@@ -104,7 +104,7 @@ def compare_generic_iter(make_it, match):
 
 klasse IntegrationTests(TestCase):
 
-    def check_hello(self, out, has_length=True):
+    def check_hello(self, out, has_length=Wahr):
         pyver = (python_implementation() + "/" +
                 sys.version.split()[0])
         self.assertEqual(out,
@@ -142,7 +142,7 @@ klasse IntegrationTests(TestCase):
     def test_validated_hello(self):
         out, err = run_amock(validator(hello_app))
         # the middleware doesn't support len(), so content-length isn't there
-        self.check_hello(out, has_length=False)
+        self.check_hello(out, has_length=Falsch)
 
     def test_simple_validation_error(self):
         def bad_app(environ,start_response):
@@ -258,7 +258,7 @@ klasse IntegrationTests(TestCase):
 
         original = signal.signal(signal.SIGUSR1, signal_handler)
         self.addCleanup(signal.signal, signal.SIGUSR1, original)
-        received = None
+        received = Nichts
         main_thread = threading.get_ident()
 
         def run_client():
@@ -271,7 +271,7 @@ klasse IntegrationTests(TestCase):
                 # signals, and then retried.  So keep sending the signal in a
                 # loop, in case an earlier signal happens to be delivered at
                 # an inconvenient moment.
-                while True:
+                while Wahr:
                     pthread_kill(main_thread, signal.SIGUSR1)
                     wenn interrupted.wait(timeout=float(1)):
                         break
@@ -296,7 +296,7 @@ klasse UtilityTests(TestCase):
         self.assertEqual(env['SCRIPT_NAME'],sn_out)
         return env
 
-    def checkDefault(self, key, value, alt=None):
+    def checkDefault(self, key, value, alt=Nichts):
         # Check defaulting when empty
         env = {}
         util.setup_testing_defaults(env)
@@ -332,20 +332,20 @@ klasse UtilityTests(TestCase):
         compare_generic_iter(make_it,match)
 
         it = make_it()
-        self.assertFalse(it.filelike.closed)
+        self.assertFalsch(it.filelike.closed)
 
         fuer item in it:
             pass
 
-        self.assertFalse(it.filelike.closed)
+        self.assertFalsch(it.filelike.closed)
 
         it.close()
-        self.assertTrue(it.filelike.closed)
+        self.assertWahr(it.filelike.closed)
 
     def testSimpleShifts(self):
         self.checkShift('','/', '', '/', '')
         self.checkShift('','/x', 'x', '/x', '')
-        self.checkShift('/','', None, '/', '')
+        self.checkShift('/','', Nichts, '/', '')
         self.checkShift('/a','/x/y', 'x', '/a/x', '/y')
         self.checkShift('/a','/x/',  'x', '/a/x', '/')
 
@@ -360,7 +360,7 @@ klasse UtilityTests(TestCase):
         self.checkShift('/a/b', '///', '', '/a/b/', '')
         self.checkShift('/a/b', '/.//', '', '/a/b/', '')
         self.checkShift('/a/b', '/x//', 'x', '/a/b/x', '/')
-        self.checkShift('/a/b', '/.', None, '/a/b', '')
+        self.checkShift('/a/b', '/.', Nichts, '/a/b', '')
 
     def testDefaults(self):
         fuer key, value in [
@@ -409,7 +409,7 @@ klasse UtilityTests(TestCase):
             HTTP_HOST="127.0.0.1", SERVER_NAME="spam.example.com")
         self.checkAppURI("https://127.0.0.1/", HTTPS="on")
         self.checkAppURI("http://127.0.0.1:8000/", SERVER_PORT="8000",
-            HTTP_HOST=None)
+            HTTP_HOST=Nichts)
 
     def testReqURIs(self):
         self.checkReqURI("http://127.0.0.1/")
@@ -439,14 +439,14 @@ klasse UtilityTests(TestCase):
             "TE Trailers Transfer-Encoding Upgrade"
         ).split():
             fuer alt in hop, hop.title(), hop.upper(), hop.lower():
-                self.assertTrue(util.is_hop_by_hop(alt))
+                self.assertWahr(util.is_hop_by_hop(alt))
 
         # Not comprehensive, just a few random header names
         fuer hop in (
             "Accept Cache-Control Date Pragma Trailer Via Warning"
         ).split():
             fuer alt in hop, hop.title(), hop.upper(), hop.lower():
-                self.assertFalse(util.is_hop_by_hop(alt))
+                self.assertFalsch(util.is_hop_by_hop(alt))
 
 klasse HeaderTests(TestCase):
 
@@ -465,10 +465,10 @@ klasse HeaderTests(TestCase):
 
         h['Foo'] = 'bar'
         fuer m in h.__contains__, h.get, h.get_all, h.__getitem__:
-            self.assertTrue(m('foo'))
-            self.assertTrue(m('Foo'))
-            self.assertTrue(m('FOO'))
-            self.assertFalse(m('bar'))
+            self.assertWahr(m('foo'))
+            self.assertWahr(m('Foo'))
+            self.assertWahr(m('FOO'))
+            self.assertFalsch(m('bar'))
 
         self.assertEqual(h['foo'],'bar')
         h['foo'] = 'baz'
@@ -493,7 +493,7 @@ klasse HeaderTests(TestCase):
         self.assertEqual(h['foo'], 'bar; baz="spam"')
         self.assertEqual(str(h),'foo: bar; baz="spam"\r\n\r\n')
 
-        h.add_header('Foo','bar',cheese=None)
+        h.add_header('Foo','bar',cheese=Nichts)
         self.assertEqual(h.get_all('foo'),
             ['bar; baz="spam"', 'bar; cheese'])
 
@@ -515,7 +515,7 @@ klasse ErrorHandler(BaseCGIHandler):
         setup_testing_defaults(kw)
         BaseCGIHandler.__init__(
             self, BytesIO(), BytesIO(), StringIO(), kw,
-            multithread=True, multiprocess=True
+            multithread=Wahr, multiprocess=Wahr
         )
 
 klasse TestHandler(ErrorHandler):
@@ -575,16 +575,16 @@ klasse HandlerTests(TestCase):
             'wsgi.input': handler.get_stdin(),
             'wsgi.errors': handler.get_stderr(),
             'wsgi.version': (1, 0),
-            'wsgi.run_once': False,
+            'wsgi.run_once': Falsch,
             'wsgi.url_scheme': 'http',
-            'wsgi.multithread': True,
-            'wsgi.multiprocess': True,
+            'wsgi.multithread': Wahr,
+            'wsgi.multiprocess': Wahr,
             'wsgi.file_wrapper': util.FileWrapper,
         })
         self.assertDictEqual(handler.environ, expected)
 
     def testCGIEnviron(self):
-        h = BaseCGIHandler(None,None,None,{})
+        h = BaseCGIHandler(Nichts,Nichts,Nichts,{})
         h.setup_environ()
         fuer key in 'wsgi.url_scheme', 'wsgi.input', 'wsgi.errors':
             self.assertIn(key, h.environ)
@@ -709,28 +709,28 @@ klasse HandlerTests(TestCase):
             "Status: 200 OK\r\n" "Content-Length: 0\r\n" "\r\n"
         ).encode("iso-8859-1")
 
-        fuer ssw in "FooBar/1.0", None:
+        fuer ssw in "FooBar/1.0", Nichts:
             sw = ssw and "Server: %s\r\n" % ssw or ""
 
             fuer version in "1.0", "1.1":
                 fuer proto in "HTTP/0.9", "HTTP/1.0", "HTTP/1.1":
 
                     h = TestHandler(SERVER_PROTOCOL=proto)
-                    h.origin_server = False
+                    h.origin_server = Falsch
                     h.http_version = version
                     h.server_software = ssw
                     h.run(non_error_app)
                     self.assertEqual(shortpat,h.stdout.getvalue())
 
                     h = TestHandler(SERVER_PROTOCOL=proto)
-                    h.origin_server = True
+                    h.origin_server = Wahr
                     h.http_version = version
                     h.server_software = ssw
                     h.run(non_error_app)
                     wenn proto=="HTTP/0.9":
                         self.assertEqual(h.stdout.getvalue(),b"")
                     sonst:
-                        self.assertTrue(
+                        self.assertWahr(
                             re.match((stdpat%(version,sw)).encode("iso-8859-1"),
                                 h.stdout.getvalue()),
                             ((stdpat%(version,sw)).encode("iso-8859-1"),
@@ -754,22 +754,22 @@ klasse HandlerTests(TestCase):
             h.stdout.getvalue())
 
     def testCloseOnError(self):
-        side_effects = {'close_called': False}
+        side_effects = {'close_called': Falsch}
         MSG = b"Some output has been sent"
         def error_app(e,s):
             s("200 OK",[])(MSG)
             klasse CrashyIterable(object):
                 def __iter__(self):
-                    while True:
+                    while Wahr:
                         yield b'blah'
                         raise AssertionError("This should be caught by handler")
                 def close(self):
-                    side_effects['close_called'] = True
+                    side_effects['close_called'] = Wahr
             return CrashyIterable()
 
         h = ErrorHandler()
         h.run(error_app)
-        self.assertEqual(side_effects['close_called'], True)
+        self.assertEqual(side_effects['close_called'], Wahr)
 
     def testPartialWrite(self):
         written = bytearray()
@@ -812,7 +812,7 @@ klasse HandlerTests(TestCase):
                 h = SimpleHandler(BytesIO(), AbortingWriter(), stderr, environ)
                 h.run(hello_app)
 
-                self.assertFalse(stderr.getvalue())
+                self.assertFalsch(stderr.getvalue())
 
     def testDontResetInternalStateOnException(self):
         klasse CustomException(ValueError):
@@ -834,10 +834,10 @@ klasse HandlerTests(TestCase):
         self.assertIn("CustomException", stderr.getvalue())
 
         # Test that the internal state of the handler is preserved.
-        self.assertIsNotNone(h.result)
-        self.assertIsNotNone(h.headers)
-        self.assertIsNotNone(h.status)
-        self.assertIsNotNone(h.environ)
+        self.assertIsNotNichts(h.result)
+        self.assertIsNotNichts(h.headers)
+        self.assertIsNotNichts(h.status)
+        self.assertIsNotNichts(h.environ)
 
 
 wenn __name__ == "__main__":

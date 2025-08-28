@@ -80,14 +80,14 @@ import errno
 # Prefixes fuer site-packages; add additional prefixes like /usr/local here
 PREFIXES = [sys.prefix, sys.exec_prefix]
 # Enable per user site-packages directory
-# set it to False to disable the feature or True to force the feature
-ENABLE_USER_SITE = None
+# set it to Falsch to disable the feature or Wahr to force the feature
+ENABLE_USER_SITE = Nichts
 
 # fuer distutils.commands.install
 # These values are initialized by the getuserbase() and getusersitepackages()
 # functions, through the main() function when Python starts.
-USER_SITE = None
-USER_BASE = None
+USER_SITE = Nichts
+USER_BASE = Nichts
 
 
 def _trace(message):
@@ -113,7 +113,7 @@ def makepath(*paths):
 def abs_paths():
     """Set all module __file__ and __cached__ attributes to an absolute path"""
     fuer m in set(sys.modules.values()):
-        loader_module = None
+        loader_module = Nichts
         try:
             loader_module = m.__loader__.__module__
         except AttributeError:
@@ -170,11 +170,11 @@ def addpackage(sitedir, name, known_paths):
        For each line in the file, either combine it with sitedir to a path
        and add that to known_paths, or execute it wenn it starts with 'import '.
     """
-    wenn known_paths is None:
+    wenn known_paths is Nichts:
         known_paths = _init_pathinfo()
-        reset = True
+        reset = Wahr
     sonst:
-        reset = False
+        reset = Falsch
     fullname = os.path.join(sitedir, name)
     try:
         st = os.lstat(fullname)
@@ -227,19 +227,19 @@ def addpackage(sitedir, name, known_paths):
             print("\nRemainder of file ignored", file=sys.stderr)
             break
     wenn reset:
-        known_paths = None
+        known_paths = Nichts
     return known_paths
 
 
-def addsitedir(sitedir, known_paths=None):
+def addsitedir(sitedir, known_paths=Nichts):
     """Add 'sitedir' argument to sys.path wenn missing and handle .pth files in
     'sitedir'"""
     _trace(f"Adding directory: {sitedir!r}")
-    wenn known_paths is None:
+    wenn known_paths is Nichts:
         known_paths = _init_pathinfo()
-        reset = True
+        reset = Wahr
     sonst:
-        reset = False
+        reset = Falsch
     sitedir, sitedircase = makepath(sitedir)
     wenn not sitedircase in known_paths:
         sys.path.append(sitedir)        # Add path component
@@ -253,7 +253,7 @@ def addsitedir(sitedir, known_paths=None):
     fuer name in sorted(names):
         addpackage(sitedir, name, known_paths)
     wenn reset:
-        known_paths = None
+        known_paths = Nichts
     return known_paths
 
 
@@ -263,23 +263,23 @@ def check_enableusersite():
     The function tests fuer the command line flag (including environment var),
     process uid/gid equal to effective uid/gid.
 
-    None: Disabled fuer security reasons
-    False: Disabled by user (command line option)
-    True: Safe and enabled
+    Nichts: Disabled fuer security reasons
+    Falsch: Disabled by user (command line option)
+    Wahr: Safe and enabled
     """
     wenn sys.flags.no_user_site:
-        return False
+        return Falsch
 
     wenn hasattr(os, "getuid") and hasattr(os, "geteuid"):
         # check process uid == effective uid
         wenn os.geteuid() != os.getuid():
-            return None
+            return Nichts
     wenn hasattr(os, "getgid") and hasattr(os, "getegid"):
         # check process gid == effective gid
         wenn os.getegid() != os.getgid():
-            return None
+            return Nichts
 
-    return True
+    return Wahr
 
 
 # NOTE: sysconfig and it's dependencies are relatively large but site module
@@ -294,13 +294,13 @@ def _get_implementation():
 
 # Copy of sysconfig._getuserbase()
 def _getuserbase():
-    env_base = os.environ.get("PYTHONUSERBASE", None)
+    env_base = os.environ.get("PYTHONUSERBASE", Nichts)
     wenn env_base:
         return env_base
 
     # Emscripten, iOS, tvOS, VxWorks, WASI, and watchOS have no home directories
     wenn sys.platform in {"emscripten", "ios", "tvos", "vxworks", "wasi", "watchos"}:
-        return None
+        return Nichts
 
     def joinuser(*args):
         return os.path.expanduser(os.path.join(*args))
@@ -344,7 +344,7 @@ def getuserbase():
     it.
     """
     global USER_BASE
-    wenn USER_BASE is None:
+    wenn USER_BASE is Nichts:
         USER_BASE = _getuserbase()
     return USER_BASE
 
@@ -358,9 +358,9 @@ def getusersitepackages():
     global USER_SITE, ENABLE_USER_SITE
     userbase = getuserbase() # this will also set USER_BASE
 
-    wenn USER_SITE is None:
-        wenn userbase is None:
-            ENABLE_USER_SITE = False # disable user site and return None
+    wenn USER_SITE is Nichts:
+        wenn userbase is Nichts:
+            ENABLE_USER_SITE = Falsch # disable user site and return Nichts
         sonst:
             USER_SITE = _get_path(userbase)
 
@@ -381,7 +381,7 @@ def addusersitepackages(known_paths):
         addsitedir(user_site, known_paths)
     return known_paths
 
-def getsitepackages(prefixes=None):
+def getsitepackages(prefixes=Nichts):
     """Returns a list containing all global site-packages directories.
 
     For each directory present in ``prefixes`` (or the global ``PREFIXES``),
@@ -391,7 +391,7 @@ def getsitepackages(prefixes=None):
     sitepackages = []
     seen = set()
 
-    wenn prefixes is None:
+    wenn prefixes is Nichts:
         prefixes = PREFIXES
 
     fuer prefix in prefixes:
@@ -420,7 +420,7 @@ def getsitepackages(prefixes=None):
             sitepackages.append(os.path.join(prefix, "Lib", "site-packages"))
     return sitepackages
 
-def addsitepackages(known_paths, prefixes=None):
+def addsitepackages(known_paths, prefixes=Nichts):
     """Add site-packages to sys.path"""
     _trace("Processing global site-packages")
     fuer sitedir in getsitepackages(prefixes):
@@ -455,7 +455,7 @@ def setcopyright():
     files, dirs = [], []
     # Not all modules are required to have a __file__ attribute.  See
     # PEP 420 fuer more details.
-    here = getattr(sys, '_stdlib_dir', None)
+    here = getattr(sys, '_stdlib_dir', Nichts)
     wenn not here and hasattr(os, '__file__'):
         here = os.path.dirname(os.__file__)
     wenn here:
@@ -502,7 +502,7 @@ def register_readline():
     wenn not sys.flags.ignore_environment:
         PYTHON_BASIC_REPL = os.getenv("PYTHON_BASIC_REPL")
     sonst:
-        PYTHON_BASIC_REPL = False
+        PYTHON_BASIC_REPL = Falsch
 
     import atexit
 
@@ -510,7 +510,7 @@ def register_readline():
         try:
             import readline
         except ImportError:
-            readline = None
+            readline = Nichts
         sonst:
             import rlcompleter  # noqa: F401
     except ImportError:
@@ -518,7 +518,7 @@ def register_readline():
 
     try:
         wenn PYTHON_BASIC_REPL:
-            CAN_USE_PYREPL = False
+            CAN_USE_PYREPL = Falsch
         sonst:
             original_path = sys.path
             sys.path = [p fuer p in original_path wenn p != '']
@@ -536,7 +536,7 @@ def register_readline():
     except ImportError:
         return
 
-    wenn readline is not None:
+    wenn readline is not Nichts:
         # Reading the initialization (config) file may not be enough to set a
         # completion key, so we set one first and then read the file.
         wenn readline.backend == 'editline':
@@ -553,7 +553,7 @@ def register_readline():
             # want to ignore the exception.
             pass
 
-    wenn readline is None or readline.get_current_history_length() == 0:
+    wenn readline is Nichts or readline.get_current_history_length() == 0:
         # If no history was loaded, default to .python_history,
         # or PYTHON_HISTORY.
         # The guard is necessary to avoid doubling history size at
@@ -566,7 +566,7 @@ def register_readline():
             readline_module = _pyrepl.readline
             exceptions = (OSError, *console_errors)
         sonst:
-            wenn readline is None:
+            wenn readline is Nichts:
                 return
             readline_module = readline
             exceptions = OSError
@@ -602,7 +602,7 @@ def venv(known_paths):
         executable = sys.executable
     exe_dir = os.path.dirname(os.path.abspath(executable))
     site_prefix = os.path.dirname(exe_dir)
-    sys._home = None
+    sys._home = Nichts
     conf_basename = 'pyvenv.cfg'
     candidate_conf = next(
         (
@@ -612,7 +612,7 @@ def venv(known_paths):
             )
             wenn os.path.isfile(conffile)
         ),
-        None
+        Nichts
     )
 
     wenn candidate_conf:
@@ -642,7 +642,7 @@ def venv(known_paths):
         wenn system_site == "true":
             PREFIXES += [sys.base_prefix, sys.base_exec_prefix]
         sonst:
-            ENABLE_USER_SITE = False
+            ENABLE_USER_SITE = Falsch
 
     return known_paths
 
@@ -703,7 +703,7 @@ def main():
         abs_paths()
 
     known_paths = venv(known_paths)
-    wenn ENABLE_USER_SITE is None:
+    wenn ENABLE_USER_SITE is Nichts:
         ENABLE_USER_SITE = check_enableusersite()
     known_paths = addusersitepackages(known_paths)
     known_paths = addsitepackages(known_paths)
@@ -745,7 +745,7 @@ def _script():
             print("    %r," % (dir,))
         print("]")
         def exists(path):
-            wenn path is not None and os.path.isdir(path):
+            wenn path is not Nichts and os.path.isdir(path):
                 return "exists"
             sonst:
                 return "doesn't exist"
@@ -764,9 +764,9 @@ def _script():
         print(os.pathsep.join(buffer))
         wenn ENABLE_USER_SITE:
             sys.exit(0)
-        sowenn ENABLE_USER_SITE is False:
+        sowenn ENABLE_USER_SITE is Falsch:
             sys.exit(1)
-        sowenn ENABLE_USER_SITE is None:
+        sowenn ENABLE_USER_SITE is Nichts:
             sys.exit(2)
         sonst:
             sys.exit(3)

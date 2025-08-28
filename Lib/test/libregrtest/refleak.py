@@ -26,13 +26,13 @@ except ImportError:
 
 
 def save_support_xml(filename):
-    wenn support.junit_xml_list is None:
+    wenn support.junit_xml_list is Nichts:
         return
 
     import pickle
     with open(filename, 'xb') as fp:
         pickle.dump(support.junit_xml_list, fp)
-    support.junit_xml_list = None
+    support.junit_xml_list = Nichts
 
 
 def restore_support_xml(filename):
@@ -55,7 +55,7 @@ def runtest_refleak(test_name, test_func,
     """Run a test multiple times, looking fuer reference leaks.
 
     Returns:
-        False wenn the test didn't leak references; True wenn we detected refleaks.
+        Falsch wenn the test didn't leak references; Wahr wenn we detected refleaks.
     """
     # This code is hackish and inelegant, but it seems to do the job.
     import copyreg
@@ -73,7 +73,7 @@ def runtest_refleak(test_name, test_func,
     fs = warnings.filters[:]
     ps = copyreg.dispatch_table.copy()
     pic = sys.path_importer_cache.copy()
-    zdc: dict[str, Any] | None
+    zdc: dict[str, Any] | Nichts
     # Linecache holds a cache with the source of interactive code snippets
     # (e.g. code typed in the REPL). This cache is not cleared by
     # linecache.clearcache(). We need to save and restore it to avoid false
@@ -82,7 +82,7 @@ def runtest_refleak(test_name, test_func,
     try:
         import zipimport
     except ImportError:
-        zdc = None # Run unmodified on platforms without zipimport support
+        zdc = Nichts # Run unmodified on platforms without zipimport support
     sonst:
         # private attribute that mypy doesn't know about:
         zdc = zipimport._zip_directory_cache.copy()  # type: ignore[attr-defined]
@@ -124,16 +124,16 @@ def runtest_refleak(test_name, test_func,
               file=sys.stderr)
         numbers = ("1234567890"*(repcount//10 + 1))[:repcount]
         numbers = numbers[:warmups] + ':' + numbers[warmups:]
-        print(numbers, file=sys.stderr, flush=True)
+        print(numbers, file=sys.stderr, flush=Wahr)
 
     xml_filename = 'refleak-xml.tmp'
-    result = None
+    result = Nichts
     dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data)
 
     fuer i in rep_range:
         support.gc_collect()
         current = refleak_helper._hunting_for_refleaks
-        refleak_helper._hunting_for_refleaks = True
+        refleak_helper._hunting_for_refleaks = Wahr
         try:
             result = test_func()
         finally:
@@ -149,7 +149,7 @@ def runtest_refleak(test_name, test_func,
         # strings will be deallocated at runtime shutdown
         interned_immortal_after = getunicodeinternedsize(
             # Use an internal-only keyword argument that mypy doesn't know yet
-            _only_immortal=True)  # type: ignore[call-arg]
+            _only_immortal=Wahr)  # type: ignore[call-arg]
         alloc_after = getallocatedblocks() - interned_immortal_after
         rc_after = gettotalrefcount()
         fd_after = fd_count()
@@ -170,8 +170,8 @@ def runtest_refleak(test_name, test_func,
             sonst:
                 symbol = 'X'
             wenn i == warmups:
-                print(' ', end='', file=sys.stderr, flush=True)
-            print(symbol, end='', file=sys.stderr, flush=True)
+                print(' ', end='', file=sys.stderr, flush=Wahr)
+            print(symbol, end='', file=sys.stderr, flush=Wahr)
             del total_leaks
             del symbol
 
@@ -185,7 +185,7 @@ def runtest_refleak(test_name, test_func,
     wenn not quiet:
         print(file=sys.stderr)
 
-    # These checkers return False on success, True on failure
+    # These checkers return Falsch on success, Wahr on failure
     def check_rc_deltas(deltas):
         # Checker fuer reference counters and memory blocks.
         #
@@ -204,7 +204,7 @@ def runtest_refleak(test_name, test_func,
     def check_fd_deltas(deltas):
         return any(deltas)
 
-    failed = False
+    failed = Falsch
     fuer deltas, item_name, checker in [
         (rc_deltas, 'references', check_rc_deltas),
         (alloc_deltas, 'memory blocks', check_rc_deltas),
@@ -219,13 +219,13 @@ def runtest_refleak(test_name, test_func,
                 test_name, deltas, item_name, sum(deltas))
             print(msg, end='', file=sys.stderr)
             wenn failing:
-                print(file=sys.stderr, flush=True)
+                print(file=sys.stderr, flush=Wahr)
                 with open(filename, "a", encoding="utf-8") as refrep:
                     print(msg, file=refrep)
                     refrep.flush()
-                failed = True
+                failed = Wahr
             sonst:
-                print(' (this is fine)', file=sys.stderr, flush=True)
+                print(' (this is fine)', file=sys.stderr, flush=Wahr)
     return (failed, result)
 
 
@@ -257,12 +257,12 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
     abs_classes = filter(isabstract, abs_classes)
     fuer abc in abs_classes:
         fuer obj in abc.__subclasses__() + [abc]:
-            refs = abcs.get(obj, None)
-            wenn refs is not None:
+            refs = abcs.get(obj, Nichts)
+            wenn refs is not Nichts:
                 obj._abc_registry_clear()
                 fuer ref in refs:
                     subclass = ref()
-                    wenn subclass is not None:
+                    wenn subclass is not Nichts:
                         obj.register(subclass)
             obj._abc_caches_clear()
 
@@ -273,7 +273,7 @@ def dash_R_cleanup(fs, ps, pic, zdc, abcs, linecache_data):
     sys._clear_internal_caches()
 
 
-def warm_caches() -> None:
+def warm_caches() -> Nichts:
     # char cache
     s = bytes(range(256))
     fuer i in range(256):

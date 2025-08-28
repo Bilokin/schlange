@@ -20,7 +20,7 @@ def decode(input, errors='strict'):
     wenn input[:3] == codecs.BOM_UTF8:
         input = input[3:]
         prefix = 3
-    (output, consumed) = codecs.utf_8_decode(input, errors, True)
+    (output, consumed) = codecs.utf_8_decode(input, errors, Wahr)
     return (output, consumed+prefix)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
@@ -28,7 +28,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
         codecs.IncrementalEncoder.__init__(self, errors)
         self.first = 1
 
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         wenn self.first:
             self.first = 0
             return codecs.BOM_UTF8 + \

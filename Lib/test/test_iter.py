@@ -80,7 +80,7 @@ klasse DefaultIterClass:
 klasse NoIterClass:
     def __getitem__(self, i):
         return i
-    __iter__ = None
+    __iter__ = Nichts
 
 klasse BadIterableClass:
     def __iter__(self):
@@ -107,7 +107,7 @@ klasse EmptyIterClass:
 klasse TestCase(unittest.TestCase):
 
     # Helper to check that an iterator returns a given sequence
-    def check_iterator(self, it, seq, pickle=True):
+    def check_iterator(self, it, seq, pickle=Wahr):
         wenn pickle:
             self.check_pickle(it, seq)
         res = []
@@ -120,7 +120,7 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(res, seq)
 
     # Helper to check that a fuer loop generates a given sequence
-    def check_for_loop(self, expr, seq, pickle=True):
+    def check_for_loop(self, expr, seq, pickle=Wahr):
         wenn pickle:
             self.check_pickle(iter(expr), seq)
         res = []
@@ -136,7 +136,7 @@ klasse TestCase(unittest.TestCase):
             # Cannot assert type equality because dict iterators unpickle as list
             # iterators.
             # self.assertEqual(type(itorg), type(it))
-            self.assertTrue(isinstance(it, collections.abc.Iterator))
+            self.assertWahr(isinstance(it, collections.abc.Iterator))
             self.assertEqual(list(it), seq)
 
             it = pickle.loads(d)
@@ -157,7 +157,7 @@ klasse TestCase(unittest.TestCase):
         seq = list(range(10))
         it = iter(seq)
         it2 = iter(it)
-        self.assertTrue(it is it2)
+        self.assertWahr(it is it2)
 
     # Test that fuer loops over iterators work
     def test_iter_for_loop(self):
@@ -235,7 +235,7 @@ klasse TestCase(unittest.TestCase):
             d = pickle.dumps((itorig, orig), proto)
             it, seq = pickle.loads(d)
             seq.n = 7
-            self.assertTrue(isinstance(it, collections.abc.Iterator))
+            self.assertWahr(isinstance(it, collections.abc.Iterator))
             self.assertEqual(list(it), [])
 
     def test_mutating_seq_class_exhausted_iter(self):
@@ -258,8 +258,8 @@ klasse TestCase(unittest.TestCase):
         builtins_dict = builtins.__dict__
         orig = {"iter": iter, "reversed": reversed}
 
-        def run(builtin_name, item, sentinel=None):
-            it = iter(item) wenn sentinel is None sonst iter(item, sentinel)
+        def run(builtin_name, item, sentinel=Nichts):
+            it = iter(item) wenn sentinel is Nichts sonst iter(item, sentinel)
 
             klasse CustomStr:
                 def __init__(self, name, iterator):
@@ -330,7 +330,7 @@ klasse TestCase(unittest.TestCase):
 
     # Test two-argument iter() with callable instance
     def test_iter_callable(self):
-        self.check_iterator(iter(CallableIterClass(), 10), list(range(10)), pickle=True)
+        self.check_iterator(iter(CallableIterClass(), 10), list(range(10)), pickle=Wahr)
 
     # Test two-argument iter() with function
     def test_iter_function(self):
@@ -338,7 +338,7 @@ klasse TestCase(unittest.TestCase):
             i = state[0]
             state[0] = i+1
             return i
-        self.check_iterator(iter(spam, 10), list(range(10)), pickle=False)
+        self.check_iterator(iter(spam, 10), list(range(10)), pickle=Falsch)
 
     # Test two-argument iter() with function that raises StopIteration
     def test_iter_function_stop(self):
@@ -348,7 +348,7 @@ klasse TestCase(unittest.TestCase):
                 raise StopIteration
             state[0] = i+1
             return i
-        self.check_iterator(iter(spam, 20), list(range(10)), pickle=False)
+        self.check_iterator(iter(spam, 20), list(range(10)), pickle=Falsch)
 
     def test_iter_function_concealing_reentrant_exhaustion(self):
         # gh-101892: Test two-argument iter() with a function that
@@ -366,11 +366,11 @@ klasse TestCase(unittest.TestCase):
             # spam() once again so protect against recursion.
             wenn spam.is_recursive_call:
                 return NO_MORE
-            spam.is_recursive_call = True
+            spam.is_recursive_call = Wahr
             exhaust(spam.iterator)
             return HAS_MORE
 
-        spam.is_recursive_call = False
+        spam.is_recursive_call = Falsch
         spam.iterator = iter(spam, NO_MORE)
         with self.assertRaises(StopIteration):
             next(spam.iterator)
@@ -415,7 +415,7 @@ klasse TestCase(unittest.TestCase):
                 wenn i == 10:
                     raise StopIteration
                 return SequenceClass.__getitem__(self, i)
-        self.check_for_loop(MySequenceClass(20), list(range(10)), pickle=False)
+        self.check_for_loop(MySequenceClass(20), list(range(10)), pickle=Falsch)
 
     # Test a big range
     def test_iter_big_range(self):
@@ -441,7 +441,7 @@ klasse TestCase(unittest.TestCase):
     def test_iter_dict(self):
         dict = {}
         fuer i in range(10):
-            dict[i] = None
+            dict[i] = Nichts
         self.check_for_loop(dict, list(dict.keys()))
 
     # Test a file
@@ -454,8 +454,8 @@ klasse TestCase(unittest.TestCase):
             f.close()
         f = open(TESTFN, "r", encoding="utf-8")
         try:
-            self.check_for_loop(f, ["0\n", "1\n", "2\n", "3\n", "4\n"], pickle=False)
-            self.check_for_loop(f, [], pickle=False)
+            self.check_for_loop(f, ["0\n", "1\n", "2\n", "3\n", "4\n"], pickle=Falsch)
+            self.check_for_loop(f, [], pickle=Falsch)
         finally:
             f.close()
             try:
@@ -529,25 +529,25 @@ klasse TestCase(unittest.TestCase):
 
     # Test filter()'s use of iterators.
     def test_builtin_filter(self):
-        self.assertEqual(list(filter(None, SequenceClass(5))),
+        self.assertEqual(list(filter(Nichts, SequenceClass(5))),
                          list(range(1, 5)))
-        self.assertEqual(list(filter(None, SequenceClass(0))), [])
-        self.assertEqual(list(filter(None, ())), [])
-        self.assertEqual(list(filter(None, "abc")), ["a", "b", "c"])
+        self.assertEqual(list(filter(Nichts, SequenceClass(0))), [])
+        self.assertEqual(list(filter(Nichts, ())), [])
+        self.assertEqual(list(filter(Nichts, "abc")), ["a", "b", "c"])
 
         d = {"one": 1, "two": 2, "three": 3}
-        self.assertEqual(list(filter(None, d)), list(d.keys()))
+        self.assertEqual(list(filter(Nichts, d)), list(d.keys()))
 
-        self.assertRaises(TypeError, filter, None, list)
-        self.assertRaises(TypeError, filter, None, 42)
+        self.assertRaises(TypeError, filter, Nichts, list)
+        self.assertRaises(TypeError, filter, Nichts, 42)
 
         klasse Boolean:
             def __init__(self, truth):
                 self.truth = truth
             def __bool__(self):
                 return self.truth
-        bTrue = Boolean(True)
-        bFalse = Boolean(False)
+        bWahr = Boolean(Wahr)
+        bFalsch = Boolean(Falsch)
 
         klasse Seq:
             def __init__(self, *args):
@@ -568,9 +568,9 @@ klasse TestCase(unittest.TestCase):
                             raise StopIteration
                 return SeqIter(self.vals)
 
-        seq = Seq(*([bTrue, bFalse] * 25))
-        self.assertEqual(list(filter(lambda x: not x, seq)), [bFalse]*25)
-        self.assertEqual(list(filter(lambda x: not x, iter(seq))), [bFalse]*25)
+        seq = Seq(*([bWahr, bFalsch] * 25))
+        self.assertEqual(list(filter(lambda x: not x, seq)), [bFalsch]*25)
+        self.assertEqual(list(filter(lambda x: not x, iter(seq))), [bFalsch]*25)
 
     # Test max() and min()'s use of iterators.
     def test_builtin_max_min(self):
@@ -613,9 +613,9 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(list(map(lambda k, d=d: (k, d[k]), d)),
                          list(d.items()))
         dkeys = list(d.keys())
-        expected = [(i < len(d) and dkeys[i] or None,
+        expected = [(i < len(d) and dkeys[i] or Nichts,
                      i,
-                     i < len(d) and dkeys[i] or None)
+                     i < len(d) and dkeys[i] or Nichts)
                     fuer i in range(3)]
 
         f = open(TESTFN, "w", encoding="utf-8")
@@ -640,7 +640,7 @@ klasse TestCase(unittest.TestCase):
         self.assertEqual(list(zip(*[])), [])
         self.assertEqual(list(zip(*[(1, 2), 'ab'])), [(1, 'a'), (2, 'b')])
 
-        self.assertRaises(TypeError, zip, None)
+        self.assertRaises(TypeError, zip, Nichts)
         self.assertRaises(TypeError, zip, range(10), 42)
         self.assertRaises(TypeError, zip, range(10), zip)
 
@@ -886,12 +886,12 @@ klasse TestCase(unittest.TestCase):
         f = open(TESTFN, "w", encoding="utf-8")
 
         try:
-            self.assertRaises(TypeError, f.writelines, None)
+            self.assertRaises(TypeError, f.writelines, Nichts)
             self.assertRaises(TypeError, f.writelines, 42)
 
             f.writelines(["1\n", "2\n"])
             f.writelines(("3\n", "4\n"))
-            f.writelines({'5\n': None})
+            f.writelines({'5\n': Nichts})
             f.writelines({})
 
             # Try a big chunk too.
@@ -1151,28 +1151,28 @@ klasse TestCase(unittest.TestCase):
 
         def init_raises():
             try:
-                fuer x in BrokenIter(init_raises=True):
+                fuer x in BrokenIter(init_raises=Wahr):
                     pass
             except Exception as e:
                 return e
 
         def next_raises():
             try:
-                fuer x in BrokenIter(next_raises=True):
+                fuer x in BrokenIter(next_raises=Wahr):
                     pass
             except Exception as e:
                 return e
 
         def iter_raises():
             try:
-                fuer x in BrokenIter(iter_raises=True):
+                fuer x in BrokenIter(iter_raises=Wahr):
                     pass
             except Exception as e:
                 return e
 
-        fuer func, expected in [(init_raises, "BrokenIter(init_raises=True)"),
-                               (next_raises, "BrokenIter(next_raises=True)"),
-                               (iter_raises, "BrokenIter(iter_raises=True)"),
+        fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
+                               (next_raises, "BrokenIter(next_raises=Wahr)"),
+                               (iter_raises, "BrokenIter(iter_raises=Wahr)"),
                               ]:
             with self.subTest(func):
                 exc = func()

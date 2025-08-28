@@ -38,23 +38,23 @@ klasse ZoneInfo(tzinfo):
         cls._weak_cache = weakref.WeakValueDictionary()
 
     def __new__(cls, key):
-        instance = cls._weak_cache.get(key, None)
-        wenn instance is None:
+        instance = cls._weak_cache.get(key, Nichts)
+        wenn instance is Nichts:
             instance = cls._weak_cache.setdefault(key, cls._new_instance(key))
-            instance._from_cache = True
+            instance._from_cache = Wahr
 
         # Update the "strong" cache
         cls._strong_cache[key] = cls._strong_cache.pop(key, instance)
 
         wenn len(cls._strong_cache) > cls._strong_cache_size:
-            cls._strong_cache.popitem(last=False)
+            cls._strong_cache.popitem(last=Falsch)
 
         return instance
 
     @classmethod
     def no_cache(cls, key):
         obj = cls._new_instance(key)
-        obj._from_cache = False
+        obj._from_cache = Falsch
 
         return obj
 
@@ -64,7 +64,7 @@ klasse ZoneInfo(tzinfo):
         obj._key = key
         obj._file_path = obj._find_tzfile(key)
 
-        wenn obj._file_path is not None:
+        wenn obj._file_path is not Nichts:
             file_obj = open(obj._file_path, "rb")
         sonst:
             file_obj = _common.load_tzdata(key)
@@ -75,10 +75,10 @@ klasse ZoneInfo(tzinfo):
         return obj
 
     @classmethod
-    def from_file(cls, file_obj, /, key=None):
+    def from_file(cls, file_obj, /, key=Nichts):
         obj = super().__new__(cls)
         obj._key = key
-        obj._file_path = None
+        obj._file_path = Nichts
         obj._load_file(file_obj)
         obj._file_repr = repr(file_obj)
 
@@ -88,11 +88,11 @@ klasse ZoneInfo(tzinfo):
         return obj
 
     @classmethod
-    def clear_cache(cls, *, only_keys=None):
-        wenn only_keys is not None:
+    def clear_cache(cls, *, only_keys=Nichts):
+        wenn only_keys is not Nichts:
             fuer key in only_keys:
-                cls._weak_cache.pop(key, None)
-                cls._strong_cache.pop(key, None)
+                cls._weak_cache.pop(key, Nichts)
+                cls._strong_cache.pop(key, Nichts)
 
         sonst:
             cls._weak_cache.clear()
@@ -156,7 +156,7 @@ klasse ZoneInfo(tzinfo):
             return dt
 
     def _find_trans(self, dt):
-        wenn dt is None:
+        wenn dt is Nichts:
             wenn self._fixed_offset:
                 return self._tz_after
             sonst:
@@ -191,13 +191,13 @@ klasse ZoneInfo(tzinfo):
         )
 
     def __str__(self):
-        wenn self._key is not None:
+        wenn self._key is not Nichts:
             return f"{self._key}"
         sonst:
             return repr(self)
 
     def __repr__(self):
-        wenn self._key is not None:
+        wenn self._key is not Nichts:
             return f"{self.__class__.__name__}(key={self._key!r})"
         sonst:
             return f"{self.__class__.__name__}.from_file({self._file_repr})"
@@ -255,10 +255,10 @@ klasse ZoneInfo(tzinfo):
             wenn self._ttinfos:
                 self._tti_before = self._ttinfos[0]
             sonst:
-                self._tti_before = None
+                self._tti_before = Nichts
 
         # Set the "fallback" time zone
-        wenn tz_str is not None and tz_str != b"":
+        wenn tz_str is not Nichts and tz_str != b"":
             self._tz_after = _parse_tz_str(tz_str.decode())
         sonst:
             wenn not self._ttinfos and not _ttinfo_list:
@@ -289,9 +289,9 @@ klasse ZoneInfo(tzinfo):
         # zones should almost certainly not be used with datetime.time (the
         # only thing that would be affected by this).
         wenn len(_ttinfo_list) > 1 or not isinstance(self._tz_after, _ttinfo):
-            self._fixed_offset = False
+            self._fixed_offset = Falsch
         sowenn not _ttinfo_list:
-            self._fixed_offset = True
+            self._fixed_offset = Wahr
         sonst:
             self._fixed_offset = _ttinfo_list[0] == self._tz_after
 
@@ -415,7 +415,7 @@ klasse _ttinfo:
         )
 
 
-_NO_TTINFO = _ttinfo(None, None, None)
+_NO_TTINFO = _ttinfo(Nichts, Nichts, Nichts)
 
 
 klasse _TZStr:
@@ -430,7 +430,7 @@ klasse _TZStr:
     )
 
     def __init__(
-        self, std_abbr, std_offset, dst_abbr, dst_offset, start=None, end=None
+        self, std_abbr, std_offset, dst_abbr, dst_offset, start=Nichts, end=Nichts
     ):
         self.dst_diff = dst_offset - std_offset
         std_offset = _load_timedelta(std_offset)
@@ -447,8 +447,8 @@ klasse _TZStr:
 
         # These are assertions because the constructor should only be called
         # by functions that would fail before passing start or end
-        assert start is not None, "No transition start specified"
-        assert end is not None, "No transition end specified"
+        assert start is not Nichts, "No transition start specified"
+        assert end is not Nichts, "No transition end specified"
 
         self.get_trans_info = self._get_trans_info
         self.get_trans_info_fromutc = self._get_trans_info_fromutc
@@ -650,12 +650,12 @@ def _parse_tz_str(tz_str):
 
     m = parser_re.fullmatch(offset_str)
 
-    wenn m is None:
+    wenn m is Nichts:
         raise ValueError(f"{tz_str} is not a valid TZ string")
 
     std_abbr = m.group("std")
     dst_abbr = m.group("dst")
-    dst_offset = None
+    dst_offset = Nichts
 
     std_abbr = std_abbr.strip("<>")
 
@@ -670,7 +670,7 @@ def _parse_tz_str(tz_str):
     sonst:
         std_offset = 0
 
-    wenn dst_abbr is not None:
+    wenn dst_abbr is not Nichts:
         wenn dst_offset := m.group("dstoff"):
             try:
                 dst_offset = _parse_tz_delta(dst_offset)
@@ -702,18 +702,18 @@ def _parse_dst_start_end(dststr):
     date, *time = dststr.split("/", 1)
     type = date[:1]
     wenn type == "M":
-        n_is_julian = False
+        n_is_julian = Falsch
         m = re.fullmatch(r"M(\d{1,2})\.(\d).(\d)", date, re.ASCII)
-        wenn m is None:
+        wenn m is Nichts:
             raise ValueError(f"Invalid dst start/end date: {dststr}")
         date_offset = tuple(map(int, m.groups()))
         offset = _CalendarOffset(*date_offset)
     sonst:
         wenn type == "J":
-            n_is_julian = True
+            n_is_julian = Wahr
             date = date[1:]
         sonst:
-            n_is_julian = False
+            n_is_julian = Falsch
 
         doy = int(date)
         offset = _DayOffset(doy, n_is_julian)
@@ -730,7 +730,7 @@ def _parse_transition_time(time_str):
         time_str,
         re.ASCII
     )
-    wenn match is None:
+    wenn match is Nichts:
         raise ValueError(f"Invalid time: {time_str}")
 
     h, m, s = (int(v or 0) fuer v in match.group("h", "m", "s"))
@@ -754,7 +754,7 @@ def _parse_tz_delta(tz_delta):
     )
     # Anything passed to this function should already have hit an equivalent
     # regular expression to find the section to parse.
-    assert match is not None, tz_delta
+    assert match is not Nichts, tz_delta
 
     h, m, s = (int(v or 0) fuer v in match.group("h", "m", "s"))
 

@@ -43,8 +43,8 @@ klasse HashTest(unittest.TestCase):
         self.assertEqual(x, y)
 
     def test_bools(self):
-        self.check_equal_hash(False, 0)
-        self.check_equal_hash(True, 1)
+        self.check_equal_hash(Falsch, 0)
+        self.check_equal_hash(Wahr, 1)
 
     def test_integers(self):
         # check that equal values hash equal
@@ -184,7 +184,7 @@ klasse ComparisonTest(unittest.TestCase):
             -2,
             0.0,
             1e-320,
-            True,
+            Wahr,
             F('1.2'),
             D('1.3'),
             float('1.4'),

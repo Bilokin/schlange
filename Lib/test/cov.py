@@ -41,7 +41,7 @@ def enable():
 
 def disable():
     mon.set_events(mon.COVERAGE_ID, 0)
-    mon.register_callback(mon.COVERAGE_ID, mon.events.LINE, None)
+    mon.register_callback(mon.COVERAGE_ID, mon.events.LINE, Nichts)
     mon.free_tool_id(mon.COVERAGE_ID)
 
 

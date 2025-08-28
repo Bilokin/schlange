@@ -38,7 +38,7 @@ klasse StringPtrTestCase(unittest.TestCase):
 
         # c_char_p and Python string is compatible
         # c_char_p and create_string_buffer is NOT compatible
-        self.assertEqual(x.str, None)
+        self.assertEqual(x.str, Nichts)
         x.str = b"Hello, World"
         self.assertEqual(x.str, b"Hello, World")
         b = create_string_buffer(b"Hello, World")

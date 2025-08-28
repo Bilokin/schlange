@@ -11,7 +11,7 @@ from test.test_asyncio import functional as func_tests
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
@@ -48,9 +48,9 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
                 await srv.serve_forever()
 
         srv = self.loop.run_until_complete(asyncio.start_server(
-            serve, socket_helper.HOSTv4, 0, start_serving=False))
+            serve, socket_helper.HOSTv4, 0, start_serving=Falsch))
 
-        self.assertFalse(srv.is_serving())
+        self.assertFalsch(srv.is_serving())
 
         main_task = self.loop.create_task(main(srv))
 
@@ -61,9 +61,9 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
 
         self.assertEqual(srv.sockets, ())
 
-        self.assertIsNone(srv._sockets)
-        self.assertIsNone(srv._waiters)
-        self.assertFalse(srv.is_serving())
+        self.assertIsNichts(srv._sockets)
+        self.assertIsNichts(srv._waiters)
+        self.assertFalsch(srv.is_serving())
 
         with self.assertRaisesRegex(RuntimeError, r'is closed'):
             self.loop.run_until_complete(srv.serve_forever())
@@ -96,15 +96,15 @@ klasse SelectorStartServerTests(BaseStartServer, unittest.TestCase):
 
         async def main(srv):
             async with srv:
-                self.assertFalse(srv.is_serving())
+                self.assertFalsch(srv.is_serving())
                 await srv.start_serving()
-                self.assertTrue(srv.is_serving())
+                self.assertWahr(srv.is_serving())
                 started.set()
                 await srv.serve_forever()
 
         with test_utils.unix_socket_path() as addr:
             srv = self.loop.run_until_complete(asyncio.start_unix_server(
-                serve, addr, start_serving=False))
+                serve, addr, start_serving=Falsch))
 
             main_task = self.loop.create_task(main(srv))
 
@@ -114,9 +114,9 @@ klasse SelectorStartServerTests(BaseStartServer, unittest.TestCase):
 
             self.assertEqual(srv.sockets, ())
 
-            self.assertIsNone(srv._sockets)
-            self.assertIsNone(srv._waiters)
-            self.assertFalse(srv.is_serving())
+            self.assertIsNichts(srv._sockets)
+            self.assertIsNichts(srv._waiters)
+            self.assertFalsch(srv.is_serving())
 
             with self.assertRaisesRegex(RuntimeError, r'is closed'):
                 self.loop.run_until_complete(srv.serve_forever())
@@ -138,24 +138,24 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
         # active count = 0, not closed: should block
         task1 = asyncio.create_task(srv.wait_closed())
         await asyncio.sleep(0)
-        self.assertFalse(task1.done())
+        self.assertFalsch(task1.done())
 
         # active count != 0, not closed: should block
         addr = srv.sockets[0].getsockname()
         (rd, wr) = await asyncio.open_connection(addr[0], addr[1])
         task2 = asyncio.create_task(srv.wait_closed())
         await asyncio.sleep(0)
-        self.assertFalse(task1.done())
-        self.assertFalse(task2.done())
+        self.assertFalsch(task1.done())
+        self.assertFalsch(task2.done())
 
         srv.close()
         await asyncio.sleep(0)
         # active count != 0, closed: should block
         task3 = asyncio.create_task(srv.wait_closed())
         await asyncio.sleep(0)
-        self.assertFalse(task1.done())
-        self.assertFalse(task2.done())
-        self.assertFalse(task3.done())
+        self.assertFalsch(task1.done())
+        self.assertFalsch(task2.done())
+        self.assertFalsch(task3.done())
 
         wr.close()
         await wr.wait_closed()
@@ -179,7 +179,7 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
 
         task = asyncio.create_task(srv.wait_closed())
         await asyncio.sleep(0)
-        self.assertFalse(task.done())
+        self.assertFalsch(task.done())
         addr = srv.sockets[0].getsockname()
         (rd, wr) = await asyncio.open_connection(addr[0], addr[1])
         loop = asyncio.get_running_loop()
@@ -204,13 +204,13 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
 
         task = asyncio.create_task(srv.wait_closed())
         await asyncio.sleep(0)
-        self.assertFalse(task.done())
+        self.assertFalsch(task.done())
 
         srv.close()
         srv.close_clients()
         await asyncio.sleep(0)
         await asyncio.sleep(0)
-        self.assertTrue(task.done())
+        self.assertWahr(task.done())
 
     async def test_abort_clients(self):
         async def serve(rd, wr):
@@ -258,13 +258,13 @@ klasse TestServer2(unittest.IsolatedAsyncioTestCase):
 
         task = asyncio.create_task(srv.wait_closed())
         await asyncio.sleep(0)
-        self.assertFalse(task.done())
+        self.assertFalsch(task.done())
 
         srv.close()
         srv.abort_clients()
         await asyncio.sleep(0)
         await asyncio.sleep(0)
-        self.assertTrue(task.done())
+        self.assertWahr(task.done())
 
 
 # Test the various corner cases of Unix server socket removal
@@ -279,7 +279,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
             srv = await asyncio.start_unix_server(serve, addr)
 
             srv.close()
-            self.assertFalse(os.path.exists(addr))
+            self.assertFalsch(os.path.exists(addr))
 
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_sock_cleanup(self):
@@ -294,7 +294,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
                 srv = await asyncio.start_unix_server(serve, sock=sock)
 
                 srv.close()
-                self.assertFalse(os.path.exists(addr))
+                self.assertFalsch(os.path.exists(addr))
 
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_cleanup_gone(self):
@@ -326,7 +326,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
                 sock.bind(addr)
 
                 srv.close()
-                self.assertTrue(os.path.exists(addr))
+                self.assertWahr(os.path.exists(addr))
 
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_cleanup_prevented(self):
@@ -335,10 +335,10 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
             async def serve(*args):
                 pass
 
-            srv = await asyncio.start_unix_server(serve, addr, cleanup_socket=False)
+            srv = await asyncio.start_unix_server(serve, addr, cleanup_socket=Falsch)
 
             srv.close()
-            self.assertTrue(os.path.exists(addr))
+            self.assertWahr(os.path.exists(addr))
 
 
 @unittest.skipUnless(hasattr(asyncio, 'ProactorEventLoop'), 'Windows only')

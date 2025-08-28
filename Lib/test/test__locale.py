@@ -2,7 +2,7 @@ from _locale import (setlocale, LC_ALL, LC_CTYPE, LC_NUMERIC, LC_TIME, localecon
 try:
     from _locale import (RADIXCHAR, THOUSEP, nl_langinfo)
 except ImportError:
-    nl_langinfo = None
+    nl_langinfo = Nichts
 
 import locale
 import sys
@@ -134,13 +134,13 @@ klasse _LocaleTests(unittest.TestCase):
                                     calc_value, known_value,
                                     calc_type, data_type, set_locale,
                                     used_locale))
-            return True
+            return Wahr
 
     @unittest.skipUnless(nl_langinfo, "nl_langinfo is not available")
     @unittest.skipIf(support.linked_to_musl(), "musl libc issue, bpo-46390")
     def test_lc_numeric_nl_langinfo(self):
         # Test nl_langinfo against known values
-        tested = False
+        tested = Falsch
         oldloc = setlocale(LC_CTYPE)
         fuer loc in candidate_locales:
             try:
@@ -150,7 +150,7 @@ klasse _LocaleTests(unittest.TestCase):
             fuer li, lc in ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
                 wenn self.numeric_tester('nl_langinfo', nl_langinfo(li), lc, loc):
-                    tested = True
+                    tested = Wahr
             self.assertEqual(setlocale(LC_CTYPE), oldloc)
         wenn not tested:
             self.skipTest('no suitable locales')
@@ -158,7 +158,7 @@ klasse _LocaleTests(unittest.TestCase):
     @unittest.skipIf(support.linked_to_musl(), "musl libc issue, bpo-46390")
     def test_lc_numeric_localeconv(self):
         # Test localeconv against known values
-        tested = False
+        tested = Falsch
         oldloc = setlocale(LC_CTYPE)
         fuer loc in candidate_locales:
             try:
@@ -169,7 +169,7 @@ klasse _LocaleTests(unittest.TestCase):
             fuer lc in ("decimal_point",
                         "thousands_sep"):
                 wenn self.numeric_tester('localeconv', formatting[lc], lc, loc):
-                    tested = True
+                    tested = Wahr
             self.assertEqual(setlocale(LC_CTYPE), oldloc)
         wenn not tested:
             self.skipTest('no suitable locales')
@@ -177,7 +177,7 @@ klasse _LocaleTests(unittest.TestCase):
     @unittest.skipUnless(nl_langinfo, "nl_langinfo is not available")
     def test_lc_numeric_basic(self):
         # Test nl_langinfo against localeconv
-        tested = False
+        tested = Falsch
         oldloc = setlocale(LC_CTYPE)
         fuer loc in candidate_locales:
             try:
@@ -197,7 +197,7 @@ klasse _LocaleTests(unittest.TestCase):
                                 "(set to %s, using %s)" % (
                                                 nl_radixchar, li_radixchar,
                                                 loc, set_locale))
-                tested = True
+                tested = Wahr
             self.assertEqual(setlocale(LC_CTYPE), oldloc)
         wenn not tested:
             self.skipTest('no suitable locales')
@@ -207,7 +207,7 @@ klasse _LocaleTests(unittest.TestCase):
     @unittest.skipIf(support.linked_to_musl(), "musl libc issue, bpo-46390")
     def test_alt_digits_nl_langinfo(self):
         # Test nl_langinfo(ALT_DIGITS)
-        tested = False
+        tested = Falsch
         fuer loc in candidate_locales:
             with self.subTest(locale=loc):
                 try:
@@ -230,7 +230,7 @@ klasse _LocaleTests(unittest.TestCase):
                         self.assertEqual(len(alt_digits), count, alt_digits)
                         fuer i in samples:
                             self.assertEqual(alt_digits[i], samples[i])
-                    tested = True
+                    tested = Wahr
         wenn not tested:
             self.skipTest('no suitable locales')
 
@@ -239,7 +239,7 @@ klasse _LocaleTests(unittest.TestCase):
     @unittest.skipIf(support.linked_to_musl(), "musl libc issue, bpo-46390")
     def test_era_nl_langinfo(self):
         # Test nl_langinfo(ERA)
-        tested = False
+        tested = Falsch
         fuer loc in candidate_locales:
             with self.subTest(locale=loc):
                 try:
@@ -264,14 +264,14 @@ klasse _LocaleTests(unittest.TestCase):
                             self.assertIn(sample, era)
                         sonst:
                             self.assertEqual(era, '')
-                    tested = True
+                    tested = Wahr
         wenn not tested:
             self.skipTest('no suitable locales')
 
     def test_float_parsing(self):
         # Bug #1391872: Test whether float parsing is okay on European
         # locales.
-        tested = False
+        tested = Falsch
         oldloc = setlocale(LC_CTYPE)
         fuer loc in candidate_locales:
             try:
@@ -290,7 +290,7 @@ klasse _LocaleTests(unittest.TestCase):
             wenn localeconv()['decimal_point'] != '.':
                 self.assertRaises(ValueError, float,
                                   localeconv()['decimal_point'].join(['1', '23']))
-            tested = True
+            tested = Wahr
             self.assertEqual(setlocale(LC_CTYPE), oldloc)
         wenn not tested:
             self.skipTest('no suitable locales')

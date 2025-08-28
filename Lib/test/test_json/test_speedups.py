@@ -34,18 +34,18 @@ klasse TestEncode(CTest):
         # bpo-6986: The interpreter shouldn't crash in case c_make_encoder()
         # receives invalid arguments.
         self.assertRaises(TypeError, self.json.encoder.c_make_encoder,
-            (True, False),
+            (Wahr, Falsch),
             b"\xCD\x7D\x3D\x4E\x12\x4C\xF9\x79\xD7\x52\xBA\x82\xF2\x27\x4A\x7D\xA0\xCA\x75",
-            None)
+            Nichts)
 
     def test_bad_str_encoder(self):
         # Issue #31505: There shouldn't be an assertion failure in case
         # c_make_encoder() receives a bad encoder() argument.
         def bad_encoder1(*args):
-            return None
-        enc = self.json.encoder.c_make_encoder(None, lambda obj: str(obj),
-                                               bad_encoder1, None, ': ', ', ',
-                                               False, False, False)
+            return Nichts
+        enc = self.json.encoder.c_make_encoder(Nichts, lambda obj: str(obj),
+                                               bad_encoder1, Nichts, ': ', ', ',
+                                               Falsch, Falsch, Falsch)
         with self.assertRaises(TypeError):
             enc('spam', 4)
         with self.assertRaises(TypeError):
@@ -53,9 +53,9 @@ klasse TestEncode(CTest):
 
         def bad_encoder2(*args):
             1/0
-        enc = self.json.encoder.c_make_encoder(None, lambda obj: str(obj),
-                                               bad_encoder2, None, ': ', ', ',
-                                               False, False, False)
+        enc = self.json.encoder.c_make_encoder(Nichts, lambda obj: str(obj),
+                                               bad_encoder2, Nichts, ': ', ', ',
+                                               Falsch, Falsch, Falsch)
         with self.assertRaises(ZeroDivisionError):
             enc('spam', 4)
 
@@ -63,10 +63,10 @@ klasse TestEncode(CTest):
         # https://bugs.python.org/issue45269
         with self.assertRaisesRegex(
             TypeError,
-            r'make_encoder\(\) argument 1 must be dict or None, not int',
+            r'make_encoder\(\) argument 1 must be dict or Nichts, not int',
         ):
-            self.json.encoder.c_make_encoder(1, None, None, None, ': ', ', ',
-                                             False, False, False)
+            self.json.encoder.c_make_encoder(1, Nichts, Nichts, Nichts, ': ', ', ',
+                                             Falsch, Falsch, Falsch)
 
     def test_bad_bool_args(self):
         def test(name):
@@ -79,4 +79,4 @@ klasse TestEncode(CTest):
 
     def test_unsortable_keys(self):
         with self.assertRaises(TypeError):
-            self.json.encoder.JSONEncoder(sort_keys=True).encode({'a': 1, 1: 'a'})
+            self.json.encoder.JSONEncoder(sort_keys=Wahr).encode({'a': 1, 1: 'a'})

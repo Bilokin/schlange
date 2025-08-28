@@ -20,11 +20,11 @@ from _collections_abc import Sequence
 try:
     import pwd
 except ImportError:
-    pwd = None
+    pwd = Nichts
 try:
     import grp
 except ImportError:
-    grp = None
+    grp = Nichts
 
 from pathlib._os import (
     PathInfo, DirEntryInfo,
@@ -479,7 +479,7 @@ klasse PurePath:
         """
         return ['.' + ext fuer ext in self.name.lstrip('.').split('.')[1:]]
 
-    def relative_to(self, other, *, walk_up=False):
+    def relative_to(self, other, *, walk_up=Falsch):
         """Return the relative path to another path identified by the passed
         arguments.  If the operation is not possible (because this is not
         related to the other path), raise ValueError.
@@ -502,21 +502,21 @@ klasse PurePath:
         return self._from_parsed_parts('', '', parts)
 
     def is_relative_to(self, other):
-        """Return True wenn the path is relative to another path or False.
+        """Return Wahr wenn the path is relative to another path or Falsch.
         """
         wenn not hasattr(other, 'with_segments'):
             other = self.with_segments(other)
         return other == self or other in self.parents
 
     def is_absolute(self):
-        """True wenn the path is absolute (has both a root and, wenn applicable,
+        """Wahr wenn the path is absolute (has both a root and, wenn applicable,
         a drive)."""
         wenn self.parser is posixpath:
             # Optimization: work with raw paths on POSIX.
             fuer path in self._raw_paths:
                 wenn path.startswith('/'):
-                    return True
-            return False
+                    return Wahr
+            return Falsch
         return self.parser.isabs(self)
 
     def as_uri(self):
@@ -544,48 +544,48 @@ klasse PurePath:
         from urllib.parse import quote_from_bytes
         return prefix + quote_from_bytes(os.fsencode(path))
 
-    def full_match(self, pattern, *, case_sensitive=None):
+    def full_match(self, pattern, *, case_sensitive=Nichts):
         """
-        Return True wenn this path matches the given glob-style pattern. The
+        Return Wahr wenn this path matches the given glob-style pattern. The
         pattern is matched against the entire path.
         """
         wenn not hasattr(pattern, 'with_segments'):
             pattern = self.with_segments(pattern)
-        wenn case_sensitive is None:
+        wenn case_sensitive is Nichts:
             case_sensitive = self.parser is posixpath
 
         # The string representation of an empty path is a single dot ('.'). Empty
         # paths shouldn't match wildcards, so we change it to the empty string.
         path = str(self) wenn self.parts sonst ''
         pattern = str(pattern) wenn pattern.parts sonst ''
-        globber = _StringGlobber(self.parser.sep, case_sensitive, recursive=True)
-        return globber.compile(pattern)(path) is not None
+        globber = _StringGlobber(self.parser.sep, case_sensitive, recursive=Wahr)
+        return globber.compile(pattern)(path) is not Nichts
 
-    def match(self, path_pattern, *, case_sensitive=None):
+    def match(self, path_pattern, *, case_sensitive=Nichts):
         """
-        Return True wenn this path matches the given pattern. If the pattern is
+        Return Wahr wenn this path matches the given pattern. If the pattern is
         relative, matching is done from the right; otherwise, the entire path
         is matched. The recursive wildcard '**' is *not* supported by this
         method.
         """
         wenn not hasattr(path_pattern, 'with_segments'):
             path_pattern = self.with_segments(path_pattern)
-        wenn case_sensitive is None:
+        wenn case_sensitive is Nichts:
             case_sensitive = self.parser is posixpath
         path_parts = self.parts[::-1]
         pattern_parts = path_pattern.parts[::-1]
         wenn not pattern_parts:
             raise ValueError("empty pattern")
         wenn len(path_parts) < len(pattern_parts):
-            return False
+            return Falsch
         wenn len(path_parts) > len(pattern_parts) and path_pattern.anchor:
-            return False
+            return Falsch
         globber = _StringGlobber(self.parser.sep, case_sensitive)
         fuer path_part, pattern_part in zip(path_parts, pattern_parts):
             match = globber.compile(pattern_part)
-            wenn match(path_part) is None:
-                return False
-        return True
+            wenn match(path_part) is Nichts:
+                return Falsch
+        return Wahr
 
 # Subclassing os.PathLike makes isinstance() checks slower,
 # which in turn makes Path construction slower. Register instead!
@@ -640,7 +640,7 @@ klasse Path(PurePath):
             self._info = PathInfo(self)
             return self._info
 
-    def stat(self, *, follow_symlinks=True):
+    def stat(self, *, follow_symlinks=Wahr):
         """
         Return the result of the stat() system call on this path, like
         os.stat() does.
@@ -654,18 +654,18 @@ klasse Path(PurePath):
         """
         return os.lstat(self)
 
-    def exists(self, *, follow_symlinks=True):
+    def exists(self, *, follow_symlinks=Wahr):
         """
         Whether this path exists.
 
         This method normally follows symlinks; to check whether a symlink exists,
-        add the argument follow_symlinks=False.
+        add the argument follow_symlinks=Falsch.
         """
         wenn follow_symlinks:
             return os.path.exists(self)
         return os.path.lexists(self)
 
-    def is_dir(self, *, follow_symlinks=True):
+    def is_dir(self, *, follow_symlinks=Wahr):
         """
         Whether this path is a directory.
         """
@@ -674,11 +674,11 @@ klasse Path(PurePath):
         try:
             return S_ISDIR(self.stat(follow_symlinks=follow_symlinks).st_mode)
         except (OSError, ValueError):
-            return False
+            return Falsch
 
-    def is_file(self, *, follow_symlinks=True):
+    def is_file(self, *, follow_symlinks=Wahr):
         """
-        Whether this path is a regular file (also True fuer symlinks pointing
+        Whether this path is a regular file (also Wahr fuer symlinks pointing
         to regular files).
         """
         wenn follow_symlinks:
@@ -686,7 +686,7 @@ klasse Path(PurePath):
         try:
             return S_ISREG(self.stat(follow_symlinks=follow_symlinks).st_mode)
         except (OSError, ValueError):
-            return False
+            return Falsch
 
     def is_mount(self):
         """
@@ -713,7 +713,7 @@ klasse Path(PurePath):
         try:
             return S_ISBLK(self.stat().st_mode)
         except (OSError, ValueError):
-            return False
+            return Falsch
 
     def is_char_device(self):
         """
@@ -722,7 +722,7 @@ klasse Path(PurePath):
         try:
             return S_ISCHR(self.stat().st_mode)
         except (OSError, ValueError):
-            return False
+            return Falsch
 
     def is_fifo(self):
         """
@@ -731,7 +731,7 @@ klasse Path(PurePath):
         try:
             return S_ISFIFO(self.stat().st_mode)
         except (OSError, ValueError):
-            return False
+            return Falsch
 
     def is_socket(self):
         """
@@ -740,7 +740,7 @@ klasse Path(PurePath):
         try:
             return S_ISSOCK(self.stat().st_mode)
         except (OSError, ValueError):
-            return False
+            return Falsch
 
     def samefile(self, other_path):
         """Return whether other_path is the same or not as this file
@@ -754,8 +754,8 @@ klasse Path(PurePath):
         return (st.st_ino == other_st.st_ino and
                 st.st_dev == other_st.st_dev)
 
-    def open(self, mode='r', buffering=-1, encoding=None,
-             errors=None, newline=None):
+    def open(self, mode='r', buffering=-1, encoding=Nichts,
+             errors=Nichts, newline=Nichts):
         """
         Open the file pointed to by this path and return a file object, as
         the built-in open() function does.
@@ -771,7 +771,7 @@ klasse Path(PurePath):
         with self.open(mode='rb', buffering=0) as f:
             return f.read()
 
-    def read_text(self, encoding=None, errors=None, newline=None):
+    def read_text(self, encoding=Nichts, errors=Nichts, newline=Nichts):
         """
         Open the file in text mode, read it, and close the file.
         """
@@ -790,7 +790,7 @@ klasse Path(PurePath):
         with self.open(mode='wb') as f:
             return f.write(view)
 
-    def write_text(self, data, encoding=None, errors=None, newline=None):
+    def write_text(self, data, encoding=Nichts, errors=Nichts, newline=Nichts):
         """
         Open the file in text mode, write to it, and close the file.
         """
@@ -803,7 +803,7 @@ klasse Path(PurePath):
         with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
             return f.write(data)
 
-    _remove_leading_dot = operator.itemgetter(slice(2, None))
+    _remove_leading_dot = operator.itemgetter(slice(2, Nichts))
     _remove_trailing_slash = operator.itemgetter(slice(-1))
 
     def _filter_trailing_slash(self, paths):
@@ -834,21 +834,21 @@ klasse Path(PurePath):
         sonst:
             return (self._from_dir_entry(e, e.path) fuer e in entries)
 
-    def glob(self, pattern, *, case_sensitive=None, recurse_symlinks=False):
+    def glob(self, pattern, *, case_sensitive=Nichts, recurse_symlinks=Falsch):
         """Iterate over this subtree and yield all existing files (of any
         kind, including directories) matching the given relative pattern.
         """
         sys.audit("pathlib.Path.glob", self, pattern)
-        wenn case_sensitive is None:
+        wenn case_sensitive is Nichts:
             case_sensitive = self.parser is posixpath
-            case_pedantic = False
+            case_pedantic = Falsch
         sonst:
             # The user has expressed a case sensitivity choice, but we don't
             # know the case sensitivity of the underlying filesystem, so we
             # must use scandir() fuer everything, including non-wildcard parts.
-            case_pedantic = True
+            case_pedantic = Wahr
         parts = self._parse_pattern(pattern)
-        recursive = True wenn recurse_symlinks sonst _no_recurse_symlinks
+        recursive = Wahr wenn recurse_symlinks sonst _no_recurse_symlinks
         globber = _StringGlobber(self.parser.sep, case_sensitive, case_pedantic, recursive)
         select = globber.selector(parts[::-1])
         root = str(self)
@@ -864,7 +864,7 @@ klasse Path(PurePath):
         paths = map(self._from_parsed_string, paths)
         return paths
 
-    def rglob(self, pattern, *, case_sensitive=None, recurse_symlinks=False):
+    def rglob(self, pattern, *, case_sensitive=Nichts, recurse_symlinks=Falsch):
         """Recursively yield all existing files (of any kind, including
         directories) matching the given relative pattern, anywhere in
         this subtree.
@@ -873,7 +873,7 @@ klasse Path(PurePath):
         pattern = self.parser.join('**', pattern)
         return self.glob(pattern, case_sensitive=case_sensitive, recurse_symlinks=recurse_symlinks)
 
-    def walk(self, top_down=True, on_error=None, follow_symlinks=False):
+    def walk(self, top_down=Wahr, on_error=Nichts, follow_symlinks=Falsch):
         """Walk the directory tree from this directory, similar to os.walk()."""
         sys.audit("pathlib.Path.walk", self, on_error, follow_symlinks)
         root_dir = str(self)
@@ -923,7 +923,7 @@ klasse Path(PurePath):
         path._str = cwd  # getcwd() returns a normalized path
         return path
 
-    def resolve(self, strict=False):
+    def resolve(self, strict=Falsch):
         """
         Make the path absolute, resolving all symlinks on the way and also
         normalizing it.
@@ -932,14 +932,14 @@ klasse Path(PurePath):
         return self.with_segments(os.path.realpath(self, strict=strict))
 
     wenn pwd:
-        def owner(self, *, follow_symlinks=True):
+        def owner(self, *, follow_symlinks=Wahr):
             """
             Return the login name of the file owner.
             """
             uid = self.stat(follow_symlinks=follow_symlinks).st_uid
             return pwd.getpwuid(uid).pw_name
     sonst:
-        def owner(self, *, follow_symlinks=True):
+        def owner(self, *, follow_symlinks=Wahr):
             """
             Return the login name of the file owner.
             """
@@ -947,14 +947,14 @@ klasse Path(PurePath):
             raise UnsupportedOperation(f"{f} is unsupported on this system")
 
     wenn grp:
-        def group(self, *, follow_symlinks=True):
+        def group(self, *, follow_symlinks=Wahr):
             """
             Return the group name of the file gid.
             """
             gid = self.stat(follow_symlinks=follow_symlinks).st_gid
             return grp.getgrgid(gid).gr_name
     sonst:
-        def group(self, *, follow_symlinks=True):
+        def group(self, *, follow_symlinks=Wahr):
             """
             Return the group name of the file gid.
             """
@@ -975,7 +975,7 @@ klasse Path(PurePath):
             f = f"{type(self).__name__}.readlink()"
             raise UnsupportedOperation(f"{f} is unsupported on this system")
 
-    def touch(self, mode=0o666, exist_ok=True):
+    def touch(self, mode=0o666, exist_ok=Wahr):
         """
         Create this file with the given access mode, wenn it doesn't exist.
         """
@@ -985,7 +985,7 @@ klasse Path(PurePath):
             # Implementation note: GNU touch uses the UTIME_NOW option of
             # the utimensat() / futimens() functions.
             try:
-                os.utime(self, None)
+                os.utime(self, Nichts)
             except OSError:
                 # Avoid exception chaining
                 pass
@@ -997,7 +997,7 @@ klasse Path(PurePath):
         fd = os.open(self, flags, mode)
         os.close(fd)
 
-    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+    def mkdir(self, mode=0o777, parents=Falsch, exist_ok=Falsch):
         """
         Create a new directory at this given path.
         """
@@ -1006,15 +1006,15 @@ klasse Path(PurePath):
         except FileNotFoundError:
             wenn not parents or self.parent == self:
                 raise
-            self.parent.mkdir(parents=True, exist_ok=True)
-            self.mkdir(mode, parents=False, exist_ok=exist_ok)
+            self.parent.mkdir(parents=Wahr, exist_ok=Wahr)
+            self.mkdir(mode, parents=Falsch, exist_ok=exist_ok)
         except OSError:
             # Cannot rely on checking fuer EEXIST, since the operating system
             # could give priority to other errors like EACCES or EROFS
             wenn not exist_ok or not self.is_dir():
                 raise
 
-    def chmod(self, mode, *, follow_symlinks=True):
+    def chmod(self, mode, *, follow_symlinks=Wahr):
         """
         Change the permissions of the path, like os.chmod().
         """
@@ -1025,9 +1025,9 @@ klasse Path(PurePath):
         Like chmod(), except wenn the path points to a symlink, the symlink's
         permissions are changed, rather than its target's.
         """
-        self.chmod(mode, follow_symlinks=False)
+        self.chmod(mode, follow_symlinks=Falsch)
 
-    def unlink(self, missing_ok=False):
+    def unlink(self, missing_ok=Falsch):
         """
         Remove this file or link.
         If the path is a directory, use rmdir() instead.
@@ -1110,7 +1110,7 @@ klasse Path(PurePath):
             target = self.with_segments(target_dir, name)
         return self.copy(target, **kwargs)
 
-    def _copy_from(self, source, follow_symlinks=True, preserve_metadata=False):
+    def _copy_from(self, source, follow_symlinks=Wahr, preserve_metadata=Falsch):
         """
         Recursively copy the given path to this path.
         """
@@ -1127,7 +1127,7 @@ klasse Path(PurePath):
         sonst:
             self._copy_from_file(source, preserve_metadata)
 
-    def _copy_from_file(self, source, preserve_metadata=False):
+    def _copy_from_file(self, source, preserve_metadata=Falsch):
         ensure_different_files(source, self)
         with magic_open(source, 'rb') as source_f:
             with open(self, 'wb') as target_f:
@@ -1138,7 +1138,7 @@ klasse Path(PurePath):
     wenn copyfile2:
         # Use fast OS routine fuer local file copying where available.
         _copy_from_file_fallback = _copy_from_file
-        def _copy_from_file(self, source, preserve_metadata=False):
+        def _copy_from_file(self, source, preserve_metadata=Falsch):
             try:
                 source = os.fspath(source)
             except TypeError:
@@ -1152,15 +1152,15 @@ klasse Path(PurePath):
         # If a directory-symlink is copied *before* its target, then
         # os.symlink() incorrectly creates a file-symlink on Windows. Avoid
         # this by passing *target_is_dir* to os.symlink() on Windows.
-        def _copy_from_symlink(self, source, preserve_metadata=False):
+        def _copy_from_symlink(self, source, preserve_metadata=Falsch):
             os.symlink(vfspath(source.readlink()), self, source.info.is_dir())
             wenn preserve_metadata:
-                copy_info(source.info, self, follow_symlinks=False)
+                copy_info(source.info, self, follow_symlinks=Falsch)
     sonst:
-        def _copy_from_symlink(self, source, preserve_metadata=False):
+        def _copy_from_symlink(self, source, preserve_metadata=Falsch):
             os.symlink(vfspath(source.readlink()), self)
             wenn preserve_metadata:
-                copy_info(source.info, self, follow_symlinks=False)
+                copy_info(source.info, self, follow_symlinks=Falsch)
 
     def move(self, target):
         """
@@ -1181,7 +1181,7 @@ klasse Path(PurePath):
             sonst:
                 return target.joinpath()  # Empty join to ensure fresh metadata.
         # Fall back to copy+delete.
-        target = self.copy(target, follow_symlinks=False, preserve_metadata=True)
+        target = self.copy(target, follow_symlinks=Falsch, preserve_metadata=Wahr)
         self._delete()
         return target
 
@@ -1199,14 +1199,14 @@ klasse Path(PurePath):
         return self.move(target)
 
     wenn hasattr(os, "symlink"):
-        def symlink_to(self, target, target_is_directory=False):
+        def symlink_to(self, target, target_is_directory=Falsch):
             """
             Make this path a symlink pointing to the target path.
             Note the order of arguments (link, target) is the reverse of os.symlink.
             """
             os.symlink(target, self, target_is_directory)
     sonst:
-        def symlink_to(self, target, target_is_directory=False):
+        def symlink_to(self, target, target_is_directory=Falsch):
             """
             Make this path a symlink pointing to the target path.
             Note the order of arguments (link, target) is the reverse of os.symlink.
@@ -1260,7 +1260,7 @@ klasse Path(PurePath):
         wenn not self.is_absolute():
             raise ValueError("relative paths can't be expressed as file URIs")
         from urllib.request import pathname2url
-        return pathname2url(str(self), add_scheme=True)
+        return pathname2url(str(self), add_scheme=Wahr)
 
     @classmethod
     def from_uri(cls, uri):
@@ -1268,9 +1268,9 @@ klasse Path(PurePath):
         from urllib.error import URLError
         from urllib.request import url2pathname
         try:
-            path = cls(url2pathname(uri, require_scheme=True))
+            path = cls(url2pathname(uri, require_scheme=Wahr))
         except URLError as exc:
-            raise ValueError(exc.reason) from None
+            raise ValueError(exc.reason) from Nichts
         wenn not path.is_absolute():
             raise ValueError(f"URI is not absolute: {uri!r}")
         return path

@@ -44,9 +44,9 @@ klasse Test(unittest.TestCase):
 
     def test_log_mask(self):
         mask = syslog.LOG_UPTO(syslog.LOG_WARNING)
-        self.assertTrue(mask & syslog.LOG_MASK(syslog.LOG_WARNING))
-        self.assertTrue(mask & syslog.LOG_MASK(syslog.LOG_ERR))
-        self.assertFalse(mask & syslog.LOG_MASK(syslog.LOG_INFO))
+        self.assertWahr(mask & syslog.LOG_MASK(syslog.LOG_WARNING))
+        self.assertWahr(mask & syslog.LOG_MASK(syslog.LOG_ERR))
+        self.assertFalsch(mask & syslog.LOG_MASK(syslog.LOG_INFO))
 
     def test_openlog_noargs(self):
         syslog.openlog()
@@ -55,7 +55,7 @@ klasse Test(unittest.TestCase):
     @threading_helper.requires_working_threading()
     def test_syslog_threaded(self):
         start = threading.Event()
-        stop = False
+        stop = Falsch
         def opener():
             start.wait(10)
             i = 1
@@ -75,7 +75,7 @@ klasse Test(unittest.TestCase):
             with threading_helper.start_threads(threads):
                 start.set()
                 time.sleep(0.1)
-                stop = True
+                stop = Wahr
         finally:
             sys.setswitchinterval(orig_si)
 
@@ -85,11 +85,11 @@ klasse Test(unittest.TestCase):
         with self.subTest('before openlog()'):
             code = dedent('''
                 import syslog
-                caught_error = False
+                caught_error = Falsch
                 try:
                     syslog.syslog('foo')
                 except RuntimeError:
-                    caught_error = True
+                    caught_error = Wahr
                 assert(caught_error)
             ''')
             res = support.run_in_subinterp(code)
@@ -111,11 +111,11 @@ klasse Test(unittest.TestCase):
         try:
             code = dedent('''
                 import syslog
-                caught_error = False
+                caught_error = Falsch
                 try:
                     syslog.openlog()
                 except RuntimeError:
-                    caught_error = True
+                    caught_error = Wahr
 
                 assert(caught_error)
             ''')
@@ -129,11 +129,11 @@ klasse Test(unittest.TestCase):
         try:
             code = dedent('''
                 import syslog
-                caught_error = False
+                caught_error = Falsch
                 try:
                     syslog.closelog()
                 except RuntimeError:
-                    caught_error = True
+                    caught_error = Wahr
 
                 assert(caught_error)
             ''')

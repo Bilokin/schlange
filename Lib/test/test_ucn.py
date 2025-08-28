@@ -106,8 +106,8 @@ klasse UnicodeNamesTest(unittest.TestCase):
     def test_bmp_characters(self):
         fuer code in range(0x10000):
             char = chr(code)
-            name = unicodedata.name(char, None)
-            wenn name is not None:
+            name = unicodedata.name(char, Nichts)
+            wenn name is not Nichts:
                 self.assertEqual(unicodedata.lookup(name), char)
 
     def test_misc_symbols(self):
@@ -168,7 +168,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
         fuer seqname, codepoints in sequences:
             self.assertEqual(unicodedata.lookup(seqname), codepoints)
             with self.assertRaises(SyntaxError):
-                self.checkletter(seqname, None)
+                self.checkletter(seqname, Nichts)
             with self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(seqname)
 
@@ -196,7 +196,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
                 codepoints = ''.join(chr(int(cp, 16)) fuer cp in codepoints.split())
                 self.assertEqual(unicodedata.lookup(seqname), codepoints)
                 with self.assertRaises(SyntaxError):
-                    self.checkletter(seqname, None)
+                    self.checkletter(seqname, Nichts)
                 with self.assertRaises(KeyError):
                     unicodedata.ucd_3_2_0.lookup(seqname)
 
@@ -230,7 +230,7 @@ klasse UnicodeNamesTest(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
-    @support.bigmemtest(size=UINT_MAX + 1, memuse=2 + 1, dry_run=False)
+    @support.bigmemtest(size=UINT_MAX + 1, memuse=2 + 1, dry_run=Falsch)
     def test_issue16335(self, size):
         # very very long bogus character name
         x = b'\\N{SPACE' + b'x' * (UINT_MAX + 1) + b'}'

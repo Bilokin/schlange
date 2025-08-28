@@ -14,7 +14,7 @@ _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 _testinternalcapi = import_helper.import_module('_testinternalcapi')
 
-NULL = None
+NULL = Nichts
 INF = float("inf")
 NAN = float("nan")
 DBL_MAX = _testcapi.DBL_MAX
@@ -30,12 +30,12 @@ klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Test PyComplex_Check()
         check = _testlimitedcapi.complex_check
 
-        self.assertTrue(check(1+2j))
-        self.assertTrue(check(ComplexSubclass(1+2j)))
-        self.assertFalse(check(Complex()))
-        self.assertFalse(check(3))
-        self.assertFalse(check(3.0))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(1+2j))
+        self.assertWahr(check(ComplexSubclass(1+2j)))
+        self.assertFalsch(check(Complex()))
+        self.assertFalsch(check(3))
+        self.assertFalsch(check(3.0))
+        self.assertFalsch(check(object()))
 
         # CRASHES check(NULL)
 
@@ -43,12 +43,12 @@ klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # PyComplex_CheckExact()
         checkexact = _testlimitedcapi.complex_checkexact
 
-        self.assertTrue(checkexact(1+2j))
-        self.assertFalse(checkexact(ComplexSubclass(1+2j)))
-        self.assertFalse(checkexact(Complex()))
-        self.assertFalse(checkexact(3))
-        self.assertFalse(checkexact(3.0))
-        self.assertFalse(checkexact(object()))
+        self.assertWahr(checkexact(1+2j))
+        self.assertFalsch(checkexact(ComplexSubclass(1+2j)))
+        self.assertFalsch(checkexact(Complex()))
+        self.assertFalsch(checkexact(3))
+        self.assertFalsch(checkexact(3.0))
+        self.assertFalsch(checkexact(object()))
 
         # CRASHES checkexact(NULL)
 
@@ -230,13 +230,13 @@ klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(_py_c_quot(1, 2j), (-0.5j, 0))
 
         z, e = _py_c_quot(NAN, 1j)
-        self.assertTrue(isnan(z.real))
-        self.assertTrue(isnan(z.imag))
+        self.assertWahr(isnan(z.real))
+        self.assertWahr(isnan(z.imag))
         self.assertEqual(e, 0)
 
         z, e = _py_c_quot(1j, NAN)
-        self.assertTrue(isnan(z.real))
-        self.assertTrue(isnan(z.imag))
+        self.assertWahr(isnan(z.real))
+        self.assertWahr(isnan(z.imag))
         self.assertEqual(e, 0)
 
         self.assertEqual(_py_c_quot(1, 0j)[1], errno.EDOM)
@@ -289,8 +289,8 @@ klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(_py_c_abs(complex('1.25+infj')), (INF, 0))
         self.assertEqual(_py_c_abs(complex('1.25-infj')), (INF, 0))
 
-        self.assertTrue(isnan(_py_c_abs(complex('1.25+nanj'))[0]))
-        self.assertTrue(isnan(_py_c_abs(complex('nan-1j'))[0]))
+        self.assertWahr(isnan(_py_c_abs(complex('1.25+nanj'))[0]))
+        self.assertWahr(isnan(_py_c_abs(complex('nan-1j'))[0]))
 
         self.assertEqual(_py_c_abs(complex(*[DBL_MAX]*2))[1], errno.ERANGE)
 

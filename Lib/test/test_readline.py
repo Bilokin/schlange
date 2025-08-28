@@ -55,19 +55,19 @@ klasse TestHistoryManipulation (unittest.TestCase):
         readline.add_history("first line")
         readline.add_history("second line")
 
-        self.assertEqual(readline.get_history_item(0), None)
+        self.assertEqual(readline.get_history_item(0), Nichts)
         self.assertEqual(readline.get_history_item(1), "first line")
         self.assertEqual(readline.get_history_item(2), "second line")
 
         readline.replace_history_item(0, "replaced line")
-        self.assertEqual(readline.get_history_item(0), None)
+        self.assertEqual(readline.get_history_item(0), Nichts)
         self.assertEqual(readline.get_history_item(1), "replaced line")
         self.assertEqual(readline.get_history_item(2), "second line")
 
         self.assertEqual(readline.get_current_history_length(), 2)
 
         readline.remove_history_item(0)
-        self.assertEqual(readline.get_history_item(0), None)
+        self.assertEqual(readline.get_history_item(0), Nichts)
         self.assertEqual(readline.get_history_item(1), "second line")
 
         self.assertEqual(readline.get_current_history_length(), 1)
@@ -75,7 +75,7 @@ klasse TestHistoryManipulation (unittest.TestCase):
     @unittest.skipUnless(hasattr(readline, "append_history_file"),
                          "append_history not available")
     def test_write_read_append(self):
-        hfile = tempfile.NamedTemporaryFile(delete=False)
+        hfile = tempfile.NamedTemporaryFile(delete=Falsch)
         hfile.close()
         hfilename = hfile.name
         self.addCleanup(unlink, hfilename)
@@ -166,7 +166,7 @@ klasse TestHistoryManipulation (unittest.TestCase):
         readline.read_history_file(TESTFN)
         self.assertEqual(readline.get_history_item(1), "second line")
         self.assertEqual(readline.get_history_item(2), "third line")
-        self.assertEqual(readline.get_history_item(3), None)
+        self.assertEqual(readline.get_history_item(3), Nichts)
 
         # Readline seems to report an additional history element.
         self.assertIn(readline.get_current_history_length(), (2, 3))
@@ -195,13 +195,13 @@ print("History length:", readline.get_current_history_length())
 """
 
     def test_auto_history_enabled(self):
-        output = run_pty(self.auto_history_script.format(True))
+        output = run_pty(self.auto_history_script.format(Wahr))
         # bpo-44949: Sometimes, the newline character is not written at the
         # end, so don't expect it in the output.
         self.assertIn(b"History length: 1", output)
 
     def test_auto_history_disabled(self):
-        output = run_pty(self.auto_history_script.format(False))
+        output = run_pty(self.auto_history_script.format(Falsch))
         # bpo-44949: Sometimes, the newline character is not written at the
         # end, so don't expect it in the output.
         self.assertIn(b"History length: 0", output)
@@ -212,7 +212,7 @@ print("History length:", readline.get_current_history_length())
             def complete(text, state):
                 wenn state == 0 and text == "$":
                     return "$complete"
-                return None
+                return Nichts
             wenn readline.backend == "editline":
                 readline.parse_and_bind(r'bind "\\t" rl_complete')
             sonst:
@@ -226,7 +226,7 @@ print("History length:", readline.get_current_history_length())
         self.assertIn(b"$complete", output)
 
     def test_nonascii(self):
-        loc = locale.setlocale(locale.LC_CTYPE, None)
+        loc = locale.setlocale(locale.LC_CTYPE, Nichts)
         wenn loc in ('C', 'POSIX'):
             # bpo-29240: On FreeBSD, wenn the LC_CTYPE locale is C or POSIX,
             # writing and reading non-ASCII bytes into/from a TTY works, but
@@ -250,7 +250,7 @@ print("History length:", readline.get_current_history_length())
 is_editline = readline.backend == "editline"
 inserted = "[\xEFnserted]"
 macro = "|t\xEB[after]"
-set_pre_input_hook = getattr(readline, "set_pre_input_hook", None)
+set_pre_input_hook = getattr(readline, "set_pre_input_hook", Nichts)
 wenn is_editline or not set_pre_input_hook:
     # The insert_line() call via pre_input_hook() does nothing with Editline,
     # so include the extra text that would have been inserted here
@@ -285,7 +285,7 @@ def completer(text, state):
             return "t\xEBxt"
     wenn text == "t\xEBx" and state == 0:
         return "t\xEBxt"
-    return None
+    return Nichts
 readline.set_completer(completer)
 
 def display(substitution, matches, longest_match_length):

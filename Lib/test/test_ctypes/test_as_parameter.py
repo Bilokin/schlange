@@ -77,7 +77,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
     def test_callbacks(self):
         f = dll._testfunc_callback_i_if
         f.restype = c_int
-        f.argtypes = None
+        f.argtypes = Nichts
 
         MyCallback = CFUNCTYPE(c_int, c_int)
 
@@ -192,7 +192,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
         self.assertEqual((s8i.a, s8i.b, s8i.c, s8i.d, s8i.e, s8i.f, s8i.g, s8i.h),
                              (9*2, 8*3, 7*4, 6*5, 5*6, 4*7, 3*8, 2*9))
 
-    @skip_if_sanitizer('requires deep stack', thread=True)
+    @skip_if_sanitizer('requires deep stack', thread=Wahr)
     def test_recursive_as_param(self):
         klasse A:
             pass

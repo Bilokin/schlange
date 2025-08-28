@@ -25,7 +25,7 @@ klasse TkinterTest(unittest.TestCase):
 
     def testFlattenLen(self):
         # Object without length.
-        self.assertRaises(TypeError, _tkinter._flatten, True)
+        self.assertRaises(TypeError, _tkinter._flatten, Wahr)
         # Object with length, but not sequence.
         self.assertRaises(TypeError, _tkinter._flatten, {})
         # Sequence or set, but not tuple or list.
@@ -222,10 +222,10 @@ klasse TclTest(unittest.TestCase):
 
     def test_getboolean(self):
         tcl = self.interp.tk
-        self.assertIs(tcl.getboolean('on'), True)
-        self.assertIs(tcl.getboolean('1'), True)
-        self.assertIs(tcl.getboolean(42), True)
-        self.assertIs(tcl.getboolean(0), False)
+        self.assertIs(tcl.getboolean('on'), Wahr)
+        self.assertIs(tcl.getboolean('1'), Wahr)
+        self.assertIs(tcl.getboolean(42), Wahr)
+        self.assertIs(tcl.getboolean(0), Falsch)
         self.assertRaises(TypeError, tcl.getboolean)
         self.assertRaises(TypeError, tcl.getboolean, 'on', '1')
         self.assertRaises(TypeError, tcl.getboolean, b'on')
@@ -433,31 +433,31 @@ klasse TclTest(unittest.TestCase):
         self.assertRaises(TypeError, tcl.exprboolean, '8.2', '+6')
         self.assertRaises(TypeError, tcl.exprboolean, b'8.2 + 6')
         self.assertRaises(TclError, tcl.exprboolean, 'spam')
-        check('', False)
+        check('', Falsch)
         fuer value in ('0', 'false', 'no', 'off'):
-            check(value, False)
-            check('"%s"' % value, False)
-            check('{%s}' % value, False)
+            check(value, Falsch)
+            check('"%s"' % value, Falsch)
+            check('{%s}' % value, Falsch)
         fuer value in ('1', 'true', 'yes', 'on'):
-            check(value, True)
-            check('"%s"' % value, True)
-            check('{%s}' % value, True)
-        check('8.2 + 6', True)
-        check('3.1 + $a', True)
-        check('2 + "$a.$b"', True)
-        check('4*[llength "6 2"]', True)
-        check('{word one} < "word $a"', False)
-        check('4*2 < 7', False)
-        check('hypot($a, 4)', True)
-        check('5 / 4', True)
-        check('5 / 4.0', True)
-        check('5 / ( [string length "abcd"] + 0.0 )', True)
-        check('20.0/5.0', True)
-        check('"0x03" > "2"', True)
-        check('[string length "a\xbd\u20ac"]', True)
-        check(r'[string length "a\xbd\u20ac"]', True)
+            check(value, Wahr)
+            check('"%s"' % value, Wahr)
+            check('{%s}' % value, Wahr)
+        check('8.2 + 6', Wahr)
+        check('3.1 + $a', Wahr)
+        check('2 + "$a.$b"', Wahr)
+        check('4*[llength "6 2"]', Wahr)
+        check('{word one} < "word $a"', Falsch)
+        check('4*2 < 7', Falsch)
+        check('hypot($a, 4)', Wahr)
+        check('5 / 4', Wahr)
+        check('5 / 4.0', Wahr)
+        check('5 / ( [string length "abcd"] + 0.0 )', Wahr)
+        check('20.0/5.0', Wahr)
+        check('"0x03" > "2"', Wahr)
+        check('[string length "a\xbd\u20ac"]', Wahr)
+        check(r'[string length "a\xbd\u20ac"]', Wahr)
         self.assertRaises(TclError, tcl.exprboolean, '"abc"')
-        check('2**64', True)
+        check('2**64', Wahr)
 
     def test_booleans(self):
         tcl = self.interp
@@ -469,14 +469,14 @@ klasse TclTest(unittest.TestCase):
             sonst:
                 self.assertIn(result, (expr, str(int(expected))))
                 self.assertIsInstance(result, str)
-        check('true', True)
-        check('yes', True)
-        check('on', True)
-        check('false', False)
-        check('no', False)
-        check('off', False)
-        check('1 < 2', True)
-        check('1 > 2', False)
+        check('true', Wahr)
+        check('yes', Wahr)
+        check('on', Wahr)
+        check('false', Falsch)
+        check('no', Falsch)
+        check('off', Falsch)
+        check('1 < 2', Wahr)
+        check('1 > 2', Falsch)
 
     def test_expr_bignum(self):
         tcl = self.interp
@@ -493,8 +493,8 @@ klasse TclTest(unittest.TestCase):
         def passValue(value):
             return self.interp.call('set', '_', value)
 
-        self.assertEqual(passValue(True), True wenn self.wantobjects sonst '1')
-        self.assertEqual(passValue(False), False wenn self.wantobjects sonst '0')
+        self.assertEqual(passValue(Wahr), Wahr wenn self.wantobjects sonst '1')
+        self.assertEqual(passValue(Falsch), Falsch wenn self.wantobjects sonst '0')
         self.assertEqual(passValue('string'), 'string')
         self.assertEqual(passValue('string\u20ac'), 'string\u20ac')
         self.assertEqual(passValue('string\U0001f4bb'), 'string\U0001f4bb')
@@ -538,25 +538,25 @@ klasse TclTest(unittest.TestCase):
                          ('a', ('b', 'c')) wenn self.wantobjects sonst 'a {b c}')
 
     def test_user_command(self):
-        result = None
+        result = Nichts
         def testfunc(arg):
             nonlocal result
             result = arg
             return arg
         self.interp.createcommand('testfunc', testfunc)
         self.addCleanup(self.interp.tk.deletecommand, 'testfunc')
-        def check(value, expected1=None, expected2=None, *, eq=self.assertEqual):
+        def check(value, expected1=Nichts, expected2=Nichts, *, eq=self.assertEqual):
             expected = value
             wenn self.wantobjects >= 2:
-                wenn expected2 is not None:
+                wenn expected2 is not Nichts:
                     expected = expected2
                 expected_type = type(expected)
             sonst:
-                wenn expected1 is not None:
+                wenn expected1 is not Nichts:
                     expected = expected1
                 expected_type = str
             nonlocal result
-            result = None
+            result = Nichts
             r = self.interp.call('testfunc', value)
             self.assertIsInstance(result, expected_type)
             eq(result, expected)
@@ -566,8 +566,8 @@ klasse TclTest(unittest.TestCase):
             self.assertAlmostEqual(float(actual), expected,
                                    delta=abs(expected) * 1e-10)
 
-        check(True, '1', 1)
-        check(False, '0', 0)
+        check(Wahr, '1', 1)
+        check(Falsch, '0', 0)
         check('string')
         check('string\xbd')
         check('string\u20ac')
@@ -606,7 +606,7 @@ klasse TclTest(unittest.TestCase):
 
     def test_passing_tcl_obj(self):
         tcl = self.interp.tk
-        a = None
+        a = Nichts
         def testfunc(arg):
             nonlocal a
             a = arg
@@ -675,13 +675,13 @@ klasse TclTest(unittest.TestCase):
         tcl = self.interp.tk
 
         arg = '-a {1 2 3} -something foo status {}'
-        self.assertEqual(splitdict(tcl, arg, False),
+        self.assertEqual(splitdict(tcl, arg, Falsch),
             {'-a': '1 2 3', '-something': 'foo', 'status': ''})
         self.assertEqual(splitdict(tcl, arg),
             {'a': '1 2 3', 'something': 'foo', 'status': ''})
 
         arg = ('-a', (1, 2, 3), '-something', 'foo', 'status', '{}')
-        self.assertEqual(splitdict(tcl, arg, False),
+        self.assertEqual(splitdict(tcl, arg, Falsch),
             {'-a': (1, 2, 3), '-something': 'foo', 'status': '{}'})
         self.assertEqual(splitdict(tcl, arg),
             {'a': (1, 2, 3), 'something': 'foo', 'status': '{}'})
@@ -754,14 +754,14 @@ klasse BigmemTclTest(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
-    @support.bigmemtest(size=INT_MAX + 1, memuse=5, dry_run=False)
+    @support.bigmemtest(size=INT_MAX + 1, memuse=5, dry_run=Falsch)
     def test_huge_string_call(self, size):
         value = ' ' * size
         self.assertRaises(OverflowError, self.interp.call, 'string', 'index', value, 0)
 
     @support.cpython_only
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
-    @support.bigmemtest(size=INT_MAX + 1, memuse=2, dry_run=False)
+    @support.bigmemtest(size=INT_MAX + 1, memuse=2, dry_run=Falsch)
     def test_huge_string_builtins(self, size):
         tk = self.interp.tk
         value = '1' + ' ' * size
@@ -786,7 +786,7 @@ klasse BigmemTclTest(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
-    @support.bigmemtest(size=INT_MAX + 1, memuse=6, dry_run=False)
+    @support.bigmemtest(size=INT_MAX + 1, memuse=6, dry_run=Falsch)
     def test_huge_string_builtins2(self, size):
         # These commands require larger memory fuer possible error messages
         tk = self.interp.tk
@@ -799,7 +799,7 @@ klasse BigmemTclTest(unittest.TestCase):
 def setUpModule():
     wenn support.verbose:
         tcl = Tcl()
-        print('patchlevel =', tcl.call('info', 'patchlevel'), flush=True)
+        print('patchlevel =', tcl.call('info', 'patchlevel'), flush=Wahr)
 
 
 wenn __name__ == "__main__":

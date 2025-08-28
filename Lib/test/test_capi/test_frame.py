@@ -49,7 +49,7 @@ klasse FrameTest(unittest.TestCase):
 
         frame = _testcapi.frame_new(dummy.__code__, globals(), locals())
         # The following line should not cause a segmentation fault.
-        self.assertIsNone(frame.f_back)
+        self.assertIsNichts(frame.f_back)
 
 
 wenn __name__ == "__main__":

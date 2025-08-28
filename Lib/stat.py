@@ -48,44 +48,44 @@ S_IFWHT = 0
 # Functions to test fuer each file type
 
 def S_ISDIR(mode):
-    """Return True wenn mode is from a directory."""
+    """Return Wahr wenn mode is from a directory."""
     return S_IFMT(mode) == S_IFDIR
 
 def S_ISCHR(mode):
-    """Return True wenn mode is from a character special device file."""
+    """Return Wahr wenn mode is from a character special device file."""
     return S_IFMT(mode) == S_IFCHR
 
 def S_ISBLK(mode):
-    """Return True wenn mode is from a block special device file."""
+    """Return Wahr wenn mode is from a block special device file."""
     return S_IFMT(mode) == S_IFBLK
 
 def S_ISREG(mode):
-    """Return True wenn mode is from a regular file."""
+    """Return Wahr wenn mode is from a regular file."""
     return S_IFMT(mode) == S_IFREG
 
 def S_ISFIFO(mode):
-    """Return True wenn mode is from a FIFO (named pipe)."""
+    """Return Wahr wenn mode is from a FIFO (named pipe)."""
     return S_IFMT(mode) == S_IFIFO
 
 def S_ISLNK(mode):
-    """Return True wenn mode is from a symbolic link."""
+    """Return Wahr wenn mode is from a symbolic link."""
     return S_IFMT(mode) == S_IFLNK
 
 def S_ISSOCK(mode):
-    """Return True wenn mode is from a socket."""
+    """Return Wahr wenn mode is from a socket."""
     return S_IFMT(mode) == S_IFSOCK
 
 def S_ISDOOR(mode):
-    """Return True wenn mode is from a door."""
-    return False
+    """Return Wahr wenn mode is from a door."""
+    return Falsch
 
 def S_ISPORT(mode):
-    """Return True wenn mode is from an event port."""
-    return False
+    """Return Wahr wenn mode is from an event port."""
+    return Falsch
 
 def S_ISWHT(mode):
-    """Return True wenn mode is from a whiteout."""
-    return False
+    """Return Wahr wenn mode is from a whiteout."""
+    return Falsch
 
 # Names fuer permission bits
 

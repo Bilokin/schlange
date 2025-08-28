@@ -23,13 +23,13 @@ klasse PreprocessorError(Exception):
             msg = f'{msg} ({reason})'
         return msg
 
-    def __init__(self, filename, preprocessor=None, reason=None):
+    def __init__(self, filename, preprocessor=Nichts, reason=Nichts):
         wenn isinstance(reason, str):
             reason = reason.strip()
 
         self.filename = filename
-        self.preprocessor = preprocessor or None
-        self.reason = str(reason) wenn reason sonst None
+        self.preprocessor = preprocessor or Nichts
+        self.reason = str(reason) wenn reason sonst Nichts
 
         msg = self._msg(**vars(self))
         msg = f'({filename}) {msg}'
@@ -48,7 +48,7 @@ klasse PreprocessorFailure(PreprocessorError):
             msg = f'{msg} {error}'
         return msg
 
-    def __init__(self, filename, argv, error=None, preprocessor=None):
+    def __init__(self, filename, argv, error=Nichts, preprocessor=Nichts):
         exitcode = -1
         wenn isinstance(error, tuple):
             wenn len(error) == 2:
@@ -58,8 +58,8 @@ klasse PreprocessorFailure(PreprocessorError):
         wenn isinstance(error, str):
             error = error.strip()
 
-        self.argv = _as_tuple(argv) or None
-        self.error = error wenn error sonst None
+        self.argv = _as_tuple(argv) or Nichts
+        self.error = error wenn error sonst Nichts
         self.exitcode = exitcode
 
         reason = str(self.error)
@@ -87,8 +87,8 @@ klasse MissingDependenciesError(PreprocessorFailure):
             msg = f'{msg} ({", ".join(missing)})'
         return msg
 
-    def __init__(self, filename, missing=None, *args, **kwargs):
-        self.missing = _as_tuple(missing) or None
+    def __init__(self, filename, missing=Nichts, *args, **kwargs):
+        self.missing = _as_tuple(missing) or Nichts
 
         super().__init__(filename, *args, **kwargs)
 
@@ -100,11 +100,11 @@ klasse OSMismatchError(MissingDependenciesError):
     def _msg(cls, expected, **ignored):
         return f'OS is {OS} but expected {expected or "???"}'
 
-    def __init__(self, filename, expected=None, *args, **kwargs):
+    def __init__(self, filename, expected=Nichts, *args, **kwargs):
         wenn isinstance(expected, str):
             expected = expected.strip()
 
         self.actual = OS
-        self.expected = expected wenn expected sonst None
+        self.expected = expected wenn expected sonst Nichts
 
-        super().__init__(filename, None, *args, **kwargs)
+        super().__init__(filename, Nichts, *args, **kwargs)

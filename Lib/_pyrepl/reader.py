@@ -131,7 +131,7 @@ default_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
 )
 
 
-@dataclass(slots=True)
+@dataclass(slots=Wahr)
 klasse Reader:
     """The Reader klasse implements the bare bones of a command reader,
     handling such details as editing and cursor motion.  What it does
@@ -160,10 +160,10 @@ klasse Reader:
       * commands:
         Dictionary mapping command names to command classes.
       * arg:
-        The emacs-style prefix argument.  It will be None wenn no such
+        The emacs-style prefix argument.  It will be Nichts wenn no such
         argument has been provided.
       * dirty:
-        True wenn we need to refresh the display.
+        Wahr wenn we need to refresh the display.
       * kill_ring:
         The emacs-style kill-ring; manipulated with yank & yank-pop
       * ps1, ps2, ps3, ps4:
@@ -197,50 +197,50 @@ klasse Reader:
     ps4: str = R"\__ "
     kill_ring: list[list[str]] = field(default_factory=list)
     msg: str = ""
-    arg: int | None = None
-    dirty: bool = False
-    finished: bool = False
-    paste_mode: bool = False
+    arg: int | Nichts = Nichts
+    dirty: bool = Falsch
+    finished: bool = Falsch
+    paste_mode: bool = Falsch
     commands: dict[str, type[Command]] = field(default_factory=make_default_commands)
-    last_command: type[Command] | None = None
+    last_command: type[Command] | Nichts = Nichts
     syntax_table: dict[str, int] = field(default_factory=make_default_syntax_table)
     keymap: tuple[tuple[str, str], ...] = ()
-    input_trans: input.KeymapTranslator = field(init=False)
+    input_trans: input.KeymapTranslator = field(init=Falsch)
     input_trans_stack: list[input.KeymapTranslator] = field(default_factory=list)
     screen: list[str] = field(default_factory=list)
-    screeninfo: list[tuple[int, list[int]]] = field(init=False)
-    cxy: tuple[int, int] = field(init=False)
-    lxy: tuple[int, int] = field(init=False)
+    screeninfo: list[tuple[int, list[int]]] = field(init=Falsch)
+    cxy: tuple[int, int] = field(init=Falsch)
+    lxy: tuple[int, int] = field(init=Falsch)
     scheduled_commands: list[str] = field(default_factory=list)
-    can_colorize: bool = False
-    threading_hook: Callback | None = None
+    can_colorize: bool = Falsch
+    threading_hook: Callback | Nichts = Nichts
 
     ## cached metadata to speed up screen refreshes
     @dataclass
     klasse RefreshCache:
         screen: list[str] = field(default_factory=list)
-        screeninfo: list[tuple[int, list[int]]] = field(init=False)
+        screeninfo: list[tuple[int, list[int]]] = field(init=Falsch)
         line_end_offsets: list[int] = field(default_factory=list)
-        pos: int = field(init=False)
-        cxy: tuple[int, int] = field(init=False)
-        dimensions: tuple[int, int] = field(init=False)
-        invalidated: bool = False
+        pos: int = field(init=Falsch)
+        cxy: tuple[int, int] = field(init=Falsch)
+        dimensions: tuple[int, int] = field(init=Falsch)
+        invalidated: bool = Falsch
 
         def update_cache(self,
                          reader: Reader,
                          screen: list[str],
                          screeninfo: list[tuple[int, list[int]]],
-            ) -> None:
+            ) -> Nichts:
             self.screen = screen.copy()
             self.screeninfo = screeninfo.copy()
             self.pos = reader.pos
             self.cxy = reader.cxy
             self.dimensions = reader.console.width, reader.console.height
-            self.invalidated = False
+            self.invalidated = Falsch
 
         def valid(self, reader: Reader) -> bool:
             wenn self.invalidated:
-                return False
+                return Falsch
             dimensions = reader.console.width, reader.console.height
             dimensions_changed = dimensions != self.dimensions
             return not dimensions_changed
@@ -262,7 +262,7 @@ klasse Reader:
 
     last_refresh_cache: RefreshCache = field(default_factory=RefreshCache)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         # Enable the use of `insert` without a `prepare` call - necessary to
         # facilitate the tab completion hack implemented for
         # <https://bugs.python.org/issue25660>.
@@ -314,16 +314,16 @@ klasse Reader:
         wenn self.can_colorize:
             colors = list(gen_colors(self.get_unicode()))
         sonst:
-            colors = None
+            colors = Nichts
         trace("colors = {colors}", colors=colors)
         lines = "".join(self.buffer[offset:]).split("\n")
-        cursor_found = False
+        cursor_found = Falsch
         lines_beyond_cursor = 0
         fuer ln, line in enumerate(lines, num_common_lines):
             line_len = len(line)
             wenn 0 <= pos <= line_len:
                 self.lxy = pos, ln
-                cursor_found = True
+                cursor_found = Wahr
             sowenn cursor_found:
                 lines_beyond_cursor += 1
                 wenn lines_beyond_cursor > self.console.height:
@@ -332,7 +332,7 @@ klasse Reader:
                     break
             wenn prompt_from_cache:
                 # Only the first line's prompt can come from the cache
-                prompt_from_cache = False
+                prompt_from_cache = Falsch
                 prompt = ""
             sonst:
                 prompt = self.get_prompt(ln, line_len >= pos >= 0)
@@ -396,17 +396,17 @@ klasse Reader:
         (\x01 and \x02) removed.  The length ignores anything between those
         brackets as well as any ANSI escape sequences.
         """
-        out_prompt = unbracket(prompt, including_content=False)
-        visible_prompt = unbracket(prompt, including_content=True)
+        out_prompt = unbracket(prompt, including_content=Falsch)
+        visible_prompt = unbracket(prompt, including_content=Wahr)
         return out_prompt, wlen(visible_prompt)
 
-    def bow(self, p: int | None = None) -> int:
+    def bow(self, p: int | Nichts = Nichts) -> int:
         """Return the 0-based index of the word break preceding p most
         immediately.
 
         p defaults to self.pos; word boundaries are determined using
         self.syntax_table."""
-        wenn p is None:
+        wenn p is Nichts:
             p = self.pos
         st = self.syntax_table
         b = self.buffer
@@ -417,13 +417,13 @@ klasse Reader:
             p -= 1
         return p + 1
 
-    def eow(self, p: int | None = None) -> int:
+    def eow(self, p: int | Nichts = Nichts) -> int:
         """Return the 0-based index of the word break following p most
         immediately.
 
         p defaults to self.pos; word boundaries are determined using
         self.syntax_table."""
-        wenn p is None:
+        wenn p is Nichts:
             p = self.pos
         st = self.syntax_table
         b = self.buffer
@@ -433,12 +433,12 @@ klasse Reader:
             p += 1
         return p
 
-    def bol(self, p: int | None = None) -> int:
+    def bol(self, p: int | Nichts = Nichts) -> int:
         """Return the 0-based index of the line break preceding p most
         immediately.
 
         p defaults to self.pos."""
-        wenn p is None:
+        wenn p is Nichts:
             p = self.pos
         b = self.buffer
         p -= 1
@@ -446,12 +446,12 @@ klasse Reader:
             p -= 1
         return p + 1
 
-    def eol(self, p: int | None = None) -> int:
+    def eol(self, p: int | Nichts = Nichts) -> int:
         """Return the 0-based index of the line break following p most
         immediately.
 
         p defaults to self.pos."""
-        wenn p is None:
+        wenn p is Nichts:
             p = self.pos
         b = self.buffer
         while p < len(b) and b[p] != "\n":
@@ -467,16 +467,16 @@ klasse Reader:
 
     def get_arg(self, default: int = 1) -> int:
         """Return any prefix argument that the user has supplied,
-        returning 'default' wenn there is None.  Defaults to 1.
+        returning 'default' wenn there is Nichts.  Defaults to 1.
         """
-        wenn self.arg is None:
+        wenn self.arg is Nichts:
             return default
         return self.arg
 
     def get_prompt(self, lineno: int, cursor_on_line: bool) -> str:
         """Return what should be in the left-hand margin fuer line
         'lineno'."""
-        wenn self.arg is not None and cursor_on_line:
+        wenn self.arg is not Nichts and cursor_on_line:
             prompt = f"(arg: {self.arg}) "
         sowenn self.paste_mode:
             prompt = "(paste) "
@@ -495,14 +495,14 @@ klasse Reader:
             prompt = f"{t.prompt}{prompt}{t.reset}"
         return prompt
 
-    def push_input_trans(self, itrans: input.KeymapTranslator) -> None:
+    def push_input_trans(self, itrans: input.KeymapTranslator) -> Nichts:
         self.input_trans_stack.append(self.input_trans)
         self.input_trans = itrans
 
-    def pop_input_trans(self) -> None:
+    def pop_input_trans(self) -> Nichts:
         self.input_trans = self.input_trans_stack.pop()
 
-    def setpos_from_xy(self, x: int, y: int) -> None:
+    def setpos_from_xy(self, x: int, y: int) -> Nichts:
         """Set pos according to coordinates x, y"""
         pos = 0
         i = 0
@@ -558,37 +558,37 @@ klasse Reader:
             y += 1
         return prompt_len + sum(char_widths[:pos]), y
 
-    def insert(self, text: str | list[str]) -> None:
+    def insert(self, text: str | list[str]) -> Nichts:
         """Insert 'text' at the insertion point."""
         self.buffer[self.pos : self.pos] = list(text)
         self.pos += len(text)
-        self.dirty = True
+        self.dirty = Wahr
 
-    def update_cursor(self) -> None:
+    def update_cursor(self) -> Nichts:
         """Move the cursor to reflect changes in self.pos"""
         self.cxy = self.pos2xy()
         trace("update_cursor({pos}) = {cxy}", pos=self.pos, cxy=self.cxy)
         self.console.move_cursor(*self.cxy)
 
-    def after_command(self, cmd: Command) -> None:
+    def after_command(self, cmd: Command) -> Nichts:
         """This function is called to allow post command cleanup."""
-        wenn getattr(cmd, "kills_digit_arg", True):
-            wenn self.arg is not None:
-                self.dirty = True
-            self.arg = None
+        wenn getattr(cmd, "kills_digit_arg", Wahr):
+            wenn self.arg is not Nichts:
+                self.dirty = Wahr
+            self.arg = Nichts
 
-    def prepare(self) -> None:
+    def prepare(self) -> Nichts:
         """Get ready to run.  Call restore when finished.  You must not
         write to the console in between the calls to prepare and
         restore."""
         try:
             self.console.prepare()
-            self.arg = None
-            self.finished = False
+            self.arg = Nichts
+            self.finished = Falsch
             del self.buffer[:]
             self.pos = 0
-            self.dirty = True
-            self.last_command = None
+            self.dirty = Wahr
+            self.last_command = Nichts
             self.calc_screen()
         except BaseException:
             self.restore()
@@ -600,10 +600,10 @@ klasse Reader:
 
     def last_command_is(self, cls: type) -> bool:
         wenn not self.last_command:
-            return False
+            return Falsch
         return issubclass(cls, self.last_command)
 
-    def restore(self) -> None:
+    def restore(self) -> Nichts:
         """Clean up after a run."""
         self.console.restore()
 
@@ -619,27 +619,27 @@ klasse Reader:
                 setattr(self, arg, prev_state[arg])
             self.prepare()
 
-    def finish(self) -> None:
+    def finish(self) -> Nichts:
         """Called when a command signals that we're finished."""
         pass
 
-    def error(self, msg: str = "none") -> None:
+    def error(self, msg: str = "none") -> Nichts:
         self.msg = "! " + msg + " "
-        self.dirty = True
+        self.dirty = Wahr
         self.console.beep()
 
-    def update_screen(self) -> None:
+    def update_screen(self) -> Nichts:
         wenn self.dirty:
             self.refresh()
 
-    def refresh(self) -> None:
+    def refresh(self) -> Nichts:
         """Recalculate and refresh the screen."""
         # this call sets up self.cxy, so call it first.
         self.screen = self.calc_screen()
         self.console.refresh(self.screen, self.cxy)
-        self.dirty = False
+        self.dirty = Falsch
 
-    def do_cmd(self, cmd: tuple[str, list[str]]) -> None:
+    def do_cmd(self, cmd: tuple[str, list[str]]) -> Nichts:
         """`cmd` is a tuple of "event_name" and "event", which in the current
         implementation is always just the "buffer" which happens to be a list
         of single-character strings."""
@@ -670,12 +670,12 @@ klasse Reader:
             self.console.finish()
             self.finish()
 
-    def run_hooks(self) -> None:
+    def run_hooks(self) -> Nichts:
         threading_hook = self.threading_hook
-        wenn threading_hook is None and 'threading' in sys.modules:
+        wenn threading_hook is Nichts and 'threading' in sys.modules:
             from ._threading_handler import install_threading_hook
             install_threading_hook(self)
-        wenn threading_hook is not None:
+        wenn threading_hook is not Nichts:
             try:
                 threading_hook()
             except Exception:
@@ -688,26 +688,26 @@ klasse Reader:
             except Exception:
                 pass
 
-    def handle1(self, block: bool = True) -> bool:
+    def handle1(self, block: bool = Wahr) -> bool:
         """Handle a single event.  Wait as long as it takes wenn block
-        is true (the default), otherwise return False wenn no event is
+        is true (the default), otherwise return Falsch wenn no event is
         pending."""
 
         wenn self.msg:
             self.msg = ""
-            self.dirty = True
+            self.dirty = Wahr
 
-        while True:
+        while Wahr:
             # We use the same timeout as in readline.c: 100ms
             self.run_hooks()
             self.console.wait(100)
-            event = self.console.get_event(block=False)
+            event = self.console.get_event(block=Falsch)
             wenn not event:
                 wenn block:
                     continue
-                return False
+                return Falsch
 
-            translate = True
+            translate = Wahr
 
             wenn event.evt == "key":
                 self.input_trans.push(event)
@@ -716,32 +716,32 @@ klasse Reader:
             sowenn event.evt == "resize":
                 self.refresh()
             sonst:
-                translate = False
+                translate = Falsch
 
             wenn translate:
                 cmd = self.input_trans.get()
             sonst:
                 cmd = [event.evt, event.data]
 
-            wenn cmd is None:
+            wenn cmd is Nichts:
                 wenn block:
                     continue
-                return False
+                return Falsch
 
             self.do_cmd(cmd)
-            return True
+            return Wahr
 
-    def push_char(self, char: int | bytes) -> None:
+    def push_char(self, char: int | bytes) -> Nichts:
         self.console.push_char(char)
-        self.handle1(block=False)
+        self.handle1(block=Falsch)
 
-    def readline(self, startup_hook: Callback | None = None) -> str:
+    def readline(self, startup_hook: Callback | Nichts = Nichts) -> str:
         """Read a line.  The implementation of this method also shows
         how to drive Reader wenn you want more control over the event
         loop."""
         self.prepare()
         try:
-            wenn startup_hook is not None:
+            wenn startup_hook is not Nichts:
                 startup_hook()
             self.refresh()
             while not self.finished:
@@ -751,7 +751,7 @@ klasse Reader:
         finally:
             self.restore()
 
-    def bind(self, spec: KeySpec, command: CommandName) -> None:
+    def bind(self, spec: KeySpec, command: CommandName) -> Nichts:
         self.keymap = self.keymap + ((spec, command),)
         self.input_trans = input.KeymapTranslator(
             self.keymap, invalid_cls="invalid-key", character_cls="self-insert"

@@ -10,7 +10,7 @@ import idlelib
 from idlelib.idle_test.mock_idle import Func
 from test.support import force_not_colorized
 
-idlelib.testing = True  # Use {} fuer executing test user code.
+idlelib.testing = Wahr  # Use {} fuer executing test user code.
 
 
 klasse ExceptionTest(unittest.TestCase):
@@ -18,7 +18,7 @@ klasse ExceptionTest(unittest.TestCase):
     def test_print_exception_unhashable(self):
         klasse UnhashableException(Exception):
             def __eq__(self, other):
-                return True
+                return Wahr
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
@@ -61,7 +61,7 @@ klasse ExceptionTest(unittest.TestCase):
 
     @force_not_colorized
     @mock.patch.object(run, 'cleanup_traceback',
-                       new_callable=lambda: (lambda t, e: None))
+                       new_callable=lambda: (lambda t, e: Nichts))
     def test_get_multiple_message(self, mock):
         d = self.data
         data2 = ((d[0], d[1]), (d[1], d[2]), (d[2], d[0]))
@@ -122,13 +122,13 @@ klasse StdInputFilesTest(unittest.TestCase):
         self.assertIsInstance(f, io.TextIOBase)
         self.assertEqual(f.encoding, 'utf-8')
         self.assertEqual(f.errors, 'strict')
-        self.assertIsNone(f.newlines)
+        self.assertIsNichts(f.newlines)
         self.assertEqual(f.name, '<stdin>')
-        self.assertFalse(f.closed)
-        self.assertTrue(f.isatty())
-        self.assertTrue(f.readable())
-        self.assertFalse(f.writable())
-        self.assertFalse(f.seekable())
+        self.assertFalsch(f.closed)
+        self.assertWahr(f.isatty())
+        self.assertWahr(f.readable())
+        self.assertFalsch(f.writable())
+        self.assertFalsch(f.seekable())
 
     def test_unsupported(self):
         shell = MockShell()
@@ -147,7 +147,7 @@ klasse StdInputFilesTest(unittest.TestCase):
         shell.push(['one\n', 'two\n', ''])
         self.assertEqual(f.read(-1), 'one\ntwo\n')
         shell.push(['one\n', 'two\n', ''])
-        self.assertEqual(f.read(None), 'one\ntwo\n')
+        self.assertEqual(f.read(Nichts), 'one\ntwo\n')
         shell.push(['one\n', 'two\n', 'three\n', ''])
         self.assertEqual(f.read(2), 'on')
         self.assertEqual(f.read(3), 'e\nt')
@@ -165,7 +165,7 @@ klasse StdInputFilesTest(unittest.TestCase):
         shell.push(['one\n', 'two\n', 'three\n', 'four\n'])
         self.assertEqual(f.readline(), 'one\n')
         self.assertEqual(f.readline(-1), 'two\n')
-        self.assertEqual(f.readline(None), 'three\n')
+        self.assertEqual(f.readline(Nichts), 'three\n')
         shell.push(['one\ntwo\n'])
         self.assertEqual(f.readline(), 'one\n')
         self.assertEqual(f.readline(), 'two\n')
@@ -192,7 +192,7 @@ klasse StdInputFilesTest(unittest.TestCase):
         shell.push(['one\n', 'two\n', ''])
         self.assertEqual(f.readlines(-1), ['one\n', 'two\n'])
         shell.push(['one\n', 'two\n', ''])
-        self.assertEqual(f.readlines(None), ['one\n', 'two\n'])
+        self.assertEqual(f.readlines(Nichts), ['one\n', 'two\n'])
         shell.push(['one\n', 'two\n', ''])
         self.assertEqual(f.readlines(0), ['one\n', 'two\n'])
         shell.push(['one\n', 'two\n', ''])
@@ -209,10 +209,10 @@ klasse StdInputFilesTest(unittest.TestCase):
         shell = MockShell()
         f = run.StdInputFile(shell, 'stdin')
         shell.push(['one\n', 'two\n', ''])
-        self.assertFalse(f.closed)
+        self.assertFalsch(f.closed)
         self.assertEqual(f.readline(), 'one\n')
         f.close()
-        self.assertFalse(f.closed)
+        self.assertFalsch(f.closed)
         self.assertEqual(f.readline(), 'two\n')
         self.assertRaises(TypeError, f.close, 1)
 
@@ -225,13 +225,13 @@ klasse StdOutputFilesTest(unittest.TestCase):
         self.assertIsInstance(f, io.TextIOBase)
         self.assertEqual(f.encoding, 'utf-8')
         self.assertEqual(f.errors, 'strict')
-        self.assertIsNone(f.newlines)
+        self.assertIsNichts(f.newlines)
         self.assertEqual(f.name, '<stdout>')
-        self.assertFalse(f.closed)
-        self.assertTrue(f.isatty())
-        self.assertFalse(f.readable())
-        self.assertTrue(f.writable())
-        self.assertFalse(f.seekable())
+        self.assertFalsch(f.closed)
+        self.assertWahr(f.isatty())
+        self.assertFalsch(f.readable())
+        self.assertWahr(f.writable())
+        self.assertFalsch(f.seekable())
 
     def test_unsupported(self):
         shell = MockShell()
@@ -318,10 +318,10 @@ klasse StdOutputFilesTest(unittest.TestCase):
     def test_close(self):
         shell = MockShell()
         f = run.StdOutputFile(shell, 'stdout')
-        self.assertFalse(f.closed)
+        self.assertFalsch(f.closed)
         f.write('test')
         f.close()
-        self.assertTrue(f.closed)
+        self.assertWahr(f.closed)
         self.assertRaises(ValueError, f.write, 'x')
         self.assertEqual(shell.written, [('test', 'stdout')])
         f.close()
@@ -364,7 +364,7 @@ klasse RecursionLimitTest(unittest.TestCase):
         def func(): "docstring"
         run.fixdoc(func, "more")
         self.assertEqual(func.__doc__, "docstring\n\nmore")
-        func.__doc__ = None
+        func.__doc__ = Nichts
         run.fixdoc(func, "more")
         self.assertEqual(func.__doc__, "more")
 
@@ -379,17 +379,17 @@ klasse HandleErrorTest(unittest.TestCase):
             try:
                 raise EOFError
             except EOFError:
-                run.MyRPCServer.handle_error(None, 'abc', '123')
-            eq(run.exit_now, True)
-            run.exit_now = False
+                run.MyRPCServer.handle_error(Nichts, 'abc', '123')
+            eq(run.exit_now, Wahr)
+            run.exit_now = Falsch
             eq(err.getvalue(), '')
 
             try:
                 raise IndexError
             except IndexError:
-                run.MyRPCServer.handle_error(None, 'abc', '123')
-            eq(run.quitting, True)
-            run.quitting = False
+                run.MyRPCServer.handle_error(Nichts, 'abc', '123')
+            eq(run.quitting, Wahr)
+            run.quitting = Falsch
             msg = err.getvalue()
             self.assertIn('abc', msg)
             self.assertIn('123', msg)
@@ -405,7 +405,7 @@ klasse ExecRuncodeTest(unittest.TestCase):
         cls.prt = Func()  # Need reference.
         run.print_exception = cls.prt
         mockrpc = mock.Mock()
-        mockrpc.console.getvar = Func(result=False)
+        mockrpc.console.getvar = Func(result=Falsch)
         cls.ex = run.Executive(mockrpc)
 
     @classmethod
@@ -422,11 +422,11 @@ klasse ExecRuncodeTest(unittest.TestCase):
         ex.runcode('1/0')
         self.assertIs(self.prt.args[0], ZeroDivisionError)
 
-        sys.excepthook = lambda: None
+        sys.excepthook = lambda: Nichts
         ex.runcode('1/0')
         t, e, tb = ex.user_exc_info
         self.assertIs(t, TypeError)
-        self.assertTrue(isinstance(e.__context__, ZeroDivisionError))
+        self.assertWahr(isinstance(e.__context__, ZeroDivisionError))
 
 
 wenn __name__ == '__main__':

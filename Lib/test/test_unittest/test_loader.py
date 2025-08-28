@@ -202,14 +202,14 @@ klasse Test_TestLoader(unittest.TestCase):
         loader = unittest.TestLoader()
         suite = loader.loadTestsFromModule(m)
         self.assertIsInstance(suite, unittest.TestSuite)
-        self.assertEqual(load_tests_args, [loader, suite, None])
+        self.assertEqual(load_tests_args, [loader, suite, Nichts])
 
         # In Python 3.12, the undocumented and unofficial use_load_tests has
         # been removed.
         with self.assertRaises(TypeError):
-            loader.loadTestsFromModule(m, False)
+            loader.loadTestsFromModule(m, Falsch)
         with self.assertRaises(TypeError):
-            loader.loadTestsFromModule(m, use_load_tests=False)
+            loader.loadTestsFromModule(m, use_load_tests=Falsch)
 
     def test_loadTestsFromModule__pattern(self):
         m = types.ModuleType('m')
@@ -245,7 +245,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertNotEqual([], loader.errors)
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
-        self.assertTrue(
+        self.assertWahr(
             'Failed to call load_tests:' in error,
             'missing error string in %r' % error)
         test = list(suite)[0]
@@ -521,8 +521,8 @@ klasse Test_TestLoader(unittest.TestCase):
     # ... a callable object which returns a ... TestSuite instance"
     def test_loadTestsFromName__callable__TestSuite(self):
         m = types.ModuleType('m')
-        testcase_1 = unittest.FunctionTestCase(lambda: None)
-        testcase_2 = unittest.FunctionTestCase(lambda: None)
+        testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
+        testcase_2 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestSuite():
             return unittest.TestSuite([testcase_1, testcase_2])
         m.return_TestSuite = return_TestSuite
@@ -536,7 +536,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # ... a callable object which returns a TestCase ... instance"
     def test_loadTestsFromName__callable__TestCase_instance(self):
         m = types.ModuleType('m')
-        testcase_1 = unittest.FunctionTestCase(lambda: None)
+        testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestCase():
             return testcase_1
         m.return_TestCase = return_TestCase
@@ -555,7 +555,7 @@ klasse Test_TestLoader(unittest.TestCase):
         klasse SubTestSuite(unittest.TestSuite):
             pass
         m = types.ModuleType('m')
-        testcase_1 = unittest.FunctionTestCase(lambda: None)
+        testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestCase():
             return testcase_1
         m.return_TestCase = return_TestCase
@@ -612,7 +612,7 @@ klasse Test_TestLoader(unittest.TestCase):
         # better not be loaded before we try.
         #
         module_name = 'test.test_unittest.dummy'
-        sys.modules.pop(module_name, None)
+        sys.modules.pop(module_name, Nichts)
 
         loader = unittest.TestLoader()
         try:
@@ -959,8 +959,8 @@ klasse Test_TestLoader(unittest.TestCase):
     # ... a callable object which returns a ... TestSuite instance"
     def test_loadTestsFromNames__callable__TestSuite(self):
         m = types.ModuleType('m')
-        testcase_1 = unittest.FunctionTestCase(lambda: None)
-        testcase_2 = unittest.FunctionTestCase(lambda: None)
+        testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
+        testcase_2 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestSuite():
             return unittest.TestSuite([testcase_1, testcase_2])
         m.return_TestSuite = return_TestSuite
@@ -976,7 +976,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # ... a callable object which returns a TestCase ... instance"
     def test_loadTestsFromNames__callable__TestCase_instance(self):
         m = types.ModuleType('m')
-        testcase_1 = unittest.FunctionTestCase(lambda: None)
+        testcase_1 = unittest.FunctionTestCase(lambda: Nichts)
         def return_TestCase():
             return testcase_1
         m.return_TestCase = return_TestCase
@@ -1037,7 +1037,7 @@ klasse Test_TestLoader(unittest.TestCase):
         # better not be loaded before we try.
         #
         module_name = 'test.test_unittest.dummy'
-        sys.modules.pop(module_name, None)
+        sys.modules.pop(module_name, Nichts)
 
         loader = unittest.TestLoader()
         try:
@@ -1383,17 +1383,17 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(loader.getTestCaseNames(Foo), sorted(test_names))
 
 
-    # "it can be set to None to disable the sort."
+    # "it can be set to Nichts to disable the sort."
     #
     # XXX How is this different from reassigning cmp? Are the tests returned
     # in a random order or something? This behaviour should die
-    def test_sortTestMethodsUsing__None(self):
+    def test_sortTestMethodsUsing__Nichts(self):
         klasse Foo(unittest.TestCase):
             def test_1(self): pass
             def test_2(self): pass
 
         loader = unittest.TestLoader()
-        loader.sortTestMethodsUsing = None
+        loader.sortTestMethodsUsing = Nichts
 
         test_names = ['test_2', 'test_1']
         self.assertEqual(set(loader.getTestCaseNames(Foo)), set(test_names))
@@ -1478,7 +1478,7 @@ klasse Test_TestLoader(unittest.TestCase):
         klasse Foo(unittest.TestCase):
             pass
 
-        setattr(Foo, 'test_partial', functools.partial(noop, None))
+        setattr(Foo, 'test_partial', functools.partial(noop, Nichts))
 
         loader = unittest.TestLoader()
 

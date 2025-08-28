@@ -20,31 +20,31 @@ klasse Options:
     # values can be set using the DOM Level 3 LoadSave feature.
 
     namespaces = 1
-    namespace_declarations = True
-    validation = False
-    external_parameter_entities = True
-    external_general_entities = True
-    external_dtd_subset = True
-    validate_if_schema = False
-    validate = False
-    datatype_normalization = False
-    create_entity_ref_nodes = True
-    entities = True
-    whitespace_in_element_content = True
-    cdata_sections = True
-    comments = True
-    charset_overrides_xml_encoding = True
-    infoset = False
-    supported_mediatypes_only = False
+    namespace_declarations = Wahr
+    validation = Falsch
+    external_parameter_entities = Wahr
+    external_general_entities = Wahr
+    external_dtd_subset = Wahr
+    validate_if_schema = Falsch
+    validate = Falsch
+    datatype_normalization = Falsch
+    create_entity_ref_nodes = Wahr
+    entities = Wahr
+    whitespace_in_element_content = Wahr
+    cdata_sections = Wahr
+    comments = Wahr
+    charset_overrides_xml_encoding = Wahr
+    infoset = Falsch
+    supported_mediatypes_only = Falsch
 
-    errorHandler = None
-    filter = None
+    errorHandler = Nichts
+    filter = Nichts
 
 
 klasse DOMBuilder:
-    entityResolver = None
-    errorHandler = None
-    filter = None
+    entityResolver = Nichts
+    errorHandler = Nichts
+    filter = Nichts
 
     ACTION_REPLACE = 1
     ACTION_APPEND_AS_CHILDREN = 2
@@ -79,7 +79,7 @@ klasse DOMBuilder:
                 settings = self._settings[(_name_xform(name), state)]
             except KeyError:
                 raise xml.dom.NotSupportedErr(
-                    "unsupported feature: %r" % (name,)) from None
+                    "unsupported feature: %r" % (name,)) from Nichts
             sonst:
                 fuer name, value in settings:
                     setattr(self._options, name, value)
@@ -179,9 +179,9 @@ klasse DOMBuilder:
 
     def parseURI(self, uri):
         wenn self.entityResolver:
-            input = self.entityResolver.resolveEntity(None, uri)
+            input = self.entityResolver.resolveEntity(Nichts, uri)
         sonst:
-            input = DOMEntityResolver().resolveEntity(None, uri)
+            input = DOMEntityResolver().resolveEntity(Nichts, uri)
         return self.parse(input)
 
     def parse(self, input):
@@ -189,7 +189,7 @@ klasse DOMBuilder:
         options.filter = self.filter
         options.errorHandler = self.errorHandler
         fp = input.byteStream
-        wenn fp is None and input.systemId:
+        wenn fp is Nichts and input.systemId:
             import urllib.request
             fp = urllib.request.urlopen(input.systemId)
         return self._parse_bytestream(fp, options)
@@ -213,7 +213,7 @@ klasse DOMEntityResolver(object):
     __slots__ = '_opener',
 
     def resolveEntity(self, publicId, systemId):
-        assert systemId is not None
+        assert systemId is not Nichts
         source = DOMInputSource()
         source.publicId = publicId
         source.systemId = systemId
@@ -250,9 +250,9 @@ klasse DOMEntityResolver(object):
         # import email.message
         # assert isinstance(info, email.message.Message)
         charset = info.get_param('charset')
-        wenn charset is not None:
+        wenn charset is not Nichts:
             return charset.lower()
-        return None
+        return Nichts
 
 
 klasse DOMInputSource(object):
@@ -260,13 +260,13 @@ klasse DOMInputSource(object):
                  'encoding', 'publicId', 'systemId', 'baseURI')
 
     def __init__(self):
-        self.byteStream = None
-        self.characterStream = None
-        self.stringData = None
-        self.encoding = None
-        self.publicId = None
-        self.systemId = None
-        self.baseURI = None
+        self.byteStream = Nichts
+        self.characterStream = Nichts
+        self.stringData = Nichts
+        self.encoding = Nichts
+        self.publicId = Nichts
+        self.systemId = Nichts
+        self.baseURI = Nichts
 
     def _get_byteStream(self):
         return self.byteStream
@@ -336,10 +336,10 @@ del NodeFilter
 klasse DocumentLS:
     """Mixin to create documents that conform to the load/save spec."""
 
-    async_ = False
+    async_ = Falsch
 
     def _get_async(self):
-        return False
+        return Falsch
 
     def _set_async(self, flag):
         wenn flag:
@@ -359,7 +359,7 @@ klasse DocumentLS:
         raise NotImplementedError("haven't written this yet")
 
     def saveXML(self, snode):
-        wenn snode is None:
+        wenn snode is Nichts:
             snode = self
         sowenn snode.ownerDocument is not self:
             raise xml.dom.WrongDocumentErr()
@@ -371,7 +371,7 @@ klasse DOMImplementationLS:
     MODE_ASYNCHRONOUS = 2
 
     def createDOMBuilder(self, mode, schemaType):
-        wenn schemaType is not None:
+        wenn schemaType is not Nichts:
             raise xml.dom.NotSupportedErr(
                 "schemaType not yet supported")
         wenn mode == self.MODE_SYNCHRONOUS:

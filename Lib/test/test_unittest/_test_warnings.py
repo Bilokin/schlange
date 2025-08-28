@@ -50,12 +50,12 @@ klasse TestWarnings(unittest.TestCase):
 
 
 wenn __name__ == '__main__':
-    with warnings.catch_warnings(record=True) as ws:
+    with warnings.catch_warnings(record=Wahr) as ws:
         # wenn an arg is provided pass it to unittest.main as 'warnings'
         wenn len(sys.argv) == 2:
-            unittest.main(exit=False, warnings=sys.argv.pop())
+            unittest.main(exit=Falsch, warnings=sys.argv.pop())
         sonst:
-            unittest.main(exit=False)
+            unittest.main(exit=Falsch)
 
     # print all the warning messages collected
     fuer w in ws:

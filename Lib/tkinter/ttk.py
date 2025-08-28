@@ -29,7 +29,7 @@ import tkinter
 from tkinter import _flatten, _join, _stringify, _splitdict
 
 
-def _format_optvalue(value, script=False):
+def _format_optvalue(value, script=Falsch):
     """Internal function."""
     wenn script:
         # wenn caller passes a Tcl script to tk.call, all the values need to
@@ -39,10 +39,10 @@ def _format_optvalue(value, script=False):
         value = _join(value)
     return value
 
-def _format_optdict(optdict, script=False, ignore=None):
+def _format_optdict(optdict, script=Falsch, ignore=Nichts):
     """Formats optdict to a tuple to pass it to tk.call.
 
-    E.g. (script=False):
+    E.g. (script=Falsch):
       {'foreground': 'blue', 'padding': [1, 2, 3, 4]} returns:
       ('-foreground', 'blue', '-padding', '1 2 3 4')"""
 
@@ -50,7 +50,7 @@ def _format_optdict(optdict, script=False, ignore=None):
     fuer opt, value in optdict.items():
         wenn not ignore or opt not in ignore:
             opts.append("-%s" % opt)
-            wenn value is not None:
+            wenn value is not Nichts:
                 opts.append(_format_optvalue(value, script))
 
     return _flatten(opts)
@@ -58,28 +58,28 @@ def _format_optdict(optdict, script=False, ignore=None):
 def _mapdict_values(items):
     # each value in mapdict is expected to be a sequence, where each item
     # is another sequence containing a state (or several) and a value
-    # E.g. (script=False):
+    # E.g. (script=Falsch):
     #   [('active', 'selected', 'grey'), ('focus', [1, 2, 3, 4])]
     #   returns:
     #   ['active selected', 'grey', 'focus', [1, 2, 3, 4]]
     opt_val = []
     fuer *state, val in items:
         wenn len(state) == 1:
-            # wenn it is empty (something that evaluates to False), then
+            # wenn it is empty (something that evaluates to Falsch), then
             # format it to Tcl code to denote the "normal" state
             state = state[0] or ''
         sonst:
             # group multiple states
             state = ' '.join(state) # raise TypeError wenn not str
         opt_val.append(state)
-        wenn val is not None:
+        wenn val is not Nichts:
             opt_val.append(val)
     return opt_val
 
-def _format_mapdict(mapdict, script=False):
+def _format_mapdict(mapdict, script=Falsch):
     """Formats mapdict to pass it to tk.call.
 
-    E.g. (script=False):
+    E.g. (script=Falsch):
       {'expand': [('active', 'selected', 'grey'), ('focus', [1, 2, 3, 4])]}
 
       returns:
@@ -93,7 +93,7 @@ def _format_mapdict(mapdict, script=False):
 
     return _flatten(opts)
 
-def _format_elemcreate(etype, script=False, *args, **kw):
+def _format_elemcreate(etype, script=Falsch, *args, **kw):
     """Formats args and kw according to the given element factory etype."""
     specs = ()
     opts = ()
@@ -143,7 +143,7 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
     be a list necessarily.
 
     E.g.:
-      [("Menubutton.background", None),
+      [("Menubutton.background", Nichts),
        ("Menubutton.button", {"children":
            [("Menubutton.focus", {"children":
                [("Menubutton.padding", {"children":
@@ -170,7 +170,7 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
     fuer layout_elem in layout:
         elem, opts = layout_elem
         opts = opts or {}
-        fopts = ' '.join(_format_optdict(opts, True, ("children",)))
+        fopts = ' '.join(_format_optdict(opts, Wahr, ("children",)))
         head = "%s%s%s" % (' ' * indent, elem, (" %s" % fopts) wenn fopts sonst '')
 
         wenn "children" in opts:
@@ -196,11 +196,11 @@ def _script_from_settings(settings):
     fuer name, opts in settings.items():
         # will format specific keys according to Tcl code
         wenn opts.get('configure'): # format 'configure'
-            s = ' '.join(_format_optdict(opts['configure'], True))
+            s = ' '.join(_format_optdict(opts['configure'], Wahr))
             script.append("ttk::style configure %s %s;" % (name, s))
 
         wenn opts.get('map'): # format 'map'
-            s = ' '.join(_format_mapdict(opts['map'], True))
+            s = ' '.join(_format_mapdict(opts['map'], Wahr))
             script.append("ttk::style map %s %s;" % (name, s))
 
         wenn 'layout' in opts: # format 'layout' which may be empty
@@ -221,7 +221,7 @@ def _script_from_settings(settings):
 
             elemargs = eopts[1:argc]
             elemkw = eopts[argc] wenn argc < len(eopts) and eopts[argc] sonst {}
-            specs, eopts = _format_elemcreate(etype, True, *elemargs, **elemkw)
+            specs, eopts = _format_elemcreate(etype, Wahr, *elemargs, **elemkw)
 
             script.append("ttk::style element create %s %s %s %s" % (
                 name, etype, specs, eopts))
@@ -281,7 +281,7 @@ def _val_or_dict(tk, options, *args):
     the appropriate result.
 
     If no option is specified, a dict is returned. If an option is
-    specified with the None value, the value fuer that option is returned.
+    specified with the Nichts value, the value fuer that option is returned.
     Otherwise, the function just sets the passed options and the caller
     shouldn't be expecting a return value anyway."""
     options = _format_optdict(options)
@@ -313,7 +313,7 @@ def _to_number(x):
 def _tclobj_to_py(val):
     """Return value converted from Tcl object to Python object."""
     wenn val and hasattr(val, '__len__') and not isinstance(val, str):
-        wenn getattr(val[0], 'typename', None) == 'StateSpec':
+        wenn getattr(val[0], 'typename', Nichts) == 'StateSpec':
             val = _list_from_statespec(val)
         sonst:
             val = list(map(_convert_stringval, val))
@@ -333,14 +333,14 @@ def tclobjs_to_py(adict):
 
     return adict
 
-def setup_master(master=None):
-    """If master is not None, itself is returned. If master is None,
+def setup_master(master=Nichts):
+    """If master is not Nichts, itself is returned. If master is Nichts,
     the default master is returned wenn there is one, otherwise a new
     master is created and returned.
 
-    If it is not allowed to use the default root and master is None,
+    If it is not allowed to use the default root and master is Nichts,
     RuntimeError is raised."""
-    wenn master is None:
+    wenn master is Nichts:
         master = tkinter._get_default_root()
     return master
 
@@ -350,26 +350,26 @@ klasse Style(object):
 
     _name = "ttk::style"
 
-    def __init__(self, master=None):
+    def __init__(self, master=Nichts):
         master = setup_master(master)
         self.master = master
         self.tk = self.master.tk
 
 
-    def configure(self, style, query_opt=None, **kw):
+    def configure(self, style, query_opt=Nichts, **kw):
         """Query or sets the default value of the specified option(s) in
         style.
 
         Each key in kw is an option and each value is either a string or
         a sequence identifying the value fuer that option."""
-        wenn query_opt is not None:
-            kw[query_opt] = None
+        wenn query_opt is not Nichts:
+            kw[query_opt] = Nichts
         result = _val_or_dict(self.tk, kw, self._name, "configure", style)
         wenn result or query_opt:
             return result
 
 
-    def map(self, style, query_opt=None, **kw):
+    def map(self, style, query_opt=Nichts, **kw):
         """Query or sets dynamic values of the specified option(s) in
         style.
 
@@ -377,7 +377,7 @@ klasse Style(object):
         tuple (usually) containing statespecs grouped in tuples, or list,
         or something sonst of your preference. A statespec is compound of
         one or more states and then a value."""
-        wenn query_opt is not None:
+        wenn query_opt is not Nichts:
             result = self.tk.call(self._name, "map", style, '-%s' % query_opt)
             return _list_from_statespec(self.tk.splitlist(result))
 
@@ -386,7 +386,7 @@ klasse Style(object):
                 fuer k, v in _splitdict(self.tk, result).items()}
 
 
-    def lookup(self, style, option, state=None, default=None):
+    def lookup(self, style, option, state=Nichts, default=Nichts):
         """Returns the value specified fuer option in style.
 
         If state is specified it is expected to be a sequence of one
@@ -398,19 +398,19 @@ klasse Style(object):
             state, default)
 
 
-    def layout(self, style, layoutspec=None):
+    def layout(self, style, layoutspec=Nichts):
         """Define the widget layout fuer given style. If layoutspec is
         omitted, return the layout specification fuer given style.
 
         layoutspec is expected to be a list or an object different than
-        None that evaluates to False wenn you want to "turn off" that style.
+        Nichts that evaluates to Falsch wenn you want to "turn off" that style.
         If it is a list (or tuple, or something else), each item should be
         a tuple where the first item is the layout name and the second item
         should have the format described below:
 
         LAYOUTS
 
-            A layout can contain the value None, wenn takes no options, or
+            A layout can contain the value Nichts, wenn takes no options, or
             a dict of options specifying how to arrange the element.
             The layout mechanism uses a simplified version of the pack
             geometry manager: given an initial cavity, each element is
@@ -430,10 +430,10 @@ klasse Style(object):
                     element. Each element is a tuple (or other sequence)
                     where the first item is the layout name, and the other
                     is a LAYOUT."""
-        lspec = None
+        lspec = Nichts
         wenn layoutspec:
             lspec = _format_layoutlist(layoutspec)[0]
-        sowenn layoutspec is not None: # will disable the layout ({}, '', etc)
+        sowenn layoutspec is not Nichts: # will disable the layout ({}, '', etc)
             lspec = "null" # could be any other word, but this may make sense
                            # when calling layout(style) later
 
@@ -443,7 +443,7 @@ klasse Style(object):
 
     def element_create(self, elementname, etype, *args, **kw):
         """Create a new element in the current theme of given etype."""
-        *specs, opts = _format_elemcreate(etype, False, *args, **kw)
+        *specs, opts = _format_elemcreate(etype, Falsch, *args, **kw)
         self.tk.call(self._name, "element", "create", elementname, etype,
             *specs, *opts)
 
@@ -460,7 +460,7 @@ klasse Style(object):
             self.tk.call(self._name, "element", "options", elementname)))
 
 
-    def theme_create(self, themename, parent=None, settings=None):
+    def theme_create(self, themename, parent=Nichts, settings=Nichts):
         """Creates a new theme.
 
         It is an error wenn themename already exists. If parent is
@@ -494,11 +494,11 @@ klasse Style(object):
         return self.tk.splitlist(self.tk.call(self._name, "theme", "names"))
 
 
-    def theme_use(self, themename=None):
-        """If themename is None, returns the theme in use, otherwise, set
+    def theme_use(self, themename=Nichts):
+        """If themename is Nichts, returns the theme in use, otherwise, set
         the current theme to themename, refreshes all widgets and emits
         a <<ThemeChanged>> event."""
-        wenn themename is None:
+        wenn themename is Nichts:
             # Starting on Tk 8.6, checking this global is no longer needed
             # since it allows doing self.tk.call(self._name, "theme", "use")
             return self.tk.eval("return $ttk::currentTheme")
@@ -512,7 +512,7 @@ klasse Style(object):
 klasse Widget(tkinter.Widget):
     """Base klasse fuer Tk themed widgets."""
 
-    def __init__(self, master, widgetname, kw=None):
+    def __init__(self, master, widgetname, kw=Nichts):
         """Constructs a Ttk Widget with the parent master.
 
         STANDARD OPTIONS
@@ -544,29 +544,29 @@ klasse Widget(tkinter.Widget):
         return self.tk.call(self._w, "identify", x, y)
 
 
-    def instate(self, statespec, callback=None, *args, **kw):
+    def instate(self, statespec, callback=Nichts, *args, **kw):
         """Test the widget's state.
 
-        If callback is not specified, returns True wenn the widget state
-        matches statespec and False otherwise. If callback is specified,
+        If callback is not specified, returns Wahr wenn the widget state
+        matches statespec and Falsch otherwise. If callback is specified,
         then it will be invoked with *args, **kw wenn the widget state
         matches statespec. statespec is expected to be a sequence."""
         ret = self.tk.getboolean(
                 self.tk.call(self._w, "instate", ' '.join(statespec)))
-        wenn ret and callback is not None:
+        wenn ret and callback is not Nichts:
             return callback(*args, **kw)
 
         return ret
 
 
-    def state(self, statespec=None):
+    def state(self, statespec=Nichts):
         """Modify or inquire widget state.
 
-        Widget state is returned wenn statespec is None, otherwise it is
+        Widget state is returned wenn statespec is Nichts, otherwise it is
         set according to the statespec flags and then a new state spec
         is returned indicating which flags were changed. statespec is
         expected to be a sequence."""
-        wenn statespec is not None:
+        wenn statespec is not Nichts:
             statespec = ' '.join(statespec)
 
         return self.tk.splitlist(str(self.tk.call(self._w, "state", statespec)))
@@ -576,7 +576,7 @@ klasse Button(Widget):
     """Ttk Button widget, displays a textual label and/or image, and
     evaluates a command when pressed."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Button widget with the parent master.
 
         STANDARD OPTIONS
@@ -599,7 +599,7 @@ klasse Button(Widget):
 klasse Checkbutton(Widget):
     """Ttk Checkbutton widget which is either in on- or off-state."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Checkbutton widget with the parent master.
 
         STANDARD OPTIONS
@@ -629,7 +629,7 @@ klasse Entry(Widget, tkinter.Entry):
     """Ttk Entry widget displays a one-line text string and allows that
     string to be edited by the user."""
 
-    def __init__(self, master=None, widget=None, **kw):
+    def __init__(self, master=Nichts, widget=Nichts, **kw):
         """Constructs a Ttk Entry widget with the parent master.
 
         STANDARD OPTIONS
@@ -662,7 +662,7 @@ klasse Entry(Widget, tkinter.Entry):
 
     def validate(self):
         """Force revalidation, independent of the conditions specified
-        by the validate option. Returns False wenn validation fails, True
+        by the validate option. Returns Falsch wenn validation fails, Wahr
         wenn it succeeds. Sets or clears the invalid state accordingly."""
         return self.tk.getboolean(self.tk.call(self._w, "validate"))
 
@@ -671,7 +671,7 @@ klasse Combobox(Entry):
     """Ttk Combobox widget combines a text field with a pop-down list of
     values."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Combobox widget with the parent master.
 
         STANDARD OPTIONS
@@ -686,12 +686,12 @@ klasse Combobox(Entry):
         Entry.__init__(self, master, "ttk::combobox", **kw)
 
 
-    def current(self, newindex=None):
+    def current(self, newindex=Nichts):
         """If newindex is supplied, sets the combobox value to the
         element at position newindex in the list of values. Otherwise,
         returns the index of the current value in the list of values
         or -1 wenn the current value does not appear in the list."""
-        wenn newindex is None:
+        wenn newindex is Nichts:
             res = self.tk.call(self._w, "current")
             wenn res == '':
                 return -1
@@ -708,7 +708,7 @@ klasse Frame(Widget):
     """Ttk Frame widget is a container, used to group other widgets
     together."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Frame with parent master.
 
         STANDARD OPTIONS
@@ -725,7 +725,7 @@ klasse Frame(Widget):
 klasse Label(Widget):
     """Ttk Label widget displays a textual label and/or image."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Label with parent master.
 
         STANDARD OPTIONS
@@ -746,7 +746,7 @@ klasse Labelframe(Widget):
     together. It has an optional label, which may be a plain text string
     or another widget."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Labelframe with parent master.
 
         STANDARD OPTIONS
@@ -766,7 +766,7 @@ klasse Menubutton(Widget):
     """Ttk Menubutton widget displays a textual label and/or image, and
     displays a menu when pressed."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Menubutton with parent master.
 
         STANDARD OPTIONS
@@ -786,7 +786,7 @@ klasse Notebook(Widget):
     a single one at a time. Each child window is associated with a tab,
     which the user may select to change the currently-displayed window."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Notebook with parent master.
 
         STANDARD OPTIONS
@@ -862,7 +862,7 @@ klasse Notebook(Widget):
         self.tk.call(self._w, "insert", pos, child, *(_format_optdict(kw)))
 
 
-    def select(self, tab_id=None):
+    def select(self, tab_id=Nichts):
         """Selects the specified tab.
 
         The associated child window will be displayed, and the
@@ -872,14 +872,14 @@ klasse Notebook(Widget):
         return self.tk.call(self._w, "select", tab_id)
 
 
-    def tab(self, tab_id, option=None, **kw):
+    def tab(self, tab_id, option=Nichts, **kw):
         """Query or modify the options of the specific tab_id.
 
         If kw is not given, returns a dict of the tab option values. If option
         is specified, returns the value of that option. Otherwise, sets the
         options to the corresponding values."""
-        wenn option is not None:
-            kw[option] = None
+        wenn option is not Nichts:
+            kw[option] = Nichts
         return _val_or_dict(self.tk, kw, self._w, "tab", tab_id)
 
 
@@ -918,7 +918,7 @@ klasse Panedwindow(Widget, tkinter.PanedWindow):
     """Ttk Panedwindow widget displays a number of subwindows, stacked
     either vertically or horizontally."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Panedwindow with parent master.
 
         STANDARD OPTIONS
@@ -948,19 +948,19 @@ klasse Panedwindow(Widget, tkinter.PanedWindow):
         self.tk.call(self._w, "insert", pos, child, *(_format_optdict(kw)))
 
 
-    def pane(self, pane, option=None, **kw):
+    def pane(self, pane, option=Nichts, **kw):
         """Query or modify the options of the specified pane.
 
         pane is either an integer index or the name of a managed subwindow.
         If kw is not given, returns a dict of the pane option values. If
         option is specified then the value fuer that option is returned.
         Otherwise, sets the options to the corresponding values."""
-        wenn option is not None:
-            kw[option] = None
+        wenn option is not Nichts:
+            kw[option] = Nichts
         return _val_or_dict(self.tk, kw, self._w, "pane", pane)
 
 
-    def sashpos(self, index, newpos=None):
+    def sashpos(self, index, newpos=Nichts):
         """If newpos is specified, sets the position of sash number index.
 
         May adjust the positions of adjacent sashes to ensure that
@@ -980,7 +980,7 @@ klasse Progressbar(Widget):
     indeterminate mode provides an animated display to let the user know
     that something is happening."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Progressbar with parent master.
 
         STANDARD OPTIONS
@@ -994,7 +994,7 @@ klasse Progressbar(Widget):
         Widget.__init__(self, master, "ttk::progressbar", kw)
 
 
-    def start(self, interval=None):
+    def start(self, interval=Nichts):
         """Begin autoincrement mode: schedules a recurring timer event
         that calls method step every interval milliseconds.
 
@@ -1002,7 +1002,7 @@ klasse Progressbar(Widget):
         self.tk.call(self._w, "start", interval)
 
 
-    def step(self, amount=None):
+    def step(self, amount=Nichts):
         """Increments the value option by amount.
 
         amount defaults to 1.0 wenn omitted."""
@@ -1019,7 +1019,7 @@ klasse Radiobutton(Widget):
     """Ttk Radiobutton widgets are used in groups to show or change a
     set of mutually-exclusive options."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Radiobutton with parent master.
 
         STANDARD OPTIONS
@@ -1047,7 +1047,7 @@ klasse Scale(Widget, tkinter.Scale):
     """Ttk Scale widget is typically used to control the numeric value of
     a linked variable that varies uniformly over some range."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Scale with parent master.
 
         STANDARD OPTIONS
@@ -1061,20 +1061,20 @@ klasse Scale(Widget, tkinter.Scale):
         Widget.__init__(self, master, "ttk::scale", kw)
 
 
-    def configure(self, cnf=None, **kw):
+    def configure(self, cnf=Nichts, **kw):
         """Modify or query scale options.
 
         Setting a value fuer any of the "from", "from_" or "to" options
         generates a <<RangeChanged>> event."""
         retval = Widget.configure(self, cnf, **kw)
-        wenn not isinstance(cnf, (type(None), str)):
+        wenn not isinstance(cnf, (type(Nichts), str)):
             kw.update(cnf)
         wenn any(['from' in kw, 'from_' in kw, 'to' in kw]):
             self.event_generate('<<RangeChanged>>')
         return retval
 
 
-    def get(self, x=None, y=None):
+    def get(self, x=Nichts, y=Nichts):
         """Get the current value of the value option, or the value
         corresponding to the coordinates x, y wenn they are specified.
 
@@ -1086,7 +1086,7 @@ klasse Scale(Widget, tkinter.Scale):
 klasse Scrollbar(Widget, tkinter.Scrollbar):
     """Ttk Scrollbar controls the viewport of a scrollable widget."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Scrollbar with parent master.
 
         STANDARD OPTIONS
@@ -1104,7 +1104,7 @@ klasse Separator(Widget):
     """Ttk Separator widget displays a horizontal or vertical separator
     bar."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Separator with parent master.
 
         STANDARD OPTIONS
@@ -1122,7 +1122,7 @@ klasse Sizegrip(Widget):
     """Ttk Sizegrip allows the user to resize the containing toplevel
     window by pressing and dragging the grip."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Sizegrip with parent master.
 
         STANDARD OPTIONS
@@ -1139,7 +1139,7 @@ klasse Spinbox(Entry):
     string values.
     """
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Spinbox widget with the parent master.
 
         STANDARD OPTIONS
@@ -1166,7 +1166,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
     of data values. The data values are displayed in successive columns
     after the tree label."""
 
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         """Construct a Ttk Treeview with parent master.
 
         STANDARD OPTIONS
@@ -1189,7 +1189,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         Widget.__init__(self, master, "ttk::treeview", kw)
 
 
-    def bbox(self, item, column=None):
+    def bbox(self, item, column=Nichts):
         """Returns the bounding box (relative to the treeview widget's
         window) of the specified item in the form x y width height.
 
@@ -1199,7 +1199,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         return self._getints(self.tk.call(self._w, "bbox", item, column)) or ''
 
 
-    def get_children(self, item=None):
+    def get_children(self, item=Nichts):
         """Returns a tuple of children belonging to item.
 
         If item is not specified, returns root children."""
@@ -1216,14 +1216,14 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         self.tk.call(self._w, "children", item, newchildren)
 
 
-    def column(self, column, option=None, **kw):
+    def column(self, column, option=Nichts, **kw):
         """Query or modify the options fuer the specified column.
 
         If kw is not given, returns a dict of the column option values. If
         option is specified then the value fuer that option is returned.
         Otherwise, sets the options to the corresponding values."""
-        wenn option is not None:
-            kw[option] = None
+        wenn option is not Nichts:
+            kw[option] = Nichts
         return _val_or_dict(self.tk, kw, self._w, "column", column)
 
 
@@ -1243,18 +1243,18 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def exists(self, item):
-        """Returns True wenn the specified item is present in the tree,
-        False otherwise."""
+        """Returns Wahr wenn the specified item is present in the tree,
+        Falsch otherwise."""
         return self.tk.getboolean(self.tk.call(self._w, "exists", item))
 
 
-    def focus(self, item=None):
+    def focus(self, item=Nichts):
         """If item is specified, sets the focus item to item. Otherwise,
         returns the current focus item, or '' wenn there is none."""
         return self.tk.call(self._w, "focus", item)
 
 
-    def heading(self, column, option=None, **kw):
+    def heading(self, column, option=Nichts, **kw):
         """Query or modify the heading options fuer the specified column.
 
         If kw is not given, returns a dict of the heading option values. If
@@ -1280,8 +1280,8 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
             # callback not registered yet, do it now
             kw['command'] = self.master.register(cmd, self._substitute)
 
-        wenn option is not None:
-            kw[option] = None
+        wenn option is not Nichts:
+            kw[option] = Nichts
 
         return _val_or_dict(self.tk, kw, self._w, 'heading', column)
 
@@ -1330,7 +1330,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         return self.tk.getint(self.tk.call(self._w, "index", item))
 
 
-    def insert(self, parent, index, iid=None, **kw):
+    def insert(self, parent, index, iid=Nichts, **kw):
         """Creates a new item and return the item identifier of the newly
         created item.
 
@@ -1344,7 +1344,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         already exist in the tree. Otherwise, a new unique identifier
         is generated."""
         opts = _format_optdict(kw)
-        wenn iid is not None:
+        wenn iid is not Nichts:
             res = self.tk.call(self._w, "insert", parent, index,
                 "-id", iid, *opts)
         sonst:
@@ -1353,15 +1353,15 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         return res
 
 
-    def item(self, item, option=None, **kw):
+    def item(self, item, option=Nichts, **kw):
         """Query or modify the options fuer the specified item.
 
         If no options are given, a dict with options/values fuer the item
         is returned. If option is specified then the value fuer that option
         is returned. Otherwise, sets the options to the corresponding
         values as given by kw."""
-        wenn option is not None:
-            kw[option] = None
+        wenn option is not Nichts:
+            kw[option] = Nichts
         return _val_or_dict(self.tk, kw, self._w, "item", item)
 
 
@@ -1398,7 +1398,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
     def see(self, item):
         """Ensure that item is visible.
 
-        Sets all of item's ancestors open option to True, and scrolls
+        Sets all of item's ancestors open option to Wahr, and scrolls
         the widget wenn necessary so that item is within the visible
         portion of the tree."""
         self.tk.call(self._w, "see", item)
@@ -1436,7 +1436,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         self._selection("toggle", items)
 
 
-    def set(self, item, column=None, value=None):
+    def set(self, item, column=Nichts, value=Nichts):
         """Query or set the value of given item.
 
         With one argument, return a dictionary of column/value pairs
@@ -1444,40 +1444,40 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         value of the specified column. With three arguments, set the
         value of given column in given item to the specified value."""
         res = self.tk.call(self._w, "set", item, column, value)
-        wenn column is None and value is None:
+        wenn column is Nichts and value is Nichts:
             return _splitdict(self.tk, res,
-                              cut_minus=False, conv=_tclobj_to_py)
+                              cut_minus=Falsch, conv=_tclobj_to_py)
         sonst:
             return res
 
 
-    def tag_bind(self, tagname, sequence=None, callback=None):
+    def tag_bind(self, tagname, sequence=Nichts, callback=Nichts):
         """Bind a callback fuer the given event sequence to the tag tagname.
         When an event is delivered to an item, the callbacks fuer each
         of the item's tags option are called."""
         self._bind((self._w, "tag", "bind", tagname), sequence, callback, add=0)
 
 
-    def tag_configure(self, tagname, option=None, **kw):
+    def tag_configure(self, tagname, option=Nichts, **kw):
         """Query or modify the options fuer the specified tagname.
 
         If kw is not given, returns a dict of the option settings fuer tagname.
         If option is specified, returns the value fuer that option fuer the
         specified tagname. Otherwise, sets the options to the corresponding
         values fuer the given tagname."""
-        wenn option is not None:
-            kw[option] = None
+        wenn option is not Nichts:
+            kw[option] = Nichts
         return _val_or_dict(self.tk, kw, self._w, "tag", "configure",
             tagname)
 
 
-    def tag_has(self, tagname, item=None):
+    def tag_has(self, tagname, item=Nichts):
         """If item is specified, returns 1 or 0 depending on whether the
         specified item has the given tagname. Otherwise, returns a list of
         all items which have the specified tag.
 
         * Availability: Tk 8.6"""
-        wenn item is None:
+        wenn item is Nichts:
             return self.tk.splitlist(
                 self.tk.call(self._w, "tag", "has", tagname))
         sonst:
@@ -1494,7 +1494,7 @@ klasse LabeledScale(Frame):
     The Ttk Scale can be accessed through instance.scale, and Ttk Label
     can be accessed through instance.label"""
 
-    def __init__(self, master=None, variable=None, from_=0, to=10, **kw):
+    def __init__(self, master=Nichts, variable=Nichts, from_=0, to=10, **kw):
         """Construct a horizontal LabeledScale with parent master, a
         variable to be associated with the Ttk Scale widget and its range.
         If variable is not specified, a tkinter.IntVar is created.
@@ -1541,8 +1541,8 @@ klasse LabeledScale(Frame):
         sonst:
             del self._variable
         super().destroy()
-        self.label = None
-        self.scale = None
+        self.label = Nichts
+        self.scale = Nichts
 
 
     def _adjust(self, *args):
@@ -1587,7 +1587,7 @@ klasse OptionMenu(Menubutton):
     """Themed OptionMenu, based after tkinter's OptionMenu, which allows
     the user to select a value from a menu."""
 
-    def __init__(self, master, variable, default=None, *values, **kwargs):
+    def __init__(self, master, variable, default=Nichts, *values, **kwargs):
         """Construct a themed OptionMenu widget with master as the parent,
         the option textvariable set to variable, the initially selected
         value specified by the default parameter, the menu values given by
@@ -1602,14 +1602,14 @@ klasse OptionMenu(Menubutton):
             command: callback
                 A callback that will be invoked after selecting an item.
         """
-        kw = {'textvariable': variable, 'style': kwargs.pop('style', None),
-              'direction': kwargs.pop('direction', None),
-              'name': kwargs.pop('name', None)}
+        kw = {'textvariable': variable, 'style': kwargs.pop('style', Nichts),
+              'direction': kwargs.pop('direction', Nichts),
+              'name': kwargs.pop('name', Nichts)}
         Menubutton.__init__(self, master, **kw)
-        self['menu'] = tkinter.Menu(self, tearoff=False)
+        self['menu'] = tkinter.Menu(self, tearoff=Falsch)
 
         self._variable = variable
-        self._callback = kwargs.pop('command', None)
+        self._callback = kwargs.pop('command', Nichts)
         wenn kwargs:
             raise tkinter.TclError('unknown option -%s' % (
                 next(iter(kwargs.keys()))))
@@ -1624,7 +1624,7 @@ klasse OptionMenu(Menubutton):
         return Menubutton.__getitem__(self, item)
 
 
-    def set_menu(self, default=None, *values):
+    def set_menu(self, default=Nichts, *values):
         """Build a new menu of radiobuttons with *values and optionally
         a default value."""
         menu = self['menu']
@@ -1632,7 +1632,7 @@ klasse OptionMenu(Menubutton):
         fuer val in values:
             menu.add_radiobutton(label=val,
                 command=(
-                    None wenn self._callback is None
+                    Nichts wenn self._callback is Nichts
                     sonst lambda val=val: self._callback(val)
                 ),
                 variable=self._variable)

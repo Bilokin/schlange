@@ -8,7 +8,7 @@ def unrepr(value):
     raise NotImplementedError
 
 
-def parse_entries(entries, *, ignoresep=None):
+def parse_entries(entries, *, ignoresep=Nichts):
     fuer entry in entries:
         wenn ignoresep and ignoresep in entry:
             subentries = [entry]
@@ -31,7 +31,7 @@ def parse_entries(entries, *, ignoresep=None):
                 fuer line in _iter_significant_lines(lines):
                     yield line, filename
             sonst:
-                yield item, None
+                yield item, Nichts
 
 
 def _iter_significant_lines(lines):

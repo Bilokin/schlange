@@ -20,23 +20,23 @@ klasse TestTokens(TestEmailBase):
 klasse TestParserMixin:
 
     def _assert_results(self, tl, rest, string, value, defects, remainder,
-                        comments=None):
+                        comments=Nichts):
         self.assertEqual(str(tl), string)
         self.assertEqual(tl.value, value)
         self.assertDefectsEqual(tl.all_defects, defects)
         self.assertEqual(rest, remainder)
-        wenn comments is not None:
+        wenn comments is not Nichts:
             self.assertEqual(tl.comments, comments)
 
     def _test_get_x(self, method, source, string, value, defects,
-                          remainder, comments=None):
+                          remainder, comments=Nichts):
         tl, rest = method(source)
         self._assert_results(tl, rest, string, value, defects, remainder,
-                             comments=None)
+                             comments=Nichts)
         return tl
 
     def _test_parse_x(self, method, input, string, value, defects,
-                             comments=None):
+                             comments=Nichts):
         tl = method(input)
         self._assert_results(tl, '', string, value, defects, '', comments)
         return tl
@@ -1589,7 +1589,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(angle_addr.token_type, 'angle-addr')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsNichts(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_angle_addr_empty(self):
@@ -1600,9 +1600,9 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             [errors.InvalidHeaderDefect],
             '')
         self.assertEqual(angle_addr.token_type, 'angle-addr')
-        self.assertIsNone(angle_addr.local_part)
-        self.assertIsNone(angle_addr.domain)
-        self.assertIsNone(angle_addr.route)
+        self.assertIsNichts(angle_addr.local_part)
+        self.assertIsNichts(angle_addr.domain)
+        self.assertIsNichts(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, '<>')
 
     def test_get_angle_addr_qs_only_quotes(self):
@@ -1615,7 +1615,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(angle_addr.token_type, 'angle-addr')
         self.assertEqual(angle_addr.local_part, '')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsNichts(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, '""@example.com')
 
     def test_get_angle_addr_with_cfws(self):
@@ -1628,7 +1628,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(angle_addr.token_type, 'angle-addr')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsNichts(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_angle_addr_qs_and_domain_literal(self):
@@ -1640,7 +1640,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             '')
         self.assertEqual(angle_addr.local_part, 'Fred Perfect')
         self.assertEqual(angle_addr.domain, '[127.0.0.1]')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsNichts(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, '"Fred Perfect"@[127.0.0.1]')
 
     def test_get_angle_addr_internal_cfws(self):
@@ -1652,7 +1652,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             '')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsNichts(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_angle_addr_obs_route(self):
@@ -1676,7 +1676,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             '')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsNichts(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_angle_addr_missing_closing_angle_with_cfws(self):
@@ -1688,7 +1688,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             '')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsNichts(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_angle_addr_ends_at_special(self):
@@ -1700,7 +1700,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             ', next')
         self.assertEqual(angle_addr.local_part, 'dinsdale')
         self.assertEqual(angle_addr.domain, 'example.com')
-        self.assertIsNone(angle_addr.route)
+        self.assertIsNichts(angle_addr.route)
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_angle_addr_empty_raise(self):
@@ -1811,10 +1811,10 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             [],
             '')
         self.assertEqual(name_addr.token_type, 'name-addr')
-        self.assertIsNone(name_addr.display_name)
+        self.assertIsNichts(name_addr.display_name)
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsNichts(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_name_addr_atom_name(self):
@@ -1828,7 +1828,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Dinsdale')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsNichts(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_name_addr_atom_name_with_cfws(self):
@@ -1841,7 +1841,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Dinsdale')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsNichts(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_name_addr_name_with_cfws_and_dots(self):
@@ -1854,7 +1854,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Roy.A.Bear')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsNichts(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_name_addr_qs_name(self):
@@ -1867,7 +1867,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Roy.A.Bear')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsNichts(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_name_addr_ending_with_dot_without_space(self):
@@ -1880,7 +1880,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'John X.')
         self.assertEqual(name_addr.local_part, 'jxd')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsNichts(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'jxd@example.com')
 
     def test_get_name_addr_starting_with_dot(self):
@@ -1893,7 +1893,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, '. Doe')
         self.assertEqual(name_addr.local_part, 'jxd')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsNichts(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'jxd@example.com')
 
     def test_get_name_addr_with_route(self):
@@ -1919,7 +1919,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.display_name, 'Roy.A.Bear')
         self.assertEqual(name_addr.local_part, 'dinsdale')
         self.assertEqual(name_addr.domain, 'example.com')
-        self.assertIsNone(name_addr.route)
+        self.assertIsNichts(name_addr.route)
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_name_addr_empty_raises(self):
@@ -1948,10 +1948,10 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             [],
             '')
         self.assertEqual(mailbox.token_type, 'mailbox')
-        self.assertIsNone(mailbox.display_name)
+        self.assertIsNichts(mailbox.display_name)
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsNichts(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
 
     def test_get_mailbox_angle_addr_only(self):
@@ -1962,10 +1962,10 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             [],
             '')
         self.assertEqual(mailbox.token_type, 'mailbox')
-        self.assertIsNone(mailbox.display_name)
+        self.assertIsNichts(mailbox.display_name)
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsNichts(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
 
     def test_get_mailbox_name_addr(self):
@@ -1979,7 +1979,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(mailbox.display_name, 'Roy A. Bear')
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsNichts(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
 
     def test_get_mailbox_ends_at_special(self):
@@ -1993,7 +1993,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(mailbox.display_name, 'Roy A. Bear')
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsNichts(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
 
     def test_get_mailbox_quoted_strings_in_atom_list(self):
@@ -2019,10 +2019,10 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(mailbox_list.token_type, 'mailbox-list')
         self.assertEqual(len(mailbox_list.mailboxes), 1)
         mailbox = mailbox_list.mailboxes[0]
-        self.assertIsNone(mailbox.display_name)
+        self.assertIsNichts(mailbox.display_name)
         self.assertEqual(mailbox.local_part, 'dinsdale')
         self.assertEqual(mailbox.domain, 'example.com')
-        self.assertIsNone(mailbox.route)
+        self.assertIsNichts(mailbox.route)
         self.assertEqual(mailbox.addr_spec, 'dinsdale@example.com')
         self.assertEqual(mailbox_list.mailboxes,
                          mailbox_list.all_mailboxes)
@@ -2104,10 +2104,10 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(len(mailbox_list.all_mailboxes), 2)
         self.assertEqual(mailbox_list.all_mailboxes[0].token_type,
                         'invalid-mailbox')
-        self.assertIsNone(mailbox_list.all_mailboxes[0].display_name)
+        self.assertIsNichts(mailbox_list.all_mailboxes[0].display_name)
         self.assertEqual(mailbox_list.all_mailboxes[0].local_part,
                         'Roy A. Bear')
-        self.assertIsNone(mailbox_list.all_mailboxes[0].domain)
+        self.assertIsNichts(mailbox_list.all_mailboxes[0].domain)
         self.assertEqual(mailbox_list.all_mailboxes[0].addr_spec,
                         '"Roy A. Bear"')
         self.assertIs(mailbox_list.all_mailboxes[1],
@@ -2321,7 +2321,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(group.mailboxes[0].display_name,
                          'Fred A. Bear')
         self.assertEqual(group.mailboxes[1].local_part, 'x')
-        self.assertIsNone(group.all_mailboxes[1].display_name)
+        self.assertIsNichts(group.all_mailboxes[1].display_name)
 
     def test_get_group_missing_final_semicol(self):
         group = self._test_get_x(parser.get_group,
@@ -2476,7 +2476,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(address.token_type, 'address')
         self.assertEqual(len(address.mailboxes), 0)
         self.assertEqual(len(address.all_mailboxes), 1)
-        self.assertIsNone(address.all_mailboxes[0].domain)
+        self.assertIsNichts(address.all_mailboxes[0].domain)
         self.assertEqual(address.all_mailboxes[0].local_part, 'ping example.com')
         self.assertEqual(address[0].token_type, 'invalid-mailbox')
 
@@ -2552,7 +2552,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
                          [str(x) fuer x in address_list.addresses])
         self.assertEqual(address_list.mailboxes[0].domain, 'example.com')
         self.assertEqual(address_list[0].token_type, 'address')
-        self.assertIsNone(address_list[0].display_name)
+        self.assertIsNichts(address_list[0].display_name)
 
     def test_get_address_list_mailboxes_two_simple(self):
         address_list = self._test_get_x(parser.get_address_list,
@@ -3037,8 +3037,8 @@ klasse Test_parse_mime_version(TestParserMixin, TestEmailBase):
             '',
             '',
             '',
-            None,
-            None,
+            Nichts,
+            Nichts,
             [errors.HeaderMissingRequiredValue]),
 
         }

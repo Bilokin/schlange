@@ -7,7 +7,7 @@ import weakref
 from test import support
 from test.support import threading_helper
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 
 klasse MyException(Exception):
@@ -15,11 +15,11 @@ klasse MyException(Exception):
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse TestFreeThreading:
-    def test_all_tasks_race(self) -> None:
+    def test_all_tasks_race(self) -> Nichts:
         async def main():
             loop = asyncio.get_running_loop()
             future = loop.create_future()
@@ -38,12 +38,12 @@ klasse TestFreeThreading:
 
                 fuer task in all_tasks:
                     self.assertEqual(task.get_loop(), loop)
-                    self.assertFalse(task.done())
+                    self.assertFalsch(task.done())
 
                 current = asyncio.current_task()
                 self.assertEqual(current.get_loop(), loop)
                 self.assertSetEqual(all_tasks, tasks | {current})
-                future.set_result(None)
+                future.set_result(Nichts)
 
         def runner():
             with asyncio.Runner() as runner:
@@ -60,8 +60,8 @@ klasse TestFreeThreading:
         with threading_helper.start_threads(threads):
             pass
 
-    def test_all_tasks_different_thread(self) -> None:
-        loop = None
+    def test_all_tasks_different_thread(self) -> Nichts:
+        loop = Nichts
         started = threading.Event()
         done = threading.Event() # used fuer main task not finishing early
         async def coro():
@@ -96,8 +96,8 @@ klasse TestFreeThreading:
         done.set()
         runner.join()
 
-    def test_task_different_thread_finalized(self) -> None:
-        task = None
+    def test_task_different_thread_finalized(self) -> Nichts:
+        task = Nichts
         async def func():
             nonlocal task
             task = asyncio.current_task()
@@ -114,9 +114,9 @@ klasse TestFreeThreading:
         del task
         # task finalization in different thread shouldn't crash
         support.gc_collect()
-        self.assertIsNone(wr())
+        self.assertIsNichts(wr())
 
-    def test_run_coroutine_threadsafe(self) -> None:
+    def test_run_coroutine_threadsafe(self) -> Nichts:
         results = []
 
         def in_thread(loop: asyncio.AbstractEventLoop):
@@ -138,7 +138,7 @@ klasse TestFreeThreading:
             loop.set_task_factory(self.factory)
             r.run(main())
 
-    def test_run_coroutine_threadsafe_exception(self) -> None:
+    def test_run_coroutine_threadsafe_exception(self) -> Nichts:
         async def coro():
             await asyncio.sleep(0)
             raise MyException("test")
@@ -153,7 +153,7 @@ klasse TestFreeThreading:
             fuer _ in range(10):
                 task = loop.create_task(asyncio.to_thread(in_thread, loop))
                 tasks.append(task)
-            results = await asyncio.gather(*tasks, return_exceptions=True)
+            results = await asyncio.gather(*tasks, return_exceptions=Wahr)
 
             self.assertEqual(len(results), 10)
             fuer result in results:
@@ -217,11 +217,11 @@ klasse TestCFreeThreading(TestFreeThreading, TestCase):
 
 
 klasse TestEagerPyFreeThreading(TestPyFreeThreading):
-    def factory(self, loop, coro, eager_start=True, **kwargs):
+    def factory(self, loop, coro, eager_start=Wahr, **kwargs):
         return asyncio.tasks._PyTask(coro, loop=loop, **kwargs, eager_start=eager_start)
 
 
 @unittest.skipUnless(hasattr(asyncio.tasks, "_c_all_tasks"), "requires _asyncio")
 klasse TestEagerCFreeThreading(TestCFreeThreading, TestCase):
-    def factory(self, loop, coro, eager_start=True, **kwargs):
+    def factory(self, loop, coro, eager_start=Wahr, **kwargs):
         return asyncio.tasks._CTask(coro, loop=loop, **kwargs, eager_start=eager_start)

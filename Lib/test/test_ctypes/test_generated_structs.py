@@ -56,9 +56,9 @@ fuer c_name, ctypes_name in {
 # Register structs and unions to test
 
 TESTCASES = {}
-def register(name=None, set_name=False):
+def register(name=Nichts, set_name=Falsch):
     def decorator(cls, name=name):
-        wenn name is None:
+        wenn name is Nichts:
             name = cls.__name__
         assert name.isascii()  # will be used in _PyUnicode_EqualToASCIIString
         assert name.isidentifier()  # will be used as a C identifier
@@ -275,26 +275,26 @@ fuer n in 8, 16, 32, 64:
     fuer signedness in '', 'u':
         ctype = globals()[f'c_{signedness}int{n}']
 
-        @register(f'Struct331_{signedness}{n}', set_name=True)
+        @register(f'Struct331_{signedness}{n}', set_name=Wahr)
         klasse _cls(Structure):
             _fields_ = [("a", ctype, 3),
                         ("b", ctype, 3),
                         ("c", ctype, 1)]
 
-        @register(f'Struct1x1_{signedness}{n}', set_name=True)
+        @register(f'Struct1x1_{signedness}{n}', set_name=Wahr)
         klasse _cls(Structure):
             _fields_ = [("a", ctype, 1),
                         ("b", ctype, n-2),
                         ("c", ctype, 1)]
 
-        @register(f'Struct1nx1_{signedness}{n}', set_name=True)
+        @register(f'Struct1nx1_{signedness}{n}', set_name=Wahr)
         klasse _cls(Structure):
             _fields_ = [("a", ctype, 1),
                         ("full", ctype),
                         ("b", ctype, n-2),
                         ("c", ctype, 1)]
 
-        @register(f'Struct3xx_{signedness}{n}', set_name=True)
+        @register(f'Struct3xx_{signedness}{n}', set_name=Wahr)
         klasse _cls(Structure):
             _fields_ = [("a", ctype, 3),
                         ("b", ctype, n-2),
@@ -455,7 +455,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
             - memory after the field is set to 0
 
         or:
-        - None
+        - Nichts
         - reason to skip the test (str)
 
         This does depend on the C compiler keeping padding bits unchanged.
@@ -464,11 +464,11 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
         fuer name, cls in TESTCASES.items():
             with self.subTest(name=name):
                 self.check_struct_or_union(cls)
-                wenn _maybe_skip := getattr(cls, '_maybe_skip', None):
+                wenn _maybe_skip := getattr(cls, '_maybe_skip', Nichts):
                     _maybe_skip()
                 expected = iter(_ctypes_test.get_generated_test_data(name))
                 expected_name = next(expected)
-                wenn expected_name is None:
+                wenn expected_name is Nichts:
                     self.skipTest(next(expected))
                 self.assertEqual(name, expected_name)
                 self.assertEqual(sizeof(cls), next(expected))
@@ -513,8 +513,8 @@ def dump_simple_ctype(tp, variable_name='', semi=''):
     variable_name: wenn given, declare the given variable
     semi: a semicolon, and/or bitfield specification to tack on to the end
     """
-    length = getattr(tp, '_length_', None)
-    wenn length is not None:
+    length = getattr(tp, '_length_', Nichts)
+    wenn length is not Nichts:
         return f'{dump_simple_ctype(tp._type_, variable_name)}[{length}]{semi}'
     assert not issubclass(tp, (Structure, Union))
     return f'{tp._c_name}{maybe_space(variable_name)}{semi}'
@@ -532,11 +532,11 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
         attributes = []
         pushes = []
         pops = []
-        pack = getattr(tp, '_pack_', None)
-        wenn pack is not None:
+        pack = getattr(tp, '_pack_', Nichts)
+        wenn pack is not Nichts:
             pushes.append(f'#pragma pack(push, {pack})')
             pops.append(f'#pragma pack(pop)')
-        layout = getattr(tp, '_layout_', None)
+        layout = getattr(tp, '_layout_', Nichts)
         wenn layout == 'ms':
             # The 'ms_struct' attribute only works on x86 and PowerPC
             requires.add(
@@ -554,7 +554,7 @@ def dump_ctype(tp, struct_or_union_tag='', variable_name='', semi=''):
             f_name, f_tp, f_bits = unpack_field_desc(*fielddesc)
             wenn f_name in getattr(tp, '_anonymous_', ()):
                 f_name = ''
-            wenn f_bits is None:
+            wenn f_bits is Nichts:
                 subsemi = ';'
             sonst:
                 wenn f_tp not in (c_int, c_uint):
@@ -584,7 +584,7 @@ def maybe_space(string):
         return ' ' + string
     return string
 
-def unpack_field_desc(f_name, f_tp, f_bits=None):
+def unpack_field_desc(f_name, f_tp, f_bits=Nichts):
     """Unpack a _fields_ entry into a (name, type, bits) triple"""
     return f_name, f_tp, f_bits
 
@@ -593,9 +593,9 @@ klasse FieldInfo:
     """Information about a (possibly nested) struct/union field"""
     name: str
     tp: type
-    bits: int | None  # number wenn this is a bit field
+    bits: int | Nichts  # number wenn this is a bit field
     parent_type: type
-    parent: 'FieldInfo' #| None
+    parent: 'FieldInfo' #| Nichts
     descriptor: object
     byte_offset: int
 
@@ -624,7 +624,7 @@ klasse FieldInfo:
 
     @cached_property
     def root(self):
-        wenn self.parent is None:
+        wenn self.parent is Nichts:
             return self
         sonst:
             return self.parent
@@ -637,7 +637,7 @@ klasse FieldInfo:
             desc = '???'
         return f'<{type(self).__name__} fuer {qname}: {desc}>'
 
-def iterfields(tp, parent=None):
+def iterfields(tp, parent=Nichts):
     """Get *leaf* fields of a structure or union, as FieldInfo"""
     try:
         fields = tp._fields_
@@ -739,7 +739,7 @@ wenn __name__ == '__main__':
         wenn requires:
             output(f"""
             #else
-                APPEND(Py_NewRef(Py_None));
+                APPEND(Py_NewRef(Py_Nichts));
                 APPEND(PyUnicode_FromString("skipped on this compiler"));
             #endif
             """)

@@ -26,13 +26,13 @@ _COMPILER_CONFIG_VARS = ('BLDSHARED', 'LDSHARED', 'CC', 'CXX')
 _INITPRE = '_OSX_SUPPORT_INITIAL_'
 
 
-def _find_executable(executable, path=None):
+def _find_executable(executable, path=Nichts):
     """Tries to find 'executable' in the directories listed in 'path'.
 
     A string listing directories separated by 'os.pathsep'; defaults to
-    os.environ['PATH'].  Returns the complete filename or None wenn not found.
+    os.environ['PATH'].  Returns the complete filename or Nichts wenn not found.
     """
-    wenn path is None:
+    wenn path is Nichts:
         path = os.environ['PATH']
 
     paths = path.split(os.pathsep)
@@ -47,13 +47,13 @@ def _find_executable(executable, path=None):
             wenn os.path.isfile(f):
                 # the file exists, we have a shot at spawn working
                 return f
-        return None
+        return Nichts
     sonst:
         return executable
 
 
-def _read_output(commandstring, capture_stderr=False):
-    """Output from successful command execution or None"""
+def _read_output(commandstring, capture_stderr=Falsch):
+    """Output from successful command execution or Nichts"""
     # Similar to os.popen(commandstring, "r").read(),
     # but without actually using os.popen because that
     # function is not usable during python bootstrap.
@@ -71,7 +71,7 @@ def _read_output(commandstring, capture_stderr=False):
             cmd = "%s >'%s' 2>&1" % (commandstring, fp.name)
         sonst:
             cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
-        return fp.read().decode('utf-8').strip() wenn not os.system(cmd) sonst None
+        return fp.read().decode('utf-8').strip() wenn not os.system(cmd) sonst Nichts
 
 
 def _find_build_tool(toolname):
@@ -81,7 +81,7 @@ def _find_build_tool(toolname):
                 or ''
             )
 
-_SYSTEM_VERSION = None
+_SYSTEM_VERSION = Nichts
 
 def _get_system_version():
     """Return the OS X system version as a string"""
@@ -93,7 +93,7 @@ def _get_system_version():
 
     global _SYSTEM_VERSION
 
-    wenn _SYSTEM_VERSION is None:
+    wenn _SYSTEM_VERSION is Nichts:
         _SYSTEM_VERSION = ''
         try:
             f = open('/System/Library/CoreServices/SystemVersion.plist', encoding="utf-8")
@@ -107,13 +107,13 @@ def _get_system_version():
                               r'<string>(.*?)</string>', f.read())
             finally:
                 f.close()
-            wenn m is not None:
+            wenn m is not Nichts:
                 _SYSTEM_VERSION = '.'.join(m.group(1).split('.')[:2])
             # sonst: fall back to the default behaviour
 
     return _SYSTEM_VERSION
 
-_SYSTEM_VERSION_TUPLE = None
+_SYSTEM_VERSION_TUPLE = Nichts
 def _get_system_version_tuple():
     """
     Return the macOS system version as a tuple
@@ -122,7 +122,7 @@ def _get_system_version_tuple():
     two version numbers.
     """
     global _SYSTEM_VERSION_TUPLE
-    wenn _SYSTEM_VERSION_TUPLE is None:
+    wenn _SYSTEM_VERSION_TUPLE is Nichts:
         osx_version = _get_system_version()
         wenn osx_version:
             try:
@@ -149,50 +149,50 @@ def _save_modified_value(_config_vars, cv, newvalue):
     _config_vars[cv] = newvalue
 
 
-_cache_default_sysroot = None
+_cache_default_sysroot = Nichts
 def _default_sysroot(cc):
     """ Returns the root of the default SDK fuer this system, or '/' """
     global _cache_default_sysroot
 
-    wenn _cache_default_sysroot is not None:
+    wenn _cache_default_sysroot is not Nichts:
         return _cache_default_sysroot
 
-    contents = _read_output('%s -c -E -v - </dev/null' % (cc,), True)
-    in_incdirs = False
+    contents = _read_output('%s -c -E -v - </dev/null' % (cc,), Wahr)
+    in_incdirs = Falsch
     fuer line in contents.splitlines():
         wenn line.startswith("#include <...>"):
-            in_incdirs = True
+            in_incdirs = Wahr
         sowenn line.startswith("End of search list"):
-            in_incdirs = False
+            in_incdirs = Falsch
         sowenn in_incdirs:
             line = line.strip()
             wenn line == '/usr/include':
                 _cache_default_sysroot = '/'
             sowenn line.endswith(".sdk/usr/include"):
                 _cache_default_sysroot = line[:-12]
-    wenn _cache_default_sysroot is None:
+    wenn _cache_default_sysroot is Nichts:
         _cache_default_sysroot = '/'
 
     return _cache_default_sysroot
 
 def _supports_universal_builds():
-    """Returns True wenn universal builds are supported on this system"""
+    """Returns Wahr wenn universal builds are supported on this system"""
     # As an approximation, we assume that wenn we are running on 10.4 or above,
     # then we are running with an Xcode environment that supports universal
     # builds, in particular -isysroot and -arch arguments to the compiler. This
     # is in support of allowing 10.4 universal builds to run on 10.3.x systems.
 
     osx_version = _get_system_version_tuple()
-    return bool(osx_version >= (10, 4)) wenn osx_version sonst False
+    return bool(osx_version >= (10, 4)) wenn osx_version sonst Falsch
 
 def _supports_arm64_builds():
-    """Returns True wenn arm64 builds are supported on this system"""
+    """Returns Wahr wenn arm64 builds are supported on this system"""
     # There are two sets of systems supporting macOS/arm64 builds:
     # 1. macOS 11 and later, unconditionally
     # 2. macOS 10.15 with Xcode 12.2 or later
     # For now the second category is ignored.
     osx_version = _get_system_version_tuple()
-    return osx_version >= (11, 0) wenn osx_version sonst False
+    return osx_version >= (11, 0) wenn osx_version sonst Falsch
 
 
 def _find_appropriate_compiler(_config_vars):
@@ -286,7 +286,7 @@ def _remove_unsupported_archs(_config_vars):
     wenn 'CC' in os.environ:
         return _config_vars
 
-    wenn re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) is not None:
+    wenn re.search(r'-arch\s+ppc', _config_vars['CFLAGS']) is not Nichts:
         # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself
         status = os.system(
@@ -342,7 +342,7 @@ def _check_for_unavailable_sdk(_config_vars):
     # package or the CLT component within Xcode.
     cflags = _config_vars.get('CFLAGS', '')
     m = re.search(r'-isysroot\s*(\S+)', cflags)
-    wenn m is not None:
+    wenn m is not Nichts:
         sdk = m.group(1)
         wenn not os.path.exists(sdk):
             fuer cv in _UNIVERSAL_CONFIG_VARS:
@@ -364,20 +364,20 @@ def compiler_fixup(compiler_so, cc_args):
     build, without a way to remove an architecture. Furthermore GCC will
     barf wenn multiple '-isysroot' arguments are present.
     """
-    stripArch = stripSysroot = False
+    stripArch = stripSysroot = Falsch
 
     compiler_so = list(compiler_so)
 
     wenn not _supports_universal_builds():
         # OSX before 10.4.0, these don't support -arch and -isysroot at
         # all.
-        stripArch = stripSysroot = True
+        stripArch = stripSysroot = Wahr
     sonst:
         stripArch = '-arch' in cc_args
         stripSysroot = any(arg fuer arg in cc_args wenn arg.startswith('-isysroot'))
 
     wenn stripArch or 'ARCHFLAGS' in os.environ:
-        while True:
+        while Wahr:
             try:
                 index = compiler_so.index('-arch')
                 # Strip this argument and the next one:
@@ -397,7 +397,7 @@ def compiler_fixup(compiler_so, cc_args):
         compiler_so = compiler_so + os.environ['ARCHFLAGS'].split()
 
     wenn stripSysroot:
-        while True:
+        while Wahr:
             indices = [i fuer i,x in enumerate(compiler_so) wenn x.startswith('-isysroot')]
             wenn not indices:
                 break
@@ -412,7 +412,7 @@ def compiler_fixup(compiler_so, cc_args):
     # Check wenn the SDK that is used during compilation actually exists,
     # the universal build requires the usage of a universal SDK and not all
     # users have that installed by default.
-    sysroot = None
+    sysroot = Nichts
     argvar = cc_args
     indices = [i fuer i,x in enumerate(cc_args) wenn x.startswith('-isysroot')]
     wenn not indices:

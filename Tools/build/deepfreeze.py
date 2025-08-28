@@ -19,14 +19,14 @@ import types
 
 import umarshal
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
     from collections.abc import Iterator
     from typing import Any, TextIO
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
-verbose = False
+verbose = Falsch
 
 # This must be kept in sync with Tools/cases_generator/analyzer.py
 RESUME = 128
@@ -95,7 +95,7 @@ def analyze_character_width(s: str) -> tuple[int, bool]:
     maxchar = ' '
     fuer c in s:
         maxchar = max(maxchar, c)
-    ascii = False
+    ascii = Falsch
     wenn maxchar <= '\xFF':
         kind = PyUnicode_1BYTE_KIND
         ascii = maxchar <= '\x7F'
@@ -113,7 +113,7 @@ def removesuffix(base: str, suffix: str) -> str:
 
 klasse Printer:
 
-    def __init__(self, file: TextIO) -> None:
+    def __init__(self, file: TextIO) -> Nichts:
         self.level = 0
         self.file = file
         self.cache: dict[tuple[type, object, str], str] = {}
@@ -143,7 +143,7 @@ klasse Printer:
         return identifiers, strings
 
     @contextlib.contextmanager
-    def indent(self) -> Iterator[None]:
+    def indent(self) -> Iterator[Nichts]:
         save_level = self.level
         try:
             self.level += 1
@@ -151,23 +151,23 @@ klasse Printer:
         finally:
             self.level = save_level
 
-    def write(self, arg: str) -> None:
+    def write(self, arg: str) -> Nichts:
         self.file.writelines(("    "*self.level, arg, "\n"))
 
     @contextlib.contextmanager
-    def block(self, prefix: str, suffix: str = "") -> Iterator[None]:
+    def block(self, prefix: str, suffix: str = "") -> Iterator[Nichts]:
         self.write(prefix + " {")
         with self.indent():
             yield
         self.write("}" + suffix)
 
-    def object_head(self, typename: str) -> None:
+    def object_head(self, typename: str) -> Nichts:
         self.write(f".ob_base = _PyObject_HEAD_INIT(&{typename}),")
 
-    def object_var_head(self, typename: str, size: int) -> None:
+    def object_var_head(self, typename: str, size: int) -> Nichts:
         self.write(f".ob_base = _PyVarObject_HEAD_INIT(&{typename}, {size}),")
 
-    def field(self, obj: object, name: str) -> None:
+    def field(self, obj: object, name: str) -> Nichts:
         self.write(f".{name} = {getattr(obj, name)},")
 
     def generate_bytes(self, name: str, b: bytes) -> str:
@@ -341,7 +341,7 @@ klasse Printer:
                             self.write(item + ",")
         return f"& {name}._object.ob_base.ob_base"
 
-    def _generate_int_for_bits(self, name: str, i: int, digit: int) -> None:
+    def _generate_int_for_bits(self, name: str, i: int, digit: int) -> Nichts:
         sign = (i > 0) - (i < 0)
         i = abs(i)
         digits: list[int] = []
@@ -404,7 +404,7 @@ klasse Printer:
         self.write("// TODO: The above tuple should be a frozenset")
         return ret
 
-    def generate_file(self, module: str, code: object)-> None:
+    def generate_file(self, module: str, code: object)-> Nichts:
         module = module.replace(".", "_")
         self.generate(f"{module}_toplevel", code)
         self.write(EPILOGUE.format(name=module))
@@ -425,10 +425,10 @@ klasse Printer:
             val = self.generate_unicode(name, obj)
         sowenn isinstance(obj, bytes):
             val = self.generate_bytes(name, obj)
-        sowenn obj is True:
-            return "Py_True"
-        sowenn obj is False:
-            return "Py_False"
+        sowenn obj is Wahr:
+            return "Py_Wahr"
+        sowenn obj is Falsch:
+            return "Py_Falsch"
         sowenn isinstance(obj, int):
             val = self.generate_int(name, obj)
         sowenn isinstance(obj, float):
@@ -439,8 +439,8 @@ klasse Printer:
             val = self.generate_frozenset(name, obj)
         sowenn obj is builtins.Ellipsis:
             return "Py_Ellipsis"
-        sowenn obj is None:
-            return "Py_None"
+        sowenn obj is Nichts:
+            return "Py_Nichts"
         sonst:
             raise TypeError(
                 f"Cannot generate code fuer {type(obj).__name__} object")
@@ -476,7 +476,7 @@ def decode_frozen_data(source: str) -> types.CodeType:
     return umarshal.loads(data)  # type: ignore[no-any-return]
 
 
-def generate(args: list[str], output: TextIO) -> None:
+def generate(args: list[str], output: TextIO) -> Nichts:
     printer = Printer(output)
     fuer arg in args:
         file, modname = arg.rsplit(':', 1)
@@ -503,13 +503,13 @@ def generate(args: list[str], output: TextIO) -> None:
 parser = argparse.ArgumentParser()
 parser.add_argument("-o", "--output", help="Defaults to deepfreeze.c", default="deepfreeze.c")
 parser.add_argument("-v", "--verbose", action="store_true", help="Print diagnostics")
-group = parser.add_mutually_exclusive_group(required=True)
+group = parser.add_mutually_exclusive_group(required=Wahr)
 group.add_argument("-f", "--file", help="read rule lines from a file")
 group.add_argument('args', nargs="*", default=(),
                    help="Input file and module name (required) in file:modname format")
 
 @contextlib.contextmanager
-def report_time(label: str) -> Iterator[None]:
+def report_time(label: str) -> Iterator[Nichts]:
     t0 = time.perf_counter()
     try:
         yield
@@ -519,7 +519,7 @@ def report_time(label: str) -> Iterator[None]:
         print(f"{label}: {t1-t0:.3f} sec")
 
 
-def main() -> None:
+def main() -> Nichts:
     global verbose
     args = parser.parse_args()
     verbose = args.verbose

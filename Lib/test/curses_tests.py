@@ -10,7 +10,7 @@
 import curses
 from curses import textpad
 
-def test_textpad(stdscr, insert_mode=False):
+def test_textpad(stdscr, insert_mode=Falsch):
     ncols, nlines = 8, 3
     uly, ulx = 3, 2
     wenn insert_mode:
@@ -38,8 +38,8 @@ def test_textpad(stdscr, insert_mode=False):
 
 def main(stdscr):
     stdscr.clear()
-    test_textpad(stdscr, False)
-    test_textpad(stdscr, True)
+    test_textpad(stdscr, Falsch)
+    test_textpad(stdscr, Wahr)
 
 
 wenn __name__ == '__main__':

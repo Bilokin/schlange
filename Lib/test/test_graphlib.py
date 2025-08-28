@@ -187,22 +187,22 @@ klasse TestTopologicalSort(unittest.TestCase):
         self.assertEqual(ts.get_ready(), ())
         ts.done(1)
         self.assertEqual(ts.get_ready(), ())
-        self.assertFalse(ts.is_active())
+        self.assertFalsch(ts.is_active())
 
     def test_is_active(self):
         ts = graphlib.TopologicalSorter()
         ts.add(1, 2)
         ts.prepare()
 
-        self.assertTrue(ts.is_active())
+        self.assertWahr(ts.is_active())
         self.assertEqual(ts.get_ready(), (2,))
-        self.assertTrue(ts.is_active())
+        self.assertWahr(ts.is_active())
         ts.done(2)
-        self.assertTrue(ts.is_active())
+        self.assertWahr(ts.is_active())
         self.assertEqual(ts.get_ready(), (1,))
-        self.assertTrue(ts.is_active())
+        self.assertWahr(ts.is_active())
         ts.done(1)
-        self.assertFalse(ts.is_active())
+        self.assertFalsch(ts.is_active())
 
     def test_not_hashable_nodes(self):
         ts = graphlib.TopologicalSorter()
@@ -248,7 +248,7 @@ klasse TestTopologicalSort(unittest.TestCase):
             env = os.environ.copy()
             # signal to assert_python not to do a copy
             # of os.environ on its own
-            env["__cleanenv"] = True
+            env["__cleanenv"] = Wahr
             env["PYTHONHASHSEED"] = str(seed)
             out = assert_python_ok("-c", code, **env)
             return out

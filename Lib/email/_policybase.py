@@ -140,7 +140,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
     Settable attributes:
 
     raise_on_defect     -- If true, then defects should be raised as errors.
-                           Default: False.
+                           Default: Falsch.
 
     linesep             -- string containing the value to use as separation
                            between output lines.  Default '\n'.
@@ -155,16 +155,16 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
                            documentation of the binary_fold method.
 
     max_line_length     -- maximum length of lines, excluding 'linesep',
-                           during serialization.  None or 0 means no line
+                           during serialization.  Nichts or 0 means no line
                            wrapping is done.  Default is 78.
 
-    mangle_from_        -- a flag that, when True escapes From_ lines in the
+    mangle_from_        -- a flag that, when Wahr escapes From_ lines in the
                            body of the message by putting a '>' in front of
                            them. This is used when the message is being
-                           serialized by a generator. Default: False.
+                           serialized by a generator. Default: Falsch.
 
     message_factory     -- the klasse to use to create new message objects.
-                           If the value is None, the default is Message.
+                           If the value is Nichts, the default is Message.
 
     verify_generated_headers
                         -- wenn true, the generator verifies that each header
@@ -175,13 +175,13 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
                            implementations.
     """
 
-    raise_on_defect = False
+    raise_on_defect = Falsch
     linesep = '\n'
     cte_type = '8bit'
     max_line_length = 78
-    mangle_from_ = False
-    message_factory = None
-    verify_generated_headers = True
+    mangle_from_ = Falsch
+    message_factory = Nichts
+    verify_generated_headers = Wahr
 
     def handle_defect(self, obj, defect):
         """Based on policy, either raise defect or call register_defect.
@@ -190,7 +190,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
         defect should be a Defect subclass, but in any case must be an
         Exception subclass.  obj is the object on which the defect should be
-        registered wenn it is not raised.  If the raise_on_defect is True, the
+        registered wenn it is not raised.  If the raise_on_defect is Wahr, the
         defect is raised as an error, otherwise the object and the defect are
         passed to register_defect.
 
@@ -205,7 +205,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
     def register_defect(self, obj, defect):
         """Record 'defect' on 'obj'.
 
-        Called by handle_defect wenn raise_on_defect is False.  This method is
+        Called by handle_defect wenn raise_on_defect is Falsch.  This method is
         part of the Policy API so that Policy subclasses can implement custom
         defect handling.  The default implementation calls the append method of
         the defects attribute of obj.  The objects used by the email package by
@@ -219,7 +219,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         """Return the maximum allowed number of headers named 'name'.
 
         Called when a header is added to a Message object.  If the returned
-        value is not 0 or None, and there are already a number of headers with
+        value is not 0 or Nichts, and there are already a number of headers with
         the name 'name' equal to the value returned, a ValueError is raised.
 
         Because the default behavior of Message's __setitem__ is to append the
@@ -230,9 +230,9 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         which will faithfully produce as many headers as exist in the message
         being parsed.)
 
-        The default implementation returns None fuer all header names.
+        The default implementation returns Nichts fuer all header names.
         """
-        return None
+        return Nichts
 
     @abc.abstractmethod
     def header_source_parse(self, sourcelines):
@@ -293,7 +293,7 @@ klasse Compat32(Policy):
     replicates the behavior of the email package version 5.1.
     """
 
-    mangle_from_ = True
+    mangle_from_ = Wahr
 
     def _sanitize_header(self, name, value):
         # If the header value contains surrogates, return a Header using
@@ -341,7 +341,7 @@ klasse Compat32(Policy):
         unknown-8bit charset.
 
         """
-        return self._fold(name, value, sanitize=True)
+        return self._fold(name, value, sanitize=Wahr)
 
     def fold_binary(self, name, value):
         """+
@@ -372,17 +372,17 @@ klasse Compat32(Policy):
                     # string.  There's no way to know so the least harm seems to
                     # be to not split the string and risk it being too long.
                     parts.append(value)
-                    h = None
+                    h = Nichts
             sonst:
                 h = header.Header(value, header_name=name)
         sonst:
             # Assume it is a Header-like object.
             h = value
-        wenn h is not None:
-            # The Header klasse interprets a value of None fuer maxlinelen as the
+        wenn h is not Nichts:
+            # The Header klasse interprets a value of Nichts fuer maxlinelen as the
             # default value of 78, as recommended by RFC 2822.
             maxlinelen = 0
-            wenn self.max_line_length is not None:
+            wenn self.max_line_length is not Nichts:
                 maxlinelen = self.max_line_length
             parts.append(h.encode(linesep=self.linesep, maxlinelen=maxlinelen))
         parts.append(self.linesep)

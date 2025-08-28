@@ -58,7 +58,7 @@ klasse TestFileMethods(LargeFileTest):
 
     # _pyio.FileIO.readall() uses a temporary bytearray then casted to bytes,
     # so memuse=2 is needed
-    @bigmemtest(size=size, memuse=2, dry_run=False)
+    @bigmemtest(size=size, memuse=2, dry_run=Falsch)
     def test_large_read(self, _size):
         # bpo-24658: Test that a read greater than 2GB does not fail.
         with self.open(TESTFN, "rb") as f:
@@ -147,14 +147,14 @@ klasse TestFileMethods(LargeFileTest):
             self.assertEqual(len(f.read()), 1)  # sonst wasn't truncated
 
     def test_seekable(self):
-        # Issue #5016; seekable() can return False when the current position
+        # Issue #5016; seekable() can return Falsch when the current position
         # is negative when truncated to an int.
         fuer pos in (2**31-1, 2**31, 2**31+1):
             with self.open(TESTFN, 'rb') as f:
                 f.seek(pos)
-                self.assertTrue(f.seekable())
+                self.assertWahr(f.seekable())
 
-    @bigmemtest(size=size, memuse=2, dry_run=False)
+    @bigmemtest(size=size, memuse=2, dry_run=Falsch)
     def test_seek_readall(self, _size):
         # Seek which doesn't change position should readall successfully.
         with self.open(TESTFN, 'rb') as f:
@@ -211,13 +211,13 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
 
     def setUp(self):
         super().setUp()
-        self.thread = None
+        self.thread = Nichts
 
     def tearDown(self):
         super().tearDown()
-        wenn self.thread is not None:
+        wenn self.thread is not Nichts:
             self.thread.join(self.timeout)
-            self.thread = None
+            self.thread = Nichts
 
     def tcp_server(self, sock):
         def run(sock):
@@ -226,7 +226,7 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
                 conn.settimeout(self.timeout)
                 with conn, open(TESTFN2, 'wb') as f:
                     event.wait(self.timeout)
-                    while True:
+                    while Wahr:
                         chunk = conn.recv(65536)
                         wenn not chunk:
                             return

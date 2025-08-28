@@ -34,9 +34,9 @@ klasse EventQueueTestBase:
 
     def test_empty(self):
         eq = self.make_eventqueue()
-        self.assertTrue(eq.empty())
+        self.assertWahr(eq.empty())
         eq.insert(Event("key", "a", b"a"))
-        self.assertFalse(eq.empty())
+        self.assertFalsch(eq.empty())
 
     def test_flush_buf(self):
         eq = self.make_eventqueue()
@@ -77,7 +77,7 @@ klasse EventQueueTestBase:
         eq.keymap = {b"a": {b"b": "c"}}
         eq.push(b"a")
         mock_keymap.compile_keymap.assert_called()
-        self.assertTrue(eq.empty())
+        self.assertWahr(eq.empty())
         eq.push(b"b")
         self.assertEqual(eq.events[0].evt, "key")
         self.assertEqual(eq.events[0].data, "c")
@@ -92,7 +92,7 @@ klasse EventQueueTestBase:
         eq.keymap = {b"a": {b"b": "c"}}
         eq.push(b"a")
         mock_keymap.compile_keymap.assert_called()
-        self.assertTrue(eq.empty())
+        self.assertWahr(eq.empty())
         eq.flush_buf()
         eq.push(b"\033")
         self.assertEqual(eq.events[0].evt, "key")
@@ -141,7 +141,7 @@ klasse EventQueueTestBase:
 
         eq.push(encoded[0])
         e = eq.get()
-        self.assertIsNone(e)
+        self.assertIsNichts(e)
 
         eq.push(encoded[1])
         e = eq.get()
@@ -152,8 +152,8 @@ klasse EventQueueTestBase:
         eq = self.make_eventqueue()
         eq.keymap = {}
 
-        def _event(evt, data, raw=None):
-            r = raw wenn raw is not None sonst data.encode(eq.encoding)
+        def _event(evt, data, raw=Nichts):
+            r = raw wenn raw is not Nichts sonst data.encode(eq.encoding)
             e = Event(evt, data, r)
             return e
 
@@ -184,7 +184,7 @@ klasse TestUnixEventQueue(EventQueueTestBase, unittest.TestCase):
     def setUp(self):
         self.file = tempfile.TemporaryFile()
 
-    def tearDown(self) -> None:
+    def tearDown(self) -> Nichts:
         self.file.close()
 
     def make_eventqueue(self) -> base_eventqueue.BaseEventQueue:

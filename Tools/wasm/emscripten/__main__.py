@@ -64,7 +64,7 @@ def updated_env(updates={}):
     return environment
 
 
-def subdir(working_dir, *, clean_ok=False):
+def subdir(working_dir, *, clean_ok=Falsch):
     """Decorator to change to a working directory."""
 
     def decorator(func):
@@ -79,11 +79,11 @@ def subdir(working_dir, *, clean_ok=False):
                 terminal_width = 80
             print("⎯" * terminal_width)
             print("📁", working_dir)
-            wenn clean_ok and getattr(context, "clean", False) and working_dir.exists():
+            wenn clean_ok and getattr(context, "clean", Falsch) and working_dir.exists():
                 print("🚮 Deleting directory (--clean)...")
                 shutil.rmtree(working_dir)
 
-            working_dir.mkdir(parents=True, exist_ok=True)
+            working_dir.mkdir(parents=Wahr, exist_ok=Wahr)
 
             with contextlib.chdir(working_dir):
                 return func(context, working_dir)
@@ -100,13 +100,13 @@ def call(command, *, quiet, **kwargs):
     """
     print("❯", " ".join(map(str, command)))
     wenn not quiet:
-        stdout = None
-        stderr = None
+        stdout = Nichts
+        stderr = Nichts
     sonst:
         stdout = tempfile.NamedTemporaryFile(
             "w",
             encoding="utf-8",
-            delete=False,
+            delete=Falsch,
             prefix="cpython-emscripten-",
             suffix=".log",
         )
@@ -133,7 +133,7 @@ def build_python_path():
     return binary
 
 
-@subdir(NATIVE_BUILD_DIR, clean_ok=True)
+@subdir(NATIVE_BUILD_DIR, clean_ok=Wahr)
 def configure_build_python(context, working_dir):
     """Configure the build/host Python."""
     wenn LOCAL_SETUP.exists():
@@ -173,7 +173,7 @@ def check_shasum(file: str, expected_shasum: str):
 
 
 def download_and_unpack(working_dir: Path, url: str, expected_shasum: str):
-    with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete_on_close=False) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete_on_close=Falsch) as tmp_file:
         with urlopen(url) as response:
             shutil.copyfileobj(response, tmp_file)
         tmp_file.close()
@@ -181,11 +181,11 @@ def download_and_unpack(working_dir: Path, url: str, expected_shasum: str):
         shutil.unpack_archive(tmp_file.name, working_dir)
 
 
-@subdir(HOST_BUILD_DIR, clean_ok=True)
+@subdir(HOST_BUILD_DIR, clean_ok=Wahr)
 def make_emscripten_libffi(context, working_dir):
     ver = "3.4.6"
     libffi_dir = working_dir / f"libffi-{ver}"
-    shutil.rmtree(libffi_dir, ignore_errors=True)
+    shutil.rmtree(libffi_dir, ignore_errors=Wahr)
     download_and_unpack(working_dir, f"https://github.com/libffi/libffi/releases/download/v{ver}/libffi-{ver}.tar.gz", "b0dea9df23c863a7a50e825440f3ebffabd65df1497108e5d437747843895a4e")
     call(
         [EMSCRIPTEN_DIR / "make_libffi.sh"],
@@ -195,11 +195,11 @@ def make_emscripten_libffi(context, working_dir):
     )
 
 
-@subdir(HOST_BUILD_DIR, clean_ok=True)
+@subdir(HOST_BUILD_DIR, clean_ok=Wahr)
 def make_mpdec(context, working_dir):
     ver = "4.0.1"
     mpdec_dir = working_dir / f"mpdecimal-{ver}"
-    shutil.rmtree(mpdec_dir, ignore_errors=True)
+    shutil.rmtree(mpdec_dir, ignore_errors=Wahr)
     download_and_unpack(working_dir, f"https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-{ver}.tar.gz", "96d33abb4bb0070c7be0fed4246cd38416188325f820468214471938545b1ac8")
     call(
         [
@@ -223,7 +223,7 @@ def make_mpdec(context, working_dir):
     )
 
 
-@subdir(HOST_DIR, clean_ok=True)
+@subdir(HOST_DIR, clean_ok=Wahr)
 def configure_emscripten_python(context, working_dir):
     """Configure the emscripten/host build."""
     config_site = os.fsdecode(
@@ -247,15 +247,15 @@ def configure_emscripten_python(context, working_dir):
         sysconfig_data += "-pydebug"
 
     host_runner = context.host_runner
-    wenn node_version := os.environ.get("PYTHON_NODE_VERSION", None):
+    wenn node_version := os.environ.get("PYTHON_NODE_VERSION", Nichts):
         res = subprocess.run(
             [
                 "bash",
                 "-c",
                 f"source ~/.nvm/nvm.sh && nvm which {node_version}",
             ],
-            text=True,
-            capture_output=True,
+            text=Wahr,
+            capture_output=Wahr,
         )
         host_runner = res.stdout.strip()
     pkg_config_path_dir = (PREFIX_DIR / "lib/pkgconfig/").resolve()
@@ -416,7 +416,7 @@ def main():
         subcommand.add_argument(
             "--quiet",
             action="store_true",
-            default=False,
+            default=Falsch,
             dest="quiet",
             help="Redirect output from subprocesses to a log file",
         )
@@ -424,7 +424,7 @@ def main():
         subcommand.add_argument(
             "--clean",
             action="store_true",
-            default=False,
+            default=Falsch,
             dest="clean",
             help="Delete any relevant directories before building",
         )

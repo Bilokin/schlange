@@ -60,7 +60,7 @@ klasse TestDecode:
         self.assertEqual(type(od), OrderedDict)
         # the object_pairs_hook takes priority over the object_hook
         self.assertEqual(self.loads(s, object_pairs_hook=OrderedDict,
-                                    object_hook=lambda x: None),
+                                    object_hook=lambda x: Nichts),
                          OrderedDict(p))
         # check that empty object literals work (see #17368)
         self.assertEqual(self.loads('{}', object_pairs_hook=OrderedDict),
@@ -87,7 +87,7 @@ klasse TestDecode:
         self.check_keys_reuse(s, self.loads)
         decoder = self.json.decoder.JSONDecoder()
         self.check_keys_reuse(s, decoder.decode)
-        self.assertFalse(decoder.memo)
+        self.assertFalsch(decoder.memo)
 
     def test_extra_data(self):
         s = '[1, 2, 3]5'
@@ -101,7 +101,7 @@ klasse TestDecode:
 
     def test_invalid_input_type(self):
         msg = 'the JSON object must be str'
-        fuer value in [1, 3.14, [], {}, None]:
+        fuer value in [1, 3.14, [], {}, Nichts]:
             self.assertRaisesRegex(TypeError, msg, self.loads, value)
 
     def test_string_with_utf8_bom(self):

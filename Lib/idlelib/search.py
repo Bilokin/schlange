@@ -66,9 +66,9 @@ klasse SearchDialog(SearchDialogBase):
         "Create the base search dialog and add a button fuer Find Next."
         SearchDialogBase.create_widgets(self)
         # TODO - why is this here and not in a create_command_buttons?
-        self.make_button("Find Next", self.default_command, isdef=True)
+        self.make_button("Find Next", self.default_command, isdef=Wahr)
 
-    def default_command(self, event=None):
+    def default_command(self, event=Nichts):
         "Handle the Find Next button as the default command."
         wenn not self.engine.getprog():
             return
@@ -88,13 +88,13 @@ klasse SearchDialog(SearchDialogBase):
         Position the window to display the located occurrence in the
         text.
 
-        Return True wenn the search was successful and False otherwise.
+        Return Wahr wenn the search was successful and Falsch otherwise.
         """
         wenn not self.engine.getpat():
             self.open(text)
-            return False
+            return Falsch
         wenn not self.engine.getprog():
-            return False
+            return Falsch
         res = self.engine.search_text(text)
         wenn res:
             line, m = res
@@ -106,17 +106,17 @@ klasse SearchDialog(SearchDialogBase):
                 sellast = text.index("sel.last")
                 wenn selfirst == first and sellast == last:
                     self.bell()
-                    return False
+                    return Falsch
             except TclError:
                 pass
             text.tag_remove("sel", "1.0", "end")
             text.tag_add("sel", first, last)
             text.mark_set("insert", self.engine.isback() and first or last)
             text.see("insert")
-            return True
+            return Wahr
         sonst:
             self.bell()
-            return False
+            return Falsch
 
     def find_selection(self, text):
         """Search fuer selected text with previous dialog preferences.
@@ -159,7 +159,7 @@ def _search_dialog(parent):  # htest #
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_search', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_search', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_search_dialog)

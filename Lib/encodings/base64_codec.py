@@ -25,12 +25,12 @@ klasse Codec(codecs.Codec):
         return base64_decode(input, errors)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         assert self.errors == 'strict'
         return base64.encodebytes(input)
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         assert self.errors == 'strict'
         return base64.decodebytes(input)
 
@@ -51,5 +51,5 @@ def getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamwriter=StreamWriter,
         streamreader=StreamReader,
-        _is_text_encoding=False,
+        _is_text_encoding=Falsch,
     )

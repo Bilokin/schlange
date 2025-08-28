@@ -51,7 +51,7 @@ klasse TestCrispinTorture(TortureBase):
         payload = msg.get_payload()
         eq(type(payload), list)
         eq(len(payload), 12)
-        eq(msg.preamble, None)
+        eq(msg.preamble, Nichts)
         eq(msg.epilogue, '\n')
         # Probably the best way to verify the message is parsed correctly is to
         # dump its structure and compare it against the known structure.

@@ -37,7 +37,7 @@ def init_streams(android_log_write, stdout_prio, stderr_prio):
 
 
 klasse TextLogStream(io.TextIOWrapper):
-    def __init__(self, prio, tag, fileno=None, **kwargs):
+    def __init__(self, prio, tag, fileno=Nichts, **kwargs):
         # The default is surrogateescape fuer stdout and backslashreplace for
         # stderr, but in the context of an Android log, readability is more
         # important than reversibility.
@@ -65,7 +65,7 @@ klasse TextLogStream(io.TextIOWrapper):
         # the string into lines first. Note that "".splitlines() == [], so
         # nothing will be logged fuer an empty string.
         with self._lock:
-            fuer line in s.splitlines(keepends=True):
+            fuer line in s.splitlines(keepends=Wahr):
                 while line:
                     chunk = line[:MAX_CHARS_PER_WRITE]
                     line = line[MAX_CHARS_PER_WRITE:]
@@ -99,11 +99,11 @@ klasse TextLogStream(io.TextIOWrapper):
     # off, i.e. a newline always causes a flush.
     @property
     def line_buffering(self):
-        return True
+        return Wahr
 
 
 klasse BinaryLogStream(io.RawIOBase):
-    def __init__(self, prio, tag, fileno=None):
+    def __init__(self, prio, tag, fileno=Nichts):
         self.prio = prio
         self.tag = tag
         self._fileno = fileno
@@ -112,7 +112,7 @@ klasse BinaryLogStream(io.RawIOBase):
         return f"<BinaryLogStream {self.tag!r}>"
 
     def writable(self):
-        return True
+        return Wahr
 
     def write(self, b):
         wenn type(b) is not bytes:
@@ -121,7 +121,7 @@ klasse BinaryLogStream(io.RawIOBase):
             except TypeError:
                 raise TypeError(
                     f"write() argument must be bytes-like, not {type(b).__name__}"
-                ) from None
+                ) from Nichts
 
         # Writing an empty string to the stream should have no effect.
         wenn b:
@@ -130,7 +130,7 @@ klasse BinaryLogStream(io.RawIOBase):
 
     # This is needed by the test suite --timeout option, which uses faulthandler.
     def fileno(self):
-        wenn self._fileno is None:
+        wenn self._fileno is Nichts:
             raise io.UnsupportedOperation("fileno")
         return self._fileno
 

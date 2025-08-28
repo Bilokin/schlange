@@ -30,7 +30,7 @@ klasse AutoFileTests:
         p.write(b'teststring')
         self.assertEqual(self.f.tell(), p.tell())
         self.f.close()
-        self.f = None
+        self.f = Nichts
         gc_collect()  # For PyPy or other GCs.
         self.assertRaises(ReferenceError, getattr, p, 'tell')
 
@@ -87,13 +87,13 @@ klasse AutoFileTests:
     def testErrors(self):
         f = self.f
         self.assertEqual(f.name, TESTFN)
-        self.assertFalse(f.isatty())
-        self.assertFalse(f.closed)
+        self.assertFalsch(f.isatty())
+        self.assertFalsch(f.closed)
 
         wenn hasattr(f, "readinto"):
             self.assertRaises((OSError, TypeError), f.readinto, "")
         f.close()
-        self.assertTrue(f.closed)
+        self.assertWahr(f.closed)
 
     def testMethods(self):
         methods = [('fileno', ()),
@@ -113,8 +113,8 @@ klasse AutoFileTests:
         methods.append(('truncate', ()))
 
         # __exit__ should close the file
-        self.f.__exit__(None, None, None)
-        self.assertTrue(self.f.closed)
+        self.f.__exit__(Nichts, Nichts, Nichts)
+        self.assertWahr(self.f.closed)
 
         fuer methodname, args in methods:
             method = getattr(self.f, methodname)
@@ -122,12 +122,12 @@ klasse AutoFileTests:
             self.assertRaises(ValueError, method, *args)
 
         # file is closed, __exit__ shouldn't do anything
-        self.assertEqual(self.f.__exit__(None, None, None), None)
-        # it must also return None wenn an exception was given
+        self.assertEqual(self.f.__exit__(Nichts, Nichts, Nichts), Nichts)
+        # it must also return Nichts wenn an exception was given
         try:
             1/0
         except ZeroDivisionError:
-            self.assertEqual(self.f.__exit__(*sys.exc_info()), None)
+            self.assertEqual(self.f.__exit__(*sys.exc_info()), Nichts)
 
     def testReadWhenWriting(self):
         self.assertRaises(OSError, self.f.read)

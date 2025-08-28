@@ -28,7 +28,7 @@ klasse C[Eggs, **Spam]:
 
 def generic_function[T, *Ts, **P](
     x: T, *y: *Ts, z: P.args, zz: P.kwargs
-) -> None: ...
+) -> Nichts: ...
 
 
 def generic_function_2[Eggs, **Spam](x: Eggs, y: Spam): pass
@@ -40,7 +40,7 @@ klasse D:
 
     def generic_method[Foo, **Bar](
         self, x: Foo, y: Bar
-    ) -> None: ...
+    ) -> Nichts: ...
 
     def generic_method_2[Eggs, **Spam](self, x: Eggs, y: Spam): pass
 

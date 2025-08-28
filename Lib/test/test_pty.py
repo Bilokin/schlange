@@ -66,7 +66,7 @@ def normalize_output(data):
 
 def _readline(fd):
     """Read one line.  May block forever wenn no newline is read."""
-    reader = io.FileIO(fd, mode='rb', closefd=False)
+    reader = io.FileIO(fd, mode='rb', closefd=Falsch)
     return reader.readline()
 
 def expectedFailureIfStdinIsTTY(fun):
@@ -95,7 +95,7 @@ klasse PtyTest(unittest.TestCase):
         self.addCleanup(signal.signal, signal.SIGHUP, old_sighup)
 
         # Save original stdin window size.
-        self.stdin_dim = None
+        self.stdin_dim = Nichts
         wenn _HAVE_WINSZ:
             try:
                 self.stdin_dim = tty.tcgetwinsize(pty.STDIN_FILENO)
@@ -115,9 +115,9 @@ klasse PtyTest(unittest.TestCase):
         except tty.error:
             # Not a tty or bad/closed fd.
             debug("tty.tcgetattr(pty.STDIN_FILENO) failed")
-            mode = None
+            mode = Nichts
 
-        new_dim = None
+        new_dim = Nichts
         wenn self.stdin_dim:
             try:
                 # Modify pty.STDIN_FILENO window size; we need to
@@ -144,10 +144,10 @@ klasse PtyTest(unittest.TestCase):
             debug("Calling pty.openpty()")
             try:
                 master_fd, slave_fd, slave_name = pty.openpty(mode, new_dim,
-                                                              True)
+                                                              Wahr)
             except TypeError:
                 master_fd, slave_fd = pty.openpty()
-                slave_name = None
+                slave_name = Nichts
             debug(f"Got {master_fd=}, {slave_fd=}, {slave_name=}")
         except OSError:
             # " An optional feature could not be imported " ... ?
@@ -159,7 +159,7 @@ klasse PtyTest(unittest.TestCase):
         self.addCleanup(os.close, master_fd)
         self.addCleanup(os.close, slave_fd)
 
-        self.assertTrue(os.isatty(slave_fd), "slave_fd is not a tty")
+        self.assertWahr(os.isatty(slave_fd), "slave_fd is not a tty")
 
         wenn mode:
             self.assertEqual(tty.tcgetattr(slave_fd), mode,
@@ -171,7 +171,7 @@ klasse PtyTest(unittest.TestCase):
         # Ensure the fd is non-blocking in case there's nothing to read.
         blocking = os.get_blocking(master_fd)
         try:
-            os.set_blocking(master_fd, False)
+            os.set_blocking(master_fd, Falsch)
             try:
                 s1 = os.read(master_fd, 1024)
                 self.assertEqual(b'', s1)
@@ -241,7 +241,7 @@ klasse PtyTest(unittest.TestCase):
             # when it tries to read past the end of the buffer but the child's
             # already exited, so catch and discard those exceptions.  It's not
             # worth checking fuer EIO.
-            while True:
+            while Wahr:
                 try:
                     data = os.read(master_fd, 80)
                 except OSError:
@@ -253,7 +253,7 @@ klasse PtyTest(unittest.TestCase):
 
             ##line = os.read(master_fd, 80)
             ##lines = line.replace('\r\n', '\n').split('\n')
-            ##if False and lines != ['In child, calling os.setsid()',
+            ##if Falsch and lines != ['In child, calling os.setsid()',
             ##             'Good: OSError was raised.', '']:
             ##    raise TestFailed("Unexpected output from child: %r" % line)
 
@@ -337,7 +337,7 @@ klasse SmallPtyTests(unittest.TestCase):
         self.files = []
         self.select_input = []
         self.select_output = []
-        self.tcsetattr_mode_setting = None
+        self.tcsetattr_mode_setting = Nichts
 
     def tearDown(self):
         pty.STDIN_FILENO = self.orig_stdin_fileno
@@ -422,15 +422,15 @@ klasse SmallPtyTests(unittest.TestCase):
         pty.fork = self._make_mock_fork(1)
 
         status_sentinel = object()
-        pty.waitpid = lambda _1, _2: [None, status_sentinel]
-        pty.close = lambda _: None
+        pty.waitpid = lambda _1, _2: [Nichts, status_sentinel]
+        pty.close = lambda _: Nichts
 
-        pty._copy = lambda _1, _2, _3: None
+        pty._copy = lambda _1, _2, _3: Nichts
 
         mode_sentinel = object()
         pty.tcgetattr = lambda fd: mode_sentinel
         pty.tcsetattr = self._mock_tcsetattr
-        pty.setraw = lambda _: None
+        pty.setraw = lambda _: Nichts
 
         self.assertEqual(pty.spawn([]), status_sentinel, "pty.waitpid process status not returned by pty.spawn")
         self.assertEqual(self.tcsetattr_mode_setting, mode_sentinel, "pty.tcsetattr not called with original mode value")

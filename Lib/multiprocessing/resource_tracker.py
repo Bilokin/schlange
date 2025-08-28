@@ -35,7 +35,7 @@ def cleanup_noop(name):
 
 _CLEANUP_FUNCS = {
     'noop': cleanup_noop,
-    'dummy': lambda name: None,  # Dummy resource used in tests
+    'dummy': lambda name: Nichts,  # Dummy resource used in tests
 }
 
 wenn os.name == 'posix':
@@ -60,9 +60,9 @@ klasse ResourceTracker(object):
 
     def __init__(self):
         self._lock = threading.RLock()
-        self._fd = None
-        self._pid = None
-        self._exitcode = None
+        self._fd = Nichts
+        self._pid = Nichts
+        self._exitcode = Nichts
         self._reentrant_messages = deque()
 
     def _reentrant_call_error(self):
@@ -77,14 +77,14 @@ klasse ResourceTracker(object):
         # making sure child processess are cleaned before ResourceTracker
         # gets destructed.
         # see https://github.com/python/cpython/issues/88887
-        self._stop(use_blocking_lock=False)
+        self._stop(use_blocking_lock=Falsch)
 
-    def _stop(self, use_blocking_lock=True):
+    def _stop(self, use_blocking_lock=Wahr):
         wenn use_blocking_lock:
             with self._lock:
                 self._stop_locked()
         sonst:
-            acquired = self._lock.acquire(blocking=False)
+            acquired = self._lock.acquire(blocking=Falsch)
             try:
                 self._stop_locked()
             finally:
@@ -101,25 +101,25 @@ klasse ResourceTracker(object):
         # so we check fuer it anyway.
         wenn self._lock._recursion_count() > 1:
             raise self._reentrant_call_error()
-        wenn self._fd is None:
+        wenn self._fd is Nichts:
             # not running
             return
-        wenn self._pid is None:
+        wenn self._pid is Nichts:
             return
 
         # closing the "alive" file descriptor stops main()
         close(self._fd)
-        self._fd = None
+        self._fd = Nichts
 
         _, status = waitpid(self._pid, 0)
 
-        self._pid = None
+        self._pid = Nichts
 
         try:
             self._exitcode = waitstatus_to_exitcode(status)
         except ValueError:
             # os.waitstatus_to_exitcode may raise an exception fuer invalid values
-            self._exitcode = None
+            self._exitcode = Nichts
 
     def getfd(self):
         self.ensure_running()
@@ -137,16 +137,16 @@ klasse ResourceTracker(object):
 
         # Clean-up to avoid dangling processes.
         try:
-            # _pid can be None wenn this process is a child from another
+            # _pid can be Nichts wenn this process is a child from another
             # python process, which has started the resource_tracker.
-            wenn self._pid is not None:
+            wenn self._pid is not Nichts:
                 os.waitpid(self._pid, 0)
         except ChildProcessError:
             # The resource_tracker has already been terminated.
             pass
-        self._fd = None
-        self._pid = None
-        self._exitcode = None
+        self._fd = Nichts
+        self._pid = Nichts
+        self._exitcode = Nichts
 
         warnings.warn('resource_tracker: process died unexpectedly, '
                       'relaunching.  Some resources might leak.')
@@ -174,13 +174,13 @@ klasse ResourceTracker(object):
             # that can make the child die before it registers signal handlers
             # fuer SIGINT and SIGTERM. The mask is unregistered after spawning
             # the child.
-            prev_sigmask = None
+            prev_sigmask = Nichts
             try:
                 wenn _HAVE_SIGMASK:
                     prev_sigmask = signal.pthread_sigmask(signal.SIG_BLOCK, _IGNORED_SIGNALS)
                 pid = util.spawnv_passfds(exe, args, fds_to_pass)
             finally:
-                wenn prev_sigmask is not None:
+                wenn prev_sigmask is not Nichts:
                     signal.pthread_sigmask(signal.SIG_SETMASK, prev_sigmask)
         except:
             os.close(w)
@@ -191,17 +191,17 @@ klasse ResourceTracker(object):
         finally:
             os.close(r)
 
-    def _ensure_running_and_write(self, msg=None):
+    def _ensure_running_and_write(self, msg=Nichts):
         with self._lock:
             wenn self._lock._recursion_count() > 1:
                 # The code below is certainly not reentrant-safe, so bail out
-                wenn msg is None:
+                wenn msg is Nichts:
                     raise self._reentrant_call_error()
                 return self._reentrant_messages.append(msg)
 
-            wenn self._fd is not None:
+            wenn self._fd is not Nichts:
                 # resource tracker was launched before, is it still running?
-                wenn msg is None:
+                wenn msg is Nichts:
                     to_send = b'PROBE:0:noop\n'
                 sonst:
                     to_send = msg
@@ -211,17 +211,17 @@ klasse ResourceTracker(object):
                     self._teardown_dead_process()
                     self._launch()
 
-                msg = None  # message was sent in probe
+                msg = Nichts  # message was sent in probe
             sonst:
                 self._launch()
 
-        while True:
+        while Wahr:
             try:
                 reentrant_msg = self._reentrant_messages.popleft()
             except IndexError:
                 break
             self._write(reentrant_msg)
-        wenn msg is not None:
+        wenn msg is not Nichts:
             self._write(msg)
 
     def _check_alive(self):
@@ -231,9 +231,9 @@ klasse ResourceTracker(object):
             # a cycle.
             os.write(self._fd, b'PROBE:0:noop\n')
         except OSError:
-            return False
+            return Falsch
         sonst:
-            return True
+            return Wahr
 
     def register(self, name, rtype):
         '''Register name of resource with resource tracker.'''
@@ -286,8 +286,8 @@ def main(fd):
             fuer line in f:
                 try:
                     cmd, name, rtype = line.strip().decode('ascii').split(':')
-                    cleanup_func = _CLEANUP_FUNCS.get(rtype, None)
-                    wenn cleanup_func is None:
+                    cleanup_func = _CLEANUP_FUNCS.get(rtype, Nichts)
+                    wenn cleanup_func is Nichts:
                         raise ValueError(
                             f'Cannot register {name} fuer automatic cleanup: '
                             f'unknown resource type {rtype}')

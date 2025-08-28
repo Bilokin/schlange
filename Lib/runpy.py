@@ -62,37 +62,37 @@ klasse _ModifiedArgv0(object):
         sys.argv[0] = self._saved_value
 
 # TODO: Replace these helpers with importlib._bootstrap_external functions.
-def _run_code(code, run_globals, init_globals=None,
-              mod_name=None, mod_spec=None,
-              pkg_name=None, script_name=None):
+def _run_code(code, run_globals, init_globals=Nichts,
+              mod_name=Nichts, mod_spec=Nichts,
+              pkg_name=Nichts, script_name=Nichts):
     """Helper to run code in nominated namespace"""
-    wenn init_globals is not None:
+    wenn init_globals is not Nichts:
         run_globals.update(init_globals)
-    wenn mod_spec is None:
-        loader = None
+    wenn mod_spec is Nichts:
+        loader = Nichts
         fname = script_name
-        cached = None
+        cached = Nichts
     sonst:
         loader = mod_spec.loader
         fname = mod_spec.origin
         cached = mod_spec.cached
-        wenn pkg_name is None:
+        wenn pkg_name is Nichts:
             pkg_name = mod_spec.parent
     run_globals.update(__name__ = mod_name,
                        __file__ = fname,
                        __cached__ = cached,
-                       __doc__ = None,
+                       __doc__ = Nichts,
                        __loader__ = loader,
                        __package__ = pkg_name,
                        __spec__ = mod_spec)
     exec(code, run_globals)
     return run_globals
 
-def _run_module_code(code, init_globals=None,
-                    mod_name=None, mod_spec=None,
-                    pkg_name=None, script_name=None):
+def _run_module_code(code, init_globals=Nichts,
+                    mod_name=Nichts, mod_spec=Nichts,
+                    pkg_name=Nichts, script_name=Nichts):
     """Helper to run code in new namespace with sys modified"""
-    fname = script_name wenn mod_spec is None sonst mod_spec.origin
+    fname = script_name wenn mod_spec is Nichts sonst mod_spec.origin
     with _TempModule(mod_name) as temp_module, _ModifiedArgv0(fname):
         mod_globals = temp_module.module.__dict__
         _run_code(code, mod_globals, init_globals,
@@ -114,12 +114,12 @@ def _get_module_details(mod_name, error=ImportError):
             # If the parent or higher ancestor package is missing, let the
             # error be raised by find_spec() below and then be caught. But do
             # not allow other errors to be caught.
-            wenn e.name is None or (e.name != pkg_name and
+            wenn e.name is Nichts or (e.name != pkg_name and
                     not pkg_name.startswith(e.name + ".")):
                 raise
         # Warn wenn the module has already been imported under its normal name
         existing = sys.modules.get(mod_name)
-        wenn existing is not None and not hasattr(existing, "__path__"):
+        wenn existing is not Nichts and not hasattr(existing, "__path__"):
             from warnings import warn
             msg = "{mod_name!r} found in sys.modules after import of " \
                 "package {pkg_name!r}, but prior to execution of " \
@@ -138,9 +138,9 @@ def _get_module_details(mod_name, error=ImportError):
             msg += (f". Try using '{mod_name[:-3]}' instead of "
                     f"'{mod_name}' as the module name.")
         raise error(msg.format(mod_name, type(ex).__name__, ex)) from ex
-    wenn spec is None:
+    wenn spec is Nichts:
         raise error("No module named %s" % mod_name)
-    wenn spec.submodule_search_locations is not None:
+    wenn spec.submodule_search_locations is not Nichts:
         wenn mod_name == "__main__" or mod_name.endswith(".__main__"):
             raise error("Cannot use package as __main__ module")
         try:
@@ -152,14 +152,14 @@ def _get_module_details(mod_name, error=ImportError):
             raise error(("%s; %r is a package and cannot " +
                                "be directly executed") %(e, mod_name))
     loader = spec.loader
-    wenn loader is None:
+    wenn loader is Nichts:
         raise error("%r is a namespace package and cannot be executed"
                                                                  % mod_name)
     try:
         code = loader.get_code(mod_name)
     except ImportError as e:
         raise error(format(e)) from e
-    wenn code is None:
+    wenn code is Nichts:
         raise error("No code object available fuer %s" % mod_name)
     return mod_name, spec, code
 
@@ -170,7 +170,7 @@ klasse _Error(Exception):
 # (Current thoughts: don't repeat the mistake that lead to its
 # creation when run_module() no longer met the needs of
 # mainmodule.c, but couldn't be changed because it was public)
-def _run_module_as_main(mod_name, alter_argv=True):
+def _run_module_as_main(mod_name, alter_argv=Wahr):
     """Runs the designated module in the __main__ namespace
 
        Note that the executed module will have full access to the
@@ -195,11 +195,11 @@ def _run_module_as_main(mod_name, alter_argv=True):
     main_globals = sys.modules["__main__"].__dict__
     wenn alter_argv:
         sys.argv[0] = mod_spec.origin
-    return _run_code(code, main_globals, None,
+    return _run_code(code, main_globals, Nichts,
                      "__main__", mod_spec)
 
-def run_module(mod_name, init_globals=None,
-               run_name=None, alter_sys=False):
+def run_module(mod_name, init_globals=Nichts,
+               run_name=Nichts, alter_sys=Falsch):
     """Execute a module's code without importing it.
 
        mod_name -- an absolute module name or package name.
@@ -208,11 +208,11 @@ def run_module(mod_name, init_globals=None,
        init_globals -- dictionary used to pre-populate the module’s
        globals dictionary before the code is executed.
 
-       run_name -- wenn not None, this will be used fuer setting __name__;
+       run_name -- wenn not Nichts, this will be used fuer setting __name__;
        otherwise, __name__ will be set to mod_name + '__main__' wenn the
        named module is a package and to just mod_name otherwise.
 
-       alter_sys -- wenn True, sys.argv[0] is updated with the value of
+       alter_sys -- wenn Wahr, sys.argv[0] is updated with the value of
        __file__ and sys.modules[__name__] is updated with a temporary
        module object fuer the module being executed. Both are
        restored to their original values before the function returns.
@@ -220,7 +220,7 @@ def run_module(mod_name, init_globals=None,
        Returns the resulting module globals dictionary.
     """
     mod_name, mod_spec, code = _get_module_details(mod_name)
-    wenn run_name is None:
+    wenn run_name is Nichts:
         run_name = mod_name
     wenn alter_sys:
         return _run_module_code(code, init_globals, run_name, mod_spec)
@@ -253,13 +253,13 @@ def _get_code_from_file(fname):
     code_path = os.path.abspath(fname)
     with io.open_code(code_path) as f:
         code = read_code(f)
-    wenn code is None:
+    wenn code is Nichts:
         # That didn't work, so try it as normal source code
         with io.open_code(code_path) as f:
             code = compile(f.read(), fname, 'exec')
     return code
 
-def run_path(path_name, init_globals=None, run_name=None):
+def run_path(path_name, init_globals=Nichts, run_name=Nichts):
     """Execute code located at the specified filesystem location.
 
        path_name -- filesystem location of a Python script, zipfile,
@@ -269,18 +269,18 @@ def run_path(path_name, init_globals=None, run_name=None):
        init_globals -- dictionary used to pre-populate the module’s
        globals dictionary before the code is executed.
 
-       run_name -- wenn not None, this will be used to set __name__;
+       run_name -- wenn not Nichts, this will be used to set __name__;
        otherwise, '<run_path>' will be used fuer __name__.
 
        Returns the resulting module globals dictionary.
     """
-    wenn run_name is None:
+    wenn run_name is Nichts:
         run_name = "<run_path>"
     pkg_name = run_name.rpartition(".")[0]
     from pkgutil import get_importer
     importer = get_importer(path_name)
     path_name = os.fsdecode(path_name)
-    wenn isinstance(importer, type(None)):
+    wenn isinstance(importer, type(Nichts)):
         # Not a valid sys.path entry, so run the code directly
         # execfile() doesn't help as we want to allow compiled files
         code = _get_code_from_file(path_name)

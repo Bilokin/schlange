@@ -27,8 +27,8 @@ klasse TLBCTests(unittest.TestCase):
         def all_opnames(bc):
             return {i.opname fuer i in dis._get_instructions_bytes(bc)}
 
-        def f(a, b, q=None):
-            wenn q is not None:
+        def f(a, b, q=Nichts):
+            wenn q is not Nichts:
                 q.put(get_tlbc(f))
             return a + b
 
@@ -61,10 +61,10 @@ klasse TLBCTests(unittest.TestCase):
         def f(a, b):
             return a + b
 
-        def g(a, b, q=None):
+        def g(a, b, q=Nichts):
             fuer _ in range(100):
                 f(a, b)
-            wenn q is not None:
+            wenn q is not Nichts:
                 q.put(get_tlbc(f))
 
         # specialize in main thread
@@ -90,8 +90,8 @@ klasse TLBCTests(unittest.TestCase):
 
         from _testinternalcapi import get_tlbc_id
 
-        def f(a, b, q=None):
-            wenn q is not None:
+        def f(a, b, q=Nichts):
+            wenn q is not Nichts:
                 q.put(get_tlbc_id(f))
             return a + b
 
@@ -108,7 +108,7 @@ klasse TLBCTests(unittest.TestCase):
         """)
         assert_python_ok("-X", "tlbc=1", "-c", code)
 
-    @support.skip_if_sanitizer("gh-129752: data race on adaptive counter", thread=True)
+    @support.skip_if_sanitizer("gh-129752: data race on adaptive counter", thread=Wahr)
     def test_no_copies_if_tlbc_disabled(self):
         code = textwrap.dedent("""
         import queue
@@ -116,8 +116,8 @@ klasse TLBCTests(unittest.TestCase):
 
         from _testinternalcapi import get_tlbc_id
 
-        def f(a, b, q=None):
-            wenn q is not None:
+        def f(a, b, q=Nichts):
+            wenn q is not Nichts:
                 q.put(get_tlbc_id(f))
             return a + b
 
@@ -134,7 +134,7 @@ klasse TLBCTests(unittest.TestCase):
             tlbc_ids.append(q.get())
 
         main_tlbc_id = get_tlbc_id(f)
-        assert main_tlbc_id is not None
+        assert main_tlbc_id is not Nichts
         assert tlbc_ids[0] == main_tlbc_id
         assert tlbc_ids[1] == main_tlbc_id
         assert tlbc_ids[2] == main_tlbc_id

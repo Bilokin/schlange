@@ -100,9 +100,9 @@ klasse scheduler:
         with self._lock:
             return not self._queue
 
-    def run(self, blocking=True):
+    def run(self, blocking=Wahr):
         """Execute events until the queue is empty.
-        If blocking is False executes the scheduled events due to
+        If blocking is Falsch executes the scheduled events due to
         expire soonest (if any) and then return the deadline of the
         next scheduled call in the scheduler.
 
@@ -131,7 +131,7 @@ klasse scheduler:
         delayfunc = self.delayfunc
         timefunc = self.timefunc
         pop = heapq.heappop
-        while True:
+        while Wahr:
             with lock:
                 wenn not q:
                     break
@@ -139,9 +139,9 @@ klasse scheduler:
                  argument, kwargs) = q[0]
                 now = timefunc()
                 wenn time > now:
-                    delay = True
+                    delay = Wahr
                 sonst:
-                    delay = False
+                    delay = Falsch
                     pop(q)
             wenn delay:
                 wenn not blocking:

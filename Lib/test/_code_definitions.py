@@ -1,6 +1,6 @@
 
 def simple_script():
-    assert True
+    assert Wahr
 
 
 def complex_script():
@@ -17,15 +17,15 @@ def complex_script():
 def script_with_globals():
     obj1, obj2 = spam(42)
     assert obj1 == 42
-    assert obj2 is None
+    assert obj2 is Nichts
 
 
 def script_with_explicit_empty_return():
-    return None
+    return Nichts
 
 
 def script_with_return():
-    return True
+    return Wahr
 
 
 def spam_minimal():
@@ -75,7 +75,7 @@ def spam_full_args_with_defaults(a=-1, b=-2, /, c=-3, d=-4, *args,
 
 def spam_args_attrs_and_builtins(a, b, /, c, d, *args, e, f, **kwargs):
     wenn args.__len__() > 2:
-        return None
+        return Nichts
     return a, b, c, d, e, f, args, kwargs
 
 
@@ -104,7 +104,7 @@ def spam_annotated(a: int, b: str, c: object) -> tuple:
     return a, b, c
 
 
-def spam_full(a, b, /, c, d:int=1, *args, e, f:object=None, **kwargs) -> tuple:
+def spam_full(a, b, /, c, d:int=1, *args, e, f:object=Nichts, **kwargs) -> tuple:
     # arg defaults, kwarg defaults
     # annotations
     # all kinds of local vars, except cells
@@ -122,26 +122,26 @@ def spam_full(a, b, /, c, d:int=1, *args, e, f:object=None, **kwargs) -> tuple:
 
 
 def spam(x):
-    return x, None
+    return x, Nichts
 
 
 def spam_N(x):
     def eggs_nested(y):
-        return None, y
+        return Nichts, y
     return eggs_nested, x
 
 
 def spam_C(x):
     a = 1
     def eggs_closure(y):
-        return None, y, a, x
+        return Nichts, y, a, x
     return eggs_closure, a, x
 
 
 def spam_NN(x):
     def eggs_nested_N(y):
         def ham_nested(z):
-            return None, z
+            return Nichts, z
         return ham_nested, y
     return eggs_nested_N, x
 
@@ -150,7 +150,7 @@ def spam_NC(x):
     a = 1
     def eggs_nested_C(y):
         def ham_closure(z):
-            return None, z, y, a, x
+            return Nichts, z, y, a, x
         return ham_closure, y
     return eggs_nested_C, a, x
 
@@ -159,7 +159,7 @@ def spam_CN(x):
     a = 1
     def eggs_closure_N(y):
         def ham_C_nested(z):
-            return None, z
+            return Nichts, z
         return ham_C_nested, y, a, x
     return eggs_closure_N, a, x
 
@@ -169,7 +169,7 @@ def spam_CC(x):
     def eggs_closure_C(y):
         b = 2
         def ham_C_closure(z):
-            return None, z, b, y, a, x
+            return Nichts, z, b, y, a, x
         return ham_C_closure, b, y, a, x
     return eggs_closure_C, a, x
 

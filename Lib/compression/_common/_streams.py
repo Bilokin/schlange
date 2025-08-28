@@ -34,11 +34,11 @@ klasse DecompressReader(io.RawIOBase):
     """Adapts the decompressor API to a RawIOBase reader API"""
 
     def readable(self):
-        return True
+        return Wahr
 
     def __init__(self, fp, decomp_factory, trailing_error=(), **decomp_args):
         self._fp = fp
-        self._eof = False
+        self._eof = Falsch
         self._pos = 0  # Current offset in decompressed stream
 
         # Set to size of decompressed stream once it is known, fuer SEEK_END
@@ -57,7 +57,7 @@ klasse DecompressReader(io.RawIOBase):
         self._trailing_error = trailing_error
 
     def close(self):
-        self._decompressor = None
+        self._decompressor = Nichts
         return super().close()
 
     def seekable(self):
@@ -75,10 +75,10 @@ klasse DecompressReader(io.RawIOBase):
 
         wenn not size or self._eof:
             return b""
-        data = None  # Default wenn EOF is encountered
+        data = Nichts  # Default wenn EOF is encountered
         # Depending on the input data, our call to the decompressor may not
         # return any data. In this case, try again after reading another block.
-        while True:
+        while Wahr:
             wenn self._decompressor.eof:
                 rawblock = (self._decompressor.unused_data or
                             self._fp.read(BUFFER_SIZE))
@@ -104,7 +104,7 @@ klasse DecompressReader(io.RawIOBase):
             wenn data:
                 break
         wenn not data:
-            self._eof = True
+            self._eof = Wahr
             self._size = self._pos
             return b""
         self._pos += len(data)
@@ -123,7 +123,7 @@ klasse DecompressReader(io.RawIOBase):
     # Rewind the file to the beginning of the data stream.
     def _rewind(self):
         self._fp.seek(0)
-        self._eof = False
+        self._eof = Falsch
         self._pos = 0
         self._decompressor = self._decomp_factory(**self._decomp_args)
 

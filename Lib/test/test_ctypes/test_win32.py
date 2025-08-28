@@ -77,8 +77,8 @@ klasse TestWintypes(unittest.TestCase):
 
         self.assertEqual(COMError.mro(),
                          [COMError, Exception, BaseException, object])
-        self.assertFalse(COMError.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
-        self.assertTrue(COMError.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
+        self.assertFalsch(COMError.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+        self.assertWahr(COMError.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
 
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
@@ -87,7 +87,7 @@ klasse TestWinError(unittest.TestCase):
         # see Issue 16169
         ERROR_INVALID_PARAMETER = 87
         msg = ctypes.FormatError(ERROR_INVALID_PARAMETER).strip()
-        args = (errno.EINVAL, msg, None, ERROR_INVALID_PARAMETER)
+        args = (errno.EINVAL, msg, Nichts, ERROR_INVALID_PARAMETER)
 
         e = ctypes.WinError(ERROR_INVALID_PARAMETER)
         self.assertEqual(e.args, args)

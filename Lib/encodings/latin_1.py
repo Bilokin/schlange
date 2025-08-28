@@ -18,11 +18,11 @@ klasse Codec(codecs.Codec):
     decode = codecs.latin_1_decode
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return codecs.latin_1_encode(input,self.errors)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         return codecs.latin_1_decode(input,self.errors)[0]
 
 klasse StreamWriter(Codec,codecs.StreamWriter):

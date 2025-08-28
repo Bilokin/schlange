@@ -6,7 +6,7 @@ import threading
 import unittest
 from test import support
 
-support.requires_working_socket(module=True)
+support.requires_working_socket(module=Wahr)
 
 def make_request_and_skipIf(condition, reason):
     # If we skip the test, we have to make a request because
@@ -23,7 +23,7 @@ def make_request_and_skipIf(condition, reason):
 
 
 def make_server():
-    serv = DocXMLRPCServer(("localhost", 0), logRequests=False)
+    serv = DocXMLRPCServer(("localhost", 0), logRequests=Falsch)
 
     try:
         # Add some documentation
@@ -70,7 +70,7 @@ def make_server():
 klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
     def setUp(self):
         # Enable server feedback
-        DocXMLRPCServer._send_traceback_header = True
+        DocXMLRPCServer._send_traceback_header = Wahr
 
         self.serv = make_server()
         self.thread = threading.Thread(target=self.serv.serve_forever)
@@ -83,7 +83,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.client.close()
 
         # Disable server feedback
-        DocXMLRPCServer._send_traceback_header = False
+        DocXMLRPCServer._send_traceback_header = Falsch
         self.serv.shutdown()
         self.thread.join()
         self.serv.server_close()

@@ -72,12 +72,12 @@ fuer c in (b' !"#$%&\'()*+,-./0123456789:;<>'
 
 # Helpers
 def header_check(octet):
-    """Return True wenn the octet should be escaped with header quopri."""
+    """Return Wahr wenn the octet should be escaped with header quopri."""
     return chr(octet) != _QUOPRI_HEADER_MAP[octet]
 
 
 def body_check(octet):
-    """Return True wenn the octet should be escaped with body quopri."""
+    """Return Wahr wenn the octet should be escaped with body quopri."""
     return chr(octet) != _QUOPRI_BODY_MAP[octet]
 
 

@@ -45,9 +45,9 @@ klasse FinderTests(abc.FinderTests):
 
     def import_(self, root, module):
         finder = self.get_finder(root)
-        return self._find(finder, module, loader_only=True)
+        return self._find(finder, module, loader_only=Wahr)
 
-    def run_test(self, test, create=None, *, compile_=None, unlink=None):
+    def run_test(self, test, create=Nichts, *, compile_=Nichts, unlink=Nichts):
         """Test the finding of 'test' with the creation of modules listed in
         'create'.
 
@@ -55,7 +55,7 @@ klasse FinderTests(abc.FinderTests):
         listed in 'unlink' have their source files deleted.
 
         """
-        wenn create is None:
+        wenn create is Nichts:
             create = {test}
         with util.create_modules(*create) as mapping:
             wenn compile_:
@@ -67,7 +67,7 @@ klasse FinderTests(abc.FinderTests):
                     try:
                         make_legacy_pyc(mapping[name])
                     except OSError as error:
-                        # Some tests do not set compile_=True so the source
+                        # Some tests do not set compile_=Wahr so the source
                         # module will not get compiled and there will be no
                         # PEP 3147 pyc file to rename.
                         wenn error.errno != errno.ENOENT:
@@ -128,7 +128,7 @@ klasse FinderTests(abc.FinderTests):
         with open('mod.py', 'w', encoding='utf-8') as file:
             file.write("# test file fuer importlib")
         try:
-            loader = self._find(finder, 'mod', loader_only=True)
+            loader = self._find(finder, 'mod', loader_only=Wahr)
             self.assertHasAttr(loader, 'load_module')
         finally:
             os.unlink('mod.py')
@@ -146,9 +146,9 @@ klasse FinderTests(abc.FinderTests):
         mod = 'mod'
         with util.create_modules(mod) as mapping:
             finder = self.get_finder(mapping['.root'])
-            found = self._find(finder, 'mod', loader_only=True)
-            self.assertIsNotNone(found)
-        found = self._find(finder, 'mod', loader_only=True)
+            found = self._find(finder, 'mod', loader_only=Wahr)
+            self.assertIsNotNichts(found)
+        found = self._find(finder, 'mod', loader_only=Wahr)
         self.assertEqual(found, self.NOT_FOUND)
 
     @unittest.skipUnless(sys.platform != 'win32',
@@ -178,11 +178,11 @@ klasse FinderTests(abc.FinderTests):
 
 klasse FinderTestsPEP451(FinderTests):
 
-    NOT_FOUND = None
+    NOT_FOUND = Nichts
 
-    def _find(self, finder, name, loader_only=False):
+    def _find(self, finder, name, loader_only=Falsch):
         spec = finder.find_spec(name)
-        return spec.loader wenn spec is not None sonst spec
+        return spec.loader wenn spec is not Nichts sonst spec
 
 
 (Frozen_FinderTestsPEP451,
@@ -192,11 +192,11 @@ klasse FinderTestsPEP451(FinderTests):
 
 klasse FinderTestsPEP420(FinderTests):
 
-    NOT_FOUND = (None, [])
+    NOT_FOUND = (Nichts, [])
 
-    def _find(self, finder, name, loader_only=False):
+    def _find(self, finder, name, loader_only=Falsch):
         spec = finder.find_spec(name)
-        wenn spec is None:
+        wenn spec is Nichts:
             return self.NOT_FOUND
         wenn loader_only:
             return spec.loader

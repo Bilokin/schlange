@@ -43,7 +43,7 @@ def func_returnint():
 def func_returnfloat():
     return 3.14
 def func_returnnull():
-    return None
+    return Nichts
 def func_returnblob():
     return b"blob"
 def func_returnlonglong():
@@ -101,10 +101,10 @@ klasse AggrExceptionInFinalize:
 
 klasse AggrCheckType:
     def __init__(self):
-        self.val = None
+        self.val = Nichts
 
     def step(self, whichType, val):
-        theType = {"str": str, "int": int, "float": float, "None": type(None),
+        theType = {"str": str, "int": int, "float": float, "Nichts": type(Nichts),
                    "blob": bytes}
         self.val = int(theType[whichType] is type(val))
 
@@ -116,7 +116,7 @@ klasse AggrCheckTypes:
         self.val = 0
 
     def step(self, whichType, *vals):
-        theType = {"str": str, "int": int, "float": float, "None": type(None),
+        theType = {"str": str, "int": int, "float": float, "Nichts": type(Nichts),
                    "blob": bytes}
         fuer val in vals:
             self.val += int(theType[whichType] is type(val))
@@ -163,7 +163,7 @@ klasse FunctionTests(unittest.TestCase):
         self.con.create_function("overflowerror", 0, func_overflowerror)
 
         self.con.create_function("isblob", 1, lambda x: isinstance(x, bytes))
-        self.con.create_function("isnone", 1, lambda x: x is None)
+        self.con.create_function("isnone", 1, lambda x: x is Nichts)
         self.con.create_function("spam", -1, lambda *x: len(x))
         self.con.execute("create table test(t text)")
 
@@ -233,8 +233,8 @@ klasse FunctionTests(unittest.TestCase):
         cur = self.con.cursor()
         cur.execute("select returnnull()")
         val = cur.fetchone()[0]
-        self.assertEqual(type(val), type(None))
-        self.assertEqual(val, None)
+        self.assertEqual(type(val), type(Nichts))
+        self.assertEqual(val, Nichts)
 
     def test_func_return_blob(self):
         cur = self.con.cursor()
@@ -252,7 +252,7 @@ klasse FunctionTests(unittest.TestCase):
     def test_func_return_nan(self):
         cur = self.con.cursor()
         cur.execute("select returnnan()")
-        self.assertIsNone(cur.fetchone()[0])
+        self.assertIsNichts(cur.fetchone()[0])
 
     @with_tracebacks(ZeroDivisionError, msg_regex="func_raiseexception")
     def test_func_exception(self):
@@ -284,12 +284,12 @@ klasse FunctionTests(unittest.TestCase):
 
     def test_empty_blob(self):
         cur = self.con.execute("select isblob(x'')")
-        self.assertTrue(cur.fetchone()[0])
+        self.assertWahr(cur.fetchone()[0])
 
     def test_nan_float(self):
         cur = self.con.execute("select isnone(?)", (float("nan"),))
         # SQLite has no concept of nan; it is converted to NULL
-        self.assertTrue(cur.fetchone()[0])
+        self.assertWahr(cur.fetchone()[0])
 
     def test_too_large_int(self):
         err = "Python int too large to convert to SQLite INTEGER"
@@ -332,7 +332,7 @@ klasse FunctionTests(unittest.TestCase):
             (b"blob", bytes),
             (bytearray(range(2)), bytes),
             (memoryview(b"blob"), bytes),
-            (None, type(None)),
+            (Nichts, type(Nichts)),
         ]
         fuer val, _ in dataset:
             cur = self.con.execute("select test_params(?)", (val,))
@@ -346,14 +346,14 @@ klasse FunctionTests(unittest.TestCase):
     # were permitted in WHERE clauses of partial indices, which allows testing
     # based on syntax, iso. the query optimizer.
     def test_func_non_deterministic(self):
-        mock = Mock(return_value=None)
-        self.con.create_function("nondeterministic", 0, mock, deterministic=False)
+        mock = Mock(return_value=Nichts)
+        self.con.create_function("nondeterministic", 0, mock, deterministic=Falsch)
         with self.assertRaises(sqlite.OperationalError):
             self.con.execute("create index t on test(t) where nondeterministic() is not null")
 
     def test_func_deterministic(self):
-        mock = Mock(return_value=None)
-        self.con.create_function("deterministic", 0, mock, deterministic=True)
+        mock = Mock(return_value=Nichts)
+        self.con.create_function("deterministic", 0, mock, deterministic=Wahr)
         try:
             self.con.execute("create index t on test(t) where deterministic() is not null")
         except sqlite.OperationalError:
@@ -361,7 +361,7 @@ klasse FunctionTests(unittest.TestCase):
 
     def test_func_deterministic_keyword_only(self):
         with self.assertRaises(TypeError):
-            self.con.create_function("deterministic", 0, int, True)
+            self.con.create_function("deterministic", 0, int, Wahr)
 
     def test_function_destructor_via_gc(self):
         # See bpo-44304: The destructor of the user function can
@@ -398,7 +398,7 @@ klasse FunctionTests(unittest.TestCase):
                 cur.execute("select pychr(?)", (value,))
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
-    @bigmemtest(size=2**31, memuse=3, dry_run=False)
+    @bigmemtest(size=2**31, memuse=3, dry_run=Falsch)
     def test_func_return_too_large_text(self, size):
         cur = self.con.cursor()
         fuer size in 2**31-1, 2**31:
@@ -407,7 +407,7 @@ klasse FunctionTests(unittest.TestCase):
                 cur.execute("select largetext()")
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
-    @bigmemtest(size=2**31, memuse=2, dry_run=False)
+    @bigmemtest(size=2**31, memuse=2, dry_run=Falsch)
     def test_func_return_too_large_blob(self, size):
         cur = self.con.cursor()
         fuer size in 2**31-1, 2**31:
@@ -424,7 +424,7 @@ klasse FunctionTests(unittest.TestCase):
     def test_func_keyword_args(self):
         with self.assertRaisesRegex(TypeError,
                 'takes exactly 3 positional arguments'):
-            self.con.create_function("noop", 0, func=lambda: None)
+            self.con.create_function("noop", 0, func=lambda: Nichts)
 
 
 klasse WindowSumInt:
@@ -562,7 +562,7 @@ klasse WindowFunctionTests(unittest.TestCase):
         self.cur.fetchall()
 
     def test_win_clear_function(self):
-        self.con.create_window_function("sumint", 1, None)
+        self.con.create_window_function("sumint", 1, Nichts)
         self.assertRaises(sqlite.OperationalError, self.cur.execute,
                           self.query % "sumint")
 
@@ -602,7 +602,7 @@ klasse AggregateTests(unittest.TestCase):
                 )
             """)
         cur.execute("insert into test(t, i, f, n, b) values (?, ?, ?, ?, ?)",
-            ("foo", 5, 3.14, None, memoryview(b"blob"),))
+            ("foo", 5, 3.14, Nichts, memoryview(b"blob"),))
         cur.close()
 
         self.con.create_aggregate("nostep", 1, AggrNoStep)
@@ -687,7 +687,7 @@ klasse AggregateTests(unittest.TestCase):
 
     def test_aggr_check_param_none(self):
         cur = self.con.cursor()
-        cur.execute("select checkType('None', ?)", (None,))
+        cur.execute("select checkType('Nichts', ?)", (Nichts,))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
@@ -708,7 +708,7 @@ klasse AggregateTests(unittest.TestCase):
     def test_aggr_no_match(self):
         cur = self.con.execute("select mysum(i) from (select 1 as i) where i == 0")
         val = cur.fetchone()[0]
-        self.assertIsNone(val)
+        self.assertIsNichts(val)
 
     def test_aggr_text(self):
         cur = self.con.cursor()
@@ -761,14 +761,14 @@ klasse AuthorizerTests(unittest.TestCase):
         self.assertIn('prohibited', str(cm.exception))
 
     def test_clear_authorizer(self):
-        self.con.set_authorizer(None)
+        self.con.set_authorizer(Nichts)
         self.con.execute("select * from t2")
         self.con.execute("select c2 from t1")
 
     def test_authorizer_keyword_args(self):
         with self.assertRaisesRegex(TypeError,
                 'takes exactly 1 positional argument'):
-            self.con.set_authorizer(authorizer_callback=lambda: None)
+            self.con.set_authorizer(authorizer_callback=lambda: Nichts)
 
 
 klasse AuthorizerRaiseExceptionTests(AuthorizerTests):

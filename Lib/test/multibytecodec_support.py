@@ -14,17 +14,17 @@ from io import BytesIO
 
 klasse TestBase:
     encoding        = ''   # codec name
-    codec           = None # codec tuple (with 4 elements)
-    tstring         = None # must set. 2 strings to test StreamReader
+    codec           = Nichts # codec tuple (with 4 elements)
+    tstring         = Nichts # must set. 2 strings to test StreamReader
 
-    codectests      = None # must set. codec test tuple
+    codectests      = Nichts # must set. codec test tuple
     roundtriptest   = 1    # set wenn roundtrip is possible with unicode
     has_iso10646    = 0    # set wenn this encoding contains whole iso10646 map
-    xmlcharnametest = None # string to test xmlcharrefreplace
+    xmlcharnametest = Nichts # string to test xmlcharrefreplace
     unmappedunicode = '\udeee' # a unicode code point that is not mapped.
 
     def setUp(self):
-        wenn self.codec is None:
+        wenn self.codec is Nichts:
             self.codec = codecs.lookup(self.encoding)
         self.encode = self.codec.encode
         self.decode = self.codec.decode
@@ -56,13 +56,13 @@ klasse TestBase:
             wenn expected:
                 result = func(source, scheme)[0]
                 wenn func is self.decode:
-                    self.assertTrue(type(result) is str, type(result))
+                    self.assertWahr(type(result) is str, type(result))
                     self.assertEqual(result, expected,
                                      '%a.decode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
                 sonst:
-                    self.assertTrue(type(result) is bytes, type(result))
+                    self.assertWahr(type(result) is bytes, type(result))
                     self.assertEqual(result, expected,
                                      '%a.encode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
@@ -119,7 +119,7 @@ klasse TestBase:
             return (ret, exc.end)
         codecs.register_error("test.cjktest", myreplace)
 
-        fuer ret in ([1, 2, 3], [], None, object()):
+        fuer ret in ([1, 2, 3], [], Nichts, object()):
             self.assertRaises(TypeError, self.encode, self.unmappedunicode,
                               'test.cjktest')
 
@@ -136,9 +136,9 @@ klasse TestBase:
         self.assertRaises(IndexError, self.encode, self.unmappedunicode,
                           'test.cjktest')
 
-    def test_callback_None_index(self):
+    def test_callback_Nichts_index(self):
         def myreplace(exc):
-            return ('x', None)
+            return ('x', Nichts)
         codecs.register_error("test.cjktest", myreplace)
         self.assertRaises(TypeError, self.encode, self.unmappedunicode,
                           'test.cjktest')
@@ -172,13 +172,13 @@ klasse TestBase:
 
     def test_incrementalencoder(self):
         UTF8Reader = codecs.getreader('utf-8')
-        fuer sizehint in [None] + list(range(1, 33)) + \
+        fuer sizehint in [Nichts] + list(range(1, 33)) + \
                         [64, 128, 256, 512, 1024]:
             istream = UTF8Reader(BytesIO(self.tstring[1]))
             ostream = BytesIO()
             encoder = self.incrementalencoder()
             while 1:
-                wenn sizehint is not None:
+                wenn sizehint is not Nichts:
                     data = istream.read(sizehint)
                 sonst:
                     data = istream.read()
@@ -192,7 +192,7 @@ klasse TestBase:
 
     def test_incrementaldecoder(self):
         UTF8Writer = codecs.getwriter('utf-8')
-        fuer sizehint in [None, -1] + list(range(1, 33)) + \
+        fuer sizehint in [Nichts, -1] + list(range(1, 33)) + \
                         [64, 128, 256, 512, 1024]:
             istream = BytesIO(self.tstring[0])
             ostream = UTF8Writer(BytesIO())
@@ -211,26 +211,26 @@ klasse TestBase:
         inv = self.unmappedunicode
 
         e = self.incrementalencoder()
-        self.assertRaises(UnicodeEncodeError, e.encode, inv, True)
+        self.assertRaises(UnicodeEncodeError, e.encode, inv, Wahr)
 
         e.errors = 'ignore'
-        self.assertEqual(e.encode(inv, True), b'')
+        self.assertEqual(e.encode(inv, Wahr), b'')
 
         e.reset()
         def tempreplace(exc):
             return ('called', exc.end)
         codecs.register_error('test.incremental_error_callback', tempreplace)
         e.errors = 'test.incremental_error_callback'
-        self.assertEqual(e.encode(inv, True), b'called')
+        self.assertEqual(e.encode(inv, Wahr), b'called')
 
         # again
         e.errors = 'ignore'
-        self.assertEqual(e.encode(inv, True), b'')
+        self.assertEqual(e.encode(inv, Wahr), b'')
 
     def test_streamreader(self):
         UTF8Writer = codecs.getwriter('utf-8')
         fuer name in ["read", "readline", "readlines"]:
-            fuer sizehint in [None, -1] + list(range(1, 33)) + \
+            fuer sizehint in [Nichts, -1] + list(range(1, 33)) + \
                             [64, 128, 256, 512, 1024]:
                 istream = self.reader(BytesIO(self.tstring[0]))
                 ostream = UTF8Writer(BytesIO())
@@ -250,13 +250,13 @@ klasse TestBase:
         readfuncs = ('read', 'readline', 'readlines')
         UTF8Reader = codecs.getreader('utf-8')
         fuer name in readfuncs:
-            fuer sizehint in [None] + list(range(1, 33)) + \
+            fuer sizehint in [Nichts] + list(range(1, 33)) + \
                             [64, 128, 256, 512, 1024]:
                 istream = UTF8Reader(BytesIO(self.tstring[1]))
                 ostream = self.writer(BytesIO())
                 func = getattr(istream, name)
                 while 1:
-                    wenn sizehint is not None:
+                    wenn sizehint is not Nichts:
                         data = func(sizehint)
                     sonst:
                         data = func()
@@ -359,14 +359,14 @@ klasse TestBase_Mapping(unittest.TestCase):
             wenn expected:
                 wenn isinstance(source, bytes):
                     result = func(self.encoding, scheme)
-                    self.assertTrue(type(result) is str, type(result))
+                    self.assertWahr(type(result) is str, type(result))
                     self.assertEqual(result, expected,
                                      '%a.decode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,
                                         expected))
                 sonst:
                     result = func(self.encoding, scheme)
-                    self.assertTrue(type(result) is bytes, type(result))
+                    self.assertWahr(type(result) is bytes, type(result))
                     self.assertEqual(result, expected,
                                      '%a.encode(%r, %r)=%a != %a'
                                      % (source, self.encoding, scheme, result,

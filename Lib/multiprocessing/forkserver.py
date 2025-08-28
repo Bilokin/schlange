@@ -35,11 +35,11 @@ _AUTHKEY_LEN = 32  # <= PIPEBUF so it fits a single write to an empty pipe.
 klasse ForkServer(object):
 
     def __init__(self):
-        self._forkserver_authkey = None
-        self._forkserver_address = None
-        self._forkserver_alive_fd = None
-        self._forkserver_pid = None
-        self._inherited_fds = None
+        self._forkserver_authkey = Nichts
+        self._forkserver_address = Nichts
+        self._forkserver_alive_fd = Nichts
+        self._forkserver_pid = Nichts
+        self._inherited_fds = Nichts
         self._lock = threading.Lock()
         self._preload_modules = ['__main__']
 
@@ -49,20 +49,20 @@ klasse ForkServer(object):
             self._stop_unlocked()
 
     def _stop_unlocked(self):
-        wenn self._forkserver_pid is None:
+        wenn self._forkserver_pid is Nichts:
             return
 
         # close the "alive" file descriptor asks the server to stop
         os.close(self._forkserver_alive_fd)
-        self._forkserver_alive_fd = None
+        self._forkserver_alive_fd = Nichts
 
         os.waitpid(self._forkserver_pid, 0)
-        self._forkserver_pid = None
+        self._forkserver_pid = Nichts
 
         wenn not util.is_abstract_socket_namespace(self._forkserver_address):
             os.unlink(self._forkserver_address)
-        self._forkserver_address = None
-        self._forkserver_authkey = None
+        self._forkserver_address = Nichts
+        self._forkserver_authkey = Nichts
 
     def set_forkserver_preload(self, modules_names):
         '''Set list of module names to try to load in forkserver process.'''
@@ -73,7 +73,7 @@ klasse ForkServer(object):
     def get_inherited_fds(self):
         '''Return list of fds inherited from parent process.
 
-        This returns None wenn the current process was not started by fork
+        This returns Nichts wenn the current process was not started by fork
         server.
         '''
         return self._inherited_fds
@@ -98,7 +98,7 @@ klasse ForkServer(object):
                       resource_tracker.getfd()]
             allfds += fds
             try:
-                client.setblocking(True)
+                client.setblocking(Wahr)
                 wrapped_client = connection.Connection(client.fileno())
                 # The other side of this exchange happens in the child as
                 # implemented in main().
@@ -129,7 +129,7 @@ klasse ForkServer(object):
         '''
         with self._lock:
             resource_tracker.ensure_running()
-            wenn self._forkserver_pid is not None:
+            wenn self._forkserver_pid is not Nichts:
                 # forkserver was launched before, is it still running?
                 pid, status = os.waitpid(self._forkserver_pid, os.WNOHANG)
                 wenn not pid:
@@ -137,10 +137,10 @@ klasse ForkServer(object):
                     return
                 # dead, launch it again
                 os.close(self._forkserver_alive_fd)
-                self._forkserver_authkey = None
-                self._forkserver_address = None
-                self._forkserver_alive_fd = None
-                self._forkserver_pid = None
+                self._forkserver_authkey = Nichts
+                self._forkserver_address = Nichts
+                self._forkserver_alive_fd = Nichts
+                self._forkserver_pid = Nichts
 
             cmd = ('from multiprocessing.forkserver import main; ' +
                    'main(%d, %d, %r, **%r)')
@@ -195,10 +195,10 @@ klasse ForkServer(object):
 #
 #
 
-def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
-         *, authkey_r=None):
+def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
+         *, authkey_r=Nichts):
     """Run forkserver."""
-    wenn authkey_r is not None:
+    wenn authkey_r is not Nichts:
         try:
             authkey = os.read(authkey_r, _AUTHKEY_LEN)
             assert len(authkey) == _AUTHKEY_LEN, f'{len(authkey)} < {_AUTHKEY_LEN}'
@@ -208,10 +208,10 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
         authkey = b''
 
     wenn preload:
-        wenn sys_path is not None:
+        wenn sys_path is not Nichts:
             sys.path[:] = sys_path
-        wenn '__main__' in preload and main_path is not None:
-            process.current_process()._inheriting = True
+        wenn '__main__' in preload and main_path is not Nichts:
+            process.current_process()._inheriting = Wahr
             try:
                 spawn.import_main_path(main_path)
             finally:
@@ -229,8 +229,8 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
     util._close_stdin()
 
     sig_r, sig_w = os.pipe()
-    os.set_blocking(sig_r, False)
-    os.set_blocking(sig_w, False)
+    os.set_blocking(sig_r, Falsch)
+    os.set_blocking(sig_w, Falsch)
 
     def sigchld_handler(*_unused):
         # Dummy signal handler, doesn't do anything
@@ -259,9 +259,9 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
         selector.register(alive_r, selectors.EVENT_READ)
         selector.register(sig_r, selectors.EVENT_READ)
 
-        while True:
+        while Wahr:
             try:
-                while True:
+                while Wahr:
                     rfds = [key.fileobj fuer (key, events) in selector.select()]
                     wenn rfds:
                         break
@@ -274,7 +274,7 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                 wenn sig_r in rfds:
                     # Got SIGCHLD
                     os.read(sig_r, 65536)  # exhaust
-                    while True:
+                    while Wahr:
                         # Scan fuer child processes
                         try:
                             pid, sts = os.waitpid(-1, os.WNOHANG)
@@ -282,8 +282,8 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None,
                             break
                         wenn pid == 0:
                             break
-                        child_w = pid_to_fd.pop(pid, None)
-                        wenn child_w is not None:
+                        child_w = pid_to_fd.pop(pid, Nichts)
+                        wenn child_w is not Nichts:
                             returncode = os.waitstatus_to_exitcode(sts)
 
                             # Send exit code to client process

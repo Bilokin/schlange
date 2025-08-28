@@ -17,10 +17,10 @@ wenn not hasattr(select, "kqueue"):
 klasse TestKQueue(unittest.TestCase):
     def test_create_queue(self):
         kq = select.kqueue()
-        self.assertTrue(kq.fileno() > 0, kq.fileno())
-        self.assertTrue(not kq.closed)
+        self.assertWahr(kq.fileno() > 0, kq.fileno())
+        self.assertWahr(not kq.closed)
         kq.close()
-        self.assertTrue(kq.closed)
+        self.assertWahr(kq.closed)
         self.assertRaises(ValueError, kq.fileno)
 
     def test_create_event(self):
@@ -39,10 +39,10 @@ klasse TestKQueue(unittest.TestCase):
         self.assertEqual(ev.udata, 0)
         self.assertEqual(ev, ev)
         self.assertNotEqual(ev, other)
-        self.assertTrue(ev < other)
-        self.assertTrue(other >= ev)
+        self.assertWahr(ev < other)
+        self.assertWahr(other >= ev)
         fuer op in lt, le, gt, ge:
-            self.assertRaises(TypeError, op, ev, None)
+            self.assertRaises(TypeError, op, ev, Nichts)
             self.assertRaises(TypeError, op, ev, 1)
             self.assertRaises(TypeError, op, ev, "ev")
 
@@ -115,7 +115,7 @@ klasse TestKQueue(unittest.TestCase):
     def test_queue_event(self):
         serverSocket = socket.create_server(('127.0.0.1', 0))
         client = socket.socket()
-        client.setblocking(False)
+        client.setblocking(Falsch)
         try:
             client.connect(('127.0.0.1', serverSocket.getsockname()[1]))
         except OSError as e:
@@ -145,7 +145,7 @@ klasse TestKQueue(unittest.TestCase):
                            select.KQ_EV_ADD | select.KQ_EV_ENABLE)
         kq2.control([ev], 0)
 
-        events = kq.control(None, 4, 1)
+        events = kq.control(Nichts, 4, 1)
         events = set((e.ident, e.filter) fuer e in events)
         self.assertEqual(events, set([
             (client.fileno(), select.KQ_FILTER_WRITE),
@@ -156,7 +156,7 @@ klasse TestKQueue(unittest.TestCase):
 
         # We may need to call it several times
         fuer i in range(10):
-            events = kq.control(None, 4, 1)
+            events = kq.control(Nichts, 4, 1)
             wenn len(events) == 4:
                 break
             time.sleep(1.0)
@@ -201,8 +201,8 @@ klasse TestKQueue(unittest.TestCase):
         event1 = select.kevent(a, select.KQ_FILTER_READ, select.KQ_EV_ADD | select.KQ_EV_ENABLE)
         event2 = select.kevent(b, select.KQ_FILTER_READ, select.KQ_EV_ADD | select.KQ_EV_ENABLE)
         r = kq.control([event1, event2], 1, 1)
-        self.assertTrue(r)
-        self.assertFalse(r[0].flags & select.KQ_EV_ERROR)
+        self.assertWahr(r)
+        self.assertFalsch(r[0].flags & select.KQ_EV_ERROR)
         self.assertEqual(b.recv(r[0].data), b'foo')
 
         a.close()
@@ -241,23 +241,23 @@ klasse TestKQueue(unittest.TestCase):
 
         # test fileno() method and closed attribute
         self.assertIsInstance(kqueue.fileno(), int)
-        self.assertFalse(kqueue.closed)
+        self.assertFalsch(kqueue.closed)
 
         # test close()
         kqueue.close()
-        self.assertTrue(kqueue.closed)
+        self.assertWahr(kqueue.closed)
         self.assertRaises(ValueError, kqueue.fileno)
 
         # close() can be called more than once
         kqueue.close()
 
         # operations must fail with ValueError("I/O operation on closed ...")
-        self.assertRaises(ValueError, kqueue.control, None, 4)
+        self.assertRaises(ValueError, kqueue.control, Nichts, 4)
 
     def test_fd_non_inheritable(self):
         kqueue = select.kqueue()
         self.addCleanup(kqueue.close)
-        self.assertEqual(os.get_inheritable(kqueue.fileno()), False)
+        self.assertEqual(os.get_inheritable(kqueue.fileno()), Falsch)
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @support.requires_fork()
@@ -266,7 +266,7 @@ klasse TestKQueue(unittest.TestCase):
         kqueue = select.kqueue()
         wenn (pid := os.fork()) == 0:
             try:
-                self.assertTrue(kqueue.closed)
+                self.assertWahr(kqueue.closed)
                 with self.assertRaisesRegex(ValueError, "closed kqueue"):
                     kqueue.fileno()
             except:
@@ -275,7 +275,7 @@ klasse TestKQueue(unittest.TestCase):
                 os._exit(0)
         sonst:
             support.wait_process(pid, exitcode=0)
-            self.assertFalse(kqueue.closed)  # child done, we're still open.
+            self.assertFalsch(kqueue.closed)  # child done, we're still open.
 
 
 wenn __name__ == "__main__":

@@ -110,7 +110,7 @@ def create_stdlib_zip(
     args: argparse.Namespace,
     *,
     optimize: int = 0,
-) -> None:
+) -> Nichts:
     def filterfunc(filename: str) -> bool:
         pathname = pathlib.Path(filename).resolve()
         return pathname not in args.omit_files_absolute
@@ -121,7 +121,7 @@ def create_stdlib_zip(
         compression=args.compression,
         optimize=optimize,
     ) as pzf:
-        wenn args.compresslevel is not None:
+        wenn args.compresslevel is not Nichts:
             pzf.compresslevel = args.compresslevel
         pzf.writepy(args.sysconfig_data)
         fuer entry in sorted(args.srcdir_lib.iterdir()):
@@ -142,7 +142,7 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
             wenn line.startswith("MODDISABLED_NAMES="):
                 disabled = line.split("=", 1)[1].strip().split()
                 fuer modname in disabled:
-                    modules[modname] = False
+                    modules[modname] = Falsch
                 break
 
     # disabled by configure?
@@ -188,7 +188,7 @@ parser.add_argument(
 )
 
 
-def main() -> None:
+def main() -> Nichts:
     args = parser.parse_args()
 
     relative_prefix = args.prefix.relative_to(pathlib.Path("/"))
@@ -221,7 +221,7 @@ def main() -> None:
     }
 
     # Empty, unused directory fuer dynamic libs, but required fuer site initialization.
-    args.wasm_dynload.mkdir(parents=True, exist_ok=True)
+    args.wasm_dynload.mkdir(parents=Wahr, exist_ok=Wahr)
     marker = args.wasm_dynload / ".empty"
     marker.touch()
     # The rest of stdlib that's useful in a WASM context.

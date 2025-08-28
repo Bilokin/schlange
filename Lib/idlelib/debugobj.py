@@ -19,7 +19,7 @@ myrepr.maxstring = 100
 myrepr.maxother = 100
 
 klasse ObjectTreeItem(TreeItem):
-    def __init__(self, labeltext, object_, setfunction=None):
+    def __init__(self, labeltext, object_, setfunction=Nichts):
         self.labeltext = labeltext
         self.object = object_
         self.setfunction = setfunction
@@ -31,7 +31,7 @@ klasse ObjectTreeItem(TreeItem):
         wenn not self.IsExpandable():
             return "python"
     def IsEditable(self):
-        return self.setfunction is not None
+        return self.setfunction is not Nichts
     def SetText(self, text):
         try:
             value = eval(text)
@@ -60,7 +60,7 @@ klasse ObjectTreeItem(TreeItem):
 
 klasse ClassTreeItem(ObjectTreeItem):
     def IsExpandable(self):
-        return True
+        return Wahr
     def GetSubList(self):
         sublist = ObjectTreeItem.GetSubList(self)
         wenn len(self.object.__bases__) == 1:
@@ -73,7 +73,7 @@ klasse ClassTreeItem(ObjectTreeItem):
 
 klasse AtomicObjectTreeItem(ObjectTreeItem):
     def IsExpandable(self):
-        return False
+        return Falsch
 
 klasse SequenceTreeItem(ObjectTreeItem):
     def IsExpandable(self):
@@ -113,7 +113,7 @@ dispatch = {
     type: ClassTreeItem,
 }
 
-def make_objecttreeitem(labeltext, object_, setfunction=None):
+def make_objecttreeitem(labeltext, object_, setfunction=Nichts):
     t = type(object_)
     wenn t in dispatch:
         c = dispatch[t]
@@ -134,13 +134,13 @@ def _debug_object_browser(parent):  # htest #
     sc = ScrolledCanvas(top, bg="white", highlightthickness=0, takefocus=1)
     sc.frame.pack(expand=1, fill="both")
     item = make_objecttreeitem("sys", sys)
-    node = TreeNode(sc.canvas, None, item)
+    node = TreeNode(sc.canvas, Nichts, item)
     node.update()
 
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_debugobj', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_debugobj', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_debug_object_browser)

@@ -64,8 +64,8 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
             self.assertEqual(Main.x.size, 1)
             self.assertEqual(Main.y.offset, 4)
             self.assertEqual(Main.y.size, 4)
-            self.assertEqual(main.y.bool1, True)
-            self.assertEqual(main.y.bool2, False)
+            self.assertEqual(main.y.bool1, Wahr)
+            self.assertEqual(main.y.bool2, Falsch)
             self.assertEqual(Main.z.offset, 8)
             self.assertEqual(main.z, 7)
 

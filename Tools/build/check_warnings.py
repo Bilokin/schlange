@@ -14,8 +14,8 @@ from typing import NamedTuple, TypedDict
 klasse IgnoreRule(NamedTuple):
     file_path: str
     count: int  # type: ignore[assignment]
-    ignore_all: bool = False
-    is_directory: bool = False
+    ignore_all: bool = Falsch
+    is_directory: bool = Falsch
 
 
 klasse CompileWarning(TypedDict):
@@ -136,10 +136,10 @@ def get_warnings_by_file(
 
 def is_file_ignored(
     file_path: str, ignore_rules: set[IgnoreRule]
-) -> IgnoreRule | None:
+) -> IgnoreRule | Nichts:
     """Return the IgnoreRule object fuer the file path.
 
-    Return ``None`` wenn there is no related rule fuer that path.
+    Return ``Nichts`` wenn there is no related rule fuer that path.
     """
     fuer rule in ignore_rules:
         wenn rule.is_directory:
@@ -147,7 +147,7 @@ def is_file_ignored(
                 return rule
         sowenn file_path == rule.file_path:
             return rule
-    return None
+    return Nichts
 
 
 def get_unexpected_warnings(
@@ -173,7 +173,7 @@ def get_unexpected_warnings(
                     rule.count,
                 )
             continue
-        sowenn rule is None:
+        sowenn rule is Nichts:
             # If the file is not in the ignore list, then it is unexpected
             unexpected_warnings[file] = (files_with_warnings[file], 0)
 
@@ -225,13 +225,13 @@ def get_unexpected_improvements(
     return 0
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv: list[str] | Nichts = Nichts) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-c",
         "--compiler-output-file-path",
         type=str,
-        required=True,
+        required=Wahr,
         help="Path to the compiler output file",
     )
     parser.add_argument(
@@ -244,14 +244,14 @@ def main(argv: list[str] | None = None) -> int:
         "-x",
         "--fail-on-regression",
         action="store_true",
-        default=False,
+        default=Falsch,
         help="Flag to fail wenn new warnings are found",
     )
     parser.add_argument(
         "-X",
         "--fail-on-improvement",
         action="store_true",
-        default=False,
+        default=Falsch,
         help="Flag to fail wenn files that were expected "
         "to have warnings have no warnings",
     )
@@ -259,7 +259,7 @@ def main(argv: list[str] | None = None) -> int:
         "-t",
         "--compiler-output-type",
         type=str,
-        required=True,
+        required=Wahr,
         choices=["gcc", "clang"],
         help="Type of compiler output file (GCC or Clang)",
     )

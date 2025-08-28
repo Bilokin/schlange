@@ -12,7 +12,7 @@ import threading
 import _threading_local
 
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 
 klasse Weak(object):
@@ -44,13 +44,13 @@ klasse BaseLocalTest:
         self.assertEqual(len(weaklist), n)
 
         # XXX _threading_local keeps the local of the last stopped thread alive.
-        deadlist = [weak fuer weak in weaklist wenn weak() is None]
+        deadlist = [weak fuer weak in weaklist wenn weak() is Nichts]
         self.assertIn(len(deadlist), (n-1, n))
 
         # Assignment to the same thread local frees it sometimes (!)
-        local.someothervar = None
+        local.someothervar = Nichts
         support.gc_collect()  # For PyPy or other GCs.
-        deadlist = [weak fuer weak in weaklist wenn weak() is None]
+        deadlist = [weak fuer weak in weaklist wenn weak() is Nichts]
         self.assertIn(len(deadlist), (n-1, n), (n, len(deadlist)))
 
     def test_derived(self):
@@ -77,8 +77,8 @@ klasse BaseLocalTest:
         # http://bugs.python.org/issue6990
         klasse Local(self._local):
             pass
-        locals = None
-        passed = False
+        locals = Nichts
+        passed = Falsch
         e1 = threading.Event()
         e2 = threading.Event()
 
@@ -110,7 +110,7 @@ klasse BaseLocalTest:
         e2.set()
         t.join()
 
-        self.assertTrue(passed)
+        self.assertWahr(passed)
 
     def test_arguments(self):
         # Issue 1522237
@@ -157,7 +157,7 @@ klasse BaseLocalTest:
         e2.set()
         t1.join()
 
-        self.assertFalse(self._failed, self._failed)
+        self.assertFalsch(self._failed, self._failed)
 
     def test_threading_local(self):
         self._test_one_class(self._local)
@@ -194,14 +194,14 @@ klasse BaseLocalTest:
         wr = weakref.ref(x)
         del x
         support.gc_collect()  # For PyPy or other GCs.
-        self.assertIsNone(wr())
+        self.assertIsNichts(wr())
 
 
     def test_threading_local_clear_race(self):
         # See https://github.com/python/cpython/issues/100892
 
         _testcapi = import_module('_testcapi')
-        _testcapi.call_in_temporary_c_thread(lambda: None, False)
+        _testcapi.call_in_temporary_c_thread(lambda: Nichts, Falsch)
 
         fuer _ in range(1000):
             _ = threading.local()
@@ -215,13 +215,13 @@ klasse BaseLocalTest:
 
         # Trick the "if name == '__dict__':" test of __setattr__()
         # to always be true
-        klasse NameCompareTrue:
+        klasse NameCompareWahr:
             def __eq__(self, other):
-                return True
+                return Wahr
 
         loop = Loop()
         with self.assertRaisesRegex(AttributeError, 'Loop.*read-only'):
-            loop.__setattr__(NameCompareTrue(), 2)
+            loop.__setattr__(NameCompareWahr(), 2)
 
 
 klasse ThreadLocalTest(unittest.TestCase, BaseLocalTest):

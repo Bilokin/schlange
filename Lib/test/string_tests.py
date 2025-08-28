@@ -22,12 +22,12 @@ klasse BaseTest:
 
     # The type to be tested
     # Change in subclasses to change the behaviour of fixtype()
-    type2test = None
+    type2test = Nichts
 
     # Whether the "contained items" of the container are integers in
     # range(0, 256) (i.e. bytes, bytearray) or strings of length 1
     # (str)
-    contains_bytes = False
+    contains_bytes = Falsch
 
     # All tests pass their arguments to the testing methods
     # as str objects. fixtype() can be used to propagate
@@ -75,13 +75,13 @@ klasse BaseTest:
                 self.assertIsNot(obj, realresult)
 
     # check that obj.method(*args) raises exc
-    def checkraises(self, exc, obj, methodname, *args, expected_msg=None):
+    def checkraises(self, exc, obj, methodname, *args, expected_msg=Nichts):
         obj = self.fixtype(obj)
         args = self.fixtype(args)
         with self.assertRaises(exc) as cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
-        wenn expected_msg is not None:
+        wenn expected_msg is not Nichts:
             self.assertEqual(str(cm.exception), expected_msg)
 
     # call obj.method(*args) without any checks
@@ -169,12 +169,12 @@ klasse BaseTest:
         self.checkequal(3, 'abc', 'find', '', 3)
         self.checkequal(-1, 'abc', 'find', '', 4)
 
-        # to check the ability to pass None as defaults
+        # to check the ability to pass Nichts as defaults
         self.checkequal( 2, 'rrarrrrrrrrra', 'find', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'find', 'a', 4)
         self.checkequal(-1, 'rrarrrrrrrrra', 'find', 'a', 4, 6)
-        self.checkequal(12, 'rrarrrrrrrrra', 'find', 'a', 4, None)
-        self.checkequal( 2, 'rrarrrrrrrrra', 'find', 'a', None, 6)
+        self.checkequal(12, 'rrarrrrrrrrra', 'find', 'a', 4, Nichts)
+        self.checkequal( 2, 'rrarrrrrrrrra', 'find', 'a', Nichts, 6)
 
         self.checkraises(TypeError, 'hello', 'find')
 
@@ -227,12 +227,12 @@ klasse BaseTest:
         self.checkequal(3, 'abc', 'rfind', '', 3)
         self.checkequal(-1, 'abc', 'rfind', '', 4)
 
-        # to check the ability to pass None as defaults
+        # to check the ability to pass Nichts as defaults
         self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a', 4)
         self.checkequal(-1, 'rrarrrrrrrrra', 'rfind', 'a', 4, 6)
-        self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a', 4, None)
-        self.checkequal( 2, 'rrarrrrrrrrra', 'rfind', 'a', None, 6)
+        self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a', 4, Nichts)
+        self.checkequal( 2, 'rrarrrrrrrrra', 'rfind', 'a', Nichts, 6)
 
         self.checkraises(TypeError, 'hello', 'rfind')
 
@@ -281,12 +281,12 @@ klasse BaseTest:
         self.checkraises(ValueError, 'abcdefghi', 'index', 'ghi', 8)
         self.checkraises(ValueError, 'abcdefghi', 'index', 'ghi', -1)
 
-        # to check the ability to pass None as defaults
+        # to check the ability to pass Nichts as defaults
         self.checkequal( 2, 'rrarrrrrrrrra', 'index', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'index', 'a', 4)
         self.checkraises(ValueError, 'rrarrrrrrrrra', 'index', 'a', 4, 6)
-        self.checkequal(12, 'rrarrrrrrrrra', 'index', 'a', 4, None)
-        self.checkequal( 2, 'rrarrrrrrrrra', 'index', 'a', None, 6)
+        self.checkequal(12, 'rrarrrrrrrrra', 'index', 'a', 4, Nichts)
+        self.checkequal( 2, 'rrarrrrrrrrra', 'index', 'a', Nichts, 6)
 
         self.checkraises(TypeError, 'hello', 'index')
 
@@ -307,12 +307,12 @@ klasse BaseTest:
         self.checkraises(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, 8)
         self.checkraises(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, -1)
 
-        # to check the ability to pass None as defaults
+        # to check the ability to pass Nichts as defaults
         self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a', 4)
         self.checkraises(ValueError, 'rrarrrrrrrrra', 'rindex', 'a', 4, 6)
-        self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a', 4, None)
-        self.checkequal( 2, 'rrarrrrrrrrra', 'rindex', 'a', None, 6)
+        self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a', 4, Nichts)
+        self.checkequal( 2, 'rrarrrrrrrrra', 'rindex', 'a', Nichts, 6)
 
         self.checkraises(TypeError, 'hello', 'rindex')
 
@@ -571,9 +571,9 @@ klasse BaseTest:
 
         # with keyword args
         self.checkequal(['a', 'b', 'c', 'd'], 'a|b|c|d', 'rsplit', sep='|')
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', sep=None)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', sep=Nichts)
         self.checkequal(['a b c', 'd'],
-                        'a b c d', 'rsplit', sep=None, maxsplit=1)
+                        'a b c d', 'rsplit', sep=Nichts, maxsplit=1)
         self.checkequal(['a|b|c', 'd'],
                         'a|b|c|d', 'rsplit', '|', maxsplit=1)
         self.checkequal(['a|b|c', 'd'],
@@ -848,35 +848,35 @@ klasse BaseTest:
 
         # by whitespace
         self.checkequal(['a', 'b', 'c', 'd'], 'a b c d ', 'split')
-        self.checkequal(['a', 'b c d'], 'a b c d', 'split', None, 1)
-        self.checkequal(['a', 'b', 'c d'], 'a b c d', 'split', None, 2)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', None, 3)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', None, 4)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', None,
+        self.checkequal(['a', 'b c d'], 'a b c d', 'split', Nichts, 1)
+        self.checkequal(['a', 'b', 'c d'], 'a b c d', 'split', Nichts, 2)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', Nichts, 3)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', Nichts, 4)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'split', Nichts,
                         sys.maxsize-1)
-        self.checkequal(['a b c d'], 'a b c d', 'split', None, 0)
-        self.checkequal(['a b c d'], '  a b c d', 'split', None, 0)
-        self.checkequal(['a', 'b', 'c  d'], 'a  b  c  d', 'split', None, 2)
+        self.checkequal(['a b c d'], 'a b c d', 'split', Nichts, 0)
+        self.checkequal(['a b c d'], '  a b c d', 'split', Nichts, 0)
+        self.checkequal(['a', 'b', 'c  d'], 'a  b  c  d', 'split', Nichts, 2)
 
         self.checkequal([], '         ', 'split')
         self.checkequal(['a'], '  a    ', 'split')
         self.checkequal(['a', 'b'], '  a    b   ', 'split')
-        self.checkequal(['a', 'b   '], '  a    b   ', 'split', None, 1)
-        self.checkequal(['a    b   c   '], '  a    b   c   ', 'split', None, 0)
-        self.checkequal(['a', 'b   c   '], '  a    b   c   ', 'split', None, 1)
-        self.checkequal(['a', 'b', 'c   '], '  a    b   c   ', 'split', None, 2)
-        self.checkequal(['a', 'b', 'c'], '  a    b   c   ', 'split', None, 3)
+        self.checkequal(['a', 'b   '], '  a    b   ', 'split', Nichts, 1)
+        self.checkequal(['a    b   c   '], '  a    b   c   ', 'split', Nichts, 0)
+        self.checkequal(['a', 'b   c   '], '  a    b   c   ', 'split', Nichts, 1)
+        self.checkequal(['a', 'b', 'c   '], '  a    b   c   ', 'split', Nichts, 2)
+        self.checkequal(['a', 'b', 'c'], '  a    b   c   ', 'split', Nichts, 3)
         self.checkequal(['a', 'b'], '\n\ta \t\r b \v ', 'split')
         aaa = ' a '*20
         self.checkequal(['a']*20, aaa, 'split')
-        self.checkequal(['a'] + [aaa[4:]], aaa, 'split', None, 1)
-        self.checkequal(['a']*19 + ['a '], aaa, 'split', None, 19)
+        self.checkequal(['a'] + [aaa[4:]], aaa, 'split', Nichts, 1)
+        self.checkequal(['a']*19 + ['a '], aaa, 'split', Nichts, 19)
 
         fuer b in ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
                   'arf\fbarf', 'arf\vbarf'):
             self.checkequal(['arf', 'barf'], b, 'split')
-            self.checkequal(['arf', 'barf'], b, 'split', None)
-            self.checkequal(['arf', 'barf'], b, 'split', None, 2)
+            self.checkequal(['arf', 'barf'], b, 'split', Nichts)
+            self.checkequal(['arf', 'barf'], b, 'split', Nichts, 2)
 
     def test_additional_rsplit(self):
         self.checkequal(['this', 'is', 'the', 'rsplit', 'function'],
@@ -884,39 +884,39 @@ klasse BaseTest:
 
         # by whitespace
         self.checkequal(['a', 'b', 'c', 'd'], 'a b c d ', 'rsplit')
-        self.checkequal(['a b c', 'd'], 'a b c d', 'rsplit', None, 1)
-        self.checkequal(['a b', 'c', 'd'], 'a b c d', 'rsplit', None, 2)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', None, 3)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', None, 4)
-        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', None,
+        self.checkequal(['a b c', 'd'], 'a b c d', 'rsplit', Nichts, 1)
+        self.checkequal(['a b', 'c', 'd'], 'a b c d', 'rsplit', Nichts, 2)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', Nichts, 3)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', Nichts, 4)
+        self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', Nichts,
                         sys.maxsize-20)
-        self.checkequal(['a b c d'], 'a b c d', 'rsplit', None, 0)
-        self.checkequal(['a b c d'], 'a b c d  ', 'rsplit', None, 0)
-        self.checkequal(['a  b', 'c', 'd'], 'a  b  c  d', 'rsplit', None, 2)
+        self.checkequal(['a b c d'], 'a b c d', 'rsplit', Nichts, 0)
+        self.checkequal(['a b c d'], 'a b c d  ', 'rsplit', Nichts, 0)
+        self.checkequal(['a  b', 'c', 'd'], 'a  b  c  d', 'rsplit', Nichts, 2)
 
         self.checkequal([], '         ', 'rsplit')
         self.checkequal(['a'], '  a    ', 'rsplit')
         self.checkequal(['a', 'b'], '  a    b   ', 'rsplit')
-        self.checkequal(['  a', 'b'], '  a    b   ', 'rsplit', None, 1)
+        self.checkequal(['  a', 'b'], '  a    b   ', 'rsplit', Nichts, 1)
         self.checkequal(['  a    b   c'], '  a    b   c   ', 'rsplit',
-                        None, 0)
+                        Nichts, 0)
         self.checkequal(['  a    b','c'], '  a    b   c   ', 'rsplit',
-                        None, 1)
+                        Nichts, 1)
         self.checkequal(['  a', 'b', 'c'], '  a    b   c   ', 'rsplit',
-                        None, 2)
+                        Nichts, 2)
         self.checkequal(['a', 'b', 'c'], '  a    b   c   ', 'rsplit',
-                        None, 3)
-        self.checkequal(['a', 'b'], '\n\ta \t\r b \v ', 'rsplit', None, 88)
+                        Nichts, 3)
+        self.checkequal(['a', 'b'], '\n\ta \t\r b \v ', 'rsplit', Nichts, 88)
         aaa = ' a '*20
         self.checkequal(['a']*20, aaa, 'rsplit')
-        self.checkequal([aaa[:-4]] + ['a'], aaa, 'rsplit', None, 1)
-        self.checkequal([' a  a'] + ['a']*18, aaa, 'rsplit', None, 18)
+        self.checkequal([aaa[:-4]] + ['a'], aaa, 'rsplit', Nichts, 1)
+        self.checkequal([' a  a'] + ['a']*18, aaa, 'rsplit', Nichts, 18)
 
         fuer b in ('arf\tbarf', 'arf\nbarf', 'arf\rbarf',
                   'arf\fbarf', 'arf\vbarf'):
             self.checkequal(['arf', 'barf'], b, 'rsplit')
-            self.checkequal(['arf', 'barf'], b, 'rsplit', None)
-            self.checkequal(['arf', 'barf'], b, 'rsplit', None, 2)
+            self.checkequal(['arf', 'barf'], b, 'rsplit', Nichts)
+            self.checkequal(['arf', 'barf'], b, 'rsplit', Nichts, 2)
 
     def test_strip_whitespace(self):
         self.checkequal('hello', '   hello   ', 'strip')
@@ -929,11 +929,11 @@ klasse BaseTest:
         self.checkequal('abc \t\n\r\f\v', b, 'lstrip')
         self.checkequal(' \t\n\r\f\vabc', b, 'rstrip')
 
-        # strip/lstrip/rstrip with None arg
-        self.checkequal('hello', '   hello   ', 'strip', None)
-        self.checkequal('hello   ', '   hello   ', 'lstrip', None)
-        self.checkequal('   hello', '   hello   ', 'rstrip', None)
-        self.checkequal('hello', 'hello', 'strip', None)
+        # strip/lstrip/rstrip with Nichts arg
+        self.checkequal('hello', '   hello   ', 'strip', Nichts)
+        self.checkequal('hello   ', '   hello   ', 'lstrip', Nichts)
+        self.checkequal('   hello', '   hello   ', 'rstrip', Nichts)
+        self.checkequal('hello', 'hello', 'strip', Nichts)
 
     def test_strip(self):
         # strip/lstrip/rstrip with str arg
@@ -996,92 +996,92 @@ klasse BaseTest:
         self.checkraises(TypeError, '123', 'zfill')
 
     def test_islower(self):
-        self.checkequal(False, '', 'islower')
-        self.checkequal(True, 'a', 'islower')
-        self.checkequal(False, 'A', 'islower')
-        self.checkequal(False, '\n', 'islower')
-        self.checkequal(True, 'abc', 'islower')
-        self.checkequal(False, 'aBc', 'islower')
-        self.checkequal(True, 'abc\n', 'islower')
+        self.checkequal(Falsch, '', 'islower')
+        self.checkequal(Wahr, 'a', 'islower')
+        self.checkequal(Falsch, 'A', 'islower')
+        self.checkequal(Falsch, '\n', 'islower')
+        self.checkequal(Wahr, 'abc', 'islower')
+        self.checkequal(Falsch, 'aBc', 'islower')
+        self.checkequal(Wahr, 'abc\n', 'islower')
         self.checkraises(TypeError, 'abc', 'islower', 42)
 
     def test_isupper(self):
-        self.checkequal(False, '', 'isupper')
-        self.checkequal(False, 'a', 'isupper')
-        self.checkequal(True, 'A', 'isupper')
-        self.checkequal(False, '\n', 'isupper')
-        self.checkequal(True, 'ABC', 'isupper')
-        self.checkequal(False, 'AbC', 'isupper')
-        self.checkequal(True, 'ABC\n', 'isupper')
+        self.checkequal(Falsch, '', 'isupper')
+        self.checkequal(Falsch, 'a', 'isupper')
+        self.checkequal(Wahr, 'A', 'isupper')
+        self.checkequal(Falsch, '\n', 'isupper')
+        self.checkequal(Wahr, 'ABC', 'isupper')
+        self.checkequal(Falsch, 'AbC', 'isupper')
+        self.checkequal(Wahr, 'ABC\n', 'isupper')
         self.checkraises(TypeError, 'abc', 'isupper', 42)
 
     def test_istitle(self):
-        self.checkequal(False, '', 'istitle')
-        self.checkequal(False, 'a', 'istitle')
-        self.checkequal(True, 'A', 'istitle')
-        self.checkequal(False, '\n', 'istitle')
-        self.checkequal(True, 'A Titlecased Line', 'istitle')
-        self.checkequal(True, 'A\nTitlecased Line', 'istitle')
-        self.checkequal(True, 'A Titlecased, Line', 'istitle')
-        self.checkequal(False, 'Not a capitalized String', 'istitle')
-        self.checkequal(False, 'Not\ta Titlecase String', 'istitle')
-        self.checkequal(False, 'Not--a Titlecase String', 'istitle')
-        self.checkequal(False, 'NOT', 'istitle')
+        self.checkequal(Falsch, '', 'istitle')
+        self.checkequal(Falsch, 'a', 'istitle')
+        self.checkequal(Wahr, 'A', 'istitle')
+        self.checkequal(Falsch, '\n', 'istitle')
+        self.checkequal(Wahr, 'A Titlecased Line', 'istitle')
+        self.checkequal(Wahr, 'A\nTitlecased Line', 'istitle')
+        self.checkequal(Wahr, 'A Titlecased, Line', 'istitle')
+        self.checkequal(Falsch, 'Not a capitalized String', 'istitle')
+        self.checkequal(Falsch, 'Not\ta Titlecase String', 'istitle')
+        self.checkequal(Falsch, 'Not--a Titlecase String', 'istitle')
+        self.checkequal(Falsch, 'NOT', 'istitle')
         self.checkraises(TypeError, 'abc', 'istitle', 42)
 
     def test_isspace(self):
-        self.checkequal(False, '', 'isspace')
-        self.checkequal(False, 'a', 'isspace')
-        self.checkequal(True, ' ', 'isspace')
-        self.checkequal(True, '\t', 'isspace')
-        self.checkequal(True, '\r', 'isspace')
-        self.checkequal(True, '\n', 'isspace')
-        self.checkequal(True, ' \t\r\n', 'isspace')
-        self.checkequal(False, ' \t\r\na', 'isspace')
+        self.checkequal(Falsch, '', 'isspace')
+        self.checkequal(Falsch, 'a', 'isspace')
+        self.checkequal(Wahr, ' ', 'isspace')
+        self.checkequal(Wahr, '\t', 'isspace')
+        self.checkequal(Wahr, '\r', 'isspace')
+        self.checkequal(Wahr, '\n', 'isspace')
+        self.checkequal(Wahr, ' \t\r\n', 'isspace')
+        self.checkequal(Falsch, ' \t\r\na', 'isspace')
         self.checkraises(TypeError, 'abc', 'isspace', 42)
 
     def test_isalpha(self):
-        self.checkequal(False, '', 'isalpha')
-        self.checkequal(True, 'a', 'isalpha')
-        self.checkequal(True, 'A', 'isalpha')
-        self.checkequal(False, '\n', 'isalpha')
-        self.checkequal(True, 'abc', 'isalpha')
-        self.checkequal(False, 'aBc123', 'isalpha')
-        self.checkequal(False, 'abc\n', 'isalpha')
+        self.checkequal(Falsch, '', 'isalpha')
+        self.checkequal(Wahr, 'a', 'isalpha')
+        self.checkequal(Wahr, 'A', 'isalpha')
+        self.checkequal(Falsch, '\n', 'isalpha')
+        self.checkequal(Wahr, 'abc', 'isalpha')
+        self.checkequal(Falsch, 'aBc123', 'isalpha')
+        self.checkequal(Falsch, 'abc\n', 'isalpha')
         self.checkraises(TypeError, 'abc', 'isalpha', 42)
 
     def test_isalnum(self):
-        self.checkequal(False, '', 'isalnum')
-        self.checkequal(True, 'a', 'isalnum')
-        self.checkequal(True, 'A', 'isalnum')
-        self.checkequal(False, '\n', 'isalnum')
-        self.checkequal(True, '123abc456', 'isalnum')
-        self.checkequal(True, 'a1b3c', 'isalnum')
-        self.checkequal(False, 'aBc000 ', 'isalnum')
-        self.checkequal(False, 'abc\n', 'isalnum')
+        self.checkequal(Falsch, '', 'isalnum')
+        self.checkequal(Wahr, 'a', 'isalnum')
+        self.checkequal(Wahr, 'A', 'isalnum')
+        self.checkequal(Falsch, '\n', 'isalnum')
+        self.checkequal(Wahr, '123abc456', 'isalnum')
+        self.checkequal(Wahr, 'a1b3c', 'isalnum')
+        self.checkequal(Falsch, 'aBc000 ', 'isalnum')
+        self.checkequal(Falsch, 'abc\n', 'isalnum')
         self.checkraises(TypeError, 'abc', 'isalnum', 42)
 
     def test_isascii(self):
-        self.checkequal(True, '', 'isascii')
-        self.checkequal(True, '\x00', 'isascii')
-        self.checkequal(True, '\x7f', 'isascii')
-        self.checkequal(True, '\x00\x7f', 'isascii')
-        self.checkequal(False, '\x80', 'isascii')
-        self.checkequal(False, '\xe9', 'isascii')
+        self.checkequal(Wahr, '', 'isascii')
+        self.checkequal(Wahr, '\x00', 'isascii')
+        self.checkequal(Wahr, '\x7f', 'isascii')
+        self.checkequal(Wahr, '\x00\x7f', 'isascii')
+        self.checkequal(Falsch, '\x80', 'isascii')
+        self.checkequal(Falsch, '\xe9', 'isascii')
         # bytes.isascii() and bytearray.isascii() has optimization which
         # check 4 or 8 bytes at once.  So check some alignments.
         fuer p in range(8):
-            self.checkequal(True, ' '*p + '\x7f', 'isascii')
-            self.checkequal(False, ' '*p + '\x80', 'isascii')
-            self.checkequal(True, ' '*p + '\x7f' + ' '*8, 'isascii')
-            self.checkequal(False, ' '*p + '\x80' + ' '*8, 'isascii')
+            self.checkequal(Wahr, ' '*p + '\x7f', 'isascii')
+            self.checkequal(Falsch, ' '*p + '\x80', 'isascii')
+            self.checkequal(Wahr, ' '*p + '\x7f' + ' '*8, 'isascii')
+            self.checkequal(Falsch, ' '*p + '\x80' + ' '*8, 'isascii')
 
     def test_isdigit(self):
-        self.checkequal(False, '', 'isdigit')
-        self.checkequal(False, 'a', 'isdigit')
-        self.checkequal(True, '0', 'isdigit')
-        self.checkequal(True, '0123456789', 'isdigit')
-        self.checkequal(False, '0123456789a', 'isdigit')
+        self.checkequal(Falsch, '', 'isdigit')
+        self.checkequal(Falsch, 'a', 'isdigit')
+        self.checkequal(Wahr, '0', 'isdigit')
+        self.checkequal(Wahr, '0123456789', 'isdigit')
+        self.checkequal(Falsch, '0123456789a', 'isdigit')
 
         self.checkraises(TypeError, 'abc', 'isdigit', 42)
 
@@ -1102,13 +1102,13 @@ klasse BaseTest:
         self.checkequal(['abc', 'def', 'ghi', ''], "abc\ndef\r\nghi\n\r", 'splitlines')
         self.checkequal(['', 'abc', 'def', 'ghi', ''], "\nabc\ndef\r\nghi\n\r", 'splitlines')
         self.checkequal(['', 'abc', 'def', 'ghi', ''],
-                        "\nabc\ndef\r\nghi\n\r", 'splitlines', False)
+                        "\nabc\ndef\r\nghi\n\r", 'splitlines', Falsch)
         self.checkequal(['\n', 'abc\n', 'def\r\n', 'ghi\n', '\r'],
-                        "\nabc\ndef\r\nghi\n\r", 'splitlines', True)
+                        "\nabc\ndef\r\nghi\n\r", 'splitlines', Wahr)
         self.checkequal(['', 'abc', 'def', 'ghi', ''], "\nabc\ndef\r\nghi\n\r",
-                        'splitlines', keepends=False)
+                        'splitlines', keepends=Falsch)
         self.checkequal(['\n', 'abc\n', 'def\r\n', 'ghi\n', '\r'],
-                        "\nabc\ndef\r\nghi\n\r", 'splitlines', keepends=True)
+                        "\nabc\ndef\r\nghi\n\r", 'splitlines', keepends=Wahr)
 
         self.checkraises(TypeError, 'abc', 'splitlines', 42, 42)
 
@@ -1145,115 +1145,115 @@ klasse StringLikeTest(BaseTest):
                         '\u1d00\u1d86\u0221\u1fb7', 'capitalize')
 
     def test_startswith(self):
-        self.checkequal(True, 'hello', 'startswith', 'he')
-        self.checkequal(True, 'hello', 'startswith', 'hello')
-        self.checkequal(False, 'hello', 'startswith', 'hello world')
-        self.checkequal(True, 'hello', 'startswith', '')
-        self.checkequal(False, 'hello', 'startswith', 'ello')
-        self.checkequal(True, 'hello', 'startswith', 'ello', 1)
-        self.checkequal(True, 'hello', 'startswith', 'o', 4)
-        self.checkequal(False, 'hello', 'startswith', 'o', 5)
-        self.checkequal(True, 'hello', 'startswith', '', 5)
-        self.checkequal(False, 'hello', 'startswith', 'lo', 6)
-        self.checkequal(True, 'helloworld', 'startswith', 'lowo', 3)
-        self.checkequal(True, 'helloworld', 'startswith', 'lowo', 3, 7)
-        self.checkequal(False, 'helloworld', 'startswith', 'lowo', 3, 6)
-        self.checkequal(True, '', 'startswith', '', 0, 1)
-        self.checkequal(True, '', 'startswith', '', 0, 0)
-        self.checkequal(False, '', 'startswith', '', 1, 0)
+        self.checkequal(Wahr, 'hello', 'startswith', 'he')
+        self.checkequal(Wahr, 'hello', 'startswith', 'hello')
+        self.checkequal(Falsch, 'hello', 'startswith', 'hello world')
+        self.checkequal(Wahr, 'hello', 'startswith', '')
+        self.checkequal(Falsch, 'hello', 'startswith', 'ello')
+        self.checkequal(Wahr, 'hello', 'startswith', 'ello', 1)
+        self.checkequal(Wahr, 'hello', 'startswith', 'o', 4)
+        self.checkequal(Falsch, 'hello', 'startswith', 'o', 5)
+        self.checkequal(Wahr, 'hello', 'startswith', '', 5)
+        self.checkequal(Falsch, 'hello', 'startswith', 'lo', 6)
+        self.checkequal(Wahr, 'helloworld', 'startswith', 'lowo', 3)
+        self.checkequal(Wahr, 'helloworld', 'startswith', 'lowo', 3, 7)
+        self.checkequal(Falsch, 'helloworld', 'startswith', 'lowo', 3, 6)
+        self.checkequal(Wahr, '', 'startswith', '', 0, 1)
+        self.checkequal(Wahr, '', 'startswith', '', 0, 0)
+        self.checkequal(Falsch, '', 'startswith', '', 1, 0)
 
         # test negative indices
-        self.checkequal(True, 'hello', 'startswith', 'he', 0, -1)
-        self.checkequal(True, 'hello', 'startswith', 'he', -53, -1)
-        self.checkequal(False, 'hello', 'startswith', 'hello', 0, -1)
-        self.checkequal(False, 'hello', 'startswith', 'hello world', -1, -10)
-        self.checkequal(False, 'hello', 'startswith', 'ello', -5)
-        self.checkequal(True, 'hello', 'startswith', 'ello', -4)
-        self.checkequal(False, 'hello', 'startswith', 'o', -2)
-        self.checkequal(True, 'hello', 'startswith', 'o', -1)
-        self.checkequal(True, 'hello', 'startswith', '', -3, -3)
-        self.checkequal(False, 'hello', 'startswith', 'lo', -9)
+        self.checkequal(Wahr, 'hello', 'startswith', 'he', 0, -1)
+        self.checkequal(Wahr, 'hello', 'startswith', 'he', -53, -1)
+        self.checkequal(Falsch, 'hello', 'startswith', 'hello', 0, -1)
+        self.checkequal(Falsch, 'hello', 'startswith', 'hello world', -1, -10)
+        self.checkequal(Falsch, 'hello', 'startswith', 'ello', -5)
+        self.checkequal(Wahr, 'hello', 'startswith', 'ello', -4)
+        self.checkequal(Falsch, 'hello', 'startswith', 'o', -2)
+        self.checkequal(Wahr, 'hello', 'startswith', 'o', -1)
+        self.checkequal(Wahr, 'hello', 'startswith', '', -3, -3)
+        self.checkequal(Falsch, 'hello', 'startswith', 'lo', -9)
 
         self.checkraises(TypeError, 'hello', 'startswith')
         self.checkraises(TypeError, 'hello', 'startswith', 42)
 
         # test tuple arguments
-        self.checkequal(True, 'hello', 'startswith', ('he', 'ha'))
-        self.checkequal(False, 'hello', 'startswith', ('lo', 'llo'))
-        self.checkequal(True, 'hello', 'startswith', ('hellox', 'hello'))
-        self.checkequal(False, 'hello', 'startswith', ())
-        self.checkequal(True, 'helloworld', 'startswith', ('hellowo',
+        self.checkequal(Wahr, 'hello', 'startswith', ('he', 'ha'))
+        self.checkequal(Falsch, 'hello', 'startswith', ('lo', 'llo'))
+        self.checkequal(Wahr, 'hello', 'startswith', ('hellox', 'hello'))
+        self.checkequal(Falsch, 'hello', 'startswith', ())
+        self.checkequal(Wahr, 'helloworld', 'startswith', ('hellowo',
                                                            'rld', 'lowo'), 3)
-        self.checkequal(False, 'helloworld', 'startswith', ('hellowo', 'ello',
+        self.checkequal(Falsch, 'helloworld', 'startswith', ('hellowo', 'ello',
                                                             'rld'), 3)
-        self.checkequal(True, 'hello', 'startswith', ('lo', 'he'), 0, -1)
-        self.checkequal(False, 'hello', 'startswith', ('he', 'hel'), 0, 1)
-        self.checkequal(True, 'hello', 'startswith', ('he', 'hel'), 0, 2)
+        self.checkequal(Wahr, 'hello', 'startswith', ('lo', 'he'), 0, -1)
+        self.checkequal(Falsch, 'hello', 'startswith', ('he', 'hel'), 0, 1)
+        self.checkequal(Wahr, 'hello', 'startswith', ('he', 'hel'), 0, 2)
 
         self.checkraises(TypeError, 'hello', 'startswith', (42,))
 
     def test_endswith(self):
-        self.checkequal(True, 'hello', 'endswith', 'lo')
-        self.checkequal(False, 'hello', 'endswith', 'he')
-        self.checkequal(True, 'hello', 'endswith', '')
-        self.checkequal(False, 'hello', 'endswith', 'hello world')
-        self.checkequal(False, 'helloworld', 'endswith', 'worl')
-        self.checkequal(True, 'helloworld', 'endswith', 'worl', 3, 9)
-        self.checkequal(True, 'helloworld', 'endswith', 'world', 3, 12)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', 1, 7)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', 2, 7)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', 3, 7)
-        self.checkequal(False, 'helloworld', 'endswith', 'lowo', 4, 7)
-        self.checkequal(False, 'helloworld', 'endswith', 'lowo', 3, 8)
-        self.checkequal(False, 'ab', 'endswith', 'ab', 0, 1)
-        self.checkequal(False, 'ab', 'endswith', 'ab', 0, 0)
-        self.checkequal(True, '', 'endswith', '', 0, 1)
-        self.checkequal(True, '', 'endswith', '', 0, 0)
-        self.checkequal(False, '', 'endswith', '', 1, 0)
+        self.checkequal(Wahr, 'hello', 'endswith', 'lo')
+        self.checkequal(Falsch, 'hello', 'endswith', 'he')
+        self.checkequal(Wahr, 'hello', 'endswith', '')
+        self.checkequal(Falsch, 'hello', 'endswith', 'hello world')
+        self.checkequal(Falsch, 'helloworld', 'endswith', 'worl')
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'worl', 3, 9)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'world', 3, 12)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'lowo', 1, 7)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'lowo', 2, 7)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'lowo', 3, 7)
+        self.checkequal(Falsch, 'helloworld', 'endswith', 'lowo', 4, 7)
+        self.checkequal(Falsch, 'helloworld', 'endswith', 'lowo', 3, 8)
+        self.checkequal(Falsch, 'ab', 'endswith', 'ab', 0, 1)
+        self.checkequal(Falsch, 'ab', 'endswith', 'ab', 0, 0)
+        self.checkequal(Wahr, '', 'endswith', '', 0, 1)
+        self.checkequal(Wahr, '', 'endswith', '', 0, 0)
+        self.checkequal(Falsch, '', 'endswith', '', 1, 0)
 
         # test negative indices
-        self.checkequal(True, 'hello', 'endswith', 'lo', -2)
-        self.checkequal(False, 'hello', 'endswith', 'he', -2)
-        self.checkequal(True, 'hello', 'endswith', '', -3, -3)
-        self.checkequal(False, 'hello', 'endswith', 'hello world', -10, -2)
-        self.checkequal(False, 'helloworld', 'endswith', 'worl', -6)
-        self.checkequal(True, 'helloworld', 'endswith', 'worl', -5, -1)
-        self.checkequal(True, 'helloworld', 'endswith', 'worl', -5, 9)
-        self.checkequal(True, 'helloworld', 'endswith', 'world', -7, 12)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', -99, -3)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', -8, -3)
-        self.checkequal(True, 'helloworld', 'endswith', 'lowo', -7, -3)
-        self.checkequal(False, 'helloworld', 'endswith', 'lowo', 3, -4)
-        self.checkequal(False, 'helloworld', 'endswith', 'lowo', -8, -2)
+        self.checkequal(Wahr, 'hello', 'endswith', 'lo', -2)
+        self.checkequal(Falsch, 'hello', 'endswith', 'he', -2)
+        self.checkequal(Wahr, 'hello', 'endswith', '', -3, -3)
+        self.checkequal(Falsch, 'hello', 'endswith', 'hello world', -10, -2)
+        self.checkequal(Falsch, 'helloworld', 'endswith', 'worl', -6)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'worl', -5, -1)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'worl', -5, 9)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'world', -7, 12)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'lowo', -99, -3)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'lowo', -8, -3)
+        self.checkequal(Wahr, 'helloworld', 'endswith', 'lowo', -7, -3)
+        self.checkequal(Falsch, 'helloworld', 'endswith', 'lowo', 3, -4)
+        self.checkequal(Falsch, 'helloworld', 'endswith', 'lowo', -8, -2)
 
         self.checkraises(TypeError, 'hello', 'endswith')
         self.checkraises(TypeError, 'hello', 'endswith', 42)
 
         # test tuple arguments
-        self.checkequal(False, 'hello', 'endswith', ('he', 'ha'))
-        self.checkequal(True, 'hello', 'endswith', ('lo', 'llo'))
-        self.checkequal(True, 'hello', 'endswith', ('hellox', 'hello'))
-        self.checkequal(False, 'hello', 'endswith', ())
-        self.checkequal(True, 'helloworld', 'endswith', ('hellowo',
+        self.checkequal(Falsch, 'hello', 'endswith', ('he', 'ha'))
+        self.checkequal(Wahr, 'hello', 'endswith', ('lo', 'llo'))
+        self.checkequal(Wahr, 'hello', 'endswith', ('hellox', 'hello'))
+        self.checkequal(Falsch, 'hello', 'endswith', ())
+        self.checkequal(Wahr, 'helloworld', 'endswith', ('hellowo',
                                                            'rld', 'lowo'), 3)
-        self.checkequal(False, 'helloworld', 'endswith', ('hellowo', 'ello',
+        self.checkequal(Falsch, 'helloworld', 'endswith', ('hellowo', 'ello',
                                                             'rld'), 3, -1)
-        self.checkequal(True, 'hello', 'endswith', ('hell', 'ell'), 0, -1)
-        self.checkequal(False, 'hello', 'endswith', ('he', 'hel'), 0, 1)
-        self.checkequal(True, 'hello', 'endswith', ('he', 'hell'), 0, 4)
+        self.checkequal(Wahr, 'hello', 'endswith', ('hell', 'ell'), 0, -1)
+        self.checkequal(Falsch, 'hello', 'endswith', ('he', 'hel'), 0, 1)
+        self.checkequal(Wahr, 'hello', 'endswith', ('he', 'hell'), 0, 4)
 
         self.checkraises(TypeError, 'hello', 'endswith', (42,))
 
     def test___contains__(self):
-        self.checkequal(True, '', '__contains__', '')
-        self.checkequal(True, 'abc', '__contains__', '')
-        self.checkequal(False, 'abc', '__contains__', '\0')
-        self.checkequal(True, '\0abc', '__contains__', '\0')
-        self.checkequal(True, 'abc\0', '__contains__', '\0')
-        self.checkequal(True, '\0abc', '__contains__', 'a')
-        self.checkequal(True, 'asdf', '__contains__', 'asdf')
-        self.checkequal(False, 'asd', '__contains__', 'asdf')
-        self.checkequal(False, '', '__contains__', 'asdf')
+        self.checkequal(Wahr, '', '__contains__', '')
+        self.checkequal(Wahr, 'abc', '__contains__', '')
+        self.checkequal(Falsch, 'abc', '__contains__', '\0')
+        self.checkequal(Wahr, '\0abc', '__contains__', '\0')
+        self.checkequal(Wahr, 'abc\0', '__contains__', '\0')
+        self.checkequal(Wahr, '\0abc', '__contains__', 'a')
+        self.checkequal(Wahr, 'asdf', '__contains__', 'asdf')
+        self.checkequal(Falsch, 'asd', '__contains__', 'asdf')
+        self.checkequal(Falsch, '', '__contains__', 'asdf')
 
     def test_subscript(self):
         self.checkequal('a', 'abc', '__getitem__', 0)
@@ -1286,7 +1286,7 @@ klasse StringLikeTest(BaseTest):
     def test_extended_getslice(self):
         # Test extended slicing by comparing with list slicing.
         s = string.ascii_letters + string.digits
-        indices = (0, None, 1, 3, 41, sys.maxsize, -1, -2, -37)
+        indices = (0, Nichts, 1, 3, 41, sys.maxsize, -1, -2, -37)
         fuer start in indices:
             fuer stop in indices:
                 # Skip step 0 (invalid)
@@ -1332,7 +1332,7 @@ klasse StringLikeTest(BaseTest):
         self.checkequal('a b c', ' ', 'join', LiesAboutLengthSeq())
 
         self.checkraises(TypeError, ' ', 'join')
-        self.checkraises(TypeError, ' ', 'join', None)
+        self.checkraises(TypeError, ' ', 'join', Nichts)
         self.checkraises(TypeError, ' ', 'join', 7)
         self.checkraises(TypeError, ' ', 'join', [1, 2, bytes()])
         try:
@@ -1371,7 +1371,7 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, 'abc', '__mod__')
         self.checkraises(TypeError, '%(foo)s', '__mod__', 42)
         self.checkraises(TypeError, '%s%s', '__mod__', (42,))
-        self.checkraises(TypeError, '%c', '__mod__', (None,))
+        self.checkraises(TypeError, '%c', '__mod__', (Nichts,))
         self.checkraises(ValueError, '%(foo', '__mod__', {})
         self.checkraises(TypeError, '%(foo)s %(bar)s', '__mod__', ('foo', 42))
         self.checkraises(TypeError, '%d', '__mod__', "42") # not numeric
@@ -1424,21 +1424,21 @@ klasse StringLikeTest(BaseTest):
     def test_inplace_rewrites(self):
         # Check that strings don't copy and modify cached single-character strings
         self.checkequal('a', 'A', 'lower')
-        self.checkequal(True, 'A', 'isupper')
+        self.checkequal(Wahr, 'A', 'isupper')
         self.checkequal('A', 'a', 'upper')
-        self.checkequal(True, 'a', 'islower')
+        self.checkequal(Wahr, 'a', 'islower')
 
         self.checkequal('a', 'A', 'replace', 'A', 'a')
-        self.checkequal(True, 'A', 'isupper')
+        self.checkequal(Wahr, 'A', 'isupper')
 
         self.checkequal('A', 'a', 'capitalize')
-        self.checkequal(True, 'a', 'islower')
+        self.checkequal(Wahr, 'a', 'islower')
 
         self.checkequal('A', 'a', 'swapcase')
-        self.checkequal(True, 'a', 'islower')
+        self.checkequal(Wahr, 'a', 'islower')
 
         self.checkequal('A', 'a', 'title')
-        self.checkequal(True, 'a', 'islower')
+        self.checkequal(Wahr, 'a', 'islower')
 
     def test_partition(self):
 
@@ -1453,7 +1453,7 @@ klasse StringLikeTest(BaseTest):
         self.checkequal(('http://www.python.', 'org', ''), S, 'partition', 'org')
 
         self.checkraises(ValueError, S, 'partition', '')
-        self.checkraises(TypeError, S, 'partition', None)
+        self.checkraises(TypeError, S, 'partition', Nichts)
 
     def test_rpartition(self):
 
@@ -1468,64 +1468,64 @@ klasse StringLikeTest(BaseTest):
         self.checkequal(('http://www.python.', 'org', ''), S, 'rpartition', 'org')
 
         self.checkraises(ValueError, S, 'rpartition', '')
-        self.checkraises(TypeError, S, 'rpartition', None)
+        self.checkraises(TypeError, S, 'rpartition', Nichts)
 
     def test_none_arguments(self):
         # issue 11828
         s = 'hello'
-        self.checkequal(2, s, 'find', 'l', None)
-        self.checkequal(3, s, 'find', 'l', -2, None)
-        self.checkequal(2, s, 'find', 'l', None, -2)
-        self.checkequal(0, s, 'find', 'h', None, None)
+        self.checkequal(2, s, 'find', 'l', Nichts)
+        self.checkequal(3, s, 'find', 'l', -2, Nichts)
+        self.checkequal(2, s, 'find', 'l', Nichts, -2)
+        self.checkequal(0, s, 'find', 'h', Nichts, Nichts)
 
-        self.checkequal(3, s, 'rfind', 'l', None)
-        self.checkequal(3, s, 'rfind', 'l', -2, None)
-        self.checkequal(2, s, 'rfind', 'l', None, -2)
-        self.checkequal(0, s, 'rfind', 'h', None, None)
+        self.checkequal(3, s, 'rfind', 'l', Nichts)
+        self.checkequal(3, s, 'rfind', 'l', -2, Nichts)
+        self.checkequal(2, s, 'rfind', 'l', Nichts, -2)
+        self.checkequal(0, s, 'rfind', 'h', Nichts, Nichts)
 
-        self.checkequal(2, s, 'index', 'l', None)
-        self.checkequal(3, s, 'index', 'l', -2, None)
-        self.checkequal(2, s, 'index', 'l', None, -2)
-        self.checkequal(0, s, 'index', 'h', None, None)
+        self.checkequal(2, s, 'index', 'l', Nichts)
+        self.checkequal(3, s, 'index', 'l', -2, Nichts)
+        self.checkequal(2, s, 'index', 'l', Nichts, -2)
+        self.checkequal(0, s, 'index', 'h', Nichts, Nichts)
 
-        self.checkequal(3, s, 'rindex', 'l', None)
-        self.checkequal(3, s, 'rindex', 'l', -2, None)
-        self.checkequal(2, s, 'rindex', 'l', None, -2)
-        self.checkequal(0, s, 'rindex', 'h', None, None)
+        self.checkequal(3, s, 'rindex', 'l', Nichts)
+        self.checkequal(3, s, 'rindex', 'l', -2, Nichts)
+        self.checkequal(2, s, 'rindex', 'l', Nichts, -2)
+        self.checkequal(0, s, 'rindex', 'h', Nichts, Nichts)
 
-        self.checkequal(2, s, 'count', 'l', None)
-        self.checkequal(1, s, 'count', 'l', -2, None)
-        self.checkequal(1, s, 'count', 'l', None, -2)
-        self.checkequal(0, s, 'count', 'x', None, None)
+        self.checkequal(2, s, 'count', 'l', Nichts)
+        self.checkequal(1, s, 'count', 'l', -2, Nichts)
+        self.checkequal(1, s, 'count', 'l', Nichts, -2)
+        self.checkequal(0, s, 'count', 'x', Nichts, Nichts)
 
-        self.checkequal(True, s, 'endswith', 'o', None)
-        self.checkequal(True, s, 'endswith', 'lo', -2, None)
-        self.checkequal(True, s, 'endswith', 'l', None, -2)
-        self.checkequal(False, s, 'endswith', 'x', None, None)
+        self.checkequal(Wahr, s, 'endswith', 'o', Nichts)
+        self.checkequal(Wahr, s, 'endswith', 'lo', -2, Nichts)
+        self.checkequal(Wahr, s, 'endswith', 'l', Nichts, -2)
+        self.checkequal(Falsch, s, 'endswith', 'x', Nichts, Nichts)
 
-        self.checkequal(True, s, 'startswith', 'h', None)
-        self.checkequal(True, s, 'startswith', 'l', -2, None)
-        self.checkequal(True, s, 'startswith', 'h', None, -2)
-        self.checkequal(False, s, 'startswith', 'x', None, None)
+        self.checkequal(Wahr, s, 'startswith', 'h', Nichts)
+        self.checkequal(Wahr, s, 'startswith', 'l', -2, Nichts)
+        self.checkequal(Wahr, s, 'startswith', 'h', Nichts, -2)
+        self.checkequal(Falsch, s, 'startswith', 'x', Nichts, Nichts)
 
     def test_find_etc_raise_correct_error_messages(self):
         # issue 11828
         s = 'hello'
         x = 'x'
         self.assertRaisesRegex(TypeError, r'^find\b', s.find,
-                                x, None, None, None)
+                                x, Nichts, Nichts, Nichts)
         self.assertRaisesRegex(TypeError, r'^rfind\b', s.rfind,
-                                x, None, None, None)
+                                x, Nichts, Nichts, Nichts)
         self.assertRaisesRegex(TypeError, r'^index\b', s.index,
-                                x, None, None, None)
+                                x, Nichts, Nichts, Nichts)
         self.assertRaisesRegex(TypeError, r'^rindex\b', s.rindex,
-                                x, None, None, None)
+                                x, Nichts, Nichts, Nichts)
         self.assertRaisesRegex(TypeError, r'^count\b', s.count,
-                                x, None, None, None)
+                                x, Nichts, Nichts, Nichts)
         self.assertRaisesRegex(TypeError, r'^startswith\b', s.startswith,
-                                x, None, None, None)
+                                x, Nichts, Nichts, Nichts)
         self.assertRaisesRegex(TypeError, r'^endswith\b', s.endswith,
-                                x, None, None, None)
+                                x, Nichts, Nichts, Nichts)
 
         # issue #15534
         self.checkequal(10, "...\u043c......<", "find", "<")

@@ -76,7 +76,7 @@ klasse _Utils:
             self._show(prof, filename, sort)
 
     def _show(self, prof, filename, sort):
-        wenn filename is not None:
+        wenn filename is not Nichts:
             prof.dump_stats(filename)
         sonst:
             prof.print_stats(sort)
@@ -87,7 +87,7 @@ klasse _Utils:
 # Note that an instance of Profile() is *not* needed to call them.
 #**************************************************************************
 
-def run(statement, filename=None, sort=-1):
+def run(statement, filename=Nichts, sort=-1):
     """Run statement under profiler optionally saving results in filename
 
     This function takes a single argument that can be passed to the
@@ -100,7 +100,7 @@ def run(statement, filename=None, sort=-1):
     """
     return _Utils(Profile).run(statement, filename, sort)
 
-def runctx(statement, globals, locals, filename=None, sort=-1):
+def runctx(statement, globals, locals, filename=Nichts, sort=-1):
     """Run statement under profiler, supplying your own globals and locals,
     optionally saving results in filename.
 
@@ -150,13 +150,13 @@ klasse Profile:
 
     bias = 0  # calibration constant
 
-    def __init__(self, timer=None, bias=None):
+    def __init__(self, timer=Nichts, bias=Nichts):
         self.timings = {}
-        self.cur = None
+        self.cur = Nichts
         self.cmd = ""
         self.c_func_name = ""
 
-        wenn bias is None:
+        wenn bias is Nichts:
             bias = self.bias
         self.bias = bias     # Materialize in local dict fuer lookup speed.
 
@@ -271,7 +271,7 @@ klasse Profile:
                                                        rframe, rframe.f_back,
                                                        frame, frame.f_back)
                 self.trace_dispatch_return(rframe, 0)
-                assert (self.cur is None or \
+                assert (self.cur is Nichts or \
                         frame.f_back is self.cur[-2]), ("Bad call",
                                                         self.cur[-3])
         fcode = frame.f_code
@@ -375,7 +375,7 @@ klasse Profile:
         wenn self.cur:
             pframe = self.cur[-2]
         sonst:
-            pframe = None
+            pframe = Nichts
         frame = self.fake_frame(code, pframe)
         self.dispatch['call'](self, frame, 0)
 
@@ -432,7 +432,7 @@ klasse Profile:
         try:
             exec(cmd, globals, locals)
         finally:
-            sys.setprofile(None)
+            sys.setprofile(Nichts)
         return self
 
     # This method is more useful to profile a single function call.
@@ -442,7 +442,7 @@ klasse Profile:
         try:
             return func(*args, **kw)
         finally:
-            sys.setprofile(None)
+            sys.setprofile(Nichts)
 
 
     #******************************************************************
@@ -566,11 +566,11 @@ def main():
 
     usage = "profile.py [-o output_file_path] [-s sort] [-m module | scriptfile] [arg] ..."
     parser = OptionParser(usage=usage)
-    parser.allow_interspersed_args = False
+    parser.allow_interspersed_args = Falsch
     parser.add_option('-o', '--outfile', dest="outfile",
-        help="Save stats to <outfile>", default=None)
+        help="Save stats to <outfile>", default=Nichts)
     parser.add_option('-m', dest="module", action="store_true",
-        help="Profile a library module.", default=False)
+        help="Profile a library module.", default=Falsch)
     parser.add_option('-s', '--sort', dest="sort",
         help="Sort order when printing to stdout, based on pstats.Stats class",
         default=-1)
@@ -584,7 +584,7 @@ def main():
 
     # The script that we're profiling may chdir, so capture the absolute path
     # to the output file at startup.
-    wenn options.outfile is not None:
+    wenn options.outfile is not Nichts:
         options.outfile = os.path.abspath(options.outfile)
 
     wenn len(args) > 0:
@@ -600,20 +600,20 @@ def main():
             sys.path.insert(0, os.path.dirname(progname))
             with io.open_code(progname) as fp:
                 code = compile(fp.read(), progname, 'exec')
-            spec = importlib.machinery.ModuleSpec(name='__main__', loader=None,
+            spec = importlib.machinery.ModuleSpec(name='__main__', loader=Nichts,
                                                   origin=progname)
             globs = {
                 '__spec__': spec,
                 '__file__': spec.origin,
                 '__name__': spec.name,
-                '__package__': None,
-                '__cached__': None,
+                '__package__': Nichts,
+                '__cached__': Nichts,
             }
         try:
-            runctx(code, globs, None, options.outfile, options.sort)
+            runctx(code, globs, Nichts, options.outfile, options.sort)
         except BrokenPipeError as exc:
             # Prevent "Exception ignored" during interpreter shutdown.
-            sys.stdout = None
+            sys.stdout = Nichts
             sys.exit(exc.errno)
     sonst:
         parser.print_usage()

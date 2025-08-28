@@ -23,8 +23,8 @@ klasse Test(unittest.TestCase):
     def test_type_flags(self):
         fuer cls in _SimpleCData, PyCSimpleType:
             with self.subTest(cls=cls):
-                self.assertTrue(_SimpleCData.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(_SimpleCData.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertWahr(_SimpleCData.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalsch(_SimpleCData.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Abstract classes (whose metaclass __init__ was not called) can't be
@@ -55,13 +55,13 @@ klasse Test(unittest.TestCase):
 
     def test_ignore_retval(self):
         # Test wenn the return value of a callback is ignored
-        # wenn restype is None
-        proto = CFUNCTYPE(None)
+        # wenn restype is Nichts
+        proto = CFUNCTYPE(Nichts)
         def func():
-            return (1, "abc", None)
+            return (1, "abc", Nichts)
 
         cb = proto(func)
-        self.assertEqual(None, cb())
+        self.assertEqual(Nichts, cb())
 
 
     def test_int_callback(self):
@@ -70,9 +70,9 @@ klasse Test(unittest.TestCase):
             args.append(arg)
             return arg
 
-        cb = CFUNCTYPE(None, MyInt)(func)
+        cb = CFUNCTYPE(Nichts, MyInt)(func)
 
-        self.assertEqual(None, cb(42))
+        self.assertEqual(Nichts, cb(42))
         self.assertEqual(type(args[-1]), MyInt)
 
         cb = CFUNCTYPE(c_int, c_int)(func)

@@ -22,7 +22,7 @@ klasse PyTest(unittest.TestCase):
 
 @unittest.skipUnless(cjson, 'requires _json')
 klasse CTest(unittest.TestCase):
-    wenn cjson is not None:
+    wenn cjson is not Nichts:
         json = cjson
         loads = staticmethod(cjson.loads)
         dumps = staticmethod(cjson.dumps)

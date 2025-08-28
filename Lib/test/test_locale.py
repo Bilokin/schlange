@@ -56,7 +56,7 @@ klasse BaseLocalizedTest(unittest.TestCase):
         self.addCleanup(locale.setlocale, self.locale_type, oldlocale)
         locale.setlocale(self.locale_type, self.enUS_locale)
         wenn verbose:
-            print("testing with %r..." % self.enUS_locale, end=' ', flush=True)
+            print("testing with %r..." % self.enUS_locale, end=' ', flush=Wahr)
 
 
 klasse BaseCookedTest(unittest.TestCase):
@@ -180,14 +180,14 @@ klasse EnUSNumberFormatting(BaseFormattingTest):
                 out=('-4%s200' % self.sep).ljust(10))
 
     def test_integer_grouping(self):
-        self._test_format_string("%d", 4200, grouping=True, out='4%s200' % self.sep)
-        self._test_format_string("%+d", 4200, grouping=True, out='+4%s200' % self.sep)
-        self._test_format_string("%+d", -4200, grouping=True, out='-4%s200' % self.sep)
+        self._test_format_string("%d", 4200, grouping=Wahr, out='4%s200' % self.sep)
+        self._test_format_string("%+d", 4200, grouping=Wahr, out='+4%s200' % self.sep)
+        self._test_format_string("%+d", -4200, grouping=Wahr, out='-4%s200' % self.sep)
 
     def test_integer_grouping_and_padding(self):
-        self._test_format_string("%10d", 4200, grouping=True,
+        self._test_format_string("%10d", 4200, grouping=Wahr,
             out=('4%s200' % self.sep).rjust(10))
-        self._test_format_string("%-10d", -4200, grouping=True,
+        self._test_format_string("%-10d", -4200, grouping=Wahr,
             out=('-4%s200' % self.sep).ljust(10))
 
     def test_simple(self):
@@ -268,19 +268,19 @@ klasse TestEnUSNumberFormatting(EnUSCookedTest, EnUSNumberFormatting):
 
     def test_currency(self):
         self._test_currency(50000, "$50000.00")
-        self._test_currency(50000, "$50,000.00", grouping=True)
+        self._test_currency(50000, "$50,000.00", grouping=Wahr)
         self._test_currency(50000, "USD 50,000.00",
-            grouping=True, international=True)
+            grouping=Wahr, international=Wahr)
 
 
 klasse TestCNumberFormatting(CCookedTest, BaseFormattingTest):
     # Test number formatting with a cooked "C" locale.
 
     def test_grouping(self):
-        self._test_format_string("%.2f", 12345.67, grouping=True, out='12345.67')
+        self._test_format_string("%.2f", 12345.67, grouping=Wahr, out='12345.67')
 
     def test_grouping_and_padding(self):
-        self._test_format_string("%9.2f", 12345.67, grouping=True, out=' 12345.67')
+        self._test_format_string("%9.2f", 12345.67, grouping=Wahr, out=' 12345.67')
 
 
 klasse TestFrFRNumberFormatting(FrFRCookedTest, BaseFormattingTest):
@@ -290,39 +290,39 @@ klasse TestFrFRNumberFormatting(FrFRCookedTest, BaseFormattingTest):
         self._test_format_string("%.2f", 12345.67, out='12345,67')
 
     def test_grouping(self):
-        self._test_format_string("%.2f", 345.67, grouping=True, out='345,67')
-        self._test_format_string("%.2f", 12345.67, grouping=True, out='12 345,67')
+        self._test_format_string("%.2f", 345.67, grouping=Wahr, out='345,67')
+        self._test_format_string("%.2f", 12345.67, grouping=Wahr, out='12 345,67')
 
     def test_grouping_and_padding(self):
-        self._test_format_string("%6.2f", 345.67, grouping=True, out='345,67')
-        self._test_format_string("%7.2f", 345.67, grouping=True, out=' 345,67')
-        self._test_format_string("%8.2f", 12345.67, grouping=True, out='12 345,67')
-        self._test_format_string("%9.2f", 12345.67, grouping=True, out='12 345,67')
-        self._test_format_string("%10.2f", 12345.67, grouping=True, out=' 12 345,67')
-        self._test_format_string("%-6.2f", 345.67, grouping=True, out='345,67')
-        self._test_format_string("%-7.2f", 345.67, grouping=True, out='345,67 ')
-        self._test_format_string("%-8.2f", 12345.67, grouping=True, out='12 345,67')
-        self._test_format_string("%-9.2f", 12345.67, grouping=True, out='12 345,67')
-        self._test_format_string("%-10.2f", 12345.67, grouping=True, out='12 345,67 ')
+        self._test_format_string("%6.2f", 345.67, grouping=Wahr, out='345,67')
+        self._test_format_string("%7.2f", 345.67, grouping=Wahr, out=' 345,67')
+        self._test_format_string("%8.2f", 12345.67, grouping=Wahr, out='12 345,67')
+        self._test_format_string("%9.2f", 12345.67, grouping=Wahr, out='12 345,67')
+        self._test_format_string("%10.2f", 12345.67, grouping=Wahr, out=' 12 345,67')
+        self._test_format_string("%-6.2f", 345.67, grouping=Wahr, out='345,67')
+        self._test_format_string("%-7.2f", 345.67, grouping=Wahr, out='345,67 ')
+        self._test_format_string("%-8.2f", 12345.67, grouping=Wahr, out='12 345,67')
+        self._test_format_string("%-9.2f", 12345.67, grouping=Wahr, out='12 345,67')
+        self._test_format_string("%-10.2f", 12345.67, grouping=Wahr, out='12 345,67 ')
 
     def test_integer_grouping(self):
-        self._test_format_string("%d", 200, grouping=True, out='200')
-        self._test_format_string("%d", 4200, grouping=True, out='4 200')
+        self._test_format_string("%d", 200, grouping=Wahr, out='200')
+        self._test_format_string("%d", 4200, grouping=Wahr, out='4 200')
 
     def test_integer_grouping_and_padding(self):
-        self._test_format_string("%4d", 4200, grouping=True, out='4 200')
-        self._test_format_string("%5d", 4200, grouping=True, out='4 200')
-        self._test_format_string("%10d", 4200, grouping=True, out='4 200'.rjust(10))
-        self._test_format_string("%-4d", 4200, grouping=True, out='4 200')
-        self._test_format_string("%-5d", 4200, grouping=True, out='4 200')
-        self._test_format_string("%-10d", 4200, grouping=True, out='4 200'.ljust(10))
+        self._test_format_string("%4d", 4200, grouping=Wahr, out='4 200')
+        self._test_format_string("%5d", 4200, grouping=Wahr, out='4 200')
+        self._test_format_string("%10d", 4200, grouping=Wahr, out='4 200'.rjust(10))
+        self._test_format_string("%-4d", 4200, grouping=Wahr, out='4 200')
+        self._test_format_string("%-5d", 4200, grouping=Wahr, out='4 200')
+        self._test_format_string("%-10d", 4200, grouping=Wahr, out='4 200'.ljust(10))
 
     def test_currency(self):
         euro = '\u20ac'
         self._test_currency(50000, "50000,00 " + euro)
-        self._test_currency(50000, "50 000,00 " + euro, grouping=True)
+        self._test_currency(50000, "50 000,00 " + euro, grouping=Wahr)
         self._test_currency(50000, "50 000,00 EUR",
-            grouping=True, international=True)
+            grouping=Wahr, international=Wahr)
 
 
 klasse TestCollation(unittest.TestCase):
@@ -502,7 +502,7 @@ klasse TestRealLocales(unittest.TestCase):
             self.skipTest('test needs Turkish locale')
         loc = locale.getlocale(locale.LC_CTYPE)
         wenn verbose:
-            print('testing with %a' % (loc,), end=' ', flush=True)
+            print('testing with %a' % (loc,), end=' ', flush=Wahr)
         try:
             locale.setlocale(locale.LC_CTYPE, loc)
         except locale.Error as exc:
@@ -540,41 +540,41 @@ klasse TestRealLocales(unittest.TestCase):
         ('fr_FR.ISO8859-15@euro', ('fr_FR@euro', 'iso88591')),
         ('fr_FR.ISO8859-15@euro', ('fr_FR@euro', 'ISO8859-15')),
         ('fr_FR.ISO8859-15@euro', ('fr_FR@euro', 'ISO8859-1')),
-        ('fr_FR.ISO8859-15@euro', ('fr_FR@euro', None)),
+        ('fr_FR.ISO8859-15@euro', ('fr_FR@euro', Nichts)),
         ('de_DE.ISO8859-15@euro', ('de_DE@euro', 'iso885915')),
         ('de_DE.ISO8859-15@euro', ('de_DE@euro', 'iso88591')),
         ('de_DE.ISO8859-15@euro', ('de_DE@euro', 'ISO8859-15')),
         ('de_DE.ISO8859-15@euro', ('de_DE@euro', 'ISO8859-1')),
-        ('de_DE.ISO8859-15@euro', ('de_DE@euro', None)),
+        ('de_DE.ISO8859-15@euro', ('de_DE@euro', Nichts)),
         ('el_GR.ISO8859-7@euro', ('el_GR@euro', 'iso88597')),
         ('el_GR.ISO8859-7@euro', ('el_GR@euro', 'ISO8859-7')),
-        ('el_GR.ISO8859-7@euro', ('el_GR@euro', None)),
+        ('el_GR.ISO8859-7@euro', ('el_GR@euro', Nichts)),
         ('ca_ES.ISO8859-15@euro', ('ca_ES@euro', 'iso885915')),
         ('ca_ES.ISO8859-15@euro', ('ca_ES@euro', 'iso88591')),
         ('ca_ES.ISO8859-15@euro', ('ca_ES@euro', 'ISO8859-15')),
         ('ca_ES.ISO8859-15@euro', ('ca_ES@euro', 'ISO8859-1')),
-        ('ca_ES.ISO8859-15@euro', ('ca_ES@euro', None)),
+        ('ca_ES.ISO8859-15@euro', ('ca_ES@euro', Nichts)),
         ('ca_ES.UTF-8@valencia', ('ca_ES@valencia', 'utf8')),
         ('ca_ES.UTF-8@valencia', ('ca_ES@valencia', 'UTF-8')),
-        ('ca_ES.UTF-8@valencia', ('ca_ES@valencia', None)),
+        ('ca_ES.UTF-8@valencia', ('ca_ES@valencia', Nichts)),
         ('ks_IN.UTF-8@devanagari', ('ks_IN@devanagari', 'utf8')),
         ('ks_IN.UTF-8@devanagari', ('ks_IN@devanagari', 'UTF-8')),
-        ('ks_IN.UTF-8@devanagari', ('ks_IN@devanagari', None)),
+        ('ks_IN.UTF-8@devanagari', ('ks_IN@devanagari', Nichts)),
         ('sd_IN.UTF-8@devanagari', ('sd_IN@devanagari', 'utf8')),
         ('sd_IN.UTF-8@devanagari', ('sd_IN@devanagari', 'UTF-8')),
-        ('sd_IN.UTF-8@devanagari', ('sd_IN@devanagari', None)),
+        ('sd_IN.UTF-8@devanagari', ('sd_IN@devanagari', Nichts)),
         ('be_BY.UTF-8@latin', ('be_BY@latin', 'utf8')),
         ('be_BY.UTF-8@latin', ('be_BY@latin', 'UTF-8')),
-        ('be_BY.UTF-8@latin', ('be_BY@latin', None)),
+        ('be_BY.UTF-8@latin', ('be_BY@latin', Nichts)),
         ('sr_RS.UTF-8@latin', ('sr_RS@latin', 'utf8')),
         ('sr_RS.UTF-8@latin', ('sr_RS@latin', 'UTF-8')),
-        ('sr_RS.UTF-8@latin', ('sr_RS@latin', None)),
+        ('sr_RS.UTF-8@latin', ('sr_RS@latin', Nichts)),
         ('ug_CN.UTF-8@latin', ('ug_CN@latin', 'utf8')),
         ('ug_CN.UTF-8@latin', ('ug_CN@latin', 'UTF-8')),
-        ('ug_CN.UTF-8@latin', ('ug_CN@latin', None)),
+        ('ug_CN.UTF-8@latin', ('ug_CN@latin', Nichts)),
         ('uz_UZ.UTF-8@cyrillic', ('uz_UZ@cyrillic', 'utf8')),
         ('uz_UZ.UTF-8@cyrillic', ('uz_UZ@cyrillic', 'UTF-8')),
-        ('uz_UZ.UTF-8@cyrillic', ('uz_UZ@cyrillic', None)),
+        ('uz_UZ.UTF-8@cyrillic', ('uz_UZ@cyrillic', Nichts)),
     ])
     def test_setlocale_with_modifier(self, localename, localetuple):
         try:
@@ -642,13 +642,13 @@ klasse TestMiscellaneous(unittest.TestCase):
         # during interpreter startup (on macOS).
         import _locale
 
-        self.assertEqual(locale._parse_localename('UTF-8'), (None, 'UTF-8'))
+        self.assertEqual(locale._parse_localename('UTF-8'), (Nichts, 'UTF-8'))
 
         wenn hasattr(_locale, '_getdefaultlocale'):
             orig_getlocale = _locale._getdefaultlocale
             del _locale._getdefaultlocale
         sonst:
-            orig_getlocale = None
+            orig_getlocale = Nichts
 
         try:
             with os_helper.EnvironmentVarGuard() as env:
@@ -656,9 +656,9 @@ klasse TestMiscellaneous(unittest.TestCase):
                 env.set('LC_CTYPE', 'UTF-8')
 
                 with check_warnings(('', DeprecationWarning)):
-                    self.assertEqual(locale.getdefaultlocale(), (None, 'UTF-8'))
+                    self.assertEqual(locale.getdefaultlocale(), (Nichts, 'UTF-8'))
         finally:
-            wenn orig_getlocale is not None:
+            wenn orig_getlocale is not Nichts:
                 _locale._getdefaultlocale = orig_getlocale
 
     def test_getencoding(self):
@@ -687,8 +687,8 @@ klasse TestMiscellaneous(unittest.TestCase):
 
     def test_strcoll_3303(self):
         # test crasher from bug #3303
-        self.assertRaises(TypeError, locale.strcoll, "a", None)
-        self.assertRaises(TypeError, locale.strcoll, b"a", None)
+        self.assertRaises(TypeError, locale.strcoll, "a", Nichts)
+        self.assertRaises(TypeError, locale.strcoll, b"a", Nichts)
 
     def test_setlocale_category(self):
         locale.setlocale(locale.LC_ALL)
@@ -766,7 +766,7 @@ klasse TestfrFRDelocalizeTest(FrFRCookedTest, BaseDelocalizeTest):
 
 klasse BaseLocalizeTest(BaseLocalizedTest):
 
-    def _test_localize(self, value, out, grouping=False):
+    def _test_localize(self, value, out, grouping=Falsch):
         self.assertEqual(locale.localize(value, grouping=grouping), out)
 
 
@@ -788,7 +788,7 @@ klasse TestfrFRLocalize(FrFRCookedTest, BaseLocalizeTest):
 
     def test_localize(self):
         self._test_localize('50000.00', '50000,00')
-        self._test_localize('50000.00', '50 000,00', grouping=True)
+        self._test_localize('50000.00', '50 000,00', grouping=Wahr)
 
 
 wenn __name__ == '__main__':

@@ -7,13 +7,13 @@ import sys
 
 klasse TestWithAscii(unittest.TestCase):
     def test_one_insert(self):
-        sm = difflib.SequenceMatcher(None, 'b' * 100, 'a' + 'b' * 100)
+        sm = difflib.SequenceMatcher(Nichts, 'b' * 100, 'a' + 'b' * 100)
         self.assertAlmostEqual(sm.ratio(), 0.995, places=3)
         self.assertEqual(list(sm.get_opcodes()),
             [   ('insert', 0, 0, 0, 1),
                 ('equal', 0, 100, 1, 101)])
         self.assertEqual(sm.bpopular, set())
-        sm = difflib.SequenceMatcher(None, 'b' * 100, 'b' * 50 + 'a' + 'b' * 50)
+        sm = difflib.SequenceMatcher(Nichts, 'b' * 100, 'b' * 50 + 'a' + 'b' * 50)
         self.assertAlmostEqual(sm.ratio(), 0.995, places=3)
         self.assertEqual(list(sm.get_opcodes()),
             [   ('equal', 0, 50, 0, 50),
@@ -22,7 +22,7 @@ klasse TestWithAscii(unittest.TestCase):
         self.assertEqual(sm.bpopular, set())
 
     def test_one_delete(self):
-        sm = difflib.SequenceMatcher(None, 'a' * 40 + 'c' + 'b' * 40, 'a' * 40 + 'b' * 40)
+        sm = difflib.SequenceMatcher(Nichts, 'a' * 40 + 'c' + 'b' * 40, 'a' * 40 + 'b' * 40)
         self.assertAlmostEqual(sm.ratio(), 0.994, places=3)
         self.assertEqual(list(sm.get_opcodes()),
             [   ('equal', 0, 40, 0, 40),
@@ -46,17 +46,17 @@ klasse TestWithAscii(unittest.TestCase):
 klasse TestAutojunk(unittest.TestCase):
     """Tests fuer the autojunk parameter added in 2.7"""
     def test_one_insert_homogenous_sequence(self):
-        # By default autojunk=True and the heuristic kicks in fuer a sequence
+        # By default autojunk=Wahr and the heuristic kicks in fuer a sequence
         # of length 200+
         seq1 = 'b' * 200
         seq2 = 'a' + 'b' * 200
 
-        sm = difflib.SequenceMatcher(None, seq1, seq2)
+        sm = difflib.SequenceMatcher(Nichts, seq1, seq2)
         self.assertAlmostEqual(sm.ratio(), 0, places=3)
         self.assertEqual(sm.bpopular, {'b'})
 
         # Now turn the heuristic off
-        sm = difflib.SequenceMatcher(None, seq1, seq2, autojunk=False)
+        sm = difflib.SequenceMatcher(Nichts, seq1, seq2, autojunk=Falsch)
         self.assertAlmostEqual(sm.ratio(), 0.9975, places=3)
         self.assertEqual(sm.bpopular, set())
 
@@ -64,21 +64,21 @@ klasse TestAutojunk(unittest.TestCase):
 klasse TestSFbugs(unittest.TestCase):
     def test_ratio_for_null_seqn(self):
         # Check clearing of SF bug 763023
-        s = difflib.SequenceMatcher(None, [], [])
+        s = difflib.SequenceMatcher(Nichts, [], [])
         self.assertEqual(s.ratio(), 1)
         self.assertEqual(s.quick_ratio(), 1)
         self.assertEqual(s.real_quick_ratio(), 1)
 
     def test_comparing_empty_lists(self):
         # Check fix fuer bug #979794
-        group_gen = difflib.SequenceMatcher(None, [], []).get_grouped_opcodes()
+        group_gen = difflib.SequenceMatcher(Nichts, [], []).get_grouped_opcodes()
         self.assertRaises(StopIteration, next, group_gen)
         diff_gen = difflib.unified_diff([], [])
         self.assertRaises(StopIteration, next, diff_gen)
 
     def test_matching_blocks_cache(self):
         # Issue #21635
-        s = difflib.SequenceMatcher(None, "abxcd", "abcd")
+        s = difflib.SequenceMatcher(Nichts, "abxcd", "abcd")
         first = s.get_matching_blocks()
         second = s.get_matching_blocks()
         self.assertEqual(second[0].size, 2)
@@ -103,7 +103,7 @@ klasse TestSFbugs(unittest.TestCase):
         # Issue #33224
         self.assertEqual(
             list(difflib._mdiff(["2"], ["3"], 1)),
-            [((1, '\x00-2\x01'), (1, '\x00+3\x01'), True)],
+            [((1, '\x00-2\x01'), (1, '\x00+3\x01'), Wahr)],
         )
 
 
@@ -205,35 +205,35 @@ klasse TestSFpatches(unittest.TestCase):
         j = difflib.HtmlDiff(tabsize=2)
         k = difflib.HtmlDiff(wrapcolumn=14)
 
-        full = i.make_file(f1a,t1a,'from','to',context=False,numlines=5)
+        full = i.make_file(f1a,t1a,'from','to',context=Falsch,numlines=5)
         tables = '\n'.join(
             [
              '<h2>Context (first diff within numlines=5(default))</h2>',
-             i.make_table(f1a,t1a,'from','to',context=True),
+             i.make_table(f1a,t1a,'from','to',context=Wahr),
              '<h2>Context (first diff after numlines=5(default))</h2>',
-             i.make_table(f1b,t1b,'from','to',context=True),
+             i.make_table(f1b,t1b,'from','to',context=Wahr),
              '<h2>Context (numlines=6)</h2>',
-             i.make_table(f1a,t1a,'from','to',context=True,numlines=6),
+             i.make_table(f1a,t1a,'from','to',context=Wahr,numlines=6),
              '<h2>Context (numlines=0)</h2>',
-             i.make_table(f1a,t1a,'from','to',context=True,numlines=0),
+             i.make_table(f1a,t1a,'from','to',context=Wahr,numlines=0),
              '<h2>Same Context</h2>',
-             i.make_table(f1a,f1a,'from','to',context=True),
+             i.make_table(f1a,f1a,'from','to',context=Wahr),
              '<h2>Same Full</h2>',
-             i.make_table(f1a,f1a,'from','to',context=False),
+             i.make_table(f1a,f1a,'from','to',context=Falsch),
              '<h2>Empty Context</h2>',
-             i.make_table([],[],'from','to',context=True),
+             i.make_table([],[],'from','to',context=Wahr),
              '<h2>Empty Full</h2>',
-             i.make_table([],[],'from','to',context=False),
+             i.make_table([],[],'from','to',context=Falsch),
              '<h2>tabsize=2</h2>',
              j.make_table(f2,t2),
              '<h2>tabsize=default</h2>',
              i.make_table(f2,t2),
              '<h2>Context (wrapcolumn=14,numlines=0)</h2>',
-             k.make_table(f3.splitlines(),t3.splitlines(),context=True,numlines=0),
+             k.make_table(f3.splitlines(),t3.splitlines(),context=Wahr,numlines=0),
              '<h2>wrapcolumn=14,splitlines()</h2>',
              k.make_table(f3.splitlines(),t3.splitlines()),
-             '<h2>wrapcolumn=14,splitlines(True)</h2>',
-             k.make_table(f3.splitlines(True),t3.splitlines(True)),
+             '<h2>wrapcolumn=14,splitlines(Wahr)</h2>',
+             k.make_table(f3.splitlines(Wahr),t3.splitlines(Wahr)),
              ])
         actual = full.replace('</body>','\n%s\n</body>' % tables)
 
@@ -249,7 +249,7 @@ klasse TestSFpatches(unittest.TestCase):
         limit = sys.getrecursionlimit()
         old = [(i%2 and "K:%d" or "V:A:%d") % i fuer i in range(limit*2)]
         new = [(i%2 and "K:%d" or "V:B:%d") % i fuer i in range(limit*2)]
-        difflib.SequenceMatcher(None, old, new).get_opcodes()
+        difflib.SequenceMatcher(Nichts, old, new).get_opcodes()
 
     def test_make_file_default_charset(self):
         html_diff = difflib.HtmlDiff()
@@ -359,7 +359,7 @@ klasse TestOutputFormat(unittest.TestCase):
     def test_unified_diff_colored_output(self):
         args = [['one', 'three'], ['two', 'three'], 'Original', 'Current',
             '2005-01-26 23:30:50', '2010-04-02 10:20:52']
-        actual = list(difflib.unified_diff(*args, lineterm='', color=True))
+        actual = list(difflib.unified_diff(*args, lineterm='', color=Wahr))
 
         expect = [
             "\033[1m--- Original\t2005-01-26 23:30:50\033[0m",
@@ -481,9 +481,9 @@ klasse TestInputTypes(unittest.TestCase):
         self._assert_type_error(expect, unified, ['a'], 'b')
         self._assert_type_error(expect, context, ['a'], 'b')
 
-        expect = "lines to compare must be str, not NoneType (None)"
-        self._assert_type_error(expect, unified, ['a'], [None])
-        self._assert_type_error(expect, context, ['a'], [None])
+        expect = "lines to compare must be str, not NoneType (Nichts)"
+        self._assert_type_error(expect, unified, ['a'], [Nichts])
+        self._assert_type_error(expect, context, ['a'], [Nichts])
 
     def test_mixed_types_content(self):
         # type of input content must be consistent: all str or all bytes
@@ -537,23 +537,23 @@ klasse TestInputTypes(unittest.TestCase):
 klasse TestJunkAPIs(unittest.TestCase):
     def test_is_line_junk_true(self):
         fuer line in ['#', '  ', ' #', '# ', ' # ', '']:
-            self.assertTrue(difflib.IS_LINE_JUNK(line), repr(line))
+            self.assertWahr(difflib.IS_LINE_JUNK(line), repr(line))
 
     def test_is_line_junk_false(self):
         fuer line in ['##', ' ##', '## ', 'abc ', 'abc #', 'Mr. Moose is up!']:
-            self.assertFalse(difflib.IS_LINE_JUNK(line), repr(line))
+            self.assertFalsch(difflib.IS_LINE_JUNK(line), repr(line))
 
     def test_is_line_junk_REDOS(self):
         evil_input = ('\t' * 1000000) + '##'
-        self.assertFalse(difflib.IS_LINE_JUNK(evil_input))
+        self.assertFalsch(difflib.IS_LINE_JUNK(evil_input))
 
     def test_is_character_junk_true(self):
         fuer char in [' ', '\t']:
-            self.assertTrue(difflib.IS_CHARACTER_JUNK(char), repr(char))
+            self.assertWahr(difflib.IS_CHARACTER_JUNK(char), repr(char))
 
     def test_is_character_junk_false(self):
         fuer char in ['a', '#', '\n', '\f', '\r', '\v']:
-            self.assertFalse(difflib.IS_CHARACTER_JUNK(char), repr(char))
+            self.assertFalsch(difflib.IS_CHARACTER_JUNK(char), repr(char))
 
 klasse TestFindLongest(unittest.TestCase):
     def longer_match_exists(self, a, b, n):
@@ -570,7 +570,7 @@ klasse TestFindLongest(unittest.TestCase):
         self.assertEqual(match.size, 6)
         self.assertEqual(a[match.a: match.a + match.size],
                          b[match.b: match.b + match.size])
-        self.assertFalse(self.longer_match_exists(a, b, match.size))
+        self.assertFalsch(self.longer_match_exists(a, b, match.size))
 
         match = sm.find_longest_match(alo=2, blo=4)
         self.assertEqual(match.a, 3)
@@ -578,7 +578,7 @@ klasse TestFindLongest(unittest.TestCase):
         self.assertEqual(match.size, 4)
         self.assertEqual(a[match.a: match.a + match.size],
                          b[match.b: match.b + match.size])
-        self.assertFalse(self.longer_match_exists(a[2:], b[4:], match.size))
+        self.assertFalsch(self.longer_match_exists(a[2:], b[4:], match.size))
 
         match = sm.find_longest_match(bhi=5, blo=1)
         self.assertEqual(match.a, 1)
@@ -586,7 +586,7 @@ klasse TestFindLongest(unittest.TestCase):
         self.assertEqual(match.size, 4)
         self.assertEqual(a[match.a: match.a + match.size],
                          b[match.b: match.b + match.size])
-        self.assertFalse(self.longer_match_exists(a, b[1:5], match.size))
+        self.assertFalsch(self.longer_match_exists(a, b[1:5], match.size))
 
     def test_longest_match_with_popular_chars(self):
         a = 'dabcd'
@@ -598,7 +598,7 @@ klasse TestFindLongest(unittest.TestCase):
         self.assertEqual(match.size, 5)
         self.assertEqual(a[match.a: match.a + match.size],
                          b[match.b: match.b + match.size])
-        self.assertFalse(self.longer_match_exists(a, b, match.size))
+        self.assertFalsch(self.longer_match_exists(a, b, match.size))
 
 
 def setUpModule():

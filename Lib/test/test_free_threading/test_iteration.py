@@ -8,7 +8,7 @@ from test import support
 # free-threading. Overhead is much higher under ThreadSanitizer, but it's
 # also much better at detecting certain races, so we don't need as many
 # items/threads.
-wenn support.check_sanitizer(thread=True):
+wenn support.check_sanitizer(thread=Wahr):
     NUMITEMS = 1000
     NUMTHREADS = 2
 sonst:

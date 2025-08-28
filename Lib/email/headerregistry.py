@@ -11,7 +11,7 @@ from email import _header_value_parser as parser
 
 klasse Address:
 
-    def __init__(self, display_name='', username='', domain='', addr_spec=None):
+    def __init__(self, display_name='', username='', domain='', addr_spec=Nichts):
         """Create an object representing a full email address.
 
         An address can have a 'display_name', a 'username', and a 'domain'.  In
@@ -28,7 +28,7 @@ klasse Address:
 
         """
 
-        inputs = ''.join(filter(None, (display_name, username, domain, addr_spec)))
+        inputs = ''.join(filter(Nichts, (display_name, username, domain, addr_spec)))
         wenn '\r' in inputs or '\n' in inputs:
             raise ValueError("invalid arguments; address parts cannot contain CR or LF")
 
@@ -36,7 +36,7 @@ klasse Address:
         # application program creates an Address object using an addr_spec
         # keyword.  The email library code itself must always supply username
         # and domain.
-        wenn addr_spec is not None:
+        wenn addr_spec is not Nichts:
             wenn username or domain:
                 raise TypeError("addrspec specified when username and/or "
                                 "domain also specified")
@@ -103,7 +103,7 @@ klasse Address:
 
 klasse Group:
 
-    def __init__(self, display_name=None, addresses=None):
+    def __init__(self, display_name=Nichts, addresses=Nichts):
         """Create an object representing an address group.
 
         An address group consists of a display_name followed by colon and a
@@ -112,8 +112,8 @@ klasse Group:
         Address objects.  A Group can also be used to represent a single
         address that is not in a group, which is convenient when manipulating
         lists that are a combination of Groups and individual Addresses.  In
-        this case the display_name should be set to None.  In particular, the
-        string representation of a Group whose display_name is None is the same
+        this case the display_name should be set to Nichts.  In particular, the
+        string representation of a Group whose display_name is Nichts is the same
         as the Address object, wenn there is one and only one Address object in
         the addresses list.
 
@@ -135,10 +135,10 @@ klasse Group:
                  self.display_name, self.addresses)
 
     def __str__(self):
-        wenn self.display_name is None and len(self.addresses)==1:
+        wenn self.display_name is Nichts and len(self.addresses)==1:
             return str(self.addresses[0])
         disp = self.display_name
-        wenn disp is not None and not parser.SPECIALS.isdisjoint(disp):
+        wenn disp is not Nichts and not parser.SPECIALS.isdisjoint(disp):
             disp = parser.quote_string(disp)
         adrstr = ", ".join(str(x) fuer x in self.addresses)
         adrstr = ' ' + adrstr wenn adrstr sonst adrstr
@@ -183,7 +183,7 @@ klasse BaseHeader(str):
     klasse with the remaining arguments and keywords.
 
     The subclass should also make sure that a 'max_count' attribute is defined
-    that is either None or 1. XXX: need to better define this API.
+    that is either Nichts or 1. XXX: need to better define this API.
 
     """
 
@@ -259,7 +259,7 @@ def _reconstruct_header(cls_name, bases, value):
 
 klasse UnstructuredHeader:
 
-    max_count = None
+    max_count = Nichts
     value_parser = staticmethod(parser.get_unstructured)
 
     @classmethod
@@ -284,7 +284,7 @@ klasse DateHeader:
     which means it is the output of format_datetime on the datetime.
     """
 
-    max_count = None
+    max_count = Nichts
 
     # This is used only fuer folding, not fuer creating 'decoded'.
     value_parser = staticmethod(parser.get_unstructured)
@@ -293,7 +293,7 @@ klasse DateHeader:
     def parse(cls, value, kwds):
         wenn not value:
             kwds['defects'].append(errors.HeaderMissingRequiredValue())
-            kwds['datetime'] = None
+            kwds['datetime'] = Nichts
             kwds['decoded'] = ''
             kwds['parse_tree'] = parser.TokenList()
             return
@@ -303,7 +303,7 @@ klasse DateHeader:
                 value = utils.parsedate_to_datetime(value)
             except ValueError:
                 kwds['defects'].append(errors.InvalidDateDefect('Invalid date value or format'))
-                kwds['datetime'] = None
+                kwds['datetime'] = Nichts
                 kwds['parse_tree'] = parser.TokenList()
                 return
         kwds['datetime'] = value
@@ -326,7 +326,7 @@ klasse UniqueDateHeader(DateHeader):
 
 klasse AddressHeader:
 
-    max_count = None
+    max_count = Nichts
 
     @staticmethod
     def value_parser(value):
@@ -352,7 +352,7 @@ klasse AddressHeader:
             # Assume it is Address/Group stuff
             wenn not hasattr(value, '__iter__'):
                 value = [value]
-            groups = [Group(None, [item]) wenn not hasattr(item, 'addresses')
+            groups = [Group(Nichts, [item]) wenn not hasattr(item, 'addresses')
                                           sonst item
                                     fuer item in value]
             defects = []
@@ -364,7 +364,7 @@ klasse AddressHeader:
 
     def init(self, *args, **kw):
         self._groups = tuple(kw.pop('groups'))
-        self._addresses = None
+        self._addresses = Nichts
         super().init(*args, **kw)
 
     @property
@@ -373,7 +373,7 @@ klasse AddressHeader:
 
     @property
     def addresses(self):
-        wenn self._addresses is None:
+        wenn self._addresses is Nichts:
             self._addresses = tuple(address fuer group in self._groups
                                             fuer address in group.addresses)
         return self._addresses
@@ -410,12 +410,12 @@ klasse MIMEVersionHeader:
         kwds['parse_tree'] = parse_tree = cls.value_parser(value)
         kwds['decoded'] = str(parse_tree)
         kwds['defects'].extend(parse_tree.all_defects)
-        kwds['major'] = None wenn parse_tree.minor is None sonst parse_tree.major
+        kwds['major'] = Nichts wenn parse_tree.minor is Nichts sonst parse_tree.major
         kwds['minor'] = parse_tree.minor
-        wenn parse_tree.minor is not None:
+        wenn parse_tree.minor is not Nichts:
             kwds['version'] = '{}.{}'.format(kwds['major'], kwds['minor'])
         sonst:
-            kwds['version'] = None
+            kwds['version'] = Nichts
 
     def init(self, *args, **kw):
         self._version = kw.pop('version')
@@ -448,7 +448,7 @@ klasse ParameterizedMIMEHeader:
         kwds['parse_tree'] = parse_tree = cls.value_parser(value)
         kwds['decoded'] = str(parse_tree)
         kwds['defects'].extend(parse_tree.all_defects)
-        wenn parse_tree.params is None:
+        wenn parse_tree.params is Nichts:
             kwds['params'] = {}
         sonst:
             # The MIME RFCs specify that parameter ordering is arbitrary.
@@ -494,7 +494,7 @@ klasse ContentDispositionHeader(ParameterizedMIMEHeader):
     def init(self, *args, **kw):
         super().init(*args, **kw)
         cd = self._parse_tree.content_disposition
-        self._content_disposition = cd wenn cd is None sonst utils._sanitize(cd)
+        self._content_disposition = cd wenn cd is Nichts sonst utils._sanitize(cd)
 
     @property
     def content_disposition(self):
@@ -564,7 +564,7 @@ klasse HeaderRegistry:
     """A header_factory and header registry."""
 
     def __init__(self, base_class=BaseHeader, default_class=UnstructuredHeader,
-                       use_default_map=True):
+                       use_default_map=Wahr):
         """Create a header_factory that works with the Policy API.
 
         base_class is the klasse that will be the last klasse in the created
@@ -572,7 +572,7 @@ klasse HeaderRegistry:
         used wenn "name" (see __call__) does not appear in the registry.
         use_default_map controls whether or not the default mapping of names to
         specialized classes is copied in to the registry when the factory is
-        created.  The default is True.
+        created.  The default is Wahr.
 
         """
         self.registry = {}

@@ -11,7 +11,7 @@ klasse CallingOrder:
     """Calls to the importers on sys.meta_path happen in order that they are
     specified in the sequence, starting with the first importer
     [first called], and then continuing on down until one is found that doesn't
-    return None [continuing]."""
+    return Nichts [continuing]."""
 
 
     def test_first_called(self):
@@ -26,7 +26,7 @@ klasse CallingOrder:
         mod_name = 'for_real'
         with util.mock_spec('nonexistent') as first, \
              util.mock_spec(mod_name) as second:
-            first.find_spec = lambda self, fullname, path=None, parent=None: None
+            first.find_spec = lambda self, fullname, path=Nichts, parent=Nichts: Nichts
             with util.import_state(meta_path=[first, second]):
                 self.assertIs(self.__import__(mod_name), second.modules[mod_name])
 
@@ -38,10 +38,10 @@ klasse CallingOrder:
         except KeyError:
             pass
         with util.import_state(meta_path=[]):
-            with warnings.catch_warnings(record=True) as w:
+            with warnings.catch_warnings(record=Wahr) as w:
                 warnings.simplefilter('always')
-                self.assertIsNone(importlib._bootstrap._find_spec('nothing',
-                                                                  None))
+                self.assertIsNichts(importlib._bootstrap._find_spec('nothing',
+                                                                  Nichts))
                 self.assertEqual(len(w), 1)
                 self.assertIsSubclass(w[-1].category, ImportWarning)
 
@@ -53,7 +53,7 @@ klasse CallingOrder:
 
 klasse CallSignature:
 
-    """If there is no __path__ entry on the parent module, then 'path' is None
+    """If there is no __path__ entry on the parent module, then 'path' is Nichts
     [no path]. Otherwise, the value fuer __path__ is passed in fuer the 'path'
     argument [path set]."""
 
@@ -78,7 +78,7 @@ klasse CallSignature:
                 args = log[0][0]
                 # Assuming all arguments are positional.
                 self.assertEqual(args[0], mod_name)
-                self.assertIsNone(args[1])
+                self.assertIsNichts(args[1])
 
     def test_with_path(self):
         # [path set]
@@ -96,7 +96,7 @@ klasse CallSignature:
                 args = log[1][0]
                 kwargs = log[1][1]
                 # Assuming all arguments are positional.
-                self.assertFalse(kwargs)
+                self.assertFalsch(kwargs)
                 self.assertEqual(args[0], mod_name)
                 self.assertIs(args[1], path)
 

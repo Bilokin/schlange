@@ -72,7 +72,7 @@ klasse PythonValuesTestCase(unittest.TestCase):
                 # This is dangerous. We *can* iterate over a pointer, but
                 # the loop will not terminate (maybe with an access
                 # violation;-) because the pointer instance has no size.
-                wenn entry.name is None:
+                wenn entry.name is Nichts:
                     break
                 modname = entry.name.decode("ascii")
                 modules.append(modname)
@@ -80,19 +80,19 @@ klasse PythonValuesTestCase(unittest.TestCase):
                     wenn entry.size != 0:
                         # Do a sanity check on entry.size and entry.code.
                         self.assertGreater(abs(entry.size), 10)
-                        self.assertTrue([entry.code[i] fuer i in range(abs(entry.size))])
+                        self.assertWahr([entry.code[i] fuer i in range(abs(entry.size))])
                     # Check the module's package-ness.
                     with import_helper.frozen_modules():
                         spec = importlib.util.find_spec(modname)
                     wenn entry.is_package:
                         # It's a package.
-                        self.assertIsNotNone(spec.submodule_search_locations)
+                        self.assertIsNotNichts(spec.submodule_search_locations)
                     sonst:
-                        self.assertIsNone(spec.submodule_search_locations)
+                        self.assertIsNichts(spec.submodule_search_locations)
 
         with import_helper.frozen_modules():
             expected = _imp._frozen_module_names()
-        self.maxDiff = None
+        self.maxDiff = Nichts
         self.assertEqual(modules, expected,
                          "_PyImport_FrozenBootstrap example "
                          "in Doc/library/ctypes.rst may be out of date")

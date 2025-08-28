@@ -15,11 +15,11 @@ klasse Codec(codecs.Codec):
         return codecs.charmap_decode(input,errors,decoding_table)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return codecs.charmap_encode(input,self.errors,encoding_map)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         return codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
@@ -45,14 +45,14 @@ def getregentry():
 
 decoding_map = codecs.make_identity_dict(range(256))
 decoding_map.update({
-    0x0080: None,       #  UNDEFINED
-    0x0081: None,       #  UNDEFINED
-    0x0082: None,       #  UNDEFINED
-    0x0083: None,       #  UNDEFINED
-    0x0084: None,       #  UNDEFINED
-    0x0085: None,       #  UNDEFINED
+    0x0080: Nichts,       #  UNDEFINED
+    0x0081: Nichts,       #  UNDEFINED
+    0x0082: Nichts,       #  UNDEFINED
+    0x0083: Nichts,       #  UNDEFINED
+    0x0084: Nichts,       #  UNDEFINED
+    0x0085: Nichts,       #  UNDEFINED
     0x0086: 0x0386,     #  GREEK CAPITAL LETTER ALPHA WITH TONOS
-    0x0087: None,       #  UNDEFINED
+    0x0087: Nichts,       #  UNDEFINED
     0x0088: 0x00b7,     #  MIDDLE DOT
     0x0089: 0x00ac,     #  NOT SIGN
     0x008a: 0x00a6,     #  BROKEN BAR
@@ -64,8 +64,8 @@ decoding_map.update({
     0x0090: 0x038a,     #  GREEK CAPITAL LETTER IOTA WITH TONOS
     0x0091: 0x03aa,     #  GREEK CAPITAL LETTER IOTA WITH DIALYTIKA
     0x0092: 0x038c,     #  GREEK CAPITAL LETTER OMICRON WITH TONOS
-    0x0093: None,       #  UNDEFINED
-    0x0094: None,       #  UNDEFINED
+    0x0093: Nichts,       #  UNDEFINED
+    0x0094: Nichts,       #  UNDEFINED
     0x0095: 0x038e,     #  GREEK CAPITAL LETTER UPSILON WITH TONOS
     0x0096: 0x03ab,     #  GREEK CAPITAL LETTER UPSILON WITH DIALYTIKA
     0x0097: 0x00a9,     #  COPYRIGHT SIGN

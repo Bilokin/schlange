@@ -97,7 +97,7 @@ klasse PropertyTests(unittest.TestCase):
         # see #1620
         sub = SubClass()
         self.assertRaises(PropertyGet, getattr, sub, "spam")
-        self.assertRaises(PropertySet, setattr, sub, "spam", None)
+        self.assertRaises(PropertySet, setattr, sub, "spam", Nichts)
         self.assertRaises(PropertyDel, delattr, sub, "spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
@@ -129,7 +129,7 @@ klasse PropertyTests(unittest.TestCase):
         self.assertEqual(newgetter.__class__.spam.__doc__, "new docstring")
 
     def test_property___isabstractmethod__descriptor(self):
-        fuer val in (True, False, [], [1], '', '1'):
+        fuer val in (Wahr, Falsch, [], [1], '', '1'):
             klasse C(object):
                 def foo(self):
                     pass
@@ -185,20 +185,20 @@ klasse PropertyTests(unittest.TestCase):
 
     @support.refcount_test
     def test_gh_115618(self):
-        # Py_XDECREF() was improperly called fuer None argument
+        # Py_XDECREF() was improperly called fuer Nichts argument
         # in property methods.
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         prop = property()
         refs_before = gettotalrefcount()
         fuer i in range(100):
-            prop = prop.getter(None)
-        self.assertIsNone(prop.fget)
+            prop = prop.getter(Nichts)
+        self.assertIsNichts(prop.fget)
         fuer i in range(100):
-            prop = prop.setter(None)
-        self.assertIsNone(prop.fset)
+            prop = prop.setter(Nichts)
+        self.assertIsNichts(prop.fset)
         fuer i in range(100):
-            prop = prop.deleter(None)
-        self.assertIsNone(prop.fdel)
+            prop = prop.deleter(Nichts)
+        self.assertIsNichts(prop.fdel)
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
     def test_property_name(self):
@@ -218,7 +218,7 @@ klasse PropertyTests(unittest.TestCase):
                 pass
 
             bar = property(getter)
-            baz = property(None, setter)
+            baz = property(Nichts, setter)
 
         self.assertEqual(A.foo.__name__, 'foo')
         self.assertEqual(A.oof.__name__, 'oof')
@@ -230,13 +230,13 @@ klasse PropertyTests(unittest.TestCase):
         A.quux.__name__ = 'myquux'
         self.assertEqual(A.quux.__name__, 'myquux')
         self.assertEqual(A.bar.__name__, 'bar')  # not affected
-        A.quux.__name__ = None
-        self.assertIsNone(A.quux.__name__)
+        A.quux.__name__ = Nichts
+        self.assertIsNichts(A.quux.__name__)
 
         with self.assertRaisesRegex(
             AttributeError, "'property' object has no attribute '__name__'"
         ):
-            property(None, setter).__name__
+            property(Nichts, setter).__name__
 
         with self.assertRaisesRegex(
             AttributeError, "'property' object has no attribute '__name__'"
@@ -315,13 +315,13 @@ klasse PropertySubclassTests(unittest.TestCase):
             __slots__ = ("foo",)
 
         p = slotted_prop()  # no AttributeError
-        self.assertIsNone(getattr(p, "__doc__", None))
+        self.assertIsNichts(getattr(p, "__doc__", Nichts))
 
         def undocumented_getter():
             return 4
 
         p = slotted_prop(undocumented_getter)  # New in 3.12: no AttributeError
-        self.assertIsNone(getattr(p, "__doc__", None))
+        self.assertIsNichts(getattr(p, "__doc__", Nichts))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
@@ -331,7 +331,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             __slots__ = ("foo",)
 
         p = slotted_prop(doc="what's up")  # no AttributeError
-        self.assertIsNone(p.__doc__)
+        self.assertIsNichts(p.__doc__)
 
         def documented_getter():
             """getter doc."""
@@ -366,7 +366,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         self.assertEqual(PropertySub.__doc__, "This is a subclass of property",
                          "Docstring of `property` subclass is ignored")
 
-        doc = PropertySub(None, None, None, "issue 41287 is fixed").__doc__
+        doc = PropertySub(Nichts, Nichts, Nichts, "issue 41287 is fixed").__doc__
         self.assertEqual(doc, "issue 41287 is fixed",
                          "Subclasses of `property` ignores `doc` constructor argument")
 
@@ -377,19 +377,19 @@ klasse PropertySubclassTests(unittest.TestCase):
             pass
 
         fuer ps in property, PropertySub, PropertySubWoDoc:
-            doc = ps(getter, None, None, "issue 41287 is fixed").__doc__
+            doc = ps(getter, Nichts, Nichts, "issue 41287 is fixed").__doc__
             self.assertEqual(doc, "issue 41287 is fixed",
                              "Getter overrides explicit property docstring (%s)" % ps.__name__)
 
-            doc = ps(getter, None, None, None).__doc__
+            doc = ps(getter, Nichts, Nichts, Nichts).__doc__
             self.assertEqual(doc, "Getter docstring", "Getter docstring is not picked-up (%s)" % ps.__name__)
 
-            doc = ps(getter_wo_doc, None, None, "issue 41287 is fixed").__doc__
+            doc = ps(getter_wo_doc, Nichts, Nichts, "issue 41287 is fixed").__doc__
             self.assertEqual(doc, "issue 41287 is fixed",
                              "Getter overrides explicit property docstring (%s)" % ps.__name__)
 
-            doc = ps(getter_wo_doc, None, None, None).__doc__
-            self.assertIsNone(doc, "Property klasse doc appears in instance __doc__ (%s)" % ps.__name__)
+            doc = ps(getter_wo_doc, Nichts, Nichts, Nichts).__doc__
+            self.assertIsNichts(doc, "Property klasse doc appears in instance __doc__ (%s)" % ps.__name__)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
@@ -423,7 +423,7 @@ klasse PropertySubclassTests(unittest.TestCase):
 
         # Case-1: user-provided doc is preserved in copies
         #         of property with undocumented getter
-        p = property(getter1, None, None, "doc-A")
+        p = property(getter1, Nichts, Nichts, "doc-A")
 
         p2 = p.getter(getter2)
         self.assertEqual(p.__doc__, "doc-A")
@@ -431,7 +431,7 @@ klasse PropertySubclassTests(unittest.TestCase):
 
         # Case-2: user-provided doc is preserved in copies
         #         of property with documented getter
-        p = property(getter2, None, None, "doc-A")
+        p = property(getter2, Nichts, Nichts, "doc-A")
 
         p2 = p.getter(getter3)
         self.assertEqual(p.__doc__, "doc-A")
@@ -439,7 +439,7 @@ klasse PropertySubclassTests(unittest.TestCase):
 
         # Case-3: with no user-provided doc new getter doc
         #         takes precedence
-        p = property(getter2, None, None, None)
+        p = property(getter2, Nichts, Nichts, Nichts)
 
         p2 = p.getter(getter3)
         self.assertEqual(p.__doc__, "doc 2")
@@ -449,7 +449,7 @@ klasse PropertySubclassTests(unittest.TestCase):
         #         with documented getter. The doc IS NOT preserved.
         #         It's an odd behaviour, but it's a strange enough
         #         use case with no easy solution.
-        p = property(getter2, None, None, None)
+        p = property(getter2, Nichts, Nichts, Nichts)
         p.__doc__ = "user"
         p2 = p.getter(getter3)
         self.assertEqual(p.__doc__, "user")
@@ -457,7 +457,7 @@ klasse PropertySubclassTests(unittest.TestCase):
 
         # Case-5: A user-provided doc is assigned after property construction
         #         with UNdocumented getter. The doc IS preserved.
-        p = property(getter1, None, None, None)
+        p = property(getter1, Nichts, Nichts, Nichts)
         p.__doc__ = "user"
         p2 = p.getter(getter2)
         self.assertEqual(p.__doc__, "user")
@@ -487,15 +487,15 @@ klasse PropertySubclassTests(unittest.TestCase):
 
     def test_property_no_doc_on_getter(self):
         # If a property's getter has no __doc__ then the property's doc should
-        # be None; test that this is consistent with subclasses as well; see
+        # be Nichts; test that this is consistent with subclasses as well; see
         # GH-2487
         klasse NoDoc:
             @property
             def __doc__(self):
                 raise AttributeError
 
-        self.assertEqual(property(NoDoc()).__doc__, None)
-        self.assertEqual(PropertySub(NoDoc()).__doc__, None)
+        self.assertEqual(property(NoDoc()).__doc__, Nichts)
+        self.assertEqual(PropertySub(NoDoc()).__doc__, Nichts)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
@@ -558,9 +558,9 @@ klasse PropertySubclassTests(unittest.TestCase):
 
 
 klasse _PropertyUnreachableAttribute:
-    msg_format = None
-    obj = None
-    cls = None
+    msg_format = Nichts
+    obj = Nichts
+    cls = Nichts
 
     def _format_exc_msg(self, msg):
         return self.msg_format.format(msg)
@@ -575,7 +575,7 @@ klasse _PropertyUnreachableAttribute:
 
     def test_set_property(self):
         with self.assertRaisesRegex(AttributeError, self._format_exc_msg("has no setter")):
-            self.obj.foo = None
+            self.obj.foo = Nichts
 
     def test_del_property(self):
         with self.assertRaisesRegex(AttributeError, self._format_exc_msg("has no deleter")):

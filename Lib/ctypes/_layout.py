@@ -67,12 +67,12 @@ def get_layout(cls, input_fields, is_struct, base):
 
     # For clarity, variables that count bits have `bit` in their names.
 
-    pack = getattr(cls, '_pack_', None)
+    pack = getattr(cls, '_pack_', Nichts)
 
-    layout = getattr(cls, '_layout_', None)
-    wenn layout is None:
+    layout = getattr(cls, '_layout_', Nichts)
+    wenn layout is Nichts:
         wenn sys.platform == 'win32':
-            gcc_layout = False
+            gcc_layout = Falsch
         sowenn pack:
             wenn is_struct:
                 base_type_name = 'Structure'
@@ -87,13 +87,13 @@ def get_layout(cls, input_fields, is_struct, base):
                 + "an error in Python {remove}.",
                 remove=(3, 19),
             )
-            gcc_layout = False
+            gcc_layout = Falsch
         sonst:
-            gcc_layout = True
+            gcc_layout = Wahr
     sowenn layout == 'ms':
-        gcc_layout = False
+        gcc_layout = Falsch
     sowenn layout == 'gcc-sysv':
-        gcc_layout = True
+        gcc_layout = Wahr
     sonst:
         raise ValueError(f'unknown _layout_: {layout!r}')
 
@@ -113,7 +113,7 @@ def get_layout(cls, input_fields, is_struct, base):
     sonst:
         big_endian = sys.byteorder == 'big'
 
-    wenn pack is not None:
+    wenn pack is not Nichts:
         try:
             pack = int(pack)
         except (TypeError, ValueError):
@@ -170,7 +170,7 @@ def get_layout(cls, input_fields, is_struct, base):
                 raise ValueError(
                     '_fields_ must be a sequence of (name, C type) pairs '
                     + 'or (name, C type, bit size) triples') from exc
-            is_bitfield = True
+            is_bitfield = Wahr
             wenn bit_size <= 0:
                 raise ValueError(
                     f'number of bits invalid fuer bit field {name!r}')
@@ -179,7 +179,7 @@ def get_layout(cls, input_fields, is_struct, base):
                 raise ValueError(
                     f'number of bits invalid fuer bit field {name!r}')
         sonst:
-            is_bitfield = False
+            is_bitfield = Falsch
             type_size = ctypes.sizeof(ctype)
             bit_size = type_size * 8
 
@@ -189,7 +189,7 @@ def get_layout(cls, input_fields, is_struct, base):
 
         wenn gcc_layout:
             # We don't use next_byte_offset here
-            assert pack is None
+            assert pack is Nichts
             assert next_byte_offset == 0
 
             # Determine whether the bit field, wenn placed at the next
@@ -270,7 +270,7 @@ def get_layout(cls, input_fields, is_struct, base):
                     ")",
                 ))
 
-            wenn fieldfmt is None:
+            wenn fieldfmt is Nichts:
                 fieldfmt = "B"
             wenn isinstance(name, bytes):
                 # a bytes name would be rejected later, but we check early
@@ -284,13 +284,13 @@ def get_layout(cls, input_fields, is_struct, base):
             type=ctype,
             byte_size=type_size,
             byte_offset=offset,
-            bit_size=bit_size wenn is_bitfield sonst None,
-            bit_offset=bit_offset wenn is_bitfield sonst None,
+            bit_size=bit_size wenn is_bitfield sonst Nichts,
+            bit_offset=bit_offset wenn is_bitfield sonst Nichts,
             index=i,
 
             # Do not use CField outside ctypes, yet.
             # The constructor is internal API and may change without warning.
-            _internal_use=True,
+            _internal_use=Wahr,
         ))
         wenn is_bitfield and not gcc_layout:
             assert type_bit_size > 0

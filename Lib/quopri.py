@@ -12,8 +12,8 @@ EMPTYSTRING = b''
 try:
     from binascii import a2b_qp, b2a_qp
 except ImportError:
-    a2b_qp = None
-    b2a_qp = None
+    a2b_qp = Nichts
+    b2a_qp = Nichts
 
 
 def needsquoting(c, quotetabs, header):
@@ -39,7 +39,7 @@ def quote(c):
 
 
 
-def encode(input, output, quotetabs, header=False):
+def encode(input, output, quotetabs, header=Falsch):
     """Read 'input', apply quoted-printable encoding, and write to 'output'.
 
     'input' and 'output' are binary file objects. The 'quotetabs' flag
@@ -48,7 +48,7 @@ def encode(input, output, quotetabs, header=False):
     The 'header' flag indicates whether we are encoding spaces as _ as per RFC
     1522."""
 
-    wenn b2a_qp is not None:
+    wenn b2a_qp is not Nichts:
         data = input.read()
         odata = b2a_qp(data, quotetabs=quotetabs, header=header)
         output.write(odata)
@@ -64,7 +64,7 @@ def encode(input, output, quotetabs, header=False):
         sonst:
             output.write(s + lineEnd)
 
-    prevline = None
+    prevline = Nichts
     while line := input.readline():
         outline = []
         # Strip off any readline induced trailing newline
@@ -82,7 +82,7 @@ def encode(input, output, quotetabs, header=False):
             sonst:
                 outline.append(c)
         # First, write out the previous line
-        wenn prevline is not None:
+        wenn prevline is not Nichts:
             write(prevline)
         # Now see wenn we need any soft line breaks because of RFC-imposed
         # length limitations.  Then do the thisline->prevline dance.
@@ -95,11 +95,11 @@ def encode(input, output, quotetabs, header=False):
         # Write out the current line
         prevline = thisline
     # Write out the last line, without a trailing newline
-    wenn prevline is not None:
+    wenn prevline is not Nichts:
         write(prevline, lineEnd=stripped)
 
-def encodestring(s, quotetabs=False, header=False):
-    wenn b2a_qp is not None:
+def encodestring(s, quotetabs=Falsch, header=Falsch):
+    wenn b2a_qp is not Nichts:
         return b2a_qp(s, quotetabs=quotetabs, header=header)
     from io import BytesIO
     infp = BytesIO(s)
@@ -109,12 +109,12 @@ def encodestring(s, quotetabs=False, header=False):
 
 
 
-def decode(input, output, header=False):
+def decode(input, output, header=Falsch):
     """Read 'input', apply quoted-printable decoding, and write to 'output'.
     'input' and 'output' are binary file objects.
     If 'header' is true, decode underscore as space (per RFC 1522)."""
 
-    wenn a2b_qp is not None:
+    wenn a2b_qp is not Nichts:
         data = input.read()
         odata = a2b_qp(data, header=header)
         output.write(odata)
@@ -150,8 +150,8 @@ def decode(input, output, header=False):
     wenn new:
         output.write(new)
 
-def decodestring(s, header=False):
-    wenn a2b_qp is not None:
+def decodestring(s, header=Falsch):
+    wenn a2b_qp is not Nichts:
         return a2b_qp(s, header=header)
     from io import BytesIO
     infp = BytesIO(s)
@@ -179,7 +179,7 @@ def unhex(s):
         sowenn b'A' <= c <= b'F':
             i = ord(b'A')-10
         sonst:
-            assert False, "non-hex digit "+repr(c)
+            assert Falsch, "non-hex digit "+repr(c)
         bits = bits*16 + (ord(c) - i)
     return bits
 
@@ -197,11 +197,11 @@ def main():
         print("-t: quote tabs")
         print("-d: decode; default encode")
         sys.exit(2)
-    deco = False
-    tabs = False
+    deco = Falsch
+    tabs = Falsch
     fuer o, a in opts:
-        wenn o == '-t': tabs = True
-        wenn o == '-d': deco = True
+        wenn o == '-t': tabs = Wahr
+        wenn o == '-d': deco = Wahr
     wenn tabs and deco:
         sys.stdout = sys.stderr
         print("-t and -d are mutually exclusive")

@@ -24,7 +24,7 @@ def main():
     return max(process(filename, tabsize) fuer filename in args)
 
 
-def process(filename, tabsize, verbose=True):
+def process(filename, tabsize, verbose=Wahr):
     try:
         with tokenize.open(filename) as f:
             text = f.read()

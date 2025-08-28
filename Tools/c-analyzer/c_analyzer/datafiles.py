@@ -16,9 +16,9 @@ EXTRA_COLUMNS = [
 ]
 
 
-def get_known(known, extracolumns=None, *,
-              analyze_resolved=None,
-              handle_unresolved=True,
+def get_known(known, extracolumns=Nichts, *,
+              analyze_resolved=Nichts,
+              handle_unresolved=Wahr,
               relroot=fsutil.USE_CWD,
               ):
     wenn isinstance(known, str):
@@ -30,7 +30,7 @@ def get_known(known, extracolumns=None, *,
     )
 
 
-def read_known(infile, extracolumns=None, relroot=fsutil.USE_CWD):
+def read_known(infile, extracolumns=Nichts, relroot=fsutil.USE_CWD):
     extracolumns = EXTRA_COLUMNS + (
         list(extracolumns) wenn extracolumns sonst []
     )
@@ -41,12 +41,12 @@ def read_known(infile, extracolumns=None, relroot=fsutil.USE_CWD):
 
 
 def analyze_known(known, *,
-                  analyze_resolved=None,
-                  handle_unresolved=True,
+                  analyze_resolved=Nichts,
+                  handle_unresolved=Wahr,
                   ):
     knowntypes = knowntypespecs = {}
     collated = _match.group_by_kinds(known)
-    types = {decl: None fuer decl in collated['type']}
+    types = {decl: Nichts fuer decl in collated['type']}
     typespecs = _analyze.get_typespecs(types)
     def analyze_decl(decl):
         return _analyze.analyze_decl(
@@ -61,9 +61,9 @@ def analyze_known(known, *,
     return types, typespecs
 
 
-def write_known(rows, outfile, extracolumns=None, *,
+def write_known(rows, outfile, extracolumns=Nichts, *,
                 relroot=fsutil.USE_CWD,
-                backup=True,
+                backup=Wahr,
                 ):
     extracolumns = EXTRA_COLUMNS + (
         list(extracolumns) wenn extracolumns sonst []
@@ -100,17 +100,17 @@ def _iter_ignored(infile, relroot):
     fuer row in _tables.read_table(infile, IGNORED_HEADER, sep='\t'):
         *varidinfo, reason = row
         wenn _tables.EMPTY in varidinfo or _tables.UNKNOWN in varidinfo:
-            varidinfo = tuple(None wenn v in bogus sonst v
+            varidinfo = tuple(Nichts wenn v in bogus sonst v
                               fuer v in varidinfo)
         wenn reason in bogus:
-            reason = None
+            reason = Nichts
         try:
             varid = _info.DeclID.from_row(varidinfo)
         except BaseException as e:
             e.add_note(f"Error occurred when processing row {varidinfo} in {infile}.")
             e.add_note(f"Could it be that you added a row which is not tab-delimited?")
             raise e
-        varid = varid.fix_filename(relroot, formatted=False, fixroot=False)
+        varid = varid.fix_filename(relroot, formatted=Falsch, fixroot=Falsch)
         yield varid, reason
 
 
@@ -121,7 +121,7 @@ def write_ignored(variables, outfile, relroot=fsutil.USE_CWD):
     reason = '???'
     #if not isinstance(varid, DeclID):
     #    varid = getattr(varid, 'parsed', varid).id
-    decls = (d.fix_filename(relroot, fixroot=False) fuer d in decls)
+    decls = (d.fix_filename(relroot, fixroot=Falsch) fuer d in decls)
     _tables.write_table(
         outfile,
         IGNORED_HEADER,

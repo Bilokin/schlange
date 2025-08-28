@@ -18,7 +18,7 @@ except FileNotFoundError:
 klasse MockGetPathTests(unittest.TestCase):
     def __init__(self, *a, **kw):
         super().__init__(*a, **kw)
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
     def test_normal_win32(self):
         "Test a 'standard' install layout on Windows."
@@ -116,7 +116,7 @@ klasse MockGetPathTests(unittest.TestCase):
         """
         hkey = rf"HKLM\Software\Python\PythonCore\9.8-XY\PythonPath"
         winreg = MockWinreg({
-            hkey: None,
+            hkey: Nichts,
             f"{hkey}\\Path1": "path1-dir",
             f"{hkey}\\Path1\\Subdir": "not-subdirs",
         })
@@ -144,7 +144,7 @@ klasse MockGetPathTests(unittest.TestCase):
 
         ns["config"]["use_environment"] = 0
         ns["config"]["module_search_paths_set"] = 0
-        ns["config"]["module_search_paths"] = None
+        ns["config"]["module_search_paths"] = Nichts
         expected = dict(
             module_search_paths_set=1,
             module_search_paths=[
@@ -615,11 +615,11 @@ klasse MockGetPathTests(unittest.TestCase):
             ENV___PYVENV_LAUNCHER__="/Library/Frameworks/DebugPython.framework/Versions/9.8/bin/python9.8",
             real_executable="/Library/Frameworks/DebugPython.framework/Versions/9.8/Resources/Python.app/Contents/MacOS/DebugPython",
             library="/Library/Frameworks/DebugPython.framework/Versions/9.8/DebugPython",
-            PYTHONPATH=None,
-            ENV_PYTHONHOME=None,
-            ENV_PYTHONEXECUTABLE=None,
-            executable_dir=None,
-            py_setpath=None,
+            PYTHONPATH=Nichts,
+            ENV_PYTHONHOME=Nichts,
+            ENV_PYTHONEXECUTABLE=Nichts,
+            executable_dir=Nichts,
+            py_setpath=Nichts,
         )
         ns.add_known_xfile("/Library/Frameworks/DebugPython.framework/Versions/9.8/Resources/Python.app/Contents/MacOS/DebugPython")
         ns.add_known_xfile("/Library/Frameworks/DebugPython.framework/Versions/9.8/bin/python9.8")
@@ -897,8 +897,8 @@ DEFAULT_NAMESPACE = dict(
     VERSION_MAJOR=9,    # fixed version number fuer ease
     VERSION_MINOR=8,    # of testing
     ABI_THREAD="",
-    PYWINVER=None,
-    EXE_SUFFIX=None,
+    PYWINVER=Nichts,
+    EXE_SUFFIX=Nichts,
 
     ENV_PATH="",
     ENV_PYTHONHOME="",
@@ -909,29 +909,29 @@ DEFAULT_NAMESPACE = dict(
     real_executable="",
     executable_dir="",
     library="",
-    winreg=None,
-    build_prefix=None,
-    venv_prefix=None,
+    winreg=Nichts,
+    build_prefix=Nichts,
+    venv_prefix=Nichts,
 )
 
 DEFAULT_CONFIG = dict(
-    home=None,
-    platlibdir=None,
-    pythonpath=None,
-    program_name=None,
-    prefix=None,
-    exec_prefix=None,
-    base_prefix=None,
-    base_exec_prefix=None,
-    executable=None,
+    home=Nichts,
+    platlibdir=Nichts,
+    pythonpath=Nichts,
+    program_name=Nichts,
+    prefix=Nichts,
+    exec_prefix=Nichts,
+    base_prefix=Nichts,
+    base_exec_prefix=Nichts,
+    executable=Nichts,
     base_executable="",
-    stdlib_dir=None,
-    platstdlib_dir=None,
-    module_search_paths=None,
+    stdlib_dir=Nichts,
+    platstdlib_dir=Nichts,
+    module_search_paths=Nichts,
     module_search_paths_set=0,
-    pythonpath_env=None,
-    argv=None,
-    orig_argv=None,
+    pythonpath_env=Nichts,
+    argv=Nichts,
+    orig_argv=Nichts,
 
     isolated=0,
     use_environment=1,
@@ -939,7 +939,7 @@ DEFAULT_CONFIG = dict(
 )
 
 klasse MockNTNamespace(dict):
-    def __init__(self, *a, argv0=None, config=None, **kw):
+    def __init__(self, *a, argv0=Nichts, config=Nichts, **kw):
         self.update(DEFAULT_NAMESPACE)
         self["config"] = DEFAULT_CONFIG.copy()
         self["os_name"] = "nt"
@@ -956,7 +956,7 @@ klasse MockNTNamespace(dict):
         self._dirs = set()
         self._warnings = []
 
-    def add_known_file(self, path, lines=None):
+    def add_known_file(self, path, lines=Nichts):
         self._files[path.casefold()] = list(lines or ())
         self.add_known_dir(path.rpartition("\\")[0])
 
@@ -976,7 +976,7 @@ klasse MockNTNamespace(dict):
         try:
             return getattr(self, key)
         except AttributeError:
-            raise KeyError(key) from None
+            raise KeyError(key) from Nichts
 
     def abspath(self, path):
         wenn self.isabs(path):
@@ -1027,16 +1027,16 @@ klasse MockNTNamespace(dict):
         try:
             return self._files[path.casefold()]
         except KeyError:
-            raise FileNotFoundError(path) from None
+            raise FileNotFoundError(path) from Nichts
 
-    def realpath(self, path, _trail=None):
+    def realpath(self, path, _trail=Nichts):
         wenn verbose:
             print("Read link from", path)
         try:
             link = self._links[path.casefold()]
         except KeyError:
             return path
-        wenn _trail is None:
+        wenn _trail is Nichts:
             _trail = set()
         sowenn link.casefold() in _trail:
             raise OSError("circular link")
@@ -1115,7 +1115,7 @@ klasse MockWinreg:
 
 
 klasse MockPosixNamespace(dict):
-    def __init__(self, *a, argv0=None, config=None, **kw):
+    def __init__(self, *a, argv0=Nichts, config=Nichts, **kw):
         self.update(DEFAULT_NAMESPACE)
         self["config"] = DEFAULT_CONFIG.copy()
         self["os_name"] = "posix"
@@ -1132,7 +1132,7 @@ klasse MockPosixNamespace(dict):
         self._dirs = set()
         self._warnings = []
 
-    def add_known_file(self, path, lines=None):
+    def add_known_file(self, path, lines=Nichts):
         self._files[path] = list(lines or ())
         self.add_known_dir(path.rpartition("/")[0])
 
@@ -1153,7 +1153,7 @@ klasse MockPosixNamespace(dict):
         try:
             return getattr(self, key)
         except AttributeError:
-            raise KeyError(key) from None
+            raise KeyError(key) from Nichts
 
     def abspath(self, path):
         wenn self.isabs(path):
@@ -1199,16 +1199,16 @@ klasse MockPosixNamespace(dict):
         try:
             return self._files[path]
         except KeyError:
-            raise FileNotFoundError(path) from None
+            raise FileNotFoundError(path) from Nichts
 
-    def realpath(self, path, _trail=None):
+    def realpath(self, path, _trail=Nichts):
         wenn verbose:
             print("Read link from", path)
         try:
             link = self._links[path]
         except KeyError:
             return path
-        wenn _trail is None:
+        wenn _trail is Nichts:
             _trail = set()
         sowenn link in _trail:
             raise OSError("circular link")
@@ -1264,10 +1264,10 @@ def dump_dict(before, after, prefix="global"):
 
 def getpath(ns, keys):
     before = copy.deepcopy(ns)
-    failed = True
+    failed = Wahr
     try:
         exec(SOURCE, ns)
-        failed = False
+        failed = Falsch
     finally:
         wenn failed:
             dump_dict(before, ns)

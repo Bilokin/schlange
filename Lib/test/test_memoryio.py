@@ -93,7 +93,7 @@ klasse MemoryTestMixin:
         memio = self.ioclass()
         self.write_ops(memio, self.buftype)
         self.assertEqual(memio.getvalue(), buf)
-        self.assertRaises(TypeError, memio.write, None)
+        self.assertRaises(TypeError, memio.write, Nichts)
         memio.close()
         self.assertRaises(ValueError, memio.write, self.buftype(""))
 
@@ -101,14 +101,14 @@ klasse MemoryTestMixin:
         buf = self.buftype("1234567890")
         memio = self.ioclass()
 
-        self.assertEqual(memio.writelines([buf] * 100), None)
+        self.assertEqual(memio.writelines([buf] * 100), Nichts)
         self.assertEqual(memio.getvalue(), buf * 100)
         memio.writelines([])
         self.assertEqual(memio.getvalue(), buf * 100)
         memio = self.ioclass()
         self.assertRaises(TypeError, memio.writelines, [buf] + [1])
         self.assertEqual(memio.getvalue(), buf)
-        self.assertRaises(TypeError, memio.writelines, None)
+        self.assertRaises(TypeError, memio.writelines, Nichts)
         memio.close()
         self.assertRaises(ValueError, memio.writelines, [])
 
@@ -138,7 +138,7 @@ klasse MemoryTestMixin:
         memio.write(buf)
         self.assertEqual(memio.getvalue(), buf[:4] + buf)
         pos = memio.tell()
-        self.assertEqual(memio.truncate(None), pos)
+        self.assertEqual(memio.truncate(Nichts), pos)
         self.assertEqual(memio.tell(), pos)
         self.assertRaises(TypeError, memio.truncate, '0')
         memio.close()
@@ -149,7 +149,7 @@ klasse MemoryTestMixin:
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
         self.assertEqual(memio.getvalue(), buf)
-        memio = self.ioclass(None)
+        memio = self.ioclass(Nichts)
         self.assertEqual(memio.getvalue(), self.EOF)
         memio.__init__(buf * 2)
         self.assertEqual(memio.getvalue(), buf * 2)
@@ -184,7 +184,7 @@ klasse MemoryTestMixin:
         memio.seek(100)
         self.assertEqual(type(memio.read()), type(buf))
         memio.seek(0)
-        self.assertEqual(memio.read(None), buf)
+        self.assertEqual(memio.read(Nichts), buf)
         self.assertRaises(TypeError, memio.read, '')
         memio.seek(len(buf) + 1)
         self.assertEqual(memio.read(1), self.EOF)
@@ -252,7 +252,7 @@ klasse MemoryTestMixin:
         memio.seek(0)
         self.assertEqual(type(memio.readlines()[0]), type(buf))
         memio.seek(0)
-        self.assertEqual(memio.readlines(None), [buf] * 10)
+        self.assertEqual(memio.readlines(Nichts), [buf] * 10)
         self.assertRaises(TypeError, memio.readlines, '')
         # Issue #24989: Buffer overread
         memio.seek(len(buf) * 10 + 1)
@@ -351,22 +351,22 @@ klasse MemoryTestMixin:
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
-        self.assertEqual(memio.flush(), None)
+        self.assertEqual(memio.flush(), Nichts)
 
     def test_flags(self):
         memio = self.ioclass()
 
-        self.assertEqual(memio.writable(), True)
-        self.assertEqual(memio.readable(), True)
-        self.assertEqual(memio.seekable(), True)
-        self.assertEqual(memio.isatty(), False)
-        self.assertEqual(memio.closed, False)
+        self.assertEqual(memio.writable(), Wahr)
+        self.assertEqual(memio.readable(), Wahr)
+        self.assertEqual(memio.seekable(), Wahr)
+        self.assertEqual(memio.isatty(), Falsch)
+        self.assertEqual(memio.closed, Falsch)
         memio.close()
         self.assertRaises(ValueError, memio.writable)
         self.assertRaises(ValueError, memio.readable)
         self.assertRaises(ValueError, memio.seekable)
         self.assertRaises(ValueError, memio.isatty)
-        self.assertEqual(memio.closed, True)
+        self.assertEqual(memio.closed, Wahr)
 
     def test_subclassing(self):
         buf = self.buftype("1234567890")
@@ -379,7 +379,7 @@ klasse MemoryTestMixin:
             klasse MemIO(self.ioclass):
                 def __init__(me, a, b):
                     self.ioclass.__init__(me, a)
-            m = MemIO(buf, None)
+            m = MemIO(buf, Nichts)
             return m.getvalue()
         self.assertEqual(test1(), buf)
         self.assertEqual(test2(), buf)
@@ -452,7 +452,7 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         self.assertRaises(BufferError, memio.write, b'x' * 100)
         self.assertRaises(BufferError, memio.truncate)
         self.assertRaises(BufferError, memio.close)
-        self.assertFalse(memio.closed)
+        self.assertFalsch(memio.closed)
         # Mutating the buffer updates the BytesIO
         buf[3:6] = b"abc"
         self.assertEqual(bytes(buf), b"123abc7890")
@@ -495,8 +495,8 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         # The C implementation emits an unraisable exception.
         with support.catch_unraisable_exception():
             gc.collect()
-        self.assertIsNone(memiowr())
-        self.assertIsNone(bufwr())
+        self.assertIsNichts(memiowr())
+        self.assertIsNichts(bufwr())
 
     def test_read1(self):
         buf = self.buftype("1234567890")
@@ -571,20 +571,20 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
     def test_issue5449(self):
         buf = self.buftype("1234567890")
         self.ioclass(initial_bytes=buf)
-        self.assertRaises(TypeError, self.ioclass, buf, foo=None)
+        self.assertRaises(TypeError, self.ioclass, buf, foo=Nichts)
 
 
 klasse TextIOTestMixin:
 
     def test_newlines_property(self):
-        memio = self.ioclass(newline=None)
+        memio = self.ioclass(newline=Nichts)
         # The C StringIO decodes newlines in write() calls, but the Python
         # implementation only does when reading.  This function forces them to
         # be decoded fuer testing.
         def force_decode():
             memio.seek(0)
             memio.read()
-        self.assertEqual(memio.newlines, None)
+        self.assertEqual(memio.newlines, Nichts)
         memio.write("a\n")
         force_decode()
         self.assertEqual(memio.newlines, "\n")
@@ -610,9 +610,9 @@ klasse TextIOTestMixin:
 
         # These are just dummy values but we nevertheless check them fuer fear
         # of unexpected breakage.
-        self.assertIsNone(memio.encoding)
-        self.assertIsNone(memio.errors)
-        self.assertFalse(memio.line_buffering)
+        self.assertIsNichts(memio.encoding)
+        self.assertIsNichts(memio.errors)
+        self.assertFalsch(memio.line_buffering)
 
     def test_newline_default(self):
         memio = self.ioclass("a\nb\r\nc\rd")
@@ -626,8 +626,8 @@ klasse TextIOTestMixin:
         self.assertEqual(memio.getvalue(), "a\nb\r\nc\rd")
 
     def test_newline_none(self):
-        # newline=None
-        memio = self.ioclass("a\nb\r\nc\rd", newline=None)
+        # newline=Nichts
+        memio = self.ioclass("a\nb\r\nc\rd", newline=Nichts)
         self.assertEqual(list(memio), ["a\n", "b\n", "c\n", "d"])
         memio.seek(0)
         self.assertEqual(memio.read(1), "a")
@@ -636,7 +636,7 @@ klasse TextIOTestMixin:
         self.assertEqual(memio.read(1), "\n")
         self.assertEqual(memio.getvalue(), "a\nb\nc\nd")
 
-        memio = self.ioclass(newline=None)
+        memio = self.ioclass(newline=Nichts)
         self.assertEqual(2, memio.write("a\n"))
         self.assertEqual(3, memio.write("b\r\n"))
         self.assertEqual(3, memio.write("c\rd"))
@@ -644,7 +644,7 @@ klasse TextIOTestMixin:
         self.assertEqual(memio.read(), "a\nb\nc\nd")
         self.assertEqual(memio.getvalue(), "a\nb\nc\nd")
 
-        memio = self.ioclass("a\r\nb", newline=None)
+        memio = self.ioclass("a\r\nb", newline=Nichts)
         self.assertEqual(memio.read(3), "a\nb")
 
     def test_newline_empty(self):
@@ -712,7 +712,7 @@ klasse TextIOTestMixin:
 
     def test_issue5265(self):
         # StringIO can duplicate newlines in universal newlines mode
-        memio = self.ioclass("a\r\nb\r\n", newline=None)
+        memio = self.ioclass("a\r\nb\r\n", newline=Nichts)
         self.assertEqual(memio.read(5), "a\nb\n")
         self.assertEqual(memio.getvalue(), "a\nb\n")
 
@@ -720,7 +720,7 @@ klasse TextIOTestMixin:
         self.assertRaises(TypeError, self.ioclass, newline=b"\n")
         self.assertRaises(ValueError, self.ioclass, newline="error")
         # These should not raise an error
-        fuer newline in (None, "", "\n", "\r", "\r\n"):
+        fuer newline in (Nichts, "", "\n", "\r", "\r\n"):
             self.ioclass(newline=newline)
 
 
@@ -765,7 +765,7 @@ klasse CBytesIOTest(PyBytesIOTest):
         self.assertEqual(len(state), 3)
         bytearray(state[0]) # Check wenn state[0] supports the buffer interface.
         self.assertIsInstance(state[1], int)
-        wenn state[2] is not None:
+        wenn state[2] is not Nichts:
             self.assertIsInstance(state[2], dict)
         memio.close()
         self.assertRaises(ValueError, memio.__getstate__)
@@ -773,18 +773,18 @@ klasse CBytesIOTest(PyBytesIOTest):
     def test_setstate(self):
         # This checks whether __setstate__ does proper input validation.
         memio = self.ioclass()
-        memio.__setstate__((b"no error", 0, None))
-        memio.__setstate__((bytearray(b"no error"), 0, None))
+        memio.__setstate__((b"no error", 0, Nichts))
+        memio.__setstate__((bytearray(b"no error"), 0, Nichts))
         memio.__setstate__((b"no error", 0, {'spam': 3}))
-        self.assertRaises(ValueError, memio.__setstate__, (b"", -1, None))
-        self.assertRaises(TypeError, memio.__setstate__, ("unicode", 0, None))
-        self.assertRaises(TypeError, memio.__setstate__, (b"", 0.0, None))
+        self.assertRaises(ValueError, memio.__setstate__, (b"", -1, Nichts))
+        self.assertRaises(TypeError, memio.__setstate__, ("unicode", 0, Nichts))
+        self.assertRaises(TypeError, memio.__setstate__, (b"", 0.0, Nichts))
         self.assertRaises(TypeError, memio.__setstate__, (b"", 0, 0))
         self.assertRaises(TypeError, memio.__setstate__, (b"len-test", 0))
         self.assertRaises(TypeError, memio.__setstate__)
         self.assertRaises(TypeError, memio.__setstate__, 0)
         memio.close()
-        self.assertRaises(ValueError, memio.__setstate__, (b"closed", 0, None))
+        self.assertRaises(ValueError, memio.__setstate__, (b"closed", 0, Nichts))
 
     check_sizeof = support.check_sizeof
 
@@ -867,7 +867,7 @@ klasse CStringIOTest(PyStringIOTest):
         self.assertIsInstance(state[0], str)
         self.assertIsInstance(state[1], str)
         self.assertIsInstance(state[2], int)
-        wenn state[3] is not None:
+        wenn state[3] is not Nichts:
             self.assertIsInstance(state[3], dict)
         memio.close()
         self.assertRaises(ValueError, memio.__getstate__)
@@ -875,19 +875,19 @@ klasse CStringIOTest(PyStringIOTest):
     def test_setstate(self):
         # This checks whether __setstate__ does proper input validation.
         memio = self.ioclass()
-        memio.__setstate__(("no error", "\n", 0, None))
+        memio.__setstate__(("no error", "\n", 0, Nichts))
         memio.__setstate__(("no error", "", 0, {'spam': 3}))
-        self.assertRaises(ValueError, memio.__setstate__, ("", "f", 0, None))
-        self.assertRaises(ValueError, memio.__setstate__, ("", "", -1, None))
-        self.assertRaises(TypeError, memio.__setstate__, (b"", "", 0, None))
-        self.assertRaises(TypeError, memio.__setstate__, ("", b"", 0, None))
-        self.assertRaises(TypeError, memio.__setstate__, ("", "", 0.0, None))
+        self.assertRaises(ValueError, memio.__setstate__, ("", "f", 0, Nichts))
+        self.assertRaises(ValueError, memio.__setstate__, ("", "", -1, Nichts))
+        self.assertRaises(TypeError, memio.__setstate__, (b"", "", 0, Nichts))
+        self.assertRaises(TypeError, memio.__setstate__, ("", b"", 0, Nichts))
+        self.assertRaises(TypeError, memio.__setstate__, ("", "", 0.0, Nichts))
         self.assertRaises(TypeError, memio.__setstate__, ("", "", 0, 0))
         self.assertRaises(TypeError, memio.__setstate__, ("len-test", 0))
         self.assertRaises(TypeError, memio.__setstate__)
         self.assertRaises(TypeError, memio.__setstate__, 0)
         memio.close()
-        self.assertRaises(ValueError, memio.__setstate__, ("closed", "", 0, None))
+        self.assertRaises(ValueError, memio.__setstate__, ("closed", "", 0, Nichts))
 
 
 klasse CStringIOPickleTest(PyStringIOPickleTest):

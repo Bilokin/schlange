@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 import traceback
 
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
     from threading import Thread
     from types import TracebackType
@@ -14,20 +14,20 @@ wenn TYPE_CHECKING:
         @property
         def exc_type(self) -> type[BaseException]: ...
         @property
-        def exc_value(self) -> BaseException | None: ...
+        def exc_value(self) -> BaseException | Nichts: ...
         @property
-        def exc_traceback(self) -> TracebackType | None: ...
+        def exc_traceback(self) -> TracebackType | Nichts: ...
         @property
-        def thread(self) -> Thread | None: ...
+        def thread(self) -> Thread | Nichts: ...
 
     klasse ShowExceptions(Protocol):
         def __call__(self) -> int: ...
-        def add(self, s: str) -> None: ...
+        def add(self, s: str) -> Nichts: ...
 
     from .reader import Reader
 
 
-def install_threading_hook(reader: Reader) -> None:
+def install_threading_hook(reader: Reader) -> Nichts:
     import threading
 
     @dataclass
@@ -50,11 +50,11 @@ def install_threading_hook(reader: Reader) -> None:
                 reader.prepare()
             return count
 
-        def add(self, s: str) -> None:
+        def add(self, s: str) -> Nichts:
             with self.lock:
                 self.messages.append(s)
 
-        def exception(self, args: ExceptHookArgs) -> None:
+        def exception(self, args: ExceptHookArgs) -> Nichts:
             lines = traceback.format_exception(
                 args.exc_type,
                 args.exc_value,

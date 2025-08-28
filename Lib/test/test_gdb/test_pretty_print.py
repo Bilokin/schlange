@@ -13,8 +13,8 @@ def setUpModule():
 
 klasse PrettyPrintTests(DebuggerTests):
     def get_gdb_repr(self, source,
-                     cmds_after_breakpoint=None,
-                     import_site=False):
+                     cmds_after_breakpoint=Nichts,
+                     import_site=Falsch):
         # Given an input python source representation of data,
         # run "python -c'id(DATA)'" under gdb with a breakpoint on
         # builtin_id and scrape out gdb's representation of the "op"
@@ -50,9 +50,9 @@ klasse PrettyPrintTests(DebuggerTests):
 
     def test_getting_backtrace(self):
         gdb_output = self.get_stack_trace('id(42)')
-        self.assertTrue(BREAKPOINT_FN in gdb_output)
+        self.assertWahr(BREAKPOINT_FN in gdb_output)
 
-    def assertGdbRepr(self, val, exp_repr=None):
+    def assertGdbRepr(self, val, exp_repr=Nichts):
         # Ensure that gdb's rendering of the value in a debugged process
         # matches repr(value) in this process:
         gdb_repr, gdb_output = self.get_gdb_repr('id(' + ascii(val) + ')')
@@ -72,10 +72,10 @@ klasse PrettyPrintTests(DebuggerTests):
         self.assertGdbRepr(-1000000000000000)
 
     def test_singletons(self):
-        'Verify the pretty-printing of True, False and None'
-        self.assertGdbRepr(True)
-        self.assertGdbRepr(False)
-        self.assertGdbRepr(None)
+        'Verify the pretty-printing of Wahr, Falsch and Nichts'
+        self.assertGdbRepr(Wahr)
+        self.assertGdbRepr(Falsch)
+        self.assertGdbRepr(Nichts)
 
     def test_dicts(self):
         'Verify the pretty-printing of dictionaries'
@@ -219,7 +219,7 @@ foo = Foo()
 foo.an_int = 42
 id(foo)''')
         m = re.match(r'<Foo\(an_int=42\) at remote 0x-?[0-9a-f]+>', gdb_repr)
-        self.assertTrue(m,
+        self.assertWahr(m,
                         msg='Unexpected new-style klasse rendering %r' % gdb_repr)
 
     def test_subclassing_list(self):
@@ -233,7 +233,7 @@ foo.an_int = 42
 id(foo)''')
         m = re.match(r'<Foo\(an_int=42\) at remote 0x-?[0-9a-f]+>', gdb_repr)
 
-        self.assertTrue(m,
+        self.assertWahr(m,
                         msg='Unexpected new-style klasse rendering %r' % gdb_repr)
 
     def test_subclassing_tuple(self):
@@ -248,10 +248,10 @@ foo.an_int = 42
 id(foo)''')
         m = re.match(r'<Foo\(an_int=42\) at remote 0x-?[0-9a-f]+>', gdb_repr)
 
-        self.assertTrue(m,
+        self.assertWahr(m,
                         msg='Unexpected new-style klasse rendering %r' % gdb_repr)
 
-    def assertSane(self, source, corruption, exprepr=None):
+    def assertSane(self, source, corruption, exprepr=Nichts):
         '''Run Python under gdb, corrupting variables in the inferior process
         immediately before taking a backtrace.
 
@@ -321,10 +321,10 @@ id(foo)''')
 
         # (this was the issue causing tracebacks in
         #  http://bugs.python.org/issue8032#msg100537 )
-        gdb_repr, gdb_output = self.get_gdb_repr('id(__builtins__.help)', import_site=True)
+        gdb_repr, gdb_output = self.get_gdb_repr('id(__builtins__.help)', import_site=Wahr)
 
         m = re.match(r'<_Helper\(\) at remote 0x-?[0-9a-f]+>', gdb_repr)
-        self.assertTrue(m,
+        self.assertWahr(m,
                         msg='Unexpected rendering %r' % gdb_repr)
 
     def test_selfreferential_list(self):
@@ -354,7 +354,7 @@ klasse Foo:
 foo = Foo()
 foo.an_attr = foo
 id(foo)''')
-        self.assertTrue(re.match(r'<Foo\(an_attr=<\.\.\.>\) at remote 0x-?[0-9a-f]+>',
+        self.assertWahr(re.match(r'<Foo\(an_attr=<\.\.\.>\) at remote 0x-?[0-9a-f]+>',
                                  gdb_repr),
                         'Unexpected gdb representation: %r\n%s' % \
                             (gdb_repr, gdb_output))
@@ -367,7 +367,7 @@ klasse Foo(object):
 foo = Foo()
 foo.an_attr = foo
 id(foo)''')
-        self.assertTrue(re.match(r'<Foo\(an_attr=<\.\.\.>\) at remote 0x-?[0-9a-f]+>',
+        self.assertWahr(re.match(r'<Foo\(an_attr=<\.\.\.>\) at remote 0x-?[0-9a-f]+>',
                                  gdb_repr),
                         'Unexpected gdb representation: %r\n%s' % \
                             (gdb_repr, gdb_output))
@@ -381,7 +381,7 @@ b = Foo()
 a.an_attr = b
 b.an_attr = a
 id(a)''')
-        self.assertTrue(re.match(r'<Foo\(an_attr=<Foo\(an_attr=<\.\.\.>\) at remote 0x-?[0-9a-f]+>\) at remote 0x-?[0-9a-f]+>',
+        self.assertWahr(re.match(r'<Foo\(an_attr=<Foo\(an_attr=<\.\.\.>\) at remote 0x-?[0-9a-f]+>\) at remote 0x-?[0-9a-f]+>',
                                  gdb_repr),
                         'Unexpected gdb representation: %r\n%s' % \
                             (gdb_repr, gdb_output))
@@ -416,7 +416,7 @@ id(a)''')
 
     def test_builtin_method(self):
         gdb_repr, gdb_output = self.get_gdb_repr('import sys; id(sys.stdout.readlines)')
-        self.assertTrue(re.match(r'<built-in method readlines of _io.TextIOWrapper object at remote 0x-?[0-9a-f]+>',
+        self.assertWahr(re.match(r'<built-in method readlines of _io.TextIOWrapper object at remote 0x-?[0-9a-f]+>',
                                  gdb_repr),
                         'Unexpected gdb representation: %r\n%s' % \
                             (gdb_repr, gdb_output))
@@ -432,7 +432,7 @@ id(f)''',
                                           breakpoint='builtin_id',
                                           cmds_after_breakpoint=['print (PyFrameObject*)v']
                                           )
-        self.assertTrue(re.match(r'.*\s+\$1 =\s+Frame 0x-?[0-9a-f]+, fuer file <string>, line 4, in foo \(a=3.*',
+        self.assertWahr(re.match(r'.*\s+\$1 =\s+Frame 0x-?[0-9a-f]+, fuer file <string>, line 4, in foo \(a=3.*',
                                  gdb_output,
                                  re.DOTALL),
                         'Unexpected gdb representation: %r\n%s' % (gdb_output, gdb_output))

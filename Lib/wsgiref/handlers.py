@@ -12,7 +12,7 @@ __all__ = [
 
 # Weekday and month names fuer HTTP date/time formatting; always English!
 _weekdayname = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-_monthname = [None, # Dummy so we can use 1-based month numbers
+_monthname = [Nichts, # Dummy so we can use 1-based month numbers
               "Jan", "Feb", "Mar", "Apr", "May", "Jun",
               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -97,13 +97,13 @@ klasse BaseHandler:
 
     # Configuration parameters; can override per-subclass or per-instance
     wsgi_version = (1,0)
-    wsgi_multithread = True
-    wsgi_multiprocess = True
-    wsgi_run_once = False
+    wsgi_multithread = Wahr
+    wsgi_multiprocess = Wahr
+    wsgi_run_once = Falsch
 
-    origin_server = True    # We are transmitting direct to client
+    origin_server = Wahr    # We are transmitting direct to client
     http_version  = "1.0"   # Version that should be used fuer response
-    server_software = None  # String name of server software, wenn any
+    server_software = Nichts  # String name of server software, wenn any
 
     # os_environ is used to supply configuration from the OS environment:
     # by default it's a copy of 'os.environ' as of import time, but you can
@@ -111,19 +111,19 @@ klasse BaseHandler:
     os_environ= read_environ()
 
     # Collaborator classes
-    wsgi_file_wrapper = FileWrapper     # set to None to disable
+    wsgi_file_wrapper = FileWrapper     # set to Nichts to disable
     headers_class = Headers             # must be a Headers-like class
 
     # Error handling (also per-subclass or per-instance)
-    traceback_limit = None  # Print entire traceback to self.get_stderr()
+    traceback_limit = Nichts  # Print entire traceback to self.get_stderr()
     error_status = "500 Internal Server Error"
     error_headers = [('Content-Type','text/plain')]
     error_body = b"A server error occurred.  Please contact the administrator."
 
     # State variables (don't mess with these)
-    status = result = None
-    headers_sent = False
-    headers = None
+    status = result = Nichts
+    headers_sent = Falsch
+    headers = Nichts
     bytes_sent = 0
 
     def run(self, application):
@@ -164,7 +164,7 @@ klasse BaseHandler:
         env['wsgi.multithread']  = self.wsgi_multithread
         env['wsgi.multiprocess'] = self.wsgi_multiprocess
 
-        wenn self.wsgi_file_wrapper is not None:
+        wenn self.wsgi_file_wrapper is not Nichts:
             env['wsgi.file_wrapper'] = self.wsgi_file_wrapper
 
         wenn self.origin_server and self.server_software:
@@ -192,7 +192,7 @@ klasse BaseHandler:
             raise
         sonst:
             # We only call close() when no exception is raised, because it
-            # will set status, result, headers, and environ fields to None.
+            # will set status, result, headers, and environ fields to Nichts.
             # See bpo-29183 fuer more details.
             self.close()
 
@@ -223,7 +223,7 @@ klasse BaseHandler:
         wenn 'Content-Length' not in self.headers:
             self.set_content_length()
 
-    def start_response(self, status, headers,exc_info=None):
+    def start_response(self, status, headers,exc_info=Nichts):
         """'start_response()' callable as specified by PEP 3333"""
 
         wenn exc_info:
@@ -231,8 +231,8 @@ klasse BaseHandler:
                 wenn self.headers_sent:
                     raise
             finally:
-                exc_info = None        # avoid dangling circular ref
-        sowenn self.headers is not None:
+                exc_info = Nichts        # avoid dangling circular ref
+        sowenn self.headers is not Nichts:
             raise AssertionError("Headers already set!")
 
         self.status = status
@@ -318,7 +318,7 @@ klasse BaseHandler:
         'self.headers_sent' is false and it is going to attempt direct
         transmission of the file.
         """
-        return False   # No platform-specific transmission by default
+        return Falsch   # No platform-specific transmission by default
 
 
     def finish_content(self):
@@ -340,27 +340,27 @@ klasse BaseHandler:
             wenn hasattr(self.result,'close'):
                 self.result.close()
         finally:
-            self.result = self.headers = self.status = self.environ = None
-            self.bytes_sent = 0; self.headers_sent = False
+            self.result = self.headers = self.status = self.environ = Nichts
+            self.bytes_sent = 0; self.headers_sent = Falsch
 
 
     def send_headers(self):
         """Transmit headers to the client, via self._write()"""
         self.cleanup_headers()
-        self.headers_sent = True
+        self.headers_sent = Wahr
         wenn not self.origin_server or self.client_is_modern():
             self.send_preamble()
             self._write(bytes(self.headers))
 
 
     def result_is_file(self):
-        """True wenn 'self.result' is an instance of 'self.wsgi_file_wrapper'"""
+        """Wahr wenn 'self.result' is an instance of 'self.wsgi_file_wrapper'"""
         wrapper = self.wsgi_file_wrapper
-        return wrapper is not None and isinstance(self.result,wrapper)
+        return wrapper is not Nichts and isinstance(self.result,wrapper)
 
 
     def client_is_modern(self):
-        """True wenn client can accept status and headers"""
+        """Wahr wenn client can accept status and headers"""
         return self.environ['SERVER_PROTOCOL'].upper() != 'HTTP/0.9'
 
 
@@ -378,7 +378,7 @@ klasse BaseHandler:
             )
             stderr.flush()
         finally:
-            exc_info = None
+            exc_info = Nichts
 
     def handle_error(self):
         """Log current error, and send error output to client wenn possible"""
@@ -446,12 +446,12 @@ klasse SimpleHandler(BaseHandler):
     Usage::
 
         handler = SimpleHandler(
-            inp,out,err,env, multithread=False, multiprocess=True
+            inp,out,err,env, multithread=Falsch, multiprocess=Wahr
         )
         handler.run(app)"""
 
     def __init__(self,stdin,stdout,stderr,environ,
-        multithread=True, multiprocess=False
+        multithread=Wahr, multiprocess=Falsch
     ):
         self.stdin = stdin
         self.stdout = stdout
@@ -471,7 +471,7 @@ klasse SimpleHandler(BaseHandler):
 
     def _write(self,data):
         result = self.stdout.write(data)
-        wenn result is None or result == len(data):
+        wenn result is Nichts or result == len(data):
             return
         from warnings import warn
         warn("SimpleHandler.stdout.write() should not do partial writes",
@@ -499,13 +499,13 @@ klasse BaseCGIHandler(SimpleHandler):
     sys.stdin, os.environ, and so on.
 
     The constructor also takes keyword arguments 'multithread' and
-    'multiprocess' (defaulting to 'True' and 'False' respectively) to control
+    'multiprocess' (defaulting to 'Wahr' and 'Falsch' respectively) to control
     the configuration sent to the application.  It sets 'origin_server' to
-    False (to enable CGI-like output), and assumes that 'wsgi.run_once' is
-    False.
+    Falsch (to enable CGI-like output), and assumes that 'wsgi.run_once' is
+    Falsch.
     """
 
-    origin_server = False
+    origin_server = Falsch
 
 
 klasse CGIHandler(BaseCGIHandler):
@@ -517,15 +517,15 @@ klasse CGIHandler(BaseCGIHandler):
         CGIHandler().run(app)
 
     The difference between this klasse and BaseCGIHandler is that it always
-    uses 'wsgi.run_once' of 'True', 'wsgi.multithread' of 'False', and
-    'wsgi.multiprocess' of 'True'.  It does not take any initialization
+    uses 'wsgi.run_once' of 'Wahr', 'wsgi.multithread' of 'Falsch', and
+    'wsgi.multiprocess' of 'Wahr'.  It does not take any initialization
     parameters, but always uses 'sys.stdin', 'os.environ', and friends.
 
     If you need to override any of these parameters, use BaseCGIHandler
     instead.
     """
 
-    wsgi_run_once = True
+    wsgi_run_once = Wahr
     # Do not allow os.environ to leak between requests in Google App Engine
     # and other multi-run CGI use cases.  This is not easily testable.
     # See http://bugs.python.org/issue7250
@@ -534,7 +534,7 @@ klasse CGIHandler(BaseCGIHandler):
     def __init__(self):
         BaseCGIHandler.__init__(
             self, sys.stdin.buffer, sys.stdout.buffer, sys.stderr,
-            read_environ(), multithread=False, multiprocess=True
+            read_environ(), multithread=Falsch, multiprocess=Wahr
         )
 
 
@@ -545,7 +545,7 @@ klasse IISCGIHandler(BaseCGIHandler):
     Microsoft IIS without having set the config allowPathInfo option (IIS>=7)
     or metabase allowPathInfoForScriptMappings (IIS<7).
     """
-    wsgi_run_once = True
+    wsgi_run_once = Wahr
     os_environ = {}
 
     # By default, IIS gives a PATH_INFO that duplicates the SCRIPT_NAME at
@@ -570,5 +570,5 @@ klasse IISCGIHandler(BaseCGIHandler):
             environ['PATH_INFO'] = path[len(script):]
         BaseCGIHandler.__init__(
             self, sys.stdin.buffer, sys.stdout.buffer, sys.stderr,
-            environ, multithread=False, multiprocess=True
+            environ, multithread=Falsch, multiprocess=Wahr
         )

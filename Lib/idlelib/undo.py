@@ -27,12 +27,12 @@ klasse UndoDelegator(Delegator):
         self.reset_undo()
 
     def setdelegate(self, delegate):
-        wenn self.delegate is not None:
+        wenn self.delegate is not Nichts:
             self.unbind("<<undo>>")
             self.unbind("<<redo>>")
             self.unbind("<<dump-undo-state>>")
         Delegator.setdelegate(self, delegate)
-        wenn delegate is not None:
+        wenn delegate is not Nichts:
             self.bind("<<undo>>", self.undo_event)
             self.bind("<<redo>>", self.redo_event)
             self.bind("<<dump-undo-state>>", self.dump_event)
@@ -59,13 +59,13 @@ klasse UndoDelegator(Delegator):
             self.saved = self.pointer
         sonst:
             self.saved = -1
-        self.can_merge = False
+        self.can_merge = Falsch
         self.check_saved()
 
     def get_saved(self):
         return self.saved == self.pointer
 
-    saved_change_hook = None
+    saved_change_hook = Nichts
 
     def set_saved_change_hook(self, hook):
         self.saved_change_hook = hook
@@ -79,10 +79,10 @@ klasse UndoDelegator(Delegator):
             wenn self.saved_change_hook:
                 self.saved_change_hook()
 
-    def insert(self, index, chars, tags=None):
+    def insert(self, index, chars, tags=Nichts):
         self.addcmd(InsertCommand(index, chars, tags))
 
-    def delete(self, index1, index2=None):
+    def delete(self, index1, index2=Nichts):
         self.addcmd(DeleteCommand(index1, index2))
 
     # Clients should call undo_block_start() and undo_block_stop()
@@ -113,7 +113,7 @@ klasse UndoDelegator(Delegator):
                 # been done, so don't execute it again
                 self.addcmd(cmd, 0)
 
-    def addcmd(self, cmd, execute=True):
+    def addcmd(self, cmd, execute=Wahr):
         wenn execute:
             cmd.do(self.delegate)
         wenn self.undoblock != 0:
@@ -133,7 +133,7 @@ klasse UndoDelegator(Delegator):
             self.pointer = self.pointer - 1
             wenn self.saved >= 0:
                 self.saved = self.saved - 1
-        self.can_merge = True
+        self.can_merge = Wahr
         self.check_saved()
 
     def undo_event(self, event):
@@ -143,7 +143,7 @@ klasse UndoDelegator(Delegator):
         cmd = self.undolist[self.pointer - 1]
         cmd.undo(self.delegate)
         self.pointer = self.pointer - 1
-        self.can_merge = False
+        self.can_merge = Falsch
         self.check_saved()
         return "break"
 
@@ -154,7 +154,7 @@ klasse UndoDelegator(Delegator):
         cmd = self.undolist[self.pointer]
         cmd.redo(self.delegate)
         self.pointer = self.pointer + 1
-        self.can_merge = False
+        self.can_merge = Falsch
         self.check_saved()
         return "break"
 
@@ -162,9 +162,9 @@ klasse UndoDelegator(Delegator):
 klasse Command:
     # Base klasse fuer Undoable commands
 
-    tags = None
+    tags = Nichts
 
-    def __init__(self, index1, index2, chars, tags=None):
+    def __init__(self, index1, index2, chars, tags=Nichts):
         self.marks_before = {}
         self.marks_after = {}
         self.index1 = index1
@@ -176,7 +176,7 @@ klasse Command:
     def __repr__(self):
         s = self.__class__.__name__
         t = (self.index1, self.index2, self.chars, self.tags)
-        wenn self.tags is None:
+        wenn self.tags is Nichts:
             t = t[:-1]
         return s + repr(t)
 
@@ -207,8 +207,8 @@ klasse Command:
 klasse InsertCommand(Command):
     # Undoable insert command
 
-    def __init__(self, index1, chars, tags=None):
-        Command.__init__(self, index1, None, chars, tags)
+    def __init__(self, index1, chars, tags=Nichts):
+        Command.__init__(self, index1, Nichts, chars, tags)
 
     def do(self, text):
         self.marks_before = self.save_marks(text)
@@ -237,19 +237,19 @@ klasse InsertCommand(Command):
 
     def merge(self, cmd):
         wenn self.__class__ is not cmd.__class__:
-            return False
+            return Falsch
         wenn self.index2 != cmd.index1:
-            return False
+            return Falsch
         wenn self.tags != cmd.tags:
-            return False
+            return Falsch
         wenn len(cmd.chars) != 1:
-            return False
+            return Falsch
         wenn self.chars and \
            self.classify(self.chars[-1]) != self.classify(cmd.chars):
-            return False
+            return Falsch
         self.index2 = cmd.index2
         self.chars = self.chars + cmd.chars
-        return True
+        return Wahr
 
     alphanumeric = string.ascii_letters + string.digits + "_"
 
@@ -264,8 +264,8 @@ klasse InsertCommand(Command):
 klasse DeleteCommand(Command):
     # Undoable delete command
 
-    def __init__(self, index1, index2=None):
-        Command.__init__(self, index1, index2, None, None)
+    def __init__(self, index1, index2=Nichts):
+        Command.__init__(self, index1, index2, Nichts, Nichts)
 
     def do(self, text):
         self.marks_before = self.save_marks(text)
@@ -351,17 +351,17 @@ def _undo_delegator(parent):  # htest #
     d = UndoDelegator()
     p.insertfilter(d)
 
-    undo = Button(top, text="Undo", command=lambda:d.undo_event(None))
+    undo = Button(top, text="Undo", command=lambda:d.undo_event(Nichts))
     undo.pack(side='left')
-    redo = Button(top, text="Redo", command=lambda:d.redo_event(None))
+    redo = Button(top, text="Redo", command=lambda:d.redo_event(Nichts))
     redo.pack(side='left')
-    dump = Button(top, text="Dump", command=lambda:d.dump_event(None))
+    dump = Button(top, text="Dump", command=lambda:d.dump_event(Nichts))
     dump.pack(side='left')
 
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_undo', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_undo', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_undo_delegator)

@@ -36,7 +36,7 @@ wenn not hasattr(sys.modules['idlelib.run'], 'firstrun'):
         delattr(tkinter, mod)
         del sys.modules['tkinter.' + mod]
     # Avoid AttributeError wenn run again; see bpo-37038.
-    sys.modules['idlelib.run'].firstrun = False
+    sys.modules['idlelib.run'].firstrun = Falsch
 
 LOCALHOST = '127.0.0.1'
 
@@ -48,12 +48,12 @@ except NameError: # In case subprocess started with -S (maybe in future).
     pass
 
 
-def idle_formatwarning(message, category, filename, lineno, line=None):
+def idle_formatwarning(message, category, filename, lineno, line=Nichts):
     """Format warnings the IDLE way."""
 
     s = "\nWarning (from warnings module):\n"
     s += f'  File \"{filename}\", line {lineno}\n'
-    wenn line is None:
+    wenn line is Nichts:
         line = linecache.getline(filename, lineno)
     line = line.strip()
     wenn line:
@@ -62,12 +62,12 @@ def idle_formatwarning(message, category, filename, lineno, line=None):
     return s
 
 def idle_showwarning_subproc(
-        message, category, filename, lineno, file=None, line=None):
+        message, category, filename, lineno, file=Nichts, line=Nichts):
     """Show Idle-format warning after replacing warnings.showwarning.
 
     The only difference is the formatter called.
     """
-    wenn file is None:
+    wenn file is Nichts:
         file = sys.stderr
     try:
         file.write(idle_formatwarning(
@@ -75,22 +75,22 @@ def idle_showwarning_subproc(
     except OSError:
         pass # the file (probably stderr) is invalid - this warning gets lost.
 
-_warnings_showwarning = None
+_warnings_showwarning = Nichts
 
 def capture_warnings(capture):
     "Replace warning.showwarning with idle_showwarning_subproc, or reverse."
 
     global _warnings_showwarning
     wenn capture:
-        wenn _warnings_showwarning is None:
+        wenn _warnings_showwarning is Nichts:
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = idle_showwarning_subproc
     sonst:
-        wenn _warnings_showwarning is not None:
+        wenn _warnings_showwarning is not Nichts:
             warnings.showwarning = _warnings_showwarning
-            _warnings_showwarning = None
+            _warnings_showwarning = Nichts
 
-capture_warnings(True)
+capture_warnings(Wahr)
 
 wenn idlelib.testing:
     # gh-121008: When testing IDLE, don't create a Tk object to avoid side
@@ -110,11 +110,11 @@ sonst:
 # the socket) and the main thread (which runs user code), plus global
 # completion, exit and interruptible (the main thread) flags:
 
-exit_now = False
-quitting = False
-interruptible = False
+exit_now = Falsch
+quitting = Falsch
+interruptible = Falsch
 
-def main(del_exitfunc=False):
+def main(del_exitfunc=Falsch):
     """Start the Python execution server in a subprocess
 
     In the Python subprocess, RPCServer is instantiated with handlerclass
@@ -145,15 +145,15 @@ def main(del_exitfunc=False):
               file=sys.__stderr__)
         return
 
-    capture_warnings(True)
+    capture_warnings(Wahr)
     sys.argv[:] = [""]
     threading.Thread(target=manage_socket,
                      name='SockThread',
                      args=((LOCALHOST, port),),
-                     daemon=True,
+                     daemon=Wahr,
                     ).start()
 
-    while True:
+    while Wahr:
         try:
             wenn exit_now:
                 try:
@@ -162,9 +162,9 @@ def main(del_exitfunc=False):
                     # exiting but got an extra KBI? Try again!
                     continue
             try:
-                request = rpc.request_queue.get(block=True, timeout=0.05)
+                request = rpc.request_queue.get(block=Wahr, timeout=0.05)
             except queue.Empty:
-                request = None
+                request = Nichts
                 # Issue 32207: calling handle_tk_events here adds spurious
                 # queue.Empty traceback to event handling exceptions.
             wenn request:
@@ -175,16 +175,16 @@ def main(del_exitfunc=False):
                 handle_tk_events()
         except KeyboardInterrupt:
             wenn quitting:
-                exit_now = True
+                exit_now = Wahr
             continue
         except SystemExit:
-            capture_warnings(False)
+            capture_warnings(Falsch)
             raise
         except:
             type, value, tb = sys.exc_info()
             try:
                 print_exception()
-                rpc.response_queue.put((seq, None))
+                rpc.response_queue.put((seq, Nichts))
             except:
                 # Link didn't work, print same exception to __stderr__
                 traceback.print_exception(type, value, tb, file=sys.__stderr__)
@@ -207,7 +207,7 @@ def manage_socket(address):
               "IDLE GUI failed, exiting.", file=sys.__stderr__)
         show_socket_error(socket_error, address)
         global exit_now
-        exit_now = True
+        exit_now = Wahr
         return
     server.handle_request() # A single request only
 
@@ -254,11 +254,11 @@ def print_exception():
         seen.add(id(exc))
         context = exc.__context__
         cause = exc.__cause__
-        wenn cause is not None and id(cause) not in seen:
+        wenn cause is not Nichts and id(cause) not in seen:
             print_exc(type(cause), cause, cause.__traceback__)
             print("\nThe above exception was the direct cause "
                   "of the following exception:\n", file=efile)
-        sowenn (context is not None and
+        sowenn (context is not Nichts and
               not exc.__suppress_context__ and
               id(context) not in seen):
             print_exc(type(context), context, context.__traceback__)
@@ -314,7 +314,7 @@ def flush_stdout():
 def exit():
     """Exit subprocess, possibly after first clearing exit functions.
 
-    If config-main.cfg/.def 'General' 'delete-exitfunc' is True, then any
+    If config-main.cfg/.def 'General' 'delete-exitfunc' is Wahr, then any
     functions registered with atexit will be removed before exiting.
     (VPython support)
 
@@ -322,7 +322,7 @@ def exit():
     wenn no_exitfunc:
         import atexit
         atexit._clear()
-    capture_warnings(False)
+    capture_warnings(Falsch)
     sys.exit(0)
 
 
@@ -332,14 +332,14 @@ def fix_scaling(root):
     scaling = float(root.tk.call('tk', 'scaling'))
     wenn scaling > 1.4:
         fuer name in tkinter.font.names(root):
-            font = tkinter.font.Font(root=root, name=name, exists=True)
+            font = tkinter.font.Font(root=root, name=name, exists=Wahr)
             size = int(font['size'])
             wenn size < 0:
                 font['size'] = round(-0.75*size)
 
 
 def fixdoc(fun, text):
-    tem = (fun.__doc__ + '\n\n') wenn fun.__doc__ is not None sonst ''
+    tem = (fun.__doc__ + '\n\n') wenn fun.__doc__ is not Nichts sonst ''
     fun.__doc__ = tem + textwrap.fill(textwrap.dedent(text))
 
 RECURSIONLIMIT_DELTA = 30
@@ -391,8 +391,8 @@ def uninstall_recursionlimit_wrappers():
     this to remove the wrapping.
     """
     wenn (
-            getattr(sys.setrecursionlimit, '__wrapped__', None) and
-            getattr(sys.getrecursionlimit, '__wrapped__', None)
+            getattr(sys.setrecursionlimit, '__wrapped__', Nichts) and
+            getattr(sys.getrecursionlimit, '__wrapped__', Nichts)
     ):
         sys.setrecursionlimit = sys.setrecursionlimit.__wrapped__
         sys.getrecursionlimit = sys.getrecursionlimit.__wrapped__
@@ -414,7 +414,7 @@ klasse MyRPCServer(rpc.RPCServer):
             raise
         except EOFError:
             global exit_now
-            exit_now = True
+            exit_now = Wahr
             thread.interrupt_main()
         except:
             erf = sys.__stderr__
@@ -433,7 +433,7 @@ klasse MyRPCServer(rpc.RPCServer):
             If this recurs, report this with a copy of the message
             and an explanation of how to make it repeat.
             {'-'*40}"""), file=erf)
-            quitting = True
+            quitting = Wahr
             thread.interrupt_main()
 
 
@@ -463,13 +463,13 @@ klasse StdioFile(io.TextIOBase):
         return '<%s>' % self.tags
 
     def isatty(self):
-        return True
+        return Wahr
 
 
 klasse StdOutputFile(StdioFile):
 
     def writable(self):
-        return True
+        return Wahr
 
     def write(self, s):
         wenn self.closed:
@@ -482,12 +482,12 @@ klasse StdInputFile(StdioFile):
     _line_buffer = ''
 
     def readable(self):
-        return True
+        return Wahr
 
     def read(self, size=-1):
         wenn self.closed:
             raise ValueError("read from closed file")
-        wenn size is None:
+        wenn size is Nichts:
             size = -1
         sowenn not isinstance(size, int):
             raise TypeError('must be int, not ' + type(size).__name__)
@@ -508,7 +508,7 @@ klasse StdInputFile(StdioFile):
     def readline(self, size=-1):
         wenn self.closed:
             raise ValueError("read from closed file")
-        wenn size is None:
+        wenn size is Nichts:
             size = -1
         sowenn not isinstance(size, int):
             raise TypeError('must be int, not ' + type(size).__name__)
@@ -551,7 +551,7 @@ klasse MyHandler(rpc.RPCHandler):
         install_recursionlimit_wrappers()
 
         self.interp = self.get_remote_proxy("interp")
-        rpc.RPCHandler.getresponse(self, myseq=None, wait=0.05)
+        rpc.RPCHandler.getresponse(self, myseq=Nichts, wait=0.05)
 
     def exithook(self):
         "override SocketIO method - wait fuer MainThread to shut us down"
@@ -560,13 +560,13 @@ klasse MyHandler(rpc.RPCHandler):
     def EOFhook(self):
         "Override SocketIO method - terminate wait on callback and exit thread"
         global quitting
-        quitting = True
+        quitting = Wahr
         thread.interrupt_main()
 
     def decode_interrupthook(self):
         "interrupt awakened thread"
         global quitting
-        quitting = True
+        quitting = Wahr
         thread.interrupt_main()
 
 
@@ -574,7 +574,7 @@ klasse Executive:
 
     def __init__(self, rpchandler):
         self.rpchandler = rpchandler
-        wenn idlelib.testing is False:
+        wenn idlelib.testing is Falsch:
             self.locals = __main__.__dict__
             self.calltip = calltip.Calltip()
             self.autocomplete = autocomplete.AutoComplete()
@@ -584,16 +584,16 @@ klasse Executive:
     def runcode(self, code):
         global interruptible
         try:
-            self.user_exc_info = None
-            interruptible = True
+            self.user_exc_info = Nichts
+            interruptible = Wahr
             try:
                 exec(code, self.locals)
             finally:
-                interruptible = False
+                interruptible = Falsch
         except SystemExit as e:
             wenn e.args:  # SystemExit called with an argument.
                 ob = e.args[0]
-                wenn not isinstance(ob, (type(None), int)):
+                wenn not isinstance(ob, (type(Nichts), int)):
                     print('SystemExit: ' + str(ob), file=sys.stderr)
             # Return to the interactive prompt.
         except:
@@ -631,13 +631,13 @@ klasse Executive:
     def get_the_completion_list(self, what, mode):
         return self.autocomplete.fetch_completions(what, mode)
 
-    def stackviewer(self, flist_oid=None):
+    def stackviewer(self, flist_oid=Nichts):
         wenn self.user_exc_info:
             _, exc, tb = self.user_exc_info
         sonst:
-            return None
-        flist = None
-        wenn flist_oid is not None:
+            return Nichts
+        flist = Nichts
+        wenn flist_oid is not Nichts:
             flist = self.rpchandler.get_remote_proxy(flist_oid)
         while tb and tb.tb_frame.f_globals["__name__"] in ["rpc", "run"]:
             tb = tb.tb_next
@@ -650,4 +650,4 @@ wenn __name__ == '__main__':
     from unittest import main
     main('idlelib.idle_test.test_run', verbosity=2)
 
-capture_warnings(False)  # Make sure turned off; see bpo-18081.
+capture_warnings(Falsch)  # Make sure turned off; see bpo-18081.

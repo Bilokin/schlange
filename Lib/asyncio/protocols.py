@@ -29,7 +29,7 @@ klasse BaseProtocol:
     def connection_lost(self, exc):
         """Called when the connection is lost or closed.
 
-        The argument is an exception object or None (the latter
+        The argument is an exception object or Nichts (the latter
         meaning a regular EOF is received or the connection was
         aborted or closed).
         """
@@ -77,7 +77,7 @@ klasse Protocol(BaseProtocol):
     called with a suitable transport object.  Then data_received()
     will be called 0 or more times with data (bytes) received from the
     transport; finally, connection_lost() will be called exactly once
-    with either an exception object or None as an argument.
+    with either an exception object or Nichts as an argument.
 
     State machine of calls:
 
@@ -100,7 +100,7 @@ klasse Protocol(BaseProtocol):
     def eof_received(self):
         """Called when the other end calls write_eof() or equivalent.
 
-        If this returns a false value (including None), the transport
+        If this returns a false value (including Nichts), the transport
         will close itself.  If it returns a true value, closing the
         transport is up to the protocol.
         """
@@ -153,7 +153,7 @@ klasse BufferedProtocol(BaseProtocol):
     def eof_received(self):
         """Called when the other end calls write_eof() or equivalent.
 
-        If this returns a false value (including None), the transport
+        If this returns a false value (including Nichts), the transport
         will close itself.  If it returns a true value, closing the
         transport is up to the protocol.
         """

@@ -147,8 +147,8 @@ _CFG = {"width" : 0.5,               # Screen
         "height" : 0.75,
         "canvwidth" : 400,
         "canvheight": 300,
-        "leftright": None,
-        "topbottom": None,
+        "leftright": Nichts,
+        "topbottom": Nichts,
         "mode": "standard",          # TurtleScreen
         "colormode": 1.0,
         "delay": 10,
@@ -157,12 +157,12 @@ _CFG = {"width" : 0.5,               # Screen
         "pencolor" : "black",
         "fillcolor" : "black",
         "resizemode" : "noresize",
-        "visible" : True,
+        "visible" : Wahr,
         "language": "english",        # docstrings
         "exampleturtle": "turtle",
         "examplescreen": "screen",
         "title": "Python Turtle Graphics",
-        "using_IDLE": False
+        "using_IDLE": Falsch
        }
 
 def config_dict(filename):
@@ -181,7 +181,7 @@ def config_dict(filename):
             continue
         key = key.strip()
         value = value.strip()
-        wenn value in ["True", "False", "None", "''", '""']:
+        wenn value in ["Wahr", "Falsch", "Nichts", "''", '""']:
             value = eval(value)
         sonst:
             try:
@@ -355,7 +355,7 @@ klasse ScrolledCanvas(TK.Frame):
         self.reset()
         self._rootwindow.bind('<Configure>', self.onResize)
 
-    def reset(self, canvwidth=None, canvheight=None, bg = None):
+    def reset(self, canvwidth=Nichts, canvheight=Nichts, bg = Nichts):
         """Adjust canvas and scrollbars according to given canvas size."""
         wenn canvwidth:
             self.canvwidth = canvwidth
@@ -492,8 +492,8 @@ klasse TurtleScreenBase(object):
         """
         return self.cv.create_polygon((0, 0, 0, 0, 0, 0), fill="", outline="")
 
-    def _drawpoly(self, polyitem, coordlist, fill=None,
-                  outline=None, width=None, top=False):
+    def _drawpoly(self, polyitem, coordlist, fill=Nichts,
+                  outline=Nichts, width=Nichts, top=Falsch):
         """Configure polygonitem polyitem according to provided
         arguments:
         coordlist is sequence of coordinates
@@ -508,11 +508,11 @@ klasse TurtleScreenBase(object):
             cl.append(x * self.xscale)
             cl.append(-y * self.yscale)
         self.cv.coords(polyitem, *cl)
-        wenn fill is not None:
+        wenn fill is not Nichts:
             self.cv.itemconfigure(polyitem, fill=fill)
-        wenn outline is not None:
+        wenn outline is not Nichts:
             self.cv.itemconfigure(polyitem, outline=outline)
-        wenn width is not None:
+        wenn width is not Nichts:
             self.cv.itemconfigure(polyitem, width=width)
         wenn top:
             self.cv.tag_raise(polyitem)
@@ -523,8 +523,8 @@ klasse TurtleScreenBase(object):
         return self.cv.create_line(0, 0, 0, 0, fill="", width=2,
                                    capstyle = TK.ROUND)
 
-    def _drawline(self, lineitem, coordlist=None,
-                  fill=None, width=None, top=False):
+    def _drawline(self, lineitem, coordlist=Nichts,
+                  fill=Nichts, width=Nichts, top=Falsch):
         """Configure lineitem according to provided arguments:
         coordlist is sequence of coordinates
         fill is drawing color
@@ -533,15 +533,15 @@ klasse TurtleScreenBase(object):
         will be put on top of the canvas' displaylist so it
         will not be covered by other items.
         """
-        wenn coordlist is not None:
+        wenn coordlist is not Nichts:
             cl = []
             fuer x, y in coordlist:
                 cl.append(x * self.xscale)
                 cl.append(-y * self.yscale)
             self.cv.coords(lineitem, *cl)
-        wenn fill is not None:
+        wenn fill is not Nichts:
             self.cv.itemconfigure(lineitem, fill=fill)
-        wenn width is not None:
+        wenn width is not Nichts:
             self.cv.itemconfigure(lineitem, width=width)
         wenn top:
             self.cv.tag_raise(lineitem)
@@ -566,15 +566,15 @@ klasse TurtleScreenBase(object):
         """
         try:
             rgb = self.cv.winfo_rgb(color)
-            ok = True
+            ok = Wahr
         except TK.TclError:
-            ok = False
+            ok = Falsch
         return ok
 
-    def _bgcolor(self, color=None):
-        """Set canvas' backgroundcolor wenn color is not None,
+    def _bgcolor(self, color=Nichts):
+        """Set canvas' backgroundcolor wenn color is not Nichts,
         sonst return backgroundcolor."""
-        wenn color is not None:
+        wenn color is not Nichts:
             self.cv.config(bg = color)
             self._update()
         sonst:
@@ -594,13 +594,13 @@ klasse TurtleScreenBase(object):
         x0, y0, x1, y1 = self.cv.bbox(item)
         return item, x1-1
 
-    def _onclick(self, item, fun, num=1, add=None):
+    def _onclick(self, item, fun, num=1, add=Nichts):
         """Bind fun to mouse-click event on turtle.
         fun must be a function with two arguments, the coordinates
         of the clicked point on the canvas.
         num, the number of the mouse-button defaults to 1
         """
-        wenn fun is None:
+        wenn fun is Nichts:
             self.cv.tag_unbind(item, "<Button-%s>" % num)
         sonst:
             def eventfun(event):
@@ -609,7 +609,7 @@ klasse TurtleScreenBase(object):
                 fun(x, y)
             self.cv.tag_bind(item, "<Button-%s>" % num, eventfun, add)
 
-    def _onrelease(self, item, fun, num=1, add=None):
+    def _onrelease(self, item, fun, num=1, add=Nichts):
         """Bind fun to mouse-button-release event on turtle.
         fun must be a function with two arguments, the coordinates
         of the point on the canvas where mouse button is released.
@@ -618,7 +618,7 @@ klasse TurtleScreenBase(object):
         If a turtle is clicked, first _onclick-event will be performed,
         then _onscreensclick-event.
         """
-        wenn fun is None:
+        wenn fun is Nichts:
             self.cv.tag_unbind(item, "<Button%s-ButtonRelease>" % num)
         sonst:
             def eventfun(event):
@@ -628,7 +628,7 @@ klasse TurtleScreenBase(object):
             self.cv.tag_bind(item, "<Button%s-ButtonRelease>" % num,
                              eventfun, add)
 
-    def _ondrag(self, item, fun, num=1, add=None):
+    def _ondrag(self, item, fun, num=1, add=Nichts):
         """Bind fun to mouse-move-event (with pressed mouse button) on turtle.
         fun must be a function with two arguments, the coordinates of the
         actual mouse position on the canvas.
@@ -637,7 +637,7 @@ klasse TurtleScreenBase(object):
         Every sequence of mouse-move-events on a turtle is preceded by a
         mouse-click event on that turtle.
         """
-        wenn fun is None:
+        wenn fun is Nichts:
             self.cv.tag_unbind(item, "<Button%s-Motion>" % num)
         sonst:
             def eventfun(event):
@@ -649,7 +649,7 @@ klasse TurtleScreenBase(object):
                     pass
             self.cv.tag_bind(item, "<Button%s-Motion>" % num, eventfun, add)
 
-    def _onscreenclick(self, fun, num=1, add=None):
+    def _onscreenclick(self, fun, num=1, add=Nichts):
         """Bind fun to mouse-click event on canvas.
         fun must be a function with two arguments, the coordinates
         of the clicked point on the canvas.
@@ -658,7 +658,7 @@ klasse TurtleScreenBase(object):
         If a turtle is clicked, first _onclick-event will be performed,
         then _onscreensclick-event.
         """
-        wenn fun is None:
+        wenn fun is Nichts:
             self.cv.unbind("<Button-%s>" % num)
         sonst:
             def eventfun(event):
@@ -671,27 +671,27 @@ klasse TurtleScreenBase(object):
         """Bind fun to key-release event of key.
         Canvas must have focus. See method listen
         """
-        wenn fun is None:
-            self.cv.unbind("<KeyRelease-%s>" % key, None)
+        wenn fun is Nichts:
+            self.cv.unbind("<KeyRelease-%s>" % key, Nichts)
         sonst:
             def eventfun(event):
                 fun()
             self.cv.bind("<KeyRelease-%s>" % key, eventfun)
 
-    def _onkeypress(self, fun, key=None):
+    def _onkeypress(self, fun, key=Nichts):
         """If key is given, bind fun to key-press event of key.
         Otherwise bind fun to any key-press.
         Canvas must have focus. See method listen.
         """
-        wenn fun is None:
-            wenn key is None:
-                self.cv.unbind("<KeyPress>", None)
+        wenn fun is Nichts:
+            wenn key is Nichts:
+                self.cv.unbind("<KeyPress>", Nichts)
             sonst:
-                self.cv.unbind("<KeyPress-%s>" % key, None)
+                self.cv.unbind("<KeyPress-%s>" % key, Nichts)
         sonst:
             def eventfun(event):
                 fun()
-            wenn key is None:
+            wenn key is Nichts:
                 self.cv.bind("<KeyPress>", eventfun)
             sonst:
                 self.cv.bind("<KeyPress-%s>" % key, eventfun)
@@ -763,18 +763,18 @@ klasse TurtleScreenBase(object):
                 coordinates = coordinates[2:]
             self.cv.coords(item, *newcoordlist)
 
-    def _resize(self, canvwidth=None, canvheight=None, bg=None):
+    def _resize(self, canvwidth=Nichts, canvheight=Nichts, bg=Nichts):
         """Resize the canvas the turtles are drawing on. Does
         not alter the drawing window.
         """
         # needs amendment
         wenn not isinstance(self.cv, ScrolledCanvas):
             return self.canvwidth, self.canvheight
-        wenn canvwidth is canvheight is bg is None:
+        wenn canvwidth is canvheight is bg is Nichts:
             return self.cv.canvwidth, self.cv.canvheight
-        wenn canvwidth is not None:
+        wenn canvwidth is not Nichts:
             self.canvwidth = canvwidth
-        wenn canvheight is not None:
+        wenn canvheight is not Nichts:
             self.canvheight = canvheight
         self.cv.reset(canvwidth, canvheight, bg)
 
@@ -811,7 +811,7 @@ klasse TurtleScreenBase(object):
         prompt is a text mostly describing what information to input.
 
         Return the string input
-        If the dialog is canceled, return None.
+        If the dialog is canceled, return Nichts.
 
         Example (for a TurtleScreen instance named screen):
         >>> screen.textinput("NIM", "Name of first player:")
@@ -819,7 +819,7 @@ klasse TurtleScreenBase(object):
         """
         return simpledialog.askstring(title, prompt, parent=self.cv)
 
-    def numinput(self, title, prompt, default=None, minval=None, maxval=None):
+    def numinput(self, title, prompt, default=Nichts, minval=Nichts, maxval=Nichts):
         """Pop up a dialog window fuer input of a number.
 
         Arguments: title is the title of the dialog window,
@@ -831,7 +831,7 @@ klasse TurtleScreenBase(object):
         The number input must be in the range minval .. maxval wenn these are
         given. If not, a hint is issued and the dialog remains open for
         correction. Return the number input.
-        If the dialog is canceled,  return None.
+        If the dialog is canceled,  return Nichts.
 
         Example (for a TurtleScreen instance named screen):
         >>> screen.numinput("Poker", "Your stakes:", 1000, minval=10, maxval=10000)
@@ -848,7 +848,7 @@ klasse TurtleScreenBase(object):
 
 
 klasse Terminator (Exception):
-    """Will be raised in TurtleScreen.update, wenn _RUNNING becomes False.
+    """Will be raised in TurtleScreen.update, wenn _RUNNING becomes Falsch.
 
     This stops execution of a turtle graphics script.
     Main purpose: use in the Demo-Viewer turtle.Demo.py.
@@ -868,7 +868,7 @@ klasse Shape(object):
     attribute _data is - depending on _type a poygon-tuple,
     an image or a list constructed using the addcomponent method.
     """
-    def __init__(self, type_, data=None):
+    def __init__(self, type_, data=Nichts):
         self._type = type_
         wenn type_ == "polygon":
             wenn isinstance(data, list):
@@ -881,7 +881,7 @@ klasse Shape(object):
             raise TurtleGraphicsError("There is no shape type %s" % type_)
         self._data = data
 
-    def addcomponent(self, poly, fill, outline=None):
+    def addcomponent(self, poly, fill, outline=Nichts):
         """Add component to a shape of type compound.
 
         Arguments: poly is a polygon, i. e. a tuple of number pairs.
@@ -900,7 +900,7 @@ klasse Shape(object):
         wenn self._type != "compound":
             raise TurtleGraphicsError("Cannot add component to %s Shape"
                                                                 % self._type)
-        wenn outline is None:
+        wenn outline is Nichts:
             outline = fill
         self._data.append([poly, fill, outline])
 
@@ -909,16 +909,16 @@ klasse Tbuffer(object):
     """Ring buffer used as undobuffer fuer RawTurtle objects."""
     def __init__(self, bufsize=10):
         self.bufsize = bufsize
-        self.buffer = [[None]] * bufsize
+        self.buffer = [[Nichts]] * bufsize
         self.ptr = -1
-        self.cumulate = False
-    def reset(self, bufsize=None):
-        wenn bufsize is None:
+        self.cumulate = Falsch
+    def reset(self, bufsize=Nichts):
+        wenn bufsize is Nichts:
             fuer i in range(self.bufsize):
-                self.buffer[i] = [None]
+                self.buffer[i] = [Nichts]
         sonst:
             self.bufsize = bufsize
-            self.buffer = [[None]] * bufsize
+            self.buffer = [[Nichts]] * bufsize
         self.ptr = -1
     def push(self, item):
         wenn self.bufsize > 0:
@@ -930,14 +930,14 @@ klasse Tbuffer(object):
     def pop(self):
         wenn self.bufsize > 0:
             item = self.buffer[self.ptr]
-            wenn item is None:
-                return None
+            wenn item is Nichts:
+                return Nichts
             sonst:
-                self.buffer[self.ptr] = [None]
+                self.buffer[self.ptr] = [Nichts]
                 self.ptr = (self.ptr - 1) % self.bufsize
                 return (item)
     def nr_of_items(self):
-        return self.bufsize - self.buffer.count([None])
+        return self.bufsize - self.buffer.count([Nichts])
     def __repr__(self):
         return str(self.buffer) + " " + str(self.ptr)
 
@@ -950,7 +950,7 @@ klasse TurtleScreen(TurtleScreenBase):
     upon components of the underlying graphics toolkit -
     which is Tkinter in this case.
     """
-    _RUNNING = True
+    _RUNNING = Wahr
 
     def __init__(self, cv, mode=_CFG["mode"],
                  colormode=_CFG["colormode"], delay=_CFG["delay"]):
@@ -1015,14 +1015,14 @@ klasse TurtleScreen(TurtleScreenBase):
         self._turtles = []
         self.bgcolor("white")
         fuer btn in 1, 2, 3:
-            self.onclick(None, btn)
-        self.onkeypress(None)
+            self.onclick(Nichts, btn)
+        self.onkeypress(Nichts)
         fuer key in self._keys[:]:
-            self.onkey(None, key)
-            self.onkeypress(None, key)
-        Turtle._pen = None
+            self.onkey(Nichts, key)
+            self.onkeypress(Nichts, key)
+        Turtle._pen = Nichts
 
-    def mode(self, mode=None):
+    def mode(self, mode=Nichts):
         """Set turtle-mode ('standard', 'logo' or 'world') and perform reset.
 
         Optional argument:
@@ -1044,7 +1044,7 @@ klasse TurtleScreen(TurtleScreenBase):
         >>> mode()
         'logo'
         """
-        wenn mode is None:
+        wenn mode is Nichts:
             return self._mode
         mode = mode.lower()
         wenn mode not in ["standard", "logo", "world"]:
@@ -1095,11 +1095,11 @@ klasse TurtleScreen(TurtleScreenBase):
         self._rescale(self.xscale/oldxscale, self.yscale/oldyscale)
         self.update()
 
-    def register_shape(self, name, shape=None):
+    def register_shape(self, name, shape=Nichts):
         """Adds a turtle shape to TurtleScreen's shapelist.
 
         Arguments:
-        (1) name is the name of an image file (PNG, GIF, PGM, and PPM) and shape is None.
+        (1) name is the name of an image file (PNG, GIF, PGM, and PPM) and shape is Nichts.
             Installs the corresponding image shape.
             !! Image-shapes DO NOT rotate when turning the turtle,
             !! so they do not display the heading of the turtle!
@@ -1122,7 +1122,7 @@ klasse TurtleScreen(TurtleScreenBase):
         >>> screen.register_shape("triangle", ((5,-3),(0,5),(-5,-3)))
 
         """
-        wenn shape is None:
+        wenn shape is Nichts:
             shape = Shape("image", self._image(name))
         sowenn isinstance(shape, str):
             shape = Shape("image", self._image(shape))
@@ -1169,7 +1169,7 @@ klasse TurtleScreen(TurtleScreenBase):
             raise TurtleGraphicsError("bad colorstring: %s" % cstr)
         return tuple(c * self._colormode/255 fuer c in cl)
 
-    def colormode(self, cmode=None):
+    def colormode(self, cmode=Nichts):
         """Return the colormode or set it to 1.0 or 255.
 
         Optional argument:
@@ -1183,7 +1183,7 @@ klasse TurtleScreen(TurtleScreenBase):
         >>> screen.colormode(255)
         >>> pencolor(240,160,80)
         """
-        wenn cmode is None:
+        wenn cmode is Nichts:
             return self._colormode
         wenn cmode == 1.0:
             self._colormode = float(cmode)
@@ -1228,13 +1228,13 @@ klasse TurtleScreen(TurtleScreenBase):
         wenn args:
             color = self._colorstr(args)
         sonst:
-            color = None
+            color = Nichts
         color = self._bgcolor(color)
-        wenn color is not None:
+        wenn color is not Nichts:
             color = self._color(color)
         return color
 
-    def tracer(self, n=None, delay=None):
+    def tracer(self, n=Nichts, delay=Nichts):
         """Turns turtle animation on/off and set delay fuer update drawings.
 
         Optional arguments:
@@ -1253,16 +1253,16 @@ klasse TurtleScreen(TurtleScreenBase):
         ...     rt(90)
         ...     dist += 2
         """
-        wenn n is None:
+        wenn n is Nichts:
             return self._tracing
         self._tracing = int(n)
         self._updatecounter = 0
-        wenn delay is not None:
+        wenn delay is not Nichts:
             self._delayvalue = int(delay)
         wenn self._tracing:
             self.update()
 
-    def delay(self, delay=None):
+    def delay(self, delay=Nichts):
         """ Return or set the drawing delay in milliseconds.
 
         Optional argument:
@@ -1273,7 +1273,7 @@ klasse TurtleScreen(TurtleScreenBase):
         >>> screen.delay()
         15
         """
-        wenn delay is None:
+        wenn delay is Nichts:
             return self._delayvalue
         self._delayvalue = int(delay)
 
@@ -1300,7 +1300,7 @@ klasse TurtleScreen(TurtleScreenBase):
     def _incrementudc(self):
         """Increment update counter."""
         wenn not TurtleScreen._RUNNING:
-            TurtleScreen._RUNNING = True
+            TurtleScreen._RUNNING = Wahr
             raise Terminator
         wenn self._tracing > 0:
             self._updatecounter += 1
@@ -1310,7 +1310,7 @@ klasse TurtleScreen(TurtleScreenBase):
         """Perform a TurtleScreen update.
         """
         tracing = self._tracing
-        self._tracing = True
+        self._tracing = Wahr
         fuer t in self.turtles():
             t._update_data()
             t._drawturtle()
@@ -1358,7 +1358,7 @@ klasse TurtleScreen(TurtleScreenBase):
         """
         return sorted(self._shapes.keys())
 
-    def onclick(self, fun, btn=1, add=None):
+    def onclick(self, fun, btn=1, add=Nichts):
         """Bind fun to mouse-click event on canvas.
 
         Arguments:
@@ -1371,7 +1371,7 @@ klasse TurtleScreen(TurtleScreenBase):
         >>> screen.onclick(goto)
         >>> # Subsequently clicking into the TurtleScreen will
         >>> # make the turtle move to the clicked point.
-        >>> screen.onclick(None)
+        >>> screen.onclick(Nichts)
         """
         self._onscreenclick(fun, btn, add)
 
@@ -1398,14 +1398,14 @@ klasse TurtleScreen(TurtleScreenBase):
         the up-arrow key, consequently drawing a hexagon
 
         """
-        wenn fun is None:
+        wenn fun is Nichts:
             wenn key in self._keys:
                 self._keys.remove(key)
         sowenn key not in self._keys:
             self._keys.append(key)
         self._onkeyrelease(fun, key)
 
-    def onkeypress(self, fun, key=None):
+    def onkeypress(self, fun, key=Nichts):
         """Bind fun to key-press event of key wenn key is given,
         or to any key-press-event wenn no key is given.
 
@@ -1430,14 +1430,14 @@ klasse TurtleScreen(TurtleScreenBase):
         the up-arrow key, or by keeping pressed the up-arrow key.
         consequently drawing a hexagon.
         """
-        wenn fun is None:
+        wenn fun is Nichts:
             wenn key in self._keys:
                 self._keys.remove(key)
-        sowenn key is not None and key not in self._keys:
+        sowenn key is not Nichts and key not in self._keys:
             self._keys.append(key)
         self._onkeypress(fun, key)
 
-    def listen(self, xdummy=None, ydummy=None):
+    def listen(self, xdummy=Nichts, ydummy=Nichts):
         """Set focus on TurtleScreen (in order to collect key-events)
 
         No arguments.
@@ -1458,7 +1458,7 @@ klasse TurtleScreen(TurtleScreenBase):
 
         Example (for a TurtleScreen instance named screen):
 
-        >>> running = True
+        >>> running = Wahr
         >>> def f():
         ...     wenn running:
         ...             fd(50)
@@ -1466,11 +1466,11 @@ klasse TurtleScreen(TurtleScreenBase):
         ...             screen.ontimer(f, 250)
         ...
         >>> f()   # makes the turtle marching around
-        >>> running = False
+        >>> running = Falsch
         """
         self._ontimer(fun, t)
 
-    def bgpic(self, picname=None):
+    def bgpic(self, picname=Nichts):
         """Set background image or return name of current backgroundimage.
 
         Optional argument:
@@ -1478,7 +1478,7 @@ klasse TurtleScreen(TurtleScreenBase):
 
         If picname is a filename, set the corresponding image as background.
         If picname is "nopic", delete backgroundimage, wenn present.
-        If picname is None, return the filename of the current backgroundimage.
+        If picname is Nichts, return the filename of the current backgroundimage.
 
         Example (for a TurtleScreen instance named screen):
         >>> screen.bgpic()
@@ -1487,14 +1487,14 @@ klasse TurtleScreen(TurtleScreenBase):
         >>> screen.bgpic()
         'landscape.gif'
         """
-        wenn picname is None:
+        wenn picname is Nichts:
             return self._bgpicname
         wenn picname not in self._bgpics:
             self._bgpics[picname] = self._image(picname)
         self._setbgpic(self._bgpic, self._bgpics[picname])
         self._bgpicname = picname
 
-    def screensize(self, canvwidth=None, canvheight=None, bg=None):
+    def screensize(self, canvwidth=Nichts, canvheight=Nichts, bg=Nichts):
         """Resize the canvas the turtles are drawing on.
 
         Optional arguments:
@@ -1513,7 +1513,7 @@ klasse TurtleScreen(TurtleScreenBase):
         """
         return self._resize(canvwidth, canvheight, bg)
 
-    def save(self, filename, *, overwrite=False):
+    def save(self, filename, *, overwrite=Falsch):
         """Save the drawing as a PostScript file
 
         Arguments:
@@ -1535,7 +1535,7 @@ klasse TurtleScreen(TurtleScreenBase):
         wenn not overwrite and filename.exists():
             raise FileExistsError(
                 f"The file '{filename}' already exists. To overwrite it use"
-                " the 'overwrite=True' argument of the save function."
+                " the 'overwrite=Wahr' argument of the save function."
             )
         wenn (ext := filename.suffix) not in {".ps", ".eps"}:
             raise ValueError(
@@ -1568,9 +1568,9 @@ klasse TNavigator(object):
         self._angleOffset = self.DEFAULT_ANGLEOFFSET
         self._angleOrient = self.DEFAULT_ANGLEORIENT
         self._mode = mode
-        self.undobuffer = None
+        self.undobuffer = Nichts
         self.degrees()
-        self._mode = None
+        self._mode = Nichts
         self._setmode(mode)
         TNavigator.reset(self)
 
@@ -1582,10 +1582,10 @@ klasse TNavigator(object):
         self._position = Vec2D(0.0, 0.0)
         self._orient =  TNavigator.START_ORIENTATION[self._mode]
 
-    def _setmode(self, mode=None):
+    def _setmode(self, mode=Nichts):
         """Set turtle-mode to 'standard', 'world' or 'logo'.
         """
-        wenn mode is None:
+        wenn mode is Nichts:
             return self._mode
         wenn mode not in ["standard", "logo", "world"]:
             return
@@ -1658,11 +1658,11 @@ klasse TNavigator(object):
         """move turtle to position end."""
         self._position = end
 
-    def teleport(self, x=None, y=None, *, fill_gap: bool = False) -> None:
+    def teleport(self, x=Nichts, y=Nichts, *, fill_gap: bool = Falsch) -> Nichts:
         """To be overwritten by child klasse RawTurtle.
         Includes no TPen references."""
-        new_x = x wenn x is not None sonst self._position[0]
-        new_y = y wenn y is not None sonst self._position[1]
+        new_x = x wenn x is not Nichts sonst self._position[0]
+        new_y = y wenn y is not Nichts sonst self._position[1]
         self._position = Vec2D(new_x, new_y)
 
     def forward(self, distance):
@@ -1792,14 +1792,14 @@ klasse TNavigator(object):
         return self._position[1]
 
 
-    def goto(self, x, y=None):
+    def goto(self, x, y=Nichts):
         """Move turtle to an absolute position.
 
         Aliases: setpos | setposition | goto:
 
         Arguments:
         x -- a number      or     a pair/vector of numbers
-        y -- a number             None
+        y -- a number             Nichts
 
         call: goto(x, y)         # two coordinates
         --or: goto((x, y))       # a pair (tuple) of coordinates
@@ -1822,7 +1822,7 @@ klasse TNavigator(object):
         >>> turtle.pos()
         (0.00,0.00)
         """
-        wenn y is None:
+        wenn y is Nichts:
             self._goto(Vec2D(*x))
         sonst:
             self._goto(Vec2D(x, y))
@@ -1877,12 +1877,12 @@ klasse TNavigator(object):
         """
         self._goto(Vec2D(self._position[0], y))
 
-    def distance(self, x, y=None):
+    def distance(self, x, y=Nichts):
         """Return the distance from the turtle to (x,y) in turtle step units.
 
         Arguments:
         x -- a number   or  a pair/vector of numbers   or   a turtle instance
-        y -- a number       None                            None
+        y -- a number       Nichts                            Nichts
 
         call: distance(x, y)         # two coordinates
         --or: distance((x, y))       # a pair (tuple) of coordinates
@@ -1899,7 +1899,7 @@ klasse TNavigator(object):
         >>> turtle.distance(pen)
         77.0
         """
-        wenn y is not None:
+        wenn y is not Nichts:
             pos = Vec2D(x, y)
         wenn isinstance(x, Vec2D):
             pos = x
@@ -1909,12 +1909,12 @@ klasse TNavigator(object):
             pos = x._position
         return abs(pos - self._position)
 
-    def towards(self, x, y=None):
+    def towards(self, x, y=Nichts):
         """Return the angle of the line from the turtle's position to (x, y).
 
         Arguments:
         x -- a number   or  a pair/vector of numbers   or   a turtle instance
-        y -- a number       None                            None
+        y -- a number       Nichts                            Nichts
 
         call: distance(x, y)         # two coordinates
         --or: distance((x, y))       # a pair (tuple) of coordinates
@@ -1931,7 +1931,7 @@ klasse TNavigator(object):
         >>> turtle.towards(0,0)
         225.0
         """
-        wenn y is not None:
+        wenn y is not Nichts:
             pos = Vec2D(x, y)
         wenn isinstance(x, Vec2D):
             pos = x
@@ -1987,7 +1987,7 @@ klasse TNavigator(object):
         angle = (angle+full/2.)%full - full/2.
         self._rotate(angle)
 
-    def circle(self, radius, extent = None, steps = None):
+    def circle(self, radius, extent = Nichts, steps = Nichts):
         """ Draw a circle with given radius.
 
         Arguments:
@@ -2019,11 +2019,11 @@ klasse TNavigator(object):
         """
         wenn self.undobuffer:
             self.undobuffer.push(["seq"])
-            self.undobuffer.cumulate = True
+            self.undobuffer.cumulate = Wahr
         speed = self.speed()
-        wenn extent is None:
+        wenn extent is Nichts:
             extent = self._fullcircle
-        wenn steps is None:
+        wenn steps is Nichts:
             frac = abs(extent)/self._fullcircle
             steps = 1+int(min(11+abs(radius)/6.0, 59.0)*frac)
         w = 1.0 * extent / steps
@@ -2048,15 +2048,15 @@ klasse TNavigator(object):
             self._tracer(tr, dl)
         self.speed(speed)
         wenn self.undobuffer:
-            self.undobuffer.cumulate = False
+            self.undobuffer.cumulate = Falsch
 
 ## three dummy methods to be implemented by child class:
 
     def speed(self, s=0):
         """dummy method - to be overwritten by child class"""
-    def _tracer(self, a=None, b=None):
+    def _tracer(self, a=Nichts, b=Nichts):
         """dummy method - to be overwritten by child class"""
-    def _delay(self, n=None):
+    def _delay(self, n=Nichts):
         """dummy method - to be overwritten by child class"""
 
     fd = forward
@@ -2076,16 +2076,16 @@ klasse TPen(object):
     """
     def __init__(self, resizemode=_CFG["resizemode"]):
         self._resizemode = resizemode # or "user" or "noresize"
-        self.undobuffer = None
+        self.undobuffer = Nichts
         TPen._reset(self)
 
     def _reset(self, pencolor=_CFG["pencolor"],
                      fillcolor=_CFG["fillcolor"]):
         self._pensize = 1
-        self._shown = True
+        self._shown = Wahr
         self._pencolor = pencolor
         self._fillcolor = fillcolor
-        self._drawing = True
+        self._drawing = Wahr
         self._speed = 3
         self._stretchfactor = (1., 1.)
         self._shearfactor = 0.
@@ -2093,7 +2093,7 @@ klasse TPen(object):
         self._shapetrafo = (1., 0., 0., 1.)
         self._outlinewidth = 1
 
-    def resizemode(self, rmode=None):
+    def resizemode(self, rmode=Nichts):
         """Set resizemode to one of the values: "auto", "user", "noresize".
 
         (Optional) Argument:
@@ -2115,13 +2115,13 @@ klasse TPen(object):
         >>> turtle.resizemode()
         'noresize'
         """
-        wenn rmode is None:
+        wenn rmode is Nichts:
             return self._resizemode
         rmode = rmode.lower()
         wenn rmode in ["auto", "user", "noresize"]:
             self.pen(resizemode=rmode)
 
-    def pensize(self, width=None):
+    def pensize(self, width=Nichts):
         """Set or return the line thickness.
 
         Aliases:  pensize | width
@@ -2139,7 +2139,7 @@ klasse TPen(object):
         1
         >>> turtle.pensize(10)   # from here on lines of width 10 are drawn
         """
-        wenn width is None:
+        wenn width is Nichts:
             return self._pensize
         self.pen(pensize=width)
 
@@ -2156,7 +2156,7 @@ klasse TPen(object):
         """
         wenn not self._drawing:
             return
-        self.pen(pendown=False)
+        self.pen(pendown=Falsch)
 
     def pendown(self):
         """Pull the pen down -- drawing when moving.
@@ -2170,24 +2170,24 @@ klasse TPen(object):
         """
         wenn self._drawing:
             return
-        self.pen(pendown=True)
+        self.pen(pendown=Wahr)
 
     def isdown(self):
-        """Return True wenn pen is down, False wenn it's up.
+        """Return Wahr wenn pen is down, Falsch wenn it's up.
 
         No argument.
 
         Example (for a Turtle instance named turtle):
         >>> turtle.penup()
         >>> turtle.isdown()
-        False
+        Falsch
         >>> turtle.pendown()
         >>> turtle.isdown()
-        True
+        Wahr
         """
         return self._drawing
 
-    def speed(self, speed=None):
+    def speed(self, speed=Nichts):
         """ Return or set the turtle's speed.
 
         Optional argument:
@@ -2215,7 +2215,7 @@ klasse TPen(object):
         >>> turtle.speed(3)
         """
         speeds = {'fastest':0, 'fast':10, 'normal':6, 'slow':3, 'slowest':1 }
-        wenn speed is None:
+        wenn speed is Nichts:
             return self._speed
         wenn speed in speeds:
             speed = speeds[speed]
@@ -2344,13 +2344,13 @@ klasse TPen(object):
         sonst:
             return self._color(self._fillcolor)
 
-    def teleport(self, x=None, y=None, *, fill_gap: bool = False) -> None:
+    def teleport(self, x=Nichts, y=Nichts, *, fill_gap: bool = Falsch) -> Nichts:
         """To be overwritten by child klasse RawTurtle.
         Includes no TNavigator references.
         """
         pendown = self.isdown()
         wenn pendown:
-            self.pen(pendown=False)
+            self.pen(pendown=Falsch)
         self.pen(pendown=pendown)
 
     def showturtle(self):
@@ -2364,7 +2364,7 @@ klasse TPen(object):
         >>> turtle.hideturtle()
         >>> turtle.showturtle()
         """
-        self.pen(shown=True)
+        self.pen(shown=Wahr)
 
     def hideturtle(self):
         """Makes the turtle invisible.
@@ -2380,21 +2380,21 @@ klasse TPen(object):
         Example (for a Turtle instance named turtle):
         >>> turtle.hideturtle()
         """
-        self.pen(shown=False)
+        self.pen(shown=Falsch)
 
     def isvisible(self):
-        """Return True wenn the Turtle is shown, False wenn it's hidden.
+        """Return Wahr wenn the Turtle is shown, Falsch wenn it's hidden.
 
         No argument.
 
         Example (for a Turtle instance named turtle):
         >>> turtle.hideturtle()
         >>> print(turtle.isvisible())
-        False
+        Falsch
         """
         return self._shown
 
-    def pen(self, pen=None, **pendict):
+    def pen(self, pen=Nichts, **pendict):
         """Return or set the pen's attributes.
 
         Arguments:
@@ -2404,8 +2404,8 @@ klasse TPen(object):
 
         Return or set the pen's attributes in a 'pen-dictionary'
         with the following key/value pairs:
-           "shown"      :   True/False
-           "pendown"    :   True/False
+           "shown"      :   Wahr/Falsch
+           "pendown"    :   Wahr/Falsch
            "pencolor"   :   color-string or color-tuple
            "fillcolor"  :   color-string or color-tuple
            "pensize"    :   positive number
@@ -2425,20 +2425,20 @@ klasse TPen(object):
         Examples (for a Turtle instance named turtle):
         >>> turtle.pen(fillcolor="black", pencolor="red", pensize=10)
         >>> turtle.pen()
-        {'pensize': 10, 'shown': True, 'resizemode': 'auto', 'outline': 1,
-        'pencolor': 'red', 'pendown': True, 'fillcolor': 'black',
+        {'pensize': 10, 'shown': Wahr, 'resizemode': 'auto', 'outline': 1,
+        'pencolor': 'red', 'pendown': Wahr, 'fillcolor': 'black',
         'stretchfactor': (1,1), 'speed': 3, 'shearfactor': 0.0}
         >>> penstate=turtle.pen()
         >>> turtle.color("yellow","")
         >>> turtle.penup()
         >>> turtle.pen()
-        {'pensize': 10, 'shown': True, 'resizemode': 'auto', 'outline': 1,
-        'pencolor': 'yellow', 'pendown': False, 'fillcolor': '',
+        {'pensize': 10, 'shown': Wahr, 'resizemode': 'auto', 'outline': 1,
+        'pencolor': 'yellow', 'pendown': Falsch, 'fillcolor': '',
         'stretchfactor': (1,1), 'speed': 3, 'shearfactor': 0.0}
         >>> p.pen(penstate, fillcolor="green")
         >>> p.pen()
-        {'pensize': 10, 'shown': True, 'resizemode': 'auto', 'outline': 1,
-        'pencolor': 'red', 'pendown': True, 'fillcolor': 'green',
+        {'pensize': 10, 'shown': Wahr, 'resizemode': 'auto', 'outline': 1,
+        'pencolor': 'red', 'pendown': Wahr, 'fillcolor': 'green',
         'stretchfactor': (1,1), 'speed': 3, 'shearfactor': 0.0}
         """
         _pd =  {"shown"         : self._shown,
@@ -2470,18 +2470,18 @@ klasse TPen(object):
         wenn self.undobuffer:
             self.undobuffer.push(("pen", _p_buf))
 
-        newLine = False
+        newLine = Falsch
         wenn "pendown" in p:
             wenn self._drawing != p["pendown"]:
-                newLine = True
+                newLine = Wahr
         wenn "pencolor" in p:
             wenn isinstance(p["pencolor"], tuple):
                 p["pencolor"] = self._colorstr((p["pencolor"],))
             wenn self._pencolor != p["pencolor"]:
-                newLine = True
+                newLine = Wahr
         wenn "pensize" in p:
             wenn self._pensize != p["pensize"]:
-                newLine = True
+                newLine = Wahr
         wenn newLine:
             self._newLine()
         wenn "pendown" in p:
@@ -2521,9 +2521,9 @@ klasse TPen(object):
 
 ## three dummy methods to be implemented by child class:
 
-    def _newLine(self, usePos = True):
+    def _newLine(self, usePos = Wahr):
         """dummy method - to be overwritten by child class"""
-    def _update(self, count=True, forced=False):
+    def _update(self, count=Wahr, forced=Falsch):
         """dummy method - to be overwritten by child class"""
     def _color(self, args):
         """dummy method - to be overwritten by child class"""
@@ -2545,7 +2545,7 @@ klasse _TurtleImage(object):
 
     def __init__(self, screen, shapeIndex):
         self.screen = screen
-        self._type = None
+        self._type = Nichts
         self._setshape(shapeIndex)
 
     def _setshape(self, shapeIndex):
@@ -2577,7 +2577,7 @@ klasse RawTurtle(TPen, TNavigator):
     """
     screens = []
 
-    def __init__(self, canvas=None,
+    def __init__(self, canvas=Nichts,
                  shape=_CFG["shape"],
                  undobuffersize=_CFG["undobuffersize"],
                  visible=_CFG["visible"]):
@@ -2604,11 +2604,11 @@ klasse RawTurtle(TPen, TNavigator):
         screen._turtles.append(self)
         self.drawingLineItem = screen._createline()
         self.turtle = _TurtleImage(screen, shape)
-        self._poly = None
-        self._creatingPoly = False
-        self._fillitem = self._fillpath = None
+        self._poly = Nichts
+        self._creatingPoly = Falsch
+        self._fillitem = self._fillpath = Nichts
         self._shown = visible
-        self._hidden_from_screen = False
+        self._hidden_from_screen = Falsch
         self.currentLineItem = screen._createline()
         self.currentLine = [self._position]
         self.items = [self.currentLineItem]
@@ -2646,18 +2646,18 @@ klasse RawTurtle(TPen, TNavigator):
         """Set or disable undobuffer.
 
         Argument:
-        size -- an integer or None
+        size -- an integer or Nichts
 
         If size is an integer an empty undobuffer of given size is installed.
         Size gives the maximum number of turtle-actions that can be undone
         by the undo() function.
-        If size is None, no undobuffer is present.
+        If size is Nichts, no undobuffer is present.
 
         Example (for a Turtle instance named turtle):
         >>> turtle.setundobuffer(42)
         """
-        wenn size is None or size <= 0:
-            self.undobuffer = None
+        wenn size is Nichts or size <= 0:
+            self.undobuffer = Nichts
         sonst:
             self.undobuffer = Tbuffer(size)
 
@@ -2670,13 +2670,13 @@ klasse RawTurtle(TPen, TNavigator):
         >>> while undobufferentries():
         ...     undo()
         """
-        wenn self.undobuffer is None:
+        wenn self.undobuffer is Nichts:
             return 0
         return self.undobuffer.nr_of_items()
 
     def _clear(self):
         """Delete all of pen's drawings"""
-        self._fillitem = self._fillpath = None
+        self._fillitem = self._fillpath = Nichts
         fuer item in self.items:
             self.screen._delete(item)
         self.currentLineItem = self.screen._createline()
@@ -2729,7 +2729,7 @@ klasse RawTurtle(TPen, TNavigator):
                     t._drawturtle()
                 screen._update()
 
-    def _tracer(self, flag=None, delay=None):
+    def _tracer(self, flag=Nichts, delay=Nichts):
         """Turns turtle animation on/off and set delay fuer update drawings.
 
         Optional arguments:
@@ -2771,25 +2771,25 @@ klasse RawTurtle(TPen, TNavigator):
             raise TurtleGraphicsError("bad color sequence: %s" % str(args))
         return "#%02x%02x%02x" % (r, g, b)
 
-    def teleport(self, x=None, y=None, *, fill_gap: bool = False) -> None:
+    def teleport(self, x=Nichts, y=Nichts, *, fill_gap: bool = Falsch) -> Nichts:
         """Instantly move turtle to an absolute position.
 
         Arguments:
-        x -- a number      or     None
-        y -- a number             None
+        x -- a number      or     Nichts
+        y -- a number             Nichts
         fill_gap -- a boolean     This argument must be specified by name.
 
         call: teleport(x, y)         # two coordinates
         --or: teleport(x)            # teleport to x position, keeping y as is
         --or: teleport(y=y)          # teleport to y position, keeping x as is
-        --or: teleport(x, y, fill_gap=True)
+        --or: teleport(x, y, fill_gap=Wahr)
                                      # teleport but fill the gap in between
 
         Move turtle to an absolute position. Unlike goto(x, y), a line will not
         be drawn. The turtle's orientation does not change. If currently
         filling, the polygon(s) teleported from will be filled after leaving,
         and filling will begin again after teleporting. This can be disabled
-        with fill_gap=True, which makes the imaginary line traveled during
+        with fill_gap=Wahr, which makes the imaginary line traveled during
         teleporting act as a fill barrier like in goto(x, y).
 
         Example (for a Turtle instance named turtle):
@@ -2809,11 +2809,11 @@ klasse RawTurtle(TPen, TNavigator):
         pendown = self.isdown()
         was_filling = self.filling()
         wenn pendown:
-            self.pen(pendown=False)
+            self.pen(pendown=Falsch)
         wenn was_filling and not fill_gap:
             self.end_fill()
-        new_x = x wenn x is not None sonst self._position[0]
-        new_y = y wenn y is not None sonst self._position[1]
+        new_x = x wenn x is not Nichts sonst self._position[0]
+        new_y = y wenn y is not Nichts sonst self._position[1]
         self._position = Vec2D(new_x, new_y)
         self.pen(pendown=pendown)
         wenn was_filling and not fill_gap:
@@ -2835,8 +2835,8 @@ klasse RawTurtle(TPen, TNavigator):
         self._newLine(self._drawing)
 
         turtle = self.turtle
-        self.screen = None
-        self.turtle = None  # too make self deepcopy-able
+        self.screen = Nichts
+        self.turtle = Nichts  # too make self deepcopy-able
 
         q = deepcopy(self)
 
@@ -2859,7 +2859,7 @@ klasse RawTurtle(TPen, TNavigator):
         q._update()
         return q
 
-    def shape(self, name=None):
+    def shape(self, name=Nichts):
         """Set turtle shape to shape with given name / return current shapename.
 
         Optional argument:
@@ -2879,14 +2879,14 @@ klasse RawTurtle(TPen, TNavigator):
         >>> turtle.shape()
         'turtle'
         """
-        wenn name is None:
+        wenn name is Nichts:
             return self.turtle.shapeIndex
         wenn not name in self.screen.getshapes():
             raise TurtleGraphicsError("There is no shape named %s" % name)
         self.turtle._setshape(name)
         self._update()
 
-    def shapesize(self, stretch_wid=None, stretch_len=None, outline=None):
+    def shapesize(self, stretch_wid=Nichts, stretch_len=Nichts, outline=Nichts):
         """Set/return turtle's stretchfactors/outline. Set resizemode to "user".
 
         Optional arguments:
@@ -2907,26 +2907,26 @@ klasse RawTurtle(TPen, TNavigator):
         >>> turtle.shapesize(5, 5, 12)
         >>> turtle.shapesize(outline=8)
         """
-        wenn stretch_wid is stretch_len is outline is None:
+        wenn stretch_wid is stretch_len is outline is Nichts:
             stretch_wid, stretch_len = self._stretchfactor
             return stretch_wid, stretch_len, self._outlinewidth
         wenn stretch_wid == 0 or stretch_len == 0:
             raise TurtleGraphicsError("stretch_wid/stretch_len must not be zero")
-        wenn stretch_wid is not None:
-            wenn stretch_len is None:
+        wenn stretch_wid is not Nichts:
+            wenn stretch_len is Nichts:
                 stretchfactor = stretch_wid, stretch_wid
             sonst:
                 stretchfactor = stretch_wid, stretch_len
-        sowenn stretch_len is not None:
+        sowenn stretch_len is not Nichts:
             stretchfactor = self._stretchfactor[0], stretch_len
         sonst:
             stretchfactor = self._stretchfactor
-        wenn outline is None:
+        wenn outline is Nichts:
             outline = self._outlinewidth
         self.pen(resizemode="user",
                  stretchfactor=stretchfactor, outline=outline)
 
-    def shearfactor(self, shear=None):
+    def shearfactor(self, shear=Nichts):
         """Set or return the current shearfactor.
 
         Optional argument: shear -- number, tangent of the shear angle
@@ -2945,11 +2945,11 @@ klasse RawTurtle(TPen, TNavigator):
         >>> turtle.shearfactor()
         >>> 0.5
         """
-        wenn shear is None:
+        wenn shear is Nichts:
             return self._shearfactor
         self.pen(resizemode="user", shearfactor=shear)
 
-    def tiltangle(self, angle=None):
+    def tiltangle(self, angle=Nichts):
         """Set or return the current tilt-angle.
 
         Optional argument: angle -- number
@@ -2977,7 +2977,7 @@ klasse RawTurtle(TPen, TNavigator):
         >>> turtle.stamp()
         >>> turtle.fd(50)
         """
-        wenn angle is None:
+        wenn angle is Nichts:
             tilt = -math.degrees(self._tilt) * self._angleOrient
             return (tilt / self._degreesPerAU) % self._fullcircle
         sonst:
@@ -3004,7 +3004,7 @@ klasse RawTurtle(TPen, TNavigator):
         """
         self.tiltangle(angle + self.tiltangle())
 
-    def shapetransform(self, t11=None, t12=None, t21=None, t22=None):
+    def shapetransform(self, t11=Nichts, t12=Nichts, t21=Nichts, t22=Nichts):
         """Set or return the current transformation matrix of the turtle shape.
 
         Optional arguments: t11, t12, t21, t22 -- numbers.
@@ -3024,13 +3024,13 @@ klasse RawTurtle(TPen, TNavigator):
         >>> turtle.shapetransform()
         (4.0, -1.0, -0.0, 2.0)
         """
-        wenn t11 is t12 is t21 is t22 is None:
+        wenn t11 is t12 is t21 is t22 is Nichts:
             return self._shapetrafo
         m11, m12, m21, m22 = self._shapetrafo
-        wenn t11 is not None: m11 = t11
-        wenn t12 is not None: m12 = t12
-        wenn t21 is not None: m21 = t21
-        wenn t22 is not None: m22 = t22
+        wenn t11 is not Nichts: m11 = t11
+        wenn t12 is not Nichts: m12 = t12
+        wenn t21 is not Nichts: m21 = t21
+        wenn t22 is not Nichts: m22 = t22
         wenn t11 * t22 - t12 * t21 == 0:
             raise TurtleGraphicsError("Bad shape transform matrix: must not be singular")
         self._shapetrafo = (m11, m12, m21, m22)
@@ -3071,9 +3071,9 @@ klasse RawTurtle(TPen, TNavigator):
         shape = self.screen._shapes[self.turtle.shapeIndex]
         wenn shape._type == "polygon":
             return self._getshapepoly(shape._data, shape._type == "compound")
-        # sonst return None
+        # sonst return Nichts
 
-    def _getshapepoly(self, polygon, compound=False):
+    def _getshapepoly(self, polygon, compound=Falsch):
         """Calculate transformed shape polygon according to resizemode
         and shapetransform.
         """
@@ -3094,7 +3094,7 @@ klasse RawTurtle(TPen, TNavigator):
         ttype = shape._type
         titem = self.turtle._item
         wenn self._shown and screen._updatecounter == 0 and screen._tracing > 0:
-            self._hidden_from_screen = False
+            self._hidden_from_screen = Falsch
             tshape = shape._data
             wenn ttype == "polygon":
                 wenn self._resizemode == "noresize": w = 1
@@ -3103,14 +3103,14 @@ klasse RawTurtle(TPen, TNavigator):
                 shape = self._polytrafo(self._getshapepoly(tshape))
                 fc, oc = self._fillcolor, self._pencolor
                 screen._drawpoly(titem, shape, fill=fc, outline=oc,
-                                                      width=w, top=True)
+                                                      width=w, top=Wahr)
             sowenn ttype == "image":
                 screen._drawimage(titem, self._position, tshape)
             sowenn ttype == "compound":
                 fuer item, (poly, fc, oc) in zip(titem, tshape):
-                    poly = self._polytrafo(self._getshapepoly(poly, True))
+                    poly = self._polytrafo(self._getshapepoly(poly, Wahr))
                     screen._drawpoly(item, poly, fill=self._cc(fc),
-                                     outline=self._cc(oc), width=self._outlinewidth, top=True)
+                                     outline=self._cc(oc), width=self._outlinewidth, top=Wahr)
         sonst:
             wenn self._hidden_from_screen:
                 return
@@ -3122,7 +3122,7 @@ klasse RawTurtle(TPen, TNavigator):
             sowenn ttype == "compound":
                 fuer item in titem:
                     screen._drawpoly(item, ((0, 0), (0, 0), (0, 0)), "", "")
-            self._hidden_from_screen = True
+            self._hidden_from_screen = Wahr
 
 ##############################  stamp stuff  ###############################
 
@@ -3153,7 +3153,7 @@ klasse RawTurtle(TPen, TNavigator):
             shape = self._polytrafo(self._getshapepoly(tshape))
             fc, oc = self._fillcolor, self._pencolor
             screen._drawpoly(stitem, shape, fill=fc, outline=oc,
-                                                  width=w, top=True)
+                                                  width=w, top=Wahr)
         sowenn ttype == "image":
             stitem = screen._createimage("")
             screen._drawimage(stitem, self._position, tshape)
@@ -3164,9 +3164,9 @@ klasse RawTurtle(TPen, TNavigator):
                 stitem.append(item)
             stitem = tuple(stitem)
             fuer item, (poly, fc, oc) in zip(stitem, tshape):
-                poly = self._polytrafo(self._getshapepoly(poly, True))
+                poly = self._polytrafo(self._getshapepoly(poly, Wahr))
                 screen._drawpoly(item, poly, fill=self._cc(fc),
-                                 outline=self._cc(oc), width=self._outlinewidth, top=True)
+                                 outline=self._cc(oc), width=self._outlinewidth, top=Wahr)
         self.stampItems.append(stitem)
         self.undobuffer.push(("stamp", stitem))
         return stitem
@@ -3191,7 +3191,7 @@ klasse RawTurtle(TPen, TNavigator):
         buf.buffer.remove(item)
         wenn index <= buf.ptr:
             buf.ptr = (buf.ptr - 1) % buf.bufsize
-        buf.buffer.insert((buf.ptr+1)%buf.bufsize, [None])
+        buf.buffer.insert((buf.ptr+1)%buf.bufsize, [Nichts])
 
     def clearstamp(self, stampid):
         """Delete stamp with given stampid
@@ -3208,13 +3208,13 @@ klasse RawTurtle(TPen, TNavigator):
         self._clearstamp(stampid)
         self._update()
 
-    def clearstamps(self, n=None):
+    def clearstamps(self, n=Nichts):
         """Delete all or first/last n of turtle's stamps.
 
         Optional argument:
         n -- an integer
 
-        If n is None, delete all of pen's stamps,
+        If n is Nichts, delete all of pen's stamps,
         sonst wenn n > 0 delete first n stamps
         sonst wenn n < 0 delete last n stamps.
 
@@ -3226,7 +3226,7 @@ klasse RawTurtle(TPen, TNavigator):
         >>> turtle.clearstamps(-2)
         >>> turtle.clearstamps()
         """
-        wenn n is None:
+        wenn n is Nichts:
             toDelete = self.stampItems[:]
         sowenn n >= 0:
             toDelete = self.stampItems[:n]
@@ -3263,9 +3263,9 @@ klasse RawTurtle(TPen, TNavigator):
             delta = diff * (1.0/nhops)
             fuer n in range(1, nhops):
                 wenn n == 1:
-                    top = True
+                    top = Wahr
                 sonst:
-                    top = False
+                    top = Falsch
                 self._position = start + delta * n
                 wenn self._drawing:
                     screen._drawline(self.drawingLineItem,
@@ -3287,7 +3287,7 @@ klasse RawTurtle(TPen, TNavigator):
         wenn len(self.currentLine) > 42: # 42! answer to the ultimate question
                                        # of life, the universe and everything
             self._newLine()
-        self._update() #count=True)
+        self._update() #count=Wahr)
 
     def _undogoto(self, entry):
         """Reverse a _goto. Used fuer undo()
@@ -3322,9 +3322,9 @@ klasse RawTurtle(TPen, TNavigator):
             delta = diff * (1.0/nhops)
             fuer n in range(1, nhops):
                 wenn n == 1:
-                    top = True
+                    top = Wahr
                 sonst:
-                    top = False
+                    top = Falsch
                 self._position = new + delta * n
                 wenn drawing:
                     screen._drawline(self.drawingLineItem,
@@ -3338,21 +3338,21 @@ klasse RawTurtle(TPen, TNavigator):
         self._position = old
         ##  wenn undo is done during creating a polygon, the last vertex
         ##  will be deleted. wenn the polygon is entirely deleted,
-        ##  creatingPoly will be set to False.
+        ##  creatingPoly will be set to Falsch.
         ##  Polygons created before the last one will not be affected by undo()
         wenn self._creatingPoly:
             wenn len(self._poly) > 0:
                 self._poly.pop()
             wenn self._poly == []:
-                self._creatingPoly = False
-                self._poly = None
+                self._creatingPoly = Falsch
+                self._poly = Nichts
         wenn filling:
             wenn self._fillpath == []:
-                self._fillpath = None
+                self._fillpath = Nichts
                 print("Unwahrscheinlich in _undogoto!")
-            sowenn self._fillpath is not None:
+            sowenn self._fillpath is not Nichts:
                 self._fillpath.pop()
-        self._update() #count=True)
+        self._update() #count=Wahr)
 
     def _rotate(self, angle):
         """Turns pen clockwise by angle.
@@ -3372,7 +3372,7 @@ klasse RawTurtle(TPen, TNavigator):
         self._orient = neworient
         self._update()
 
-    def _newLine(self, usePos=True):
+    def _newLine(self, usePos=Wahr):
         """Closes current line item and starts a new one.
            Remark: wenn current line became too long, animation
            performance (via _drawline) slowed down considerably.
@@ -3383,13 +3383,13 @@ klasse RawTurtle(TPen, TNavigator):
             self.currentLineItem = self.screen._createline()
             self.items.append(self.currentLineItem)
         sonst:
-            self.screen._drawline(self.currentLineItem, top=True)
+            self.screen._drawline(self.currentLineItem, top=Wahr)
         self.currentLine = []
         wenn usePos:
             self.currentLine = [self._position]
 
     def filling(self):
-        """Return fillstate (True wenn filling, False else).
+        """Return fillstate (Wahr wenn filling, Falsch else).
 
         No argument.
 
@@ -3457,10 +3457,10 @@ klasse RawTurtle(TPen, TNavigator):
                                       fill=self._fillcolor)
                 wenn self.undobuffer:
                     self.undobuffer.push(("dofill", self._fillitem))
-            self._fillitem = self._fillpath = None
+            self._fillitem = self._fillpath = Nichts
             self._update()
 
-    def dot(self, size=None, *color):
+    def dot(self, size=Nichts, *color):
         """Draw a dot with diameter size, using color.
 
         Optional arguments:
@@ -3483,14 +3483,14 @@ klasse RawTurtle(TPen, TNavigator):
                 wenn not size:
                     size = self._pensize + max(self._pensize, 4)
         sonst:
-            wenn size is None:
+            wenn size is Nichts:
                 size = self._pensize + max(self._pensize, 4)
             color = self._colorstr(color)
         # If screen were to gain a dot function, see GH #104218.
         pen = self.pen()
         wenn self.undobuffer:
             self.undobuffer.push(["seq"])
-            self.undobuffer.cumulate = True
+            self.undobuffer.cumulate = Wahr
         try:
             wenn self.resizemode() == 'auto':
                 self.ht()
@@ -3501,7 +3501,7 @@ klasse RawTurtle(TPen, TNavigator):
         finally:
             self.pen(pen)
         wenn self.undobuffer:
-            self.undobuffer.cumulate = False
+            self.undobuffer.cumulate = Falsch
 
     def _write(self, txt, align, font):
         """Performs the writing fuer write()
@@ -3514,34 +3514,34 @@ klasse RawTurtle(TPen, TNavigator):
             self.undobuffer.push(("wri", item))
         return end
 
-    def write(self, arg, move=False, align="left", font=("Arial", 8, "normal")):
+    def write(self, arg, move=Falsch, align="left", font=("Arial", 8, "normal")):
         """Write text at the current turtle position.
 
         Arguments:
         arg -- info, which is to be written to the TurtleScreen
-        move (optional) -- True/False
+        move (optional) -- Wahr/Falsch
         align (optional) -- one of the strings "left", "center" or right"
         font (optional) -- a triple (fontname, fontsize, fonttype)
 
         Write text - the string representation of arg - at the current
         turtle position according to align ("left", "center" or right")
         and with the given font.
-        If move is True, the pen is moved to the bottom-right corner
-        of the text. By default, move is False.
+        If move is Wahr, the pen is moved to the bottom-right corner
+        of the text. By default, move is Falsch.
 
         Example (for a Turtle instance named turtle):
-        >>> turtle.write('Home = ', True, align="center")
-        >>> turtle.write((0,0), True)
+        >>> turtle.write('Home = ', Wahr, align="center")
+        >>> turtle.write((0,0), Wahr)
         """
         wenn self.undobuffer:
             self.undobuffer.push(["seq"])
-            self.undobuffer.cumulate = True
+            self.undobuffer.cumulate = Wahr
         end = self._write(str(arg), align.lower(), font)
         wenn move:
             x, y = self.pos()
             self.setpos(end, y)
         wenn self.undobuffer:
-            self.undobuffer.cumulate = False
+            self.undobuffer.cumulate = Falsch
 
     @contextmanager
     def poly(self):
@@ -3576,7 +3576,7 @@ klasse RawTurtle(TPen, TNavigator):
         >>> turtle.begin_poly()
         """
         self._poly = [self._position]
-        self._creatingPoly = True
+        self._creatingPoly = Wahr
 
     def end_poly(self):
         """Stop recording the vertices of a polygon.
@@ -3589,7 +3589,7 @@ klasse RawTurtle(TPen, TNavigator):
         Example (for a Turtle instance named turtle):
         >>> turtle.end_poly()
         """
-        self._creatingPoly = False
+        self._creatingPoly = Falsch
 
     def get_poly(self):
         """Return the lastly recorded polygon.
@@ -3601,7 +3601,7 @@ klasse RawTurtle(TPen, TNavigator):
         >>> turtle.register_shape("myFavouriteShape", p)
         """
         ## check wenn there is any poly?
-        wenn self._poly is not None:
+        wenn self._poly is not Nichts:
             return tuple(self._poly)
 
     def getscreen(self):
@@ -3644,19 +3644,19 @@ klasse RawTurtle(TPen, TNavigator):
     ### screen oriented methods recurring to methods of TurtleScreen
     ################################################################
 
-    def _delay(self, delay=None):
+    def _delay(self, delay=Nichts):
         """Set delay value which determines speed of turtle animation.
         """
         return self.screen.delay(delay)
 
-    def onclick(self, fun, btn=1, add=None):
+    def onclick(self, fun, btn=1, add=Nichts):
         """Bind fun to mouse-click event on this turtle on canvas.
 
         Arguments:
         fun --  a function with two arguments, to which will be assigned
                 the coordinates of the clicked point on the canvas.
         btn --  number of the mouse-button defaults to 1 (left mouse button).
-        add --  True or False. If True, new binding will be added, otherwise
+        add --  Wahr or Falsch. If Wahr, new binding will be added, otherwise
                 it will replace a former binding.
 
         Example fuer the anonymous turtle, i. e. the procedural way:
@@ -3665,12 +3665,12 @@ klasse RawTurtle(TPen, TNavigator):
         ...     left(360)
         ...
         >>> onclick(turn)  # Now clicking into the turtle will turn it.
-        >>> onclick(None)  # event-binding will be removed
+        >>> onclick(Nichts)  # event-binding will be removed
         """
         self.screen._onclick(self.turtle._item, fun, btn, add)
         self._update()
 
-    def onrelease(self, fun, btn=1, add=None):
+    def onrelease(self, fun, btn=1, add=Nichts):
         """Bind fun to mouse-button-release event on this turtle on canvas.
 
         Arguments:
@@ -3695,7 +3695,7 @@ klasse RawTurtle(TPen, TNavigator):
         self.screen._onrelease(self.turtle._item, fun, btn, add)
         self._update()
 
-    def ondrag(self, fun, btn=1, add=None):
+    def ondrag(self, fun, btn=1, add=Nichts):
         """Bind fun to mouse-move event on this turtle on canvas.
 
         Arguments:
@@ -3719,7 +3719,7 @@ klasse RawTurtle(TPen, TNavigator):
     def _undo(self, action, data):
         """Does the main part of the work fuer undo()
         """
-        wenn self.undobuffer is None:
+        wenn self.undobuffer is Nichts:
             return
         wenn action == "rot":
             angle, degPAU = data
@@ -3740,7 +3740,7 @@ klasse RawTurtle(TPen, TNavigator):
                                   fill="", outline="")
         sowenn action == "beginfill":
             item = data[0]
-            self._fillitem = self._fillpath = None
+            self._fillitem = self._fillpath = Nichts
             wenn item in self.items:
                 self.screen._delete(item)
                 self.items.remove(item)
@@ -3765,7 +3765,7 @@ klasse RawTurtle(TPen, TNavigator):
         ...     turtle.undo()
         ...
         """
-        wenn self.undobuffer is None:
+        wenn self.undobuffer is Nichts:
             return
         item = self.undobuffer.pop()
         action = item[0]
@@ -3787,22 +3787,22 @@ def Screen():
     """Return the singleton screen object.
     If none exists at the moment, create a new one and return it,
     sonst return the existing one."""
-    wenn Turtle._screen is None:
+    wenn Turtle._screen is Nichts:
         Turtle._screen = _Screen()
     return Turtle._screen
 
 klasse _Screen(TurtleScreen):
 
-    _root = None
-    _canvas = None
+    _root = Nichts
+    _canvas = Nichts
     _title = _CFG["title"]
 
     def __init__(self):
-        wenn _Screen._root is None:
+        wenn _Screen._root is Nichts:
             _Screen._root = self._root = _Root()
             self._root.title(_Screen._title)
             self._root.ondestroy(self._destroy)
-        wenn _Screen._canvas is None:
+        wenn _Screen._canvas is Nichts:
             width = _CFG["width"]
             height = _CFG["height"]
             canvwidth = _CFG["canvwidth"]
@@ -3825,17 +3825,17 @@ klasse _Screen(TurtleScreen):
           screen. Default is 75% of screen.
         startx: wenn positive, starting position in pixels from the left
           edge of the screen, wenn negative from the right edge
-          Default, startx=None is to center window horizontally.
+          Default, startx=Nichts is to center window horizontally.
         starty: wenn positive, starting position in pixels from the top
           edge of the screen, wenn negative from the bottom edge
-          Default, starty=None is to center window vertically.
+          Default, starty=Nichts is to center window vertically.
 
         Examples (for a Screen instance named screen):
         >>> screen.setup (width=200, height=200, startx=0, starty=0)
 
         sets window to 200x200 pixels, in upper left of screen
 
-        >>> screen.setup(width=.75, height=0.5, startx=None, starty=None)
+        >>> screen.setup(width=.75, height=0.5, startx=Nichts, starty=Nichts)
 
         sets window to 75% of screen by 50% of screen and centers
         """
@@ -3845,11 +3845,11 @@ klasse _Screen(TurtleScreen):
         sh = self._root.win_height()
         wenn isinstance(width, float) and 0 <= width <= 1:
             width = sw*width
-        wenn startx is None:
+        wenn startx is Nichts:
             startx = (sw - width) / 2
         wenn isinstance(height, float) and 0 <= height <= 1:
             height = sh*height
-        wenn starty is None:
+        wenn starty is Nichts:
             starty = (sh - height) / 2
         self._root.set_geometry(width, height, startx, starty)
         self.update()
@@ -3867,18 +3867,18 @@ klasse _Screen(TurtleScreen):
         Example (for a Screen instance named screen):
         >>> screen.title("Welcome to the turtle-zoo!")
         """
-        wenn _Screen._root is not None:
+        wenn _Screen._root is not Nichts:
             _Screen._root.title(titlestring)
         _Screen._title = titlestring
 
     def _destroy(self):
         root = self._root
         wenn root is _Screen._root:
-            Turtle._pen = None
-            Turtle._screen = None
-            _Screen._root = None
-            _Screen._canvas = None
-        TurtleScreen._RUNNING = False
+            Turtle._pen = Nichts
+            Turtle._screen = Nichts
+            _Screen._root = Nichts
+            _Screen._canvas = Nichts
+        TurtleScreen._RUNNING = Falsch
         root.destroy()
 
     def bye(self):
@@ -3895,10 +3895,10 @@ klasse _Screen(TurtleScreen):
         No arguments.
 
         Bind bye() method to mouseclick on TurtleScreen.
-        If "using_IDLE" - value in configuration dictionary is False
+        If "using_IDLE" - value in configuration dictionary is Falsch
         (default value), enter mainloop.
         If IDLE with -n switch (no subprocess) is used, this value should be
-        set to True in turtle.cfg. In this case IDLE's mainloop
+        set to Wahr in turtle.cfg. In this case IDLE's mainloop
         is active also fuer the client script.
 
         This is a method of the Screen-class and not available for
@@ -3925,14 +3925,14 @@ klasse Turtle(RawTurtle):
     When a Turtle object is created or a function derived from some
     Turtle method is called a TurtleScreen object is automatically created.
     """
-    _pen = None
-    _screen = None
+    _pen = Nichts
+    _screen = Nichts
 
     def __init__(self,
                  shape=_CFG["shape"],
                  undobuffersize=_CFG["undobuffersize"],
                  visible=_CFG["visible"]):
-        wenn Turtle._screen is None:
+        wenn Turtle._screen is Nichts:
             Turtle._screen = Screen()
         RawTurtle.__init__(self, Turtle._screen,
                            shape=shape,
@@ -4044,8 +4044,8 @@ def _turtle_docrevise(docstr):
     """To reduce docstrings from RawTurtle klasse fuer functions
     """
     import re
-    wenn docstr is None:
-        return None
+    wenn docstr is Nichts:
+        return Nichts
     turtlename = _CFG["exampleturtle"]
     newdocstr = docstr.replace("%s." % turtlename,"")
     parexp = re.compile(r' \(.+ %s\):' % turtlename)
@@ -4056,8 +4056,8 @@ def _screen_docrevise(docstr):
     """To reduce docstrings from TurtleScreen klasse fuer functions
     """
     import re
-    wenn docstr is None:
-        return None
+    wenn docstr is Nichts:
+        return Nichts
     screenname = _CFG["examplescreen"]
     newdocstr = docstr.replace("%s." % screenname,"")
     parexp = re.compile(r' \(.+ %s\):' % screenname)
@@ -4070,16 +4070,16 @@ def _screen_docrevise(docstr):
 
 __func_body = """\
 def {name}{paramslist}:
-    wenn {obj} is None:
+    wenn {obj} is Nichts:
         wenn not TurtleScreen._RUNNING:
-            TurtleScreen._RUNNING = True
+            TurtleScreen._RUNNING = Wahr
             raise Terminator
         {obj} = {init}
     try:
         return {obj}.{name}{argslist}
     except TK.TclError:
         wenn not TurtleScreen._RUNNING:
-            TurtleScreen._RUNNING = True
+            TurtleScreen._RUNNING = Wahr
             raise Terminator
         raise
 """
@@ -4114,7 +4114,7 @@ wenn __name__ == "__main__":
     def demo1():
         """Demo of old turtle.py - module"""
         reset()
-        tracer(True)
+        tracer(Wahr)
         up()
         backward(100)
         down()
@@ -4135,7 +4135,7 @@ wenn __name__ == "__main__":
         width(1)
         color("black")
         # move out of the way
-        tracer(False)
+        tracer(Falsch)
         up()
         right(90)
         forward(100)
@@ -4154,7 +4154,7 @@ wenn __name__ == "__main__":
             forward(20)
             right(90)
         # filled staircase
-        tracer(True)
+        tracer(Wahr)
         begin_fill()
         fuer i in range(5):
             forward(20)

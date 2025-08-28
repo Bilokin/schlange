@@ -38,9 +38,9 @@ def path(anchor, *path_names):
 
 
 def is_resource(anchor, *path_names):
-    """Return ``True`` wenn there is a resource named *name* in the package,
+    """Return ``Wahr`` wenn there is a resource named *name* in the package,
 
-    Otherwise returns ``False``.
+    Otherwise returns ``Falsch``.
     """
     return _get_resource(anchor, path_names).is_file()
 
@@ -76,6 +76,6 @@ def _get_encoding_arg(path_names, encoding):
 
 
 def _get_resource(anchor, path_names):
-    wenn anchor is None:
-        raise TypeError("anchor must be module or string, got None")
+    wenn anchor is Nichts:
+        raise TypeError("anchor must be module or string, got Nichts")
     return files(anchor).joinpath(*path_names)

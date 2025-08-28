@@ -38,8 +38,8 @@ import threading as _threading
 import http.client  # only fuer the default HTTP port
 from calendar import timegm
 
-debug = False   # set to True to enable debugging via the logging module
-logger = None
+debug = Falsch   # set to Wahr to enable debugging via the logging module
+logger = Nichts
 
 def _debug(*args):
     wenn not debug:
@@ -69,7 +69,7 @@ def _warn_unhandled_exception():
     # exceptions are caught there.
     import io, warnings, traceback
     f = io.StringIO()
-    traceback.print_exc(None, f)
+    traceback.print_exc(Nichts, f)
     msg = f.getvalue()
     warnings.warn("http.cookiejar bug!\n%s" % msg, stacklevel=2)
 
@@ -84,14 +84,14 @@ def _timegm(tt):
         (0 <= hour <= 24) and (0 <= min <= 59) and (0 <= sec <= 61)):
         return timegm(tt)
     sonst:
-        return None
+        return Nichts
 
 DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 MONTHS_LOWER = [month.lower() fuer month in MONTHS]
 
-def time2isoz(t=None):
+def time2isoz(t=Nichts):
     """Return a string representing time in seconds since epoch, t.
 
     If the function is called without an argument, it will use the current
@@ -103,14 +103,14 @@ def time2isoz(t=None):
     1994-11-24 08:49:37Z
 
     """
-    wenn t is None:
+    wenn t is Nichts:
         dt = datetime.datetime.now(tz=datetime.UTC)
     sonst:
         dt = datetime.datetime.fromtimestamp(t, tz=datetime.UTC)
     return "%04d-%02d-%02d %02d:%02d:%02dZ" % (
         dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
 
-def time2netscape(t=None):
+def time2netscape(t=Nichts):
     """Return a string representing time in seconds since epoch, t.
 
     If the function is called without an argument, it will use the current
@@ -121,7 +121,7 @@ def time2netscape(t=None):
     Wed, DD-Mon-YYYY HH:MM:SS GMT
 
     """
-    wenn t is None:
+    wenn t is Nichts:
         dt = datetime.datetime.now(tz=datetime.UTC)
     sonst:
         dt = datetime.datetime.fromtimestamp(t, tz=datetime.UTC)
@@ -130,11 +130,11 @@ def time2netscape(t=None):
         dt.year, dt.hour, dt.minute, dt.second)
 
 
-UTC_ZONES = {"GMT": None, "UTC": None, "UT": None, "Z": None}
+UTC_ZONES = {"GMT": Nichts, "UTC": Nichts, "UT": Nichts, "Z": Nichts}
 
 TIMEZONE_RE = re.compile(r"^([-+])?(\d\d?):?(\d\d)?$", re.ASCII)
 def offset_from_tz_string(tz):
-    offset = None
+    offset = Nichts
     wenn tz in UTC_ZONES:
         offset = 0
     sonst:
@@ -150,7 +150,7 @@ def offset_from_tz_string(tz):
 def _str2time(day, mon, yr, hr, min, sec, tz):
     yr = int(yr)
     wenn yr > datetime.MAXYEAR:
-        return None
+        return Nichts
 
     # translate month name to number
     # month numbers start with 1 (January)
@@ -161,16 +161,16 @@ def _str2time(day, mon, yr, hr, min, sec, tz):
         try:
             imon = int(mon)
         except ValueError:
-            return None
+            return Nichts
         wenn 1 <= imon <= 12:
             mon = imon
         sonst:
-            return None
+            return Nichts
 
     # make sure clock elements are defined
-    wenn hr is None: hr = 0
-    wenn min is None: min = 0
-    wenn sec is None: sec = 0
+    wenn hr is Nichts: hr = 0
+    wenn min is Nichts: min = 0
+    wenn sec is Nichts: sec = 0
 
     day = int(day)
     hr = int(hr)
@@ -191,14 +191,14 @@ def _str2time(day, mon, yr, hr, min, sec, tz):
     # convert UTC time tuple to seconds since epoch (not timezone-adjusted)
     t = _timegm((yr, mon, day, hr, min, sec, tz))
 
-    wenn t is not None:
+    wenn t is not Nichts:
         # adjust time using timezone string, to get absolute time since epoch
-        wenn tz is None:
+        wenn tz is Nichts:
             tz = "UTC"
         tz = tz.upper()
         offset = offset_from_tz_string(tz)
-        wenn offset is None:
-            return None
+        wenn offset is Nichts:
+            return Nichts
         t = t - offset
 
     return t
@@ -234,7 +234,7 @@ def http2time(text):
 
     Return value is an integer.
 
-    None is returned wenn the format of str is unrecognized, the time is outside
+    Nichts is returned wenn the format of str is unrecognized, the time is outside
     the representable range, or the timezone string is not recognized.  If the
     string contains no timezone, UTC is assumed.
 
@@ -274,14 +274,14 @@ def http2time(text):
     text = WEEKDAY_RE.sub("", text, 1)  # Useless weekday
 
     # tz is time zone specifier string
-    day, mon, yr, hr, min, sec, tz = [None]*7
+    day, mon, yr, hr, min, sec, tz = [Nichts]*7
 
     # loose regexp parse
     m = LOOSE_HTTP_DATE_RE.search(text)
-    wenn m is not None:
+    wenn m is not Nichts:
         day, mon, yr, hr, min, sec, tz = m.groups()
     sonst:
-        return None  # bad format
+        return Nichts  # bad format
 
     return _str2time(day, mon, yr, hr, min, sec, tz)
 
@@ -319,16 +319,16 @@ def iso2time(text):
     text = text.lstrip()
 
     # tz is time zone specifier string
-    day, mon, yr, hr, min, sec, tz = [None]*7
+    day, mon, yr, hr, min, sec, tz = [Nichts]*7
 
     # loose regexp parse
     m = ISO_DATE_RE.search(text)
-    wenn m is not None:
+    wenn m is not Nichts:
         # XXX there's an extra bit of the timezone I'm ignoring here: is
         #   this the right thing to do?
         yr, mon, day, hr, min, sec, tz, _ = m.groups()
     sonst:
-        return None  # bad format
+        return Nichts  # bad format
 
     return _str2time(day, mon, yr, hr, min, sec, tz)
 
@@ -377,17 +377,17 @@ def split_header_words(header_values):
       value             = token | quoted-string
 
     Each header is represented by a list of key/value pairs.  The value fuer a
-    simple token (not part of a parameter) is None.  Syntactically incorrect
+    simple token (not part of a parameter) is Nichts.  Syntactically incorrect
     headers will not necessarily be parsed as you would want.
 
     This is easier to describe with some examples:
 
     >>> split_header_words(['foo="bar"; port="80,81"; discard, bar=baz'])
-    [[('foo', 'bar'), ('port', '80,81'), ('discard', None)], [('bar', 'baz')]]
+    [[('foo', 'bar'), ('port', '80,81'), ('discard', Nichts)], [('bar', 'baz')]]
     >>> split_header_words(['text/html; charset="iso-8859-1"'])
-    [[('text/html', None), ('charset', 'iso-8859-1')]]
+    [[('text/html', Nichts), ('charset', 'iso-8859-1')]]
     >>> split_header_words([r'Basic realm="\"foo\bar\""'])
-    [[('Basic', None), ('realm', '"foobar"')]]
+    [[('Basic', Nichts), ('realm', '"foobar"')]]
 
     """
     assert not isinstance(header_values, str)
@@ -413,7 +413,7 @@ def split_header_words(header_values):
                         value = value.rstrip()
                     sonst:
                         # no value, a lone token
-                        value = None
+                        value = Nichts
                 pairs.append((name, value))
             sowenn text.lstrip().startswith(","):
                 # concatenated headers, as per RFC 2616 section 4.2
@@ -438,9 +438,9 @@ def join_header_words(lists):
     Takes a list of lists of (key, value) pairs and produces a single header
     value.  Attribute values are quoted wenn needed.
 
-    >>> join_header_words([[("text/plain", None), ("charset", "iso-8859/1")]])
+    >>> join_header_words([[("text/plain", Nichts), ("charset", "iso-8859/1")]])
     'text/plain; charset="iso-8859/1"'
-    >>> join_header_words([[("text/plain", None)], [("charset", "iso-8859/1")]])
+    >>> join_header_words([[("text/plain", Nichts)], [("charset", "iso-8859/1")]])
     'text/plain, charset="iso-8859/1"'
 
     """
@@ -448,7 +448,7 @@ def join_header_words(lists):
     fuer pairs in lists:
         attr = []
         fuer k, v in pairs:
-            wenn v is not None:
+            wenn v is not Nichts:
                 wenn not HEADER_JOIN_TOKEN_RE.fullmatch(v):
                     v = HEADER_JOIN_ESCAPE_RE.sub(r"\\\1", v)  # escape " and \
                     v = '"%s"' % v
@@ -486,7 +486,7 @@ def parse_ns_headers(ns_headers):
     result = []
     fuer ns_header in ns_headers:
         pairs = []
-        version_set = False
+        version_set = Falsch
 
         # XXX: The following does not strictly adhere to RFCs in that empty
         # names and values are legal (the former will only appear once and will
@@ -506,7 +506,7 @@ def parse_ns_headers(ns_headers):
 
             # allow fuer a distinction between present and empty and missing
             # altogether
-            val = val.strip() wenn sep sonst None
+            val = val.strip() wenn sep sonst Nichts
 
             wenn ii != 0:
                 lc = key.lower()
@@ -515,13 +515,13 @@ def parse_ns_headers(ns_headers):
 
                 wenn key == "version":
                     # This is an RFC 2109 cookie.
-                    wenn val is not None:
+                    wenn val is not Nichts:
                         val = strip_quotes(val)
-                    version_set = True
+                    version_set = Wahr
                 sowenn key == "expires":
                     # convert expires date to seconds since epoch
-                    wenn val is not None:
-                        val = http2time(strip_quotes(val))  # None wenn invalid
+                    wenn val is not Nichts:
+                        val = http2time(strip_quotes(val))  # Nichts wenn invalid
             pairs.append((key, val))
 
         wenn pairs:
@@ -534,22 +534,22 @@ def parse_ns_headers(ns_headers):
 
 IPV4_RE = re.compile(r"\.\d+$", re.ASCII)
 def is_HDN(text):
-    """Return True wenn text is a host domain name."""
+    """Return Wahr wenn text is a host domain name."""
     # XXX
     # This may well be wrong.  Which RFC is HDN defined in, wenn any (for
     #  the purposes of RFC 2965)?
     # For the current implementation, what about IPv6?  Remember to look
     #  at other uses of IPV4_RE also, wenn change this.
     wenn IPV4_RE.search(text):
-        return False
+        return Falsch
     wenn text == "":
-        return False
+        return Falsch
     wenn text[0] == "." or text[-1] == ".":
-        return False
-    return True
+        return Falsch
+    return Wahr
 
 def domain_match(A, B):
-    """Return True wenn domain A domain-matches domain B, according to RFC 2965.
+    """Return Wahr wenn domain A domain-matches domain B, according to RFC 2965.
 
     A and B may be host domain names or IP addresses.
 
@@ -574,28 +574,28 @@ def domain_match(A, B):
     A = A.lower()
     B = B.lower()
     wenn A == B:
-        return True
+        return Wahr
     wenn not is_HDN(A):
-        return False
+        return Falsch
     i = A.rfind(B)
     wenn i == -1 or i == 0:
         # A does not have form NB, or N is the empty string
-        return False
+        return Falsch
     wenn not B.startswith("."):
-        return False
+        return Falsch
     wenn not is_HDN(B[1:]):
-        return False
-    return True
+        return Falsch
+    return Wahr
 
 def liberal_is_HDN(text):
-    """Return True wenn text is a sort-of-like a host domain name.
+    """Return Wahr wenn text is a sort-of-like a host domain name.
 
     For accepting/blocking domains.
 
     """
     wenn IPV4_RE.search(text):
-        return False
-    return True
+        return Falsch
+    return Wahr
 
 def user_domain_match(A, B):
     """For blocking/accepting domains.
@@ -608,14 +608,14 @@ def user_domain_match(A, B):
     wenn not (liberal_is_HDN(A) and liberal_is_HDN(B)):
         wenn A == B:
             # equal IP addresses
-            return True
-        return False
+            return Wahr
+        return Falsch
     initial_dot = B.startswith(".")
     wenn initial_dot and A.endswith(B):
-        return True
+        return Wahr
     wenn not initial_dot and A == B:
-        return True
-    return False
+        return Wahr
+    return Falsch
 
 cut_port_re = re.compile(r":\d+$", re.ASCII)
 def request_host(request):
@@ -664,7 +664,7 @@ def request_port(request):
             int(port)
         except ValueError:
             _debug("nonnumeric port: '%s'", port)
-            return None
+            return Nichts
     sonst:
         port = DEFAULT_HTTP_PORT
     return port
@@ -736,9 +736,9 @@ def is_third_party(request):
     """
     req_host = request_host(request)
     wenn not domain_match(req_host, reach(request.origin_req_host)):
-        return True
+        return Wahr
     sonst:
-        return False
+        return Falsch
 
 
 klasse Cookie:
@@ -755,7 +755,7 @@ klasse Cookie:
     and returned to the server.
 
     Note that the port may be present in the headers, but unspecified ("Port"
-    rather than"Port=80", fuer example); wenn this is the case, port is None.
+    rather than"Port=80", fuer example); wenn this is the case, port is Nichts.
 
     """
 
@@ -769,13 +769,13 @@ klasse Cookie:
                  comment,
                  comment_url,
                  rest,
-                 rfc2109=False,
+                 rfc2109=Falsch,
                  ):
 
-        wenn version is not None: version = int(version)
-        wenn expires is not None: expires = int(float(expires))
-        wenn port is None and port_specified is True:
-            raise ValueError("if port is None, port_specified must be false")
+        wenn version is not Nichts: version = int(version)
+        wenn expires is not Nichts: expires = int(float(expires))
+        wenn port is Nichts and port_specified is Wahr:
+            raise ValueError("if port is Nichts, port_specified must be false")
 
         self.version = version
         self.name = name
@@ -803,22 +803,22 @@ klasse Cookie:
 
     def has_nonstandard_attr(self, name):
         return name in self._rest
-    def get_nonstandard_attr(self, name, default=None):
+    def get_nonstandard_attr(self, name, default=Nichts):
         return self._rest.get(name, default)
     def set_nonstandard_attr(self, name, value):
         self._rest[name] = value
 
-    def is_expired(self, now=None):
-        wenn now is None: now = time.time()
-        wenn (self.expires is not None) and (self.expires <= now):
-            return True
-        return False
+    def is_expired(self, now=Nichts):
+        wenn now is Nichts: now = time.time()
+        wenn (self.expires is not Nichts) and (self.expires <= now):
+            return Wahr
+        return Falsch
 
     def __str__(self):
-        wenn self.port is None: p = ""
+        wenn self.port is Nichts: p = ""
         sonst: p = ":"+self.port
         limit = self.domain + p + self.path
-        wenn self.value is not None:
+        wenn self.value is not Nichts:
             namevalue = "%s=%s" % (self.name, self.value)
         sonst:
             namevalue = self.name
@@ -864,12 +864,12 @@ klasse CookiePolicy:
     def domain_return_ok(self, domain, request):
         """Return false wenn cookies should not be returned, given cookie domain.
         """
-        return True
+        return Wahr
 
     def path_return_ok(self, path, request):
         """Return false wenn cookies should not be returned, given cookie path.
         """
-        return True
+        return Wahr
 
 
 klasse DefaultCookiePolicy(CookiePolicy):
@@ -883,16 +883,16 @@ klasse DefaultCookiePolicy(CookiePolicy):
     DomainStrict = DomainStrictNoDots|DomainStrictNonDomain
 
     def __init__(self,
-                 blocked_domains=None, allowed_domains=None,
-                 netscape=True, rfc2965=False,
-                 rfc2109_as_netscape=None,
-                 hide_cookie2=False,
-                 strict_domain=False,
-                 strict_rfc2965_unverifiable=True,
-                 strict_ns_unverifiable=False,
+                 blocked_domains=Nichts, allowed_domains=Nichts,
+                 netscape=Wahr, rfc2965=Falsch,
+                 rfc2109_as_netscape=Nichts,
+                 hide_cookie2=Falsch,
+                 strict_domain=Falsch,
+                 strict_rfc2965_unverifiable=Wahr,
+                 strict_ns_unverifiable=Falsch,
                  strict_ns_domain=DomainLiberal,
-                 strict_ns_set_initial_dollar=False,
-                 strict_ns_set_path=False,
+                 strict_ns_set_initial_dollar=Falsch,
+                 strict_ns_set_path=Falsch,
                  secure_protocols=("https", "wss")
                  ):
         """Constructor arguments should be passed as keyword arguments only."""
@@ -908,12 +908,12 @@ klasse DefaultCookiePolicy(CookiePolicy):
         self.strict_ns_set_path = strict_ns_set_path
         self.secure_protocols = secure_protocols
 
-        wenn blocked_domains is not None:
+        wenn blocked_domains is not Nichts:
             self._blocked_domains = tuple(blocked_domains)
         sonst:
             self._blocked_domains = ()
 
-        wenn allowed_domains is not None:
+        wenn allowed_domains is not Nichts:
             allowed_domains = tuple(allowed_domains)
         self._allowed_domains = allowed_domains
 
@@ -927,25 +927,25 @@ klasse DefaultCookiePolicy(CookiePolicy):
     def is_blocked(self, domain):
         fuer blocked_domain in self._blocked_domains:
             wenn user_domain_match(domain, blocked_domain):
-                return True
-        return False
+                return Wahr
+        return Falsch
 
     def allowed_domains(self):
-        """Return None, or the sequence of allowed domains (as a tuple)."""
+        """Return Nichts, or the sequence of allowed domains (as a tuple)."""
         return self._allowed_domains
     def set_allowed_domains(self, allowed_domains):
-        """Set the sequence of allowed domains, or None."""
-        wenn allowed_domains is not None:
+        """Set the sequence of allowed domains, or Nichts."""
+        wenn allowed_domains is not Nichts:
             allowed_domains = tuple(allowed_domains)
         self._allowed_domains = allowed_domains
 
     def is_not_allowed(self, domain):
-        wenn self._allowed_domains is None:
-            return False
+        wenn self._allowed_domains is Nichts:
+            return Falsch
         fuer allowed_domain in self._allowed_domains:
             wenn user_domain_match(domain, allowed_domain):
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def set_ok(self, cookie, request):
         """
@@ -956,42 +956,42 @@ klasse DefaultCookiePolicy(CookiePolicy):
         """
         _debug(" - checking cookie %s=%s", cookie.name, cookie.value)
 
-        assert cookie.name is not None
+        assert cookie.name is not Nichts
 
         fuer n in "version", "verifiability", "name", "path", "domain", "port":
             fn_name = "set_ok_"+n
             fn = getattr(self, fn_name)
             wenn not fn(cookie, request):
-                return False
+                return Falsch
 
-        return True
+        return Wahr
 
     def set_ok_version(self, cookie, request):
-        wenn cookie.version is None:
+        wenn cookie.version is Nichts:
             # Version is always set to 0 by parse_ns_headers wenn it's a Netscape
             # cookie, so this must be an invalid RFC 2965 cookie.
             _debug("   Set-Cookie2 without version attribute (%s=%s)",
                    cookie.name, cookie.value)
-            return False
+            return Falsch
         wenn cookie.version > 0 and not self.rfc2965:
             _debug("   RFC 2965 cookies are switched off")
-            return False
+            return Falsch
         sowenn cookie.version == 0 and not self.netscape:
             _debug("   Netscape cookies are switched off")
-            return False
-        return True
+            return Falsch
+        return Wahr
 
     def set_ok_verifiability(self, cookie, request):
         wenn request.unverifiable and is_third_party(request):
             wenn cookie.version > 0 and self.strict_rfc2965_unverifiable:
                 _debug("   third-party RFC 2965 cookie during "
                              "unverifiable transaction")
-                return False
+                return Falsch
             sowenn cookie.version == 0 and self.strict_ns_unverifiable:
                 _debug("   third-party Netscape cookie during "
                              "unverifiable transaction")
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def set_ok_name(self, cookie, request):
         # Try and stop servers setting V0 cookies designed to hack other
@@ -999,8 +999,8 @@ klasse DefaultCookiePolicy(CookiePolicy):
         wenn (cookie.version == 0 and self.strict_ns_set_initial_dollar and
             cookie.name.startswith("$")):
             _debug("   illegal name (starts with '$'): '%s'", cookie.name)
-            return False
-        return True
+            return Falsch
+        return Wahr
 
     def set_ok_path(self, cookie, request):
         wenn cookie.path_specified:
@@ -1010,16 +1010,16 @@ klasse DefaultCookiePolicy(CookiePolicy):
                 not self.path_return_ok(cookie.path, request)):
                 _debug("   path attribute %s is not a prefix of request "
                        "path %s", cookie.path, req_path)
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def set_ok_domain(self, cookie, request):
         wenn self.is_blocked(cookie.domain):
             _debug("   domain %s is in user block-list", cookie.domain)
-            return False
+            return Falsch
         wenn self.is_not_allowed(cookie.domain):
             _debug("   domain %s is not in user allow-list", cookie.domain)
-            return False
+            return Falsch
         wenn cookie.domain_specified:
             req_host, erhn = eff_request_host(request)
             domain = cookie.domain
@@ -1038,7 +1038,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
                        "travel", "eu") and len(tld) == 2:
                         # domain like .co.uk
                         _debug("   country-code second level domain %s", domain)
-                        return False
+                        return Falsch
             wenn domain.startswith("."):
                 undotted_domain = domain[1:]
             sonst:
@@ -1047,7 +1047,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
             wenn not embedded_dots and not erhn.endswith(".local"):
                 _debug("   non-local domain %s contains no embedded dot",
                        domain)
-                return False
+                return Falsch
             wenn cookie.version == 0:
                 wenn (not (erhn.endswith(domain) or
                          erhn.endswith(f"{undotted_domain}.local")) and
@@ -1056,13 +1056,13 @@ klasse DefaultCookiePolicy(CookiePolicy):
                     _debug("   effective request-host %s (even with added "
                            "initial dot) does not end with %s",
                            erhn, domain)
-                    return False
+                    return Falsch
             wenn (cookie.version > 0 or
                 (self.strict_ns_domain & self.DomainRFC2965Match)):
                 wenn not domain_match(erhn, domain):
                     _debug("   effective request-host %s does not domain-match "
                            "%s", erhn, domain)
-                    return False
+                    return Falsch
             wenn (cookie.version > 0 or
                 (self.strict_ns_domain & self.DomainStrictNoDots)):
                 host_prefix = req_host[:-len(domain)]
@@ -1070,13 +1070,13 @@ klasse DefaultCookiePolicy(CookiePolicy):
                     not IPV4_RE.search(req_host)):
                     _debug("   host prefix %s fuer domain %s contains a dot",
                            host_prefix, domain)
-                    return False
-        return True
+                    return Falsch
+        return Wahr
 
     def set_ok_port(self, cookie, request):
         wenn cookie.port_specified:
             req_port = request_port(request)
-            wenn req_port is None:
+            wenn req_port is Nichts:
                 req_port = "80"
             sonst:
                 req_port = str(req_port)
@@ -1085,14 +1085,14 @@ klasse DefaultCookiePolicy(CookiePolicy):
                     int(p)
                 except ValueError:
                     _debug("   bad port %s (not numeric)", p)
-                    return False
+                    return Falsch
                 wenn p == req_port:
                     break
             sonst:
                 _debug("   request port (%s) not found in %s",
                        req_port, cookie.port)
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def return_ok(self, cookie, request):
         """
@@ -1109,46 +1109,46 @@ klasse DefaultCookiePolicy(CookiePolicy):
             fn_name = "return_ok_"+n
             fn = getattr(self, fn_name)
             wenn not fn(cookie, request):
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def return_ok_version(self, cookie, request):
         wenn cookie.version > 0 and not self.rfc2965:
             _debug("   RFC 2965 cookies are switched off")
-            return False
+            return Falsch
         sowenn cookie.version == 0 and not self.netscape:
             _debug("   Netscape cookies are switched off")
-            return False
-        return True
+            return Falsch
+        return Wahr
 
     def return_ok_verifiability(self, cookie, request):
         wenn request.unverifiable and is_third_party(request):
             wenn cookie.version > 0 and self.strict_rfc2965_unverifiable:
                 _debug("   third-party RFC 2965 cookie during unverifiable "
                        "transaction")
-                return False
+                return Falsch
             sowenn cookie.version == 0 and self.strict_ns_unverifiable:
                 _debug("   third-party Netscape cookie during unverifiable "
                        "transaction")
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def return_ok_secure(self, cookie, request):
         wenn cookie.secure and request.type not in self.secure_protocols:
             _debug("   secure cookie with non-secure request")
-            return False
-        return True
+            return Falsch
+        return Wahr
 
     def return_ok_expires(self, cookie, request):
         wenn cookie.is_expired(self._now):
             _debug("   cookie expired")
-            return False
-        return True
+            return Falsch
+        return Wahr
 
     def return_ok_port(self, cookie, request):
         wenn cookie.port:
             req_port = request_port(request)
-            wenn req_port is None:
+            wenn req_port is Nichts:
                 req_port = "80"
             fuer p in cookie.port.split(","):
                 wenn p == req_port:
@@ -1156,8 +1156,8 @@ klasse DefaultCookiePolicy(CookiePolicy):
             sonst:
                 _debug("   request port %s does not match cookie port %s",
                        req_port, cookie.port)
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def return_ok_domain(self, cookie, request):
         req_host, erhn = eff_request_host(request)
@@ -1174,17 +1174,17 @@ klasse DefaultCookiePolicy(CookiePolicy):
             not cookie.domain_specified and domain != erhn):
             _debug("   cookie with unspecified domain does not string-compare "
                    "equal to request domain")
-            return False
+            return Falsch
 
         wenn cookie.version > 0 and not domain_match(erhn, domain):
             _debug("   effective request-host name %s does not domain-match "
                    "RFC 2965 cookie domain %s", erhn, domain)
-            return False
+            return Falsch
         wenn cookie.version == 0 and not ("."+erhn).endswith(dotdomain):
             _debug("   request-host %s does not match Netscape cookie domain "
                    "%s", req_host, domain)
-            return False
-        return True
+            return Falsch
+        return Wahr
 
     def domain_return_ok(self, domain, request):
         # Liberal check of.  This is here as an optimization to avoid
@@ -1201,47 +1201,47 @@ klasse DefaultCookiePolicy(CookiePolicy):
         wenn not (req_host.endswith(dotdomain) or erhn.endswith(dotdomain)):
             #_debug("   request domain %s does not match cookie domain %s",
             #       req_host, domain)
-            return False
+            return Falsch
 
         wenn self.is_blocked(domain):
             _debug("   domain %s is in user block-list", domain)
-            return False
+            return Falsch
         wenn self.is_not_allowed(domain):
             _debug("   domain %s is not in user allow-list", domain)
-            return False
+            return Falsch
 
-        return True
+        return Wahr
 
     def path_return_ok(self, path, request):
         _debug("- checking cookie path=%s", path)
         req_path = request_path(request)
         pathlen = len(path)
         wenn req_path == path:
-            return True
+            return Wahr
         sowenn (req_path.startswith(path) and
               (path.endswith("/") or req_path[pathlen:pathlen+1] == "/")):
-            return True
+            return Wahr
 
         _debug("  %s does not path-match %s", req_path, path)
-        return False
+        return Falsch
 
 def deepvalues(mapping):
     """Iterates over nested mapping, depth-first"""
     fuer obj in list(mapping.values()):
-        mapping = False
+        mapping = Falsch
         try:
             obj.items
         except AttributeError:
             pass
         sonst:
-            mapping = True
+            mapping = Wahr
             yield from deepvalues(obj)
         wenn not mapping:
             yield obj
 
 
 # Used as second parameter to dict.get() method, to distinguish absent
-# dict key from one with a None value.
+# dict key from one with a Nichts value.
 klasse Absent: pass
 
 klasse CookieJar:
@@ -1259,8 +1259,8 @@ klasse CookieJar:
 
     magic_re = re.compile(r"^\#LWP-Cookies-(\d+\.\d+)", re.ASCII)
 
-    def __init__(self, policy=None):
-        wenn policy is None:
+    def __init__(self, policy=Nichts):
+        wenn policy is Nichts:
             policy = DefaultCookiePolicy()
         self._policy = policy
 
@@ -1305,9 +1305,9 @@ klasse CookieJar:
 
         """
         # add cookies in order of most specific (ie. longest) path first
-        cookies.sort(key=lambda a: len(a.path), reverse=True)
+        cookies.sort(key=lambda a: len(a.path), reverse=Wahr)
 
-        version_set = False
+        version_set = Falsch
 
         attrs = []
         fuer cookie in cookies:
@@ -1319,21 +1319,21 @@ klasse CookieJar:
             #  RFC 2965 errata, but that may never appear...
             version = cookie.version
             wenn not version_set:
-                version_set = True
+                version_set = Wahr
                 wenn version > 0:
                     attrs.append("$Version=%s" % version)
 
             # quote cookie value wenn necessary
             # (not fuer Netscape protocol, which already has any quotes
             #  intact, due to the poorly-specified Netscape Cookie: syntax)
-            wenn ((cookie.value is not None) and
+            wenn ((cookie.value is not Nichts) and
                 self.non_word_re.search(cookie.value) and version > 0):
                 value = self.quote_re.sub(r"\\\1", cookie.value)
             sonst:
                 value = cookie.value
 
             # add cookie-attributes to be returned in Cookie header
-            wenn cookie.value is None:
+            wenn cookie.value is Nichts:
                 attrs.append(cookie.name)
             sonst:
                 attrs.append("%s=%s" % (cookie.name, value))
@@ -1346,7 +1346,7 @@ klasse CookieJar:
                         domain.startswith(".")):
                         domain = domain[1:]
                     attrs.append('$Domain="%s"' % domain)
-                wenn cookie.port is not None:
+                wenn cookie.port is not Nichts:
                     p = "$Port"
                     wenn cookie.port_specified:
                         p = p + ('="%s"' % cookie.port)
@@ -1419,9 +1419,9 @@ klasse CookieJar:
             # should have Max-Age, but since V1 includes RFC 2109 cookies (and
             # since V0 cookies may be a mish-mash of Netscape and RFC 2109), we
             # accept either (but prefer Max-Age).
-            max_age_set = False
+            max_age_set = Falsch
 
-            bad_cookie = False
+            bad_cookie = Falsch
 
             standard = {}
             rest = {}
@@ -1430,17 +1430,17 @@ klasse CookieJar:
                 # don't lose case distinction fuer unknown fields
                 wenn lc in value_attrs or lc in boolean_attrs:
                     k = lc
-                wenn k in boolean_attrs and v is None:
+                wenn k in boolean_attrs and v is Nichts:
                     # boolean cookie-attribute is present, but has no value
                     # (like "discard", rather than "port=80")
-                    v = True
+                    v = Wahr
                 wenn k in standard:
                     # only first value is significant
                     continue
                 wenn k == "domain":
-                    wenn v is None:
+                    wenn v is Nichts:
                         _debug("   missing value fuer domain attribute")
-                        bad_cookie = True
+                        bad_cookie = Wahr
                         break
                     # RFC 2965 section 3.3.3
                     v = v.lower()
@@ -1448,18 +1448,18 @@ klasse CookieJar:
                     wenn max_age_set:
                         # Prefer max-age to expires (like Mozilla)
                         continue
-                    wenn v is None:
+                    wenn v is Nichts:
                         _debug("   missing or invalid value fuer expires "
                               "attribute: treating as session cookie")
                         continue
                 wenn k == "max-age":
-                    max_age_set = True
+                    max_age_set = Wahr
                     try:
                         v = int(v)
                     except ValueError:
                         _debug("   missing or invalid (non-numeric) value fuer "
                               "max-age attribute")
-                        bad_cookie = True
+                        bad_cookie = Wahr
                         break
                     # convert RFC 2965 Max-Age to seconds since epoch
                     # XXX Strictly you're supposed to follow RFC 2616
@@ -1468,10 +1468,10 @@ klasse CookieJar:
                     k = "expires"
                     v = self._now + v
                 wenn (k in value_attrs) or (k in boolean_attrs):
-                    wenn (v is None and
+                    wenn (v is Nichts and
                         k not in ("port", "comment", "commenturl")):
                         _debug("   missing value fuer %s attribute" % k)
-                        bad_cookie = True
+                        bad_cookie = Wahr
                         break
                     standard[k] = v
                 sonst:
@@ -1495,24 +1495,24 @@ klasse CookieJar:
         expires = standard.get("expires", Absent)
 
         # set the easy defaults
-        version = standard.get("version", None)
-        wenn version is not None:
+        version = standard.get("version", Nichts)
+        wenn version is not Nichts:
             try:
                 version = int(version)
             except ValueError:
-                return None  # invalid version, ignore cookie
-        secure = standard.get("secure", False)
+                return Nichts  # invalid version, ignore cookie
+        secure = standard.get("secure", Falsch)
         # (discard is also set wenn expires is Absent)
-        discard = standard.get("discard", False)
-        comment = standard.get("comment", None)
-        comment_url = standard.get("commenturl", None)
+        discard = standard.get("discard", Falsch)
+        comment = standard.get("comment", Nichts)
+        comment_url = standard.get("commenturl", Nichts)
 
         # set default path
         wenn path is not Absent and path != "":
-            path_specified = True
+            path_specified = Wahr
             path = escape_path(path)
         sonst:
-            path_specified = False
+            path_specified = Falsch
             path = request_path(request)
             i = path.rfind("/")
             wenn i != -1:
@@ -1526,7 +1526,7 @@ klasse CookieJar:
         # set default domain
         domain_specified = domain is not Absent
         # but first we have to remember whether it starts with a dot
-        domain_initial_dot = False
+        domain_initial_dot = Falsch
         wenn domain_specified:
             domain_initial_dot = bool(domain.startswith("."))
         wenn domain is Absent:
@@ -1536,23 +1536,23 @@ klasse CookieJar:
             domain = "."+domain
 
         # set default port
-        port_specified = False
+        port_specified = Falsch
         wenn port is not Absent:
-            wenn port is None:
+            wenn port is Nichts:
                 # Port attr present, but has no value: default to request port.
                 # Cookie should then only be sent back on that port.
                 port = request_port(request)
             sonst:
-                port_specified = True
+                port_specified = Wahr
                 port = re.sub(r"\s+", "", port)
         sonst:
             # No port attr present.  Cookie can be sent back on any port.
-            port = None
+            port = Nichts
 
         # set default expires and discard
         wenn expires is Absent:
-            expires = None
-            discard = True
+            expires = Nichts
+            discard = Wahr
         sowenn expires <= self._now:
             # Expiry date in past is request to delete cookie.  This can't be
             # in DefaultCookiePolicy, because can't delete cookies there.
@@ -1562,7 +1562,7 @@ klasse CookieJar:
                 pass
             _debug("Expiring cookie, domain='%s', path='%s', name='%s'",
                    domain, path, name)
-            return None
+            return Nichts
 
         return Cookie(version,
                       name, value,
@@ -1586,12 +1586,12 @@ klasse CookieJar:
         return cookies
 
     def _process_rfc2109_cookies(self, cookies):
-        rfc2109_as_ns = getattr(self._policy, 'rfc2109_as_netscape', None)
-        wenn rfc2109_as_ns is None:
+        rfc2109_as_ns = getattr(self._policy, 'rfc2109_as_netscape', Nichts)
+        wenn rfc2109_as_ns is Nichts:
             rfc2109_as_ns = not self._policy.rfc2965
         fuer cookie in cookies:
             wenn cookie.version == 1:
-                cookie.rfc2109 = True
+                cookie.rfc2109 = Wahr
                 wenn rfc2109_as_ns:
                     # treat 2109 cookies as Netscape cookies rather than
                     # as RFC2965 cookies
@@ -1640,7 +1640,7 @@ klasse CookieJar:
             wenn rfc2965:
                 lookup = {}
                 fuer cookie in cookies:
-                    lookup[(cookie.domain, cookie.path, cookie.name)] = None
+                    lookup[(cookie.domain, cookie.path, cookie.name)] = Nichts
 
                 def no_matching_rfc2965(ns_cookie, lookup=lookup):
                     key = ns_cookie.domain, ns_cookie.path, ns_cookie.name
@@ -1690,7 +1690,7 @@ klasse CookieJar:
         finally:
             self._cookies_lock.release()
 
-    def clear(self, domain=None, path=None, name=None):
+    def clear(self, domain=Nichts, path=Nichts, name=Nichts):
         """Clear some cookies.
 
         Invoking this method without arguments will clear all cookies.  If
@@ -1702,17 +1702,17 @@ klasse CookieJar:
         Raises KeyError wenn no matching cookie exists.
 
         """
-        wenn name is not None:
-            wenn (domain is None) or (path is None):
+        wenn name is not Nichts:
+            wenn (domain is Nichts) or (path is Nichts):
                 raise ValueError(
                     "domain and path must be given to remove a cookie by name")
             del self._cookies[domain][path][name]
-        sowenn path is not None:
-            wenn domain is None:
+        sowenn path is not Nichts:
+            wenn domain is Nichts:
                 raise ValueError(
                     "domain must be given to remove cookies by path")
             del self._cookies[domain][path]
-        sowenn domain is not None:
+        sowenn domain is not Nichts:
             del self._cookies[domain]
         sonst:
             self._cookies = {}
@@ -1777,41 +1777,41 @@ klasse LoadError(OSError): pass
 klasse FileCookieJar(CookieJar):
     """CookieJar that can be loaded from and saved to a file."""
 
-    def __init__(self, filename=None, delayload=False, policy=None):
+    def __init__(self, filename=Nichts, delayload=Falsch, policy=Nichts):
         """
         Cookies are NOT loaded from the named file until either the .load() or
         .revert() method is called.
 
         """
         CookieJar.__init__(self, policy)
-        wenn filename is not None:
+        wenn filename is not Nichts:
             filename = os.fspath(filename)
         self.filename = filename
         self.delayload = bool(delayload)
 
-    def save(self, filename=None, ignore_discard=False, ignore_expires=False):
+    def save(self, filename=Nichts, ignore_discard=Falsch, ignore_expires=Falsch):
         """Save cookies to a file."""
         raise NotImplementedError()
 
-    def load(self, filename=None, ignore_discard=False, ignore_expires=False):
+    def load(self, filename=Nichts, ignore_discard=Falsch, ignore_expires=Falsch):
         """Load cookies from a file."""
-        wenn filename is None:
-            wenn self.filename is not None: filename = self.filename
+        wenn filename is Nichts:
+            wenn self.filename is not Nichts: filename = self.filename
             sonst: raise ValueError(MISSING_FILENAME_TEXT)
 
         with open(filename) as f:
             self._really_load(f, filename, ignore_discard, ignore_expires)
 
-    def revert(self, filename=None,
-               ignore_discard=False, ignore_expires=False):
+    def revert(self, filename=Nichts,
+               ignore_discard=Falsch, ignore_expires=Falsch):
         """Clear all cookies and reload cookies from a saved file.
 
         Raises LoadError (or OSError) wenn reversion is not successful; the
         object's state will not be altered wenn this happens.
 
         """
-        wenn filename is None:
-            wenn self.filename is not None: filename = self.filename
+        wenn filename is Nichts:
+            wenn self.filename is not Nichts: filename = self.filename
             sonst: raise ValueError(MISSING_FILENAME_TEXT)
 
         self._cookies_lock.acquire()
@@ -1838,14 +1838,14 @@ def lwp_cookie_str(cookie):
     h = [(cookie.name, cookie.value),
          ("path", cookie.path),
          ("domain", cookie.domain)]
-    wenn cookie.port is not None: h.append(("port", cookie.port))
-    wenn cookie.path_specified: h.append(("path_spec", None))
-    wenn cookie.port_specified: h.append(("port_spec", None))
-    wenn cookie.domain_initial_dot: h.append(("domain_dot", None))
-    wenn cookie.secure: h.append(("secure", None))
+    wenn cookie.port is not Nichts: h.append(("port", cookie.port))
+    wenn cookie.path_specified: h.append(("path_spec", Nichts))
+    wenn cookie.port_specified: h.append(("port_spec", Nichts))
+    wenn cookie.domain_initial_dot: h.append(("domain_dot", Nichts))
+    wenn cookie.secure: h.append(("secure", Nichts))
     wenn cookie.expires: h.append(("expires",
                                time2isoz(float(cookie.expires))))
-    wenn cookie.discard: h.append(("discard", None))
+    wenn cookie.discard: h.append(("discard", Nichts))
     wenn cookie.comment: h.append(("comment", cookie.comment))
     wenn cookie.comment_url: h.append(("commenturl", cookie.comment_url))
 
@@ -1866,11 +1866,11 @@ klasse LWPCookieJar(FileCookieJar):
 
     Additional methods
 
-    as_lwp_str(ignore_discard=True, ignore_expired=True)
+    as_lwp_str(ignore_discard=Wahr, ignore_expired=Wahr)
 
     """
 
-    def as_lwp_str(self, ignore_discard=True, ignore_expires=True):
+    def as_lwp_str(self, ignore_discard=Wahr, ignore_expires=Wahr):
         """Return cookies as a string of "\\n"-separated "Set-Cookie3" headers.
 
         ignore_discard and ignore_expires: see docstring fuer FileCookieJar.save
@@ -1886,9 +1886,9 @@ klasse LWPCookieJar(FileCookieJar):
             r.append("Set-Cookie3: %s" % lwp_cookie_str(cookie))
         return "\n".join(r+[""])
 
-    def save(self, filename=None, ignore_discard=False, ignore_expires=False):
-        wenn filename is None:
-            wenn self.filename is not None: filename = self.filename
+    def save(self, filename=Nichts, ignore_discard=Falsch, ignore_expires=Falsch):
+        wenn filename is Nichts:
+            wenn self.filename is not Nichts: filename = self.filename
             sonst: raise ValueError(MISSING_FILENAME_TEXT)
 
         with os.fdopen(
@@ -1929,17 +1929,17 @@ klasse LWPCookieJar(FileCookieJar):
                     standard = {}
                     rest = {}
                     fuer k in boolean_attrs:
-                        standard[k] = False
+                        standard[k] = Falsch
                     fuer k, v in data[1:]:
-                        wenn k is not None:
+                        wenn k is not Nichts:
                             lc = k.lower()
                         sonst:
-                            lc = None
+                            lc = Nichts
                         # don't lose case distinction fuer unknown fields
                         wenn (lc in value_attrs) or (lc in boolean_attrs):
                             k = lc
                         wenn k in boolean_attrs:
-                            wenn v is None: v = True
+                            wenn v is Nichts: v = Wahr
                             standard[k] = v
                         sowenn k in value_attrs:
                             standard[k] = v
@@ -1949,10 +1949,10 @@ klasse LWPCookieJar(FileCookieJar):
                     h = standard.get
                     expires = h("expires")
                     discard = h("discard")
-                    wenn expires is not None:
+                    wenn expires is not Nichts:
                         expires = iso2time(expires)
-                    wenn expires is None:
-                        discard = True
+                    wenn expires is Nichts:
+                        discard = Wahr
                     domain = h("domain")
                     domain_specified = domain.startswith(".")
                     c = Cookie(h("version"), name, value,
@@ -2046,26 +2046,26 @@ klasse MozillaCookieJar(FileCookieJar):
                     # with no name, whereas http.cookiejar regards it as a
                     # cookie with no value.
                     name = value
-                    value = None
+                    value = Nichts
 
                 initial_dot = domain.startswith(".")
                 assert domain_specified == initial_dot
 
-                discard = False
+                discard = Falsch
                 wenn expires == "":
-                    expires = None
-                    discard = True
+                    expires = Nichts
+                    discard = Wahr
 
                 # assume path_specified is false
                 c = Cookie(0, name, value,
-                           None, False,
+                           Nichts, Falsch,
                            domain, domain_specified, initial_dot,
-                           path, False,
+                           path, Falsch,
                            secure,
                            expires,
                            discard,
-                           None,
-                           None,
+                           Nichts,
+                           Nichts,
                            rest)
                 wenn not ignore_discard and c.discard:
                     continue
@@ -2080,9 +2080,9 @@ klasse MozillaCookieJar(FileCookieJar):
             raise LoadError("invalid Netscape format cookies file %r: %r" %
                             (filename, line))
 
-    def save(self, filename=None, ignore_discard=False, ignore_expires=False):
-        wenn filename is None:
-            wenn self.filename is not None: filename = self.filename
+    def save(self, filename=Nichts, ignore_discard=Falsch, ignore_expires=Falsch):
+        wenn filename is Nichts:
+            wenn self.filename is not Nichts: filename = self.filename
             sonst: raise ValueError(MISSING_FILENAME_TEXT)
 
         with os.fdopen(
@@ -2101,11 +2101,11 @@ klasse MozillaCookieJar(FileCookieJar):
                 sonst: secure = "FALSE"
                 wenn domain.startswith("."): initial_dot = "TRUE"
                 sonst: initial_dot = "FALSE"
-                wenn cookie.expires is not None:
+                wenn cookie.expires is not Nichts:
                     expires = str(cookie.expires)
                 sonst:
                     expires = ""
-                wenn cookie.value is None:
+                wenn cookie.value is Nichts:
                     # cookies.txt regards 'Set-Cookie: foo' as a cookie
                     # with no name, whereas http.cookiejar regards it as a
                     # cookie with no value.

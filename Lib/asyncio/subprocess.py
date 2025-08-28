@@ -21,19 +21,19 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
     def __init__(self, limit, loop):
         super().__init__(loop=loop)
         self._limit = limit
-        self.stdin = self.stdout = self.stderr = None
-        self._transport = None
-        self._process_exited = False
+        self.stdin = self.stdout = self.stderr = Nichts
+        self._transport = Nichts
+        self._process_exited = Falsch
         self._pipe_fds = []
         self._stdin_closed = self._loop.create_future()
 
     def __repr__(self):
         info = [self.__class__.__name__]
-        wenn self.stdin is not None:
+        wenn self.stdin is not Nichts:
             info.append(f'stdin={self.stdin!r}')
-        wenn self.stdout is not None:
+        wenn self.stdout is not Nichts:
             info.append(f'stdout={self.stdout!r}')
-        wenn self.stderr is not None:
+        wenn self.stderr is not Nichts:
             info.append(f'stderr={self.stderr!r}')
         return '<{}>'.format(' '.join(info))
 
@@ -41,24 +41,24 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
         self._transport = transport
 
         stdout_transport = transport.get_pipe_transport(1)
-        wenn stdout_transport is not None:
+        wenn stdout_transport is not Nichts:
             self.stdout = streams.StreamReader(limit=self._limit,
                                                loop=self._loop)
             self.stdout.set_transport(stdout_transport)
             self._pipe_fds.append(1)
 
         stderr_transport = transport.get_pipe_transport(2)
-        wenn stderr_transport is not None:
+        wenn stderr_transport is not Nichts:
             self.stderr = streams.StreamReader(limit=self._limit,
                                                loop=self._loop)
             self.stderr.set_transport(stderr_transport)
             self._pipe_fds.append(2)
 
         stdin_transport = transport.get_pipe_transport(0)
-        wenn stdin_transport is not None:
+        wenn stdin_transport is not Nichts:
             self.stdin = streams.StreamWriter(stdin_transport,
                                               protocol=self,
-                                              reader=None,
+                                              reader=Nichts,
                                               loop=self._loop)
 
     def pipe_data_received(self, fd, data):
@@ -67,32 +67,32 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
         sowenn fd == 2:
             reader = self.stderr
         sonst:
-            reader = None
-        wenn reader is not None:
+            reader = Nichts
+        wenn reader is not Nichts:
             reader.feed_data(data)
 
     def pipe_connection_lost(self, fd, exc):
         wenn fd == 0:
             pipe = self.stdin
-            wenn pipe is not None:
+            wenn pipe is not Nichts:
                 pipe.close()
             self.connection_lost(exc)
-            wenn exc is None:
-                self._stdin_closed.set_result(None)
+            wenn exc is Nichts:
+                self._stdin_closed.set_result(Nichts)
             sonst:
                 self._stdin_closed.set_exception(exc)
                 # Since calling `wait_closed()` is not mandatory,
                 # we shouldn't log the traceback wenn this is not awaited.
-                self._stdin_closed._log_traceback = False
+                self._stdin_closed._log_traceback = Falsch
             return
         wenn fd == 1:
             reader = self.stdout
         sowenn fd == 2:
             reader = self.stderr
         sonst:
-            reader = None
-        wenn reader is not None:
-            wenn exc is None:
+            reader = Nichts
+        wenn reader is not Nichts:
+            wenn exc is Nichts:
                 reader.feed_eof()
             sonst:
                 reader.set_exception(exc)
@@ -102,13 +102,13 @@ klasse SubprocessStreamProtocol(streams.FlowControlMixin,
         self._maybe_close_transport()
 
     def process_exited(self):
-        self._process_exited = True
+        self._process_exited = Wahr
         self._maybe_close_transport()
 
     def _maybe_close_transport(self):
         wenn len(self._pipe_fds) == 0 and self._process_exited:
             self._transport.close()
-            self._transport = None
+            self._transport = Nichts
 
     def _get_close_waiter(self, stream):
         wenn stream is self.stdin:
@@ -148,7 +148,7 @@ klasse Process:
     async def _feed_stdin(self, input):
         debug = self._loop.get_debug()
         try:
-            wenn input is not None:
+            wenn input is not Nichts:
                 self.stdin.write(input)
                 wenn debug:
                     logger.debug(
@@ -166,7 +166,7 @@ klasse Process:
         self.stdin.close()
 
     async def _noop(self):
-        return None
+        return Nichts
 
     async def _read_stream(self, fd):
         transport = self._transport.get_pipe_transport(fd)
@@ -185,16 +185,16 @@ klasse Process:
         transport.close()
         return output
 
-    async def communicate(self, input=None):
-        wenn self.stdin is not None:
+    async def communicate(self, input=Nichts):
+        wenn self.stdin is not Nichts:
             stdin = self._feed_stdin(input)
         sonst:
             stdin = self._noop()
-        wenn self.stdout is not None:
+        wenn self.stdout is not Nichts:
             stdout = self._read_stream(1)
         sonst:
             stdout = self._noop()
-        wenn self.stderr is not None:
+        wenn self.stderr is not Nichts:
             stderr = self._read_stream(2)
         sonst:
             stderr = self._noop()
@@ -203,7 +203,7 @@ klasse Process:
         return (stdout, stderr)
 
 
-async def create_subprocess_shell(cmd, stdin=None, stdout=None, stderr=None,
+async def create_subprocess_shell(cmd, stdin=Nichts, stdout=Nichts, stderr=Nichts,
                                   limit=streams._DEFAULT_LIMIT, **kwds):
     loop = events.get_running_loop()
     protocol_factory = lambda: SubprocessStreamProtocol(limit=limit,
@@ -215,8 +215,8 @@ async def create_subprocess_shell(cmd, stdin=None, stdout=None, stderr=None,
     return Process(transport, protocol, loop)
 
 
-async def create_subprocess_exec(program, *args, stdin=None, stdout=None,
-                                 stderr=None, limit=streams._DEFAULT_LIMIT,
+async def create_subprocess_exec(program, *args, stdin=Nichts, stdout=Nichts,
+                                 stderr=Nichts, limit=streams._DEFAULT_LIMIT,
                                  **kwds):
     loop = events.get_running_loop()
     protocol_factory = lambda: SubprocessStreamProtocol(limit=limit,

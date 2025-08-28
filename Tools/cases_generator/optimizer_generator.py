@@ -32,7 +32,7 @@ DEFAULT_OUTPUT = ROOT / "Python/optimizer_cases.c.h"
 DEFAULT_ABSTRACT_INPUT = (ROOT / "Python/optimizer_bytecodes.c").absolute().as_posix()
 
 
-def validate_uop(override: Uop, uop: Uop) -> None:
+def validate_uop(override: Uop, uop: Uop) -> Nichts:
     """
     Check that the overridden uop (defined in 'optimizer_bytecodes.c')
     has the same stack effects as the original uop (defined in 'bytecodes.c').
@@ -55,7 +55,7 @@ def validate_uop(override: Uop, uop: Uop) -> None:
             )
             raise analysis_error(msg, override.body.open)
 
-        fuer orig, new in zip(orig_effects, new_effects, strict=True):
+        fuer orig, new in zip(orig_effects, new_effects, strict=Wahr):
             wenn orig.name != new.name and orig.name != "unused" and new.name != "unused":
                 msg = (
                     f"{uop.name}: {stack_effect.capitalize()} must have "
@@ -82,7 +82,7 @@ def stackref_type_name(var: StackItem) -> str:
     assert not var.is_array(), "Unsafe to convert a symbol to an array-like StackRef."
     return "_PyStackRef "
 
-def declare_variables(uop: Uop, out: CWriter, skip_inputs: bool) -> None:
+def declare_variables(uop: Uop, out: CWriter, skip_inputs: bool) -> Nichts:
     variables = {"unused"}
     wenn not skip_inputs:
         fuer var in reversed(uop.stack.inputs):
@@ -103,15 +103,15 @@ def decref_inputs(
     tkn_iter: TokenIterator,
     uop: Uop,
     stack: Stack,
-    inst: Instruction | None,
-) -> None:
+    inst: Instruction | Nichts,
+) -> Nichts:
     next(tkn_iter)
     next(tkn_iter)
     next(tkn_iter)
     out.emit_at("", tkn)
 
 
-def emit_default(out: CWriter, uop: Uop, stack: Stack) -> None:
+def emit_default(out: CWriter, uop: Uop, stack: Stack) -> Nichts:
     null = CWriter.null()
     fuer var in reversed(uop.stack.inputs):
         stack.pop(var, null)
@@ -125,7 +125,7 @@ def emit_default(out: CWriter, uop: Uop, stack: Stack) -> None:
         local = Local.undefined(var)
         stack.push(local)
         wenn var.name != "unused" and not var.peek:
-            local.in_local = True
+            local.in_local = Wahr
             wenn var.is_array():
                 wenn var.size == "1":
                     out.emit(f"{var.name}[0] = sym_new_not_null(ctx);\n")
@@ -147,13 +147,13 @@ klasse OptimizerEmitter(Emitter):
         self.original_uop = original_uop
         self.stack = stack
 
-    def emit_save(self, storage: Storage) -> None:
+    def emit_save(self, storage: Storage) -> Nichts:
         storage.flush(self.out)
 
-    def emit_reload(self, storage: Storage) -> None:
+    def emit_reload(self, storage: Storage) -> Nichts:
         pass
 
-    def goto_label(self, goto: Token, label: Token, storage: Storage) -> None:
+    def goto_label(self, goto: Token, label: Token, storage: Storage) -> Nichts:
         self.out.emit(goto)
         self.out.emit(label)
 
@@ -163,7 +163,7 @@ klasse OptimizerEmitter(Emitter):
         tkn_iter: TokenIterator,
         uop: CodeSection,
         storage: Storage,
-        inst: Instruction | None,
+        inst: Instruction | Nichts,
     ) -> bool:
         assert isinstance(uop, Uop)
         input_identifiers = []
@@ -216,12 +216,12 @@ klasse OptimizerEmitter(Emitter):
             emitter.emit(f"_PyStackRef {outp.name}_stackref;\n")
 
 
-        storage = Storage.for_uop(self.stack, self.original_uop, CWriter.null(), check_liveness=False)
+        storage = Storage.for_uop(self.stack, self.original_uop, CWriter.null(), check_liveness=Falsch)
         # No reference management of outputs needed.
         fuer var in storage.outputs:
-            var.in_local = True
+            var.in_local = Wahr
         emitter.emit("/* Start of uop copied from bytecodes fuer constant evaluation */\n")
-        emitter.emit_tokens(self.original_uop, storage, inst=None, emit_braces=False)
+        emitter.emit_tokens(self.original_uop, storage, inst=Nichts, emit_braces=Falsch)
         self.out.start_line()
         emitter.emit("/* End of uop copied from bytecodes fuer constant evaluation */\n")
         # Finally, assign back the output stackrefs to symbolics.
@@ -248,7 +248,7 @@ klasse OptimizerEmitter(Emitter):
         storage.flush(self.out)
         emitter.emit("break;\n")
         emitter.emit("}\n")
-        return True
+        return Wahr
 
 klasse OptimizerConstantEmitter(OptimizerEmitter):
     def __init__(self, out: CWriter, labels: dict[str, Label], original_uop: Uop, stack: Stack):
@@ -258,7 +258,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
             outp.name: self.emit_stackref_override fuer outp in self.original_uop.stack.outputs
         }
         self._replacers = {**self._replacers, **overrides}
-        self.cannot_escape = True
+        self.cannot_escape = Wahr
 
     def emit_to_with_replacement(
         self,
@@ -267,7 +267,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         end: str,
         uop: CodeSection,
         storage: Storage,
-        inst: Instruction | None
+        inst: Instruction | Nichts
     ) -> Token:
         parens = 0
         fuer tkn in tkn_iter:
@@ -289,11 +289,11 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         tkn_iter: TokenIterator,
         uop: CodeSection,
         storage: Storage,
-        inst: Instruction | None,
+        inst: Instruction | Nichts,
     ) -> bool:
         self.out.emit(tkn)
         self.out.emit("_stackref ")
-        return True
+        return Wahr
 
     def deopt_if(
         self,
@@ -301,7 +301,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         tkn_iter: TokenIterator,
         uop: CodeSection,
         storage: Storage,
-        inst: Instruction | None,
+        inst: Instruction | Nichts,
     ) -> bool:
         self.out.start_line()
         self.out.emit("if (")
@@ -326,7 +326,7 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
         tkn_iter: TokenIterator,
         uop: CodeSection,
         storage: Storage,
-        inst: Instruction | None,
+        inst: Instruction | Nichts,
     ) -> bool:
         lparen = next(tkn_iter)
         assert lparen.kind == "LPAREN"
@@ -351,19 +351,19 @@ klasse OptimizerConstantEmitter(OptimizerEmitter):
 
 
 def write_uop(
-    override: Uop | None,
+    override: Uop | Nichts,
     uop: Uop,
     out: CWriter,
     stack: Stack,
     debug: bool,
     skip_inputs: bool,
-) -> None:
+) -> Nichts:
     locals: dict[str, Local] = {}
     prototype = override wenn override sonst uop
     try:
         out.start_line()
         wenn override:
-            storage = Storage.for_uop(stack, prototype, out, check_liveness=False)
+            storage = Storage.for_uop(stack, prototype, out, check_liveness=Falsch)
         wenn debug:
             args = []
             fuer input in prototype.stack.inputs:
@@ -383,8 +383,8 @@ def write_uop(
             emitter = OptimizerEmitter(out, {}, uop, stack.copy())
             # No reference management of inputs needed.
             fuer var in storage.inputs:  # type: ignore[possibly-undefined]
-                var.in_local = False
-            _, storage = emitter.emit_tokens(override, storage, None, False)
+                var.in_local = Falsch
+            _, storage = emitter.emit_tokens(override, storage, Nichts, Falsch)
             out.start_line()
             storage.flush(out)
             out.start_line()
@@ -393,7 +393,7 @@ def write_uop(
             out.start_line()
             stack.flush(out)
     except StackError as ex:
-        raise analysis_error(ex.args[0], prototype.body.open) # from None
+        raise analysis_error(ex.args[0], prototype.body.open) # from Nichts
 
 
 SKIPS = ("_EXTENDED_ARG",)
@@ -405,9 +405,9 @@ def generate_abstract_interpreter(
     base: Analysis,
     outfile: TextIO,
     debug: bool,
-) -> None:
+) -> Nichts:
     write_header(__file__, filenames, outfile)
-    out = CWriter(outfile, 2, False)
+    out = CWriter(outfile, 2, Falsch)
     out.emit("\n")
     base_uop_names = set([uop.name fuer uop in base.uops.values()])
     fuer abstract_uop_name in abstract.uops:
@@ -416,7 +416,7 @@ def generate_abstract_interpreter(
                                  "but {abstract_uop_name} is not.")
 
     fuer uop in base.uops.values():
-        override: Uop | None = None
+        override: Uop | Nichts = Nichts
         wenn uop.name in abstract.uops:
             override = abstract.uops[uop.name]
             validate_uop(override, uop)
@@ -431,11 +431,11 @@ def generate_abstract_interpreter(
             continue
         out.emit(f"case {uop.name}: {{\n")
         wenn override:
-            declare_variables(override, out, skip_inputs=False)
+            declare_variables(override, out, skip_inputs=Falsch)
         sonst:
-            declare_variables(uop, out, skip_inputs=True)
+            declare_variables(uop, out, skip_inputs=Wahr)
         stack = Stack()
-        write_uop(override, uop, out, stack, debug, skip_inputs=(override is None))
+        write_uop(override, uop, out, stack, debug, skip_inputs=(override is Nichts))
         out.start_line()
         out.emit("break;\n")
         out.emit("}")
@@ -443,8 +443,8 @@ def generate_abstract_interpreter(
 
 
 def generate_tier2_abstract_from_files(
-    filenames: list[str], outfilename: str, debug: bool = False
-) -> None:
+    filenames: list[str], outfilename: str, debug: bool = Falsch
+) -> Nichts:
     assert len(filenames) == 2, "Need a base file and an abstract cases file."
     base = analyze_files([filenames[0]])
     abstract = analyze_files([filenames[1]])

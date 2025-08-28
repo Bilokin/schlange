@@ -45,7 +45,7 @@ benchmarks = [
 #            This is an arbitrary Python expression; the available
 #            variables are "found" (the whole match), and "g1", "g2", ...
 #            up to "g99" contain the contents of each group, or the
-#            string 'None' wenn the group wasn't given a value, or the
+#            string 'Nichts' wenn the group wasn't given a value, or the
 #            string 'Error' wenn the group index was out of range;
 #            also "groups", the return value of m.group() (a tuple).
 #         4: The expected result of evaluating the expression.
@@ -221,12 +221,12 @@ tests = [
     ('(ab|a)b*c', 'abc', SUCCEED, 'found+"-"+g1', 'abc-ab'),
     ('((a)(b)c)(d)', 'abcd', SUCCEED, 'g1+"-"+g2+"-"+g3+"-"+g4', 'abc-a-b-d'),
     ('[a-zA-Z_][a-zA-Z0-9_]*', 'alpha', SUCCEED, 'found', 'alpha'),
-    ('^a(bc+|b[eh])g|.h$', 'abh', SUCCEED, 'found+"-"+g1', 'bh-None'),
-    ('(bc+d$|ef*g.|h?i(j|k))', 'effgz', SUCCEED, 'found+"-"+g1+"-"+g2', 'effgz-effgz-None'),
+    ('^a(bc+|b[eh])g|.h$', 'abh', SUCCEED, 'found+"-"+g1', 'bh-Nichts'),
+    ('(bc+d$|ef*g.|h?i(j|k))', 'effgz', SUCCEED, 'found+"-"+g1+"-"+g2', 'effgz-effgz-Nichts'),
     ('(bc+d$|ef*g.|h?i(j|k))', 'ij', SUCCEED, 'found+"-"+g1+"-"+g2', 'ij-ij-j'),
     ('(bc+d$|ef*g.|h?i(j|k))', 'effg', FAIL),
     ('(bc+d$|ef*g.|h?i(j|k))', 'bcdd', FAIL),
-    ('(bc+d$|ef*g.|h?i(j|k))', 'reffgz', SUCCEED, 'found+"-"+g1+"-"+g2', 'effgz-effgz-None'),
+    ('(bc+d$|ef*g.|h?i(j|k))', 'reffgz', SUCCEED, 'found+"-"+g1+"-"+g2', 'effgz-effgz-Nichts'),
     ('(((((((((a)))))))))', 'a', SUCCEED, 'found', 'a'),
     ('multiple words of text', 'uh-uh', FAIL),
     ('multiple words', 'multiple words, yeah', SUCCEED, 'found', 'multiple words'),
@@ -250,7 +250,7 @@ tests = [
     ('(a|aa)a\\1$', 'aaa', SUCCEED, 'found+"-"+g1', 'aaa-a'),
     ('(a+)a\\1$', 'aaa', SUCCEED, 'found+"-"+g1', 'aaa-a'),
     ('([abc]*)\\1', 'abcabc', SUCCEED, 'found+"-"+g1', 'abcabc-abc'),
-    ('(a)(b)c|ab', 'ab', SUCCEED, 'found+"-"+g1+"-"+g2', 'ab-None-None'),
+    ('(a)(b)c|ab', 'ab', SUCCEED, 'found+"-"+g1+"-"+g2', 'ab-Nichts-Nichts'),
     ('(a)+x', 'aaax', SUCCEED, 'found+"-"+g1', 'aaax-a'),
     ('([ac])+x', 'aacx', SUCCEED, 'found+"-"+g1', 'aacx-c'),
     ('([^/]*/)*sub1/', 'd:msgs/tdir/sub1/trial/away.cpp', SUCCEED, 'found+"-"+g1', 'd:msgs/tdir/sub1/-tdir/'),
@@ -260,7 +260,7 @@ tests = [
     ('([abc]*)x', 'abcx', SUCCEED, 'found+"-"+g1', 'abcx-abc'),
     ('([abc]*)x', 'abc', FAIL),
     ('([xyz]*)x', 'abcx', SUCCEED, 'found+"-"+g1', 'x-'),
-    ('(a)+b|aac', 'aac', SUCCEED, 'found+"-"+g1', 'aac-None'),
+    ('(a)+b|aac', 'aac', SUCCEED, 'found+"-"+g1', 'aac-Nichts'),
 
     # Test symbolic groups
 
@@ -387,7 +387,7 @@ tests = [
     ('(?i)(a+|b){1,}', 'AB', SUCCEED, 'found+"-"+g1', 'AB-B'),
     ('(?i)(a+|b)?', 'AB', SUCCEED, 'found+"-"+g1', 'A-A'),
     ('(?i)(a+|b){0,1}', 'AB', SUCCEED, 'found+"-"+g1', 'A-A'),
-    ('(?i)(a+|b){0,1}?', 'AB', SUCCEED, 'found+"-"+g1', '-None'),
+    ('(?i)(a+|b){0,1}?', 'AB', SUCCEED, 'found+"-"+g1', '-Nichts'),
     ('(?i))(', '-', SYNTAX_ERROR),
     ('(?i)[^ab]*', 'CDE', SUCCEED, 'found', 'CDE'),
     ('(?i)abc', '', FAIL),
@@ -414,12 +414,12 @@ tests = [
     ('(?i)(ab|a)b*c', 'ABC', SUCCEED, 'found+"-"+g1', 'ABC-AB'),
     ('(?i)((a)(b)c)(d)', 'ABCD', SUCCEED, 'g1+"-"+g2+"-"+g3+"-"+g4', 'ABC-A-B-D'),
     ('(?i)[a-zA-Z_][a-zA-Z0-9_]*', 'ALPHA', SUCCEED, 'found', 'ALPHA'),
-    ('(?i)^a(bc+|b[eh])g|.h$', 'ABH', SUCCEED, 'found+"-"+g1', 'BH-None'),
-    ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'EFFGZ', SUCCEED, 'found+"-"+g1+"-"+g2', 'EFFGZ-EFFGZ-None'),
+    ('(?i)^a(bc+|b[eh])g|.h$', 'ABH', SUCCEED, 'found+"-"+g1', 'BH-Nichts'),
+    ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'EFFGZ', SUCCEED, 'found+"-"+g1+"-"+g2', 'EFFGZ-EFFGZ-Nichts'),
     ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'IJ', SUCCEED, 'found+"-"+g1+"-"+g2', 'IJ-IJ-J'),
     ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'EFFG', FAIL),
     ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'BCDD', FAIL),
-    ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'REFFGZ', SUCCEED, 'found+"-"+g1+"-"+g2', 'EFFGZ-EFFGZ-None'),
+    ('(?i)(bc+d$|ef*g.|h?i(j|k))', 'REFFGZ', SUCCEED, 'found+"-"+g1+"-"+g2', 'EFFGZ-EFFGZ-Nichts'),
     ('(?i)((((((((((a))))))))))', 'A', SUCCEED, 'g10', 'A'),
     ('(?i)((((((((((a))))))))))\\10', 'AA', SUCCEED, 'found', 'AA'),
     #('(?i)((((((((((a))))))))))\\41', 'AA', FAIL),
@@ -510,7 +510,7 @@ xyzabc
     # post-1.5.2 additions
 
     # xmllib problem
-    (r'(([a-z]+):)?([a-z]+)$', 'smil', SUCCEED, 'g1+"-"+g2+"-"+g3', 'None-None-smil'),
+    (r'(([a-z]+):)?([a-z]+)$', 'smil', SUCCEED, 'g1+"-"+g2+"-"+g3', 'Nichts-Nichts-smil'),
     # bug 110866: reference to undefined group
     (r'((.)\1+)', '', SYNTAX_ERROR),
     # bug 111869: search (PRE/PCRE fails on this one, SRE doesn't)
@@ -548,11 +548,11 @@ xyzabc
     # bug 490573: minimizing repeat problem
     (r'^a*?$', 'foo', FAIL),
     # bug 470582: nested groups problem
-    (r'^((a)c)?(ab)$', 'ab', SUCCEED, 'g1+"-"+g2+"-"+g3', 'None-None-ab'),
+    (r'^((a)c)?(ab)$', 'ab', SUCCEED, 'g1+"-"+g2+"-"+g3', 'Nichts-Nichts-ab'),
     # another minimizing repeat problem (capturing groups in assertions)
-    ('^([ab]*?)(?=(b)?)c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-None'),
-    ('^([ab]*?)(?!(b))c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-None'),
-    ('^([ab]*?)(?<!(a))c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-None'),
+    ('^([ab]*?)(?=(b)?)c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-Nichts'),
+    ('^([ab]*?)(?!(b))c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-Nichts'),
+    ('^([ab]*?)(?<!(a))c', 'abc', SUCCEED, 'g1+"-"+g2', 'ab-Nichts'),
 ]
 
 u = '\N{LATIN CAPITAL LETTER A WITH DIAERESIS}'

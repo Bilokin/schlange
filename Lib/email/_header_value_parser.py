@@ -124,9 +124,9 @@ rfc2047_matcher = re.compile(r'''
 
 klasse TokenList(list):
 
-    token_type = None
-    syntactic_break = True
-    ew_combine_allowed = True
+    token_type = Nichts
+    syntactic_break = Wahr
+    ew_combine_allowed = Wahr
 
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
@@ -152,7 +152,7 @@ klasse TokenList(list):
 
     @property
     def as_ew_allowed(self):
-        """True wenn all top level tokens of this part may be RFC2047 encoded."""
+        """Wahr wenn all top level tokens of this part may be RFC2047 encoded."""
         return all(part.as_ew_allowed fuer part in self)
 
     @property
@@ -221,14 +221,14 @@ klasse Atom(TokenList):
 
 klasse Token(TokenList):
     token_type = 'token'
-    encode_as_ew = False
+    encode_as_ew = Falsch
 
 
 klasse EncodedWord(TokenList):
     token_type = 'encoded-word'
-    cte = None
-    charset = None
-    lang = None
+    cte = Nichts
+    charset = Nichts
+    lang = Nichts
 
 
 klasse QuotedString(TokenList):
@@ -399,7 +399,7 @@ klasse NameAddr(TokenList):
     @property
     def display_name(self):
         wenn len(self) == 1:
-            return None
+            return Nichts
         return self[0].display_name
 
     @property
@@ -495,7 +495,7 @@ klasse InvalidMailbox(TokenList):
 
     @property
     def display_name(self):
-        return None
+        return Nichts
 
     local_part = domain = route = addr_spec = display_name
 
@@ -503,7 +503,7 @@ klasse InvalidMailbox(TokenList):
 klasse Domain(TokenList):
 
     token_type = 'domain'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
 
     @property
     def domain(self):
@@ -516,18 +516,18 @@ klasse DotAtom(TokenList):
 
 klasse DotAtomText(TokenList):
     token_type = 'dot-atom-text'
-    as_ew_allowed = True
+    as_ew_allowed = Wahr
 
 
 klasse NoFoldLiteral(TokenList):
     token_type = 'no-fold-literal'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
 
 
 klasse AddrSpec(TokenList):
 
     token_type = 'addr-spec'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
 
     @property
     def local_part(self):
@@ -536,7 +536,7 @@ klasse AddrSpec(TokenList):
     @property
     def domain(self):
         wenn len(self) < 3:
-            return None
+            return Nichts
         return self[-1].domain
 
     @property
@@ -552,7 +552,7 @@ klasse AddrSpec(TokenList):
             lp = quote_string(self.local_part)
         sonst:
             lp = self.local_part
-        wenn self.domain is not None:
+        wenn self.domain is not Nichts:
             return lp + '@' + self.domain
         return lp
 
@@ -560,13 +560,13 @@ klasse AddrSpec(TokenList):
 klasse ObsLocalPart(TokenList):
 
     token_type = 'obs-local-part'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
 
 
 klasse DisplayName(Phrase):
 
     token_type = 'display-name'
-    ew_combine_allowed = False
+    ew_combine_allowed = Falsch
 
     @property
     def display_name(self):
@@ -589,13 +589,13 @@ klasse DisplayName(Phrase):
 
     @property
     def value(self):
-        quote = False
+        quote = Falsch
         wenn self.defects:
-            quote = True
+            quote = Wahr
         sonst:
             fuer x in self:
                 wenn x.token_type == 'quoted-string':
-                    quote = True
+                    quote = Wahr
         wenn len(self) != 0 and quote:
             pre = post = ''
             wenn (self[0].token_type == 'cfws' or
@@ -614,7 +614,7 @@ klasse DisplayName(Phrase):
 klasse LocalPart(TokenList):
 
     token_type = 'local-part'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
 
     @property
     def value(self):
@@ -628,7 +628,7 @@ klasse LocalPart(TokenList):
         # Strip whitespace from front, back, and around dots.
         res = [DOT]
         last = DOT
-        last_is_tl = False
+        last_is_tl = Falsch
         fuer tok in self[0] + [DOT]:
             wenn tok.token_type == 'cfws':
                 continue
@@ -650,7 +650,7 @@ klasse LocalPart(TokenList):
 klasse DomainLiteral(TokenList):
 
     token_type = 'domain-literal'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
 
     @property
     def domain(self):
@@ -666,15 +666,15 @@ klasse DomainLiteral(TokenList):
 klasse MIMEVersion(TokenList):
 
     token_type = 'mime-version'
-    major = None
-    minor = None
+    major = Nichts
+    minor = Nichts
 
 
 klasse Parameter(TokenList):
 
     token_type = 'parameter'
-    sectioned = False
-    extended = False
+    sectioned = Falsch
+    extended = Falsch
     charset = 'us-ascii'
 
     @property
@@ -716,7 +716,7 @@ klasse Attribute(TokenList):
 klasse Section(TokenList):
 
     token_type = 'section'
-    number = None
+    number = Nichts
 
 
 klasse Value(TokenList):
@@ -737,7 +737,7 @@ klasse Value(TokenList):
 klasse MimeParameters(TokenList):
 
     token_type = 'mime-parameters'
-    syntactic_break = False
+    syntactic_break = Falsch
 
     @property
     def params(self):
@@ -824,7 +824,7 @@ klasse ParameterizedHeaderValue(TokenList):
 
     # Set this false so that the value doesn't wind up on a new line even
     # wenn it and the parameters would fit there but not on the first line.
-    syntactic_break = False
+    syntactic_break = Falsch
 
     @property
     def params(self):
@@ -836,31 +836,31 @@ klasse ParameterizedHeaderValue(TokenList):
 
 klasse ContentType(ParameterizedHeaderValue):
     token_type = 'content-type'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
     maintype = 'text'
     subtype = 'plain'
 
 
 klasse ContentDisposition(ParameterizedHeaderValue):
     token_type = 'content-disposition'
-    as_ew_allowed = False
-    content_disposition = None
+    as_ew_allowed = Falsch
+    content_disposition = Nichts
 
 
 klasse ContentTransferEncoding(TokenList):
     token_type = 'content-transfer-encoding'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
     cte = '7bit'
 
 
 klasse HeaderLabel(TokenList):
     token_type = 'header-label'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
 
 
 klasse MsgID(TokenList):
     token_type = 'msg-id'
-    as_ew_allowed = False
+    as_ew_allowed = Falsch
 
     def fold(self, policy):
         # message-id tokens may not be folded.
@@ -885,9 +885,9 @@ klasse Header(TokenList):
 
 klasse Terminal(str):
 
-    as_ew_allowed = True
-    ew_combine_allowed = True
-    syntactic_break = True
+    as_ew_allowed = Wahr
+    ew_combine_allowed = Wahr
+    syntactic_break = Wahr
 
     def __new__(cls, value, token_type):
         self = super().__new__(cls, value)
@@ -916,7 +916,7 @@ klasse Terminal(str):
 
     def pop_trailing_ws(self):
         # This terminates the recursion.
-        return None
+        return Nichts
 
     @property
     def comments(self):
@@ -933,7 +933,7 @@ klasse WhiteSpaceTerminal(Terminal):
         return ' '
 
     def startswith_fws(self):
-        return True
+        return Wahr
 
 
 klasse ValueTerminal(Terminal):
@@ -943,7 +943,7 @@ klasse ValueTerminal(Terminal):
         return self
 
     def startswith_fws(self):
-        return False
+        return Falsch
 
 
 klasse EWWhiteSpaceTerminal(WhiteSpaceTerminal):
@@ -965,8 +965,8 @@ klasse _InvalidEwError(errors.HeaderParseError):
 # up other parse trees.  Maybe should have  tests fuer that, too.
 DOT = ValueTerminal('.', 'dot')
 ListSeparator = ValueTerminal(',', 'list-separator')
-ListSeparator.as_ew_allowed = False
-ListSeparator.syntactic_break = False
+ListSeparator.as_ew_allowed = Falsch
+ListSeparator.syntactic_break = Falsch
 RouteComponentMarker = ValueTerminal('@', 'route-component-marker')
 
 #
@@ -1017,25 +1017,25 @@ def _get_ptext_to_endchars(value, endchars):
     This function turns a run of qcontent, ccontent-without-comments, or
     dtext-with-quoted-printables into a single string by unquoting any
     quoted printables.  It returns the string, the remaining value, and
-    a flag that is True iff there were any quoted printables decoded.
+    a flag that is Wahr iff there were any quoted printables decoded.
 
     """
     wenn not value:
-        return '', '', False
+        return '', '', Falsch
     fragment, *remainder = _wsp_splitter(value, 1)
     vchars = []
-    escape = False
-    had_qp = False
+    escape = Falsch
+    had_qp = Falsch
     fuer pos in range(len(fragment)):
         wenn fragment[pos] == '\\':
             wenn escape:
-                escape = False
-                had_qp = True
+                escape = Falsch
+                had_qp = Wahr
             sonst:
-                escape = True
+                escape = Wahr
                 continue
         wenn escape:
-            escape = False
+            escape = Falsch
         sowenn fragment[pos] in endchars:
             break
         vchars.append(fragment[pos])
@@ -1133,23 +1133,23 @@ def get_unstructured(value):
             token, value = get_fws(value)
             unstructured.append(token)
             continue
-        valid_ew = True
+        valid_ew = Wahr
         wenn value.startswith('=?'):
             try:
                 token, value = get_encoded_word(value, 'utext')
             except _InvalidEwError:
-                valid_ew = False
+                valid_ew = Falsch
             except errors.HeaderParseError:
                 # XXX: Need to figure out how to register defects when
                 # appropriate here.
                 pass
             sonst:
-                have_ws = True
+                have_ws = Wahr
                 wenn len(unstructured) > 0:
                     wenn unstructured[-1].token_type != 'fws':
                         unstructured.defects.append(errors.InvalidHeaderDefect(
                             "missing whitespace before encoded word"))
-                        have_ws = False
+                        have_ws = Falsch
                 wenn have_ws and len(unstructured) > 1:
                     wenn unstructured[-2].token_type == 'encoded-word':
                         unstructured[-1] = EWWhiteSpaceTerminal(
@@ -1238,12 +1238,12 @@ def get_bare_quoted_string(value):
         wenn value[0] in WSP:
             token, value = get_fws(value)
         sowenn value[:2] == '=?':
-            valid_ew = False
+            valid_ew = Falsch
             try:
                 token, value = get_encoded_word(value)
                 bare_quoted_string.defects.append(errors.InvalidHeaderDefect(
                     "encoded word inside quoted string"))
-                valid_ew = True
+                valid_ew = Wahr
             except errors.HeaderParseError:
                 token, value = get_qcontent(value)
             # Collapse the whitespace between two encoded words that occur in a
@@ -1408,7 +1408,7 @@ def get_word(value):
     wenn value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     sonst:
-        leader = None
+        leader = Nichts
     wenn not value:
         raise errors.HeaderParseError(
             "Expected 'atom' or 'quoted-string' but found nothing.")
@@ -1419,7 +1419,7 @@ def get_word(value):
                                       "but found '{}'".format(value))
     sonst:
         token, value = get_atom(value)
-    wenn leader is not None:
+    wenn leader is not Nichts:
         token[:0] = [leader]
     return token, value
 
@@ -1466,7 +1466,7 @@ def get_local_part(value):
 
     """
     local_part = LocalPart()
-    leader = None
+    leader = Nichts
     wenn value and value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     wenn not value:
@@ -1481,7 +1481,7 @@ def get_local_part(value):
             wenn value[0] != '\\' and value[0] in PHRASE_ENDS:
                 raise
             token = TokenList()
-    wenn leader is not None:
+    wenn leader is not Nichts:
         token[:0] = [leader]
     local_part.append(token)
     wenn value and (value[0]=='\\' or value[0] not in PHRASE_ENDS):
@@ -1504,14 +1504,14 @@ def get_obs_local_part(value):
     """ obs-local-part = word *("." word)
     """
     obs_local_part = ObsLocalPart()
-    last_non_ws_was_dot = False
+    last_non_ws_was_dot = Falsch
     while value and (value[0]=='\\' or value[0] not in PHRASE_ENDS):
         wenn value[0] == '.':
             wenn last_non_ws_was_dot:
                 obs_local_part.defects.append(errors.InvalidHeaderDefect(
                     "invalid repeated '.'"))
             obs_local_part.append(DOT)
-            last_non_ws_was_dot = True
+            last_non_ws_was_dot = Wahr
             value = value[1:]
             continue
         sowenn value[0]=='\\':
@@ -1520,14 +1520,14 @@ def get_obs_local_part(value):
             value = value[1:]
             obs_local_part.defects.append(errors.InvalidHeaderDefect(
                 "'\\' character outside of quoted-string/ccontent"))
-            last_non_ws_was_dot = False
+            last_non_ws_was_dot = Falsch
             continue
         wenn obs_local_part and obs_local_part[-1].token_type != 'dot':
             obs_local_part.defects.append(errors.InvalidHeaderDefect(
                 "missing '.' between words"))
         try:
             token, value = get_word(value)
-            last_non_ws_was_dot = False
+            last_non_ws_was_dot = Falsch
         except errors.HeaderParseError:
             wenn value[0] not in CFWS_LEADER:
                 raise
@@ -1574,11 +1574,11 @@ def get_dtext(value):
 
 def _check_for_early_dl_end(value, domain_literal):
     wenn value:
-        return False
+        return Falsch
     domain_literal.defects.append(errors.InvalidHeaderDefect(
         "end of input inside domain-literal"))
     domain_literal.append(ValueTerminal(']', 'domain-literal-end'))
-    return True
+    return Wahr
 
 def get_domain_literal(value):
     """ domain-literal = [CFWS] "[" *([FWS] dtext) [FWS] "]" [CFWS]
@@ -1625,7 +1625,7 @@ def get_domain(value):
 
     """
     domain = Domain()
-    leader = None
+    leader = Nichts
     wenn value and value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     wenn not value:
@@ -1633,7 +1633,7 @@ def get_domain(value):
             "expected domain but found '{}'".format(value))
     wenn value[0] == '[':
         token, value = get_domain_literal(value)
-        wenn leader is not None:
+        wenn leader is not Nichts:
             token[:0] = [leader]
         domain.append(token)
         return domain, value
@@ -1643,7 +1643,7 @@ def get_domain(value):
         token, value = get_atom(value)
     wenn value and value[0] == '@':
         raise errors.HeaderParseError('Invalid Domain')
-    wenn leader is not None:
+    wenn leader is not Nichts:
         token[:0] = [leader]
     domain.append(token)
     wenn value and value[0] == '.':
@@ -1783,7 +1783,7 @@ def get_name_addr(value):
     """
     name_addr = NameAddr()
     # Both the optional display name and the angle-addr can start with cfws.
-    leader = None
+    leader = Nichts
     wenn not value:
         raise errors.HeaderParseError(
             "expected name-addr but found '{}'".format(value))
@@ -1800,15 +1800,15 @@ def get_name_addr(value):
         wenn not value:
             raise errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(token))
-        wenn leader is not None:
+        wenn leader is not Nichts:
             wenn isinstance(token[0], TokenList):
                 token[0][:0] = [leader]
             sonst:
                 token[:0] = [leader]
-            leader = None
+            leader = Nichts
         name_addr.append(token)
     token, value = get_angle_addr(value)
-    wenn leader is not None:
+    wenn leader is not Nichts:
         token[:0] = [leader]
     name_addr.append(token)
     return name_addr, value
@@ -1838,7 +1838,7 @@ def get_invalid_mailbox(value, endchars):
     """ Read everything up to one of the chars in endchars.
 
     This is outside the formal grammar.  The InvalidMailbox TokenList that is
-    returned acts like a Mailbox, but the data attributes are None.
+    returned acts like a Mailbox, but the data attributes are Nichts.
 
     """
     invalid_mailbox = InvalidMailbox()
@@ -1870,7 +1870,7 @@ def get_mailbox_list(value):
             token, value = get_mailbox(value)
             mailbox_list.append(token)
         except errors.HeaderParseError:
-            leader = None
+            leader = Nichts
             wenn value[0] in CFWS_LEADER:
                 leader, value = get_cfws(value)
                 wenn not value or value[0] in ',;':
@@ -1879,7 +1879,7 @@ def get_mailbox_list(value):
                         "empty element in mailbox-list"))
                 sonst:
                     token, value = get_invalid_mailbox(value, ',;')
-                    wenn leader is not None:
+                    wenn leader is not Nichts:
                         token[:0] = [leader]
                     mailbox_list.append(token)
                     mailbox_list.defects.append(errors.InvalidHeaderDefect(
@@ -1889,7 +1889,7 @@ def get_mailbox_list(value):
                     "empty element in mailbox-list"))
             sonst:
                 token, value = get_invalid_mailbox(value, ',;')
-                wenn leader is not None:
+                wenn leader is not Nichts:
                     token[:0] = [leader]
                 mailbox_list.append(token)
                 mailbox_list.defects.append(errors.InvalidHeaderDefect(
@@ -1919,7 +1919,7 @@ def get_group_list(value):
         group_list.defects.append(errors.InvalidHeaderDefect(
             "end of header before group-list"))
         return group_list, value
-    leader = None
+    leader = Nichts
     wenn value and value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
         wenn not value:
@@ -1935,13 +1935,13 @@ def get_group_list(value):
             return group_list, value
     token, value = get_mailbox_list(value)
     wenn len(token.all_mailboxes)==0:
-        wenn leader is not None:
+        wenn leader is not Nichts:
             group_list.append(leader)
         group_list.extend(token)
         group_list.defects.append(errors.ObsoleteHeaderDefect(
             "group-list with empty entries"))
         return group_list, value
-    wenn leader is not None:
+    wenn leader is not Nichts:
         token[:0] = [leader]
     group_list.append(token)
     return group_list, value
@@ -2021,7 +2021,7 @@ def get_address_list(value):
             token, value = get_address(value)
             address_list.append(token)
         except errors.HeaderParseError:
-            leader = None
+            leader = Nichts
             wenn value[0] in CFWS_LEADER:
                 leader, value = get_cfws(value)
                 wenn not value or value[0] == ',':
@@ -2030,7 +2030,7 @@ def get_address_list(value):
                         "address-list entry with no content"))
                 sonst:
                     token, value = get_invalid_mailbox(value, ',')
-                    wenn leader is not None:
+                    wenn leader is not Nichts:
                         token[:0] = [leader]
                     address_list.append(Address([token]))
                     address_list.defects.append(errors.InvalidHeaderDefect(
@@ -2040,7 +2040,7 @@ def get_address_list(value):
                     "empty element in address-list"))
             sonst:
                 token, value = get_invalid_mailbox(value, ',')
-                wenn leader is not None:
+                wenn leader is not Nichts:
                     token[:0] = [leader]
                 address_list.append(Address([token]))
                 address_list.defects.append(errors.InvalidHeaderDefect(
@@ -2164,7 +2164,7 @@ def parse_message_id(value):
         message_id.defects.append(
             errors.InvalidHeaderDefect("Invalid msg-id: {!r}".format(ex)))
     sonst:
-        # Value after parsing a valid msg_id should be None.
+        # Value after parsing a valid msg_id should be Nichts.
         wenn value:
             message_id.defects.append(errors.InvalidHeaderDefect(
                 "Unexpected {!r}".format(value)))
@@ -2211,7 +2211,7 @@ def parse_mime_version(value):
         token, value = get_cfws(value)
         mime_version.append(token)
     wenn not value or value[0] != '.':
-        wenn mime_version.major is not None:
+        wenn mime_version.major is not Nichts:
             mime_version.defects.append(errors.InvalidHeaderDefect(
                 "Incomplete MIME version; found only major number"))
         wenn value:
@@ -2223,7 +2223,7 @@ def parse_mime_version(value):
         token, value = get_cfws(value)
         mime_version.append(token)
     wenn not value:
-        wenn mime_version.major is not None:
+        wenn mime_version.major is not Nichts:
             mime_version.defects.append(errors.InvalidHeaderDefect(
                 "Incomplete MIME version; found only major number"))
         return mime_version
@@ -2251,7 +2251,7 @@ def get_invalid_parameter(value):
     """ Read everything up to the next ';'.
 
     This is outside the formal grammar.  The InvalidParameter TokenList that is
-    returned acts like a Parameter, but the data attributes are None.
+    returned acts like a Parameter, but the data attributes are Nichts.
 
     """
     invalid_parameter = InvalidParameter()
@@ -2426,7 +2426,7 @@ def get_value(value):
     v = Value()
     wenn not value:
         raise errors.HeaderParseError("Expected value but found end of string")
-    leader = None
+    leader = Nichts
     wenn value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     wenn not value:
@@ -2436,7 +2436,7 @@ def get_value(value):
         token, value = get_quoted_string(value)
     sonst:
         token, value = get_extended_attribute(value)
-    wenn leader is not None:
+    wenn leader is not Nichts:
         token[:0] = [leader]
     v.append(token)
     return v, value
@@ -2462,7 +2462,7 @@ def get_parameter(value):
     wenn value[0] == '*':
         try:
             token, value = get_section(value)
-            param.sectioned = True
+            param.sectioned = Wahr
             param.append(token)
         except errors.HeaderParseError:
             pass
@@ -2471,7 +2471,7 @@ def get_parameter(value):
         wenn value[0] == '*':
             param.append(ValueTerminal('*', 'extended-parameter-marker'))
             value = value[1:]
-            param.extended = True
+            param.extended = Wahr
     wenn value[0] != '=':
         raise errors.HeaderParseError("Parameter not followed by '='")
     param.append(ValueTerminal('=', 'parameter-separator'))
@@ -2479,7 +2479,7 @@ def get_parameter(value):
     wenn value and value[0] in CFWS_LEADER:
         token, value = get_cfws(value)
         param.append(token)
-    remainder = None
+    remainder = Nichts
     appendto = param
     wenn param.extended and value and value[0] == '"':
         # Now fuer some serious hackery to handle the common invalid case of
@@ -2487,14 +2487,14 @@ def get_parameter(value):
         # a value marked as encoded that isn't really.
         qstring, remainder = get_quoted_string(value)
         inner_value = qstring.stripped_value
-        semi_valid = False
+        semi_valid = Falsch
         wenn param.section_number == 0:
             wenn inner_value and inner_value[0] == "'":
-                semi_valid = True
+                semi_valid = Wahr
             sonst:
                 token, rest = get_attrtext(inner_value)
                 wenn rest and rest[0] == "'":
-                    semi_valid = True
+                    semi_valid = Wahr
         sonst:
             try:
                 token, rest = get_extended_attrtext(inner_value)
@@ -2502,7 +2502,7 @@ def get_parameter(value):
                 pass
             sonst:
                 wenn not rest:
-                    semi_valid = True
+                    semi_valid = Wahr
         wenn semi_valid:
             param.defects.append(errors.InvalidHeaderDefect(
                 "Quoted string value fuer extended parameter is invalid"))
@@ -2514,18 +2514,18 @@ def get_parameter(value):
                     break
             value = inner_value
         sonst:
-            remainder = None
+            remainder = Nichts
             param.defects.append(errors.InvalidHeaderDefect(
                 "Parameter marked as extended but appears to have a "
                 "quoted string value that is non-encoded"))
     wenn value and value[0] == "'":
-        token = None
+        token = Nichts
     sonst:
         token, value = get_value(value)
     wenn not param.extended or param.section_number > 0:
         wenn not value or value[0] != "'":
             appendto.append(token)
-            wenn remainder is not None:
+            wenn remainder is not Nichts:
                 assert not value, value
                 value = remainder
             return param, value
@@ -2537,10 +2537,10 @@ def get_parameter(value):
         param.defects.append(errors.InvalidHeaderDefect(
             "Missing required charset/lang delimiters"))
         appendto.append(token)
-        wenn remainder is None:
+        wenn remainder is Nichts:
             return param, value
     sonst:
-        wenn token is not None:
+        wenn token is not Nichts:
             fuer t in token:
                 wenn t.token_type == 'extended-attrtext':
                     break
@@ -2561,7 +2561,7 @@ def get_parameter(value):
                                   "delimiter, but found {}".format(value))
         appendto.append(ValueTerminal("'", 'RFC2231-delimiter'))
         value = value[1:]
-    wenn remainder is not None:
+    wenn remainder is not Nichts:
         # Treat the rest of value as bare quoted string content.
         v = Value()
         while value:
@@ -2577,7 +2577,7 @@ def get_parameter(value):
     sonst:
         token, value = get_value(value)
     appendto.append(token)
-    wenn remainder is not None:
+    wenn remainder is not Nichts:
         assert not value, value
         value = remainder
     return param, value
@@ -2601,14 +2601,14 @@ def parse_mime_parameters(value):
             token, value = get_parameter(value)
             mime_parameters.append(token)
         except errors.HeaderParseError:
-            leader = None
+            leader = Nichts
             wenn value[0] in CFWS_LEADER:
                 leader, value = get_cfws(value)
             wenn not value:
                 mime_parameters.append(leader)
                 return mime_parameters
             wenn value[0] == ';':
-                wenn leader is not None:
+                wenn leader is not Nichts:
                     mime_parameters.append(leader)
                 mime_parameters.defects.append(errors.InvalidHeaderDefect(
                     "parameter entry with no content"))
@@ -2794,18 +2794,18 @@ def _refold_parse_tree(parse_tree, *, policy):
     """Return string of contents of parse_tree folded according to RFC rules.
 
     """
-    # max_line_length 0/None means no limit, ie: infinitely long.
+    # max_line_length 0/Nichts means no limit, ie: infinitely long.
     maxlen = policy.max_line_length or sys.maxsize
     encoding = 'utf-8' wenn policy.utf8 sonst 'us-ascii'
     lines = ['']  # Folded lines to be output
     leading_whitespace = ''  # When we have whitespace between two encoded
                              # words, we may need to encode the whitespace
                              # at the beginning of the second word.
-    last_ew = None  # Points to the last encoded character wenn there's an ew on
+    last_ew = Nichts  # Points to the last encoded character wenn there's an ew on
                     # the line
-    last_charset = None
+    last_charset = Nichts
     wrap_as_ew_blocked = 0
-    want_encoding = False  # This is set to True wenn we need to encode this part
+    want_encoding = Falsch  # This is set to Wahr wenn we need to encode this part
     end_ew_not_allowed = Terminal('', 'wrap_as_ew_blocked')
     parts = list(parse_tree)
     while parts:
@@ -2832,7 +2832,7 @@ def _refold_parse_tree(parse_tree, *, policy):
                 # If policy.utf8 is false this should really be taken from a
                 # 'charset' property on the policy.
                 charset = 'utf-8'
-            want_encoding = True
+            want_encoding = Wahr
 
         wenn part.token_type == 'mime-parameters':
             # Mime parameter folding (using RFC2231) is extra special.
@@ -2841,8 +2841,8 @@ def _refold_parse_tree(parse_tree, *, policy):
 
         wenn want_encoding and not wrap_as_ew_blocked:
             wenn not part.as_ew_allowed:
-                want_encoding = False
-                last_ew = None
+                want_encoding = Falsch
+                last_ew = Nichts
                 wenn part.syntactic_break:
                     encoded_part = part.fold(policy=policy)[:-len(policy.linesep)]
                     wenn policy.linesep not in encoded_part:
@@ -2861,29 +2861,29 @@ def _refold_parse_tree(parse_tree, *, policy):
             wenn not hasattr(part, 'encode'):
                 # It's not a Terminal, do each piece individually.
                 parts = list(part) + parts
-                want_encoding = False
+                want_encoding = Falsch
                 continue
             sowenn part.as_ew_allowed:
                 # It's a terminal, wrap it as an encoded word, possibly
                 # combining it with previously encoded words wenn allowed.
-                wenn (last_ew is not None and
+                wenn (last_ew is not Nichts and
                     charset != last_charset and
                     (last_charset == 'unknown-8bit' or
                      last_charset == 'utf-8' and charset != 'us-ascii')):
-                    last_ew = None
+                    last_ew = Nichts
                 last_ew = _fold_as_ew(tstr, lines, maxlen, last_ew,
                                       part.ew_combine_allowed, charset, leading_whitespace)
                 # This whitespace has been added to the lines in _fold_as_ew()
                 # so clear it now.
                 leading_whitespace = ''
                 last_charset = charset
-                want_encoding = False
+                want_encoding = Falsch
                 continue
             sonst:
                 # It's a terminal which should be kept non-encoded
                 # (e.g. a ListSeparator).
-                last_ew = None
-                want_encoding = False
+                last_ew = Nichts
+                want_encoding = Falsch
                 # fall through
 
         wenn len(tstr) <= maxlen - len(lines[-1]):
@@ -2910,7 +2910,7 @@ def _refold_parse_tree(parse_tree, *, policy):
                         break
                     whitespace_accumulator.append(char)
                 leading_whitespace = ''.join(whitespace_accumulator)
-                last_ew = None
+                last_ew = Nichts
                 continue
         wenn not hasattr(part, 'encode'):
             # It's not a terminal, try folding the subparts.
@@ -2933,7 +2933,7 @@ def _refold_parse_tree(parse_tree, *, policy):
             # It doesn't need CTE encoding, but encode it anyway so we can
             # wrap it.
             parts.insert(0, part)
-            want_encoding = True
+            want_encoding = Wahr
             continue
         # We can't figure out how to wrap, it, so give up.
         newline = _steal_trailing_WSP_if_exists(lines)
@@ -2947,16 +2947,16 @@ def _refold_parse_tree(parse_tree, *, policy):
 
 def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset, leading_whitespace):
     """Fold string to_encode into lines as encoded word, combining wenn allowed.
-    Return the new value fuer last_ew, or None wenn ew_combine_allowed is False.
+    Return the new value fuer last_ew, or Nichts wenn ew_combine_allowed is Falsch.
 
     If there is already an encoded word in the last line of lines (indicated by
-    a non-None value fuer last_ew) and ew_combine_allowed is true, decode the
+    a non-Nichts value fuer last_ew) and ew_combine_allowed is true, decode the
     existing ew, combine it with to_encode, and re-encode.  Otherwise, encode
     to_encode.  In either case, split to_encode as necessary so that the
     encoded segments fit within maxlen.
 
     """
-    wenn last_ew is not None and ew_combine_allowed:
+    wenn last_ew is not Nichts and ew_combine_allowed:
         to_encode = str(
             get_unstructured(lines[-1][last_ew:] + to_encode))
         lines[-1] = lines[-1][:last_ew]
@@ -2974,7 +2974,7 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset, 
         # Likewise fuer the trailing space.
         trailing_wsp = to_encode[-1]
         to_encode = to_encode[:-1]
-    new_last_ew = len(lines[-1]) wenn last_ew is None sonst last_ew
+    new_last_ew = len(lines[-1]) wenn last_ew is Nichts sonst last_ew
 
     encode_as = 'utf-8' wenn charset == 'us-ascii' sonst charset
 
@@ -3019,7 +3019,7 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset, 
             lines.append(' ')
             new_last_ew = len(lines[-1])
     lines[-1] += trailing_wsp
-    return new_last_ew wenn ew_combine_allowed sonst None
+    return new_last_ew wenn ew_combine_allowed sonst Nichts
 
 def _fold_mime_parameters(part, lines, maxlen, encoding):
     """Fold TokenList 'part' into the 'lines' list as mime parameters.
@@ -3048,9 +3048,9 @@ def _fold_mime_parameters(part, lines, maxlen, encoding):
         error_handler = 'strict'
         try:
             value.encode(encoding)
-            encoding_required = False
+            encoding_required = Falsch
         except UnicodeEncodeError:
-            encoding_required = True
+            encoding_required = Wahr
             wenn utils._has_surrogates(value):
                 charset = 'unknown-8bit'
                 error_handler = 'surrogateescape'
@@ -3081,7 +3081,7 @@ def _fold_mime_parameters(part, lines, maxlen, encoding):
                 # the RFC standard width.
                 maxlen = 78
             splitpoint = maxchars = maxlen - chrome_len - 2
-            while True:
+            while Wahr:
                 partial = value[:splitpoint]
                 encoded_value = urllib.parse.quote(
                     partial, safe='', errors=error_handler)

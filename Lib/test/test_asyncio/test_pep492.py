@@ -11,7 +11,7 @@ from test.test_asyncio import utils as test_utils
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 # Test that asyncio.iscoroutine() uses collections.abc.Coroutine
@@ -19,7 +19,7 @@ klasse FakeCoro:
     def send(self, value):
         pass
 
-    def throw(self, typ, val=None, tb=None):
+    def throw(self, typ, val=Nichts, tb=Nichts):
         pass
 
     def close(self):
@@ -52,17 +52,17 @@ klasse LockTests(BaseTest):
 
         async def test(lock):
             await asyncio.sleep(0.01)
-            self.assertFalse(lock.locked())
+            self.assertFalsch(lock.locked())
             async with lock as _lock:
-                self.assertIs(_lock, None)
-                self.assertTrue(lock.locked())
+                self.assertIs(_lock, Nichts)
+                self.assertWahr(lock.locked())
                 await asyncio.sleep(0.01)
-                self.assertTrue(lock.locked())
-            self.assertFalse(lock.locked())
+                self.assertWahr(lock.locked())
+            self.assertFalsch(lock.locked())
 
         fuer primitive in primitives:
             self.loop.run_until_complete(test(primitive))
-            self.assertFalse(primitive.locked())
+            self.assertFalsch(primitive.locked())
 
     def test_context_manager_with_await(self):
         primitives = [
@@ -74,7 +74,7 @@ klasse LockTests(BaseTest):
 
         async def test(lock):
             await asyncio.sleep(0.01)
-            self.assertFalse(lock.locked())
+            self.assertFalsch(lock.locked())
             with self.assertRaisesRegex(
                 TypeError,
                 "can't be awaited"
@@ -84,7 +84,7 @@ klasse LockTests(BaseTest):
 
         fuer primitive in primitives:
             self.loop.run_until_complete(test(primitive))
-            self.assertFalse(primitive.locked())
+            self.assertFalsch(primitive.locked())
 
 
 klasse StreamReaderTests(BaseTest):
@@ -113,21 +113,21 @@ klasse CoroutineTests(BaseTest):
 
         f = foo()
         try:
-            self.assertTrue(asyncio.iscoroutine(f))
+            self.assertWahr(asyncio.iscoroutine(f))
         finally:
             f.close() # silence warning
 
-        self.assertTrue(asyncio.iscoroutine(FakeCoro()))
+        self.assertWahr(asyncio.iscoroutine(FakeCoro()))
 
     def test_iscoroutine_generator(self):
         def foo(): yield
 
-        self.assertFalse(asyncio.iscoroutine(foo()))
+        self.assertFalsch(asyncio.iscoroutine(foo()))
 
     def test_iscoroutinefunction(self):
         async def foo(): pass
         with self.assertWarns(DeprecationWarning):
-            self.assertTrue(asyncio.iscoroutinefunction(foo))
+            self.assertWahr(asyncio.iscoroutinefunction(foo))
 
     def test_async_def_coroutines(self):
         async def bar():
@@ -140,16 +140,16 @@ klasse CoroutineTests(BaseTest):
         self.assertEqual(data, 'spam')
 
         # debug mode
-        self.loop.set_debug(True)
+        self.loop.set_debug(Wahr)
         data = self.loop.run_until_complete(foo())
         self.assertEqual(data, 'spam')
 
     def test_debug_mode_manages_coroutine_origin_tracking(self):
         async def start():
-            self.assertTrue(sys.get_coroutine_origin_tracking_depth() > 0)
+            self.assertWahr(sys.get_coroutine_origin_tracking_depth() > 0)
 
         self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 0)
-        self.loop.set_debug(True)
+        self.loop.set_debug(Wahr)
         self.loop.run_until_complete(start())
         self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 0)
 
@@ -171,14 +171,14 @@ klasse CoroutineTests(BaseTest):
         self.assertEqual(data, 'spam')
 
     def test_task_print_stack(self):
-        T = None
+        T = Nichts
 
         async def foo():
             f = T.get_stack(limit=1)
             try:
                 self.assertEqual(f[0].f_code.co_name, 'foo')
             finally:
-                f = None
+                f = Nichts
 
         async def runner():
             nonlocal T
@@ -200,7 +200,7 @@ klasse CoroutineTests(BaseTest):
             finally:
                 t.cancel()
 
-        self.loop.set_debug(True)
+        self.loop.set_debug(Wahr)
         with self.assertRaises(
                 RuntimeError,
                 msg='coroutine is being awaited already'):

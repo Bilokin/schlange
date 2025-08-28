@@ -10,7 +10,7 @@ from errno import EIO
 
 from test.support.import_helper import import_module
 
-def run_pty(script, input=b"dummy input\r", env=None):
+def run_pty(script, input=b"dummy input\r", env=Nichts):
     pty = import_module('pty')
     output = bytearray()
     [master, slave] = pty.openpty()
@@ -34,8 +34,8 @@ def run_pty(script, input=b"dummy input\r", env=None):
         # to use with select().
         sel = cleanup.enter_context(selectors.SelectSelector())
         sel.register(master, selectors.EVENT_READ | selectors.EVENT_WRITE)
-        os.set_blocking(master, False)
-        while True:
+        os.set_blocking(master, Falsch)
+        while Wahr:
             fuer [_, events] in sel.select():
                 wenn events & selectors.EVENT_READ:
                     try:

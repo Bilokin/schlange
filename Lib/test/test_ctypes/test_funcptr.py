@@ -27,8 +27,8 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
     def test_type_flags(self):
         fuer cls in _CFuncPtr, PyCFuncPtrType:
             with self.subTest(cls=cls):
-                self.assertTrue(_CFuncPtr.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(_CFuncPtr.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertWahr(_CFuncPtr.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalsch(_CFuncPtr.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Cannot call the metaclass __init__ more than once
@@ -110,7 +110,7 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
         strchr.restype = c_char_p
         strchr.argtypes = (c_char_p, c_char)
         self.assertEqual(strchr(b"abcdefghi", b"b"), b"bcdefghi")
-        self.assertEqual(strchr(b"abcdefghi", b"x"), None)
+        self.assertEqual(strchr(b"abcdefghi", b"x"), Nichts)
 
         strtok = lib.my_strtok
         strtok.restype = c_char_p
@@ -123,9 +123,9 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
         b = c_string(s)
 
         self.assertEqual(strtok(b, b"\n"), b"a")
-        self.assertEqual(strtok(None, b"\n"), b"b")
-        self.assertEqual(strtok(None, b"\n"), b"c")
-        self.assertEqual(strtok(None, b"\n"), None)
+        self.assertEqual(strtok(Nichts, b"\n"), b"b")
+        self.assertEqual(strtok(Nichts, b"\n"), b"c")
+        self.assertEqual(strtok(Nichts, b"\n"), Nichts)
 
     def test_abstract(self):
         self.assertRaises(TypeError, _CFuncPtr, 13, "name", 42, "iid")

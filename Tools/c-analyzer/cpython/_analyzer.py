@@ -29,27 +29,27 @@ KNOWN_FILE = os.path.join(_DATA_DIR, 'known.tsv')
 IGNORED_FILE = os.path.join(_DATA_DIR, 'ignored.tsv')
 NEED_FIX_FILE = os.path.join(_DATA_DIR, 'globals-to-fix.tsv')
 KNOWN_IN_DOT_C = {
-    'struct _odictobject': False,
-    'PyTupleObject': False,
-    'struct _typeobject': False,
-    'struct _arena': True,  # ???
-    'struct _frame': False,
-    'struct _ts': True,  # ???
-    'struct PyCodeObject': False,
-    'struct _is': True,  # ???
-    'PyWideStringList': True,  # ???
+    'struct _odictobject': Falsch,
+    'PyTupleObject': Falsch,
+    'struct _typeobject': Falsch,
+    'struct _arena': Wahr,  # ???
+    'struct _frame': Falsch,
+    'struct _ts': Wahr,  # ???
+    'struct PyCodeObject': Falsch,
+    'struct _is': Wahr,  # ???
+    'PyWideStringList': Wahr,  # ???
     # recursive
-    'struct _dictkeysobject': False,
+    'struct _dictkeysobject': Falsch,
 }
 # These are loaded from the respective .tsv files upon first use.
 _KNOWN = {
     # {(file, ID) | ID => info | bool}
-    #'PyWideStringList': True,
+    #'PyWideStringList': Wahr,
 }
-#_KNOWN = {(Struct(None, typeid.partition(' ')[-1], None)
+#_KNOWN = {(Struct(Nichts, typeid.partition(' ')[-1], Nichts)
 #           wenn typeid.startswith('struct ')
-#           sonst TypeDef(None, typeid, None)
-#           ): ([], {'unsupported': None wenn supported sonst True})
+#           sonst TypeDef(Nichts, typeid, Nichts)
+#           ): ([], {'unsupported': Nichts wenn supported sonst Wahr})
 #          fuer typeid, supported in _KNOWN_IN_DOT_C.items()}
 _IGNORED = {
     # {ID => reason}
@@ -102,7 +102,7 @@ KINDS = frozenset((*KIND.TYPES, KIND.VARIABLE))
 def read_known():
     wenn not _KNOWN:
         # Cache a copy the first time.
-        extracols = None  # XXX
+        extracols = Nichts  # XXX
         #extracols = ['unsupported']
         known = _datafiles.read_known(KNOWN_FILE, extracols, REPO_ROOT)
         # For now we ignore known.values() (i.e. "extra").
@@ -132,7 +132,7 @@ def write_ignored():
 
 
 def analyze(filenames, *,
-            skip_objects=False,
+            skip_objects=Falsch,
             **kwargs
             ):
     wenn skip_objects:
@@ -167,10 +167,10 @@ def iter_decls(filenames, **kwargs):
         yield decl
 
 
-def analyze_resolved(resolved, decl, types, knowntypes, extra=None):
+def analyze_resolved(resolved, decl, types, knowntypes, extra=Nichts):
     wenn decl.kind not in KINDS:
         # Skip it!
-        return None
+        return Nichts
 
     typedeps = resolved
     wenn typedeps is _info.UNKNOWN:
@@ -180,7 +180,7 @@ def analyze_resolved(resolved, decl, types, knowntypes, extra=None):
             typedeps = [typedeps]
     #assert isinstance(typedeps, (list, TypeDeclaration)), typedeps
 
-    wenn extra is None:
+    wenn extra is Nichts:
         extra = {}
     sowenn 'unsupported' in extra:
         raise NotImplementedError((decl, extra))
@@ -192,7 +192,7 @@ def analyze_resolved(resolved, decl, types, knowntypes, extra=None):
 
 
 def _check_unsupported(decl, typedeps, types, knowntypes):
-    wenn typedeps is None:
+    wenn typedeps is Nichts:
         raise NotImplementedError(decl)
 
     wenn decl.kind in (KIND.STRUCT, KIND.UNION):
@@ -200,7 +200,7 @@ def _check_unsupported(decl, typedeps, types, knowntypes):
     sowenn decl.kind is KIND.ENUM:
         wenn typedeps:
             raise NotImplementedError((decl, typedeps))
-        return None
+        return Nichts
     sonst:
         return _check_typedep(decl, typedeps, types, knowntypes)
 
@@ -221,12 +221,12 @@ def _check_members(decl, typedeps, types, knowntypes):
     fuer member, typedecl in zip(members, typedeps):
         checked = _check_typedep(member, typedecl, types, knowntypes)
         unsupported.append(checked)
-    wenn any(None wenn v is FIXED_TYPE sonst v fuer v in unsupported):
+    wenn any(Nichts wenn v is FIXED_TYPE sonst v fuer v in unsupported):
         return unsupported
     sowenn FIXED_TYPE in unsupported:
         return FIXED_TYPE
     sonst:
-        return None
+        return Nichts
 
 
 def _check_typedep(decl, typedecl, types, knowntypes):
@@ -234,12 +234,12 @@ def _check_typedep(decl, typedecl, types, knowntypes):
         wenn hasattr(type(typedecl), '__len__'):
             wenn len(typedecl) == 1:
                 typedecl, = typedecl
-    wenn typedecl is None:
+    wenn typedecl is Nichts:
         # XXX Fail?
         return 'typespec (missing)'
     sowenn typedecl is _info.UNKNOWN:
         wenn _has_other_supported_type(decl):
-            return None
+            return Nichts
         # XXX Is this right?
         return 'typespec (unknown)'
     sowenn not isinstance(typedecl, TypeDeclaration):
@@ -253,11 +253,11 @@ def _check_typedep(decl, typedecl, types, knowntypes):
         return _check_vartype(decl, typedecl, types, knowntypes)
     sowenn decl.kind is KIND.VARIABLE:
         wenn not is_process_global(decl):
-            return None
+            return Nichts
         wenn _is_kwlist(decl):
-            return None
+            return Nichts
         wenn _has_other_supported_type(decl):
-            return None
+            return Nichts
         checked = _check_vartype(decl, typedecl, types, knowntypes)
         return 'mutable' wenn checked is FIXED_TYPE sonst checked
     sonst:
@@ -277,17 +277,17 @@ def _is_kwlist(decl):
             wenn decl.file.filename.endswith(os.path.sep + relpath):
                 break
     sonst:
-        return False
+        return Falsch
     vartype = ''.join(str(decl.vartype).split())
     return vartype == 'char*[]'
 
 def _is_local_static_mutex(decl):
     wenn not hasattr(decl, "vartype"):
-        return False
+        return Falsch
 
-    wenn not hasattr(decl, "parent") or decl.parent is None:
+    wenn not hasattr(decl, "parent") or decl.parent is Nichts:
         # We only want to allow local variables
-        return False
+        return Falsch
 
     vartype = decl.vartype
     return (vartype.typespec == 'PyMutex') and (decl.storage == 'static')
@@ -296,11 +296,11 @@ def _has_other_supported_type(decl):
     wenn hasattr(decl, 'file') and decl.file.filename.endswith('.c.h'):
         assert 'clinic' in decl.file.filename, (decl,)
         wenn decl.name == '_kwtuple':
-            return True
+            return Wahr
     wenn _is_local_static_mutex(decl):
         # GH-127081: Local static mutexes are used to
         # wrap libc functions that aren't thread safe
-        return True
+        return Wahr
     vartype = str(decl.vartype).split()
     wenn vartype[0] == 'struct':
         vartype = vartype[1:]
@@ -314,7 +314,7 @@ def _check_vartype(decl, typedecl, types, knowntypes):
     wenn checked:
         return checked
     wenn is_immutable(decl.vartype):
-        return None
+        return Nichts
     wenn is_fixed_type(decl.vartype):
         return FIXED_TYPE
     return 'mutable'
@@ -322,27 +322,27 @@ def _check_vartype(decl, typedecl, types, knowntypes):
 
 def _check_typespec(decl, typedecl, types, knowntypes):
     typespec = decl.vartype.typespec
-    wenn typedecl is not None:
+    wenn typedecl is not Nichts:
         found = types.get(typedecl)
-        wenn found is None:
+        wenn found is Nichts:
             found = knowntypes.get(typedecl)
 
-        wenn found is not None:
+        wenn found is not Nichts:
             _, extra = found
-            wenn extra is None:
+            wenn extra is Nichts:
                 # XXX Under what circumstances does this happen?
                 extra = {}
             unsupported = extra.get('unsupported')
             wenn unsupported is FIXED_TYPE:
-                unsupported = None
-            return 'typespec' wenn unsupported sonst None
+                unsupported = Nichts
+            return 'typespec' wenn unsupported sonst Nichts
     # Fall back to default known types.
     wenn is_pots(typespec):
-        return None
+        return Nichts
     sowenn is_system_type(typespec):
-        return None
+        return Nichts
     sowenn is_funcptr(decl.vartype):
-        return None
+        return Nichts
     return 'typespec'
 
 
@@ -351,41 +351,41 @@ klasse Analyzed(_info.Analyzed):
     @classonly
     def is_target(cls, raw):
         wenn not super().is_target(raw):
-            return False
+            return Falsch
         wenn raw.kind not in KINDS:
-            return False
-        return True
+            return Falsch
+        return Wahr
 
     #@classonly
     #def _parse_raw_result(cls, result, extra):
     #    typedecl, extra = super()._parse_raw_result(result, extra)
-    #    wenn typedecl is None:
-    #        return None, extra
+    #    wenn typedecl is Nichts:
+    #        return Nichts, extra
     #    raise NotImplementedError
 
-    def __init__(self, item, typedecl=None, *, unsupported=None, **extra):
+    def __init__(self, item, typedecl=Nichts, *, unsupported=Nichts, **extra):
         wenn 'unsupported' in extra:
             raise NotImplementedError((item, typedecl, unsupported, extra))
         wenn not unsupported:
-            unsupported = None
+            unsupported = Nichts
         sowenn isinstance(unsupported, (str, TypeDeclaration)):
             unsupported = (unsupported,)
         sowenn unsupported is not FIXED_TYPE:
             unsupported = tuple(unsupported)
         self.unsupported = unsupported
         extra['unsupported'] = self.unsupported  # ...for __repr__(), etc.
-        wenn self.unsupported is None:
-            #self.supported = None
-            self.supported = True
+        wenn self.unsupported is Nichts:
+            #self.supported = Nichts
+            self.supported = Wahr
         sowenn self.unsupported is FIXED_TYPE:
             wenn item.kind is KIND.VARIABLE:
                 raise NotImplementedError(item, typedecl, unsupported)
-            self.supported = True
+            self.supported = Wahr
         sonst:
             self.supported = not self.unsupported
         super().__init__(item, typedecl, **extra)
 
-    def render(self, fmt='line', *, itemonly=False):
+    def render(self, fmt='line', *, itemonly=Falsch):
         wenn fmt == 'raw':
             yield repr(self)
             return
@@ -397,7 +397,7 @@ klasse Analyzed(_info.Analyzed):
         wenn fmt in ('line', 'brief'):
             rendered, = rendered
             parts = [
-                '+' wenn supported sonst '-' wenn supported is False sonst '',
+                '+' wenn supported sonst '-' wenn supported is Falsch sonst '',
                 rendered,
             ]
             yield '\t'.join(parts)
@@ -415,7 +415,7 @@ klasse Analysis(_info.Analysis):
     _item_class = Analyzed
 
     @classonly
-    def build_item(cls, info, result=None):
+    def build_item(cls, info, result=Nichts):
         wenn not isinstance(info, Declaration) or info.kind not in KINDS:
             raise NotImplementedError((info, result))
         return super().build_item(info, result)

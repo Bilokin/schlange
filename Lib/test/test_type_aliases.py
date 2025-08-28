@@ -11,20 +11,20 @@ from typing import (
 
 klasse TypeParamsInvalidTest(unittest.TestCase):
     def test_name_collisions(self):
-        check_syntax_error(self, 'type TA1[A, **A] = None', "duplicate type parameter 'A'")
-        check_syntax_error(self, 'type T[A, *A] = None', "duplicate type parameter 'A'")
-        check_syntax_error(self, 'type T[*A, **A] = None', "duplicate type parameter 'A'")
+        check_syntax_error(self, 'type TA1[A, **A] = Nichts', "duplicate type parameter 'A'")
+        check_syntax_error(self, 'type T[A, *A] = Nichts', "duplicate type parameter 'A'")
+        check_syntax_error(self, 'type T[*A, **A] = Nichts', "duplicate type parameter 'A'")
 
     def test_name_non_collision_02(self):
         ns = run_code("""type TA1[A] = lambda A: A""")
         self.assertIsInstance(ns["TA1"], TypeAliasType)
-        self.assertTrue(callable(ns["TA1"].__value__))
+        self.assertWahr(callable(ns["TA1"].__value__))
         self.assertEqual("arg", ns["TA1"].__value__("arg"))
 
     def test_name_non_collision_03(self):
         ns = run_code("""
             klasse Outer[A]:
-                type TA1[A] = None
+                type TA1[A] = Nichts
             """
         )
         outer_A, = ns["Outer"].__type_params__
@@ -60,9 +60,9 @@ klasse TypeParamsAccessTest(unittest.TestCase):
         cls = ns["Outer"]
         A, = cls.__type_params__
         B, = cls.inner.__type_params__
-        alias = cls.inner(None)
+        alias = cls.inner(Nichts)
         self.assertIsInstance(alias, TypeAliasType)
-        alias2 = cls.inner(None)
+        alias2 = cls.inner(Nichts)
         self.assertIsNot(alias, alias2)
         self.assertEqual(len(alias.__type_params__), 1)
 
@@ -204,7 +204,7 @@ klasse TypeAliasConstructorTest(unittest.TestCase):
         self.assertEqual(TA.__name__, "TA")
         self.assertIs(TA.__value__, int)
         self.assertEqual(TA.__type_params__, ())
-        self.assertIs(TA.__module__, None)
+        self.assertIs(TA.__module__, Nichts)
 
     def test_generic(self):
         T = TypeVar("T")

@@ -38,8 +38,8 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
             global repl_future
             global keyboard_interrupted
 
-            repl_future = None
-            keyboard_interrupted = False
+            repl_future = Nichts
+            keyboard_interrupted = Falsch
 
             func = types.FunctionType(code, self.locals)
             try:
@@ -49,7 +49,7 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
                 self.loop.stop()
                 return
             except KeyboardInterrupt as ex:
-                keyboard_interrupted = True
+                keyboard_interrupted = Wahr
                 future.set_exception(ex)
                 return
             except BaseException as ex:
@@ -134,13 +134,13 @@ klasse REPLThread(threading.Thread):
 
             loop.call_soon_threadsafe(loop.stop)
 
-    def interrupt(self) -> None:
+    def interrupt(self) -> Nichts:
         wenn not CAN_USE_PYREPL:
             return
 
         from _pyrepl.simple_interact import _get_reader
         r = _get_reader()
-        wenn r.threading_hook is not None:
+        wenn r.threading_hook is not Nichts:
             r.threading_hook.add("")  # type: ignore
 
 
@@ -148,7 +148,7 @@ wenn __name__ == '__main__':
     parser = argparse.ArgumentParser(
         prog="python3 -m asyncio",
         description="Interactive asyncio shell and CLI tools",
-        color=True,
+        color=Wahr,
     )
     subparsers = parser.add_subparsers(help="sub-commands", dest="command")
     ps = subparsers.add_parser(
@@ -172,7 +172,7 @@ wenn __name__ == '__main__':
         case "pstree":
             display_awaited_by_tasks_tree(args.pid)
             sys.exit(0)
-        case None:
+        case Nichts:
             pass  # continue to the interactive shell
         case _:
             # shouldn't happen as an invalid command-line wouldn't parse
@@ -184,7 +184,7 @@ wenn __name__ == '__main__':
     sys.audit("cpython.run_stdin")
 
     wenn os.getenv('PYTHON_BASIC_REPL'):
-        CAN_USE_PYREPL = False
+        CAN_USE_PYREPL = Falsch
     sonst:
         from _pyrepl.main import CAN_USE_PYREPL
 
@@ -200,17 +200,17 @@ wenn __name__ == '__main__':
 
     console = AsyncIOInteractiveConsole(repl_locals, loop)
 
-    repl_future = None
-    keyboard_interrupted = False
+    repl_future = Nichts
+    keyboard_interrupted = Falsch
 
     try:
         import readline  # NoQA
     except ImportError:
-        readline = None
+        readline = Nichts
 
-    interactive_hook = getattr(sys, "__interactivehook__", None)
+    interactive_hook = getattr(sys, "__interactivehook__", Nichts)
 
-    wenn interactive_hook is not None:
+    wenn interactive_hook is not Nichts:
         sys.audit("cpython.run_interactivehook", interactive_hook)
         interactive_hook()
 
@@ -221,19 +221,19 @@ wenn __name__ == '__main__':
         except:
             pass
         sonst:
-            wenn readline is not None:
+            wenn readline is not Nichts:
                 completer = rlcompleter.Completer(console.locals)
                 readline.set_completer(completer.complete)
 
     repl_thread = REPLThread(name="Interactive thread")
-    repl_thread.daemon = True
+    repl_thread.daemon = Wahr
     repl_thread.start()
 
-    while True:
+    while Wahr:
         try:
             loop.run_forever()
         except KeyboardInterrupt:
-            keyboard_interrupted = True
+            keyboard_interrupted = Wahr
             wenn repl_future and not repl_future.done():
                 repl_future.cancel()
             repl_thread.interrupt()

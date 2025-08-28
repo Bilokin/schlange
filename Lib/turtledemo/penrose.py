@@ -47,7 +47,7 @@ def inflatekite(l, n):
     wenn n == 0:
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
-        tiledict[(h,x,y)] = True
+        tiledict[(h,x,y)] = Wahr
         return
     fl = f * l
     lt(36)
@@ -69,7 +69,7 @@ def inflatedart(l, n):
     wenn n == 0:
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
-        tiledict[(h,x,y)] = False
+        tiledict[(h,x,y)] = Falsch
         return
     fl = f * l
     inflatekite(fl, n-1)

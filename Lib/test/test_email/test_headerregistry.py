@@ -55,7 +55,7 @@ klasse TestHeaderRegistry(TestEmailBase):
         self.assertIsInstance(h, headerregistry.UniqueUnstructuredHeader)
 
     def test_dont_use_default_map(self):
-        factory = headerregistry.HeaderRegistry(use_default_map=False)
+        factory = headerregistry.HeaderRegistry(use_default_map=Falsch)
         h = factory('subject', 'test')
         self.assertIsInstance(h, headerregistry.BaseHeader)
         self.assertIsInstance(h, headerregistry.UnstructuredHeader)
@@ -196,7 +196,7 @@ klasse TestDateHeader(TestHeaderBase):
     def test_resent_date_header_properties(self):
         h = self.make_header('resent-date', self.datestring)
         self.assertIsInstance(h, headerregistry.DateHeader)
-        self.assertEqual(h.max_count, None)
+        self.assertEqual(h.max_count, Nichts)
         self.assertEqual(h.defects, ())
 
     def test_no_value_is_defect(self):
@@ -208,7 +208,7 @@ klasse TestDateHeader(TestHeaderBase):
         s = 'Not a date header'
         h = self.make_header('date', s)
         self.assertEqual(h, s)
-        self.assertIsNone(h.datetime)
+        self.assertIsNichts(h.datetime)
         self.assertEqual(len(h.defects), 1)
         self.assertIsInstance(h.defects[0], errors.InvalidDateDefect)
 
@@ -216,7 +216,7 @@ klasse TestDateHeader(TestHeaderBase):
         s = 'Tue, 06 Jun 2017 27:39:33 +0600'
         h = self.make_header('date', s)
         self.assertEqual(h, s)
-        self.assertIsNone(h.datetime)
+        self.assertIsNichts(h.datetime)
         self.assertEqual(len(h.defects), 1)
         self.assertIsInstance(h.defects[0], errors.InvalidDateDefect)
 
@@ -888,7 +888,7 @@ klasse TestContentDisposition(TestHeaderBase):
 
         'no_value': (
             '',
-            None,
+            Nichts,
             {},
             [errors.HeaderMissingRequiredValue],
             '',
@@ -1038,49 +1038,49 @@ klasse TestMIMEVersionHeader(TestHeaderBase):
         'non_comment_garbage_before': (
             '<abc> 1.0',
             '<abc> 1.0',
-            None,
-            None,
-            None,
+            Nichts,
+            Nichts,
+            Nichts,
             [errors.InvalidHeaderDefect]),
 
         'non_comment_garbage_inside': (
             '1.<abc>0',
             '1.<abc>0',
-            None,
-            None,
-            None,
+            Nichts,
+            Nichts,
+            Nichts,
             [errors.InvalidHeaderDefect]),
 
         'two_periods': (
             '1..0',
             '1..0',
-            None,
-            None,
-            None,
+            Nichts,
+            Nichts,
+            Nichts,
             [errors.InvalidHeaderDefect]),
 
         '2_x': (
             '2.x',
             '2.x',
-            None,  # This could be 2, but it seems safer to make it None.
-            None,
-            None,
+            Nichts,  # This could be 2, but it seems safer to make it Nichts.
+            Nichts,
+            Nichts,
             [errors.InvalidHeaderDefect]),
 
         'foo': (
             'foo',
             'foo',
-            None,
-            None,
-            None,
+            Nichts,
+            Nichts,
+            Nichts,
             [errors.InvalidHeaderDefect]),
 
         'missing': (
             '',
             '',
-            None,
-            None,
-            None,
+            Nichts,
+            Nichts,
+            Nichts,
             [errors.HeaderMissingRequiredValue]),
 
         }
@@ -1099,7 +1099,7 @@ klasse TestAddressHeader(TestHeaderBase):
              '<>',
              '',
              '',
-             None),
+             Nichts),
 
         'address_only':
             ('zippy@pinhead.com',
@@ -1109,7 +1109,7 @@ klasse TestAddressHeader(TestHeaderBase):
              'zippy@pinhead.com',
              'zippy',
              'pinhead.com',
-             None),
+             Nichts),
 
         'name_and_address':
             ('Zaphrod Beblebrux <zippy@pinhead.com>',
@@ -1119,7 +1119,7 @@ klasse TestAddressHeader(TestHeaderBase):
              'zippy@pinhead.com',
              'zippy',
              'pinhead.com',
-             None),
+             Nichts),
 
         'quoted_local_part':
             ('Zaphrod Beblebrux <"foo bar"@pinhead.com>',
@@ -1129,7 +1129,7 @@ klasse TestAddressHeader(TestHeaderBase):
              '"foo bar"@pinhead.com',
              'foo bar',
              'pinhead.com',
-             None),
+             Nichts),
 
         'quoted_parens_in_name':
             (r'"A \(Special\) Person" <person@dom.ain>',
@@ -1139,7 +1139,7 @@ klasse TestAddressHeader(TestHeaderBase):
              'person@dom.ain',
              'person',
              'dom.ain',
-             None),
+             Nichts),
 
         'quoted_backslashes_in_name':
             (r'"Arthur \\Backslash\\ Foobar" <person@dom.ain>',
@@ -1149,7 +1149,7 @@ klasse TestAddressHeader(TestHeaderBase):
              'person@dom.ain',
              'person',
              'dom.ain',
-             None),
+             Nichts),
 
         'name_with_dot':
             ('John X. Doe <jxd@example.com>',
@@ -1159,7 +1159,7 @@ klasse TestAddressHeader(TestHeaderBase):
              'jxd@example.com',
              'jxd',
              'example.com',
-             None),
+             Nichts),
 
         'quoted_strings_in_local_part':
             ('""example" example"@example.com',
@@ -1169,7 +1169,7 @@ klasse TestAddressHeader(TestHeaderBase):
              '"example example"@example.com',
              'example example',
              'example.com',
-             None),
+             Nichts),
 
         'escaped_quoted_strings_in_local_part':
             (r'"\"example\" example"@example.com',
@@ -1179,7 +1179,7 @@ klasse TestAddressHeader(TestHeaderBase):
              r'"\"example\" example"@example.com',
              r'"example" example',
              'example.com',
-            None),
+            Nichts),
 
         'escaped_escapes_in_local_part':
             (r'"\\"example\\" example"@example.com',
@@ -1189,7 +1189,7 @@ klasse TestAddressHeader(TestHeaderBase):
              r'"\\example\\\\ example"@example.com',
              r'\example\\ example',
              'example.com',
-            None),
+            Nichts),
 
         'spaces_in_unquoted_local_part_collapsed':
             ('merwok  wok  @example.com',
@@ -1199,7 +1199,7 @@ klasse TestAddressHeader(TestHeaderBase):
              '"merwok wok"@example.com',
              'merwok wok',
              'example.com',
-             None),
+             Nichts),
 
         'spaces_around_dots_in_local_part_removed':
             ('merwok. wok .  wok@example.com',
@@ -1209,7 +1209,7 @@ klasse TestAddressHeader(TestHeaderBase):
              'merwok.wok.wok@example.com',
              'merwok.wok.wok',
              'example.com',
-             None),
+             Nichts),
 
         'rfc2047_atom_is_decoded':
             ('=?utf-8?q?=C3=89ric?= <foo@example.com>',
@@ -1219,7 +1219,7 @@ klasse TestAddressHeader(TestHeaderBase):
             'foo@example.com',
             'foo',
             'example.com',
-            None),
+            Nichts),
 
         'rfc2047_atom_in_phrase_is_decoded':
             ('The =?utf-8?q?=C3=89ric=2C?= Himself <foo@example.com>',
@@ -1229,7 +1229,7 @@ klasse TestAddressHeader(TestHeaderBase):
             'foo@example.com',
             'foo',
             'example.com',
-            None),
+            Nichts),
 
         'rfc2047_atom_in_quoted_string_is_decoded':
             ('"=?utf-8?q?=C3=89ric?=" <foo@example.com>',
@@ -1240,7 +1240,7 @@ klasse TestAddressHeader(TestHeaderBase):
             'foo@example.com',
             'foo',
             'example.com',
-            None),
+            Nichts),
 
         'name_ending_with_dot_without_space':
             ('John X.<jxd@example.com>',
@@ -1250,7 +1250,7 @@ klasse TestAddressHeader(TestHeaderBase):
              'jxd@example.com',
              'jxd',
              'example.com',
-             None),
+             Nichts),
 
         'name_starting_with_dot':
             ('. Doe <jxd@example.com>',
@@ -1260,7 +1260,7 @@ klasse TestAddressHeader(TestHeaderBase):
              'jxd@example.com',
              'jxd',
              'example.com',
-             None),
+             Nichts),
 
         }
 
@@ -1344,10 +1344,10 @@ klasse TestAddressHeader(TestHeaderBase):
         self.assertEqual(h.groups[6].display_name, 'A "list"')
         self.assertEqual(len(h.addresses), len(examples))
         fuer i in range(4):
-            self.assertIsNone(h.groups[i+2].display_name)
+            self.assertIsNichts(h.groups[i+2].display_name)
             self.assertEqual(str(h.groups[i+2].addresses[0]), examples[i][2])
         fuer i in range(7, 7 + len(examples) - 6):
-            self.assertIsNone(h.groups[i].display_name)
+            self.assertIsNichts(h.groups[i].display_name)
             self.assertEqual(str(h.groups[i].addresses[0]), examples[i-1][2])
         fuer i in range(len(examples)):
             self.assertEqual(str(h.addresses[i]), examples[i][2])
@@ -1566,9 +1566,9 @@ klasse TestAddressAndGroup(TestEmailBase):
 
     def test_null_group(self):
         g = Group()
-        self.assertIsNone(g.display_name)
+        self.assertIsNichts(g.display_name)
         self.assertEqual(g.addresses, tuple())
-        self.assertEqual(str(g), 'None:;')
+        self.assertEqual(str(g), 'Nichts:;')
 
     def test_group_with_addresses(self):
         addrs = [Address('b', 'b', 'c'), Address('a', 'b','c')]
@@ -1580,14 +1580,14 @@ klasse TestAddressAndGroup(TestEmailBase):
     def test_group_with_addresses_no_display_name(self):
         addrs = [Address('b', 'b', 'c'), Address('a', 'b','c')]
         g = Group(addresses=addrs)
-        self.assertIsNone(g.display_name)
+        self.assertIsNichts(g.display_name)
         self.assertEqual(g.addresses, tuple(addrs))
-        self.assertEqual(str(g), 'None: b <b@c>, a <b@c>;')
+        self.assertEqual(str(g), 'Nichts: b <b@c>, a <b@c>;')
 
     def test_group_with_one_address_no_display_name(self):
         addrs = [Address('b', 'b', 'c')]
         g = Group(addresses=addrs)
-        self.assertIsNone(g.display_name)
+        self.assertIsNichts(g.display_name)
         self.assertEqual(g.addresses, tuple(addrs))
         self.assertEqual(str(g), 'b <b@c>')
 
@@ -1623,8 +1623,8 @@ klasse TestAddressAndGroup(TestEmailBase):
         self.assertNotEqual(Address('baz', 'bar', 'example.com'), a)
         self.assertNotEqual(Address('foo', 'baz', 'example.com'), a)
         self.assertNotEqual(Address('foo', 'bar', 'baz'), a)
-        self.assertFalse(a == object())
-        self.assertTrue(a == ALWAYS_EQ)
+        self.assertFalsch(a == object())
+        self.assertWahr(a == ALWAYS_EQ)
 
     def test_group_comparison(self):
         a = Address('foo', 'bar', 'example.com')
@@ -1632,8 +1632,8 @@ klasse TestAddressAndGroup(TestEmailBase):
         self.assertEqual(Group('foo bar', (a,)), g)
         self.assertNotEqual(Group('baz', [a]), g)
         self.assertNotEqual(Group('foo bar', []), g)
-        self.assertFalse(g == object())
-        self.assertTrue(g == ALWAYS_EQ)
+        self.assertFalsch(g == object())
+        self.assertWahr(g == ALWAYS_EQ)
 
 
 klasse TestFolding(TestHeaderBase):

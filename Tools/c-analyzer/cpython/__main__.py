@@ -136,7 +136,7 @@ def _cli_parse(parser):
     ]
 
 
-def cmd_parse(filenames=None, **kwargs):
+def cmd_parse(filenames=Nichts, **kwargs):
     filenames = _resolve_filenames(filenames)
     wenn 'get_file_preprocessor' not in kwargs:
         kwargs['get_file_preprocessor'] = _parser.get_preprocessor()
@@ -152,7 +152,7 @@ def _cli_check(parser, **kwargs):
     return c_analyzer._cli_check(parser, CHECKS, **kwargs, **FILES_KWARGS)
 
 
-def cmd_check(filenames=None, **kwargs):
+def cmd_check(filenames=Nichts, **kwargs):
     filenames = _resolve_filenames(filenames)
     kwargs['get_file_preprocessor'] = _parser.get_preprocessor(log_err=print)
     try:
@@ -165,19 +165,19 @@ def cmd_check(filenames=None, **kwargs):
             **kwargs
         )
     except SystemExit as exc:
-        num_failed = exc.args[0] wenn getattr(exc, 'args', None) sonst None
+        num_failed = exc.args[0] wenn getattr(exc, 'args', Nichts) sonst Nichts
         wenn isinstance(num_failed, int):
             wenn num_failed > 0:
                 sys.stderr.flush()
-                print(CHECK_EXPLANATION, flush=True)
+                print(CHECK_EXPLANATION, flush=Wahr)
         raise  # re-raise
     except Exception:
         sys.stderr.flush()
-        print(CHECK_EXPLANATION, flush=True)
+        print(CHECK_EXPLANATION, flush=Wahr)
         raise  # re-raise
 
 
-def cmd_analyze(filenames=None, **kwargs):
+def cmd_analyze(filenames=Nichts, **kwargs):
     formats = dict(c_analyzer.FORMATS)
     formats['summary'] = fmt_summary
     filenames = _resolve_filenames(filenames)
@@ -193,8 +193,8 @@ def cmd_analyze(filenames=None, **kwargs):
 
 
 def _cli_data(parser):
-    filenames = False
-    known = True
+    filenames = Falsch
+    known = Wahr
     return c_analyzer._cli_data(parser, filenames, known)
 
 
@@ -202,7 +202,7 @@ def cmd_data(datacmd, **kwargs):
     formats = dict(c_analyzer.FORMATS)
     formats['summary'] = fmt_summary
     filenames = (file
-                 fuer file in _resolve_filenames(None)
+                 fuer file in _resolve_filenames(Nichts)
                  wenn file not in _parser.EXCLUDED)
     kwargs['get_file_preprocessor'] = _parser.get_preprocessor(log_err=print)
     wenn datacmd == 'show':
@@ -219,7 +219,7 @@ def cmd_data(datacmd, **kwargs):
             wenn decl.shortkey == 'struct _object':
                 tempinfo = info
         known = _analyzer.Analysis.from_results(results)
-        analyze = None
+        analyze = Nichts
     sowenn datacmd == 'dump':
         known = _analyzer.KNOWN_FILE
         def analyze(files, **kwargs):
@@ -241,7 +241,7 @@ def cmd_data(datacmd, **kwargs):
         known = _analyzer.read_known()
         def analyze(files, **kwargs):
             return _analyzer.iter_decls(files, **kwargs)
-    extracolumns = None
+    extracolumns = Nichts
     c_analyzer.cmd_data(
         datacmd,
         filenames,
@@ -263,7 +263,7 @@ def _cli_capi(parser):
     fuer level in _capi.LEVELS:
         parser.add_argument(f'--{level}', dest='levels',
                             action='append_const', const=level)
-    def process_levels(args, *, argv=None):
+    def process_levels(args, *, argv=Nichts):
         levels = []
         fuer raw in args.levels or ():
             fuer level in raw.replace(',', ' ').strip().split():
@@ -283,7 +283,7 @@ def _cli_capi(parser):
     fuer kind in _capi.KINDS:
         parser.add_argument(f'--{kind}', dest='kinds',
                             action='append_const', const=kind)
-    def process_kinds(args, *, argv=None):
+    def process_kinds(args, *, argv=Nichts):
         kinds = []
         fuer raw in args.kinds or ():
             fuer kind in raw.replace(',', ' ').strip().split():
@@ -299,7 +299,7 @@ def _cli_capi(parser):
     parser.add_argument('--format', default='table')
     parser.add_argument('--summary', dest='format',
                         action='store_const', const='summary')
-    def process_format(args, *, argv=None):
+    def process_format(args, *, argv=Nichts):
         orig = args.format
         args.format = _capi.resolve_format(args.format)
         wenn isinstance(args.format, str):
@@ -308,16 +308,16 @@ def _cli_capi(parser):
 
     parser.add_argument('--show-empty', dest='showempty', action='store_true')
     parser.add_argument('--no-show-empty', dest='showempty', action='store_false')
-    parser.set_defaults(showempty=None)
+    parser.set_defaults(showempty=Nichts)
 
     # XXX Add --sort-by, --sort and --no-sort.
 
     parser.add_argument('--ignore', dest='ignored', action='append')
-    def process_ignored(args, *, argv=None):
+    def process_ignored(args, *, argv=Nichts):
         ignored = []
         fuer raw in args.ignored or ():
             ignored.extend(raw.replace(',', ' ').strip().split())
-        args.ignored = ignored or None
+        args.ignored = ignored or Nichts
 
     parser.add_argument('filenames', nargs='*', metavar='FILENAME')
     process_progress = add_progress_cli(parser)
@@ -331,14 +331,14 @@ def _cli_capi(parser):
     ]
 
 
-def cmd_capi(filenames=None, *,
-             levels=None,
-             kinds=None,
+def cmd_capi(filenames=Nichts, *,
+             levels=Nichts,
+             kinds=Nichts,
              groupby='kind',
              format='table',
-             showempty=None,
-             ignored=None,
-             track_progress=None,
+             showempty=Nichts,
+             ignored=Nichts,
+             track_progress=Nichts,
              verbosity=VERBOSITY,
              **kwargs
              ):
@@ -373,7 +373,7 @@ def _cli_builtin_types(parser):
     parser.add_argument('--format', dest='fmt', default='table')
 #    parser.add_argument('--summary', dest='format',
 #                        action='store_const', const='summary')
-    def process_format(args, *, argv=None):
+    def process_format(args, *, argv=Nichts):
         orig = args.fmt
         args.fmt = _builtin_types.resolve_format(args.fmt)
         wenn isinstance(args.fmt, str):
@@ -382,7 +382,7 @@ def _cli_builtin_types(parser):
 
     parser.add_argument('--include-modules', dest='showmodules',
                         action='store_true')
-    def process_modules(args, *, argv=None):
+    def process_modules(args, *, argv=Nichts):
         pass
 
     return [
@@ -392,7 +392,7 @@ def _cli_builtin_types(parser):
 
 
 def cmd_builtin_types(fmt, *,
-                      showmodules=False,
+                      showmodules=Falsch,
                       verbosity=VERBOSITY,
                       ):
     render = _builtin_types.get_renderer(fmt)
@@ -450,14 +450,14 @@ COMMANDS = {
 #######################################
 # the script
 
-def parse_args(argv=sys.argv[1:], prog=None, *, subset=None):
+def parse_args(argv=sys.argv[1:], prog=Nichts, *, subset=Nichts):
     import argparse
     parser = argparse.ArgumentParser(
         prog=prog or get_prog(),
     )
 
 #    wenn subset == 'check' or subset == ['check']:
-#        wenn checks is not None:
+#        wenn checks is not Nichts:
 #            commands = dict(COMMANDS)
 #            commands['check'] = list(commands['check'])
 #            cli = commands['check'][1][0]

@@ -44,7 +44,7 @@ def _new_value(type_):
                         "c, b, B, u, h, H, i, I, l, L, q, Q, f or d)") from e
 
     wrapper = heap.BufferWrapper(size)
-    return rebuild_ctype(type_, wrapper, None)
+    return rebuild_ctype(type_, wrapper, Nichts)
 
 def RawValue(typecode_or_type, *args):
     '''
@@ -72,28 +72,28 @@ def RawArray(typecode_or_type, size_or_initializer):
         result.__init__(*size_or_initializer)
         return result
 
-def Value(typecode_or_type, *args, lock=True, ctx=None):
+def Value(typecode_or_type, *args, lock=Wahr, ctx=Nichts):
     '''
     Return a synchronization wrapper fuer a Value
     '''
     obj = RawValue(typecode_or_type, *args)
-    wenn lock is False:
+    wenn lock is Falsch:
         return obj
-    wenn lock in (True, None):
+    wenn lock in (Wahr, Nichts):
         ctx = ctx or get_context()
         lock = ctx.RLock()
     wenn not hasattr(lock, 'acquire'):
         raise AttributeError("%r has no method 'acquire'" % lock)
     return synchronized(obj, lock, ctx=ctx)
 
-def Array(typecode_or_type, size_or_initializer, *, lock=True, ctx=None):
+def Array(typecode_or_type, size_or_initializer, *, lock=Wahr, ctx=Nichts):
     '''
     Return a synchronization wrapper fuer a RawArray
     '''
     obj = RawArray(typecode_or_type, size_or_initializer)
-    wenn lock is False:
+    wenn lock is Falsch:
         return obj
-    wenn lock in (True, None):
+    wenn lock in (Wahr, Nichts):
         ctx = ctx or get_context()
         lock = ctx.RLock()
     wenn not hasattr(lock, 'acquire'):
@@ -105,7 +105,7 @@ def copy(obj):
     ctypes.pointer(new_obj)[0] = obj
     return new_obj
 
-def synchronized(obj, lock=None, ctx=None):
+def synchronized(obj, lock=Nichts, ctx=Nichts):
     assert not isinstance(obj, SynchronizedBase), 'object already synchronized'
     ctx = ctx or get_context()
 
@@ -135,10 +135,10 @@ def reduce_ctype(obj):
     wenn isinstance(obj, ctypes.Array):
         return rebuild_ctype, (obj._type_, obj._wrapper, obj._length_)
     sonst:
-        return rebuild_ctype, (type(obj), obj._wrapper, None)
+        return rebuild_ctype, (type(obj), obj._wrapper, Nichts)
 
 def rebuild_ctype(type_, wrapper, length):
-    wenn length is not None:
+    wenn length is not Nichts:
         type_ = type_ * length
     _ForkingPickler.register(type_, reduce_ctype)
     buf = wrapper.create_memoryview()
@@ -184,12 +184,12 @@ klasse_cache = weakref.WeakKeyDictionary()
 
 klasse SynchronizedBase(object):
 
-    def __init__(self, obj, lock=None, ctx=None):
+    def __init__(self, obj, lock=Nichts, ctx=Nichts):
         self._obj = obj
         wenn lock:
             self._lock = lock
         sonst:
-            ctx = ctx or get_context(force=True)
+            ctx = ctx or get_context(force=Wahr)
             self._lock = ctx.RLock()
         self.acquire = self._lock.acquire
         self.release = self._lock.release

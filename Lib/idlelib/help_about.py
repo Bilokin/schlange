@@ -23,7 +23,7 @@ klasse AboutDialog(Toplevel):
     """Modal about dialog fuer idle
 
     """
-    def __init__(self, parent, title=None, *, _htest=False, _utest=False):
+    def __init__(self, parent, title=Nichts, *, _htest=Falsch, _utest=Falsch):
         """Create popup, do not return until tk widget destroyed.
 
         parent - parent of this dialog
@@ -40,7 +40,7 @@ klasse AboutDialog(Toplevel):
         self.bg = "#bbbbbb"
         self.fg = "#000000"
         self.create_widgets()
-        self.resizable(height=False, width=False)
+        self.resizable(height=Falsch, width=Falsch)
         self.title(title or
                    f'About IDLE {pyver} ({bits} bit)')
         self.transient(parent)
@@ -50,7 +50,7 @@ klasse AboutDialog(Toplevel):
         self.button_ok.focus_set()
         self.bind('<Return>', self.ok)  # dismiss dialog
         self.bind('<Escape>', self.ok)  # dismiss dialog
-        self._current_textview = None
+        self._current_textview = Nichts
         self._utest = _utest
 
         wenn not _utest:
@@ -61,13 +61,13 @@ klasse AboutDialog(Toplevel):
         frame = Frame(self, borderwidth=2, relief=SUNKEN)
         frame_buttons = Frame(self)
         frame_buttons.pack(side=BOTTOM, fill=X)
-        frame.pack(side=TOP, expand=True, fill=BOTH)
+        frame.pack(side=TOP, expand=Wahr, fill=BOTH)
         self.button_ok = Button(frame_buttons, text='Close',
                                 command=self.ok)
         self.button_ok.pack(padx=5, pady=5)
 
         frame_background = Frame(frame, bg=self.bg)
-        frame_background.pack(expand=True, fill=BOTH)
+        frame_background.pack(expand=Wahr, fill=BOTH)
 
         header = Label(frame_background, text='IDLE', fg=self.fg,
                        bg=self.bg, font=('courier', 24, 'bold'))
@@ -186,7 +186,7 @@ klasse AboutDialog(Toplevel):
         self._current_textview = textview.view_text(
             self, title, text, _utest=self._utest)
 
-    def display_file_text(self, title, filename, encoding=None):
+    def display_file_text(self, title, filename, encoding=Nichts):
         """Create textview fuer filename.
 
         The filename needs to be in the current directory.  The path
@@ -197,7 +197,7 @@ klasse AboutDialog(Toplevel):
         self._current_textview = textview.view_file(
             self, title, fn, encoding, _utest=self._utest)
 
-    def ok(self, event=None):
+    def ok(self, event=Nichts):
         "Dismiss help_about dialog."
         self.grab_release()
         self.destroy()
@@ -205,7 +205,7 @@ klasse AboutDialog(Toplevel):
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_help_about', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_help_about', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(AboutDialog)

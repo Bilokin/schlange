@@ -15,12 +15,12 @@ from test.support.import_helper import make_legacy_pyc
 
 
 # Cached result of the expensive test performed in the function below.
-__cached_interp_requires_environment = None
+__cached_interp_requires_environment = Nichts
 
 
 def interpreter_requires_environment():
     """
-    Returns True wenn our sys.executable interpreter requires environment
+    Returns Wahr wenn our sys.executable interpreter requires environment
     variables in order to be able to run at all.
 
     This is designed to be used with @unittest.skipIf() to annotate tests
@@ -36,24 +36,24 @@ def interpreter_requires_environment():
     variables that might impact whether or not the interpreter can start.
     """
     global __cached_interp_requires_environment
-    wenn __cached_interp_requires_environment is None:
+    wenn __cached_interp_requires_environment is Nichts:
         # If PYTHONHOME is set, assume that we need it
         wenn 'PYTHONHOME' in os.environ:
-            __cached_interp_requires_environment = True
-            return True
+            __cached_interp_requires_environment = Wahr
+            return Wahr
         # cannot run subprocess, assume we don't need it
         wenn not support.has_subprocess_support:
-            __cached_interp_requires_environment = False
-            return False
+            __cached_interp_requires_environment = Falsch
+            return Falsch
 
         # Try running an interpreter with -E to see wenn it works or not.
         try:
             subprocess.check_call([sys.executable, '-E',
                                    '-c', 'import sys; sys.exit(0)'])
         except subprocess.CalledProcessError:
-            __cached_interp_requires_environment = True
+            __cached_interp_requires_environment = Wahr
         sonst:
-            __cached_interp_requires_environment = False
+            __cached_interp_requires_environment = Falsch
 
     return __cached_interp_requires_environment
 
@@ -107,8 +107,8 @@ def run_python_until_end(*args, **env_vars):
     run it.
     """
     env_required = interpreter_requires_environment()
-    run_using_command = env_vars.pop('__run_using_command', None)
-    cwd = env_vars.pop('__cwd', None)
+    run_using_command = env_vars.pop('__run_using_command', Nichts)
+    cwd = env_vars.pop('__cwd', Nichts)
     wenn '__isolated' in env_vars:
         isolated = env_vars.pop('__isolated')
     sonst:
@@ -126,7 +126,7 @@ def run_python_until_end(*args, **env_vars):
 
     # But a special flag that can be set to override -- in this case, the
     # caller is responsible to pass the full environment.
-    wenn env_vars.pop('__cleanenv', None):
+    wenn env_vars.pop('__cleanenv', Nichts):
         env = {}
         wenn sys.platform == 'win32':
             # Windows requires at least the SYSTEMROOT environment variable to
@@ -177,9 +177,9 @@ def assert_python_ok(*args, **env_vars):
     If the __cleanenv keyword is set, env_vars is used as a fresh environment.
 
     Python is started in isolated mode (command line option -I),
-    except wenn the __isolated keyword is set to False.
+    except wenn the __isolated keyword is set to Falsch.
     """
-    return _assert_python(True, *args, **env_vars)
+    return _assert_python(Wahr, *args, **env_vars)
 
 
 def assert_python_failure(*args, **env_vars):
@@ -190,7 +190,7 @@ def assert_python_failure(*args, **env_vars):
 
     See assert_python_ok() fuer more options.
     """
-    return _assert_python(False, *args, **env_vars)
+    return _assert_python(Falsch, *args, **env_vars)
 
 
 @support.requires_subprocess()
@@ -229,7 +229,7 @@ def kill_python(p):
     return data
 
 
-def make_script(script_dir, script_basename, source, omit_suffix=False):
+def make_script(script_dir, script_basename, source, omit_suffix=Falsch):
     script_filename = script_basename
     wenn not omit_suffix:
         script_filename += os.extsep + 'py'
@@ -245,12 +245,12 @@ def make_script(script_dir, script_basename, source, omit_suffix=False):
     return script_name
 
 
-def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=None):
+def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Nichts):
     import zipfile
     zip_filename = zip_basename+os.extsep+'zip'
     zip_name = os.path.join(zip_dir, zip_filename)
     with zipfile.ZipFile(zip_name, 'w') as zip_file:
-        wenn name_in_zip is None:
+        wenn name_in_zip is Nichts:
             parts = script_name.split(os.sep)
             wenn len(parts) >= 2 and parts[-2] == '__pycache__':
                 legacy_pyc = make_legacy_pyc(source_from_cache(script_name))
@@ -272,7 +272,7 @@ def make_pkg(pkg_dir, init_source=''):
 
 
 def make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
-                 source, depth=1, compiled=False):
+                 source, depth=1, compiled=Falsch):
     import zipfile
     unlink = []
     init_name = make_script(zip_dir, '__init__', '')
@@ -281,8 +281,8 @@ def make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
     script_name = make_script(zip_dir, script_basename, source)
     unlink.append(script_name)
     wenn compiled:
-        init_name = py_compile.compile(init_name, doraise=True)
-        script_name = py_compile.compile(script_name, doraise=True)
+        init_name = py_compile.compile(init_name, doraise=Wahr)
+        script_name = py_compile.compile(script_name, doraise=Wahr)
         unlink.extend((init_name, script_name))
     pkg_names = [os.sep.join([pkg_name]*i) fuer i in range(1, depth+1)]
     script_name_in_zip = os.path.join(pkg_names[-1], os.path.basename(script_name))
@@ -311,13 +311,13 @@ def run_test_script(script):
 
         name = f"script {os.path.basename(script)}"
         print()
-        print(title(name), flush=True)
+        print(title(name), flush=Wahr)
         # In verbose mode, the child process inherit stdout and stdout,
         # to see output in realtime and reduce the risk of losing output.
         args = [sys.executable, "-E", "-X", "faulthandler", "-u", script, "-v"]
         proc = subprocess.run(args)
         print(title(f"{name} completed: exit code {proc.returncode}"),
-              flush=True)
+              flush=Wahr)
         wenn proc.returncode:
             raise AssertionError(f"{name} failed")
     sonst:

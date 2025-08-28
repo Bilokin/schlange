@@ -15,12 +15,12 @@ from test.test_importlib import util as test_util
 
 
 klasse TestableTestProgram(unittest.TestProgram):
-    module = None
-    exit = True
-    defaultTest = failfast = catchbreak = buffer = None
+    module = Nichts
+    exit = Wahr
+    defaultTest = failfast = catchbreak = buffer = Nichts
     verbosity = 1
     progName = ''
-    testRunner = testLoader = None
+    testRunner = testLoader = Nichts
 
     def __init__(self):
         pass
@@ -74,7 +74,7 @@ klasse TestDiscovery(unittest.TestCase):
 
         loader._get_module_from_name = lambda path: path + ' module'
         orig_load_tests = loader.loadTestsFromModule
-        def loadTestsFromModule(module, pattern=None):
+        def loadTestsFromModule(module, pattern=Nichts):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
             return base + [module + ' tests']
@@ -112,15 +112,15 @@ klasse TestDiscovery(unittest.TestCase):
         os.listdir = lambda path: path_lists.pop(0)
         self.addCleanup(restore_listdir)
 
-        os.path.isdir = lambda path: False
+        os.path.isdir = lambda path: Falsch
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: False
+        os.path.isfile = lambda path: Falsch
         self.addCleanup(restore_isfile)
 
         loader._get_module_from_name = lambda path: path + ' module'
         orig_load_tests = loader.loadTestsFromModule
-        def loadTestsFromModule(module, pattern=None):
+        def loadTestsFromModule(module, pattern=Nichts):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
             return base + [module + ' tests']
@@ -151,7 +151,7 @@ klasse TestDiscovery(unittest.TestCase):
         os.listdir = lambda path: path_lists.pop(0)
         self.addCleanup(restore_listdir)
 
-        os.path.isdir = lambda path: True
+        os.path.isdir = lambda path: Wahr
         self.addCleanup(restore_isdir)
 
         os.path.isfile = lambda path: os.path.basename(path) not in directories
@@ -175,7 +175,7 @@ klasse TestDiscovery(unittest.TestCase):
 
         loader._get_module_from_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
-        def loadTestsFromModule(module, pattern=None):
+        def loadTestsFromModule(module, pattern=Nichts):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
             return base + [module.path + ' module tests']
@@ -225,7 +225,7 @@ klasse TestDiscovery(unittest.TestCase):
         os.listdir = lambda path: path_lists.pop(0)
         self.addCleanup(restore_listdir)
 
-        os.path.isdir = lambda path: True
+        os.path.isdir = lambda path: Wahr
         self.addCleanup(restore_isdir)
 
         os.path.isfile = lambda path: os.path.basename(path) not in directories
@@ -249,7 +249,7 @@ klasse TestDiscovery(unittest.TestCase):
 
         loader._get_module_from_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
-        def loadTestsFromModule(module, pattern=None):
+        def loadTestsFromModule(module, pattern=Nichts):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
             return base + [module.path + ' module tests']
@@ -374,7 +374,7 @@ klasse TestDiscovery(unittest.TestCase):
         def restore_isfile():
             os.path.isfile = original_isfile
 
-        os.path.isfile = lambda path: False
+        os.path.isfile = lambda path: Falsch
         self.addCleanup(restore_isfile)
 
         orig_sys_path = sys.path[:]
@@ -389,15 +389,15 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertEqual(loader._top_level_dir, full_path)
         self.assertIn(full_path, sys.path)
 
-        os.path.isfile = lambda path: True
-        os.path.isdir = lambda path: True
+        os.path.isfile = lambda path: Wahr
+        os.path.isdir = lambda path: Wahr
 
         def restore_isdir():
             os.path.isdir = original_isdir
         self.addCleanup(restore_isdir)
 
         _find_tests_args = []
-        def _find_tests(start_dir, pattern, namespace=None):
+        def _find_tests(start_dir, pattern, namespace=Nichts):
             _find_tests_args.append((start_dir, pattern))
             return ['tests']
         loader._find_tests = _find_tests
@@ -422,15 +422,15 @@ klasse TestDiscovery(unittest.TestCase):
             sys.path[:] = original_sys_path
         self.addCleanup(restore)
 
-        os.path.isfile = lambda path: True
-        os.path.isdir = lambda path: True
+        os.path.isfile = lambda path: Wahr
+        os.path.isdir = lambda path: Wahr
         loader = unittest.TestLoader()
         loader.suiteClass = str
         dir = '/foo/bar'
         top_level_dir = '/foo'
 
         loader.discover(dir, top_level_dir=top_level_dir)
-        self.assertEqual(loader._top_level_dir, None)
+        self.assertEqual(loader._top_level_dir, Nichts)
 
         loader._top_level_dir = dir2 = '/previous/dir'
         loader.discover(dir, top_level_dir=top_level_dir)
@@ -485,7 +485,7 @@ klasse TestDiscovery(unittest.TestCase):
         listdir = os.listdir
         os.listdir = lambda _: [fakefile]
         isfile = os.path.isfile
-        os.path.isfile = lambda _: True
+        os.path.isfile = lambda _: Wahr
         orig_sys_path = sys.path[:]
         def restore():
             os.path.isfile = isfile
@@ -497,7 +497,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.addCleanup(setattr, os, 'listdir', os.listdir)
         self.addCleanup(setattr, os.path, 'isfile', os.path.isfile)
         self.addCleanup(setattr, os.path, 'isdir', os.path.isdir)
-        self.addCleanup(sys.path.__setitem__, slice(None), list(sys.path))
+        self.addCleanup(sys.path.__setitem__, slice(Nichts), list(sys.path))
         def list_dir(path):
             return list(vfs[path])
         os.listdir = list_dir
@@ -516,7 +516,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertNotEqual([], loader.errors)
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
-        self.assertTrue(
+        self.assertWahr(
             'Failed to import test module: test_this_does_not_exist' in error,
             'missing error string in %r' % error)
         test = list(list(suite)[0])[0] # extract test from suite
@@ -542,7 +542,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertNotEqual([], loader.errors)
         self.assertEqual(1, len(loader.errors))
         error = loader.errors[0]
-        self.assertTrue(
+        self.assertWahr(
             'Failed to import test module: my_package' in error,
             'missing error string in %r' % error)
         test = list(list(suite)[0])[0] # extract test from suite
@@ -624,9 +624,9 @@ klasse TestDiscovery(unittest.TestCase):
         program.parseArgs(['something'])
         self.assertEqual(args, [[]])
         self.assertEqual(program.verbosity, 1)
-        self.assertIs(program.buffer, False)
-        self.assertIs(program.catchbreak, False)
-        self.assertIs(program.failfast, False)
+        self.assertIs(program.buffer, Falsch)
+        self.assertIs(program.catchbreak, Falsch)
+        self.assertIs(program.failfast, Falsch)
 
     def test_command_line_handling_discover_by_default_with_options(self):
         program = TestableTestProgram()
@@ -636,14 +636,14 @@ klasse TestDiscovery(unittest.TestCase):
         program.parseArgs(['something', '-v', '-b', '-v', '-c', '-f'])
         self.assertEqual(args, [[]])
         self.assertEqual(program.verbosity, 2)
-        self.assertIs(program.buffer, True)
-        self.assertIs(program.catchbreak, True)
-        self.assertIs(program.failfast, True)
+        self.assertIs(program.buffer, Wahr)
+        self.assertIs(program.catchbreak, Wahr)
+        self.assertIs(program.failfast, Wahr)
 
 
     def test_command_line_handling_do_discovery_too_many_arguments(self):
         program = TestableTestProgram()
-        program.testLoader = None
+        program.testLoader = Nichts
 
         with support.captured_stderr() as stderr, \
              self.assertRaises(SystemExit) as cm:
@@ -665,7 +665,7 @@ klasse TestDiscovery(unittest.TestCase):
 
         program.testLoader = Loader()
         program._do_discovery(['-v'])
-        self.assertEqual(Loader.args, [('.', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('.', 'test*.py', Nichts)])
 
     def test_command_line_handling_do_discovery_calls_loader(self):
         program = TestableTestProgram()
@@ -679,31 +679,31 @@ klasse TestDiscovery(unittest.TestCase):
         program._do_discovery(['-v'], Loader=Loader)
         self.assertEqual(program.verbosity, 2)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('.', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('.', 'test*.py', Nichts)])
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery(['--verbose'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('.', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('.', 'test*.py', Nichts)])
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery([], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('.', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('.', 'test*.py', Nichts)])
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery(['fish'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('fish', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('fish', 'test*.py', Nichts)])
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery(['fish', 'eggs'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('fish', 'eggs', None)])
+        self.assertEqual(Loader.args, [('fish', 'eggs', Nichts)])
 
         Loader.args = []
         program = TestableTestProgram()
@@ -715,7 +715,7 @@ klasse TestDiscovery(unittest.TestCase):
         program = TestableTestProgram()
         program._do_discovery(['-s', 'fish'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('fish', 'test*.py', None)])
+        self.assertEqual(Loader.args, [('fish', 'test*.py', Nichts)])
 
         Loader.args = []
         program = TestableTestProgram()
@@ -727,19 +727,19 @@ klasse TestDiscovery(unittest.TestCase):
         program = TestableTestProgram()
         program._do_discovery(['-p', 'fish'], Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('.', 'fish', None)])
-        self.assertFalse(program.failfast)
-        self.assertFalse(program.catchbreak)
+        self.assertEqual(Loader.args, [('.', 'fish', Nichts)])
+        self.assertFalsch(program.failfast)
+        self.assertFalsch(program.catchbreak)
 
         Loader.args = []
         program = TestableTestProgram()
         program._do_discovery(['-p', 'eggs', '-s', 'fish', '-v', '-f', '-c'],
                               Loader=Loader)
         self.assertEqual(program.test, 'tests')
-        self.assertEqual(Loader.args, [('fish', 'eggs', None)])
+        self.assertEqual(Loader.args, [('fish', 'eggs', Nichts)])
         self.assertEqual(program.verbosity, 2)
-        self.assertTrue(program.failfast)
-        self.assertTrue(program.catchbreak)
+        self.assertWahr(program.failfast)
+        self.assertWahr(program.catchbreak)
 
     def setup_module_clash(self):
         klasse Module(object):
@@ -764,9 +764,9 @@ klasse TestDiscovery(unittest.TestCase):
         def listdir(_):
             return ['foo.py']
         def isfile(_):
-            return True
+            return Wahr
         def isdir(_):
-            return True
+            return Wahr
         os.listdir = listdir
         os.path.isfile = isfile
         os.path.isdir = isdir
@@ -816,14 +816,14 @@ klasse TestDiscovery(unittest.TestCase):
         tests = [self]
         expectedPath = os.path.abspath(os.path.dirname(test.test_unittest.__file__))
 
-        self.wasRun = False
-        def _find_tests(start_dir, pattern, namespace=None):
-            self.wasRun = True
+        self.wasRun = Falsch
+        def _find_tests(start_dir, pattern, namespace=Nichts):
+            self.wasRun = Wahr
             self.assertEqual(start_dir, expectedPath)
             return tests
         loader._find_tests = _find_tests
         suite = loader.discover('test.test_unittest')
-        self.assertTrue(self.wasRun)
+        self.assertWahr(self.wasRun)
         self.assertEqual(suite._tests, tests)
 
 
@@ -835,7 +835,7 @@ klasse TestDiscovery(unittest.TestCase):
         os.listdir = lambda _: ['test_this_does_not_exist.py']
         isfile = os.path.isfile
         isdir = os.path.isdir
-        os.path.isdir = lambda _: False
+        os.path.isdir = lambda _: Falsch
         orig_sys_path = sys.path[:]
         def restore():
             os.path.isfile = isfile
@@ -856,10 +856,10 @@ klasse TestDiscovery(unittest.TestCase):
         package = types.ModuleType('package')
         package.__name__ = "tests"
         package.__path__ = ['/a', '/b']
-        package.__file__ = None
+        package.__file__ = Nichts
         package.__spec__ = types.SimpleNamespace(
             name=package.__name__,
-            loader=NamespaceLoader(package.__name__, package.__path__, None),
+            loader=NamespaceLoader(package.__name__, package.__path__, Nichts),
             submodule_search_locations=['/a', '/b']
         )
 
@@ -868,7 +868,7 @@ klasse TestDiscovery(unittest.TestCase):
             return package
 
         _find_tests_args = []
-        def _find_tests(start_dir, pattern, namespace=None):
+        def _find_tests(start_dir, pattern, namespace=Nichts):
             _find_tests_args.append((start_dir, pattern))
             return ['%s/tests' % start_dir]
 

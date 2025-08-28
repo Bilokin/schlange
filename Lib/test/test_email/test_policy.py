@@ -16,28 +16,28 @@ def make_defaults(base_defaults, differences):
 
 klasse PolicyAPITests(unittest.TestCase):
 
-    longMessage = True
+    longMessage = Wahr
 
     # Base default values.
     compat32_defaults = {
         'max_line_length':          78,
         'linesep':                  '\n',
         'cte_type':                 '8bit',
-        'raise_on_defect':          False,
-        'mangle_from_':             True,
-        'message_factory':          None,
-        'verify_generated_headers': True,
+        'raise_on_defect':          Falsch,
+        'mangle_from_':             Wahr,
+        'message_factory':          Nichts,
+        'verify_generated_headers': Wahr,
         }
     # These default values are the ones set on email.policy.default.
     # If any of these defaults change, the docs must be updated.
     policy_defaults = compat32_defaults.copy()
     policy_defaults.update({
-        'utf8':                     False,
-        'raise_on_defect':          False,
+        'utf8':                     Falsch,
+        'raise_on_defect':          Falsch,
         'header_factory':           email.policy.EmailPolicy.header_factory,
         'refold_source':            'long',
         'content_manager':          email.policy.EmailPolicy.content_manager,
-        'mangle_from_':             False,
+        'mangle_from_':             Falsch,
         'message_factory':          email.message.EmailMessage,
         })
 
@@ -52,12 +52,12 @@ klasse PolicyAPITests(unittest.TestCase):
                                          {'linesep': '\r\n'}),
         email.policy.SMTPUTF8: make_defaults(policy_defaults,
                                              {'linesep': '\r\n',
-                                              'utf8': True}),
+                                              'utf8': Wahr}),
         email.policy.HTTP: make_defaults(policy_defaults,
                                          {'linesep': '\r\n',
-                                          'max_line_length': None}),
+                                          'max_line_length': Nichts}),
         email.policy.strict: make_defaults(policy_defaults,
-                                           {'raise_on_defect': True}),
+                                           {'raise_on_defect': Wahr}),
         new_policy: make_defaults(policy_defaults, {}),
         }
     # Creating a new policy creates a new header factory.  There is a test
@@ -100,25 +100,25 @@ klasse PolicyAPITests(unittest.TestCase):
         fuer policy, defaults in self.policies.items():
             fuer attr in defaults:
                 with self.assertRaisesRegex(AttributeError, attr+".*read-only"):
-                    setattr(policy, attr, None)
+                    setattr(policy, attr, Nichts)
             with self.assertRaisesRegex(AttributeError, 'no attribute.*foo'):
-                policy.foo = None
+                policy.foo = Nichts
 
     def test_set_policy_attrs_when_cloned(self):
-        # None of the attributes has a default value of None, so we set them
-        # all to None in the clone call and check that it worked.
+        # Nichts of the attributes has a default value of Nichts, so we set them
+        # all to Nichts in the clone call and check that it worked.
         fuer policyclass, defaults in self.policies.items():
-            testattrdict = {attr: None fuer attr in defaults}
+            testattrdict = {attr: Nichts fuer attr in defaults}
             policy = policyclass.clone(**testattrdict)
             fuer attr in defaults:
-                self.assertIsNone(getattr(policy, attr))
+                self.assertIsNichts(getattr(policy, attr))
 
     def test_reject_non_policy_keyword_when_called(self):
         fuer policyclass in self.policies:
             with self.assertRaises(TypeError):
-                policyclass(this_keyword_should_not_be_valid=None)
+                policyclass(this_keyword_should_not_be_valid=Nichts)
             with self.assertRaises(TypeError):
-                policyclass(newtline=None)
+                policyclass(newtline=Nichts)
 
     def test_policy_addition(self):
         expected = self.policy_defaults.copy()
@@ -145,7 +145,7 @@ klasse PolicyAPITests(unittest.TestCase):
         msg['Subject'] = s
 
         p_ascii = email.policy.default.clone()
-        p_utf8 = email.policy.default.clone(utf8=True)
+        p_utf8 = email.policy.default.clone(utf8=Wahr)
 
         self.assertEqual(p_ascii.fold('Subject', msg['Subject']), expected_ascii)
         self.assertEqual(p_utf8.fold('Subject', msg['Subject']), expected_utf8)
@@ -160,7 +160,7 @@ klasse PolicyAPITests(unittest.TestCase):
         msg['Subject'] = 'á'
 
         p1 = email.policy.default.clone(max_line_length=0)
-        p2 = email.policy.default.clone(max_line_length=None)
+        p2 = email.policy.default.clone(max_line_length=Nichts)
 
         self.assertEqual(p1.fold('Subject', msg['Subject']), expected)
         self.assertEqual(p2.fold('Subject', msg['Subject']), expected)
@@ -201,7 +201,7 @@ klasse PolicyAPITests(unittest.TestCase):
         self.assertEqual(foo.defects, [defect1, defect2])
 
     klasse MyPolicy(email.policy.EmailPolicy):
-        defects = None
+        defects = Nichts
         def __init__(self, *args, **kw):
             super().__init__(*args, defects=[], **kw)
         def register_defect(self, obj, defect):
@@ -211,7 +211,7 @@ klasse PolicyAPITests(unittest.TestCase):
         foo = self.MyObj()
         defect = self.MyDefect("the telly is broken")
         with self.assertRaisesRegex(self.MyDefect, "the telly is broken"):
-            self.MyPolicy(raise_on_defect=True).handle_defect(foo, defect)
+            self.MyPolicy(raise_on_defect=Wahr).handle_defect(foo, defect)
 
     def test_overridden_register_defect_works(self):
         foo = self.MyObj()
@@ -266,7 +266,7 @@ klasse PolicyAPITests(unittest.TestCase):
         newpolicy = email.policy.default + email.policy.strict
         self.assertEqual(newpolicy.header_factory,
                          email.policy.EmailPolicy.header_factory)
-        self.assertEqual(newpolicy.__dict__, {'raise_on_defect': True})
+        self.assertEqual(newpolicy.__dict__, {'raise_on_defect': Wahr})
 
     def test_non_ascii_chars_do_not_cause_inf_loop(self):
         policy = email.policy.default.clone(max_line_length=20)
@@ -297,7 +297,7 @@ klasse PolicyAPITests(unittest.TestCase):
 
     def test_verify_generated_headers(self):
         """Turning protection off allows header injection"""
-        policy = email.policy.default.clone(verify_generated_headers=False)
+        policy = email.policy.default.clone(verify_generated_headers=Falsch)
         fuer text in (
             'Header: Value\r\nBad: Injection\r\n',
             'Header: NoNewLine'
@@ -375,8 +375,8 @@ klasse TestPolicyPropagation(unittest.TestCase):
     # policy in to feedparser, we can use message_from_string for
     # the rest of the propagation tests.
 
-    def _make_msg(self, source='Subject: test\n\n', policy=None):
-        self.policy = email.policy.default.clone() wenn policy is None sonst policy
+    def _make_msg(self, source='Subject: test\n\n', policy=Nichts):
+        self.policy = email.policy.default.clone() wenn policy is Nichts sonst policy
         return email.message_from_string(source, policy=self.policy)
 
     def test_parser_propagates_policy_to_message(self):

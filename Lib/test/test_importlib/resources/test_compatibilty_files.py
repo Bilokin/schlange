@@ -39,18 +39,18 @@ klasse CompatibilityFilesTests(unittest.TestCase):
         self.assertEqual(list((self.files / 'a' / 'a' / 'a').iterdir()), [])
 
     def test_spec_path_is(self):
-        self.assertFalse(self.files.is_file())
-        self.assertFalse(self.files.is_dir())
+        self.assertFalsch(self.files.is_file())
+        self.assertFalsch(self.files.is_dir())
 
     def test_child_path_is(self):
-        self.assertTrue((self.files / 'a').is_file())
-        self.assertFalse((self.files / 'a').is_dir())
+        self.assertWahr((self.files / 'a').is_file())
+        self.assertFalsch((self.files / 'a').is_dir())
 
     def test_orphan_path_is(self):
-        self.assertFalse((self.files / 'a' / 'a').is_file())
-        self.assertFalse((self.files / 'a' / 'a').is_dir())
-        self.assertFalse((self.files / 'a' / 'a' / 'a').is_file())
-        self.assertFalse((self.files / 'a' / 'a' / 'a').is_dir())
+        self.assertFalsch((self.files / 'a' / 'a').is_file())
+        self.assertFalsch((self.files / 'a' / 'a').is_dir())
+        self.assertFalsch((self.files / 'a' / 'a' / 'a').is_file())
+        self.assertFalsch((self.files / 'a' / 'a' / 'a').is_dir())
 
     def test_spec_path_name(self):
         self.assertEqual(self.files.name, 'testingpackage')
@@ -88,13 +88,13 @@ klasse CompatibilityFilesTests(unittest.TestCase):
 
     def test_wrap_spec(self):
         spec = wrap_spec(self.package)
-        self.assertIsInstance(spec.loader.get_resource_reader(None), CompatibilityFiles)
+        self.assertIsInstance(spec.loader.get_resource_reader(Nichts), CompatibilityFiles)
 
 
 klasse CompatibilityFilesNoReaderTests(unittest.TestCase):
     @property
     def package(self):
-        return util.create_package_from_loader(None)
+        return util.create_package_from_loader(Nichts)
 
     @property
     def files(self):

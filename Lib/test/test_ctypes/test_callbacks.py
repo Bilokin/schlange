@@ -112,14 +112,14 @@ klasse Callbacks(unittest.TestCase):
 
         prototype = self.functype.__func__(POINTER(c_double))
         # The type is checked when the prototype is called
-        self.assertRaises(TypeError, prototype, lambda: None)
+        self.assertRaises(TypeError, prototype, lambda: Nichts)
 
     def test_unsupported_restype_2(self):
         prototype = self.functype.__func__(object)
-        self.assertRaises(TypeError, prototype, lambda: None)
+        self.assertRaises(TypeError, prototype, lambda: Nichts)
 
     def test_issue_7959(self):
-        proto = self.functype.__func__(None)
+        proto = self.functype.__func__(Nichts)
 
         klasse X:
             def func(self): pass
@@ -137,7 +137,7 @@ klasse Callbacks(unittest.TestCase):
         klasse Nasty:
             def __del__(self):
                 gc.collect()
-        CFUNCTYPE(None)(lambda x=Nasty(): None)
+        CFUNCTYPE(Nichts)(lambda x=Nasty(): Nichts)
 
     @unittest.skipUnless(hasattr(ctypes, 'WINFUNCTYPE'),
                          'ctypes.WINFUNCTYPE is required')
@@ -207,7 +207,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         def EnumWindowsCallbackFunc(hwnd, lParam):
             global windowCount
             windowCount += 1
-            return True #Allow windows to keep enumerating
+            return Wahr #Allow windows to keep enumerating
 
         user32 = ctypes.windll.user32
         user32.EnumWindows(EnumWindowsCallbackFunc, 0)
@@ -274,11 +274,11 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         s.second = 0xcafebabe
         s.third = 0x0bad1dea
 
-        CALLBACK = CFUNCTYPE(None, X)
+        CALLBACK = CFUNCTYPE(Nichts, X)
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_cbk_large_struct
         func.argtypes = (X, CALLBACK)
-        func.restype = None
+        func.restype = Nichts
         # the function just calls the callback with the passed structure
         func(s, CALLBACK(functools.partial(callback, check)))
         self.assertEqual(check.first, s.first)
@@ -326,7 +326,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
             self.assertEqual(cm.unraisable.err_msg,
                              f"Exception ignored while converting result "
                              f"of ctypes callback function {func!r}")
-            self.assertIsNone(cm.unraisable.object)
+            self.assertIsNichts(cm.unraisable.object)
 
 
 wenn __name__ == '__main__':

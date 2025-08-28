@@ -98,13 +98,13 @@ def len_q(bstring):
 #
 
 def decode_b(encoded):
-    # First try encoding with validate=True, fixing the padding wenn needed.
+    # First try encoding with validate=Wahr, fixing the padding wenn needed.
     # This will succeed only wenn encoded includes no invalid characters.
     pad_err = len(encoded) % 4
     missing_padding = b'==='[:4-pad_err] wenn pad_err sonst b''
     try:
         return (
-            base64.b64decode(encoded + missing_padding, validate=True),
+            base64.b64decode(encoded + missing_padding, validate=Wahr),
             [errors.InvalidBase64PaddingDefect()] wenn pad_err sonst [],
         )
     except binascii.Error:
@@ -115,7 +115,7 @@ def decode_b(encoded):
         # padding to see wenn it works.
         try:
             return (
-                base64.b64decode(encoded, validate=False),
+                base64.b64decode(encoded, validate=Falsch),
                 [errors.InvalidBase64CharactersDefect()],
             )
         except binascii.Error:
@@ -123,7 +123,7 @@ def decode_b(encoded):
             # is ignored).
             try:
                 return (
-                    base64.b64decode(encoded + b'==', validate=False),
+                    base64.b64decode(encoded + b'==', validate=Falsch),
                     [errors.InvalidBase64CharactersDefect(),
                      errors.InvalidBase64PaddingDefect()],
                 )
@@ -201,7 +201,7 @@ _cte_encode_length = {
     'b': len_b,
     }
 
-def encode(string, charset='utf-8', encoding=None, lang=''):
+def encode(string, charset='utf-8', encoding=Nichts, lang=''):
     """Encode string using the CTE encoding that produces the shorter result.
 
     Produces an RFC 2047/2243 encoded word of the form:
@@ -212,7 +212,7 @@ def encode(string, charset='utf-8', encoding=None, lang=''):
     Optional argument charset (defaults to utf-8) specifies the charset to use
     to encode the string to binary before CTE encoding it.  Optional argument
     'encoding' is the cte specifier fuer the encoding that should be used ('q'
-    or 'b'); wenn it is None (the default) the encoding which produces the
+    or 'b'); wenn it is Nichts (the default) the encoding which produces the
     shortest encoded sequence is used, except that 'q' is preferred wenn it is up
     to five characters longer.  Optional argument 'lang' (default '') gives the
     RFC 2243 language string to specify in the encoded word.
@@ -222,7 +222,7 @@ def encode(string, charset='utf-8', encoding=None, lang=''):
         bstring = string.encode('ascii', 'surrogateescape')
     sonst:
         bstring = string.encode(charset)
-    wenn encoding is None:
+    wenn encoding is Nichts:
         qlen = _cte_encode_length['q'](bstring)
         blen = _cte_encode_length['b'](bstring)
         # Bias toward q.  5 is arbitrary.

@@ -5,15 +5,15 @@ from ctypes import (Structure, POINTER, pointer, c_char_p, c_int)
 klasse SimpleTestCase(unittest.TestCase):
     def test_cint(self):
         x = c_int()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
         x.value = 42
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
         x = c_int(99)
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
 
     def test_ccharp(self):
         x = c_char_p()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
         x.value = b"abc"
         self.assertEqual(x._objects, b"abc")
         x = c_char_p(b"spam")
@@ -27,17 +27,17 @@ klasse StructureTestCase(unittest.TestCase):
                         ("b", c_int)]
 
         x = X()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
         x.a = 42
         x.b = 99
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
 
     def test_ccharp_struct(self):
         klasse X(Structure):
             _fields_ = [("a", c_char_p),
                         ("b", c_char_p)]
         x = X()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
 
         x.a = b"spam"
         x.b = b"foo"
@@ -54,7 +54,7 @@ klasse StructureTestCase(unittest.TestCase):
         r.ul.y = 1
         r.lr.x = 2
         r.lr.y = 3
-        self.assertEqual(r._objects, None)
+        self.assertEqual(r._objects, Nichts)
 
         r = RECT()
         pt = POINT(1, 2)
@@ -72,11 +72,11 @@ klasse ArrayTestCase(unittest.TestCase):
         INTARR = c_int * 3
 
         ia = INTARR()
-        self.assertEqual(ia._objects, None)
+        self.assertEqual(ia._objects, Nichts)
         ia[0] = 1
         ia[1] = 2
         ia[2] = 3
-        self.assertEqual(ia._objects, None)
+        self.assertEqual(ia._objects, Nichts)
 
         klasse X(Structure):
             _fields_ = [("x", c_int),
@@ -86,7 +86,7 @@ klasse ArrayTestCase(unittest.TestCase):
         x.x = 1000
         x.a[0] = 42
         x.a[1] = 96
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
         x.a = ia
         self.assertEqual(x._objects, {'1': {}})
 

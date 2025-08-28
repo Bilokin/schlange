@@ -58,16 +58,16 @@ klasse Idb(bdb.Bdb):
 def _in_rpc_code(frame):
     "Determine wenn debugger is within RPC code."
     wenn frame.f_code.co_filename.count('rpc.py'):
-        return True  # Skip this frame.
+        return Wahr  # Skip this frame.
     sonst:
         prev_frame = frame.f_back
-        wenn prev_frame is None:
-            return False
+        wenn prev_frame is Nichts:
+            return Falsch
         prev_name = prev_frame.f_code.co_filename
         wenn 'idlelib' in prev_name and 'debugger' in prev_name:
             # catch both idlelib/debugger.py and idlelib/debugger_r.py
             # on both Posix and Windows
-            return False
+            return Falsch
         return _in_rpc_code(prev_frame)
 
 def _frame2message(frame):
@@ -88,15 +88,15 @@ klasse Debugger:
     This klasse handles the drawing of the debugger window and
     the interactions with the underlying debugger session.
     """
-    vstack = None
-    vsource = None
-    vlocals = None
-    vglobals = None
-    stackviewer = None
-    localsviewer = None
-    globalsviewer = None
+    vstack = Nichts
+    vsource = Nichts
+    vlocals = Nichts
+    vglobals = Nichts
+    stackviewer = Nichts
+    localsviewer = Nichts
+    globalsviewer = Nichts
 
-    def __init__(self, pyshell, idb=None):
+    def __init__(self, pyshell, idb=Nichts):
         """Instantiate and draw a debugger window.
 
         :param pyshell: An instance of the PyShell Window
@@ -105,13 +105,13 @@ klasse Debugger:
         :param idb: An instance of the IDLE debugger (optional)
         :type  idb: :class:`idlelib.debugger.Idb`
         """
-        wenn idb is None:
+        wenn idb is Nichts:
             idb = Idb(self)
         self.pyshell = pyshell
         self.idb = idb  # If passed, a proxy of remote instance.
-        self.frame = None
+        self.frame = Nichts
         self.make_gui()
-        self.interacting = False
+        self.interacting = Falsch
         self.nesting_level = 0
 
     def run(self, *args):
@@ -150,12 +150,12 @@ klasse Debugger:
             self.root.after(100, lambda: self.run(*args))
             return
         try:
-            self.interacting = True
+            self.interacting = Wahr
             return self.idb.run(*args)
         finally:
-            self.interacting = False
+            self.interacting = Falsch
 
-    def close(self, event=None):
+    def close(self, event=Nichts):
         """Close the debugger and window."""
         try:
             self.quit()
@@ -165,7 +165,7 @@ klasse Debugger:
             self.top.bell()
             return
         wenn self.stackviewer:
-            self.stackviewer.close(); self.stackviewer = None
+            self.stackviewer.close(); self.stackviewer = Nichts
         # Clean up pyshell wenn user clicked debugger control close widget.
         # (Causes a harmless extra cycle through close_debugger() wenn user
         # toggled debugger from pyshell Debug menu)
@@ -249,7 +249,7 @@ klasse Debugger:
         wenn self.vglobals.get():
             self.show_globals()
 
-    def interaction(self, message, frame, info=None):
+    def interaction(self, message, frame, info=Nichts):
         self.frame = frame
         self.status.configure(text=message)
 
@@ -259,7 +259,7 @@ klasse Debugger:
                 m1 = type.__name__
             except AttributeError:
                 m1 = "%s" % str(type)
-            wenn value is not None:
+            wenn value is not Nichts:
                 try:
                    # TODO redo entire section, tries not needed.
                     m1 = f"{m1}: {value}"
@@ -268,7 +268,7 @@ klasse Debugger:
             bg = "yellow"
         sonst:
             m1 = ""
-            tb = None
+            tb = Nichts
             bg = self.errorbg
         self.error.configure(text=m1, background=bg)
 
@@ -297,7 +297,7 @@ klasse Debugger:
             b.configure(state="disabled")
         self.status.configure(text="")
         self.error.configure(text="", background=self.errorbg)
-        self.frame = None
+        self.frame = Nichts
 
     def sync_source_line(self):
         frame = self.frame
@@ -340,12 +340,12 @@ klasse Debugger:
         wenn not self.stackviewer and self.vstack.get():
             self.stackviewer = sv = StackViewer(self.fstack, self.flist, self)
             wenn self.frame:
-                stack, i = self.idb.get_stack(self.frame, None)
+                stack, i = self.idb.get_stack(self.frame, Nichts)
                 sv.load_stack(stack, i)
         sonst:
             sv = self.stackviewer
             wenn sv and not self.vstack.get():
-                self.stackviewer = None
+                self.stackviewer = Nichts
                 sv.close()
             self.fstack['height'] = 1
 
@@ -364,7 +364,7 @@ klasse Debugger:
                 self.localsviewer = NamespaceViewer(self.flocals, "Locals")
         sonst:
             wenn lv:
-                self.localsviewer = None
+                self.localsviewer = Nichts
                 lv.close()
                 self.flocals['height'] = 1
         self.show_variables()
@@ -376,7 +376,7 @@ klasse Debugger:
                 self.globalsviewer = NamespaceViewer(self.fglobals, "Globals")
         sonst:
             wenn gv:
-                self.globalsviewer = None
+                self.globalsviewer = Nichts
                 gv.close()
                 self.fglobals['height'] = 1
         self.show_variables()
@@ -386,12 +386,12 @@ klasse Debugger:
         gv = self.globalsviewer
         frame = self.frame
         wenn not frame:
-            ldict = gdict = None
+            ldict = gdict = Nichts
         sonst:
             ldict = frame.f_locals
             gdict = frame.f_globals
             wenn lv and gv and ldict is gdict:
-                ldict = None
+                ldict = Nichts
         wenn lv:
             lv.load_dict(ldict, force, self.pyshell.interp.rpcclt)
         wenn gv:
@@ -436,7 +436,7 @@ klasse StackViewer(ScrolledList):
         self.gui = gui
         self.stack = []
 
-    def load_stack(self, stack, index=None):
+    def load_stack(self, stack, index=Nichts):
         self.stack = stack
         self.clear()
         fuer i in range(len(stack)):
@@ -451,7 +451,7 @@ klasse StackViewer(ScrolledList):
             import linecache
             sourceline = linecache.getline(filename, lineno)
             sourceline = sourceline.strip()
-            wenn funcname in ("?", "", None):
+            wenn funcname in ("?", "", Nichts):
                 item = "%s, line %d: %s" % (modname, lineno, sourceline)
             sonst:
                 item = "%s.%s(), line %d: %s" % (modname, funcname,
@@ -459,7 +459,7 @@ klasse StackViewer(ScrolledList):
             wenn i == index:
                 item = "> " + item
             self.append(item)
-        wenn index is not None:
+        wenn index is not Nichts:
             self.select(index)
 
     def popup_event(self, event):
@@ -508,7 +508,7 @@ klasse StackViewer(ScrolledList):
 klasse NamespaceViewer:
     "Global/local namespace viewer fuer debugger GUI."
 
-    def __init__(self, master, title, odict=None):  # XXX odict never passed.
+    def __init__(self, master, title, odict=Nichts):  # XXX odict never passed.
         width = 0
         height = 40
         wenn odict:
@@ -537,16 +537,16 @@ klasse NamespaceViewer:
 
     prev_odict = -1  # Needed fuer initial comparison below.
 
-    def load_dict(self, odict, force=0, rpc_client=None):
+    def load_dict(self, odict, force=0, rpc_client=Nichts):
         wenn odict is self.prev_odict and not force:
             return
         subframe = self.subframe
         frame = self.frame
         fuer c in list(subframe.children.values()):
             c.destroy()
-        self.prev_odict = None
+        self.prev_odict = Nichts
         wenn not odict:
-            l = Label(subframe, text="None")
+            l = Label(subframe, text="Nichts")
             l.grid(row=0, column=0)
         sonst:
             #names = sorted(dict)
@@ -597,6 +597,6 @@ klasse NamespaceViewer:
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_debugger', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_debugger', verbosity=2, exit=Falsch)
 
 # TODO: htest?

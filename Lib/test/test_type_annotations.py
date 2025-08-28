@@ -15,9 +15,9 @@ klasse TypeAnnotationTests(unittest.TestCase):
         # a freshly created type shouldn't have an annotations dict yet.
         foo = type("Foo", (), {})
         fuer i in range(3):
-            self.assertFalse("__annotations_cache__" in foo.__dict__)
+            self.assertFalsch("__annotations_cache__" in foo.__dict__)
             d = foo.__annotations__
-            self.assertTrue("__annotations_cache__" in foo.__dict__)
+            self.assertWahr("__annotations_cache__" in foo.__dict__)
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations_cache__'], d)
             del foo.__annotations__
@@ -25,10 +25,10 @@ klasse TypeAnnotationTests(unittest.TestCase):
     def test_setting_annotations(self):
         foo = type("Foo", (), {})
         fuer i in range(3):
-            self.assertFalse("__annotations_cache__" in foo.__dict__)
+            self.assertFalsch("__annotations_cache__" in foo.__dict__)
             d = {'a': int}
             foo.__annotations__ = d
-            self.assertTrue("__annotations_cache__" in foo.__dict__)
+            self.assertWahr("__annotations_cache__" in foo.__dict__)
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations_cache__'], d)
             del foo.__annotations__
@@ -54,9 +54,9 @@ klasse TypeAnnotationTests(unittest.TestCase):
             a:int=3
             b:str=4
         self.assertEqual(C.__annotations__, {"a": int, "b": str})
-        self.assertTrue("__annotations_cache__" in C.__dict__)
+        self.assertWahr("__annotations_cache__" in C.__dict__)
         del C.__annotations__
-        self.assertFalse("__annotations_cache__" in C.__dict__)
+        self.assertFalsch("__annotations_cache__" in C.__dict__)
 
     def test_pep563_annotations(self):
         isa = inspect_stringized_annotations
@@ -81,28 +81,28 @@ klasse TypeAnnotationTests(unittest.TestCase):
 
     def test_del_annotations_and_annotate(self):
         # gh-132285
-        called = False
+        called = Falsch
         klasse A:
             def __annotate__(format):
                 nonlocal called
-                called = True
+                called = Wahr
                 return {'a': int}
 
         self.assertEqual(A.__annotations__, {'a': int})
-        self.assertTrue(called)
-        self.assertTrue(A.__annotate__)
+        self.assertWahr(called)
+        self.assertWahr(A.__annotate__)
 
         del A.__annotations__
-        called = False
+        called = Falsch
 
         self.assertEqual(A.__annotations__, {})
-        self.assertFalse(called)
-        self.assertIs(A.__annotate__, None)
+        self.assertFalsch(called)
+        self.assertIs(A.__annotate__, Nichts)
 
     def test_descriptor_still_works(self):
         klasse C:
-            def __init__(self, name=None, bases=None, d=None):
-                self.my_annotations = None
+            def __init__(self, name=Nichts, bases=Nichts, d=Nichts):
+                self.my_annotations = Nichts
 
             @property
             def __annotations__(self):
@@ -120,9 +120,9 @@ klasse TypeAnnotationTests(unittest.TestCase):
 
             @__annotations__.deleter
             def __annotations__(self):
-                wenn getattr(self, 'my_annotations', False) is None:
+                wenn getattr(self, 'my_annotations', Falsch) is Nichts:
                     raise AttributeError('__annotations__')
-                self.my_annotations = None
+                self.my_annotations = Nichts
 
         c = C()
         self.assertEqual(c.__annotations__, {})
@@ -194,14 +194,14 @@ klasse TestSetupAnnotations(unittest.TestCase):
         self.check("x: int = 1")
 
     def test_blocks(self):
-        self.check("if True:\n    x: int = 1")
+        self.check("if Wahr:\n    x: int = 1")
         self.check("""
-            while True:
+            while Wahr:
                 x: int = 1
                 break
         """)
         self.check("""
-            while False:
+            while Falsch:
                 pass
             sonst:
                 x: int = 1
@@ -300,9 +300,9 @@ klasse AnnotateTests(unittest.TestCase):
 
     def check_annotations(self, f):
         self.assertEqual(f.__annotations__, {})
-        self.assertIs(f.__annotate__, None)
+        self.assertIs(f.__annotate__, Nichts)
 
-        with self.assertRaisesRegex(TypeError, "__annotate__ must be callable or None"):
+        with self.assertRaisesRegex(TypeError, "__annotate__ must be callable or Nichts"):
             f.__annotate__ = 42
         f.__annotate__ = lambda: 42
         with self.assertRaisesRegex(TypeError, r"takes 0 positional arguments but 1 was given"):
@@ -315,8 +315,8 @@ klasse AnnotateTests(unittest.TestCase):
         f.__annotate__ = lambda x: {"x": x}
         self.assertEqual(f.__annotations__, {"x": 1})
 
-        # Setting annotate to None does not invalidate the cached __annotations__
-        f.__annotate__ = None
+        # Setting annotate to Nichts does not invalidate the cached __annotations__
+        f.__annotate__ = Nichts
         self.assertEqual(f.__annotations__, {"x": 1})
 
         # But setting it to a new callable does
@@ -325,7 +325,7 @@ klasse AnnotateTests(unittest.TestCase):
 
         # Setting f.__annotations__ also clears __annotate__
         f.__annotations__ = {"z": 43}
-        self.assertIs(f.__annotate__, None)
+        self.assertIs(f.__annotate__, Nichts)
 
     def test_user_defined_annotate(self):
         klasse X:
@@ -472,7 +472,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
                 with self.assertRaises(NotImplementedError):
                     annotate(annotationlib.Format.STRING)
                 with self.assertRaises(TypeError):
-                    annotate(None)
+                    annotate(Nichts)
                 self.assertEqual(annotate(annotationlib.Format.VALUE), {"x": int})
 
                 sig = inspect.signature(annotate)
@@ -507,7 +507,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         klasse f:
             x: int
         """)
-        fuer future in (False, True):
+        fuer future in (Falsch, Wahr):
             fuer label, code in (("function", function_code), ("class", class_code)):
                 with self.subTest(future=future, label=label):
                     wenn future:
@@ -562,7 +562,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         def outer():
             def f(x: format):
                 pass
-            wenn False:
+            wenn Falsch:
                 klasse format: pass
             return f
         f = outer()
@@ -580,7 +580,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
         fuer scope in ("class", "module"):
             fuer (cond, expected) in (
                 # Constants (so code might get optimized out)
-                (True, true_annos), (False, false_annos),
+                (Wahr, true_annos), (Falsch, false_annos),
                 # Non-constant expressions
                 ("not not len", true_annos), ("not len", false_annos),
             ):
@@ -602,7 +602,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
                     pass
 
                 def __exit__(self, *args):
-                    return True
+                    return Wahr
 
             with Swallower():
                 wenn {cond}:
@@ -700,9 +700,9 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
     def test_match(self):
         code = """
             match {cond}:
-                case True:
+                case Wahr:
                     x: "true"
-                case False:
+                case Falsch:
                     x: "false"
         """
         self.check_scopes(
@@ -831,7 +831,7 @@ klasse RegressionTests(unittest.TestCase):
         mod = build_module(code)
         annos = mod.__annotations__
         self.assertEqual(annos.keys(), {"unique_name_7", "unique_name_2"})
-        self.assertEqual(annos["unique_name_7"], {True})
+        self.assertEqual(annos["unique_name_7"], {Wahr})
         genexp = annos["unique_name_2"][0]
         lamb = list(genexp)[0]
         self.assertEqual(lamb(), 42)

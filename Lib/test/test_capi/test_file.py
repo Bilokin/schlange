@@ -8,7 +8,7 @@ from test.support import import_helper, os_helper, warnings_helper
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 _io = import_helper.import_module('_io')
-NULL = None
+NULL = Nichts
 STDOUT_FD = 1
 
 with open(__file__, 'rb') as fp:
@@ -144,7 +144,7 @@ klasse CAPIFileTest(unittest.TestCase):
         # bool emits RuntimeWarning
         msg = r"bool is used as a file descriptor"
         with warnings_helper.check_warnings((msg, RuntimeWarning)):
-            self.assertEqual(asfd(True), 1)
+            self.assertEqual(asfd(Wahr), 1)
 
         klasse FakeFile:
             def __init__(self, fd):
@@ -175,19 +175,19 @@ klasse CAPIFileTest(unittest.TestCase):
         pyfile_newstdprinter = _testcapi.pyfile_newstdprinter
 
         file = pyfile_newstdprinter(STDOUT_FD)
-        self.assertEqual(file.closed, False)
-        self.assertIsNone(file.encoding)
+        self.assertEqual(file.closed, Falsch)
+        self.assertIsNichts(file.encoding)
         self.assertEqual(file.mode, "w")
 
         self.assertEqual(file.fileno(), STDOUT_FD)
         self.assertEqual(file.isatty(), os.isatty(STDOUT_FD))
 
         # flush() is a no-op
-        self.assertIsNone(file.flush())
+        self.assertIsNichts(file.flush())
 
         # close() is a no-op
-        self.assertIsNone(file.close())
-        self.assertEqual(file.closed, False)
+        self.assertIsNichts(file.close())
+        self.assertEqual(file.closed, Falsch)
 
         support.check_disallow_instantiation(self, type(file))
 
@@ -242,10 +242,10 @@ klasse CAPIFileTest(unittest.TestCase):
             os_helper.TESTFN,
             os.fsencode(os_helper.TESTFN),
         ]
-        wenn os_helper.TESTFN_UNDECODABLE is not None:
+        wenn os_helper.TESTFN_UNDECODABLE is not Nichts:
             filenames.append(os_helper.TESTFN_UNDECODABLE)
             filenames.append(os.fsdecode(os_helper.TESTFN_UNDECODABLE))
-        wenn os_helper.TESTFN_UNENCODABLE is not None:
+        wenn os_helper.TESTFN_UNENCODABLE is not Nichts:
             filenames.append(os_helper.TESTFN_UNENCODABLE)
         fuer filename in filenames:
             with self.subTest(filename=filename):
@@ -255,7 +255,7 @@ klasse CAPIFileTest(unittest.TestCase):
                 except OSError:
                     # TESTFN_UNDECODABLE cannot be used to create a file
                     # on macOS/WASI.
-                    filename = None
+                    filename = Nichts
                     continue
                 try:
                     data = py_fopen(filename, "rb")

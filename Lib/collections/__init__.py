@@ -59,7 +59,7 @@ try:
 except ImportError:
     pass
 
-heapq = None  # Lazily imported
+heapq = Nichts  # Lazily imported
 
 
 ################################################################################
@@ -140,8 +140,8 @@ klasse OrderedDict(dict):
         link_next = link.next
         link_prev.next = link_next
         link_next.prev = link_prev
-        link.prev = None
-        link.next = None
+        link.prev = Nichts
+        link.next = Nichts
 
     def __iter__(self):
         'od.__iter__() <==> iter(od)'
@@ -162,13 +162,13 @@ klasse OrderedDict(dict):
             curr = curr.prev
 
     def clear(self):
-        'od.clear() -> None.  Remove all items from od.'
+        'od.clear() -> Nichts.  Remove all items from od.'
         root = self.__root
         root.prev = root.next = root
         self.__map.clear()
         dict.clear(self)
 
-    def popitem(self, last=True):
+    def popitem(self, last=Wahr):
         '''Remove and return a (key, value) pair from the dictionary.
 
         Pairs are returned in LIFO order wenn last is true or FIFO order wenn false.
@@ -191,7 +191,7 @@ klasse OrderedDict(dict):
         value = dict.pop(self, key)
         return key, value
 
-    def move_to_end(self, key, last=True):
+    def move_to_end(self, key, last=Wahr):
         '''Move an existing element to the end (or beginning wenn last is false).
 
         Raise KeyError wenn the element does not exist.
@@ -258,14 +258,14 @@ klasse OrderedDict(dict):
             link_next = link.next
             link_prev.next = link_next
             link_next.prev = link_prev
-            link.prev = None
-            link.next = None
+            link.prev = Nichts
+            link.next = Nichts
             return result
         wenn default is marker:
             raise KeyError(key)
         return default
 
-    def setdefault(self, key, default=None):
+    def setdefault(self, key, default=Nichts):
         '''Insert key with a value of default wenn key is not in the dictionary.
 
         Return the value fuer key wenn key is in the dictionary, sonst default.
@@ -293,20 +293,20 @@ klasse OrderedDict(dict):
             state = state.copy()
             slots = slots.copy()
             fuer k in vars(OrderedDict()):
-                state.pop(k, None)
-                slots.pop(k, None)
+                state.pop(k, Nichts)
+                slots.pop(k, Nichts)
             wenn slots:
                 state = state, slots
             sonst:
-                state = state or None
-        return self.__class__, (), state, None, iter(self.items())
+                state = state or Nichts
+        return self.__class__, (), state, Nichts, iter(self.items())
 
     def copy(self):
         'od.copy() -> a shallow copy of od'
         return self.__class__(self)
 
     @classmethod
-    def fromkeys(cls, iterable, value=None):
+    def fromkeys(cls, iterable, value=Nichts):
         '''Create a new ordered dictionary with keys from iterable and values set to value.
         '''
         self = cls()
@@ -358,7 +358,7 @@ try:
 except ImportError:
     _tuplegetter = lambda index, doc: property(_itemgetter(index), doc=doc)
 
-def namedtuple(typename, field_names, *, rename=False, defaults=None, module=None):
+def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=Nichts):
     """Returns a new subclass of tuple with named fields.
 
     >>> Point = namedtuple('Point', ['x', 'y'])
@@ -419,7 +419,7 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
         seen.add(name)
 
     field_defaults = {}
-    wenn defaults is not None:
+    wenn defaults is not Nichts:
         defaults = tuple(defaults)
         wenn len(defaults) > len(field_names):
             raise TypeError('Got more default values than field names')
@@ -447,7 +447,7 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
     __new__ = eval(code, namespace)
     __new__.__name__ = '__new__'
     __new__.__doc__ = f'Create new instance of {typename}({arg_list})'
-    wenn defaults is not None:
+    wenn defaults is not Nichts:
         __new__.__defaults__ = defaults
 
     @classmethod
@@ -519,7 +519,7 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
     # sys._getframe is not defined (Jython fuer example) or sys._getframe is not
     # defined fuer arguments greater than 0 (IronPython), or where the user has
     # specified a particular module.
-    wenn module is None:
+    wenn module is Nichts:
         try:
             module = _sys._getframemodulename(1) or '__main__'
         except AttributeError:
@@ -527,7 +527,7 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
                 module = _sys._getframe(1).f_globals.get('__name__', '__main__')
             except (AttributeError, ValueError):
                 pass
-    wenn module is not None:
+    wenn module is not Nichts:
         result.__module__ = module
 
     return result
@@ -599,7 +599,7 @@ klasse Counter(dict):
     #   http://code.activestate.com/recipes/259174/
     #   Knuth, TAOCP Vol. II section 4.6.3
 
-    def __init__(self, iterable=None, /, **kwds):
+    def __init__(self, iterable=Nichts, /, **kwds):
         '''Create a new, empty Counter object.  And wenn given, count elements
         from an input iterable.  Or, initialize the count from another mapping
         of elements to their counts.
@@ -622,21 +622,21 @@ klasse Counter(dict):
         'Sum of the counts'
         return sum(self.values())
 
-    def most_common(self, n=None):
+    def most_common(self, n=Nichts):
         '''List the n most common elements and their counts from the most
-        common to the least.  If n is None, then list all element counts.
+        common to the least.  If n is Nichts, then list all element counts.
 
         >>> Counter('abracadabra').most_common(3)
         [('a', 5), ('b', 2), ('r', 2)]
 
         '''
         # Emulate Bag.sortedByCount from Smalltalk
-        wenn n is None:
-            return sorted(self.items(), key=_itemgetter(1), reverse=True)
+        wenn n is Nichts:
+            return sorted(self.items(), key=_itemgetter(1), reverse=Wahr)
 
         # Lazy import to speedup Python startup time
         global heapq
-        wenn heapq is None:
+        wenn heapq is Nichts:
             import heapq
 
         return heapq.nlargest(n, self.items(), key=_itemgetter(1))
@@ -665,7 +665,7 @@ klasse Counter(dict):
     # Override dict methods where necessary
 
     @classmethod
-    def fromkeys(cls, iterable, v=None):
+    def fromkeys(cls, iterable, v=Nichts):
         # There is no equivalent method fuer counters because the semantics
         # would be ambiguous in cases such as Counter.fromkeys('aaabbc', v=2).
         # Initializing counters to zero values isn't necessary because zero
@@ -676,7 +676,7 @@ klasse Counter(dict):
         raise NotImplementedError(
             'Counter.fromkeys() is undefined.  Use Counter(iterable) instead.')
 
-    def update(self, iterable=None, /, **kwds):
+    def update(self, iterable=Nichts, /, **kwds):
         '''Like dict.update() but add counts instead of replacing them.
 
         Source can be an iterable, a dictionary, or another Counter instance.
@@ -696,7 +696,7 @@ klasse Counter(dict):
         # contexts.  Instead, we implement straight-addition.  Both the inputs
         # and outputs are allowed to contain zero and negative counts.
 
-        wenn iterable is not None:
+        wenn iterable is not Nichts:
             wenn isinstance(iterable, _collections_abc.Mapping):
                 wenn self:
                     self_get = self.get
@@ -710,7 +710,7 @@ klasse Counter(dict):
         wenn kwds:
             self.update(kwds)
 
-    def subtract(self, iterable=None, /, **kwds):
+    def subtract(self, iterable=Nichts, /, **kwds):
         '''Like dict.update() but subtracts counts instead of replacing them.
         Counts can be reduced below zero.  Both the inputs and outputs are
         allowed to contain zero and negative counts.
@@ -726,7 +726,7 @@ klasse Counter(dict):
         -1
 
         '''
-        wenn iterable is not None:
+        wenn iterable is not Nichts:
             self_get = self.get
             wenn isinstance(iterable, _collections_abc.Mapping):
                 fuer elem, count in iterable.items():
@@ -798,37 +798,37 @@ klasse Counter(dict):
     #         set(cp & cq) == sp & sq
 
     def __eq__(self, other):
-        'True wenn all counts agree. Missing counts are treated as zero.'
+        'Wahr wenn all counts agree. Missing counts are treated as zero.'
         wenn not isinstance(other, Counter):
             return NotImplemented
         return all(self[e] == other[e] fuer c in (self, other) fuer e in c)
 
     def __ne__(self, other):
-        'True wenn any counts disagree. Missing counts are treated as zero.'
+        'Wahr wenn any counts disagree. Missing counts are treated as zero.'
         wenn not isinstance(other, Counter):
             return NotImplemented
         return not self == other
 
     def __le__(self, other):
-        'True wenn all counts in self are a subset of those in other.'
+        'Wahr wenn all counts in self are a subset of those in other.'
         wenn not isinstance(other, Counter):
             return NotImplemented
         return all(self[e] <= other[e] fuer c in (self, other) fuer e in c)
 
     def __lt__(self, other):
-        'True wenn all counts in self are a proper subset of those in other.'
+        'Wahr wenn all counts in self are a proper subset of those in other.'
         wenn not isinstance(other, Counter):
             return NotImplemented
         return self <= other and self != other
 
     def __ge__(self, other):
-        'True wenn all counts in self are a superset of those in other.'
+        'Wahr wenn all counts in self are a superset of those in other.'
         wenn not isinstance(other, Counter):
             return NotImplemented
         return all(self[e] >= other[e] fuer c in (self, other) fuer e in c)
 
     def __gt__(self, other):
-        'True wenn all counts in self are a proper superset of those in other.'
+        'Wahr wenn all counts in self are a proper superset of those in other.'
         wenn not isinstance(other, Counter):
             return NotImplemented
         return self >= other and self != other
@@ -1027,7 +1027,7 @@ klasse ChainMap(_collections_abc.MutableMapping):
                 pass
         return self.__missing__(key)            # support subclasses that define __missing__
 
-    def get(self, key, default=None):
+    def get(self, key, default=Nichts):
         return self[key] wenn key in self sonst default    # needs to make use of __contains__
 
     def __len__(self):
@@ -1042,8 +1042,8 @@ klasse ChainMap(_collections_abc.MutableMapping):
     def __contains__(self, key):
         fuer mapping in self.maps:
             wenn key in mapping:
-                return True
-        return False
+                return Wahr
+        return Falsch
 
     def __bool__(self):
         return any(self.maps)
@@ -1053,7 +1053,7 @@ klasse ChainMap(_collections_abc.MutableMapping):
         return f'{self.__class__.__name__}({", ".join(map(repr, self.maps))})'
 
     @classmethod
-    def fromkeys(cls, iterable, value=None, /):
+    def fromkeys(cls, iterable, value=Nichts, /):
         'Create a new ChainMap with keys from iterable and values set to value.'
         return cls(dict.fromkeys(iterable, value))
 
@@ -1063,12 +1063,12 @@ klasse ChainMap(_collections_abc.MutableMapping):
 
     __copy__ = copy
 
-    def new_child(self, m=None, **kwargs):      # like Django's Context.push()
+    def new_child(self, m=Nichts, **kwargs):      # like Django's Context.push()
         '''New ChainMap with a new map followed by all previous maps.
         If no map is provided, an empty dict is used.
         Keyword arguments update the map or new empty dict.
         '''
-        wenn m is None:
+        wenn m is Nichts:
             m = kwargs
         sowenn kwargs:
             m.update(kwargs)
@@ -1133,9 +1133,9 @@ klasse ChainMap(_collections_abc.MutableMapping):
 klasse UserDict(_collections_abc.MutableMapping):
 
     # Start by filling-out the abstract methods
-    def __init__(self, dict=None, /, **kwargs):
+    def __init__(self, dict=Nichts, /, **kwargs):
         self.data = {}
-        wenn dict is not None:
+        wenn dict is not Nichts:
             self.update(dict)
         wenn kwargs:
             self.update(kwargs)
@@ -1164,7 +1164,7 @@ klasse UserDict(_collections_abc.MutableMapping):
     def __contains__(self, key):
         return key in self.data
 
-    def get(self, key, default=None):
+    def get(self, key, default=Nichts):
         wenn key in self:
             return self[key]
         return default
@@ -1216,7 +1216,7 @@ klasse UserDict(_collections_abc.MutableMapping):
         return c
 
     @classmethod
-    def fromkeys(cls, iterable, value=None):
+    def fromkeys(cls, iterable, value=Nichts):
         d = cls()
         fuer key in iterable:
             d[key] = value
@@ -1230,9 +1230,9 @@ klasse UserDict(_collections_abc.MutableMapping):
 klasse UserList(_collections_abc.MutableSequence):
     """A more or less complete user-defined wrapper around list objects."""
 
-    def __init__(self, initlist=None):
+    def __init__(self, initlist=Nichts):
         self.data = []
-        wenn initlist is not None:
+        wenn initlist is not Nichts:
             # XXX should this accept an arbitrary sequence?
             wenn type(initlist) == type(self.data):
                 self.data[:] = initlist
@@ -1476,8 +1476,8 @@ klasse UserString(_collections_abc.Sequence):
         return self.__class__(self.data.removesuffix(suffix))
 
     def encode(self, encoding='utf-8', errors='strict'):
-        encoding = 'utf-8' wenn encoding is None sonst encoding
-        errors = 'strict' wenn errors is None sonst errors
+        encoding = 'utf-8' wenn encoding is Nichts sonst encoding
+        errors = 'strict' wenn errors is Nichts sonst errors
         return self.data.encode(encoding, errors)
 
     def endswith(self, suffix, start=0, end=_sys.maxsize):
@@ -1545,7 +1545,7 @@ klasse UserString(_collections_abc.Sequence):
     def lower(self):
         return self.__class__(self.data.lower())
 
-    def lstrip(self, chars=None):
+    def lstrip(self, chars=Nichts):
         return self.__class__(self.data.lstrip(chars))
 
     maketrans = str.maketrans
@@ -1574,22 +1574,22 @@ klasse UserString(_collections_abc.Sequence):
     def rpartition(self, sep):
         return self.data.rpartition(sep)
 
-    def rstrip(self, chars=None):
+    def rstrip(self, chars=Nichts):
         return self.__class__(self.data.rstrip(chars))
 
-    def split(self, sep=None, maxsplit=-1):
+    def split(self, sep=Nichts, maxsplit=-1):
         return self.data.split(sep, maxsplit)
 
-    def rsplit(self, sep=None, maxsplit=-1):
+    def rsplit(self, sep=Nichts, maxsplit=-1):
         return self.data.rsplit(sep, maxsplit)
 
-    def splitlines(self, keepends=False):
+    def splitlines(self, keepends=Falsch):
         return self.data.splitlines(keepends)
 
     def startswith(self, prefix, start=0, end=_sys.maxsize):
         return self.data.startswith(prefix, start, end)
 
-    def strip(self, chars=None):
+    def strip(self, chars=Nichts):
         return self.__class__(self.data.strip(chars))
 
     def swapcase(self):

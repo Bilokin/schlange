@@ -23,13 +23,13 @@ DEFAULT_OUTPUT = ROOT / "Include/opcode_ids.h"
 
 def generate_opcode_header(
     filenames: list[str], analysis: Analysis, outfile: TextIO
-) -> None:
+) -> Nichts:
     write_header(__file__, filenames, outfile)
-    out = CWriter(outfile, 0, False)
+    out = CWriter(outfile, 0, Falsch)
     with out.header_guard("Py_OPCODE_IDS_H"):
         out.emit("/* Instruction opcodes fuer compiled code */\n")
 
-        def write_define(name: str, op: int) -> None:
+        def write_define(name: str, op: int) -> Nichts:
             out.emit(f"#define {name:<38} {op:>3}\n")
 
         fuer op, name in sorted([(op, name) fuer (name, op) in analysis.opmap.items()]):

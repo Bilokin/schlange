@@ -32,7 +32,7 @@ klasse TestAsdlParser(unittest.TestCase):
         loader.exec_module(module)
         cls.asdl = module
         cls.mod = cls.asdl.parse(os.path.join(parser_dir, 'Python.asdl'))
-        cls.assertTrue(cls.asdl.check(cls.mod), 'Module validation failed')
+        cls.assertWahr(cls.asdl.check(cls.mod), 'Module validation failed')
 
     @classmethod
     def tearDownClass(cls):
@@ -86,18 +86,18 @@ klasse TestAsdlParser(unittest.TestCase):
         f0 = cons.fields[0]
         self.assertEqual(f0.type, 'expr')
         self.assertEqual(f0.name, 'type')
-        self.assertTrue(f0.opt)
+        self.assertWahr(f0.opt)
 
         f1 = cons.fields[1]
         self.assertEqual(f1.type, 'identifier')
         self.assertEqual(f1.name, 'name')
-        self.assertTrue(f1.opt)
+        self.assertWahr(f1.opt)
 
         f2 = cons.fields[2]
         self.assertEqual(f2.type, 'stmt')
         self.assertEqual(f2.name, 'body')
-        self.assertFalse(f2.opt)
-        self.assertTrue(f2.seq)
+        self.assertFalsch(f2.opt)
+        self.assertWahr(f2.seq)
 
     def test_visitor(self):
         klasse CustomVisitor(self.asdl.VisitorBase):

@@ -30,7 +30,7 @@ cellvars: ()
 freevars: ('x',)
 nlocals: 1
 flags: 19
-consts: ('None',)
+consts: ('Nichts',)
 
 >>> def h(x, y):
 ...     a = x + y
@@ -50,7 +50,7 @@ cellvars: ()
 freevars: ()
 nlocals: 5
 flags: 3
-consts: ('None',)
+consts: ('Nichts',)
 
 >>> def attrs(obj):
 ...     print(obj.attr1)
@@ -68,7 +68,7 @@ cellvars: ()
 freevars: ()
 nlocals: 1
 flags: 3
-consts: ('None',)
+consts: ('Nichts',)
 
 >>> def optimize_away():
 ...     'doc string'
@@ -87,7 +87,7 @@ cellvars: ()
 freevars: ()
 nlocals: 0
 flags: 67108867
-consts: ("'doc string'", 'None')
+consts: ("'doc string'", 'Nichts')
 
 >>> def keywordonly_args(a,b,*,k1):
 ...     return a,b,k1
@@ -104,7 +104,7 @@ cellvars: ()
 freevars: ()
 nlocals: 3
 flags: 3
-consts: ('None',)
+consts: ('Nichts',)
 
 >>> def posonly_args(a,b,/,c):
 ...     return a,b,c
@@ -121,7 +121,7 @@ cellvars: ()
 freevars: ()
 nlocals: 3
 flags: 3
-consts: ('None',)
+consts: ('Nichts',)
 
 >>> def has_docstring(x: str):
 ...     'This is a one-line doc string'
@@ -161,7 +161,7 @@ cellvars: ()
 freevars: ()
 nlocals: 3
 flags: 67108995
-consts: ("'This is a docstring from async function'", 'None')
+consts: ("'This is a docstring from async function'", 'Nichts')
 
 >>> def no_docstring(x, y, z):
 ...     return x + "hello" + y + z + "world"
@@ -191,7 +191,7 @@ This is a docstring fuer class
 ...     pass
 
 >>> print(class_without_docstring.__doc__)
-None
+Nichts
 """
 
 import copy
@@ -207,7 +207,7 @@ import dis
 try:
     import ctypes
 except ImportError:
-    ctypes = None
+    ctypes = Nichts
 from test.support import (cpython_only,
                           check_impl_detail, requires_debug_ranges,
                           gc_collect, Py_GIL_DISABLED)
@@ -219,7 +219,7 @@ from _testcapi import code_offset_to_line
 try:
     import _testinternalcapi
 except ModuleNotFoundError:
-    _testinternalcapi = None
+    _testinternalcapi = Nichts
 import test._code_definitions as defs
 
 COPY_FREE_VARS = opmap['COPY_FREE_VARS']
@@ -431,25 +431,25 @@ klasse CodeTest(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             func.__code__.co_lnotab
 
-    @unittest.skipIf(_testinternalcapi is None, '_testinternalcapi is missing')
+    @unittest.skipIf(_testinternalcapi is Nichts, '_testinternalcapi is missing')
     def test_returns_only_none(self):
-        value = True
+        value = Wahr
 
         def spam1():
             pass
         def spam2():
             return
         def spam3():
-            return None
+            return Nichts
         def spam4():
             wenn not value:
                 return
             ...
         def spam5():
             wenn not value:
-                return None
+                return Nichts
             ...
-        lambda1 = (lambda: None)
+        lambda1 = (lambda: Nichts)
         fuer func in [
             spam1,
             spam2,
@@ -460,21 +460,21 @@ klasse CodeTest(unittest.TestCase):
         ]:
             with self.subTest(func):
                 res = _testinternalcapi.code_returns_only_none(func.__code__)
-                self.assertTrue(res)
+                self.assertWahr(res)
 
         def spam6():
-            return True
+            return Wahr
         def spam7():
             return value
         def spam8():
             wenn value:
-                return None
-            return True
+                return Nichts
+            return Wahr
         def spam9():
             wenn value:
-                return True
-            return None
-        lambda2 = (lambda: True)
+                return Wahr
+            return Nichts
+        lambda2 = (lambda: Wahr)
         fuer func in [
             spam6,
             spam7,
@@ -484,7 +484,7 @@ klasse CodeTest(unittest.TestCase):
         ]:
             with self.subTest(func):
                 res = _testinternalcapi.code_returns_only_none(func.__code__)
-                self.assertFalse(res)
+                self.assertFalsch(res)
 
     def test_invalid_bytecode(self):
         def foo():
@@ -521,13 +521,13 @@ klasse CodeTest(unittest.TestCase):
         fuer instr, positions in instructions_with_positions(
             dis.get_instructions(code), code.co_positions()
         ):
-            # If any of the positions is None, then all have to
-            # be None as well fuer the case above. There are still
+            # If any of the positions is Nichts, then all have to
+            # be Nichts as well fuer the case above. There are still
             # some places in the compiler, where the artificial instructions
             # get assigned the first_lineno but they don't have other positions.
             # There is no easy way of inferring them at that stage, so fuer now
             # we don't support it.
-            self.assertIn(positions.count(None), [0, 3, 4])
+            self.assertIn(positions.count(Nichts), [0, 3, 4])
 
             wenn not any(positions):
                 artificial_instructions.append(instr)
@@ -538,13 +538,13 @@ klasse CodeTest(unittest.TestCase):
                 fuer instruction in artificial_instructions
             ],
             [
-                ("PUSH_EXC_INFO", None),
-                ("LOAD_CONST", None), # artificial 'None'
+                ("PUSH_EXC_INFO", Nichts),
+                ("LOAD_CONST", Nichts), # artificial 'Nichts'
                 ("STORE_NAME", "e"),  # XX: we know the location fuer this
                 ("DELETE_NAME", "e"),
                 ("RERAISE", 1),
                 ("COPY", 3),
-                ("POP_EXCEPT", None),
+                ("POP_EXCEPT", Nichts),
                 ("RERAISE", 1)
             ]
         )
@@ -559,8 +559,8 @@ klasse CodeTest(unittest.TestCase):
             positions = f.__code__.co_positions()
             fuer line, end_line, column, end_column in positions:
                 assert line == end_line
-                assert column is None
-                assert end_column is None
+                assert column is Nichts
+                assert end_column is Nichts
             """)
         assert_python_ok('-X', 'no_debug_ranges', '-c', code)
 
@@ -573,8 +573,8 @@ klasse CodeTest(unittest.TestCase):
             positions = f.__code__.co_positions()
             fuer line, end_line, column, end_column in positions:
                 assert line == end_line
-                assert column is None
-                assert end_column is None
+                assert column is Nichts
+                assert end_column is Nichts
             """)
         assert_python_ok('-c', code, PYTHONNODEBUGRANGES='1')
 
@@ -587,7 +587,7 @@ klasse CodeTest(unittest.TestCase):
         new_code = func.__code__.replace(co_linetable=b'')
         positions = new_code.co_positions()
         fuer line, end_line, column, end_column in positions:
-            self.assertIsNone(line)
+            self.assertIsNichts(line)
             self.assertEqual(end_line, new_code.co_firstlineno + 1)
 
     def test_code_equality(self):
@@ -649,14 +649,14 @@ klasse CodeTest(unittest.TestCase):
         """
         code1 = compile("x is x", "example.py", "eval")
         code2 = compile("x in x", "example.py", "eval")
-        sys._getframe().f_trace_opcodes = True
-        sys.settrace(lambda *args: None)
+        sys._getframe().f_trace_opcodes = Wahr
+        sys.settrace(lambda *args: Nichts)
         exec(code1, {'x': []})
         exec(code2, {'x': []})
         self.assertNotEqual(code1, code2)
-        sys.settrace(None)
+        sys.settrace(Nichts)
 
-    @unittest.skipIf(_testinternalcapi is None, "missing _testinternalcapi")
+    @unittest.skipIf(_testinternalcapi is Nichts, "missing _testinternalcapi")
     def test_local_kinds(self):
         CO_FAST_ARG_POS = 0x02
         CO_FAST_ARG_KW = 0x04
@@ -851,9 +851,9 @@ klasse CodeTest(unittest.TestCase):
                 kinds = _testinternalcapi.get_co_localskinds(func.__code__)
                 self.assertEqual(kinds, expected)
 
-    @unittest.skipIf(_testinternalcapi is None, "missing _testinternalcapi")
+    @unittest.skipIf(_testinternalcapi is Nichts, "missing _testinternalcapi")
     def test_var_counts(self):
-        self.maxDiff = None
+        self.maxDiff = Nichts
         def new_var_counts(*,
                            posonly=0,
                            posorkw=0,
@@ -1136,9 +1136,9 @@ klasse CodeTest(unittest.TestCase):
             counts = _testinternalcapi.get_code_var_counts(func, builtinsns={})
             self.assertEqual(counts, expected)
 
-    @unittest.skipIf(_testinternalcapi is None, "missing _testinternalcapi")
+    @unittest.skipIf(_testinternalcapi is Nichts, "missing _testinternalcapi")
     def test_stateless(self):
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         STATELESS_FUNCTIONS = [
             *defs.STATELESS_FUNCTIONS,
@@ -1232,7 +1232,7 @@ klasse CodeConstsTest(unittest.TestCase):
                 return (0.0, (1, 2, "hello"))
         """), globals)
 
-        self.assertTrue(globals["func1"]() is globals["func2"]())
+        self.assertWahr(globals["func1"]() is globals["func2"]())
 
     @cpython_only
     def test_unusual_constants(self):
@@ -1262,20 +1262,20 @@ klasse CodeWeakRefTest(unittest.TestCase):
         f = namespace["f"]
         del namespace
 
-        self.called = False
+        self.called = Falsch
         def callback(code):
-            self.called = True
+            self.called = Wahr
 
         # f is now the last reference to the function, and through it, the code
         # object.  While we hold it, check that we can create a weakref and
         # deref it.  Then delete it, and check that the callback gets called and
         # the reference dies.
         coderef = weakref.ref(f.__code__, callback)
-        self.assertTrue(bool(coderef()))
+        self.assertWahr(bool(coderef()))
         del f
         gc_collect()  # For PyPy or other GCs.
-        self.assertFalse(bool(coderef()))
-        self.assertTrue(self.called)
+        self.assertFalsch(bool(coderef()))
+        self.assertWahr(self.called)
 
 # Python implementation of location table parsing algorithm
 def read(it):
@@ -1301,7 +1301,7 @@ def read_signed_varint(it):
 def parse_location_table(code):
     line = code.co_firstlineno
     it = iter(code.co_linetable)
-    while True:
+    while Wahr:
         try:
             first_byte = read(it)
         except StopIteration:
@@ -1309,26 +1309,26 @@ def parse_location_table(code):
         code = (first_byte >> 3) & 15
         length = (first_byte & 7) + 1
         wenn code == 15:
-            yield (code, length, None, None, None, None)
+            yield (code, length, Nichts, Nichts, Nichts, Nichts)
         sowenn code == 14:
             line_delta = read_signed_varint(it)
             line += line_delta
             end_line = line + read_varint(it)
             col = read_varint(it)
             wenn col == 0:
-                col = None
+                col = Nichts
             sonst:
                 col -= 1
             end_col = read_varint(it)
             wenn end_col == 0:
-                end_col = None
+                end_col = Nichts
             sonst:
                 end_col -= 1
             yield (code, length, line, end_line, col, end_col)
         sowenn code == 13: # No column
             line_delta = read_signed_varint(it)
             line += line_delta
-            yield (code, length, line, line, None, None)
+            yield (code, length, line, line, Nichts, Nichts)
         sowenn code in (10, 11, 12): # new line
             line_delta = code - 10
             line += line_delta
@@ -1453,7 +1453,7 @@ klasse CodeLocationTest(unittest.TestCase):
         self.assertRaises(AssertionError, f)
         self.assertEqual(
             list(f.__code__.co_positions()),
-            3 * [(42, 42, None, None)],
+            3 * [(42, 42, Nichts, Nichts)],
         )
 
     @cpython_only
@@ -1479,7 +1479,7 @@ klasse CodeLocationTest(unittest.TestCase):
 
 
             fuer func in [has_docstring, no_docstring(4), async_func]:
-                assert(func.__doc__ is None)
+                assert(func.__doc__ is Nichts)
             ''')
 
         rc, out, err = assert_python_ok('-OO', '-c', code)
@@ -1531,9 +1531,9 @@ klasse CodeLocationTest(unittest.TestCase):
             get_line_branches(afunc),
             [(1,1,3)])
 
-wenn check_impl_detail(cpython=True) and ctypes is not None:
+wenn check_impl_detail(cpython=Wahr) and ctypes is not Nichts:
     py = ctypes.pythonapi
-    freefunc = ctypes.CFUNCTYPE(None,ctypes.c_voidp)
+    freefunc = ctypes.CFUNCTYPE(Nichts,ctypes.c_voidp)
 
     RequestCodeExtraIndex = py.PyUnstable_Eval_RequestCodeExtraIndex
     RequestCodeExtraIndex.argtypes = (freefunc,)
@@ -1548,7 +1548,7 @@ wenn check_impl_detail(cpython=True) and ctypes is not None:
                          ctypes.POINTER(ctypes.c_voidp))
     GetExtra.restype = ctypes.c_int
 
-    LAST_FREED = None
+    LAST_FREED = Nichts
     def myfree(ptr):
         global LAST_FREED
         LAST_FREED = ptr

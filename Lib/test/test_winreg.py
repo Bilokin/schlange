@@ -16,18 +16,18 @@ from winreg import *
 try:
     REMOTE_NAME = sys.argv[sys.argv.index("--remote")+1]
 except (IndexError, ValueError):
-    REMOTE_NAME = None
+    REMOTE_NAME = Nichts
 
 # tuple of (major, minor)
 WIN_VER = sys.getwindowsversion()[:2]
 # Some tests should only run on 64-bit architectures where WOW64 will be.
-WIN64_MACHINE = True wenn machine() == "AMD64" sonst False
+WIN64_MACHINE = Wahr wenn machine() == "AMD64" sonst Falsch
 
 # Starting with Windows 7 and Windows Server 2008 R2, WOW64 no longer uses
 # registry reflection and formerly reflected keys are shared instead.
 # Windows 7 and Windows Server 2008 R2 are version 6.1. Due to this, some
 # tests are only valid up until 6.1
-HAS_REFLECTION = True wenn WIN_VER < (6, 1) sonst False
+HAS_REFLECTION = Wahr wenn WIN_VER < (6, 1) sonst Falsch
 
 # Use a per-process key to prevent concurrent test runs (buildbot!) from
 # stomping on each other.
@@ -54,7 +54,7 @@ test_data = [
 @cpython_only
 klasse HeapTypeTests(unittest.TestCase):
     def test_have_gc(self):
-        self.assertTrue(gc.is_tracked(HKEYType))
+        self.assertWahr(gc.is_tracked(HKEYType))
 
     def test_immutable(self):
         with self.assertRaisesRegex(TypeError, "immutable"):
@@ -74,7 +74,7 @@ klasse BaseWinregTests(unittest.TestCase):
         except OSError:
             # subkey does not exist
             return
-        while True:
+        while Wahr:
             try:
                 subsubkey = EnumKey(hkey, 0)
             except OSError:
@@ -89,7 +89,7 @@ klasse BaseWinregTests(unittest.TestCase):
         # Set the default value fuer this key.
         SetValue(root_key, test_key_name, REG_SZ, "Default value")
         key = CreateKey(root_key, test_key_name)
-        self.assertTrue(key.handle != 0)
+        self.assertWahr(key.handle != 0)
         # Create a sub-key
         sub_key = CreateKey(key, subkeystr)
         # Give the sub-key some named values
@@ -141,7 +141,7 @@ klasse BaseWinregTests(unittest.TestCase):
                     data = EnumValue(sub_key, index)
                 except OSError:
                     break
-                self.assertEqual(data in test_data, True,
+                self.assertEqual(data in test_data, Wahr,
                                  "Didn't read back the correct test data")
                 index = index + 1
             self.assertEqual(index, len(test_data),
@@ -203,11 +203,11 @@ klasse BaseWinregTests(unittest.TestCase):
     def _test_named_args(self, key, sub_key):
         with CreateKeyEx(key=key, sub_key=sub_key, reserved=0,
                          access=KEY_ALL_ACCESS) as ckey:
-            self.assertTrue(ckey.handle != 0)
+            self.assertWahr(ckey.handle != 0)
 
         with OpenKeyEx(key=key, sub_key=sub_key, reserved=0,
                        access=KEY_ALL_ACCESS) as okey:
-            self.assertTrue(okey.handle != 0)
+            self.assertWahr(okey.handle != 0)
 
 
 klasse LocalWinregTests(BaseWinregTests):
@@ -236,7 +236,7 @@ klasse LocalWinregTests(BaseWinregTests):
 
     def test_connect_registry_to_local_machine_works(self):
         # perform minimal ConnectRegistry test which just invokes it
-        h = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
+        h = ConnectRegistry(Nichts, HKEY_LOCAL_MACHINE)
         self.assertNotEqual(h.handle, 0)
         h.Close()
         self.assertEqual(h.handle, 0)
@@ -253,7 +253,7 @@ klasse LocalWinregTests(BaseWinregTests):
     def test_context_manager(self):
         # ensure that the handle is closed wenn an exception occurs
         try:
-            with ConnectRegistry(None, HKEY_LOCAL_MACHINE) as h:
+            with ConnectRegistry(Nichts, HKEY_LOCAL_MACHINE) as h:
                 self.assertNotEqual(h.handle, 0)
                 raise OSError
         except OSError:
@@ -263,12 +263,12 @@ klasse LocalWinregTests(BaseWinregTests):
         # Issue2810: A race condition in 2.6 and 3.1 may cause
         # EnumValue or QueryValue to raise "WindowsError: More data is
         # available"
-        done = False
+        done = Falsch
 
         klasse VeryActiveThread(threading.Thread):
             def run(self):
                 with CreateKey(HKEY_CURRENT_USER, test_key_name) as key:
-                    use_short = True
+                    use_short = Wahr
                     long_string = 'x'*2000
                     while not done:
                         s = 'x' wenn use_short sonst long_string
@@ -286,7 +286,7 @@ klasse LocalWinregTests(BaseWinregTests):
                         name = EnumValue(key, i)
                         QueryValue(key, name[0])
         finally:
-            done = True
+            done = Wahr
             thread.join()
             DeleteKey(HKEY_CURRENT_USER, test_key_name+'\\changing_value')
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
@@ -347,7 +347,7 @@ klasse LocalWinregTests(BaseWinregTests):
         try:
             with CreateKey(HKEY_CURRENT_USER, test_key_name) as ck:
                 self.assertNotEqual(ck.handle, 0)
-                SetValueEx(ck, "test_name", None, REG_DWORD, 0x80000000)
+                SetValueEx(ck, "test_name", Nichts, REG_DWORD, 0x80000000)
         finally:
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
@@ -360,8 +360,8 @@ klasse LocalWinregTests(BaseWinregTests):
         try:
             with CreateKey(HKEY_CURRENT_USER, test_key_name) as ck:
                 with self.assertRaises(OverflowError):
-                    SetValueEx(ck, "test_name_dword", None, REG_DWORD, -1)
-                    SetValueEx(ck, "test_name_qword", None, REG_QWORD, -1)
+                    SetValueEx(ck, "test_name_dword", Nichts, REG_DWORD, -1)
+                    SetValueEx(ck, "test_name_qword", Nichts, REG_QWORD, -1)
                 self.assertRaises(FileNotFoundError, QueryValueEx, ck, "test_name_dword")
                 self.assertRaises(FileNotFoundError, QueryValueEx, ck, "test_name_qword")
 
@@ -377,7 +377,7 @@ klasse LocalWinregTests(BaseWinregTests):
             with CreateKey(HKEY_CURRENT_USER, test_key_name) as ck:
                 self.assertNotEqual(ck.handle, 0)
                 test_val = 0x80000000
-                SetValueEx(ck, "test_name", None, REG_DWORD, test_val)
+                SetValueEx(ck, "test_name", Nichts, REG_DWORD, test_val)
                 ret_val, ret_type = QueryValueEx(ck, "test_name")
                 self.assertEqual(ret_type, REG_DWORD)
                 self.assertEqual(ret_val, test_val)
@@ -385,11 +385,11 @@ klasse LocalWinregTests(BaseWinregTests):
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
     def test_setvalueex_crash_with_none_arg(self):
-        # Test fuer Issue #21151, segfault when None is passed to SetValueEx
+        # Test fuer Issue #21151, segfault when Nichts is passed to SetValueEx
         try:
             with CreateKey(HKEY_CURRENT_USER, test_key_name) as ck:
                 self.assertNotEqual(ck.handle, 0)
-                test_val = None
+                test_val = Nichts
                 SetValueEx(ck, "test_name", 0, REG_BINARY, test_val)
                 ret_val, ret_type = QueryValueEx(ck, "test_name")
                 self.assertEqual(ret_type, REG_BINARY)
@@ -434,10 +434,10 @@ klasse Win64WinregTests(BaseWinregTests):
         # on a key which isn't on the reflection list with no consequences.
         with OpenKey(HKEY_LOCAL_MACHINE, "Software") as key:
             # HKLM\Software is redirected but not reflected in all OSes
-            self.assertTrue(QueryReflectionKey(key))
-            self.assertIsNone(EnableReflectionKey(key))
-            self.assertIsNone(DisableReflectionKey(key))
-            self.assertTrue(QueryReflectionKey(key))
+            self.assertWahr(QueryReflectionKey(key))
+            self.assertIsNichts(EnableReflectionKey(key))
+            self.assertIsNichts(DisableReflectionKey(key))
+            self.assertWahr(QueryReflectionKey(key))
 
     @unittest.skipUnless(HAS_REFLECTION, "OS doesn't support reflection")
     def test_reflection(self):
@@ -493,10 +493,10 @@ klasse Win64WinregTests(BaseWinregTests):
                 disabled = QueryReflectionKey(created_key)
                 self.assertEqual(type(disabled), bool)
                 # HKCU\Software\Classes is reflected by default
-                self.assertFalse(disabled)
+                self.assertFalsch(disabled)
 
                 DisableReflectionKey(created_key)
-                self.assertTrue(QueryReflectionKey(created_key))
+                self.assertWahr(QueryReflectionKey(created_key))
 
             # The key is now closed and would normally be reflected to the
             # 64-bit area, but let's make sure that didn't happen.

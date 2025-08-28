@@ -22,7 +22,7 @@ def evaluate_slice_index(arg):
     sonst:
         raise TypeError(
             "slice indices must be integers or "
-            "None or have an __index__ method")
+            "Nichts or have an __index__ method")
 
 def slice_indices(slice, length):
     """
@@ -31,7 +31,7 @@ def slice_indices(slice, length):
     """
     # Compute step and length as integers.
     length = operator.index(length)
-    step = 1 wenn slice.step is None sonst evaluate_slice_index(slice.step)
+    step = 1 wenn slice.step is Nichts sonst evaluate_slice_index(slice.step)
 
     # Raise ValueError fuer negative length or zero step.
     wenn length < 0:
@@ -44,14 +44,14 @@ def slice_indices(slice, length):
     upper = length - 1 wenn step < 0 sonst length
 
     # Compute start.
-    wenn slice.start is None:
+    wenn slice.start is Nichts:
         start = upper wenn step < 0 sonst lower
     sonst:
         start = evaluate_slice_index(slice.start)
         start = max(start + length, lower) wenn start < 0 sonst min(start, upper)
 
     # Compute stop.
-    wenn slice.stop is None:
+    wenn slice.stop is Nichts:
         stop = lower wenn step < 0 sonst upper
     sonst:
         stop = evaluate_slice_index(slice.stop)
@@ -97,7 +97,7 @@ klasse SliceTest(unittest.TestCase):
         s3 = slice(1, 2, 4)
         self.assertEqual(s1, s2)
         self.assertNotEqual(s1, s3)
-        self.assertNotEqual(s1, None)
+        self.assertNotEqual(s1, Nichts)
         self.assertNotEqual(s1, (1, 2, 3))
         self.assertNotEqual(s1, "")
 
@@ -125,14 +125,14 @@ klasse SliceTest(unittest.TestCase):
 
     def test_members(self):
         s = slice(1)
-        self.assertEqual(s.start, None)
+        self.assertEqual(s.start, Nichts)
         self.assertEqual(s.stop, 1)
-        self.assertEqual(s.step, None)
+        self.assertEqual(s.step, Nichts)
 
         s = slice(1, 2)
         self.assertEqual(s.start, 1)
         self.assertEqual(s.stop, 2)
-        self.assertEqual(s.step, None)
+        self.assertEqual(s.step, Nichts)
 
         s = slice(1, 2, 3)
         self.assertEqual(s.start, 1)
@@ -144,7 +144,7 @@ klasse SliceTest(unittest.TestCase):
 
         obj = AnyClass()
         s = slice(obj)
-        self.assertTrue(s.stop is obj)
+        self.assertWahr(s.stop is obj)
 
     def check_indices(self, slice, length):
         try:
@@ -163,33 +163,33 @@ klasse SliceTest(unittest.TestCase):
             self.assertEqual(actual, expected)
 
     def test_indices(self):
-        self.assertEqual(slice(None           ).indices(10), (0, 10,  1))
-        self.assertEqual(slice(None,  None,  2).indices(10), (0, 10,  2))
-        self.assertEqual(slice(1,     None,  2).indices(10), (1, 10,  2))
-        self.assertEqual(slice(None,  None, -1).indices(10), (9, -1, -1))
-        self.assertEqual(slice(None,  None, -2).indices(10), (9, -1, -2))
-        self.assertEqual(slice(3,     None, -2).indices(10), (3, -1, -2))
+        self.assertEqual(slice(Nichts           ).indices(10), (0, 10,  1))
+        self.assertEqual(slice(Nichts,  Nichts,  2).indices(10), (0, 10,  2))
+        self.assertEqual(slice(1,     Nichts,  2).indices(10), (1, 10,  2))
+        self.assertEqual(slice(Nichts,  Nichts, -1).indices(10), (9, -1, -1))
+        self.assertEqual(slice(Nichts,  Nichts, -2).indices(10), (9, -1, -2))
+        self.assertEqual(slice(3,     Nichts, -2).indices(10), (3, -1, -2))
         # issue 3004 tests
-        self.assertEqual(slice(None, -9).indices(10), (0, 1, 1))
-        self.assertEqual(slice(None, -10).indices(10), (0, 0, 1))
-        self.assertEqual(slice(None, -11).indices(10), (0, 0, 1))
-        self.assertEqual(slice(None, -10, -1).indices(10), (9, 0, -1))
-        self.assertEqual(slice(None, -11, -1).indices(10), (9, -1, -1))
-        self.assertEqual(slice(None, -12, -1).indices(10), (9, -1, -1))
-        self.assertEqual(slice(None, 9).indices(10), (0, 9, 1))
-        self.assertEqual(slice(None, 10).indices(10), (0, 10, 1))
-        self.assertEqual(slice(None, 11).indices(10), (0, 10, 1))
-        self.assertEqual(slice(None, 8, -1).indices(10), (9, 8, -1))
-        self.assertEqual(slice(None, 9, -1).indices(10), (9, 9, -1))
-        self.assertEqual(slice(None, 10, -1).indices(10), (9, 9, -1))
+        self.assertEqual(slice(Nichts, -9).indices(10), (0, 1, 1))
+        self.assertEqual(slice(Nichts, -10).indices(10), (0, 0, 1))
+        self.assertEqual(slice(Nichts, -11).indices(10), (0, 0, 1))
+        self.assertEqual(slice(Nichts, -10, -1).indices(10), (9, 0, -1))
+        self.assertEqual(slice(Nichts, -11, -1).indices(10), (9, -1, -1))
+        self.assertEqual(slice(Nichts, -12, -1).indices(10), (9, -1, -1))
+        self.assertEqual(slice(Nichts, 9).indices(10), (0, 9, 1))
+        self.assertEqual(slice(Nichts, 10).indices(10), (0, 10, 1))
+        self.assertEqual(slice(Nichts, 11).indices(10), (0, 10, 1))
+        self.assertEqual(slice(Nichts, 8, -1).indices(10), (9, 8, -1))
+        self.assertEqual(slice(Nichts, 9, -1).indices(10), (9, 9, -1))
+        self.assertEqual(slice(Nichts, 10, -1).indices(10), (9, 9, -1))
 
         self.assertEqual(
             slice(-100,  100     ).indices(10),
-            slice(None).indices(10)
+            slice(Nichts).indices(10)
         )
         self.assertEqual(
             slice(100,  -100,  -1).indices(10),
-            slice(None, None, -1).indices(10)
+            slice(Nichts, Nichts, -1).indices(10)
         )
         self.assertEqual(slice(-100, 100, 2).indices(10), (0, 10,  2))
 
@@ -197,7 +197,7 @@ klasse SliceTest(unittest.TestCase):
 
         # Check a variety of start, stop, step and length values, including
         # values exceeding sys.maxsize (see issue #14794).
-        vals = [None, -2**100, -2**30, -53, -7, -1, 0, 1, 7, 53, 2**30, 2**100]
+        vals = [Nichts, -2**100, -2**30, -53, -7, -1, 0, 1, 7, 53, 2**30, 2**100]
         lengths = [0, 1, 7, 53, 2**30, 2**100]
         fuer slice_args in itertools.product(vals, repeat=3):
             s = slice(*slice_args)
@@ -207,7 +207,7 @@ klasse SliceTest(unittest.TestCase):
 
         # Negative length should raise ValueError
         with self.assertRaises(ValueError):
-            slice(None).indices(-1)
+            slice(Nichts).indices(-1)
 
         # Zero step should raise ValueError
         with self.assertRaises(ValueError):
@@ -291,9 +291,9 @@ klasse SliceTest(unittest.TestCase):
         o = myobj()
         o.s = slice(o)
         w = weakref.ref(o)
-        o = None
+        o = Nichts
         support.gc_collect()
-        self.assertIsNone(w())
+        self.assertIsNichts(w())
 
 wenn __name__ == "__main__":
     unittest.main()

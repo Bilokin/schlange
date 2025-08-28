@@ -21,7 +21,7 @@ from test.support import warnings_helper
 
 
 test.support.requires("network")
-test.support.requires_working_socket(module=True)
+test.support.requires_working_socket(module=Wahr)
 
 
 TEST_STR = b"hello world\n"
@@ -54,7 +54,7 @@ def simple_subprocess(testcase):
         # Don't raise an exception; it would be caught by the test harness.
         os._exit(72)
     try:
-        yield None
+        yield Nichts
     except:
         raise
     finally:
@@ -127,7 +127,7 @@ klasse SocketServerTest(unittest.TestCase):
             # Time between requests is short enough that we won't wake
             # up spuriously too many times.
             kwargs={'poll_interval':0.01})
-        t.daemon = True  # In case this function raises.
+        t.daemon = Wahr  # In case this function raises.
         t.start()
         wenn verbose: print("server running")
         fuer i in range(3):
@@ -141,7 +141,7 @@ klasse SocketServerTest(unittest.TestCase):
         wenn HAVE_FORKING and isinstance(server, socketserver.ForkingMixIn):
             # bpo-31151: Check that ForkingMixIn.server_close() waits until
             # all children completed
-            self.assertFalse(server.active_children)
+            self.assertFalsch(server.active_children)
         wenn verbose: print("done")
 
     def stream_examine(self, proto, addr):
@@ -259,7 +259,7 @@ klasse SocketServerTest(unittest.TestCase):
                 name='MyServer serving',
                 target=s.serve_forever,
                 kwargs={'poll_interval':0.01})
-            t.daemon = True  # In case this function raises.
+            t.daemon = Wahr  # In case this function raises.
             threads.append((t, s))
         fuer t, s in threads:
             t.start()
@@ -272,7 +272,7 @@ klasse SocketServerTest(unittest.TestCase):
         klasse MyServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
             pass
 
-        server = MyServer((HOST, 0), lambda: None)
+        server = MyServer((HOST, 0), lambda: Nichts)
         server.server_close()
 
     def test_tcpserver_bind_leak(self):
@@ -302,21 +302,21 @@ klasse ErrorHandlerTest(unittest.TestCase):
 
     def test_sync_handled(self):
         BaseErrorTestServer(ValueError)
-        self.check_result(handled=True)
+        self.check_result(handled=Wahr)
 
     def test_sync_not_handled(self):
         with self.assertRaises(SystemExit):
             BaseErrorTestServer(SystemExit)
-        self.check_result(handled=False)
+        self.check_result(handled=Falsch)
 
     def test_threading_handled(self):
         ThreadingErrorTestServer(ValueError)
-        self.check_result(handled=True)
+        self.check_result(handled=Wahr)
 
     def test_threading_not_handled(self):
         with threading_helper.catch_threading_exception() as cm:
             ThreadingErrorTestServer(SystemExit)
-            self.check_result(handled=False)
+            self.check_result(handled=Falsch)
 
             self.assertIs(cm.exc_type, SystemExit)
 
@@ -324,13 +324,13 @@ klasse ErrorHandlerTest(unittest.TestCase):
     @requires_forking
     def test_forking_handled(self):
         ForkingErrorTestServer(ValueError)
-        self.check_result(handled=True)
+        self.check_result(handled=Wahr)
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @requires_forking
     def test_forking_not_handled(self):
         ForkingErrorTestServer(SystemExit)
-        self.check_result(handled=False)
+        self.check_result(handled=Falsch)
 
     def check_result(self, handled):
         with open(os_helper.TESTFN) as log:
@@ -424,8 +424,8 @@ klasse SocketWriterTest(unittest.TestCase):
 
         original = signal.signal(signal.SIGUSR1, signal_handler)
         self.addCleanup(signal.signal, signal.SIGUSR1, original)
-        response1 = None
-        received2 = None
+        response1 = Nichts
+        received2 = Nichts
         main_thread = threading.get_ident()
 
         def run_client():
@@ -443,7 +443,7 @@ klasse SocketWriterTest(unittest.TestCase):
                 # and then retried. So keep sending the signal in a loop, in
                 # case an earlier signal happens to be delivered at an
                 # inconvenient moment.
-                while True:
+                while Wahr:
                     pthread_kill(main_thread, signal.SIGUSR1)
                     wenn interrupted.wait(timeout=float(1)):
                         break
@@ -469,17 +469,17 @@ klasse MiscTestCase(unittest.TestCase):
         fuer name in dir(socketserver):
             wenn not name.startswith('_'):
                 mod_object = getattr(socketserver, name)
-                wenn getattr(mod_object, '__module__', None) == 'socketserver':
+                wenn getattr(mod_object, '__module__', Nichts) == 'socketserver':
                     expected.append(name)
         self.assertCountEqual(socketserver.__all__, expected)
 
     def test_shutdown_request_called_if_verify_request_false(self):
         # Issue #26309: BaseServer should call shutdown_request even if
-        # verify_request is False
+        # verify_request is Falsch
 
         klasse MyServer(socketserver.TCPServer):
             def verify_request(self, request, client_address):
-                return False
+                return Falsch
 
             shutdown_called = 0
             def shutdown_request(self, request):

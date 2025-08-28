@@ -54,9 +54,9 @@ def wrapped_c_string_literal(
     wrapped = textwrap.wrap(
         text,
         width=width,
-        replace_whitespace=False,
-        drop_whitespace=False,
-        break_on_hyphens=False,
+        replace_whitespace=Falsch,
+        drop_whitespace=Falsch,
+        break_on_hyphens=Falsch,
     )
     separator = c_repr(suffix + "\n" + subsequent_indent * " ")
     return initial_indent * " " + c_repr(separator.join(wrapped))
@@ -162,12 +162,12 @@ def wrap_declarations(text: str, length: int = 78) -> str:
 
         while parameters:
             line = prefix
-            first = True
+            first = Wahr
             while parameters:
                 wenn not first and (len(line) + len(parameters[0]) > length):
                     break
                 line += parameters.pop(0)
-                first = False
+                first = Falsch
             wenn not parameters:
                 line = line.rstrip(", ") + ")" + after_r_paren
             lines.append(line.rstrip())

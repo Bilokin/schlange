@@ -1,6 +1,6 @@
 klasse Delegator:
 
-    def __init__(self, delegate=None):
+    def __init__(self, delegate=Nichts):
         self.delegate = delegate
         self.__cache = set()
         # Cache is used to only remove added attributes

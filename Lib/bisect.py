@@ -1,7 +1,7 @@
 """Bisection algorithms."""
 
 
-def insort_right(a, x, lo=0, hi=None, *, key=None):
+def insort_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """Insert item x in list a, and keep it sorted assuming a is sorted.
 
     If x is already in a, insert it to the right of the rightmost x.
@@ -11,14 +11,14 @@ def insort_right(a, x, lo=0, hi=None, *, key=None):
 
     A custom key function can be supplied to customize the sort order.
     """
-    wenn key is None:
+    wenn key is Nichts:
         lo = bisect_right(a, x, lo, hi)
     sonst:
         lo = bisect_right(a, key(x), lo, hi, key=key)
     a.insert(lo, x)
 
 
-def bisect_right(a, x, lo=0, hi=None, *, key=None):
+def bisect_right(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """Return the index where to insert item x in list a, assuming a is sorted.
 
     The return value i is such that all e in a[:i] have e <= x, and all e in
@@ -33,11 +33,11 @@ def bisect_right(a, x, lo=0, hi=None, *, key=None):
 
     wenn lo < 0:
         raise ValueError('lo must be non-negative')
-    wenn hi is None:
+    wenn hi is Nichts:
         hi = len(a)
     # Note, the comparison uses "<" to match the
     # __lt__() logic in list.sort() and in heapq.
-    wenn key is None:
+    wenn key is Nichts:
         while lo < hi:
             mid = (lo + hi) // 2
             wenn x < a[mid]:
@@ -54,7 +54,7 @@ def bisect_right(a, x, lo=0, hi=None, *, key=None):
     return lo
 
 
-def insort_left(a, x, lo=0, hi=None, *, key=None):
+def insort_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """Insert item x in list a, and keep it sorted assuming a is sorted.
 
     If x is already in a, insert it to the left of the leftmost x.
@@ -65,13 +65,13 @@ def insort_left(a, x, lo=0, hi=None, *, key=None):
     A custom key function can be supplied to customize the sort order.
     """
 
-    wenn key is None:
+    wenn key is Nichts:
         lo = bisect_left(a, x, lo, hi)
     sonst:
         lo = bisect_left(a, key(x), lo, hi, key=key)
     a.insert(lo, x)
 
-def bisect_left(a, x, lo=0, hi=None, *, key=None):
+def bisect_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
     """Return the index where to insert item x in list a, assuming a is sorted.
 
     The return value i is such that all e in a[:i] have e < x, and all e in
@@ -86,11 +86,11 @@ def bisect_left(a, x, lo=0, hi=None, *, key=None):
 
     wenn lo < 0:
         raise ValueError('lo must be non-negative')
-    wenn hi is None:
+    wenn hi is Nichts:
         hi = len(a)
     # Note, the comparison uses "<" to match the
     # __lt__() logic in list.sort() and in heapq.
-    wenn key is None:
+    wenn key is Nichts:
         while lo < hi:
             mid = (lo + hi) // 2
             wenn a[mid] < x:

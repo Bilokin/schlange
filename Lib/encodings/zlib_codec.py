@@ -30,7 +30,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
         self.errors = errors
         self.compressobj = zlib.compressobj()
 
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         wenn final:
             c = self.compressobj.compress(input)
             return c + self.compressobj.flush()
@@ -46,7 +46,7 @@ klasse IncrementalDecoder(codecs.IncrementalDecoder):
         self.errors = errors
         self.decompressobj = zlib.decompressobj()
 
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         wenn final:
             c = self.decompressobj.decompress(input)
             return c + self.decompressobj.flush()
@@ -73,5 +73,5 @@ def getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamreader=StreamReader,
         streamwriter=StreamWriter,
-        _is_text_encoding=False,
+        _is_text_encoding=Falsch,
     )

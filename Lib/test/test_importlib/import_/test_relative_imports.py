@@ -215,12 +215,12 @@ klasse RelativeImports:
 
     def test_relative_import_no_package(self):
         with self.assertRaises(ImportError):
-            self.__import__('a', {'__package__': '', '__spec__': None},
+            self.__import__('a', {'__package__': '', '__spec__': Nichts},
                             level=1)
 
     def test_relative_import_no_package_exists_absolute(self):
         with self.assertRaises(ImportError):
-            self.__import__('sys', {'__package__': '', '__spec__': None},
+            self.__import__('sys', {'__package__': '', '__spec__': Nichts},
                             level=1)
 
     def test_malicious_relative_import(self):

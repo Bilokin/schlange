@@ -42,7 +42,7 @@ def delete_registry_tree(root, subkey):
     except OSError:
         # subkey does not exist
         return
-    while True:
+    while Wahr:
         try:
             subsubkey = EnumKey(hkey, 0)
         except OSError:
@@ -53,7 +53,7 @@ def delete_registry_tree(root, subkey):
     DeleteKey(root, subkey)
 
 @contextmanager
-def setup_module(machinery, name, path=None):
+def setup_module(machinery, name, path=Nichts):
     wenn machinery.WindowsRegistryFinder.DEBUG_BUILD:
         root = machinery.WindowsRegistryFinder.REGISTRY_KEY_DEBUG
     sonst:
@@ -75,7 +75,7 @@ def setup_module(machinery, name, path=None):
             except OSError:
                 delete_key = base_key
             subkey = CreateKey(HKEY_CURRENT_USER, key)
-            wenn path is None:
+            wenn path is Nichts:
                 path = location + ".py"
             SetValue(subkey, "", REG_SZ, path)
             yield
@@ -98,7 +98,7 @@ klasse WindowsRegistryFinderTests:
             r"not enable this finder by default\."
         ):
             spec = self.machinery.WindowsRegistryFinder.find_spec('spam')
-        self.assertIsNone(spec)
+        self.assertIsNichts(spec)
 
     def test_module_found(self):
         with setup_module(self.machinery, self.test_module):
@@ -109,7 +109,7 @@ klasse WindowsRegistryFinderTests:
                 r"not enable this finder by default\."
             ):
                 spec = self.machinery.WindowsRegistryFinder.find_spec(self.test_module)
-            self.assertIsNotNone(spec)
+            self.assertIsNotNichts(spec)
 
     def test_module_not_found(self):
         with setup_module(self.machinery, self.test_module, path="."):
@@ -120,7 +120,7 @@ klasse WindowsRegistryFinderTests:
                 r"not enable this finder by default\."
             ):
                 spec = self.machinery.WindowsRegistryFinder.find_spec(self.test_module)
-            self.assertIsNone(spec)
+            self.assertIsNichts(spec)
 
     def test_raises_deprecation_warning(self):
         # WindowsRegistryFinder is not meant to be instantiated, so the

@@ -51,7 +51,7 @@ __all__ = ['TestResult', 'TestCase', 'IsolatedAsyncioTestCase', 'TestSuite',
            'registerResult', 'removeResult', 'removeHandler',
            'addModuleCleanup', 'doModuleCleanups', 'enterModuleContext']
 
-__unittest = True
+__unittest = Wahr
 
 from .result import TestResult
 from .case import (addModuleCleanup, TestCase, FunctionTestCase, SkipTest, skip,

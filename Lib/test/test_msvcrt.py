@@ -43,7 +43,7 @@ klasse TestFileOperations(unittest.TestCase):
 
         try:
             fd = msvcrt.open_osfhandle(h, os.O_RDONLY)
-            h = None
+            h = Nichts
             os.close(fd)
         finally:
             wenn h:
@@ -67,7 +67,7 @@ klasse TestConsoleIO(unittest.TestCase):
         # Run test in a separated process to avoid stdin conflicts.
         # See: gh-110147
         cmd = [sys.executable, '-c', code]
-        subprocess.run(cmd, check=True, capture_output=True,
+        subprocess.run(cmd, check=Wahr, capture_output=Wahr,
                        creationflags=subprocess.CREATE_NEW_CONSOLE)
 
     def test_kbhit(self):

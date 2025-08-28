@@ -6,7 +6,7 @@ from unittest import TestCase
 
 from test.support import threading_helper, Py_GIL_DISABLED
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 
 def get_func_annotation(f, b):
@@ -39,7 +39,7 @@ klasse TestFTFuncAnnotations(TestCase):
                 futures = {executor.submit(get_func_annotation, f, b): i fuer i in range(self.NUM_THREADS)}
                 fuer fut in concurrent.futures.as_completed(futures):
                     annotate = fut.result()
-                    self.assertIsNotNone(annotate)
+                    self.assertIsNotNichts(annotate)
                     self.assertEqual(annotate, {'x': int, 'return': int})
 
             with concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) as executor:
@@ -47,7 +47,7 @@ klasse TestFTFuncAnnotations(TestCase):
                 futures = {executor.submit(get_func_annotation_dunder, f, b): i fuer i in range(self.NUM_THREADS)}
                 fuer fut in concurrent.futures.as_completed(futures):
                     annotate = fut.result()
-                    self.assertIsNotNone(annotate)
+                    self.assertIsNotNichts(annotate)
                     self.assertEqual(annotate, {'x': int, 'return': int})
 
     def test_concurrent_write(self):
@@ -60,7 +60,7 @@ klasse TestFTFuncAnnotations(TestCase):
                 futures = {executor.submit(set_func_annotation, bar, b): i fuer i in range(self.NUM_THREADS)}
                 fuer fut in concurrent.futures.as_completed(futures):
                     annotate = fut.result()
-                    self.assertIsNotNone(annotate)
+                    self.assertIsNotNichts(annotate)
                     self.assertEqual(annotate, {'x': int, 'y': int, 'return': int})
 
             # func_get_annotations returns in-place dict, so bar.__annotations__ should be modified as well

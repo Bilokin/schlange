@@ -37,7 +37,7 @@ def resolve_filename(filename):
         return os.path.join(REPO_ROOT, filename)
 
 
-def iter_filenames(*, search=False):
+def iter_filenames(*, search=Falsch):
     wenn search:
         yield from iter_files_by_suffix(INCLUDE_DIRS, ('.h',))
         yield from iter_files_by_suffix(SOURCE_DIRS, ('.c',))
@@ -46,7 +46,7 @@ def iter_filenames(*, search=False):
         yield from expand_filenames(globs)
 
 
-def iter_header_files(filenames=None, *, levels=None):
+def iter_header_files(filenames=Nichts, *, levels=Nichts):
     wenn not filenames:
         wenn levels:
             levels = set(levels)

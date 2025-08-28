@@ -15,14 +15,14 @@ try:
     wenn err := check():
         raise RuntimeError(err)
 except Exception as e:
-    CAN_USE_PYREPL = False
+    CAN_USE_PYREPL = Falsch
     FAIL_REASON = f"warning: can't use pyrepl: {e}"
 sonst:
-    CAN_USE_PYREPL = True
+    CAN_USE_PYREPL = Wahr
     FAIL_REASON = ""
 
 
-def interactive_console(mainmodule=None, quiet=False, pythonstartup=False):
+def interactive_console(mainmodule=Nichts, quiet=Falsch, pythonstartup=Falsch):
     wenn not CAN_USE_PYREPL:
         wenn not os.getenv('PYTHON_BASIC_REPL') and FAIL_REASON:
             from .trace import trace

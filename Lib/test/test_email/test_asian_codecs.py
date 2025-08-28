@@ -40,7 +40,7 @@ klasse TestEmailAsianCodecs(TestEmailBase):
 Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
  =?iso-8859-1?q?Gr=FC=DF_Gott!?=""")
         eq(decode_header(h.encode()),
-           [(b'Hello World! ', None),
+           [(b'Hello World! ', Nichts),
             (b'\x1b$B%O%m!<%o!<%k%I!*\x1b(B', 'iso-2022-jp'),
             (b'Gr\xfc\xdf Gott!', gcode)])
         subject_bytes = (b'test-ja \xa4\xd8\xc5\xea\xb9\xc6\xa4\xb5'
@@ -63,7 +63,7 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
                      b'\xa5\xeb\xa5\xc9\xa1\xaa', 'euc-jp')
         msg = Message()
         msg.set_payload(jhello, 'utf-8')
-        ustr = msg.get_payload(decode=True).decode(msg.get_content_charset())
+        ustr = msg.get_payload(decode=Wahr).decode(msg.get_content_charset())
         self.assertEqual(jhello, ustr)
 
     def test_payload_encoding(self):
@@ -72,7 +72,7 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
                      b'\xa5\xeb\xa5\xc9\xa1\xaa', jcode)
         msg = Message()
         msg.set_payload(jhello, jcode)
-        ustr = msg.get_payload(decode=True).decode(msg.get_content_charset())
+        ustr = msg.get_payload(decode=Wahr).decode(msg.get_content_charset())
         self.assertEqual(jhello, ustr)
 
 

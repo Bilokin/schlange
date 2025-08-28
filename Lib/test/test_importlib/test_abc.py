@@ -123,8 +123,8 @@ klasse SourceLoader(InheritanceTests):
 
 ##### Default return values ####################################################
 
-def make_abc_subclasses(base_class, name=None, inst=False, **kwargs):
-    wenn name is None:
+def make_abc_subclasses(base_class, name=Nichts, inst=Falsch, **kwargs):
+    wenn name is Nichts:
         name = base_class.__name__
     base = {kind: getattr(splitabc, name)
             fuer kind, splitabc in abc.items()}
@@ -192,7 +192,7 @@ klasse LoaderDefaultsTests(ABCTestHarness):
 
     def test_create_module(self):
         spec = 'a spec'
-        self.assertIsNone(self.ins.create_module(spec))
+        self.assertIsNichts(self.ins.create_module(spec))
 
     def test_load_module(self):
         with self.assertRaises(ImportError):
@@ -205,7 +205,7 @@ klasse LoaderDefaultsTests(ABCTestHarness):
             original_repr = repr(mod)
             mod.__loader__ = self.ins
             # Should still return a proper repr.
-            self.assertTrue(repr(mod))
+            self.assertWahr(repr(mod))
 
 
 (Frozen_LDefaultTests,
@@ -308,7 +308,7 @@ klasse MetaPathFinderFindModuleTests:
     def finder(cls, spec):
         klasse MetaPathSpecFinder(cls.abc.MetaPathFinder):
 
-            def find_spec(self, fullname, path, target=None):
+            def find_spec(self, fullname, path, target=Nichts):
                 self.called_for = fullname, path
                 return spec
 
@@ -318,15 +318,15 @@ klasse MetaPathFinderFindModuleTests:
         loader = object()
         spec = self.util.spec_from_loader('blah', loader)
         finder = self.finder(spec)
-        found = finder.find_spec('blah', 'blah', None)
+        found = finder.find_spec('blah', 'blah', Nichts)
         self.assertEqual(found, spec)
 
     def test_no_spec(self):
-        finder = self.finder(None)
+        finder = self.finder(Nichts)
         path = ['a', 'b', 'c']
         name = 'blah'
-        found = finder.find_spec(name, path, None)
-        self.assertIsNone(found)
+        found = finder.find_spec(name, path, Nichts)
+        self.assertIsNichts(found)
         self.assertEqual(name, finder.called_for[0])
         self.assertEqual(path, finder.called_for[1])
 
@@ -334,7 +334,7 @@ klasse MetaPathFinderFindModuleTests:
         loader = object()
         spec = self.util.spec_from_loader('blah', loader)
         finder = self.finder(spec)
-        found = finder.find_spec('blah', None)
+        found = finder.find_spec('blah', Nichts)
         self.assertIs(found, spec)
 
 
@@ -348,13 +348,13 @@ klasse LoaderLoadModuleTests:
 
     def loader(self):
         klasse SpecLoader(self.abc.Loader):
-            found = None
+            found = Nichts
             def exec_module(self, module):
                 self.found = module
 
             def is_package(self, fullname):
                 """Force some non-default module state to be set."""
-                return True
+                return Wahr
 
         return SpecLoader()
 
@@ -371,8 +371,8 @@ klasse LoaderLoadModuleTests:
             self.assertEqual(loader, module.__spec__.loader)
             self.assertEqual(name, module.__name__)
             self.assertEqual(name, module.__spec__.name)
-            self.assertIsNotNone(module.__path__)
-            self.assertIsNotNone(module.__path__,
+            self.assertIsNotNichts(module.__path__)
+            self.assertIsNotNichts(module.__path__,
                                 module.__spec__.submodule_search_locations)
 
     def test_reload(self):
@@ -399,11 +399,11 @@ klasse LoaderLoadModuleTests:
 ##### InspectLoader concrete methods ###########################################
 klasse InspectLoaderSourceToCodeTests:
 
-    def source_to_module(self, data, path=None):
+    def source_to_module(self, data, path=Nichts):
         """Help with source_to_code() tests."""
         module = types.ModuleType('blah')
         loader = self.InspectLoaderSubclass()
-        wenn path is None:
+        wenn path is Nichts:
             code = loader.source_to_code(data)
         sonst:
             code = loader.source_to_code(data, path)
@@ -457,13 +457,13 @@ klasse InspectLoaderGetCodeTests:
         exec(code, module.__dict__)
         self.assertEqual(module.attr, 42)
 
-    def test_get_code_source_is_None(self):
-        # If get_source() is None then this should be None.
+    def test_get_code_source_is_Nichts(self):
+        # If get_source() is Nichts then this should be Nichts.
         with mock.patch.object(self.InspectLoaderSubclass, 'get_source') as mocked:
-            mocked.return_value = None
+            mocked.return_value = Nichts
             loader = self.InspectLoaderSubclass()
             code = loader.get_code('blah')
-        self.assertIsNone(code)
+        self.assertIsNichts(code)
 
     def test_get_code_source_not_found(self):
         # If there is no source then there is no code object.
@@ -505,10 +505,10 @@ klasse InspectLoaderLoadModuleTests:
                 loader = self.InspectLoaderSubclass()
                 self.load(loader)
 
-    def test_get_code_None(self):
-        # If get_code() returns None, raise ImportError.
+    def test_get_code_Nichts(self):
+        # If get_code() returns Nichts, raise ImportError.
         with self.mock_get_code() as mocked_get_code:
-            mocked_get_code.return_value = None
+            mocked_get_code.return_value = Nichts
             with self.assertRaises(ImportError):
                 loader = self.InspectLoaderSubclass()
                 self.load(loader)
@@ -534,8 +534,8 @@ klasse InspectLoaderLoadModuleTests:
 ##### ExecutionLoader concrete methods #########################################
 klasse ExecutionLoaderGetCodeTests:
 
-    def mock_methods(self, *, get_source=False, get_filename=False):
-        source_mock_context, filename_mock_context = None, None
+    def mock_methods(self, *, get_source=Falsch, get_filename=Falsch):
+        source_mock_context, filename_mock_context = Nichts, Nichts
         wenn get_source:
             source_mock_context = mock.patch.object(self.ExecutionLoaderSubclass,
                                                     'get_source')
@@ -547,7 +547,7 @@ klasse ExecutionLoaderGetCodeTests:
     def test_get_code(self):
         path = 'blah.py'
         source_mock_context, filename_mock_context = self.mock_methods(
-                get_source=True, get_filename=True)
+                get_source=Wahr, get_filename=Wahr)
         with source_mock_context as source_mock, filename_mock_context as name_mock:
             source_mock.return_value = 'attr = 42'
             name_mock.return_value = path
@@ -558,14 +558,14 @@ klasse ExecutionLoaderGetCodeTests:
         exec(code, module.__dict__)
         self.assertEqual(module.attr, 42)
 
-    def test_get_code_source_is_None(self):
-        # If get_source() is None then this should be None.
-        source_mock_context, _ = self.mock_methods(get_source=True)
+    def test_get_code_source_is_Nichts(self):
+        # If get_source() is Nichts then this should be Nichts.
+        source_mock_context, _ = self.mock_methods(get_source=Wahr)
         with source_mock_context as mocked:
-            mocked.return_value = None
+            mocked.return_value = Nichts
             loader = self.ExecutionLoaderSubclass()
             code = loader.get_code('blah')
-        self.assertIsNone(code)
+        self.assertIsNichts(code)
 
     def test_get_code_source_not_found(self):
         # If there is no source then there is no code object.
@@ -577,7 +577,7 @@ klasse ExecutionLoaderGetCodeTests:
         # If get_filename() raises ImportError then simply skip setting the path
         # on the code object.
         source_mock_context, filename_mock_context = self.mock_methods(
-                get_source=True, get_filename=True)
+                get_source=Wahr, get_filename=Wahr)
         with source_mock_context as source_mock, filename_mock_context as name_mock:
             source_mock.return_value = 'attr = 42'
             name_mock.side_effect = ImportError
@@ -621,18 +621,18 @@ klasse SourceLoader(SourceOnlyLoader):
 
     source_mtime = 1
 
-    def __init__(self, path, magic=None):
+    def __init__(self, path, magic=Nichts):
         super().__init__(path)
         self.bytecode_path = self.util.cache_from_source(self.path)
         self.source_size = len(self.source)
-        wenn magic is None:
+        wenn magic is Nichts:
             magic = self.util.MAGIC_NUMBER
         data = bytearray(magic)
         data.extend(self.init._pack_uint32(0))
         data.extend(self.init._pack_uint32(self.source_mtime))
         data.extend(self.init._pack_uint32(self.source_size))
         code_object = compile(self.source, self.path, 'exec',
-                                dont_inherit=True)
+                                dont_inherit=Wahr)
         data.extend(marshal.dumps(code_object))
         self.bytecode = bytes(data)
         self.written = {}
@@ -660,7 +660,7 @@ SPLIT_SL = make_abc_subclasses(SourceLoader, util=util, init=init)
 
 klasse SourceLoaderTestHarness:
 
-    def setUp(self, *, is_package=True, **kwargs):
+    def setUp(self, *, is_package=Wahr, **kwargs):
         self.package = 'pkg'
         wenn is_package:
             self.path = os.path.join(self.package, '__init__.py')
@@ -713,11 +713,11 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
 
     def test_is_package(self):
         # Properly detect when loading a package.
-        self.setUp(is_package=False)
-        self.assertFalse(self.loader.is_package(self.name))
-        self.setUp(is_package=True)
-        self.assertTrue(self.loader.is_package(self.name))
-        self.assertFalse(self.loader.is_package(self.name + '.__init__'))
+        self.setUp(is_package=Falsch)
+        self.assertFalsch(self.loader.is_package(self.name))
+        self.setUp(is_package=Wahr)
+        self.assertWahr(self.loader.is_package(self.name))
+        self.assertFalsch(self.loader.is_package(self.name + '.__init__'))
 
     def test_get_code(self):
         # Verify the code object is created.
@@ -749,7 +749,7 @@ klasse SourceOnlyLoaderTests(SourceLoaderTestHarness):
         # Testing the values fuer a package are covered by test_load_module.
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
-            self.setUp(is_package=False)
+            self.setUp(is_package=Falsch)
             with test_util.uncache(self.name):
                 with warnings.catch_warnings():
                     warnings.simplefilter('ignore', DeprecationWarning)
@@ -785,7 +785,7 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     """
 
-    def verify_code(self, code_object, *, bytecode_written=False):
+    def verify_code(self, code_object, *, bytecode_written=Falsch):
         super().verify_code(code_object)
         wenn bytecode_written:
             self.assertIn(self.cached, self.loader.written)
@@ -812,7 +812,7 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
             bytecode_path = self.util.cache_from_source(self.path)
             self.loader.get_data(bytecode_path)
         code_object = self.loader.get_code(self.name)
-        self.verify_code(code_object, bytecode_written=True)
+        self.verify_code(code_object, bytecode_written=Wahr)
 
     def test_code_bad_timestamp(self):
         # Bytecode is only used when the timestamp matches the source EXACTLY.
@@ -823,7 +823,7 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
             # If bytecode is used then EOFError would be raised by marshal.
             self.loader.bytecode = self.loader.bytecode[8:]
             code_object = self.loader.get_code(self.name)
-            self.verify_code(code_object, bytecode_written=True)
+            self.verify_code(code_object, bytecode_written=Wahr)
             self.loader.source_mtime = original
 
     def test_code_bad_magic(self):
@@ -832,18 +832,18 @@ klasse SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         # If bytecode is used then EOFError would be raised by marshal.
         self.loader.bytecode = self.loader.bytecode[8:]
         code_object = self.loader.get_code(self.name)
-        self.verify_code(code_object, bytecode_written=True)
+        self.verify_code(code_object, bytecode_written=Wahr)
 
     def test_dont_write_bytecode(self):
         # Bytecode is not written wenn sys.dont_write_bytecode is true.
         # Can assume it is false already thanks to the skipIf klasse decorator.
         try:
-            sys.dont_write_bytecode = True
+            sys.dont_write_bytecode = Wahr
             self.loader.bytecode_path = "<does not exist>"
             code_object = self.loader.get_code(self.name)
             self.assertNotIn(self.cached, self.loader.written)
         finally:
-            sys.dont_write_bytecode = False
+            sys.dont_write_bytecode = Falsch
 
     def test_no_set_data(self):
         # If set_data is not defined, one can still read bytecode.
@@ -904,7 +904,7 @@ klasse SourceLoaderGetSourceTests:
         mock = self.SourceOnlyLoaderMock('mod.file')
         source = "x = 42\r\ny = -13\r\n"
         mock.source = source.encode('utf-8')
-        expect = io.IncrementalNewlineDecoder(None, True).decode(source)
+        expect = io.IncrementalNewlineDecoder(Nichts, Wahr).decode(source)
         self.assertEqual(mock.get_source(name), expect)
 
 

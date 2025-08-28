@@ -9,7 +9,7 @@ from test.support import (
     )
 
 
-wenn check_sanitizer(address=True, memory=True):
+wenn check_sanitizer(address=Wahr, memory=Wahr):
     # See gh-90791 fuer details
     raise unittest.SkipTest("Tests involving libX11 can SEGFAULT on ASAN/MSAN builds")
 

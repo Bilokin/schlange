@@ -22,9 +22,9 @@ c_uuid = import_helper.import_fresh_module('uuid', fresh=['_uuid'])
 def importable(name):
     try:
         __import__(name)
-        return True
+        return Wahr
     except ModuleNotFoundError:
-        return False
+        return Falsch
 
 
 def mock_get_command_stdout(data):
@@ -34,7 +34,7 @@ def mock_get_command_stdout(data):
 
 
 klasse BaseTestUUID:
-    uuid = None
+    uuid = Nichts
 
     def test_nil_uuid(self):
         nil_uuid = self.uuid.NIL
@@ -54,7 +54,7 @@ klasse BaseTestUUID:
         # specified in RFC 9562. As such, because the Nil UUID falls under a
         # different variant, its version is considered undefined.
         # See https://www.rfc-editor.org/rfc/rfc9562.html#table2
-        self.assertIsNone(nil_uuid.version)
+        self.assertIsNichts(nil_uuid.version)
 
     def test_max_uuid(self):
         max_uuid = self.uuid.MAX
@@ -75,13 +75,13 @@ klasse BaseTestUUID:
         # Max UUID falls under a different variant, its version is considered
         # undefined.
         # See https://www.rfc-editor.org/rfc/rfc9562.html#table2
-        self.assertIsNone(max_uuid.version)
+        self.assertIsNichts(max_uuid.version)
 
     def test_safe_uuid_enum(self):
         klasse CheckedSafeUUID(enum.Enum):
             safe = 0
             unsafe = -1
-            unknown = None
+            unknown = Nichts
         enum._test_simple_enum(CheckedSafeUUID, py_uuid.SafeUUID)
 
     def test_UUID(self):
@@ -97,7 +97,7 @@ klasse BaseTestUUID:
              (0, 0, 0, 0, 0, 0),
              0,
              'urn:uuid:00000000-0000-0000-0000-000000000000',
-             0, 0, self.uuid.RESERVED_NCS, None),
+             0, 0, self.uuid.RESERVED_NCS, Nichts),
             ('00010203-0405-0607-0809-0a0b0c0d0e0f',
              '{00010203-0405-0607-0809-0a0b0c0d0e0f}',
              '000102030405060708090a0b0c0d0e0f',
@@ -106,7 +106,7 @@ klasse BaseTestUUID:
              (0x00010203, 0x0405, 0x0607, 8, 9, 0x0a0b0c0d0e0f),
              0x000102030405060708090a0b0c0d0e0f,
              'urn:uuid:00010203-0405-0607-0809-0a0b0c0d0e0f',
-             0x607040500010203, 0x809, self.uuid.RESERVED_NCS, None),
+             0x607040500010203, 0x809, self.uuid.RESERVED_NCS, Nichts),
             ('02d9e6d5-9467-382e-8f9b-9300a64ac3cd',
              '{02d9e6d5-9467-382e-8f9b-9300a64ac3cd}',
              '02d9e6d59467382e8f9b9300a64ac3cd',
@@ -124,7 +124,7 @@ klasse BaseTestUUID:
              (0x12345678, 0x1234, 0x5678, 0x12, 0x34, 0x567812345678),
              0x12345678123456781234567812345678,
              'urn:uuid:12345678-1234-5678-1234-567812345678',
-             0x678123412345678, 0x1234, self.uuid.RESERVED_NCS, None),
+             0x678123412345678, 0x1234, self.uuid.RESERVED_NCS, Nichts),
             ('6ba7b810-9dad-11d1-80b4-00c04fd430c8',
              '{6ba7b810-9dad-11d1-80b4-00c04fd430c8}',
              '6ba7b8109dad11d180b400c04fd430c8',
@@ -205,7 +205,7 @@ klasse BaseTestUUID:
              (0xfffefdfc, 0xfffe, 0xfffe, 0xff, 0xfe, 0xfffefdfcfbfa),
              0xfffefdfcfffefffefffefffefdfcfbfa,
              'urn:uuid:fffefdfc-fffe-fffe-fffe-fffefdfcfbfa',
-             0xffefffefffefdfc, 0x3ffe, self.uuid.RESERVED_FUTURE, None),
+             0xffefffefffefdfc, 0x3ffe, self.uuid.RESERVED_FUTURE, Nichts),
             ('ffffffff-ffff-ffff-ffff-ffffffffffff',
              '{ffffffff-ffff-ffff-ffff-ffffffffffff}',
              'ffffffffffffffffffffffffffffffff',
@@ -214,7 +214,7 @@ klasse BaseTestUUID:
              (0xffffffff, 0xffff, 0xffff, 0xff, 0xff, 0xffffffffffff),
              0xffffffffffffffffffffffffffffffff,
              'urn:uuid:ffffffff-ffff-ffff-ffff-ffffffffffff',
-             0xfffffffffffffff, 0x3fff, self.uuid.RESERVED_FUTURE, None),
+             0xfffffffffffffff, 0x3fff, self.uuid.RESERVED_FUTURE, Nichts),
             ]:
             equivalents = []
             # Construct each UUID in several different ways.
@@ -367,7 +367,7 @@ klasse BaseTestUUID:
 
     def test_getnode(self):
         node1 = self.uuid.getnode()
-        self.assertTrue(0 < node1 < (1 << 48), '%012x' % node1)
+        self.assertWahr(0 < node1 < (1 << 48), '%012x' % node1)
 
         # Test it again to ensure consistency.
         node2 = self.uuid.getnode()
@@ -518,11 +518,11 @@ klasse BaseTestUUID:
         too_large_getter = lambda: 1 << 48
         with mock.patch.multiple(
             self.uuid,
-            _node=None,  # Ignore any cached node value.
+            _node=Nichts,  # Ignore any cached node value.
             _GETTERS=[too_large_getter],
         ):
             node = self.uuid.getnode()
-        self.assertTrue(0 < node < (1 << 48), '%012x' % node)
+        self.assertWahr(0 < node < (1 << 48), '%012x' % node)
 
         # Confirm that uuid1 can use the generated node, i.e., the that
         # uuid.getnode fell back on uuid._random_getnode() rather than using
@@ -578,7 +578,7 @@ klasse BaseTestUUID:
         try:
             import _uuid
         except ImportError:
-            has_uuid_generate_time_safe = False
+            has_uuid_generate_time_safe = Falsch
         sonst:
             has_uuid_generate_time_safe = _uuid.has_uuid_generate_time_safe
 
@@ -599,7 +599,7 @@ klasse BaseTestUUID:
         wenn os.name != 'posix':
             self.skipTest('POSIX-only test')
         f = self.uuid._generate_time_safe
-        wenn f is None:
+        wenn f is Nichts:
             self.skipTest('need uuid._generate_time_safe')
         with mock.patch.object(self.uuid, '_generate_time_safe',
                                lambda: (f()[0], safe_value)):
@@ -609,7 +609,7 @@ klasse BaseTestUUID:
     def test_uuid1_unknown(self):
         # Even wenn the platform has uuid_generate_time_safe(), let's mock it to
         # be uuid_generate_time() and ensure the safety is unknown.
-        with self.mock_generate_time_safe(None):
+        with self.mock_generate_time_safe(Nichts):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
@@ -632,16 +632,16 @@ klasse BaseTestUUID:
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
     def test_uuid1_time(self):
-        with mock.patch.object(self.uuid, '_generate_time_safe', None), \
-             mock.patch.object(self.uuid, '_last_timestamp', None), \
+        with mock.patch.object(self.uuid, '_generate_time_safe', Nichts), \
+             mock.patch.object(self.uuid, '_last_timestamp', Nichts), \
              mock.patch.object(self.uuid, 'getnode', return_value=93328246233727), \
              mock.patch('time.time_ns', return_value=1545052026752910643), \
              mock.patch('random.getrandbits', return_value=5317): # guaranteed to be random
             u = self.uuid.uuid1()
             self.assertEqual(u, self.uuid.UUID('a7a55b92-01fc-11e9-94c5-54e1acf6da7f'))
 
-        with mock.patch.object(self.uuid, '_generate_time_safe', None), \
-             mock.patch.object(self.uuid, '_last_timestamp', None), \
+        with mock.patch.object(self.uuid, '_generate_time_safe', Nichts), \
+             mock.patch.object(self.uuid, '_last_timestamp', Nichts), \
              mock.patch('time.time_ns', return_value=1545052026752910643):
             u = self.uuid.uuid1(node=93328246233727, clock_seq=5317)
             self.assertEqual(u, self.uuid.UUID('a7a55b92-01fc-11e9-94c5-54e1acf6da7f'))
@@ -736,7 +736,7 @@ klasse BaseTestUUID:
         fake_node_value = 0x54e1_acf6_da7f
         fake_clock_seq = 0x14c5
         with (
-            mock.patch.object(self.uuid, '_last_timestamp_v6', None),
+            mock.patch.object(self.uuid, '_last_timestamp_v6', Nichts),
             mock.patch.object(self.uuid, 'getnode', return_value=fake_node_value),
             mock.patch('time.time_ns', return_value=fake_nanoseconds),
             mock.patch('random.getrandbits', return_value=fake_clock_seq)
@@ -776,8 +776,8 @@ klasse BaseTestUUID:
 
         with mock.patch('time.time_ns', return_value=fake_nanoseconds):
             def gen():
-                with mock.patch.object(self.uuid, '_last_timestamp_v6', None):
-                    return self.uuid.uuid6(node=0, clock_seq=None)
+                with mock.patch.object(self.uuid, '_last_timestamp_v6', Nichts):
+                    return self.uuid.uuid6(node=0, clock_seq=Nichts)
 
             # By the birthday paradox, sampling N = 1024 UUIDs with identical
             # node IDs and timestamps results in duplicates with probability
@@ -856,7 +856,7 @@ klasse BaseTestUUID:
         clock_seq = (3 << 12) | 0x3c8
 
         with (
-            mock.patch.object(self.uuid, '_last_timestamp_v6', None),
+            mock.patch.object(self.uuid, '_last_timestamp_v6', Nichts),
             mock.patch('time.time_ns', return_value=fake_nanoseconds)
         ):
             u = self.uuid.uuid6(node=node, clock_seq=clock_seq)
@@ -899,7 +899,7 @@ klasse BaseTestUUID:
             with (
                 mock.patch.multiple(
                     self.uuid,
-                    _last_timestamp_v7=None,
+                    _last_timestamp_v7=Nichts,
                     _last_counter_v7=0,
                 ),
                 mock.patch('time.time_ns', return_value=timestamp_ns),
@@ -1086,18 +1086,18 @@ klasse BaseTestUUID:
 
         fuer (_, hi, mid, lo) in product(
             range(10),  # repeat 10 times
-            [None, 0, random.getrandbits(48)],
-            [None, 0, random.getrandbits(12)],
-            [None, 0, random.getrandbits(62)],
+            [Nichts, 0, random.getrandbits(48)],
+            [Nichts, 0, random.getrandbits(12)],
+            [Nichts, 0, random.getrandbits(62)],
         ):
             u = self.uuid.uuid8(hi, mid, lo)
             equal(u.variant, self.uuid.RFC_4122)
             equal(u.version, 8)
-            wenn hi is not None:
+            wenn hi is not Nichts:
                 equal((u.int >> 80) & 0xffffffffffff, hi)
-            wenn mid is not None:
+            wenn mid is not Nichts:
                 equal((u.int >> 64) & 0xfff, mid)
-            wenn lo is not None:
+            wenn lo is not Nichts:
                 equal(u.int & 0x3fffffffffffffff, lo)
 
     def test_uuid8_uniqueness(self):
@@ -1143,7 +1143,7 @@ klasse BaseTestUUID:
 
 
 klasse CommandLineTestCases:
-    uuid = None  # to be defined in subclasses
+    uuid = Nichts  # to be defined in subclasses
 
     def do_test_standalone_uuid(self, version):
         stdout = io.StringIO()
@@ -1264,8 +1264,8 @@ klasse TestUUIDWithExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCa
         _, n_a, _ = assert_python_ok('-c', script)
         _, n_b, _ = assert_python_ok('-c', script)
         n_a, n_b = n_a.decode().strip(), n_b.decode().strip()
-        self.assertTrue(n_a.isdigit())
-        self.assertTrue(n_b.isdigit())
+        self.assertWahr(n_a.isdigit())
+        self.assertWahr(n_b.isdigit())
         self.assertEqual(n_a, n_b)
 
     @unittest.skipUnless(os.name == 'nt', 'Windows only')
@@ -1275,8 +1275,8 @@ klasse TestUUIDWithExtModule(CommandLineTestCases, BaseTestUUID, unittest.TestCa
         _, n_a, _ = assert_python_ok('-c', script)
         _, n_b, _ = assert_python_ok('-c', script)
         n_a, n_b = n_a.decode().strip(), n_b.decode().strip()
-        self.assertTrue(n_a.isdigit())
-        self.assertTrue(n_b.isdigit())
+        self.assertWahr(n_a.isdigit())
+        self.assertWahr(n_b.isdigit())
         self.assertEqual(n_a, n_b)
 
 
@@ -1287,11 +1287,11 @@ klasse BaseTestInternals:
         wenn not aix:
             patch = mock.patch.multiple(self.uuid,
                                         _MAC_DELIM=b':',
-                                        _MAC_OMITS_LEADING_ZEROES=False)
+                                        _MAC_OMITS_LEADING_ZEROES=Falsch)
         sonst:
             patch = mock.patch.multiple(self.uuid,
                                         _MAC_DELIM=b'.',
-                                        _MAC_OMITS_LEADING_ZEROES=True)
+                                        _MAC_OMITS_LEADING_ZEROES=Wahr)
 
         with patch:
             # Valid MAC addresses
@@ -1327,13 +1327,13 @@ klasse BaseTestInternals:
                 wenn aix:
                     mac = mac.replace(b':', b'.')
                 with self.subTest(mac=mac):
-                    self.assertIsNone(self.uuid._parse_mac(mac))
+                    self.assertIsNichts(self.uuid._parse_mac(mac))
 
     def test_parse_mac(self):
-        self.check_parse_mac(False)
+        self.check_parse_mac(Falsch)
 
     def test_parse_mac_aix(self):
-        self.check_parse_mac(True)
+        self.check_parse_mac(Wahr)
 
     def test_find_under_heading(self):
         data = '''\
@@ -1347,10 +1347,10 @@ en0   1500  192.168.90  x071             1714807956     0 711348489     0     0
 '''
 
         # The above data is from AIX - with '.' as _MAC_DELIM and strings
-        # shorter than 17 bytes (no leading 0). (_MAC_OMITS_LEADING_ZEROES=True)
+        # shorter than 17 bytes (no leading 0). (_MAC_OMITS_LEADING_ZEROES=Wahr)
         with mock.patch.multiple(self.uuid,
                                  _MAC_DELIM=b'.',
-                                 _MAC_OMITS_LEADING_ZEROES=True,
+                                 _MAC_OMITS_LEADING_ZEROES=Wahr,
                                  _get_command_stdout=mock_get_command_stdout(data)):
             mac = self.uuid._find_mac_under_heading(
                 command='netstat',
@@ -1387,7 +1387,7 @@ lo0       - 127.0.0.0/8   127.0.0.1           259955     -     -   259955     - 
 
         with mock.patch.multiple(self.uuid,
                                  _MAC_DELIM=b':',
-                                 _MAC_OMITS_LEADING_ZEROES=False,
+                                 _MAC_OMITS_LEADING_ZEROES=Falsch,
                                  _get_command_stdout=mock_get_command_stdout(data)):
             mac = self.uuid._find_mac_under_heading(
                 command='netstat',
@@ -1408,7 +1408,7 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         # The above data will only be parsed properly on non-AIX unixes.
         with mock.patch.multiple(self.uuid,
                                  _MAC_DELIM=b':',
-                                 _MAC_OMITS_LEADING_ZEROES=False,
+                                 _MAC_OMITS_LEADING_ZEROES=Falsch,
                                  _get_command_stdout=mock_get_command_stdout(data)):
             mac = self.uuid._find_mac_near_keyword(
                 command='ifconfig',
@@ -1419,13 +1419,13 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
 
         self.assertEqual(mac, 0x1234567890ab)
 
-    def check_node(self, node, requires=None):
-        wenn requires and node is None:
+    def check_node(self, node, requires=Nichts):
+        wenn requires and node is Nichts:
             self.skipTest('requires ' + requires)
         hex = '%012x' % node
         wenn support.verbose >= 2:
             print(hex, end=' ')
-        self.assertTrue(0 < node < (1 << 48),
+        self.assertWahr(0 < node < (1 << 48),
                         "%s is not an RFC 4122 node ID" % hex)
 
     @unittest.skipUnless(_uuid._ifconfig_getnode in _uuid._GETTERS,
@@ -1463,7 +1463,7 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         # The multicast bit, i.e. the least significant bit of first octet,
         # must be set fuer randomly generated MAC addresses.  See RFC 4122,
         # $4.1.6.
-        self.assertTrue(node & (1 << 40), '%012x' % node)
+        self.assertWahr(node & (1 << 40), '%012x' % node)
         self.check_node(node)
 
         node2 = self.uuid._random_getnode()
@@ -1480,7 +1480,7 @@ klasse TestInternalsWithExtModule(BaseTestInternals, unittest.TestCase):
     def test_unix_getnode(self):
         wenn not importable('_uuid') and not importable('ctypes'):
             self.skipTest("neither _uuid extension nor ctypes available")
-        try: # Issues 1481, 3581: _uuid_generate_time() might be None.
+        try: # Issues 1481, 3581: _uuid_generate_time() might be Nichts.
             node = self.uuid._unix_getnode()
         except TypeError:
             self.skipTest('requires uuid_generate_time')

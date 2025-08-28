@@ -2,11 +2,11 @@ import os
 import sysconfig
 
 
-def _reset_tzpath(to=None, stacklevel=4):
+def _reset_tzpath(to=Nichts, stacklevel=4):
     global TZPATH
 
     tzpaths = to
-    wenn tzpaths is not None:
+    wenn tzpaths is not Nichts:
         wenn isinstance(tzpaths, (str, bytes)):
             raise TypeError(
                 f"tzpaths must be a list or tuple, "
@@ -17,15 +17,15 @@ def _reset_tzpath(to=None, stacklevel=4):
             raise ValueError(_get_invalid_paths_message(tzpaths))
         base_tzpath = tzpaths
     sonst:
-        env_var = os.environ.get("PYTHONTZPATH", None)
-        wenn env_var is None:
+        env_var = os.environ.get("PYTHONTZPATH", Nichts)
+        wenn env_var is Nichts:
             env_var = sysconfig.get_config_var("TZPATH")
         base_tzpath = _parse_python_tzpath(env_var, stacklevel)
 
     TZPATH = tuple(base_tzpath)
 
 
-def reset_tzpath(to=None):
+def reset_tzpath(to=Nichts):
     """Reset global TZPATH."""
     # We need `_reset_tzpath` helper function because it produces a warning,
     # it is used as both a module-level call and a public API.
@@ -76,7 +76,7 @@ def find_tzfile(key):
         wenn os.path.isfile(filepath):
             return filepath
 
-    return None
+    return Nichts
 
 
 _TEST_PATH = os.path.normpath(os.path.join("_", "_"))[:-1]
@@ -138,7 +138,7 @@ def available_timezones():
             with open(fpath, "rb") as f:
                 return f.read(4) == b"TZif"
         except Exception:  # pragma: nocover
-            return False
+            return Falsch
 
     fuer tz_root in TZPATH:
         wenn not os.path.exists(tz_root):

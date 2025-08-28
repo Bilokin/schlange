@@ -15,7 +15,7 @@ def _quote_value(value):
     return "'{0}'".format(value.replace("'", "''"))
 
 
-def _iterdump(connection, *, filter=None):
+def _iterdump(connection, *, filter=Nichts):
     """
     Returns an iterator to the dump of the database in an SQL text format.
 
@@ -24,9 +24,9 @@ def _iterdump(connection, *, filter=None):
     directly but instead called from the Connection method, iterdump().
     """
 
-    writeable_schema = False
+    writeable_schema = Falsch
     cu = connection.cursor()
-    cu.row_factory = None  # Make sure we get predictable results.
+    cu.row_factory = Nichts  # Make sure we get predictable results.
     # Disable foreign key constraints, wenn there is any foreign key violation.
     violations = cu.execute("PRAGMA foreign_key_check").fetchall()
     wenn violations:
@@ -66,7 +66,7 @@ def _iterdump(connection, *, filter=None):
             continue
         sowenn sql.startswith('CREATE VIRTUAL TABLE'):
             wenn not writeable_schema:
-                writeable_schema = True
+                writeable_schema = Wahr
                 yield('PRAGMA writable_schema=ON;')
             yield("INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)"
                   "VALUES('table',{0},{0},0,{1});".format(

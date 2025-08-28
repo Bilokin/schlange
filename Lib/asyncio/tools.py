@@ -18,7 +18,7 @@ klasse CycleFoundException(Exception):
             self,
             cycles: list[list[int]],
             id2name: dict[int, str],
-        ) -> None:
+        ) -> Nichts:
         super().__init__(cycles, id2name)
         self.cycles = cycles
         self.id2name = id2name
@@ -164,8 +164,8 @@ def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
         flag = task_emoji wenn node[0] == NodeType.TASK sonst cor_emoji
         return f"{flag} {labels[node]}"
 
-    def render(node, prefix="", last=True, buf=None):
-        wenn buf is None:
+    def render(node, prefix="", last=Wahr, buf=Nichts):
+        wenn buf is Nichts:
             buf = []
         buf.append(f"{prefix}{'└── ' wenn last sonst '├── '}{pretty(node)}")
         new_pref = prefix + ("    " wenn last sonst "│   ")
@@ -227,7 +227,7 @@ def _get_awaited_by_tasks(pid: int) -> list:
     try:
         return get_all_awaited_by(pid)
     except RuntimeError as e:
-        while e.__context__ is not None:
+        while e.__context__ is not Nichts:
             e = e.__context__
         print(f"Error retrieving tasks: {e}")
         sys.exit(1)
@@ -285,7 +285,7 @@ def _display_awaited_by_tasks_csv(table, *, format):
     csv_writer.writerows(table)
 
 
-def display_awaited_by_tasks_tree(pid: int) -> None:
+def display_awaited_by_tasks_tree(pid: int) -> Nichts:
     """Build and print a tree of all pending tasks under `pid`."""
 
     tasks = _get_awaited_by_tasks(pid)

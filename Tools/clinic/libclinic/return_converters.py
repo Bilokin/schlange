@@ -20,7 +20,7 @@ return_converters: ReturnConverterDict = {}
 
 def add_c_return_converter(
     f: ReturnConverterType,
-    name: str | None = None
+    name: str | Nichts = Nichts
 ) -> ReturnConverterType:
     wenn not name:
         name = f.__name__
@@ -37,7 +37,7 @@ klasse CReturnConverterAutoRegister(type):
         name: str,
         bases: tuple[type[object], ...],
         classdict: dict[str, Any]
-    ) -> None:
+    ) -> Nichts:
         add_c_return_converter(cls)
 
 
@@ -50,14 +50,14 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
 
     # The Python default value fuer this parameter, as a Python value.
     # Or the magic value "unspecified" wenn there is no default.
-    default: object = None
+    default: object = Nichts
 
     def __init__(
         self,
         *,
-        py_default: str | None = None,
+        py_default: str | Nichts = Nichts,
         **kwargs: Any
-    ) -> None:
+    ) -> Nichts:
         self.py_default = py_default
         try:
             self.return_converter_init(**kwargs)
@@ -65,9 +65,9 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
             s = ', '.join(name + '=' + repr(value) fuer name, value in kwargs.items())
             sys.exit(self.__class__.__name__ + '(' + s + ')\n' + str(e))
 
-    def return_converter_init(self) -> None: ...
+    def return_converter_init(self) -> Nichts: ...
 
-    def declare(self, data: CRenderData) -> None:
+    def declare(self, data: CRenderData) -> Nichts:
         line: list[str] = []
         add = line.append
         add(self.type)
@@ -81,7 +81,7 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
         self,
         expr: str,
         data: CRenderData
-    ) -> None:
+    ) -> Nichts:
         line = f'if (({expr}) && PyErr_Occurred()) {{\n    goto exit;\n}}\n'
         data.return_conversion.append(line)
 
@@ -89,7 +89,7 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
         self,
         variable: str,
         data: CRenderData
-    ) -> None:
+    ) -> Nichts:
         line = f'if ({variable} == NULL) {{\n    goto exit;\n}}\n'
         data.return_conversion.append(line)
 
@@ -97,7 +97,7 @@ klasse CReturnConverter(metaclass=CReturnConverterAutoRegister):
         self,
         function: Function,
         data: CRenderData
-    ) -> None: ...
+    ) -> Nichts: ...
 
 
 add_c_return_converter(CReturnConverter, 'object')
@@ -106,7 +106,7 @@ add_c_return_converter(CReturnConverter, 'object')
 klasse bool_return_converter(CReturnConverter):
     type = 'int'
 
-    def render(self, function: Function, data: CRenderData) -> None:
+    def render(self, function: Function, data: CRenderData) -> Nichts:
         self.declare(data)
         self.err_occurred_if(f"{data.converter_retval} == -1", data)
         data.return_conversion.append(
@@ -120,7 +120,7 @@ klasse long_return_converter(CReturnConverter):
     cast = ''
     unsigned_cast = ''
 
-    def render(self, function: Function, data: CRenderData) -> None:
+    def render(self, function: Function, data: CRenderData) -> Nichts:
         self.declare(data)
         self.err_occurred_if(f"{data.converter_retval} == {self.unsigned_cast}-1", data)
         data.return_conversion.append(
@@ -160,7 +160,7 @@ klasse double_return_converter(CReturnConverter):
     type = 'double'
     cast = ''
 
-    def render(self, function: Function, data: CRenderData) -> None:
+    def render(self, function: Function, data: CRenderData) -> Nichts:
         self.declare(data)
         self.err_occurred_if(f"{data.converter_retval} == -1.0", data)
         data.return_conversion.append(

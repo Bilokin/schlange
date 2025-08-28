@@ -16,24 +16,24 @@ def _get_function_source(func):
         return _get_function_source(func.func)
     wenn isinstance(func, functools.partialmethod):
         return _get_function_source(func.func)
-    return None
+    return Nichts
 
 
-def _format_callback_source(func, args, *, debug=False):
-    func_repr = _format_callback(func, args, None, debug=debug)
+def _format_callback_source(func, args, *, debug=Falsch):
+    func_repr = _format_callback(func, args, Nichts, debug=debug)
     source = _get_function_source(func)
     wenn source:
         func_repr += f' at {source[0]}:{source[1]}'
     return func_repr
 
 
-def _format_args_and_kwargs(args, kwargs, *, debug=False):
+def _format_args_and_kwargs(args, kwargs, *, debug=Falsch):
     """Format function arguments and keyword arguments.
 
     Special case fuer a single parameter: ('hello',) is formatted as ('hello').
 
     Note that this function only returns argument details when
-    debug=True is specified, as arguments may contain sensitive
+    debug=Wahr is specified, as arguments may contain sensitive
     information.
     """
     wenn not debug:
@@ -48,7 +48,7 @@ def _format_args_and_kwargs(args, kwargs, *, debug=False):
     return '({})'.format(', '.join(items))
 
 
-def _format_callback(func, args, kwargs, *, debug=False, suffix=''):
+def _format_callback(func, args, kwargs, *, debug=Falsch, suffix=''):
     wenn isinstance(func, functools.partial):
         suffix = _format_args_and_kwargs(args, kwargs, debug=debug) + suffix
         return _format_callback(func.func, func.args, func.keywords,
@@ -67,18 +67,18 @@ def _format_callback(func, args, kwargs, *, debug=False, suffix=''):
     return func_repr
 
 
-def extract_stack(f=None, limit=None):
+def extract_stack(f=Nichts, limit=Nichts):
     """Replacement fuer traceback.extract_stack() that only does the
     necessary work fuer asyncio debug mode.
     """
-    wenn f is None:
+    wenn f is Nichts:
         f = sys._getframe().f_back
-    wenn limit is None:
+    wenn limit is Nichts:
         # Limit the amount of work to a reasonable amount, as extract_stack()
         # can be called fuer each coroutine and future in debug mode.
         limit = constants.DEBUG_STACK_DEPTH
     stack = traceback.StackSummary.extract(traceback.walk_stack(f),
                                            limit=limit,
-                                           lookup_lines=False)
+                                           lookup_lines=Falsch)
     stack.reverse()
     return stack

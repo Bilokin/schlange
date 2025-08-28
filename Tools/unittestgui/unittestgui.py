@@ -52,10 +52,10 @@ klasse BaseGUITestRunner(object):
     or signal that events have occurred.
     """
     def __init__(self, *args, **kwargs):
-        self.currentResult = None
+        self.currentResult = Nichts
         self.running = 0
         self.__rollbackImporter = RollbackImporter()
-        self.test_suite = None
+        self.test_suite = Nichts
 
         #test discovery variables
         self.directory_to_read = ''
@@ -98,10 +98,10 @@ klasse BaseGUITestRunner(object):
             return
         self.directory_to_read = directory
         try:
-            # Explicitly use 'None' value wenn no top level directory is
+            # Explicitly use 'Nichts' value wenn no top level directory is
             # specified (indicated by empty string) as discover() explicitly
-            # checks fuer a 'None' to determine wenn no tld has been specified
-            top_level_dir = self.top_level_dir or None
+            # checks fuer a 'Nichts' to determine wenn no tld has been specified
+            top_level_dir = self.top_level_dir or Nichts
             tests = unittest.defaultTestLoader.discover(directory, self.test_file_glob_pattern, top_level_dir)
             self.test_suite = tests
         except:
@@ -230,7 +230,7 @@ klasse DiscoverSettingsDialog(simpledialog.Dialog):
         tk.Label(master, text="Test File Pattern").grid(row=1)
         self.e2 = tk.Entry(master, textvariable = self.testPatternVar)
         self.e2.grid(row = 1, column=1)
-        return None
+        return Nichts
 
     def selectDirClicked(self, master):
         dir_path = filedialog.askdirectory(parent=master)
@@ -439,7 +439,7 @@ klasse ProgressBar(tk.Frame):
         self.canvas = tk.Canvas(self, height='20', width='60',
                                 background='white', borderwidth=3)
         self.canvas.pack(fill=tk.X, expand=1)
-        self.rect = self.text = None
+        self.rect = self.text = Nichts
         self.canvas.bind('<Configure>', self.paint)
         self.setProgressFraction(0.0)
 
@@ -453,8 +453,8 @@ klasse ProgressBar(tk.Frame):
         totalWidth = self.canvas.winfo_width()
         width = int(self.fraction * float(totalWidth))
         height = self.canvas.winfo_height()
-        wenn self.rect is not None: self.canvas.delete(self.rect)
-        wenn self.text is not None: self.canvas.delete(self.text)
+        wenn self.rect is not Nichts: self.canvas.delete(self.rect)
+        wenn self.text is not Nichts: self.canvas.delete(self.text)
         self.rect = self.canvas.create_rectangle(0, 0, width, height,
                                                  fill=self.color)
         percentString = "%3.0f%%" % (100.0 * self.fraction)

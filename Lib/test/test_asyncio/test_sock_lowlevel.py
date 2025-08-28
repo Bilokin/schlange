@@ -15,18 +15,18 @@ wenn socket_helper.tcp_blackhole():
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse MyProto(asyncio.Protocol):
-    connected = None
-    done = None
+    connected = Nichts
+    done = Nichts
 
-    def __init__(self, loop=None):
-        self.transport = None
+    def __init__(self, loop=Nichts):
+        self.transport = Nichts
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is not None:
+        wenn loop is not Nichts:
             self.connected = loop.create_future()
             self.done = loop.create_future()
 
@@ -39,7 +39,7 @@ klasse MyProto(asyncio.Protocol):
         self._assert_state('INITIAL')
         self.state = 'CONNECTED'
         wenn self.connected:
-            self.connected.set_result(None)
+            self.connected.set_result(Nichts)
         transport.write(b'GET / HTTP/1.0\r\nHost: example.com\r\n\r\n')
 
     def data_received(self, data):
@@ -54,7 +54,7 @@ klasse MyProto(asyncio.Protocol):
         self._assert_state('CONNECTED', 'EOF')
         self.state = 'CLOSED'
         wenn self.done:
-            self.done.set_result(None)
+            self.done.set_result(Nichts)
 
 
 klasse BaseSockTestsMixin:
@@ -80,8 +80,8 @@ klasse BaseSockTestsMixin:
         wenn not isinstance(self.loop, proactor_events.BaseProactorEventLoop):
             # in debug mode, socket operations must fail
             # wenn the socket is not in blocking mode
-            self.loop.set_debug(True)
-            sock.setblocking(True)
+            self.loop.set_debug(Wahr)
+            sock.setblocking(Wahr)
             with self.assertRaises(ValueError):
                 self.loop.run_until_complete(
                     self.loop.sock_connect(sock, httpd.address))
@@ -99,7 +99,7 @@ klasse BaseSockTestsMixin:
                     self.loop.sock_accept(sock))
 
         # test in non-blocking mode
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         self.loop.run_until_complete(
             self.loop.sock_connect(sock, httpd.address))
         self.loop.run_until_complete(
@@ -114,7 +114,7 @@ klasse BaseSockTestsMixin:
 
     def _basetest_sock_recv_into(self, httpd, sock):
         # same as _basetest_sock_client_ops, but using sock_recv_into
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         self.loop.run_until_complete(
             self.loop.sock_connect(sock, httpd.address))
         self.loop.run_until_complete(
@@ -137,7 +137,7 @@ klasse BaseSockTestsMixin:
             self._basetest_sock_recv_into(httpd, sock)
 
     async def _basetest_sock_recv_racing(self, httpd, sock):
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         await self.loop.sock_connect(sock, httpd.address)
 
         task = asyncio.create_task(self.loop.sock_recv(sock, 1024))
@@ -153,7 +153,7 @@ klasse BaseSockTestsMixin:
         self.assertStartsWith(data, b'HTTP/1.0 200 OK')
 
     async def _basetest_sock_recv_into_racing(self, httpd, sock):
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         await self.loop.sock_connect(sock, httpd.address)
 
         data = bytearray(1024)
@@ -178,12 +178,12 @@ klasse BaseSockTestsMixin:
 
         # make connection
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024)
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         task = asyncio.create_task(
             self.loop.sock_connect(sock, listener.getsockname()))
         await asyncio.sleep(0)
         server = listener.accept()[0]
-        server.setblocking(False)
+        server.setblocking(Falsch)
 
         with server:
             await task
@@ -192,7 +192,7 @@ klasse BaseSockTestsMixin:
             size = 8192
             while size >= 4:
                 with self.assertRaises(BlockingIOError):
-                    while True:
+                    while Wahr:
                         sock.send(b' ' * size)
                 size = int(size / 2)
 
@@ -205,7 +205,7 @@ klasse BaseSockTestsMixin:
             # receive everything that is not a space
             async def recv_all():
                 rv = b''
-                while True:
+                while Wahr:
                     buf = await self.loop.sock_recv(server, 8192)
                     wenn not buf:
                         return rv
@@ -230,7 +230,7 @@ klasse BaseSockTestsMixin:
     async def _basetest_sock_connect_racing(self, listener, sock):
         listener.bind(('127.0.0.1', 0))
         addr = listener.getsockname()
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
 
         task = asyncio.create_task(self.loop.sock_connect(sock, addr))
         await asyncio.sleep(0)
@@ -282,7 +282,7 @@ klasse BaseSockTestsMixin:
 
     async def _basetest_huge_content(self, address):
         sock = socket.socket()
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         DATA_SIZE = 10_000_00
 
         chunk = b'0123456789' * (DATA_SIZE // 10)
@@ -312,7 +312,7 @@ klasse BaseSockTestsMixin:
         self.assertEqual(data, expected)
         size -= len(data)
 
-        while True:
+        while Wahr:
             data = await self.loop.sock_recv(sock, DATA_SIZE)
             wenn not data:
                 break
@@ -331,7 +331,7 @@ klasse BaseSockTestsMixin:
 
     async def _basetest_huge_content_recvinto(self, address):
         sock = socket.socket()
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         DATA_SIZE = 10_000_00
 
         chunk = b'0123456789' * (DATA_SIZE // 10)
@@ -366,7 +366,7 @@ klasse BaseSockTestsMixin:
         self.assertEqual(data, expected)
         size -= len(data)
 
-        while True:
+        while Wahr:
             nbytes = await self.loop.sock_recv_into(sock, buf)
             data = buf[:nbytes]
             wenn not data:
@@ -388,7 +388,7 @@ klasse BaseSockTestsMixin:
         # Happy path, sock.sendto() returns immediately
         data = b'\x01' * 4096
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-            sock.setblocking(False)
+            sock.setblocking(Falsch)
             await self.loop.sock_sendto(sock, data, server_address)
             received_data, from_addr = await self.loop.sock_recvfrom(
                 sock, 4096)
@@ -403,7 +403,7 @@ klasse BaseSockTestsMixin:
     async def _basetest_datagram_recvfrom_into(self, server_address):
         # Happy path, sock.sendto() returns immediately
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-            sock.setblocking(False)
+            sock.setblocking(Falsch)
 
             buf = bytearray(4096)
             data = b'\x01' * 4096
@@ -433,7 +433,7 @@ klasse BaseSockTestsMixin:
         # sendto() is not used by the proactor event loop
         data = b'\x01' * 4096
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-            sock.setblocking(False)
+            sock.setblocking(Falsch)
             mock_sock = Mock(sock)
             mock_sock.gettimeout = sock.gettimeout
             mock_sock.sendto.configure_mock(side_effect=BlockingIOError)
@@ -467,7 +467,7 @@ klasse BaseSockTestsMixin:
 
     def test_sock_client_fail(self):
         # Make sure that we will get an unused port
-        address = None
+        address = Nichts
         try:
             s = socket.socket()
             s.bind(('127.0.0.1', 0))
@@ -476,7 +476,7 @@ klasse BaseSockTestsMixin:
             s.close()
 
         sock = socket.socket()
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         with self.assertRaises(ConnectionRefusedError):
             self.loop.run_until_complete(
                 self.loop.sock_connect(sock, address))
@@ -484,7 +484,7 @@ klasse BaseSockTestsMixin:
 
     def test_sock_accept(self):
         listener = socket.socket()
-        listener.setblocking(False)
+        listener.setblocking(Falsch)
         listener.bind(('127.0.0.1', 0))
         listener.listen(1)
         client = socket.socket()
@@ -501,7 +501,7 @@ klasse BaseSockTestsMixin:
 
     def test_cancel_sock_accept(self):
         listener = socket.socket()
-        listener.setblocking(False)
+        listener.setblocking(Falsch)
         listener.bind(('127.0.0.1', 0))
         listener.listen(1)
         sockaddr = listener.getsockname()
@@ -511,7 +511,7 @@ klasse BaseSockTestsMixin:
 
         listener.close()
         client = socket.socket()
-        client.setblocking(False)
+        client.setblocking(Falsch)
         f = self.loop.sock_connect(client, sockaddr)
         with self.assertRaises(ConnectionRefusedError):
             self.loop.run_until_complete(f)
@@ -520,14 +520,14 @@ klasse BaseSockTestsMixin:
 
     def test_create_connection_sock(self):
         with test_utils.run_test_server() as httpd:
-            sock = None
+            sock = Nichts
             infos = self.loop.run_until_complete(
                 self.loop.getaddrinfo(
                     *httpd.address, type=socket.SOCK_STREAM))
             fuer family, type, proto, cname, address in infos:
                 try:
                     sock = socket.socket(family=family, type=type, proto=proto)
-                    sock.setblocking(False)
+                    sock.setblocking(Falsch)
                     self.loop.run_until_complete(
                         self.loop.sock_connect(sock, address))
                 except BaseException:
@@ -575,7 +575,7 @@ wenn sys.platform == 'win32':
 
             def create_socket():
                 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                sock.setblocking(False)
+                sock.setblocking(Falsch)
                 sock.bind(('127.0.0.1', 0))
                 return sock
 

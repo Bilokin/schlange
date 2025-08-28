@@ -37,7 +37,7 @@ def _fileobj_to_fd(fileobj):
             fd = int(fileobj.fileno())
         except (AttributeError, TypeError, ValueError):
             raise ValueError("Invalid file object: "
-                             "{!r}".format(fileobj)) from None
+                             "{!r}".format(fileobj)) from Nichts
     wenn fd < 0:
         raise ValueError("Invalid file descriptor: {}".format(fd))
     return fd
@@ -66,14 +66,14 @@ klasse _SelectorMapping(Mapping):
     def __len__(self):
         return len(self._selector._fd_to_key)
 
-    def get(self, fileobj, default=None):
+    def get(self, fileobj, default=Nichts):
         fd = self._selector._fileobj_lookup(fileobj)
         return self._selector._fd_to_key.get(fd, default)
 
     def __getitem__(self, fileobj):
         fd = self._selector._fileobj_lookup(fileobj)
         key = self._selector._fd_to_key.get(fd)
-        wenn key is None:
+        wenn key is Nichts:
             raise KeyError("{!r} is not registered".format(fileobj))
         return key
 
@@ -97,7 +97,7 @@ klasse BaseSelector(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def register(self, fileobj, events, data=None):
+    def register(self, fileobj, events, data=Nichts):
         """Register a file object.
 
         Parameters:
@@ -138,7 +138,7 @@ klasse BaseSelector(metaclass=ABCMeta):
         """
         raise NotImplementedError
 
-    def modify(self, fileobj, events, data=None):
+    def modify(self, fileobj, events, data=Nichts):
         """Change a registered file object monitored events or attached data.
 
         Parameters:
@@ -156,7 +156,7 @@ klasse BaseSelector(metaclass=ABCMeta):
         return self.register(fileobj, events, data)
 
     @abstractmethod
-    def select(self, timeout=None):
+    def select(self, timeout=Nichts):
         """Perform the actual selection, until some monitored file objects are
         ready or a timeout expires.
 
@@ -165,7 +165,7 @@ klasse BaseSelector(metaclass=ABCMeta):
                    seconds
                    wenn timeout <= 0, the select() call won't block, and will
                    report the currently ready file objects
-                   wenn timeout is None, select() will block until a monitored
+                   wenn timeout is Nichts, select() will block until a monitored
                    file object becomes ready
 
         Returns:
@@ -188,12 +188,12 @@ klasse BaseSelector(metaclass=ABCMeta):
         SelectorKey fuer this file object
         """
         mapping = self.get_map()
-        wenn mapping is None:
+        wenn mapping is Nichts:
             raise RuntimeError('Selector is closed')
         try:
             return mapping[fileobj]
         except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) from None
+            raise KeyError("{!r} is not registered".format(fileobj)) from Nichts
 
     @abstractmethod
     def get_map(self):
@@ -235,7 +235,7 @@ klasse _BaseSelectorImpl(BaseSelector):
             # Raise ValueError after all.
             raise
 
-    def register(self, fileobj, events, data=None):
+    def register(self, fileobj, events, data=Nichts):
         wenn (not events) or (events & ~(EVENT_READ | EVENT_WRITE)):
             raise ValueError("Invalid events: {!r}".format(events))
 
@@ -252,14 +252,14 @@ klasse _BaseSelectorImpl(BaseSelector):
         try:
             key = self._fd_to_key.pop(self._fileobj_lookup(fileobj))
         except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) from None
+            raise KeyError("{!r} is not registered".format(fileobj)) from Nichts
         return key
 
-    def modify(self, fileobj, events, data=None):
+    def modify(self, fileobj, events, data=Nichts):
         try:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
         except KeyError:
-            raise KeyError("{!r} is not registered".format(fileobj)) from None
+            raise KeyError("{!r} is not registered".format(fileobj)) from Nichts
         wenn events != key.events:
             self.unregister(fileobj)
             key = self.register(fileobj, events, data)
@@ -271,7 +271,7 @@ klasse _BaseSelectorImpl(BaseSelector):
 
     def close(self):
         self._fd_to_key.clear()
-        self._map = None
+        self._map = Nichts
 
     def get_map(self):
         return self._map
@@ -286,7 +286,7 @@ klasse SelectSelector(_BaseSelectorImpl):
         self._readers = set()
         self._writers = set()
 
-    def register(self, fileobj, events, data=None):
+    def register(self, fileobj, events, data=Nichts):
         key = super().register(fileobj, events, data)
         wenn events & EVENT_READ:
             self._readers.add(key.fd)
@@ -301,14 +301,14 @@ klasse SelectSelector(_BaseSelectorImpl):
         return key
 
     wenn sys.platform == 'win32':
-        def _select(self, r, w, _, timeout=None):
+        def _select(self, r, w, _, timeout=Nichts):
             r, w, x = select.select(r, w, w, timeout)
             return r, w + x, []
     sonst:
         _select = select.select
 
-    def select(self, timeout=None):
-        timeout = None wenn timeout is None sonst max(timeout, 0)
+    def select(self, timeout=Nichts):
+        timeout = Nichts wenn timeout is Nichts sonst max(timeout, 0)
         ready = []
         try:
             r, w, _ = self._select(self._readers, self._writers, [], timeout)
@@ -329,15 +329,15 @@ klasse SelectSelector(_BaseSelectorImpl):
 
 klasse _PollLikeSelector(_BaseSelectorImpl):
     """Base klasse shared between poll, epoll and devpoll selectors."""
-    _selector_cls = None
-    _EVENT_READ = None
-    _EVENT_WRITE = None
+    _selector_cls = Nichts
+    _EVENT_READ = Nichts
+    _EVENT_WRITE = Nichts
 
     def __init__(self):
         super().__init__()
         self._selector = self._selector_cls()
 
-    def register(self, fileobj, events, data=None):
+    def register(self, fileobj, events, data=Nichts):
         key = super().register(fileobj, events, data)
         poller_events = ((events & EVENT_READ and self._EVENT_READ)
                          | (events & EVENT_WRITE and self._EVENT_WRITE) )
@@ -358,13 +358,13 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
             pass
         return key
 
-    def modify(self, fileobj, events, data=None):
+    def modify(self, fileobj, events, data=Nichts):
         try:
             key = self._fd_to_key[self._fileobj_lookup(fileobj)]
         except KeyError:
-            raise KeyError(f"{fileobj!r} is not registered") from None
+            raise KeyError(f"{fileobj!r} is not registered") from Nichts
 
-        changed = False
+        changed = Falsch
         wenn events != key.events:
             selector_events = ((events & EVENT_READ and self._EVENT_READ)
                                | (events & EVENT_WRITE and self._EVENT_WRITE))
@@ -373,20 +373,20 @@ klasse _PollLikeSelector(_BaseSelectorImpl):
             except:
                 super().unregister(fileobj)
                 raise
-            changed = True
+            changed = Wahr
         wenn data != key.data:
-            changed = True
+            changed = Wahr
 
         wenn changed:
             key = key._replace(events=events, data=data)
             self._fd_to_key[key.fd] = key
         return key
 
-    def select(self, timeout=None):
+    def select(self, timeout=Nichts):
         # This is shared between poll() and epoll().
         # epoll() has a different signature and handling of timeout parameter.
-        wenn timeout is None:
-            timeout = None
+        wenn timeout is Nichts:
+            timeout = Nichts
         sowenn timeout <= 0:
             timeout = 0
         sonst:
@@ -432,8 +432,8 @@ wenn hasattr(select, 'epoll'):
         def fileno(self):
             return self._selector.fileno()
 
-        def select(self, timeout=None):
-            wenn timeout is None:
+        def select(self, timeout=Nichts):
+            wenn timeout is Nichts:
                 timeout = -1
             sowenn timeout <= 0:
                 timeout = 0
@@ -496,7 +496,7 @@ wenn hasattr(select, 'kqueue'):
         def fileno(self):
             return self._selector.fileno()
 
-        def register(self, fileobj, events, data=None):
+        def register(self, fileobj, events, data=Nichts):
             key = super().register(fileobj, events, data)
             try:
                 wenn events & EVENT_READ:
@@ -537,15 +537,15 @@ wenn hasattr(select, 'kqueue'):
                     pass
             return key
 
-        def select(self, timeout=None):
-            timeout = None wenn timeout is None sonst max(timeout, 0)
+        def select(self, timeout=Nichts):
+            timeout = Nichts wenn timeout is Nichts sonst max(timeout, 0)
             # If max_ev is 0, kqueue will ignore the timeout. For consistent
             # behavior with the other selector classes, we prevent that here
             # (using max). See https://bugs.python.org/issue29255
             max_ev = self._max_events or 1
             ready = []
             try:
-                kev_list = self._selector.control(None, max_ev, timeout)
+                kev_list = self._selector.control(Nichts, max_ev, timeout)
             except InterruptedError:
                 return ready
 
@@ -569,10 +569,10 @@ def _can_use(method):
     """Check wenn we can use the selector depending upon the
     operating system. """
     # Implementation based upon https://github.com/sethmlarson/selectors2/blob/master/selectors2.py
-    selector = getattr(select, method, None)
-    wenn selector is None:
+    selector = getattr(select, method, Nichts)
+    wenn selector is Nichts:
         # select module does not implement method
-        return False
+        return Falsch
     # check wenn the OS and Kernel actually support the method. Call may fail with
     # OSError: [Errno 38] Function not implemented
     try:
@@ -583,9 +583,9 @@ def _can_use(method):
         sonst:
             # close epoll, kqueue, and devpoll fd
             selector_obj.close()
-        return True
+        return Wahr
     except OSError:
-        return False
+        return Falsch
 
 
 # Choose the best implementation, roughly:

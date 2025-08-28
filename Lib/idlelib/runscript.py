@@ -68,13 +68,13 @@ klasse ScriptBinding:
                 self.editwin.gotoline(lineno)
                 self.errorbox("Tabnanny Tokenizing Error",
                               "Token Error: %s" % msgtxt)
-                return False
+                return Falsch
             except tabnanny.NannyNag as nag:
                 # The error messages from tabnanny are too confusing...
                 self.editwin.gotoline(nag.get_lineno())
                 self.errorbox("Tab/space error", indent_message)
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def checksyntax(self, filename):
         self.shell = shell = self.flist.open_shell()
@@ -102,14 +102,14 @@ klasse ScriptBinding:
             pos = "0.0 + %d lines + %d chars" % (lineno-1, offset-1)
             editwin.colorize_syntax_error(text, pos)
             self.errorbox("SyntaxError", "%-20s" % msg)
-            return False
+            return Falsch
         finally:
             shell.set_warning_stream(saved_stream)
 
     def run_custom_event(self, event):
-        return self.run_module_event(event, customize=True)
+        return self.run_module_event(event, customize=Wahr)
 
-    def run_module_event(self, event, *, customize=False):
+    def run_module_event(self, event, *, customize=Falsch):
         """Run the module after setting up the environment.
 
         First check the syntax.  Next get customization.  If OK, make
@@ -137,11 +137,11 @@ klasse ScriptBinding:
                                  cli_args=self.cli_args).result
             wenn not run_args:  # User cancelled.
                 return 'break'
-        self.cli_args, restart = run_args wenn customize sonst ([], True)
+        self.cli_args, restart = run_args wenn customize sonst ([], Wahr)
         interp = self.shell.interp
         wenn pyshell.use_subprocess and restart:
             interp.restart_subprocess(
-                    with_cwd=False, filename=filename)
+                    with_cwd=Falsch, filename=filename)
         dirname = os.path.dirname(filename)
         argv = [filename]
         wenn self.cli_args:
@@ -171,7 +171,7 @@ klasse ScriptBinding:
 
         The debugger requires a source file.  Make sure there is one, and that
         the current version of the source buffer has been saved.  If the user
-        declines to save or cancels the Save As dialog, return None.
+        declines to save or cancels the Save As dialog, return Nichts.
 
         If the user has configured IDLE fuer Autosave, the file will be
         silently saved wenn it already exists and is dirty.
@@ -182,15 +182,15 @@ klasse ScriptBinding:
             autosave = idleConf.GetOption('main', 'General',
                                           'autosave', type='bool')
             wenn autosave and filename:
-                self.editwin.io.save(None)
+                self.editwin.io.save(Nichts)
             sonst:
                 confirm = self.ask_save_dialog()
                 self.editwin.text.focus_set()
                 wenn confirm:
-                    self.editwin.io.save(None)
+                    self.editwin.io.save(Nichts)
                     filename = self.editwin.io.filename
                 sonst:
-                    filename = None
+                    filename = Nichts
         return filename
 
     def ask_save_dialog(self):

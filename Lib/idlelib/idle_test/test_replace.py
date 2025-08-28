@@ -23,7 +23,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         se.messagebox = Mbox
         cls.engine = se.SearchEngine(cls.root)
         cls.dialog = ReplaceDialog(cls.root, cls.engine)
-        cls.dialog.bell = lambda: None
+        cls.dialog.bell = lambda: Nichts
         cls.dialog.ok = Mock()
         cls.text = Text(cls.root)
         cls.text.undo_block_start = Mock()
@@ -43,21 +43,21 @@ klasse ReplaceDialogTest(unittest.TestCase):
     def tearDown(self):
         self.engine.patvar.set('')
         self.dialog.replvar.set('')
-        self.engine.wordvar.set(False)
-        self.engine.casevar.set(False)
-        self.engine.revar.set(False)
-        self.engine.wrapvar.set(True)
-        self.engine.backvar.set(False)
+        self.engine.wordvar.set(Falsch)
+        self.engine.casevar.set(Falsch)
+        self.engine.revar.set(Falsch)
+        self.engine.wrapvar.set(Wahr)
+        self.engine.backvar.set(Falsch)
         showerror.title = ''
         showerror.message = ''
         self.text.delete('1.0', 'end')
 
     def test_replace_simple(self):
         # Test replace function with all options at default setting.
-        # Wrap around - True
-        # Regular Expression - False
-        # Match case - False
-        # Match word - False
+        # Wrap around - Wahr
+        # Regular Expression - Falsch
+        # Match case - Falsch
+        # Match word - Falsch
         # Direction - Forwards
         text = self.text
         equal = self.assertEqual
@@ -128,7 +128,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         pv = self.engine.patvar
         rv = self.dialog.replvar
         replace = self.dialog.replace_it
-        self.engine.wrapvar.set(False)
+        self.engine.wrapvar.set(Falsch)
 
         # replace candidate found both after and before 'insert'
         text.mark_set('insert', '1.4')
@@ -157,7 +157,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         pv = self.engine.patvar
         rv = self.dialog.replvar
         replace = self.dialog.replace_it
-        self.engine.wordvar.set(True)
+        self.engine.wordvar.set(Wahr)
 
         pv.set('is')
         rv.set('hello')
@@ -171,7 +171,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         pv = self.engine.patvar
         rv = self.dialog.replvar
         replace = self.dialog.replace_it
-        self.engine.casevar.set(True)
+        self.engine.casevar.set(Wahr)
 
         before_text = self.text.get('1.0', 'end')
         pv.set('this')
@@ -190,7 +190,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         pv = self.engine.patvar
         rv = self.dialog.replvar
         replace = self.dialog.replace_it
-        self.engine.revar.set(True)
+        self.engine.revar.set(Wahr)
 
         before_text = text.get('1.0', 'end')
         pv.set(r'[a-z][\d]+')
@@ -231,7 +231,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         pv = self.engine.patvar
         rv = self.dialog.replvar
         replace = self.dialog.replace_it
-        self.engine.backvar.set(True)
+        self.engine.backvar.set(Wahr)
 
         text.insert('insert', '\nis as ')
 
@@ -258,7 +258,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         replace_all()
         self.assertNotIn('is', text.get('1.0', 'end'))
 
-        self.engine.revar.set(True)
+        self.engine.revar.set(Wahr)
         pv.set('')
         replace_all()
         self.assertIn('error', showerror.title)
@@ -268,7 +268,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         rv.set('\\')
         replace_all()
 
-        self.engine.revar.set(False)
+        self.engine.revar.set(Falsch)
         pv.set('text which is not present')
         rv.set('foobar')
         replace_all()
@@ -285,7 +285,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         replace_find()
         equal(text.get('sel.first', 'sel.last'), 'was')
 
-        self.engine.revar.set(True)
+        self.engine.revar.set(Wahr)
         pv.set('')
         replace_find()
 

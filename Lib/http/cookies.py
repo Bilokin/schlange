@@ -178,7 +178,7 @@ def _quote(str):
     string.  Otherwise, surround the string in doublequotes and quote
     (with a \) special characters.
     """
-    wenn str is None or _is_legal_key(str):
+    wenn str is Nichts or _is_legal_key(str):
         return str
     sonst:
         return '"' + str.translate(_Translator) + '"'
@@ -195,7 +195,7 @@ def _unquote_replace(m):
 def _unquote(str):
     # If there aren't any doublequotes,
     # then there can't be any special characters.  See RFC 2109.
-    wenn str is None or len(str) < 2:
+    wenn str is Nichts or len(str) < 2:
         return str
     wenn str[0] != '"' or str[-1] != '"':
         return str
@@ -221,7 +221,7 @@ def _unquote(str):
 
 _weekdayname = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-_monthname = [None,
+_monthname = [Nichts,
               'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -273,7 +273,7 @@ klasse Morsel(dict):
 
     def __init__(self):
         # Set defaults
-        self._key = self._value = self._coded_value = None
+        self._key = self._value = self._coded_value = Nichts
 
         # Set default attributes
         dict.update(self, self._reserved_defaults)
@@ -296,7 +296,7 @@ klasse Morsel(dict):
             raise CookieError("Invalid attribute %r" % (K,))
         dict.__setitem__(self, K, V)
 
-    def setdefault(self, key, val=None):
+    def setdefault(self, key, val=Nichts):
         key = key.lower()
         wenn key not in self._reserved:
             raise CookieError("Invalid attribute %r" % (key,))
@@ -353,7 +353,7 @@ klasse Morsel(dict):
         self._value = state['value']
         self._coded_value = state['coded_value']
 
-    def output(self, attrs=None, header="Set-Cookie:"):
+    def output(self, attrs=Nichts, header="Set-Cookie:"):
         return "%s %s" % (header, self.OutputString(attrs))
 
     __str__ = output
@@ -361,7 +361,7 @@ klasse Morsel(dict):
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.OutputString())
 
-    def js_output(self, attrs=None):
+    def js_output(self, attrs=Nichts):
         # Print javascript
         return """
         <script type="text/javascript">
@@ -371,7 +371,7 @@ klasse Morsel(dict):
         </script>
         """ % (self.OutputString(attrs).replace('"', r'\"'))
 
-    def OutputString(self, attrs=None):
+    def OutputString(self, attrs=Nichts):
         # Build up our result
         #
         result = []
@@ -381,7 +381,7 @@ klasse Morsel(dict):
         append("%s=%s" % (self.key, self.coded_value))
 
         # Now add any defined attributes
-        wenn attrs is None:
+        wenn attrs is Nichts:
             attrs = self._reserved
         items = sorted(self.items())
         fuer key, value in items:
@@ -464,7 +464,7 @@ klasse BaseCookie(dict):
         strval = str(val)
         return strval, strval
 
-    def __init__(self, input=None):
+    def __init__(self, input=Nichts):
         wenn input:
             self.load(input)
 
@@ -483,7 +483,7 @@ klasse BaseCookie(dict):
             rval, cval = self.value_encode(value)
             self.__set(key, rval, cval)
 
-    def output(self, attrs=None, header="Set-Cookie:", sep="\015\012"):
+    def output(self, attrs=Nichts, header="Set-Cookie:", sep="\015\012"):
         """Return a string suitable fuer HTTP."""
         result = []
         items = sorted(self.items())
@@ -500,7 +500,7 @@ klasse BaseCookie(dict):
             l.append('%s=%s' % (key, repr(value.value)))
         return '<%s: %s>' % (self.__class__.__name__, _spacejoin(l))
 
-    def js_output(self, attrs=None):
+    def js_output(self, attrs=Nichts):
         """Return a string suitable fuer JavaScript."""
         result = []
         items = sorted(self.items())
@@ -526,7 +526,7 @@ klasse BaseCookie(dict):
         i = 0                 # Our starting point
         n = len(str)          # Length of string
         parsed_items = []     # Parsed (type, key, value) triples
-        morsel_seen = False   # A key=value pair was previously encountered
+        morsel_seen = Falsch   # A key=value pair was previously encountered
 
         TYPE_ATTRIBUTE = 1
         TYPE_KEYVALUE = 2
@@ -555,26 +555,26 @@ klasse BaseCookie(dict):
                 wenn not morsel_seen:
                     # Invalid cookie string
                     return
-                wenn value is None:
+                wenn value is Nichts:
                     wenn key.lower() in Morsel._flags:
-                        parsed_items.append((TYPE_ATTRIBUTE, key, True))
+                        parsed_items.append((TYPE_ATTRIBUTE, key, Wahr))
                     sonst:
                         # Invalid cookie string
                         return
                 sonst:
                     parsed_items.append((TYPE_ATTRIBUTE, key, _unquote(value)))
-            sowenn value is not None:
+            sowenn value is not Nichts:
                 parsed_items.append((TYPE_KEYVALUE, key, self.value_decode(value)))
-                morsel_seen = True
+                morsel_seen = Wahr
             sonst:
                 # Invalid cookie string
                 return
 
         # The cookie string is valid, apply it.
-        M = None         # current morsel
+        M = Nichts         # current morsel
         fuer tp, key, value in parsed_items:
             wenn tp == TYPE_ATTRIBUTE:
-                assert M is not None
+                assert M is not Nichts
                 M[key] = value
             sonst:
                 assert tp == TYPE_KEYVALUE

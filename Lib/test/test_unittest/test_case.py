@@ -313,10 +313,10 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             Foo('test').run()
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate return of value that is not None from a test
+        # Issue 41322 - deprecate return of value that is not Nichts from a test
         klasse Nothing:
             def __eq__(self, o):
-                return o is None
+                return o is Nichts
         klasse Foo(unittest.TestCase):
             def test1(self):
                 return 1
@@ -327,21 +327,21 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         with self.assertWarns(DeprecationWarning) as w:
             Foo('test1').run()
-        self.assertIn('It is deprecated to return a value that is not None', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
         with self.assertWarns(DeprecationWarning) as w:
             Foo('test2').run()
-        self.assertIn('It is deprecated to return a value that is not None', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'generator'", str(w.warning))
 
         with self.assertWarns(DeprecationWarning) as w:
             Foo('test3').run()
-        self.assertIn('It is deprecated to return a value that is not None', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn(f'returned {Nothing.__name__!r}', str(w.warning))
@@ -356,7 +356,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'coroutine .* was never awaited', RuntimeWarning)
             Foo('test1').run()
             support.gc_collect()
-        self.assertIn('It is deprecated to return a value that is not None', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'coroutine'", str(w.warning))
@@ -441,7 +441,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     def test_run_call_order__subtests_failfast(self):
         events = []
         result = LoggingResult(events)
-        result.failfast = True
+        result.failfast = Wahr
 
         klasse Foo(Test.LoggingTestCase):
             def test(self):
@@ -478,7 +478,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                 events.append('c')
 
         result = unittest.TestResult()
-        result.failfast = True
+        result.failfast = Wahr
         suite = unittest.TestLoader().loadTestsFromTestCase(Foo)
         suite.run(result)
 
@@ -589,7 +589,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertIsInstance(Foo().id(), str)
 
 
-    # "If result is omitted or None, a temporary result object is created,
+    # "If result is omitted or Nichts, a temporary result object is created,
     # used, and is made available to the caller. As TestCase owns the
     # temporary result startTestRun and stopTestRun are called.
 
@@ -646,7 +646,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
 
     def testShortDescriptionWithoutDocstring(self):
-        self.assertIsNone(self.shortDescription())
+        self.assertIsNichts(self.shortDescription())
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
@@ -685,8 +685,8 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         klasse SadSnake(object):
             """Dummy klasse fuer test_addTypeEqualityFunc."""
         s1, s2 = SadSnake(), SadSnake()
-        self.assertFalse(s1 == s2)
-        def AllSnakesCreatedEqual(a, b, msg=None):
+        self.assertFalsch(s1 == s2)
+        def AllSnakesCreatedEqual(a, b, msg=Nichts):
             return type(a) == type(b) == SadSnake
         self.addTypeEqualityFunc(SadSnake, AllSnakesCreatedEqual)
         self.assertEqual(s1, s2)
@@ -918,11 +918,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                           a, tuple(b))
         self.assertRaises(self.failureException, self.assertTupleEqual,
                           tuple(a), b)
-        self.assertRaises(self.failureException, self.assertListEqual, None, b)
-        self.assertRaises(self.failureException, self.assertTupleEqual, None,
+        self.assertRaises(self.failureException, self.assertListEqual, Nichts, b)
+        self.assertRaises(self.failureException, self.assertTupleEqual, Nichts,
                           tuple(b))
         self.assertRaises(self.failureException, self.assertSequenceEqual,
-                          None, tuple(b))
+                          Nichts, tuple(b))
         self.assertRaises(self.failureException, self.assertListEqual, 1, 1)
         self.assertRaises(self.failureException, self.assertTupleEqual, 1, 1)
         self.assertRaises(self.failureException, self.assertSequenceEqual,
@@ -942,7 +942,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertRaises(unittest.TestCase.failureException,
                           self.assertDictEqual, c, d, 'These are unequal')
 
-        self.assertRaises(self.failureException, self.assertDictEqual, None, d)
+        self.assertRaises(self.failureException, self.assertDictEqual, Nichts, d)
         self.assertRaises(self.failureException, self.assertDictEqual, [], d)
         self.assertRaises(self.failureException, self.assertDictEqual, 1, 1)
 
@@ -976,7 +976,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertGreater(len(msg), len(diff))
         self.assertNotIn(omitted, msg)
 
-        self.maxDiff = None
+        self.maxDiff = Nichts
         try:
             self.assertSequenceEqual(seq1, seq2)
         except self.failureException as e:
@@ -992,7 +992,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         omitted = unittest.case.DIFF_OMITTED % len('bar')
         self.assertEqual(message, 'foo' + omitted)
 
-        self.maxDiff = None
+        self.maxDiff = Nichts
         message = self._truncateMessage('foo', 'bar')
         self.assertEqual(message, 'foobar')
 
@@ -1028,7 +1028,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         # check threshold value
         self.assertEqual(self._diffThreshold, 2**16)
         # disable madDiff to get diff markers
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         # set a lower threshold value and add a cleanup to restore it
         old_threshold = self._diffThreshold
@@ -1094,11 +1094,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertCountEqual([1, 2, 3], [3, 2, 1])
         self.assertCountEqual(['foo', 'bar', 'baz'], ['bar', 'baz', 'foo'])
         self.assertCountEqual([a, a, 2, 2, 3], (a, 2, 3, a, 2))
-        self.assertCountEqual([1, "2", "a", "a"], ["a", "2", True, "a"])
+        self.assertCountEqual([1, "2", "a", "a"], ["a", "2", Wahr, "a"])
         self.assertRaises(self.failureException, self.assertCountEqual,
                           [1, 2] + [3] * 100, [1] * 100 + [2, 3])
         self.assertRaises(self.failureException, self.assertCountEqual,
-                          [1, "2", "a", "a"], ["a", "2", True, 1])
+                          [1, "2", "a", "a"], ["a", "2", Wahr, 1])
         self.assertRaises(self.failureException, self.assertCountEqual,
                           [10], [10, 11])
         self.assertRaises(self.failureException, self.assertCountEqual,
@@ -1107,7 +1107,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                           [10, 11, 10], [10, 11])
 
         # Test that sequences of unhashable objects can be tested fuer sameness:
-        self.assertCountEqual([[1, 2], [3, 4], 0], [False, [3, 4], [1, 2]])
+        self.assertCountEqual([[1, 2], [3, 4], 0], [Falsch, [3, 4], [1, 2]])
         # Test that iterator of unhashable objects can be tested fuer sameness:
         self.assertCountEqual(iter([1, 2, [], 3, 4]),
                               iter([1, 2, [], 3, 4]))
@@ -1128,9 +1128,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertRaises(self.failureException, self.assertCountEqual,
                           [1, 1, 2], [2, 1])
         self.assertRaises(self.failureException, self.assertCountEqual,
-                          [1, 1, "2", "a", "a"], ["2", "2", True, "a"])
+                          [1, 1, "2", "a", "a"], ["2", "2", Wahr, "a"])
         self.assertRaises(self.failureException, self.assertCountEqual,
-                          [1, {'b': 2}, None, True], [{'b': 2}, True, None])
+                          [1, {'b': 2}, Nichts, Wahr], [{'b': 2}, Wahr, Nichts])
 
         # Same elements which don't reliably compare, in
         # different order, see issue 10242
@@ -1156,9 +1156,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         set2 = set()
         self.assertSetEqual(set1, set2)
 
-        self.assertRaises(self.failureException, self.assertSetEqual, None, set2)
+        self.assertRaises(self.failureException, self.assertSetEqual, Nichts, set2)
         self.assertRaises(self.failureException, self.assertSetEqual, [], set2)
-        self.assertRaises(self.failureException, self.assertSetEqual, set1, None)
+        self.assertRaises(self.failureException, self.assertSetEqual, set1, Nichts)
         self.assertRaises(self.failureException, self.assertSetEqual, set1, [])
 
         set1 = set(['a'])
@@ -1272,7 +1272,7 @@ test case
 ?                                                       +++++++++++++++++++++
 +     own implementation that does not subclass from TestCase, of course.
 """
-        self.maxDiff = None
+        self.maxDiff = Nichts
         try:
             self.assertMultiLineEqual(sample_text, revised_sample_text)
         except self.failureException as e:
@@ -1442,11 +1442,11 @@ test case
         with bytes_warning(), self.assertRaises(self.failureException):
             self.assertCountEqual(['a', 'a', []], [b'a', b'a', []])
 
-    def testAssertIsNone(self):
-        self.assertIsNone(None)
-        self.assertRaises(self.failureException, self.assertIsNone, False)
-        self.assertIsNotNone('DjZoPloGears on Rails')
-        self.assertRaises(self.failureException, self.assertIsNotNone, None)
+    def testAssertIsNichts(self):
+        self.assertIsNichts(Nichts)
+        self.assertRaises(self.failureException, self.assertIsNichts, Falsch)
+        self.assertIsNotNichts('DjZoPloGears on Rails')
+        self.assertRaises(self.failureException, self.assertIsNotNichts, Nichts)
 
     def testAssertRegex(self):
         self.assertRegex('asdfabasdf', r'ab+')
@@ -1466,9 +1466,9 @@ test case
         # Failure when no exception is raised
         with self.assertRaises(self.failureException):
             self.assertRaises(ExceptionMock, lambda: 0)
-        # Failure when the function is None
+        # Failure when the function is Nichts
         with self.assertRaises(TypeError):
-            self.assertRaises(ExceptionMock, None)
+            self.assertRaises(ExceptionMock, Nichts)
         # Failure when another exception is raised
         with self.assertRaises(ExceptionMock):
             self.assertRaises(ValueError, Stub)
@@ -1540,17 +1540,17 @@ test case
         self.assertRaisesRegex(ExceptionMock, re.compile('expect$'), Stub)
         self.assertRaisesRegex(ExceptionMock, 'expect$', Stub)
         with self.assertRaises(TypeError):
-            self.assertRaisesRegex(ExceptionMock, 'expect$', None)
+            self.assertRaisesRegex(ExceptionMock, 'expect$', Nichts)
 
     def testAssertNotRaisesRegex(self):
         self.assertRaisesRegex(
                 self.failureException, '^Exception not raised by <lambda>$',
                 self.assertRaisesRegex, Exception, re.compile('x'),
-                lambda: None)
+                lambda: Nichts)
         self.assertRaisesRegex(
                 self.failureException, '^Exception not raised by <lambda>$',
                 self.assertRaisesRegex, Exception, 'x',
-                lambda: None)
+                lambda: Nichts)
         # Custom message
         with self.assertRaisesRegex(self.failureException, 'foobar'):
             with self.assertRaisesRegex(Exception, 'expect', msg='foobar'):
@@ -1564,13 +1564,13 @@ test case
         # Issue 20145.
         klasse MyExc(Exception):
             pass
-        self.assertRaises(TypeError, self.assertRaisesRegex, MyExc, lambda: True)
+        self.assertRaises(TypeError, self.assertRaisesRegex, MyExc, lambda: Wahr)
 
     def testAssertWarnsRegexInvalidRegex(self):
         # Issue 20145.
         klasse MyWarn(Warning):
             pass
-        self.assertRaises(TypeError, self.assertWarnsRegex, MyWarn, lambda: True)
+        self.assertRaises(TypeError, self.assertWarnsRegex, MyWarn, lambda: Wahr)
 
     def testAssertWarnsModifySysModules(self):
         # bpo-29620: handle modified sys.modules during iteration
@@ -1644,9 +1644,9 @@ test case
         # Failure when no warning is triggered
         with self.assertRaises(self.failureException):
             self.assertWarns(RuntimeWarning, lambda: 0)
-        # Failure when the function is None
+        # Failure when the function is Nichts
         with self.assertRaises(TypeError):
-            self.assertWarns(RuntimeWarning, None)
+            self.assertWarns(RuntimeWarning, Nichts)
         # Failure when another warning is triggered
         with warnings.catch_warnings():
             # Force default filter (in case tests are run with -We)
@@ -1730,9 +1730,9 @@ test case
         with self.assertRaises(self.failureException):
             self.assertWarnsRegex(RuntimeWarning, "o+",
                                   lambda: 0)
-        # Failure when the function is None
+        # Failure when the function is Nichts
         with self.assertRaises(TypeError):
-            self.assertWarnsRegex(RuntimeWarning, "o+", None)
+            self.assertWarnsRegex(RuntimeWarning, "o+", Nichts)
         # Failure when another warning is triggered
         with warnings.catch_warnings():
             # Force default filter (in case tests are run with -We)
@@ -2000,10 +2000,10 @@ test case
             with self.assertNoLogs():
                 raise ZeroDivisionError("Unexpected")
 
-    def testAssertNoLogsYieldsNone(self):
+    def testAssertNoLogsYieldsNichts(self):
         with self.assertNoLogs() as value:
             pass
-        self.assertIsNone(value)
+        self.assertIsNichts(value)
 
     def testAssertStartsWith(self):
         self.assertStartsWith('ababahalamaha', 'ababa')
@@ -2227,7 +2227,7 @@ test case
             unpickled_test.assertEqual(set(), set())
 
     def testKeyboardInterrupt(self):
-        def _raise(self=None):
+        def _raise(self=Nichts):
             raise KeyboardInterrupt
         def nothing(self):
             pass
@@ -2252,7 +2252,7 @@ test case
                 klass('test_something').run()
 
     def testSkippingEverywhere(self):
-        def _skip(self=None):
+        def _skip(self=Nichts):
             raise unittest.SkipTest('some reason')
         def nothing(self):
             pass
@@ -2279,7 +2279,7 @@ test case
             self.assertEqual(result.testsRun, 1)
 
     def testSystemExit(self):
-        def _raise(self=None):
+        def _raise(self=Nichts):
             raise SystemExit
         def nothing(self):
             pass
@@ -2311,7 +2311,7 @@ test case
         wr = weakref.ref(case)
         with support.disable_gc():
             del case
-            self.assertFalse(wr())
+            self.assertFalsch(wr())
 
     def test_no_exception_leak(self):
         # Issue #19880: TestCase.run() should not keep a reference

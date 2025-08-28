@@ -62,7 +62,7 @@ klasse CompatibilityFiles:
             )
 
         def is_file(self):
-            return False
+            return Falsch
 
         is_dir = is_file
 
@@ -76,7 +76,7 @@ klasse CompatibilityFiles:
             return self._spec.name
 
         def open(self, mode='r', *args, **kwargs):
-            return _io_wrapper(self._reader.open_resource(None), mode, *args, **kwargs)
+            return _io_wrapper(self._reader.open_resource(Nichts), mode, *args, **kwargs)
 
     klasse ChildPath(abc.Traversable):
         """
@@ -124,7 +124,7 @@ klasse CompatibilityFiles:
             return iter(())
 
         def is_file(self):
-            return False
+            return Falsch
 
         is_dir = is_file
 

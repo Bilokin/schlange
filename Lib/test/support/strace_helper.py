@@ -75,12 +75,12 @@ def _filter_memory_call(call):
     # mmap can operate on a fd or "MAP_ANONYMOUS" which gives a block of memory.
     # Ignore "MAP_ANONYMOUS + the "MAP_ANON" alias.
     wenn call.syscall == "mmap" and "MAP_ANON" in call.args[3]:
-        return True
+        return Wahr
 
     wenn call.syscall in ("munmap", "mprotect"):
-        return True
+        return Wahr
 
-    return False
+    return Falsch
 
 
 def filter_memory(syscalls):
@@ -94,11 +94,11 @@ def filter_memory(syscalls):
 
 
 @support.requires_subprocess()
-def strace_python(code, strace_flags, check=True):
+def strace_python(code, strace_flags, check=Wahr):
     """Run strace and return the trace.
 
     Sets strace_returncode and python_returncode to `-1` on error."""
-    res = None
+    res = Nichts
 
     def _make_error(reason, details):
         return StraceResult(
@@ -151,13 +151,13 @@ def get_events(code, strace_flags, prelude, cleanup):
     code = textwrap.dedent(code)
     cleanup = textwrap.dedent(cleanup)
     to_run = f"""
-print("MARK prelude", flush=True)
+print("MARK prelude", flush=Wahr)
 {prelude}
-print("MARK code", flush=True)
+print("MARK code", flush=Wahr)
 {code}
-print("MARK cleanup", flush=True)
+print("MARK cleanup", flush=Wahr)
 {cleanup}
-print("MARK __shutdown", flush=True)
+print("MARK __shutdown", flush=Wahr)
     """
     trace = strace_python(to_run, strace_flags)
     all_sections = trace.sections()
@@ -165,7 +165,7 @@ print("MARK __shutdown", flush=True)
 
 
 def get_syscalls(code, strace_flags, prelude="", cleanup="",
-                 ignore_memory=True):
+                 ignore_memory=Wahr):
     """Get the syscalls which a given chunk of python code generates"""
     events = get_events(code, strace_flags, prelude=prelude, cleanup=cleanup)
 
@@ -181,11 +181,11 @@ def _can_strace():
     res = strace_python("import sys; sys.exit(0)",
                         # --trace option needs strace 5.5 (gh-133741)
                         ["--trace=%process"],
-                        check=False)
+                        check=Falsch)
     wenn res.strace_returncode == 0 and res.python_returncode == 0:
         assert res.events(), "Should have parsed multiple calls"
-        return True
-    return False
+        return Wahr
+    return Falsch
 
 
 def requires_strace():
@@ -199,7 +199,7 @@ def requires_strace():
         # system calls).
         return unittest.skip("Not supported when LD_PRELOAD is intercepting system calls.")
 
-    wenn support.check_sanitizer(address=True, memory=True):
+    wenn support.check_sanitizer(address=Wahr, memory=Wahr):
         return unittest.skip("LeakSanitizer does not work under ptrace (strace, gdb, etc)")
 
     return unittest.skipUnless(_can_strace(), "Requires working strace")

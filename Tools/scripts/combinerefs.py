@@ -88,14 +88,14 @@ def read(fileiter, pat, whilematch):
 def combinefile(f):
     fi = iter(f)
 
-    fuer line in read(fi, re.compile(r'^Remaining objects:$'), False):
+    fuer line in read(fi, re.compile(r'^Remaining objects:$'), Falsch):
         pass
 
     crack = re.compile(r'([a-zA-Z\d]+) \[(\d+)\] (.*)')
     addr2rc = {}
     addr2guts = {}
     before = 0
-    fuer line in read(fi, re.compile(r'^Remaining object addresses:$'), False):
+    fuer line in read(fi, re.compile(r'^Remaining object addresses:$'), Falsch):
         m = crack.match(line)
         wenn m:
             addr, addr2rc[addr], addr2guts[addr] = m.groups()
@@ -104,7 +104,7 @@ def combinefile(f):
             print('??? skipped:', line)
 
     after = 0
-    fuer line in read(fi, crack, True):
+    fuer line in read(fi, crack, Wahr):
         after += 1
         m = crack.match(line)
         assert m

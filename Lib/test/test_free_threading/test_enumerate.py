@@ -4,7 +4,7 @@ from threading import Thread, Barrier
 
 from test.support import threading_helper
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 klasse EnumerateThreading(unittest.TestCase):
 
@@ -17,7 +17,7 @@ klasse EnumerateThreading(unittest.TestCase):
         barrier = Barrier(number_of_threads)
         def work(enum):
             barrier.wait()
-            while True:
+            while Wahr:
                 try:
                     _ = next(enum)
                 except StopIteration:

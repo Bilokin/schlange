@@ -46,7 +46,7 @@ def find_lib(name):
     raise ValueError("%s not found" % (name,))
 
 
-def d(location=None, name=None, shortname=None, version=None, suffix=None):
+def d(location=Nichts, name=Nichts, shortname=Nichts, version=Nichts, suffix=Nichts):
     return {'location': location, 'name': name, 'shortname': shortname,
             'version': version, 'suffix': suffix}
 
@@ -78,8 +78,8 @@ klasse MachOTest(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == "darwin", 'OSX-specific test')
     def test_info(self):
-        self.assertIsNone(dylib_info('completely/invalid'))
-        self.assertIsNone(dylib_info('completely/invalide_debug'))
+        self.assertIsNichts(dylib_info('completely/invalid'))
+        self.assertIsNichts(dylib_info('completely/invalide_debug'))
         self.assertEqual(dylib_info('P/Foo.dylib'), d('P', 'Foo.dylib', 'Foo'))
         self.assertEqual(dylib_info('P/Foo_debug.dylib'),
                          d('P', 'Foo_debug.dylib', 'Foo', suffix='debug'))
@@ -92,16 +92,16 @@ klasse MachOTest(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == "darwin", 'OSX-specific test')
     def test_framework_info(self):
-        self.assertIsNone(framework_info('completely/invalid'))
-        self.assertIsNone(framework_info('completely/invalid/_debug'))
-        self.assertIsNone(framework_info('P/F.framework'))
-        self.assertIsNone(framework_info('P/F.framework/_debug'))
+        self.assertIsNichts(framework_info('completely/invalid'))
+        self.assertIsNichts(framework_info('completely/invalid/_debug'))
+        self.assertIsNichts(framework_info('P/F.framework'))
+        self.assertIsNichts(framework_info('P/F.framework/_debug'))
         self.assertEqual(framework_info('P/F.framework/F'),
                          d('P', 'F.framework/F', 'F'))
         self.assertEqual(framework_info('P/F.framework/F_debug'),
                          d('P', 'F.framework/F_debug', 'F', suffix='debug'))
-        self.assertIsNone(framework_info('P/F.framework/Versions'))
-        self.assertIsNone(framework_info('P/F.framework/Versions/A'))
+        self.assertIsNichts(framework_info('P/F.framework/Versions'))
+        self.assertIsNichts(framework_info('P/F.framework/Versions/A'))
         self.assertEqual(framework_info('P/F.framework/Versions/A/F'),
                          d('P', 'F.framework/Versions/A/F', 'F', 'A'))
         self.assertEqual(framework_info('P/F.framework/Versions/A/F_debug'),

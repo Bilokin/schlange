@@ -77,15 +77,15 @@ klasse DictSetTest(unittest.TestCase):
         self.assertIsInstance(repr(d), str)
         r = repr(d.items())
         self.assertIsInstance(r, str)
-        self.assertTrue(r == "dict_items([('a', 'ABC'), (1, 10)])" or
+        self.assertWahr(r == "dict_items([('a', 'ABC'), (1, 10)])" or
                         r == "dict_items([(1, 10), ('a', 'ABC')])")
         r = repr(d.keys())
         self.assertIsInstance(r, str)
-        self.assertTrue(r == "dict_keys(['a', 1])" or
+        self.assertWahr(r == "dict_keys(['a', 1])" or
                         r == "dict_keys([1, 'a'])")
         r = repr(d.values())
         self.assertIsInstance(r, str)
-        self.assertTrue(r == "dict_values(['ABC', 10])" or
+        self.assertWahr(r == "dict_values(['ABC', 10])" or
                         r == "dict_values([10, 'ABC'])")
 
     def test_keys_set_operations(self):
@@ -140,23 +140,23 @@ klasse DictSetTest(unittest.TestCase):
         self.assertEqual(d1.keys() - set(d3.keys()), {'a', 'b'})
         self.assertEqual(d1.keys() - (0, 1), {'a', 'b'})
 
-        self.assertFalse(d1.keys().isdisjoint(d1.keys()))
-        self.assertFalse(d1.keys().isdisjoint(d2.keys()))
-        self.assertFalse(d1.keys().isdisjoint(list(d2.keys())))
-        self.assertFalse(d1.keys().isdisjoint(set(d2.keys())))
-        self.assertTrue(d1.keys().isdisjoint({'x', 'y', 'z'}))
-        self.assertTrue(d1.keys().isdisjoint(['x', 'y', 'z']))
-        self.assertTrue(d1.keys().isdisjoint(set(['x', 'y', 'z'])))
-        self.assertTrue(d1.keys().isdisjoint(set(['x', 'y'])))
-        self.assertTrue(d1.keys().isdisjoint(['x', 'y']))
-        self.assertTrue(d1.keys().isdisjoint({}))
-        self.assertTrue(d1.keys().isdisjoint(d3.keys()))
+        self.assertFalsch(d1.keys().isdisjoint(d1.keys()))
+        self.assertFalsch(d1.keys().isdisjoint(d2.keys()))
+        self.assertFalsch(d1.keys().isdisjoint(list(d2.keys())))
+        self.assertFalsch(d1.keys().isdisjoint(set(d2.keys())))
+        self.assertWahr(d1.keys().isdisjoint({'x', 'y', 'z'}))
+        self.assertWahr(d1.keys().isdisjoint(['x', 'y', 'z']))
+        self.assertWahr(d1.keys().isdisjoint(set(['x', 'y', 'z'])))
+        self.assertWahr(d1.keys().isdisjoint(set(['x', 'y'])))
+        self.assertWahr(d1.keys().isdisjoint(['x', 'y']))
+        self.assertWahr(d1.keys().isdisjoint({}))
+        self.assertWahr(d1.keys().isdisjoint(d3.keys()))
 
         de = {}
-        self.assertTrue(de.keys().isdisjoint(set()))
-        self.assertTrue(de.keys().isdisjoint([]))
-        self.assertTrue(de.keys().isdisjoint(de.keys()))
-        self.assertTrue(de.keys().isdisjoint([1]))
+        self.assertWahr(de.keys().isdisjoint(set()))
+        self.assertWahr(de.keys().isdisjoint([]))
+        self.assertWahr(de.keys().isdisjoint(de.keys()))
+        self.assertWahr(de.keys().isdisjoint([1]))
 
     def test_items_set_operations(self):
         d1 = {'a': 1, 'b': 2}
@@ -215,22 +215,22 @@ klasse DictSetTest(unittest.TestCase):
         self.assertEqual(d1.items() - (("a", 2), ("b", 2)), {('a', 1)})
         self.assertEqual(d1.items() - (("d", 4), ("e", 5)), {('a', 1), ('b', 2)})
 
-        self.assertFalse(d1.items().isdisjoint(d1.items()))
-        self.assertFalse(d1.items().isdisjoint(d2.items()))
-        self.assertFalse(d1.items().isdisjoint(list(d2.items())))
-        self.assertFalse(d1.items().isdisjoint(set(d2.items())))
-        self.assertTrue(d1.items().isdisjoint({'x', 'y', 'z'}))
-        self.assertTrue(d1.items().isdisjoint(['x', 'y', 'z']))
-        self.assertTrue(d1.items().isdisjoint(set(['x', 'y', 'z'])))
-        self.assertTrue(d1.items().isdisjoint(set(['x', 'y'])))
-        self.assertTrue(d1.items().isdisjoint({}))
-        self.assertTrue(d1.items().isdisjoint(d3.items()))
+        self.assertFalsch(d1.items().isdisjoint(d1.items()))
+        self.assertFalsch(d1.items().isdisjoint(d2.items()))
+        self.assertFalsch(d1.items().isdisjoint(list(d2.items())))
+        self.assertFalsch(d1.items().isdisjoint(set(d2.items())))
+        self.assertWahr(d1.items().isdisjoint({'x', 'y', 'z'}))
+        self.assertWahr(d1.items().isdisjoint(['x', 'y', 'z']))
+        self.assertWahr(d1.items().isdisjoint(set(['x', 'y', 'z'])))
+        self.assertWahr(d1.items().isdisjoint(set(['x', 'y'])))
+        self.assertWahr(d1.items().isdisjoint({}))
+        self.assertWahr(d1.items().isdisjoint(d3.items()))
 
         de = {}
-        self.assertTrue(de.items().isdisjoint(set()))
-        self.assertTrue(de.items().isdisjoint([]))
-        self.assertTrue(de.items().isdisjoint(de.items()))
-        self.assertTrue(de.items().isdisjoint([1]))
+        self.assertWahr(de.items().isdisjoint(set()))
+        self.assertWahr(de.items().isdisjoint([]))
+        self.assertWahr(de.items().isdisjoint(de.items()))
+        self.assertWahr(de.items().isdisjoint([1]))
 
     def test_set_operations_with_iterator(self):
         origin = {1: 2, 3: 4}

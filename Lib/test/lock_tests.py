@@ -29,10 +29,10 @@ klasse Bunch(object):
     """
     A bunch of threads.
     """
-    def __init__(self, func, nthread, wait_before_exit=False):
+    def __init__(self, func, nthread, wait_before_exit=Falsch):
         """
         Construct a bunch of `nthread` threads running the same function `func`.
-        If `wait_before_exit` is True, the threads won't terminate until
+        If `wait_before_exit` is Wahr, the threads won't terminate until
         do_finish() is called.
         """
         self.func = func
@@ -41,7 +41,7 @@ klasse Bunch(object):
         self.finished = []
         self.exceptions = []
         self._can_exit = not wait_before_exit
-        self._wait_thread = None
+        self._wait_thread = Nichts
 
     def task(self):
         tid = threading.get_ident()
@@ -64,7 +64,7 @@ klasse Bunch(object):
             fuer _ in range(self.nthread):
                 start_new_thread(self.task, ())
         except:
-            self._can_exit = True
+            self._can_exit = Wahr
             raise
 
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
@@ -79,17 +79,17 @@ klasse Bunch(object):
                 break
 
         # Wait until threads completely exit according to _thread._count()
-        self._wait_thread.__exit__(None, None, None)
+        self._wait_thread.__exit__(Nichts, Nichts, Nichts)
 
         # Break reference cycle
         exceptions = self.exceptions
-        self.exceptions = None
+        self.exceptions = Nichts
         wenn exceptions:
             raise ExceptionGroup(f"{self.func} threads raised exceptions",
                                  exceptions)
 
     def do_finish(self):
-        self._can_exit = True
+        self._can_exit = Wahr
 
 
 klasse BaseTestCase(unittest.TestCase):
@@ -153,7 +153,7 @@ klasse BaseLockTests(BaseTestCase):
 
     def test_try_acquire(self):
         lock = self.locktype()
-        self.assertTrue(lock.acquire(False))
+        self.assertWahr(lock.acquire(Falsch))
         lock.release()
 
     def test_try_acquire_contended(self):
@@ -161,10 +161,10 @@ klasse BaseLockTests(BaseTestCase):
         lock.acquire()
         result = []
         def f():
-            result.append(lock.acquire(False))
+            result.append(lock.acquire(Falsch))
         with Bunch(f, 1):
             pass
-        self.assertFalse(result[0])
+        self.assertFalsch(result[0])
         lock.release()
 
     def test_acquire_contended(self):
@@ -191,9 +191,9 @@ klasse BaseLockTests(BaseTestCase):
             lock.acquire()
             lock.release()
 
-        def with_lock(err=None):
+        def with_lock(err=Nichts):
             with lock:
-                wenn err is not None:
+                wenn err is not Nichts:
                     raise err
 
         # Acquire the lock, do nothing, with releases the lock
@@ -230,7 +230,7 @@ klasse BaseLockTests(BaseTestCase):
     def test_timeout(self):
         lock = self.locktype()
         # Can't set timeout wenn not blocking
-        self.assertRaises(ValueError, lock.acquire, False, 1)
+        self.assertRaises(ValueError, lock.acquire, Falsch, 1)
         # Invalid timeout values
         self.assertRaises(ValueError, lock.acquire, timeout=-100)
         self.assertRaises(OverflowError, lock.acquire, timeout=1e100)
@@ -239,7 +239,7 @@ klasse BaseLockTests(BaseTestCase):
         lock.acquire(timeout=TIMEOUT_MAX)
         lock.release()
         t1 = time.monotonic()
-        self.assertTrue(lock.acquire(timeout=5))
+        self.assertWahr(lock.acquire(timeout=5))
         t2 = time.monotonic()
         # Just a sanity test that it didn't actually wait fuer the timeout.
         self.assertLess(t2 - t1, 5)
@@ -251,20 +251,20 @@ klasse BaseLockTests(BaseTestCase):
             results.append(t2 - t1)
         with Bunch(f, 1):
             pass
-        self.assertFalse(results[0])
+        self.assertFalsch(results[0])
         self.assertTimeout(results[1], 0.5)
 
     def test_weakref_exists(self):
         lock = self.locktype()
         ref = weakref.ref(lock)
-        self.assertIsNotNone(ref())
+        self.assertIsNotNichts(ref())
 
     def test_weakref_deleted(self):
         lock = self.locktype()
         ref = weakref.ref(lock)
         del lock
         gc.collect()  # For PyPy or other GCs.
-        self.assertIsNone(ref())
+        self.assertIsNichts(ref())
 
 
 klasse LockTests(BaseLockTests):
@@ -279,9 +279,9 @@ klasse LockTests(BaseLockTests):
 
         def f():
             lock.acquire()
-            phase.append(None)
+            phase.append(Nichts)
             lock.acquire()
-            phase.append(None)
+            phase.append(Nichts)
 
         with threading_helper.wait_threads_exit():
             # Thread blocked on lock.acquire()
@@ -308,10 +308,10 @@ klasse LockTests(BaseLockTests):
         # (non-zero) timeout.
         lock = self.locktype()
         lock.acquire()
-        self.assertFalse(lock.acquire(timeout=0.01))
+        self.assertFalsch(lock.acquire(timeout=0.01))
         lock.release()
-        self.assertFalse(lock.locked())
-        self.assertTrue(lock.acquire(blocking=False))
+        self.assertFalsch(lock.locked())
+        self.assertWahr(lock.acquire(blocking=Falsch))
 
     @requires_fork
     def test_at_fork_reinit(self):
@@ -380,15 +380,15 @@ klasse RLockTests(BaseLockTests):
 
     def test_locked(self):
         lock = self.locktype()
-        self.assertFalse(lock.locked())
+        self.assertFalsch(lock.locked())
         lock.acquire()
-        self.assertTrue(lock.locked())
+        self.assertWahr(lock.locked())
         lock.acquire()
-        self.assertTrue(lock.locked())
+        self.assertWahr(lock.locked())
         lock.release()
-        self.assertTrue(lock.locked())
+        self.assertWahr(lock.locked())
         lock.release()
-        self.assertFalse(lock.locked())
+        self.assertFalsch(lock.locked())
 
     def test_locked_with_2threads(self):
         # see gh-134323: check that a rlock which
@@ -396,7 +396,7 @@ klasse RLockTests(BaseLockTests):
         # is still locked in the main thread.
         result = []
         rlock = self.locktype()
-        self.assertFalse(rlock.locked())
+        self.assertFalsch(rlock.locked())
         def acquire():
             result.append(rlock.locked())
             rlock.acquire()
@@ -404,9 +404,9 @@ klasse RLockTests(BaseLockTests):
 
         with Bunch(acquire, 1):
             pass
-        self.assertTrue(rlock.locked())
-        self.assertFalse(result[0])
-        self.assertTrue(result[1])
+        self.assertWahr(rlock.locked())
+        self.assertFalsch(result[0])
+        self.assertWahr(result[1])
 
     def test_release_save_unacquired(self):
         # Cannot _release_save an unacquired lock
@@ -438,11 +438,11 @@ klasse RLockTests(BaseLockTests):
 
         def f():
             lock.acquire()
-            phase.append(None)
+            phase.append(Nichts)
 
             self.wait_phase(phase, 2)
             lock.release()
-            phase.append(None)
+            phase.append(Nichts)
 
         with threading_helper.wait_threads_exit():
             # Thread blocked on lock.acquire()
@@ -451,7 +451,7 @@ klasse RLockTests(BaseLockTests):
             self.assertEqual(0, lock._recursion_count())
 
             # Thread unblocked
-            phase.append(None)
+            phase.append(Nichts)
             self.wait_phase(phase, 3)
             self.assertEqual(0, lock._recursion_count())
 
@@ -461,7 +461,7 @@ klasse RLockTests(BaseLockTests):
         def f():
             lock.acquire()
 
-        with Bunch(f, 1, True) as bunch:
+        with Bunch(f, 1, Wahr) as bunch:
             try:
                 self.assertRaises(RuntimeError, lock.release)
             finally:
@@ -469,21 +469,21 @@ klasse RLockTests(BaseLockTests):
 
     def test__is_owned(self):
         lock = self.locktype()
-        self.assertFalse(lock._is_owned())
+        self.assertFalsch(lock._is_owned())
         lock.acquire()
-        self.assertTrue(lock._is_owned())
+        self.assertWahr(lock._is_owned())
         lock.acquire()
-        self.assertTrue(lock._is_owned())
+        self.assertWahr(lock._is_owned())
         result = []
         def f():
             result.append(lock._is_owned())
         with Bunch(f, 1):
             pass
-        self.assertFalse(result[0])
+        self.assertFalsch(result[0])
         lock.release()
-        self.assertTrue(lock._is_owned())
+        self.assertWahr(lock._is_owned())
         lock.release()
-        self.assertFalse(lock._is_owned())
+        self.assertFalsch(lock._is_owned())
 
 
 klasse EventTests(BaseTestCase):
@@ -493,15 +493,15 @@ klasse EventTests(BaseTestCase):
 
     def test_is_set(self):
         evt = self.eventtype()
-        self.assertFalse(evt.is_set())
+        self.assertFalsch(evt.is_set())
         evt.set()
-        self.assertTrue(evt.is_set())
+        self.assertWahr(evt.is_set())
         evt.set()
-        self.assertTrue(evt.is_set())
+        self.assertWahr(evt.is_set())
         evt.clear()
-        self.assertFalse(evt.is_set())
+        self.assertFalsch(evt.is_set())
         evt.clear()
-        self.assertFalse(evt.is_set())
+        self.assertFalsch(evt.is_set())
 
     def _check_notify(self, evt):
         # All threads get notified
@@ -520,8 +520,8 @@ klasse EventTests(BaseTestCase):
             # Threads unblocked
             evt.set()
 
-        self.assertEqual(results1, [True] * N)
-        self.assertEqual(results2, [True] * N)
+        self.assertEqual(results1, [Wahr] * N)
+        self.assertEqual(results2, [Wahr] * N)
 
     def test_notify(self):
         evt = self.eventtype()
@@ -546,9 +546,9 @@ klasse EventTests(BaseTestCase):
         with Bunch(f, N):
             pass
 
-        self.assertEqual(results1, [False] * N)
+        self.assertEqual(results1, [Falsch] * N)
         fuer r, dt in results2:
-            self.assertFalse(r)
+            self.assertFalsch(r)
             self.assertTimeout(dt, 0.5)
 
         # The event is set
@@ -558,9 +558,9 @@ klasse EventTests(BaseTestCase):
         with Bunch(f, N):
             pass
 
-        self.assertEqual(results1, [True] * N)
+        self.assertEqual(results1, [Wahr] * N)
         fuer r, dt in results2:
-            self.assertTrue(r)
+            self.assertWahr(r)
 
     def test_set_and_clear(self):
         # gh-57711: check that wait() returns true even when the event is
@@ -579,17 +579,17 @@ klasse EventTests(BaseTestCase):
             event.set()
             event.clear()
 
-        self.assertEqual(results, [True] * N)
+        self.assertEqual(results, [Wahr] * N)
 
     @requires_fork
     def test_at_fork_reinit(self):
         # ensure that condition is still using a Lock after reset
         evt = self.eventtype()
         with evt._cond:
-            self.assertFalse(evt._cond.acquire(False))
+            self.assertFalsch(evt._cond.acquire(Falsch))
         evt._at_fork_reinit()
         with evt._cond:
-            self.assertFalse(evt._cond.acquire(False))
+            self.assertFalsch(evt._cond.acquire(Falsch))
 
     def test_repr(self):
         evt = self.eventtype()
@@ -614,13 +614,13 @@ klasse ConditionTests(BaseTestCase):
         lock = threading.Lock()
         cond = self.condtype(lock)
         cond.acquire()
-        self.assertFalse(lock.acquire(False))
+        self.assertFalsch(lock.acquire(Falsch))
         cond.release()
-        self.assertTrue(lock.acquire(False))
-        self.assertFalse(cond.acquire(False))
+        self.assertWahr(lock.acquire(Falsch))
+        self.assertFalsch(cond.acquire(Falsch))
         lock.release()
         with cond:
-            self.assertFalse(lock.acquire(False))
+            self.assertFalsch(lock.acquire(Falsch))
 
     def test_unacquired_wait(self):
         cond = self.condtype()
@@ -685,7 +685,7 @@ klasse ConditionTests(BaseTestCase):
                 wenn len(results1) >= count1:
                     break
 
-            self.assertEqual(results1, [(True, 1)] * count1)
+            self.assertEqual(results1, [(Wahr, 1)] * count1)
             self.assertEqual(results2, [])
 
             # Wait until awaken workers are blocked on cond.wait()
@@ -706,8 +706,8 @@ klasse ConditionTests(BaseTestCase):
                     break
 
             count2 = N - count1
-            self.assertEqual(results1, [(True, 1)] * count1 + [(True, 2)] * count2)
-            self.assertEqual(results2, [(True, 2)] * count1)
+            self.assertEqual(results1, [(Wahr, 1)] * count1 + [(Wahr, 2)] * count2)
+            self.assertEqual(results2, [(Wahr, 2)] * count1)
 
             # Make sure all workers settle into cond.wait()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
@@ -725,8 +725,8 @@ klasse ConditionTests(BaseTestCase):
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn len(results2) >= N:
                     break
-            self.assertEqual(results1, [(True, 1)] * count1 + [(True, 2)] * count2)
-            self.assertEqual(results2, [(True, 2)] * count1 + [(True, 3)] * count2)
+            self.assertEqual(results1, [(Wahr, 1)] * count1 + [(Wahr, 2)] * count2)
+            self.assertEqual(results2, [(Wahr, 2)] * count1 + [(Wahr, 3)] * count2)
 
     def test_notify(self):
         cond = self.condtype()
@@ -758,7 +758,7 @@ klasse ConditionTests(BaseTestCase):
             # timeout occurs.  Spurious wakeups can occur.
             # This makes it hard to verify the result value.
             # In practice, this implementation has no spurious wakeups.
-            self.assertFalse(result)
+            self.assertFalsch(result)
 
     def test_waitfor(self):
         cond = self.condtype()
@@ -766,7 +766,7 @@ klasse ConditionTests(BaseTestCase):
         def f():
             with cond:
                 result = cond.wait_for(lambda: state == 4)
-                self.assertTrue(result)
+                self.assertWahr(result)
                 self.assertEqual(state, 4)
 
         with Bunch(f, 1):
@@ -785,9 +785,9 @@ klasse ConditionTests(BaseTestCase):
                 dt = time.monotonic()
                 result = cond.wait_for(lambda : state==4, timeout=0.1)
                 dt = time.monotonic() - dt
-                self.assertFalse(result)
+                self.assertFalsch(result)
                 self.assertTimeout(dt, 0.1)
-                success.append(None)
+                success.append(Nichts)
 
         with Bunch(f, 1):
             # Only increment 3 times, so state == 4 is never reached.
@@ -871,14 +871,14 @@ klasse BaseSemaphoreTests(BaseTestCase):
             self.assertEqual(sorted(results1 + results2),
                              [0] * count1 + [1] * count2 + [2] * count3)
             # The semaphore is still locked
-            self.assertFalse(sem.acquire(False))
+            self.assertFalsch(sem.acquire(Falsch))
 
             # Final release, to let the last thread finish
             count4 = 1
             sem.release()
 
         self.assertEqual(sem_results,
-                         [True] * (count1 + count2 + count3 + count4))
+                         [Wahr] * (count1 + count2 + count3 + count4))
 
     def test_multirelease(self):
         sem_value = 7
@@ -922,43 +922,43 @@ klasse BaseSemaphoreTests(BaseTestCase):
             self.assertEqual(sorted(results1 + results2),
                              [0] * count1 + [1] * count2 + [2] * count3)
             # The semaphore is still locked
-            self.assertFalse(sem.acquire(False))
+            self.assertFalsch(sem.acquire(Falsch))
 
             # Final release, to let the last thread finish
             sem.release()
 
     def test_try_acquire(self):
         sem = self.semtype(2)
-        self.assertTrue(sem.acquire(False))
-        self.assertTrue(sem.acquire(False))
-        self.assertFalse(sem.acquire(False))
+        self.assertWahr(sem.acquire(Falsch))
+        self.assertWahr(sem.acquire(Falsch))
+        self.assertFalsch(sem.acquire(Falsch))
         sem.release()
-        self.assertTrue(sem.acquire(False))
+        self.assertWahr(sem.acquire(Falsch))
 
     def test_try_acquire_contended(self):
         sem = self.semtype(4)
         sem.acquire()
         results = []
         def f():
-            results.append(sem.acquire(False))
-            results.append(sem.acquire(False))
+            results.append(sem.acquire(Falsch))
+            results.append(sem.acquire(Falsch))
         with Bunch(f, 5):
             pass
         # There can be a thread switch between acquiring the semaphore and
         # appending the result, therefore results will not necessarily be
         # ordered.
-        self.assertEqual(sorted(results), [False] * 7 + [True] *  3 )
+        self.assertEqual(sorted(results), [Falsch] * 7 + [Wahr] *  3 )
 
     def test_acquire_timeout(self):
         sem = self.semtype(2)
-        self.assertRaises(ValueError, sem.acquire, False, timeout=1.0)
-        self.assertTrue(sem.acquire(timeout=0.005))
-        self.assertTrue(sem.acquire(timeout=0.005))
-        self.assertFalse(sem.acquire(timeout=0.005))
+        self.assertRaises(ValueError, sem.acquire, Falsch, timeout=1.0)
+        self.assertWahr(sem.acquire(timeout=0.005))
+        self.assertWahr(sem.acquire(timeout=0.005))
+        self.assertFalsch(sem.acquire(timeout=0.005))
         sem.release()
-        self.assertTrue(sem.acquire(timeout=0.005))
+        self.assertWahr(sem.acquire(timeout=0.005))
         t = time.monotonic()
-        self.assertFalse(sem.acquire(timeout=0.5))
+        self.assertFalsch(sem.acquire(timeout=0.5))
         dt = time.monotonic() - t
         self.assertTimeout(dt, 0.5)
 
@@ -973,26 +973,26 @@ klasse BaseSemaphoreTests(BaseTestCase):
         with Bunch(f, 1) as bunch:
             # Thread blocked on sem.acquire()
             wait_threads_blocked(1)
-            self.assertFalse(bunch.finished)
+            self.assertFalsch(bunch.finished)
 
             # Thread unblocked
             sem.release()
 
     def test_with(self):
         sem = self.semtype(2)
-        def _with(err=None):
+        def _with(err=Nichts):
             with sem:
-                self.assertTrue(sem.acquire(False))
+                self.assertWahr(sem.acquire(Falsch))
                 sem.release()
                 with sem:
-                    self.assertFalse(sem.acquire(False))
+                    self.assertFalsch(sem.acquire(Falsch))
                     wenn err:
                         raise err
         _with()
-        self.assertTrue(sem.acquire(False))
+        self.assertWahr(sem.acquire(Falsch))
         sem.release()
         self.assertRaises(TypeError, _with, TypeError)
-        self.assertTrue(sem.acquire(False))
+        self.assertWahr(sem.acquire(Falsch))
         sem.release()
 
 klasse SemaphoreTests(BaseSemaphoreTests):
@@ -1059,14 +1059,14 @@ klasse BarrierTests(BaseTestCase):
         m = self.barrier.parties
         self.assertEqual(m, self.N)
         fuer i in range(n):
-            results[0].append(True)
+            results[0].append(Wahr)
             self.assertEqual(len(results[1]), i * m)
             self.barrier.wait()
-            results[1].append(True)
+            results[1].append(Wahr)
             self.assertEqual(len(results[0]), (i + 1) * m)
             self.barrier.wait()
         self.assertEqual(self.barrier.n_waiting, 0)
-        self.assertFalse(self.barrier.broken)
+        self.assertFalsch(self.barrier.broken)
 
     def test_constructor(self):
         self.assertRaises(ValueError, self.barriertype, parties=0)
@@ -1105,7 +1105,7 @@ klasse BarrierTests(BaseTestCase):
         """
         results = []
         def action():
-            results.append(True)
+            results.append(Wahr)
         barrier = self.barriertype(self.N, action)
         def f():
             barrier.wait()
@@ -1125,9 +1125,9 @@ klasse BarrierTests(BaseTestCase):
                 wenn i == self.N//2:
                     raise RuntimeError
                 self.barrier.wait()
-                results1.append(True)
+                results1.append(Wahr)
             except threading.BrokenBarrierError:
-                results2.append(True)
+                results2.append(Wahr)
             except RuntimeError:
                 self.barrier.abort()
                 pass
@@ -1135,7 +1135,7 @@ klasse BarrierTests(BaseTestCase):
         self.run_threads(f)
         self.assertEqual(len(results1), 0)
         self.assertEqual(len(results2), self.N-1)
-        self.assertTrue(self.barrier.broken)
+        self.assertWahr(self.barrier.broken)
 
     def test_reset(self):
         """
@@ -1155,12 +1155,12 @@ klasse BarrierTests(BaseTestCase):
             sonst:
                 try:
                     self.barrier.wait()
-                    results1.append(True)
+                    results1.append(Wahr)
                 except threading.BrokenBarrierError:
-                    results2.append(True)
+                    results2.append(Wahr)
             # Now, pass the barrier again
             self.barrier.wait()
-            results3.append(True)
+            results3.append(Wahr)
 
         self.run_threads(f)
         self.assertEqual(len(results1), 0)
@@ -1182,9 +1182,9 @@ klasse BarrierTests(BaseTestCase):
                 wenn i == self.N//2:
                     raise RuntimeError
                 self.barrier.wait()
-                results1.append(True)
+                results1.append(Wahr)
             except threading.BrokenBarrierError:
-                results2.append(True)
+                results2.append(Wahr)
             except RuntimeError:
                 self.barrier.abort()
                 pass
@@ -1195,7 +1195,7 @@ klasse BarrierTests(BaseTestCase):
                 self.barrier.reset()
             barrier2.wait()
             self.barrier.wait()
-            results3.append(True)
+            results3.append(Wahr)
 
         self.run_threads(f)
         self.assertEqual(len(results1), 0)

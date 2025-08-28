@@ -8,7 +8,7 @@ from test.support import import_helper
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
-NULL = None
+NULL = Nichts
 
 
 klasse IntSubclass(int):
@@ -50,34 +50,34 @@ klasse LongTests(unittest.TestCase):
     def test_compact_known(self):
         # Sanity-check some implementation details (we don't guarantee
         # that these are/aren't compact)
-        self.assertEqual(_testcapi.call_long_compact_api(-1), (True, -1))
-        self.assertEqual(_testcapi.call_long_compact_api(0), (True, 0))
-        self.assertEqual(_testcapi.call_long_compact_api(256), (True, 256))
+        self.assertEqual(_testcapi.call_long_compact_api(-1), (Wahr, -1))
+        self.assertEqual(_testcapi.call_long_compact_api(0), (Wahr, 0))
+        self.assertEqual(_testcapi.call_long_compact_api(256), (Wahr, 256))
         self.assertEqual(_testcapi.call_long_compact_api(sys.maxsize),
-                         (False, -1))
+                         (Falsch, -1))
 
     def test_long_check(self):
         # Test PyLong_Check()
         check = _testlimitedcapi.pylong_check
-        self.assertTrue(check(1))
-        self.assertTrue(check(123456789012345678901234567890))
-        self.assertTrue(check(-1))
-        self.assertTrue(check(True))
-        self.assertTrue(check(IntSubclass(1)))
-        self.assertFalse(check(1.0))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(1))
+        self.assertWahr(check(123456789012345678901234567890))
+        self.assertWahr(check(-1))
+        self.assertWahr(check(Wahr))
+        self.assertWahr(check(IntSubclass(1)))
+        self.assertFalsch(check(1.0))
+        self.assertFalsch(check(object()))
         # CRASHES check(NULL)
 
     def test_long_checkexact(self):
         # Test PyLong_CheckExact()
         check = _testlimitedcapi.pylong_checkexact
-        self.assertTrue(check(1))
-        self.assertTrue(check(123456789012345678901234567890))
-        self.assertTrue(check(-1))
-        self.assertFalse(check(True))
-        self.assertFalse(check(IntSubclass(1)))
-        self.assertFalse(check(1.0))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(1))
+        self.assertWahr(check(123456789012345678901234567890))
+        self.assertWahr(check(-1))
+        self.assertFalsch(check(Wahr))
+        self.assertFalsch(check(IntSubclass(1)))
+        self.assertFalsch(check(1.0))
+        self.assertFalsch(check(object()))
         # CRASHES check(NULL)
 
     def test_long_fromdouble(self):
@@ -164,8 +164,8 @@ klasse LongTests(unittest.TestCase):
         # CRASHES fromunicodeobject(NULL, 16)
 
     def check_long_asint(self, func, min_val, max_val, *,
-                         use_index=True,
-                         mask=False,
+                         use_index=Wahr,
+                         mask=Falsch,
                          negative_value_error=OverflowError):
         # round trip (object -> C integer -> object)
         values = (0, 1, 512, 1234, max_val)
@@ -211,7 +211,7 @@ klasse LongTests(unittest.TestCase):
 
         self.assertEqual(func(min_val - 1), (-1, -1))
         self.assertEqual(func(max_val + 1), (-1, +1))
-        self.assertRaises(SystemError, func, None)
+        self.assertRaises(SystemError, func, Nichts)
         self.assertRaises(TypeError, func, 1.0)
 
     def test_long_asint(self):
@@ -237,13 +237,13 @@ klasse LongTests(unittest.TestCase):
         asunsignedlong = _testlimitedcapi.pylong_asunsignedlong
         from _testcapi import ULONG_MAX
         self.check_long_asint(asunsignedlong, 0, ULONG_MAX,
-                                      use_index=False)
+                                      use_index=Falsch)
 
     def test_long_asunsignedlongmask(self):
         # Test PyLong_AsUnsignedLongMask()
         asunsignedlongmask = _testlimitedcapi.pylong_asunsignedlongmask
         from _testcapi import ULONG_MAX
-        self.check_long_asint(asunsignedlongmask, 0, ULONG_MAX, mask=True)
+        self.check_long_asint(asunsignedlongmask, 0, ULONG_MAX, mask=Wahr)
 
     def test_long_aslonglong(self):
         # Test PyLong_AsLongLong() and PyLong_FromLongLong()
@@ -261,26 +261,26 @@ klasse LongTests(unittest.TestCase):
         # Test PyLong_AsUnsignedLongLong() and PyLong_FromUnsignedLongLong()
         asunsignedlonglong = _testlimitedcapi.pylong_asunsignedlonglong
         from _testcapi import ULLONG_MAX
-        self.check_long_asint(asunsignedlonglong, 0, ULLONG_MAX, use_index=False)
+        self.check_long_asint(asunsignedlonglong, 0, ULLONG_MAX, use_index=Falsch)
 
     def test_long_asunsignedlonglongmask(self):
         # Test PyLong_AsUnsignedLongLongMask()
         asunsignedlonglongmask = _testlimitedcapi.pylong_asunsignedlonglongmask
         from _testcapi import ULLONG_MAX
-        self.check_long_asint(asunsignedlonglongmask, 0, ULLONG_MAX, mask=True)
+        self.check_long_asint(asunsignedlonglongmask, 0, ULLONG_MAX, mask=Wahr)
 
     def test_long_as_ssize_t(self):
         # Test PyLong_AsSsize_t() and PyLong_FromSsize_t()
         as_ssize_t = _testlimitedcapi.pylong_as_ssize_t
         from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
         self.check_long_asint(as_ssize_t, PY_SSIZE_T_MIN, PY_SSIZE_T_MAX,
-                              use_index=False)
+                              use_index=Falsch)
 
     def test_long_as_size_t(self):
         # Test PyLong_AsSize_t() and PyLong_FromSize_t()
         as_size_t = _testlimitedcapi.pylong_as_size_t
         from _testcapi import SIZE_MAX
-        self.check_long_asint(as_size_t, 0, SIZE_MAX, use_index=False)
+        self.check_long_asint(as_size_t, 0, SIZE_MAX, use_index=Falsch)
 
     def test_long_asdouble(self):
         # Test PyLong_AsDouble()
@@ -634,9 +634,9 @@ klasse LongTests(unittest.TestCase):
         self.assertEqual(getsign(123456), 1)
         self.assertEqual(getsign(-2), -1)
         self.assertEqual(getsign(0), 0)
-        self.assertEqual(getsign(True), 1)
+        self.assertEqual(getsign(Wahr), 1)
         self.assertEqual(getsign(IntSubclass(-11)), -1)
-        self.assertEqual(getsign(False), 0)
+        self.assertEqual(getsign(Falsch), 0)
 
         self.assertRaises(TypeError, getsign, 1.0)
         self.assertRaises(TypeError, getsign, Index(123))
@@ -650,8 +650,8 @@ klasse LongTests(unittest.TestCase):
         self.assertEqual(ispositive(123), 1)
         self.assertEqual(ispositive(-1), 0)
         self.assertEqual(ispositive(0), 0)
-        self.assertEqual(ispositive(True), 1)
-        self.assertEqual(ispositive(False), 0)
+        self.assertEqual(ispositive(Wahr), 1)
+        self.assertEqual(ispositive(Falsch), 0)
         self.assertEqual(ispositive(IntSubclass(-1)), 0)
         self.assertRaises(TypeError, ispositive, 1.0)
         self.assertRaises(TypeError, ispositive, Index(123))
@@ -665,8 +665,8 @@ klasse LongTests(unittest.TestCase):
         self.assertEqual(isnegative(123), 0)
         self.assertEqual(isnegative(-1), 1)
         self.assertEqual(isnegative(0), 0)
-        self.assertEqual(isnegative(True), 0)
-        self.assertEqual(isnegative(False), 0)
+        self.assertEqual(isnegative(Wahr), 0)
+        self.assertEqual(isnegative(Falsch), 0)
         self.assertEqual(isnegative(IntSubclass(-1)), 1)
         self.assertRaises(TypeError, isnegative, 1.0)
         self.assertRaises(TypeError, isnegative, Index(123))
@@ -679,8 +679,8 @@ klasse LongTests(unittest.TestCase):
         self.assertEqual(iszero(1), 0)
         self.assertEqual(iszero(-1), 0)
         self.assertEqual(iszero(0), 1)
-        self.assertEqual(iszero(True), 0)
-        self.assertEqual(iszero(False), 1)
+        self.assertEqual(iszero(Wahr), 0)
+        self.assertEqual(iszero(Falsch), 1)
         self.assertEqual(iszero(IntSubclass(-1)), 0)
         self.assertEqual(iszero(IntSubclass(0)), 1)
         self.assertRaises(TypeError, iszero, 1.0)
@@ -780,7 +780,7 @@ klasse LongTests(unittest.TestCase):
 
         def to_digits(num):
             digits = []
-            while True:
+            while Wahr:
                 num, digit = divmod(num, base)
                 digits.append(digit)
                 wenn not num:

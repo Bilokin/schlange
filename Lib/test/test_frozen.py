@@ -29,9 +29,9 @@ klasse TestFrozen(unittest.TestCase):
 
     def test_frozen_submodule_in_unfrozen_package(self):
         with import_helper.CleanImport('__phello__', '__phello__.spam'):
-            with import_helper.frozen_modules(enabled=False):
+            with import_helper.frozen_modules(enabled=Falsch):
                 import __phello__
-            with import_helper.frozen_modules(enabled=True):
+            with import_helper.frozen_modules(enabled=Wahr):
                 import __phello__.spam as spam
         self.assertIs(spam, __phello__.spam)
         self.assertIsNot(__phello__.__spec__.loader,
@@ -41,9 +41,9 @@ klasse TestFrozen(unittest.TestCase):
 
     def test_unfrozen_submodule_in_frozen_package(self):
         with import_helper.CleanImport('__phello__', '__phello__.spam'):
-            with import_helper.frozen_modules(enabled=True):
+            with import_helper.frozen_modules(enabled=Wahr):
                 import __phello__
-            with import_helper.frozen_modules(enabled=False):
+            with import_helper.frozen_modules(enabled=Falsch):
                 import __phello__.spam as spam
         self.assertIs(spam, __phello__.spam)
         self.assertIs(__phello__.__spec__.loader,

@@ -79,7 +79,7 @@ TABLE_SECTIONS = {
 }
 
 
-def _render_table(items, columns, relroot=None):
+def _render_table(items, columns, relroot=Nichts):
     # XXX improve this
     header = '\t'.join(columns)
     div = '--------------------'
@@ -98,7 +98,7 @@ def _render_table(items, columns, relroot=None):
     yield f'total: {total}'
 
 
-def build_section(name, groupitems, *, relroot=None):
+def build_section(name, groupitems, *, relroot=Nichts):
     info = TABLE_SECTIONS[name]
     while type(info) is not tuple:
         wenn name in KINDS:
@@ -125,15 +125,15 @@ CHECKS = {
 }
 
 
-def add_checks_cli(parser, checks=None, *, add_flags=None):
-    default = False
+def add_checks_cli(parser, checks=Nichts, *, add_flags=Nichts):
+    default = Falsch
     wenn not checks:
         checks = list(CHECKS)
-        default = True
+        default = Wahr
     sowenn isinstance(checks, str):
         checks = [checks]
-    wenn (add_flags is None and len(checks) > 1) or default:
-        add_flags = True
+    wenn (add_flags is Nichts and len(checks) > 1) or default:
+        add_flags = Wahr
 
     process_checks = add_sepval_cli(parser, '--check', 'checks', checks)
     wenn add_flags:
@@ -146,7 +146,7 @@ def add_checks_cli(parser, checks=None, *, add_flags=None):
 
 
 def _get_check_handlers(fmt, printer, verbosity=VERBOSITY):
-    div = None
+    div = Nichts
     def handle_after():
         pass
     wenn not fmt:
@@ -231,7 +231,7 @@ def fmt_summary(analysis):
     yield f'grand total: {total}'
 
 
-def _fmt_one_summary(item, extra=None):
+def _fmt_one_summary(item, extra=Nichts):
     parent = item.parent or ''
     funcname = parent wenn isinstance(parent, str) sonst parent.name
     wenn extra:
@@ -261,7 +261,7 @@ FORMATS = {
 def add_output_cli(parser, *, default='summary'):
     parser.add_argument('--format', dest='fmt', default=default, choices=tuple(FORMATS))
 
-    def process_args(args, *, argv=None):
+    def process_args(args, *, argv=Nichts):
         pass
     return process_args
 
@@ -269,21 +269,21 @@ def add_output_cli(parser, *, default='summary'):
 #######################################
 # the commands
 
-def _cli_check(parser, checks=None, **kwargs):
+def _cli_check(parser, checks=Nichts, **kwargs):
     wenn isinstance(checks, str):
         checks = [checks]
-    wenn checks is False:
-        process_checks = None
-    sowenn checks is None:
+    wenn checks is Falsch:
+        process_checks = Nichts
+    sowenn checks is Nichts:
         process_checks = add_checks_cli(parser)
     sowenn len(checks) == 1 and type(checks) is not dict and re.match(r'^<.*>$', checks[0]):
         check = checks[0][1:-1]
-        def process_checks(args, *, argv=None):
+        def process_checks(args, *, argv=Nichts):
             args.checks = [check]
     sonst:
         process_checks = add_checks_cli(parser, checks=checks)
     process_progress = add_progress_cli(parser)
-    process_output = add_output_cli(parser, default=None)
+    process_output = add_output_cli(parser, default=Nichts)
     process_files = add_files_cli(parser, **kwargs)
     return [
         process_checks,
@@ -294,13 +294,13 @@ def _cli_check(parser, checks=None, **kwargs):
 
 
 def cmd_check(filenames, *,
-              checks=None,
-              ignored=None,
-              fmt=None,
-              failfast=False,
-              iter_filenames=None,
+              checks=Nichts,
+              ignored=Nichts,
+              fmt=Nichts,
+              failfast=Falsch,
+              iter_filenames=Nichts,
               relroot=fsutil.USE_CWD,
-              track_progress=None,
+              track_progress=Nichts,
               verbosity=VERBOSITY,
               _analyze=_analyze,
               _CHECKS=CHECKS,
@@ -323,16 +323,16 @@ def cmd_check(filenames, *,
 
     logger.info('analyzing files...')
     analyzed = _analyze(filenames, **kwargs)
-    analyzed.fix_filenames(relroot, normalize=False)
-    decls = filter_forward(analyzed, markpublic=True)
+    analyzed.fix_filenames(relroot, normalize=Falsch)
+    decls = filter_forward(analyzed, markpublic=Wahr)
 
     logger.info('checking analysis results...')
     failed = []
     fuer data, failure in _check_all(decls, checks, failfast=failfast):
-        wenn data is None:
+        wenn data is Nichts:
             printer.info('stopping after one failure')
             break
-        wenn div is not None and len(failed) > 0:
+        wenn div is not Nichts and len(failed) > 0:
             printer.info(div)
         failed.append(data)
         handle_failure(failure, data)
@@ -346,7 +346,7 @@ def cmd_check(filenames, *,
         print('Categorized by storage:')
         print()
         from .match import group_by_storage
-        grouped = group_by_storage(failed, ignore_non_match=False)
+        grouped = group_by_storage(failed, ignore_non_match=Falsch)
         fuer group, decls in grouped.items():
             print()
             print(group)
@@ -371,16 +371,16 @@ def _cli_analyze(parser, **kwargs):
 
 # XXX Support filtering by kind.
 def cmd_analyze(filenames, *,
-                fmt=None,
-                iter_filenames=None,
+                fmt=Nichts,
+                iter_filenames=Nichts,
                 relroot=fsutil.USE_CWD,
-                track_progress=None,
-                verbosity=None,
+                track_progress=Nichts,
+                verbosity=Nichts,
                 _analyze=_analyze,
                 formats=FORMATS,
                 **kwargs
                 ):
-    verbosity = verbosity wenn verbosity is not None sonst 3
+    verbosity = verbosity wenn verbosity is not Nichts sonst 3
 
     try:
         do_fmt = formats[fmt]
@@ -394,16 +394,16 @@ def cmd_analyze(filenames, *,
 
     logger.info('analyzing files...')
     analyzed = _analyze(filenames, **kwargs)
-    analyzed.fix_filenames(relroot, normalize=False)
-    decls = filter_forward(analyzed, markpublic=True)
+    analyzed.fix_filenames(relroot, normalize=Falsch)
+    decls = filter_forward(analyzed, markpublic=Wahr)
 
     fuer line in do_fmt(decls):
         print(line)
 
 
-def _cli_data(parser, filenames=None, known=None):
+def _cli_data(parser, filenames=Nichts, known=Nichts):
     ArgumentParser = type(parser)
-    common = ArgumentParser(add_help=False)
+    common = ArgumentParser(add_help=Falsch)
     # These flags will get processed by the top-level parse_args().
     add_verbosity_cli(common)
     add_traceback_cli(common)
@@ -411,20 +411,20 @@ def _cli_data(parser, filenames=None, known=None):
     subs = parser.add_subparsers(dest='datacmd')
 
     sub = subs.add_parser('show', parents=[common])
-    wenn known is None:
-        sub.add_argument('--known', required=True)
-    wenn filenames is None:
+    wenn known is Nichts:
+        sub.add_argument('--known', required=Wahr)
+    wenn filenames is Nichts:
         sub.add_argument('filenames', metavar='FILE', nargs='+')
 
     sub = subs.add_parser('dump', parents=[common])
-    wenn known is None:
+    wenn known is Nichts:
         sub.add_argument('--known')
     sub.add_argument('--show', action='store_true')
     process_progress = add_progress_cli(sub)
 
     sub = subs.add_parser('check', parents=[common])
-    wenn known is None:
-        sub.add_argument('--known', required=True)
+    wenn known is Nichts:
+        sub.add_argument('--known', required=Wahr)
 
     def process_args(args, *, argv):
         wenn args.datacmd == 'dump':
@@ -432,16 +432,16 @@ def _cli_data(parser, filenames=None, known=None):
     return process_args
 
 
-def cmd_data(datacmd, filenames, known=None, *,
+def cmd_data(datacmd, filenames, known=Nichts, *,
              _analyze=_analyze,
              formats=FORMATS,
-             extracolumns=None,
+             extracolumns=Nichts,
              relroot=fsutil.USE_CWD,
-             track_progress=None,
+             track_progress=Nichts,
              **kwargs
              ):
-    kwargs.pop('verbosity', None)
-    usestdout = kwargs.pop('show', None)
+    kwargs.pop('verbosity', Nichts)
+    usestdout = kwargs.pop('show', Nichts)
     wenn datacmd == 'show':
         do_fmt = formats['summary']
         wenn isinstance(known, str):
@@ -453,8 +453,8 @@ def cmd_data(datacmd, filenames, known=None, *,
         wenn track_progress:
             filenames = track_progress(filenames)
         analyzed = _analyze(filenames, **kwargs)
-        analyzed.fix_filenames(relroot, normalize=False)
-        wenn known is None or usestdout:
+        analyzed.fix_filenames(relroot, normalize=Falsch)
+        wenn known is Nichts or usestdout:
             outfile = io.StringIO()
             _datafiles.write_known(analyzed, outfile, extracolumns,
                                    relroot=relroot)
@@ -490,7 +490,7 @@ COMMANDS = {
 #######################################
 # the script
 
-def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset=None):
+def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *, subset=Nichts):
     import argparse
     parser = argparse.ArgumentParser(
         prog=prog or get_prog(),

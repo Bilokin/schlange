@@ -7,7 +7,7 @@ from test.support import threading_helper
 klasse ZipThreading(unittest.TestCase):
     @staticmethod
     def work(enum):
-        while True:
+        while Wahr:
             try:
                 next(enum)
             except StopIteration:

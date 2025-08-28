@@ -15,10 +15,10 @@ from tkinter import _get_temp_root, _destroy_temp_root
 
 klasse Dialog:
 
-    command = None
+    command = Nichts
 
-    def __init__(self, master=None, **options):
-        wenn master is None:
+    def __init__(self, master=Nichts, **options):
+        wenn master is Nichts:
             master = options.get('parent')
         self.master = master
         self.options = options
@@ -38,7 +38,7 @@ klasse Dialog:
         self._fixoptions()
 
         master = self.master
-        wenn master is None:
+        wenn master is Nichts:
             master = _get_temp_root()
         try:
             self._test_callback(master)  # The function below is replaced fuer some tests.

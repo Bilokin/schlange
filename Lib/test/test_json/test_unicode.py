@@ -19,23 +19,23 @@ klasse TestUnicode:
 
     def test_encoding5(self):
         u = '\N{GREEK SMALL LETTER ALPHA}\N{GREEK CAPITAL LETTER OMEGA}'
-        j = self.dumps(u, ensure_ascii=False)
+        j = self.dumps(u, ensure_ascii=Falsch)
         self.assertEqual(j, f'"{u}"')
 
     def test_encoding6(self):
         u = '\N{GREEK SMALL LETTER ALPHA}\N{GREEK CAPITAL LETTER OMEGA}'
-        j = self.dumps([u], ensure_ascii=False)
+        j = self.dumps([u], ensure_ascii=Falsch)
         self.assertEqual(j, f'["{u}"]')
 
     def test_encoding7(self):
         u = '\N{GREEK SMALL LETTER ALPHA}\N{GREEK CAPITAL LETTER OMEGA}'
-        j = self.dumps(u + "\n", ensure_ascii=False)
+        j = self.dumps(u + "\n", ensure_ascii=Falsch)
         self.assertEqual(j, f'"{u}\\n"')
 
     def test_big_unicode_encode(self):
         u = '\U0001d120'
         self.assertEqual(self.dumps(u), '"\\ud834\\udd20"')
-        self.assertEqual(self.dumps(u, ensure_ascii=False), '"\U0001d120"')
+        self.assertEqual(self.dumps(u, ensure_ascii=Falsch), '"\U0001d120"')
 
     def test_big_unicode_decode(self):
         u = 'z\U0001d120x'
@@ -95,7 +95,7 @@ klasse TestUnicode:
         self.assertEqual(type(od), OrderedDict)
         # the object_pairs_hook takes priority over the object_hook
         self.assertEqual(self.loads(s, object_pairs_hook = OrderedDict,
-                                    object_hook = lambda x: None),
+                                    object_hook = lambda x: Nichts),
                          OrderedDict(p))
 
 

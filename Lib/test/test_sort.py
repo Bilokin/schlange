@@ -7,7 +7,7 @@ verbose = support.verbose
 nerrors = 0
 
 
-def check(tag, expected, raw, compare=None):
+def check(tag, expected, raw, compare=Nichts):
     global nerrors
 
     wenn verbose:
@@ -49,7 +49,7 @@ klasse TestBase(unittest.TestCase):
         sizes.extend([10, 100, 1000])
 
         klasse Complains(object):
-            maybe_complain = True
+            maybe_complain = Wahr
 
             def __init__(self, i):
                 self.i = i
@@ -112,14 +112,14 @@ klasse TestBase(unittest.TestCase):
             x = [Complains(i) fuer i in x]
             s = x[:]
             random.shuffle(s)
-            Complains.maybe_complain = True
-            it_complained = False
+            Complains.maybe_complain = Wahr
+            it_complained = Falsch
             try:
                 s.sort()
             except RuntimeError:
-                it_complained = True
+                it_complained = Wahr
             wenn it_complained:
-                Complains.maybe_complain = False
+                Complains.maybe_complain = Falsch
                 check("exception during sort left some permutation", x, s)
 
             s = [Stable(random.randrange(10), i) fuer i in range(n)]
@@ -261,7 +261,7 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
     def test_reverse(self):
         data = list(range(100))
         random.shuffle(data)
-        data.sort(reverse=True)
+        data.sort(reverse=Wahr)
         self.assertEqual(data, list(range(99,-1,-1)))
 
     def test_reverse_stability(self):
@@ -274,10 +274,10 @@ klasse TestDecorateSortUndecorate(unittest.TestCase):
         def my_cmp_reversed(x, y):
             x0, y0 = x[0], y[0]
             return (y0 > x0) - (y0 < x0)
-        data.sort(key=cmp_to_key(my_cmp), reverse=True)
+        data.sort(key=cmp_to_key(my_cmp), reverse=Wahr)
         copy1.sort(key=cmp_to_key(my_cmp_reversed))
         self.assertEqual(data, copy1)
-        copy2.sort(key=lambda x: x[0], reverse=True)
+        copy2.sort(key=lambda x: x[0], reverse=Wahr)
         self.assertEqual(data, copy2)
 
 #==============================================================================
@@ -396,13 +396,13 @@ klasse TestOptimizedCompares(unittest.TestCase):
                                                       _ in range(100)])
 
     def test_not_all_tuples(self):
-        self.assertRaises(TypeError, [(1.0, 1.0), (False, "A"), 6].sort)
+        self.assertRaises(TypeError, [(1.0, 1.0), (Falsch, "A"), 6].sort)
         self.assertRaises(TypeError, [('a', 1), (1, 'a')].sort)
         self.assertRaises(TypeError, [(1, 'a'), ('a', 1)].sort)
 
     def test_none_in_tuples(self):
-        expected = [(None, 1), (None, 2)]
-        actual = sorted([(None, 2), (None, 1)])
+        expected = [(Nichts, 1), (Nichts, 2)]
+        actual = sorted([(Nichts, 2), (Nichts, 1)])
         self.assertEqual(actual, expected)
 
 #==============================================================================

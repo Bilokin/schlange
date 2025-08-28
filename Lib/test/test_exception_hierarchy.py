@@ -74,7 +74,7 @@ klasse HierarchyTest(unittest.TestCase):
             wenn not line:
                 continue
             excname, _, errnames = line.partition(' ')
-            fuer errname in filter(None, errnames.strip().split(', ')):
+            fuer errname in filter(Nichts, errnames.strip().split(', ')):
                 wenn errname == "ENOTCAPABLE" and not hasattr(errno, errname):
                     continue
                 _map[getattr(errno, errname)] = getattr(builtins, excname)
@@ -110,7 +110,7 @@ klasse HierarchyTest(unittest.TestCase):
             self.fail("should have raised a FileNotFoundError")
 
         # Another test fuer PyErr_SetExcFromWindowsErrWithFilenameObject()
-        self.assertFalse(os.path.exists(filename))
+        self.assertFalsch(os.path.exists(filename))
         try:
             os.unlink(filename)
         except FileNotFoundError:
@@ -134,7 +134,7 @@ klasse AttributesTest(unittest.TestCase):
         self.assertEqual(e.strerror, "File already exists")
         self.assertEqual(e.filename, "foo.txt")
         wenn os.name == "nt":
-            self.assertEqual(e.winerror, None)
+            self.assertEqual(e.winerror, Nichts)
 
     @unittest.skipUnless(os.name == "nt", "Windows-specific test")
     def test_errno_translation(self):

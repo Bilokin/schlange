@@ -137,7 +137,7 @@ klasse Parser:
         """
         Return index of a good place to begin parsing, as close to the
         end of the string as possible.  This will be the start of some
-        popular stmt like "if" or "def".  Return None wenn none found:
+        popular stmt like "if" or "def".  Return Nichts wenn none found:
         the caller should pass more prior context then, wenn possible, or
         wenn not (the entire program text up until the point of interest
         has already been tried) pass 0 to set_lo().
@@ -146,10 +146,10 @@ klasse Parser:
         function, meaning that when it says "no", it's absolutely
         guaranteed that the char is not in a string.
         """
-        code, pos = self.code, None
+        code, pos = self.code, Nichts
 
         # Peek back from the end fuer a good place to start,
-        # but don't try too often; pos will be left None, or
+        # but don't try too often; pos will be left Nichts, or
         # bumped to a legitimate synch point.
         limit = len(code)
         fuer tries in range(5):
@@ -162,7 +162,7 @@ klasse Parser:
                 pos = m.start()
                 break
             limit = i
-        wenn pos is None:
+        wenn pos is Nichts:
             # Nothing looks like a block-opener, or stuff does
             # but is_char_in_string keeps returning true; most likely
             # we're in or near a giant string, the colorizer hasn't
@@ -452,7 +452,7 @@ klasse Parser:
         # end while p < q:
 
         self.lastch = lastch
-        self.lastopenbracketpos = stack[-1] wenn stack sonst None
+        self.lastopenbracketpos = stack[-1] wenn stack sonst Nichts
         self.stmt_bracketing = tuple(bracketing)
 
     def compute_bracket_indent(self):
@@ -541,7 +541,7 @@ klasse Parser:
             # found a legit =, but it may be the last interesting
             # thing on the line
             i = i+1     # move beyond the =
-            found = re.match(r"\s*\\", code[i:endpos]) is None
+            found = re.match(r"\s*\\", code[i:endpos]) is Nichts
 
         wenn not found:
             # oh well ... settle fuer moving beyond the first chunk
@@ -566,14 +566,14 @@ klasse Parser:
         return code[i:j]
 
     def is_block_opener(self):
-        "Return True wenn the last interesting statement opens a block."
+        "Return Wahr wenn the last interesting statement opens a block."
         self._study2()
         return self.lastch == ':'
 
     def is_block_closer(self):
-        "Return True wenn the last interesting statement closes a block."
+        "Return Wahr wenn the last interesting statement closes a block."
         self._study2()
-        return _closere(self.code, self.stmt_start) is not None
+        return _closere(self.code, self.stmt_start) is not Nichts
 
     def get_last_stmt_bracketing(self):
         """Return bracketing structure of the last interesting statement.

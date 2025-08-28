@@ -88,10 +88,10 @@ Generators can call other generators:
     [0, 1, 2, 3, 4]
 
 
-Make sure that None is a valid return value
+Make sure that Nichts is a valid return value
 
-    >>> {None fuer i in range(10)}
-    {None}
+    >>> {Nichts fuer i in range(10)}
+    {Nichts}
 
 ########### Tests fuer various scoping corner cases ############
 
@@ -99,7 +99,7 @@ Return lambdas that use the iteration variable as a default argument
 
     >>> items = {(lambda i=i: i) fuer i in range(5)}
     >>> {x() fuer x in items} == set(range(5))
-    True
+    Wahr
 
 Same again, only this time as a closure variable
 
@@ -127,7 +127,7 @@ We also repeat each of the above scoping tests inside a function
     ...     items = {(lambda i=i: i) fuer i in range(5)}
     ...     return {x() fuer x in items}
     >>> test_func() == set(range(5))
-    True
+    Wahr
 
     >>> def test_func():
     ...     items = {(lambda: i) fuer i in range(5)}
@@ -158,25 +158,25 @@ klasse SetComprehensionTest(unittest.TestCase):
 
         def init_raises():
             try:
-                {x fuer x in BrokenIter(init_raises=True)}
+                {x fuer x in BrokenIter(init_raises=Wahr)}
             except Exception as e:
                 return e
 
         def next_raises():
             try:
-                {x fuer x in BrokenIter(next_raises=True)}
+                {x fuer x in BrokenIter(next_raises=Wahr)}
             except Exception as e:
                 return e
 
         def iter_raises():
             try:
-                {x fuer x in BrokenIter(iter_raises=True)}
+                {x fuer x in BrokenIter(iter_raises=Wahr)}
             except Exception as e:
                 return e
 
-        fuer func, expected in [(init_raises, "BrokenIter(init_raises=True)"),
-                               (next_raises, "BrokenIter(next_raises=True)"),
-                               (iter_raises, "BrokenIter(iter_raises=True)"),
+        fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
+                               (next_raises, "BrokenIter(next_raises=Wahr)"),
+                               (iter_raises, "BrokenIter(iter_raises=Wahr)"),
                               ]:
             with self.subTest(func):
                 exc = func()

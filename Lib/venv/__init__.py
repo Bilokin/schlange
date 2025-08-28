@@ -31,14 +31,14 @@ klasse EnvBuilder:
     on Windows platforms but symlinks elsewhere. If instantiated some
     other way, the default is to *not* use symlinks.
 
-    :param system_site_packages: If True, the system (global) site-packages
+    :param system_site_packages: If Wahr, the system (global) site-packages
                                  dir is available to created environments.
-    :param clear: If True, delete the contents of the environment directory if
+    :param clear: If Wahr, delete the contents of the environment directory if
                   it already exists, before environment creation.
-    :param symlinks: If True, attempt to symlink rather than copy files into
+    :param symlinks: If Wahr, attempt to symlink rather than copy files into
                      virtual environment.
-    :param upgrade: If True, upgrade an existing virtual environment.
-    :param with_pip: If True, ensure pip is installed in the virtual
+    :param upgrade: If Wahr, upgrade an existing virtual environment.
+    :param with_pip: If Wahr, ensure pip is installed in the virtual
                      environment
     :param prompt: Alternative terminal prefix fuer the environment.
     :param upgrade_deps: Update the base venv modules to the latest on PyPI
@@ -46,9 +46,9 @@ klasse EnvBuilder:
                              iterable.
     """
 
-    def __init__(self, system_site_packages=False, clear=False,
-                 symlinks=False, upgrade=False, with_pip=False, prompt=None,
-                 upgrade_deps=False, *, scm_ignore_files=frozenset()):
+    def __init__(self, system_site_packages=Falsch, clear=Falsch,
+                 symlinks=Falsch, upgrade=Falsch, with_pip=Falsch, prompt=Nichts,
+                 upgrade_deps=Falsch, *, scm_ignore_files=frozenset()):
         self.system_site_packages = system_site_packages
         self.clear = clear
         self.symlinks = symlinks
@@ -72,10 +72,10 @@ klasse EnvBuilder:
         context = self.ensure_directories(env_dir)
         fuer scm in self.scm_ignore_files:
             getattr(self, f"create_{scm}_ignore_file")(context)
-        # See issue 24875. We need system_site_packages to be False
+        # See issue 24875. We need system_site_packages to be Falsch
         # until after pip is installed.
         true_system_site_packages = self.system_site_packages
-        self.system_site_packages = False
+        self.system_site_packages = Falsch
         self.create_configuration(context)
         self.setup_python(context)
         wenn self.with_pip:
@@ -84,9 +84,9 @@ klasse EnvBuilder:
             self.setup_scripts(context)
             self.post_setup(context)
         wenn true_system_site_packages:
-            # We had set it to False before, now
+            # We had set it to Falsch before, now
             # restore it and rewrite the configuration
-            self.system_site_packages = True
+            self.system_site_packages = Wahr
             self.create_configuration(context)
         wenn self.upgrade_deps:
             self.upgrade_dependencies(context)
@@ -116,7 +116,7 @@ klasse EnvBuilder:
         """
         wenn sys.platform == 'win32':
             wenn os.path.normcase(path1) == os.path.normcase(path2):
-                return True
+                return Wahr
             # gh-90329: Don't display a warning fuer short/long names
             import _winapi
             try:
@@ -128,8 +128,8 @@ klasse EnvBuilder:
             except OSError:
                 pass
             wenn os.path.normcase(path1) == os.path.normcase(path2):
-                return True
-            return False
+                return Wahr
+            return Falsch
         sonst:
             return path1 == path2
 
@@ -155,7 +155,7 @@ klasse EnvBuilder:
         context = types.SimpleNamespace()
         context.env_dir = env_dir
         context.env_name = os.path.split(env_dir)[1]
-        context.prompt = self.prompt wenn self.prompt is not None sonst context.env_name
+        context.prompt = self.prompt wenn self.prompt is not Nichts sonst context.env_name
         create_if_needed(env_dir)
         executable = sys._base_executable
         wenn not executable:  # see gh-96861
@@ -235,7 +235,7 @@ klasse EnvBuilder:
                 incl = 'false'
             f.write('include-system-site-packages = %s\n' % incl)
             f.write('version = %d.%d.%d\n' % sys.version_info[:3])
-            wenn self.prompt is not None:
+            wenn self.prompt is not Nichts:
                 f.write(f'prompt = {self.prompt!r}\n')
             f.write('executable = %s\n' % os.path.realpath(sys.executable))
             args = []
@@ -254,7 +254,7 @@ klasse EnvBuilder:
                 args.append('--upgrade')
             wenn self.upgrade_deps:
                 args.append('--upgrade-deps')
-            wenn self.orig_prompt is not None:
+            wenn self.orig_prompt is not Nichts:
                 args.append(f'--prompt="{self.orig_prompt}"')
             wenn not self.scm_ignore_files:
                 args.append('--without-scm-ignore-files')
@@ -263,7 +263,7 @@ klasse EnvBuilder:
             args = ' '.join(args)
             f.write(f'command = {sys.executable} -m venv {args}\n')
 
-    def symlink_or_copy(self, src, dst, relative_symlinks_ok=False):
+    def symlink_or_copy(self, src, dst, relative_symlinks_ok=Falsch):
         """
         Try symlinking a file, and wenn that fails, fall back to copying.
         (Unused on Windows, because we can't just copy a failed symlink file: we
@@ -281,7 +281,7 @@ klasse EnvBuilder:
                         os.symlink(src, dst)
             except Exception:   # may need to use a more specific exception
                 logger.warning('Unable to symlink %r to %r', src, dst)
-                force_copy = True
+                force_copy = Wahr
         wenn force_copy:
             shutil.copyfile(src, dst)
 
@@ -319,7 +319,7 @@ klasse EnvBuilder:
                 wenn not os.path.exists(path):
                     # Issue 18807: make copies if
                     # symlinks are not wanted
-                    copier(context.env_exe, path, relative_symlinks_ok=True)
+                    copier(context.env_exe, path, relative_symlinks_ok=Wahr)
                     wenn not os.path.islink(path):
                         os.chmod(path, 0o755)
 
@@ -385,9 +385,9 @@ klasse EnvBuilder:
                     f'pythonw{exe_t}{exe_d}.exe': pythonw_exe,
                 }
 
-            do_copies = True
+            do_copies = Wahr
             wenn self.symlinks:
-                do_copies = False
+                do_copies = Falsch
                 # For symlinking, we need all the DLLs to be available alongside
                 # the executables.
                 link_sources.update({
@@ -404,7 +404,7 @@ klasse EnvBuilder:
                         to_unlink.append(dest)
                     except OSError:
                         logger.warning('Unable to symlink %r to %r', src, dest)
-                        do_copies = True
+                        do_copies = Wahr
                         fuer f in to_unlink:
                             try:
                                 os.unlink(f)
@@ -444,8 +444,8 @@ klasse EnvBuilder:
         args = [context.env_exec_cmd, *py_args]
         kwargs['env'] = env = os.environ.copy()
         env['VIRTUAL_ENV'] = context.env_dir
-        env.pop('PYTHONHOME', None)
-        env.pop('PYTHONPATH', None)
+        env.pop('PYTHONHOME', Nichts)
+        env.pop('PYTHONPATH', Nichts)
         kwargs['cwd'] = context.env_dir
         kwargs['executable'] = context.env_exec_cmd
         subprocess.check_output(args, **kwargs)
@@ -550,7 +550,7 @@ klasse EnvBuilder:
                         and f.endswith(('.exe', '.pdb')))
         sonst:
             def skip_file(f):
-                return False
+                return Falsch
         fuer root, dirs, files in os.walk(path):
             wenn root == path:  # at top-level, remove irrelevant dirs
                 fuer d in dirs[:]:
@@ -599,8 +599,8 @@ klasse EnvBuilder:
                               *CORE_VENV_DEPS)
 
 
-def create(env_dir, system_site_packages=False, clear=False,
-           symlinks=False, with_pip=False, prompt=None, upgrade_deps=False,
+def create(env_dir, system_site_packages=Falsch, clear=Falsch,
+           symlinks=Falsch, with_pip=Falsch, prompt=Nichts, upgrade_deps=Falsch,
            *, scm_ignore_files=frozenset()):
     """Create a virtual environment in a directory."""
     builder = EnvBuilder(system_site_packages=system_site_packages,
@@ -610,7 +610,7 @@ def create(env_dir, system_site_packages=False, clear=False,
     builder.create(env_dir)
 
 
-def main(args=None):
+def main(args=Nichts):
     import argparse
 
     parser = argparse.ArgumentParser(description='Creates virtual Python '
@@ -622,18 +622,18 @@ def main(args=None):
                                             'activate it, e.g. by '
                                             'sourcing an activate script '
                                             'in its bin directory.',
-                                     color=True,
+                                     color=Wahr,
                                      )
     parser.add_argument('dirs', metavar='ENV_DIR', nargs='+',
                         help='A directory to create the environment in.')
-    parser.add_argument('--system-site-packages', default=False,
+    parser.add_argument('--system-site-packages', default=Falsch,
                         action='store_true', dest='system_site',
                         help='Give the virtual environment access to the '
                              'system site-packages dir.')
     wenn os.name == 'nt':
-        use_symlinks = False
+        use_symlinks = Falsch
     sonst:
-        use_symlinks = True
+        use_symlinks = Wahr
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--symlinks', default=use_symlinks,
                        action='store_true', dest='symlinks',
@@ -645,25 +645,25 @@ def main(args=None):
                        help='Try to use copies rather than symlinks, '
                             'even when symlinks are the default fuer '
                             'the platform.')
-    parser.add_argument('--clear', default=False, action='store_true',
+    parser.add_argument('--clear', default=Falsch, action='store_true',
                         dest='clear', help='Delete the contents of the '
                                            'environment directory wenn it '
                                            'already exists, before '
                                            'environment creation.')
-    parser.add_argument('--upgrade', default=False, action='store_true',
+    parser.add_argument('--upgrade', default=Falsch, action='store_true',
                         dest='upgrade', help='Upgrade the environment '
                                              'directory to use this version '
                                              'of Python, assuming Python '
                                              'has been upgraded in-place.')
     parser.add_argument('--without-pip', dest='with_pip',
-                        default=True, action='store_false',
+                        default=Wahr, action='store_false',
                         help='Skips installing or upgrading pip in the '
                              'virtual environment (pip is bootstrapped '
                              'by default)')
     parser.add_argument('--prompt',
                         help='Provides an alternative prompt prefix fuer '
                              'this environment.')
-    parser.add_argument('--upgrade-deps', default=False, action='store_true',
+    parser.add_argument('--upgrade-deps', default=Falsch, action='store_true',
                         dest='upgrade_deps',
                         help=f'Upgrade core dependencies ({", ".join(CORE_VENV_DEPS)}) '
                              'to the latest version in PyPI')

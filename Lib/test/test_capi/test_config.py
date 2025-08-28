@@ -23,98 +23,98 @@ klasse CAPITests(unittest.TestCase):
 
         TEST_VALUE = {
             str: "TEST_MARKER_STR",
-            str | None: "TEST_MARKER_OPT_STR",
+            str | Nichts: "TEST_MARKER_OPT_STR",
             list[str]: ("TEST_MARKER_STR_TUPLE",),
-            dict[str, str | bool]: {"x": "value", "y": True},
+            dict[str, str | bool]: {"x": "value", "y": Wahr},
         }
 
         # read config options and check their type
         options = [
-            ("allocator", int, None),
+            ("allocator", int, Nichts),
             ("argv", list[str], "argv"),
-            ("base_exec_prefix", str | None, "base_exec_prefix"),
-            ("base_executable", str | None, "_base_executable"),
-            ("base_prefix", str | None, "base_prefix"),
-            ("buffered_stdio", bool, None),
-            ("bytes_warning", int, None),
-            ("check_hash_pycs_mode", str, None),
-            ("code_debug_ranges", bool, None),
-            ("configure_c_stdio", bool, None),
-            ("coerce_c_locale", bool, None),
-            ("coerce_c_locale_warn", bool, None),
-            ("configure_locale", bool, None),
-            ("cpu_count", int, None),
-            ("dev_mode", bool, None),
-            ("dump_refs", bool, None),
-            ("dump_refs_file", str | None, None),
-            ("exec_prefix", str | None, "exec_prefix"),
-            ("executable", str | None, "executable"),
-            ("faulthandler", bool, None),
-            ("filesystem_encoding", str, None),
-            ("filesystem_errors", str, None),
-            ("hash_seed", int, None),
-            ("home", str | None, None),
-            ("thread_inherit_context", int, None),
-            ("context_aware_warnings", int, None),
-            ("import_time", int, None),
-            ("inspect", bool, None),
-            ("install_signal_handlers", bool, None),
-            ("int_max_str_digits", int, None),
-            ("interactive", bool, None),
-            ("isolated", bool, None),
-            ("malloc_stats", bool, None),
+            ("base_exec_prefix", str | Nichts, "base_exec_prefix"),
+            ("base_executable", str | Nichts, "_base_executable"),
+            ("base_prefix", str | Nichts, "base_prefix"),
+            ("buffered_stdio", bool, Nichts),
+            ("bytes_warning", int, Nichts),
+            ("check_hash_pycs_mode", str, Nichts),
+            ("code_debug_ranges", bool, Nichts),
+            ("configure_c_stdio", bool, Nichts),
+            ("coerce_c_locale", bool, Nichts),
+            ("coerce_c_locale_warn", bool, Nichts),
+            ("configure_locale", bool, Nichts),
+            ("cpu_count", int, Nichts),
+            ("dev_mode", bool, Nichts),
+            ("dump_refs", bool, Nichts),
+            ("dump_refs_file", str | Nichts, Nichts),
+            ("exec_prefix", str | Nichts, "exec_prefix"),
+            ("executable", str | Nichts, "executable"),
+            ("faulthandler", bool, Nichts),
+            ("filesystem_encoding", str, Nichts),
+            ("filesystem_errors", str, Nichts),
+            ("hash_seed", int, Nichts),
+            ("home", str | Nichts, Nichts),
+            ("thread_inherit_context", int, Nichts),
+            ("context_aware_warnings", int, Nichts),
+            ("import_time", int, Nichts),
+            ("inspect", bool, Nichts),
+            ("install_signal_handlers", bool, Nichts),
+            ("int_max_str_digits", int, Nichts),
+            ("interactive", bool, Nichts),
+            ("isolated", bool, Nichts),
+            ("malloc_stats", bool, Nichts),
             ("module_search_paths", list[str], "path"),
-            ("optimization_level", int, None),
+            ("optimization_level", int, Nichts),
             ("orig_argv", list[str], "orig_argv"),
-            ("parser_debug", bool, None),
-            ("parse_argv", bool, None),
-            ("pathconfig_warnings", bool, None),
-            ("perf_profiling", int, None),
+            ("parser_debug", bool, Nichts),
+            ("parse_argv", bool, Nichts),
+            ("pathconfig_warnings", bool, Nichts),
+            ("perf_profiling", int, Nichts),
             ("platlibdir", str, "platlibdir"),
-            ("prefix", str | None, "prefix"),
-            ("program_name", str, None),
-            ("pycache_prefix", str | None, "pycache_prefix"),
-            ("quiet", bool, None),
-            ("remote_debug", int, None),
-            ("run_command", str | None, None),
-            ("run_filename", str | None, None),
-            ("run_module", str | None, None),
-            ("safe_path", bool, None),
-            ("show_ref_count", bool, None),
-            ("site_import", bool, None),
-            ("skip_source_first_line", bool, None),
-            ("stdio_encoding", str, None),
-            ("stdio_errors", str, None),
-            ("stdlib_dir", str | None, "_stdlib_dir"),
-            ("tracemalloc", int, None),
-            ("use_environment", bool, None),
-            ("use_frozen_modules", bool, None),
-            ("use_hash_seed", bool, None),
-            ("user_site_directory", bool, None),
-            ("utf8_mode", bool, None),
-            ("verbose", int, None),
-            ("warn_default_encoding", bool, None),
+            ("prefix", str | Nichts, "prefix"),
+            ("program_name", str, Nichts),
+            ("pycache_prefix", str | Nichts, "pycache_prefix"),
+            ("quiet", bool, Nichts),
+            ("remote_debug", int, Nichts),
+            ("run_command", str | Nichts, Nichts),
+            ("run_filename", str | Nichts, Nichts),
+            ("run_module", str | Nichts, Nichts),
+            ("safe_path", bool, Nichts),
+            ("show_ref_count", bool, Nichts),
+            ("site_import", bool, Nichts),
+            ("skip_source_first_line", bool, Nichts),
+            ("stdio_encoding", str, Nichts),
+            ("stdio_errors", str, Nichts),
+            ("stdlib_dir", str | Nichts, "_stdlib_dir"),
+            ("tracemalloc", int, Nichts),
+            ("use_environment", bool, Nichts),
+            ("use_frozen_modules", bool, Nichts),
+            ("use_hash_seed", bool, Nichts),
+            ("user_site_directory", bool, Nichts),
+            ("utf8_mode", bool, Nichts),
+            ("verbose", int, Nichts),
+            ("warn_default_encoding", bool, Nichts),
             ("warnoptions", list[str], "warnoptions"),
-            ("write_bytecode", bool, None),
+            ("write_bytecode", bool, Nichts),
             ("xoptions", dict[str, str | bool], "_xoptions"),
         ]
         wenn support.Py_DEBUG:
-            options.append(("run_presite", str | None, None))
+            options.append(("run_presite", str | Nichts, Nichts))
         wenn support.Py_GIL_DISABLED:
-            options.append(("enable_gil", int, None))
-            options.append(("tlbc_enabled", int, None))
+            options.append(("enable_gil", int, Nichts))
+            options.append(("tlbc_enabled", int, Nichts))
         wenn support.MS_WINDOWS:
             options.extend((
-                ("legacy_windows_stdio", bool, None),
-                ("legacy_windows_fs_encoding", bool, None),
+                ("legacy_windows_stdio", bool, Nichts),
+                ("legacy_windows_fs_encoding", bool, Nichts),
             ))
         wenn Py_STATS:
             options.extend((
-                ("_pystats", bool, None),
+                ("_pystats", bool, Nichts),
             ))
         wenn support.is_apple:
             options.extend((
-                ("use_system_logger", bool, None),
+                ("use_system_logger", bool, Nichts),
             ))
 
         fuer name, option_type, sys_attr in options:
@@ -136,7 +136,7 @@ klasse CAPITests(unittest.TestCase):
                 sonst:
                     self.assertIsInstance(value, option_type)
 
-                wenn sys_attr is not None:
+                wenn sys_attr is not Nichts:
                     expected = getattr(sys, sys_attr)
                     self.assertEqual(expected, value)
 
@@ -154,24 +154,24 @@ klasse CAPITests(unittest.TestCase):
 
         # compare config options with sys.flags
         fuer flag, name, negate in (
-            ("debug", "parser_debug", False),
-            ("inspect", "inspect", False),
-            ("interactive", "interactive", False),
-            ("optimize", "optimization_level", False),
-            ("dont_write_bytecode", "write_bytecode", True),
-            ("no_user_site", "user_site_directory", True),
-            ("no_site", "site_import", True),
-            ("ignore_environment", "use_environment", True),
-            ("verbose", "verbose", False),
-            ("bytes_warning", "bytes_warning", False),
-            ("quiet", "quiet", False),
+            ("debug", "parser_debug", Falsch),
+            ("inspect", "inspect", Falsch),
+            ("interactive", "interactive", Falsch),
+            ("optimize", "optimization_level", Falsch),
+            ("dont_write_bytecode", "write_bytecode", Wahr),
+            ("no_user_site", "user_site_directory", Wahr),
+            ("no_site", "site_import", Wahr),
+            ("ignore_environment", "use_environment", Wahr),
+            ("verbose", "verbose", Falsch),
+            ("bytes_warning", "bytes_warning", Falsch),
+            ("quiet", "quiet", Falsch),
             # "hash_randomization" is tested below
-            ("isolated", "isolated", False),
-            ("dev_mode", "dev_mode", False),
-            ("utf8_mode", "utf8_mode", False),
-            ("warn_default_encoding", "warn_default_encoding", False),
-            ("safe_path", "safe_path", False),
-            ("int_max_str_digits", "int_max_str_digits", False),
+            ("isolated", "isolated", Falsch),
+            ("dev_mode", "dev_mode", Falsch),
+            ("utf8_mode", "utf8_mode", Falsch),
+            ("warn_default_encoding", "warn_default_encoding", Falsch),
+            ("safe_path", "safe_path", Falsch),
+            ("int_max_str_digits", "int_max_str_digits", Falsch),
             # "gil", "thread_inherit_context" and "context_aware_warnings" are tested below
         ):
             with self.subTest(flag=flag, name=name, negate=negate):
@@ -186,7 +186,7 @@ klasse CAPITests(unittest.TestCase):
 
         wenn support.Py_GIL_DISABLED:
             value = config_get('enable_gil')
-            expected = (value wenn value != -1 sonst None)
+            expected = (value wenn value != -1 sonst Nichts)
             self.assertEqual(sys.flags.gil, expected)
 
         expected_inherit_context = 1 wenn support.Py_GIL_DISABLED sonst 0
@@ -248,31 +248,31 @@ klasse CAPITests(unittest.TestCase):
         # mutable configuration option mapped to sys attributes
         fuer name, sys_attr, option_type in (
             ('argv', 'argv', list[str]),
-            ('base_exec_prefix', 'base_exec_prefix', str | None),
-            ('base_executable', '_base_executable', str | None),
-            ('base_prefix', 'base_prefix', str | None),
-            ('exec_prefix', 'exec_prefix', str | None),
-            ('executable', 'executable', str | None),
+            ('base_exec_prefix', 'base_exec_prefix', str | Nichts),
+            ('base_executable', '_base_executable', str | Nichts),
+            ('base_prefix', 'base_prefix', str | Nichts),
+            ('exec_prefix', 'exec_prefix', str | Nichts),
+            ('executable', 'executable', str | Nichts),
             ('module_search_paths', 'path', list[str]),
             ('platlibdir', 'platlibdir', str),
-            ('prefix', 'prefix', str | None),
-            ('pycache_prefix', 'pycache_prefix', str | None),
-            ('stdlib_dir', '_stdlib_dir', str | None),
+            ('prefix', 'prefix', str | Nichts),
+            ('pycache_prefix', 'pycache_prefix', str | Nichts),
+            ('stdlib_dir', '_stdlib_dir', str | Nichts),
             ('warnoptions', 'warnoptions', list[str]),
             ('xoptions', '_xoptions', dict[str, str | bool]),
         ):
             with self.subTest(name=name):
                 wenn option_type == str:
                     test_values = ('TEST_REPLACE',)
-                    invalid_types = (1, None)
-                sowenn option_type == str | None:
-                    test_values = ('TEST_REPLACE', None)
+                    invalid_types = (1, Nichts)
+                sowenn option_type == str | Nichts:
+                    test_values = ('TEST_REPLACE', Nichts)
                     invalid_types = (123,)
                 sowenn option_type == list[str]:
                     test_values = (['TEST_REPLACE'], [])
                     invalid_types = ('text', 123, [123])
                 sonst:  # option_type == dict[str, str | bool]:
-                    test_values = ({"x": "value", "y": True},)
+                    test_values = ({"x": "value", "y": Wahr},)
                     invalid_types = ('text', 123, ['option'],
                                      {123: 'value'},
                                      {'key': b'bytes'})
@@ -340,11 +340,11 @@ klasse CAPITests(unittest.TestCase):
                 invalid_values = (-1, 40)  # value must 0 or >= 4300
                 invalid_types = (1.0, "abc")
             sowenn option_type == int:
-                new_values = (False, True, 0, 1, 5, -5)
+                new_values = (Falsch, Wahr, 0, 1, 5, -5)
                 invalid_values = ()
                 invalid_types = (1.0, "abc")
             sonst:
-                new_values = (False, True, 0, 1, 5)
+                new_values = (Falsch, Wahr, 0, 1, 5)
                 invalid_values = (-5,)
                 invalid_types = (1.0, "abc")
 
@@ -391,7 +391,7 @@ klasse CAPITests(unittest.TestCase):
         fuer name, value in (
             ("allocator", 0),  # PyPreConfig member
             ("perf_profiling", 8),
-            ("dev_mode", True),
+            ("dev_mode", Wahr),
             ("filesystem_encoding", "utf-8"),
         ):
             with self.subTest(name=name, value=value):

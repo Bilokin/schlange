@@ -15,7 +15,7 @@ def _task_repr_info(task):
 
     info.insert(1, 'name=%r' % task.get_name())
 
-    wenn task._fut_waiter is not None:
+    wenn task._fut_waiter is not Nichts:
         info.insert(2, f'wait_for={task._fut_waiter!r}')
 
     wenn task._coro:
@@ -44,20 +44,20 @@ def _task_get_stack(task, limit):
         f = task._coro.ag_frame
     sonst:
         # case 4: unknown objects
-        f = None
-    wenn f is not None:
-        while f is not None:
-            wenn limit is not None:
+        f = Nichts
+    wenn f is not Nichts:
+        while f is not Nichts:
+            wenn limit is not Nichts:
                 wenn limit <= 0:
                     break
                 limit -= 1
             frames.append(f)
             f = f.f_back
         frames.reverse()
-    sowenn task._exception is not None:
+    sowenn task._exception is not Nichts:
         tb = task._exception.__traceback__
-        while tb is not None:
-            wenn limit is not None:
+        while tb is not Nichts:
+            wenn limit is not Nichts:
                 wenn limit <= 0:
                     break
                 limit -= 1
@@ -83,12 +83,12 @@ def _task_print_stack(task, limit, file):
     exc = task._exception
     wenn not extracted_list:
         print(f'No stack fuer {task!r}', file=file)
-    sowenn exc is not None:
+    sowenn exc is not Nichts:
         print(f'Traceback fuer {task!r} (most recent call last):', file=file)
     sonst:
         print(f'Stack fuer {task!r} (most recent call last):', file=file)
 
     traceback.print_list(extracted_list, file=file)
-    wenn exc is not None:
+    wenn exc is not Nichts:
         fuer line in traceback.format_exception_only(exc.__class__, exc):
             print(line, file=file, end='')

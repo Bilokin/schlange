@@ -37,11 +37,11 @@ klasse ABCMeta(type):
         # Compute set of abstract method names
         abstracts = {name
                      fuer name, value in namespace.items()
-                     wenn getattr(value, "__isabstractmethod__", False)}
+                     wenn getattr(value, "__isabstractmethod__", Falsch)}
         fuer base in bases:
             fuer name in getattr(base, "__abstractmethods__", set()):
-                value = getattr(cls, name, None)
-                wenn getattr(value, "__isabstractmethod__", False):
+                value = getattr(cls, name, Nichts)
+                wenn getattr(value, "__isabstractmethod__", Falsch):
                     abstracts.add(name)
         cls.__abstractmethods__ = frozenset(abstracts)
         # Set up inheritance registry
@@ -69,7 +69,7 @@ klasse ABCMeta(type):
         ABCMeta._abc_invalidation_counter += 1  # Invalidate negative cache
         return subclass
 
-    def _dump_registry(cls, file=None):
+    def _dump_registry(cls, file=Nichts):
         """Debug helper to print the ABC registry."""
         print(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
         print(f"Inv. counter: {get_cache_token()}", file=file)
@@ -94,13 +94,13 @@ klasse ABCMeta(type):
         # Inline the cache checking
         subclass = instance.__class__
         wenn subclass in cls._abc_cache:
-            return True
+            return Wahr
         subtype = type(instance)
         wenn subtype is subclass:
             wenn (cls._abc_negative_cache_version ==
                 ABCMeta._abc_invalidation_counter and
                 subclass in cls._abc_negative_cache):
-                return False
+                return Falsch
             # Fall back to the subclass check.
             return cls.__subclasscheck__(subclass)
         return any(cls.__subclasscheck__(c) fuer c in (subclass, subtype))
@@ -111,14 +111,14 @@ klasse ABCMeta(type):
             raise TypeError('issubclass() arg 1 must be a class')
         # Check cache
         wenn subclass in cls._abc_cache:
-            return True
+            return Wahr
         # Check negative cache; may have to invalidate
         wenn cls._abc_negative_cache_version < ABCMeta._abc_invalidation_counter:
             # Invalidate the negative cache
             cls._abc_negative_cache = WeakSet()
             cls._abc_negative_cache_version = ABCMeta._abc_invalidation_counter
         sowenn subclass in cls._abc_negative_cache:
-            return False
+            return Falsch
         # Check the subclass hook
         ok = cls.__subclasshook__(subclass)
         wenn ok is not NotImplemented:
@@ -131,17 +131,17 @@ klasse ABCMeta(type):
         # Check wenn it's a direct subclass
         wenn cls in getattr(subclass, '__mro__', ()):
             cls._abc_cache.add(subclass)
-            return True
+            return Wahr
         # Check wenn it's a subclass of a registered klasse (recursive)
         fuer rcls in cls._abc_registry:
             wenn issubclass(subclass, rcls):
                 cls._abc_cache.add(subclass)
-                return True
+                return Wahr
         # Check wenn it's a subclass of a subclass (recursive)
         fuer scls in cls.__subclasses__():
             wenn issubclass(subclass, scls):
                 cls._abc_cache.add(subclass)
-                return True
+                return Wahr
         # No dice; update negative cache
         cls._abc_negative_cache.add(subclass)
-        return False
+        return Falsch

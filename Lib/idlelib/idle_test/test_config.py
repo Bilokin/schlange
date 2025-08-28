@@ -28,11 +28,11 @@ userextn = testcfg['extensions'] = config.IdleUserConfParser('')
 
 def setUpModule():
     idleConf.userCfg = testcfg
-    idlelib.testing = True
+    idlelib.testing = Wahr
 
 def tearDownModule():
     idleConf.userCfg = usercfg
-    idlelib.testing = False
+    idlelib.testing = Falsch
 
 
 klasse IdleConfParserTest(unittest.TestCase):
@@ -56,19 +56,19 @@ klasse IdleConfParserTest(unittest.TestCase):
         eq = self.assertEqual
 
         # Test with type argument.
-        self.assertIs(parser.Get('one', 'one', type='bool'), False)
-        self.assertIs(parser.Get('one', 'two', type='bool'), True)
+        self.assertIs(parser.Get('one', 'one', type='bool'), Falsch)
+        self.assertIs(parser.Get('one', 'two', type='bool'), Wahr)
         eq(parser.Get('one', 'three', type='int'), 10)
         eq(parser.Get('two', 'one'), 'a string')
-        self.assertIs(parser.Get('two', 'two', type='bool'), True)
-        self.assertIs(parser.Get('two', 'three', type='bool'), False)
+        self.assertIs(parser.Get('two', 'two', type='bool'), Wahr)
+        self.assertIs(parser.Get('two', 'three', type='bool'), Falsch)
 
         # Test without type should fallback to string.
         eq(parser.Get('two', 'two'), 'true')
         eq(parser.Get('two', 'three'), 'false')
 
-        # If option not exist, should return None, or default.
-        self.assertIsNone(parser.Get('not', 'exist'))
+        # If option not exist, should return Nichts, or default.
+        self.assertIsNichts(parser.Get('not', 'exist'))
         eq(parser.Get('not', 'exist', default='DEFAULT'), 'DEFAULT')
 
     def test_get_option_list(self):
@@ -103,16 +103,16 @@ klasse IdleUserConfParserTest(unittest.TestCase):
     def test_set_option(self):
         parser = self.new_parser()
         parser.add_section('Foo')
-        # Setting new option in existing section should return True.
-        self.assertTrue(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting existing option with same value should return False.
-        self.assertFalse(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting exiting option with new value should return True.
-        self.assertTrue(parser.SetOption('Foo', 'bar', 'false'))
+        # Setting new option in existing section should return Wahr.
+        self.assertWahr(parser.SetOption('Foo', 'bar', 'true'))
+        # Setting existing option with same value should return Falsch.
+        self.assertFalsch(parser.SetOption('Foo', 'bar', 'true'))
+        # Setting exiting option with new value should return Wahr.
+        self.assertWahr(parser.SetOption('Foo', 'bar', 'false'))
         self.assertEqual(parser.Get('Foo', 'bar'), 'false')
 
-        # Setting option in new section should create section and return True.
-        self.assertTrue(parser.SetOption('Bar', 'bar', 'true'))
+        # Setting option in new section should create section and return Wahr.
+        self.assertWahr(parser.SetOption('Bar', 'bar', 'true'))
         self.assertCountEqual(parser.sections(), ['Bar', 'Foo'])
         self.assertEqual(parser.Get('Bar', 'bar'), 'true')
 
@@ -121,9 +121,9 @@ klasse IdleUserConfParserTest(unittest.TestCase):
         parser.AddSection('Foo')
         parser.SetOption('Foo', 'bar', 'true')
 
-        self.assertTrue(parser.RemoveOption('Foo', 'bar'))
-        self.assertFalse(parser.RemoveOption('Foo', 'bar'))
-        self.assertFalse(parser.RemoveOption('Not', 'Exist'))
+        self.assertWahr(parser.RemoveOption('Foo', 'bar'))
+        self.assertFalsch(parser.RemoveOption('Foo', 'bar'))
+        self.assertFalsch(parser.RemoveOption('Not', 'Exist'))
 
     def test_add_section(self):
         parser = self.new_parser()
@@ -151,12 +151,12 @@ klasse IdleUserConfParserTest(unittest.TestCase):
 
         parser.AddSection('Foo')
         parser.AddSection('Bar')
-        self.assertTrue(parser.IsEmpty())
+        self.assertWahr(parser.IsEmpty())
         self.assertEqual(parser.sections(), [])
 
         parser.SetOption('Foo', 'bar', 'false')
         parser.AddSection('Bar')
-        self.assertFalse(parser.IsEmpty())
+        self.assertFalsch(parser.IsEmpty())
         self.assertCountEqual(parser.sections(), ['Foo'])
 
     def test_save(self):
@@ -167,14 +167,14 @@ klasse IdleUserConfParserTest(unittest.TestCase):
             parser.SetOption('Foo', 'bar', 'true')
 
             # Should save to path when config is not empty.
-            self.assertFalse(os.path.exists(path))
+            self.assertFalsch(os.path.exists(path))
             parser.Save()
-            self.assertTrue(os.path.exists(path))
+            self.assertWahr(os.path.exists(path))
 
             # Should remove the file from disk when config is empty.
             parser.remove_section('Foo')
             parser.Save()
-            self.assertFalse(os.path.exists(path))
+            self.assertFalsch(os.path.exists(path))
 
 
 klasse IdleConfTest(unittest.TestCase):
@@ -184,7 +184,7 @@ klasse IdleConfTest(unittest.TestCase):
     def setUpClass(cls):
         cls.config_string = {}
 
-        conf = config.IdleConf(_utest=True)
+        conf = config.IdleConf(_utest=Wahr)
         wenn __name__ != '__main__':
             idle_dir = os.path.dirname(__file__)
         sonst:
@@ -201,7 +201,7 @@ klasse IdleConfTest(unittest.TestCase):
     def tearDownClass(cls):
         config._warn = cls.orig_warn
 
-    def new_config(self, _utest=False):
+    def new_config(self, _utest=Falsch):
         return config.IdleConf(_utest=_utest)
 
     def mock_config(self):
@@ -209,7 +209,7 @@ klasse IdleConfTest(unittest.TestCase):
 
         Both default and user config used the same config-*.def
         """
-        conf = config.IdleConf(_utest=True)
+        conf = config.IdleConf(_utest=Wahr)
         fuer ctype in conf.config_types:
             conf.defaultCfg[ctype] = config.IdleConfParser('')
             conf.defaultCfg[ctype].read_string(self.config_string[ctype])
@@ -221,11 +221,11 @@ klasse IdleConfTest(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('win'), 'this is test fuer unix system')
     def test_get_user_cfg_dir_unix(self):
         # Test to get user config directory under unix.
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Wahr)
 
         # Check normal way should success
         with mock.patch('os.path.expanduser', return_value='/home/foo'):
-            with mock.patch('os.path.exists', return_value=True):
+            with mock.patch('os.path.exists', return_value=Wahr):
                 self.assertEqual(conf.GetUserCfgDir(), '/home/foo/.idlerc')
 
         # Check os.getcwd should success
@@ -244,11 +244,11 @@ klasse IdleConfTest(unittest.TestCase):
     @unittest.skipIf(not sys.platform.startswith('win'), 'this is test fuer Windows system')
     def test_get_user_cfg_dir_windows(self):
         # Test to get user config directory under Windows.
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Wahr)
 
         # Check normal way should success
         with mock.patch('os.path.expanduser', return_value='C:\\foo'):
-            with mock.patch('os.path.exists', return_value=True):
+            with mock.patch('os.path.exists', return_value=Wahr):
                 self.assertEqual(conf.GetUserCfgDir(), 'C:\\foo\\.idlerc')
 
         # Check os.getcwd should success
@@ -265,7 +265,7 @@ klasse IdleConfTest(unittest.TestCase):
                     conf.GetUserCfgDir()
 
     def test_create_config_handlers(self):
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Wahr)
 
         # Mock out idle_dir
         idle_dir = '/home/foo'
@@ -292,7 +292,7 @@ klasse IdleConfTest(unittest.TestCase):
                              os.path.join(conf.userdir or '#', f'config-{cfg_type}.cfg'))
 
     def test_load_cfg_files(self):
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Wahr)
 
         # Borrow test/configdata/cfgparser.1 from test_configparser.
         config_path = findfile('cfgparser.1', subdir='configdata')
@@ -326,8 +326,8 @@ klasse IdleConfTest(unittest.TestCase):
         eq(conf.GetOption('main', 'EditorWindow', 'width'), '80')
         eq(conf.GetOption('main', 'EditorWindow', 'width', type='int'), 80)
         with mock.patch('idlelib.config._warn') as _warn:
-            eq(conf.GetOption('main', 'EditorWindow', 'font', type='int'), None)
-            eq(conf.GetOption('main', 'EditorWindow', 'NotExists'), None)
+            eq(conf.GetOption('main', 'EditorWindow', 'font', type='int'), Nichts)
+            eq(conf.GetOption('main', 'EditorWindow', 'NotExists'), Nichts)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists', default='NE'), 'NE')
             eq(_warn.call_count, 4)
 
@@ -397,7 +397,7 @@ klasse IdleConfTest(unittest.TestCase):
 
     def test_default_keys(self):
         current_platform = sys.platform
-        conf = self.new_config(_utest=True)
+        conf = self.new_config(_utest=Wahr)
 
         sys.platform = 'win32'
         self.assertEqual(conf.default_keys(), 'IDLE Classic Windows')
@@ -414,17 +414,17 @@ klasse IdleConfTest(unittest.TestCase):
     def test_get_extensions(self):
         userextn.read_string('''
             [ZzDummy]
-            enable = True
+            enable = Wahr
             [DISABLE]
-            enable = False
+            enable = Falsch
             ''')
         eq = self.assertEqual
         iGE = idleConf.GetExtensions
-        eq(iGE(shell_only=True), [])
+        eq(iGE(shell_only=Wahr), [])
         eq(iGE(), ['ZzDummy'])
-        eq(iGE(editor_only=True), ['ZzDummy'])
-        eq(iGE(active_only=False), ['ZzDummy', 'DISABLE'])
-        eq(iGE(active_only=False, editor_only=True), ['ZzDummy', 'DISABLE'])
+        eq(iGE(editor_only=Wahr), ['ZzDummy'])
+        eq(iGE(active_only=Falsch), ['ZzDummy', 'DISABLE'])
+        eq(iGE(active_only=Falsch, editor_only=Wahr), ['ZzDummy', 'DISABLE'])
         userextn.remove_section('ZzDummy')
         userextn.remove_section('DISABLE')
 
@@ -439,17 +439,17 @@ klasse IdleConfTest(unittest.TestCase):
     def test_get_extn_name_for_event(self):
         userextn.read_string('''
             [ZzDummy]
-            enable = True
+            enable = Wahr
             ''')
         eq = self.assertEqual
         eq(idleConf.GetExtnNameForEvent('z-in'), 'ZzDummy')
-        eq(idleConf.GetExtnNameForEvent('z-out'), None)
+        eq(idleConf.GetExtnNameForEvent('z-out'), Nichts)
         userextn.remove_section('ZzDummy')
 
     def test_get_extension_keys(self):
         userextn.read_string('''
             [ZzDummy]
-            enable = True
+            enable = Wahr
             ''')
         self.assertEqual(idleConf.GetExtensionKeys('ZzDummy'),
            {'<<z-in>>': ['<Control-Shift-KeyRelease-Insert>']})
@@ -461,7 +461,7 @@ klasse IdleConfTest(unittest.TestCase):
     def test_get_extension_bindings(self):
         userextn.read_string('''
             [ZzDummy]
-            enable = True
+            enable = Wahr
             ''')
         eq = self.assertEqual
         iGEB = idleConf.GetExtensionBindings
@@ -511,7 +511,7 @@ klasse IdleConfTest(unittest.TestCase):
         # Conflict with key set, should be disable to ''
         conf.defaultCfg['extensions'].add_section('Foobar')
         conf.defaultCfg['extensions'].add_section('Foobar_cfgBindings')
-        conf.defaultCfg['extensions'].set('Foobar', 'enable', 'True')
+        conf.defaultCfg['extensions'].set('Foobar', 'enable', 'Wahr')
         conf.defaultCfg['extensions'].set('Foobar_cfgBindings', 'newfoo', '<Key-F3>')
         self.assertEqual(conf.GetKeySet('IDLE Modern Unix')['<<newfoo>>'], '')
 
@@ -519,10 +519,10 @@ klasse IdleConfTest(unittest.TestCase):
         # XXX: Should move out the core keys to config file or other place
         conf = self.mock_config()
 
-        self.assertTrue(conf.IsCoreBinding('copy'))
-        self.assertTrue(conf.IsCoreBinding('cut'))
-        self.assertTrue(conf.IsCoreBinding('del-word-right'))
-        self.assertFalse(conf.IsCoreBinding('not-exists'))
+        self.assertWahr(conf.IsCoreBinding('copy'))
+        self.assertWahr(conf.IsCoreBinding('cut'))
+        self.assertWahr(conf.IsCoreBinding('del-word-right'))
+        self.assertFalsch(conf.IsCoreBinding('not-exists'))
 
     def test_extra_help_source_list(self):
         # Test GetExtraHelpSourceList and GetAllExtraHelpSourcesList in same
@@ -561,7 +561,7 @@ klasse IdleConfTest(unittest.TestCase):
         root = Tk()
         root.withdraw()
 
-        f = Font.actual(Font(name='TkFixedFont', exists=True, root=root))
+        f = Font.actual(Font(name='TkFixedFont', exists=Wahr, root=root))
         self.assertEqual(
             conf.GetFont(root, 'main', 'EditorWindow'),
             (f['family'], 10 wenn f['size'] <= 0 sonst f['size'], f['weight']))
@@ -603,7 +603,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
         # For old default, name2 must be blank.
         usermain.read_string('''
             [Theme]
-            default = True
+            default = Wahr
             ''')
         # IDLE omits 'name' fuer default old builtin theme.
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
@@ -619,7 +619,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
         # IDLE writes name2 fuer new builtins.
         usermain.read_string('''
             [Theme]
-            default = True
+            default = Wahr
             name2 = IDLE Dark
             ''')
         self.assertEqual(self.colorkeys('Theme'), 'IDLE Dark')
@@ -635,7 +635,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
         # Erroneous custom name (no definition) reverts to default.
         usermain.read_string('''
             [Theme]
-            default = False
+            default = Falsch
             name = Custom Dark
             ''')
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
@@ -654,7 +654,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
         # For old default, name2 must be blank, name is always used.
         usermain.read_string('''
             [Keys]
-            default = True
+            default = Wahr
             name = IDLE Classic Unix
             ''')
         self.assertEqual(self.colorkeys('Keys'), 'IDLE Classic Unix')
@@ -667,7 +667,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
         # IDLE writes name2 fuer new builtins.
         usermain.read_string('''
             [Keys]
-            default = True
+            default = Wahr
             name2 = IDLE Modern Unix
             ''')
         self.assertEqual(self.colorkeys('Keys'), 'IDLE Modern Unix')
@@ -683,7 +683,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
         # Erroneous custom name (no definition) reverts to default.
         usermain.read_string('''
             [Keys]
-            default = False
+            default = Falsch
             name = Custom Keys
             ''')
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
@@ -727,24 +727,24 @@ klasse ChangesTest(unittest.TestCase):
 
     def test_save_option(self):  # Static function does not touch changes.
         save_option = self.changes.save_option
-        self.assertTrue(save_option('main', 'Indent', 'what', '0'))
-        self.assertFalse(save_option('main', 'Indent', 'what', '0'))
+        self.assertWahr(save_option('main', 'Indent', 'what', '0'))
+        self.assertFalsch(save_option('main', 'Indent', 'what', '0'))
         self.assertEqual(usermain['Indent']['what'], '0')
 
-        self.assertTrue(save_option('main', 'Indent', 'use-spaces', '0'))
+        self.assertWahr(save_option('main', 'Indent', 'use-spaces', '0'))
         self.assertEqual(usermain['Indent']['use-spaces'], '0')
-        self.assertTrue(save_option('main', 'Indent', 'use-spaces', '1'))
-        self.assertFalse(usermain.has_option('Indent', 'use-spaces'))
+        self.assertWahr(save_option('main', 'Indent', 'use-spaces', '1'))
+        self.assertFalsch(usermain.has_option('Indent', 'use-spaces'))
         usermain.remove_section('Indent')
 
     def test_save_added(self):
         changes = self.load()
-        self.assertTrue(changes.save_all())
+        self.assertWahr(changes.save_all())
         self.assertEqual(usermain['Msec']['mitem'], 'mval')
         self.assertEqual(userhigh['Hsec']['hitem'], 'hval')
         self.assertEqual(userkeys['Ksec']['kitem'], 'kval')
         changes.add_option('main', 'Msec', 'mitem', 'mval')
-        self.assertFalse(changes.save_all())
+        self.assertFalsch(changes.save_all())
         usermain.remove_section('Msec')
         userhigh.remove_section('Hsec')
         userkeys.remove_section('Ksec')
@@ -755,13 +755,13 @@ klasse ChangesTest(unittest.TestCase):
         changes.save_option('main', 'HelpFiles', 'IDLE', 'idledoc')
         changes.add_option('main', 'HelpFiles', 'ELDI', 'codeldi')
         changes.save_all()
-        self.assertFalse(usermain.has_option('HelpFiles', 'IDLE'))
-        self.assertTrue(usermain.has_option('HelpFiles', 'ELDI'))
+        self.assertFalsch(usermain.has_option('HelpFiles', 'IDLE'))
+        self.assertWahr(usermain.has_option('HelpFiles', 'ELDI'))
 
     def test_save_default(self):  # Cover 2nd and 3rd false branches.
         changes = self.changes
         changes.add_option('main', 'Indent', 'use-spaces', '1')
-        # save_option returns False; cfg_type_changed remains False.
+        # save_option returns Falsch; cfg_type_changed remains Falsch.
 
     # TODO: test that save_all calls usercfg Saves.
 

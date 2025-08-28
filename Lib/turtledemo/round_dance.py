@@ -21,13 +21,13 @@ from turtle import *
 
 def stop():
     global running
-    running = False
+    running = Falsch
 
 def main():
     global running
     clearscreen()
     bgcolor("gray10")
-    tracer(False)
+    tracer(Falsch)
     shape("triangle")
     f =   0.793402
     phi = 9.064678
@@ -58,7 +58,7 @@ def main():
             dancers.append(clone())
     home()
     # dance
-    running = True
+    running = Wahr
     onkeypress(stop)
     listen()
     cs = 1

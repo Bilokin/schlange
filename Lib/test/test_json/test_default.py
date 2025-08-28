@@ -33,7 +33,7 @@ klasse TestDefault:
             self.dumps(od),
             '{"a": 1, "c": 3, "d": 4, "b": 2}')
         self.assertEqual(
-            self.dumps(od, sort_keys=True),
+            self.dumps(od, sort_keys=Wahr),
             '{"a": 1, "b": 2, "c": 3, "d": 4}')
 
 

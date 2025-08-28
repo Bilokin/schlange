@@ -51,7 +51,7 @@ klasse InvalidNodeVisitor(GrammarVisitor):
         return name.startswith("invalid")
 
     def visit_StringLeaf(self, node: StringLeaf) -> bool:
-        return False
+        return Falsch
 
     def visit_NamedItem(self, node: NamedItem) -> bool:
         return self.visit(node.item)
@@ -84,7 +84,7 @@ klasse InvalidNodeVisitor(GrammarVisitor):
         return self.visit(node.rhs)
 
     def visit_Cut(self, node: Cut) -> bool:
-        return False
+        return Falsch
 
     def visit_Forced(self, node: Forced) -> bool:
         return self.visit(node.node)
@@ -124,13 +124,13 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         tail = tail[:-1]
         return head, tail
 
-    def visit_PositiveLookahead(self, node: PositiveLookahead) -> Tuple[None, str]:
+    def visit_PositiveLookahead(self, node: PositiveLookahead) -> Tuple[Nichts, str]:
         head, tail = self.lookahead_call_helper(node)
-        return None, f"self.positive_lookahead({head}, {tail})"
+        return Nichts, f"self.positive_lookahead({head}, {tail})"
 
-    def visit_NegativeLookahead(self, node: NegativeLookahead) -> Tuple[None, str]:
+    def visit_NegativeLookahead(self, node: NegativeLookahead) -> Tuple[Nichts, str]:
         head, tail = self.lookahead_call_helper(node)
-        return None, f"self.negative_lookahead({head}, {tail})"
+        return Nichts, f"self.negative_lookahead({head}, {tail})"
 
     def visit_Opt(self, node: Opt) -> Tuple[str, str]:
         name, call = self.visit(node.node)
@@ -175,7 +175,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
             node,
             "repeat0",
             lambda name: f"self.{name}(),",  # Also a trailing comma!
-            lambda: self.gen.artificial_rule_from_repeat(node.node, is_repeat1=False),
+            lambda: self.gen.artificial_rule_from_repeat(node.node, is_repeat1=Falsch),
         )
 
     def visit_Repeat1(self, node: Repeat1) -> Tuple[str, str]:
@@ -183,7 +183,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
             node,
             "repeat1",
             lambda name: f"self.{name}()",  # But no trailing comma here!
-            lambda: self.gen.artificial_rule_from_repeat(node.node, is_repeat1=True),
+            lambda: self.gen.artificial_rule_from_repeat(node.node, is_repeat1=Wahr),
         )
 
     def visit_Gather(self, node: Gather) -> Tuple[str, str]:
@@ -198,7 +198,7 @@ klasse PythonCallMakerVisitor(GrammarVisitor):
         return self.visit(node.rhs)
 
     def visit_Cut(self, node: Cut) -> Tuple[str, str]:
-        return "cut", "True"
+        return "cut", "Wahr"
 
     def visit_Forced(self, node: Forced) -> Tuple[str, str]:
         wenn isinstance(node.node, Group):
@@ -217,24 +217,24 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
         grammar: grammar.Grammar,
         file: Optional[IO[Text]],
         tokens: Set[str] = set(token.tok_name.values()),
-        location_formatting: Optional[str] = None,
-        unreachable_formatting: Optional[str] = None,
+        location_formatting: Optional[str] = Nichts,
+        unreachable_formatting: Optional[str] = Nichts,
     ):
         tokens.add("SOFT_KEYWORD")
         super().__init__(grammar, tokens, file)
         self.callmakervisitor: PythonCallMakerVisitor = PythonCallMakerVisitor(self)
         self.invalidvisitor: InvalidNodeVisitor = InvalidNodeVisitor()
-        self.unreachable_formatting = unreachable_formatting or "None  # pragma: no cover"
+        self.unreachable_formatting = unreachable_formatting or "Nichts  # pragma: no cover"
         self.location_formatting = (
             location_formatting
             or "lineno=start_lineno, col_offset=start_col_offset, "
             "end_lineno=end_lineno, end_col_offset=end_col_offset"
         )
 
-    def generate(self, filename: str) -> None:
+    def generate(self, filename: str) -> Nichts:
         self.collect_rules()
         header = self.grammar.metas.get("header", MODULE_PREFIX)
-        wenn header is not None:
+        wenn header is not Nichts:
             basename = os.path.basename(filename)
             self.print(header.rstrip("\n").format(filename=basename))
         subheader = self.grammar.metas.get("subheader", "")
@@ -254,19 +254,19 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             self.print(f"SOFT_KEYWORDS = {tuple(self.soft_keywords)}")
 
         trailer = self.grammar.metas.get("trailer", MODULE_SUFFIX.format(class_name=cls_name))
-        wenn trailer is not None:
+        wenn trailer is not Nichts:
             self.print(trailer.rstrip("\n"))
 
     def alts_uses_locations(self, alts: Sequence[Alt]) -> bool:
         fuer alt in alts:
             wenn alt.action and "LOCATIONS" in alt.action:
-                return True
+                return Wahr
             fuer n in alt.items:
                 wenn isinstance(n.item, Group) and self.alts_uses_locations(n.item.rhs.alts):
-                    return True
-        return False
+                    return Wahr
+        return Falsch
 
-    def visit_Rule(self, node: Rule) -> None:
+    def visit_Rule(self, node: Rule) -> Nichts:
         is_loop = node.is_loop()
         is_gather = node.is_gather()
         rhs = node.flatten()
@@ -293,9 +293,9 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             wenn is_loop:
                 self.print("return children")
             sonst:
-                self.print("return None")
+                self.print("return Nichts")
 
-    def visit_NamedItem(self, node: NamedItem) -> None:
+    def visit_NamedItem(self, node: NamedItem) -> Nichts:
         name, call = self.callmakervisitor.visit(node.item)
         wenn node.name:
             name = node.name
@@ -306,31 +306,31 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
                 name = self.dedupe(name)
             self.print(f"({name} := {call})")
 
-    def visit_Rhs(self, node: Rhs, is_loop: bool = False, is_gather: bool = False) -> None:
+    def visit_Rhs(self, node: Rhs, is_loop: bool = Falsch, is_gather: bool = Falsch) -> Nichts:
         wenn is_loop:
             assert len(node.alts) == 1
         fuer alt in node.alts:
             self.visit(alt, is_loop=is_loop, is_gather=is_gather)
 
-    def visit_Alt(self, node: Alt, is_loop: bool, is_gather: bool) -> None:
+    def visit_Alt(self, node: Alt, is_loop: bool, is_gather: bool) -> Nichts:
         has_cut = any(isinstance(item.item, Cut) fuer item in node.items)
         with self.local_variable_context():
             wenn has_cut:
-                self.print("cut = False")
+                self.print("cut = Falsch")
             wenn is_loop:
                 self.print("while (")
             sonst:
                 self.print("if (")
             with self.indent():
-                first = True
+                first = Wahr
                 fuer item in node.items:
                     wenn first:
-                        first = False
+                        first = Falsch
                     sonst:
                         self.print("and")
                     self.visit(item)
                     wenn is_gather:
-                        self.print("is not None")
+                        self.print("is not Nichts")
 
             self.print("):")
             with self.indent():
@@ -364,4 +364,4 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             self.print("self._reset(mark)")
             # Skip remaining alternatives wenn a cut was reached.
             wenn has_cut:
-                self.print("if cut: return None")
+                self.print("if cut: return Nichts")

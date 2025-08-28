@@ -14,25 +14,25 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
 
     def __init__(self, loop, protocol, args, shell,
                  stdin, stdout, stderr, bufsize,
-                 waiter=None, extra=None, **kwargs):
+                 waiter=Nichts, extra=Nichts, **kwargs):
         super().__init__(extra)
-        self._closed = False
+        self._closed = Falsch
         self._protocol = protocol
         self._loop = loop
-        self._proc = None
-        self._pid = None
-        self._returncode = None
+        self._proc = Nichts
+        self._pid = Nichts
+        self._returncode = Nichts
         self._exit_waiters = []
         self._pending_calls = collections.deque()
         self._pipes = {}
-        self._finished = False
+        self._finished = Falsch
 
         wenn stdin == subprocess.PIPE:
-            self._pipes[0] = None
+            self._pipes[0] = Nichts
         wenn stdout == subprocess.PIPE:
-            self._pipes[1] = None
+            self._pipes[1] = Nichts
         wenn stderr == subprocess.PIPE:
-            self._pipes[2] = None
+            self._pipes[2] = Nichts
 
         # Create the child process: set the _proc attribute
         try:
@@ -59,27 +59,27 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         info = [self.__class__.__name__]
         wenn self._closed:
             info.append('closed')
-        wenn self._pid is not None:
+        wenn self._pid is not Nichts:
             info.append(f'pid={self._pid}')
-        wenn self._returncode is not None:
+        wenn self._returncode is not Nichts:
             info.append(f'returncode={self._returncode}')
-        sowenn self._pid is not None:
+        sowenn self._pid is not Nichts:
             info.append('running')
         sonst:
             info.append('not started')
 
         stdin = self._pipes.get(0)
-        wenn stdin is not None:
+        wenn stdin is not Nichts:
             info.append(f'stdin={stdin.pipe}')
 
         stdout = self._pipes.get(1)
         stderr = self._pipes.get(2)
-        wenn stdout is not None and stderr is stdout:
+        wenn stdout is not Nichts and stderr is stdout:
             info.append(f'stdout=stderr={stdout.pipe}')
         sonst:
-            wenn stdout is not None:
+            wenn stdout is not Nichts:
                 info.append(f'stdout={stdout.pipe}')
-            wenn stderr is not None:
+            wenn stderr is not Nichts:
                 info.append(f'stderr={stderr.pipe}')
 
         return '<{}>'.format(' '.join(info))
@@ -99,10 +99,10 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
     def close(self):
         wenn self._closed:
             return
-        self._closed = True
+        self._closed = Wahr
 
         fuer proto in self._pipes.values():
-            wenn proto is None:
+            wenn proto is Nichts:
                 continue
             # See gh-114177
             # skip closing the pipe wenn loop is already closed
@@ -111,12 +111,12 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             wenn self._loop and not self._loop.is_closed():
                 proto.pipe.close()
 
-        wenn (self._proc is not None and
+        wenn (self._proc is not Nichts and
                 # has the child process finished?
-                self._returncode is None and
+                self._returncode is Nichts and
                 # the child process has finished, but the
                 # transport hasn't been notified yet?
-                self._proc.poll() is None):
+                self._proc.poll() is Nichts):
 
             wenn self._loop.get_debug():
                 logger.warning('Close running child process: kill %r', self)
@@ -144,10 +144,10 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         wenn fd in self._pipes:
             return self._pipes[fd].pipe
         sonst:
-            return None
+            return Nichts
 
     def _check_proc(self):
-        wenn self._proc is None:
+        wenn self._proc is Nichts:
             raise ProcessLookupError()
 
     wenn sys.platform == 'win32':
@@ -181,41 +181,41 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             proc = self._proc
             loop = self._loop
 
-            wenn proc.stdin is not None:
+            wenn proc.stdin is not Nichts:
                 _, pipe = await loop.connect_write_pipe(
                     lambda: WriteSubprocessPipeProto(self, 0),
                     proc.stdin)
                 self._pipes[0] = pipe
 
-            wenn proc.stdout is not None:
+            wenn proc.stdout is not Nichts:
                 _, pipe = await loop.connect_read_pipe(
                     lambda: ReadSubprocessPipeProto(self, 1),
                     proc.stdout)
                 self._pipes[1] = pipe
 
-            wenn proc.stderr is not None:
+            wenn proc.stderr is not Nichts:
                 _, pipe = await loop.connect_read_pipe(
                     lambda: ReadSubprocessPipeProto(self, 2),
                     proc.stderr)
                 self._pipes[2] = pipe
 
-            assert self._pending_calls is not None
+            assert self._pending_calls is not Nichts
 
             loop.call_soon(self._protocol.connection_made, self)
             fuer callback, data in self._pending_calls:
                 loop.call_soon(callback, *data)
-            self._pending_calls = None
+            self._pending_calls = Nichts
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException as exc:
-            wenn waiter is not None and not waiter.cancelled():
+            wenn waiter is not Nichts and not waiter.cancelled():
                 waiter.set_exception(exc)
         sonst:
-            wenn waiter is not None and not waiter.cancelled():
-                waiter.set_result(None)
+            wenn waiter is not Nichts and not waiter.cancelled():
+                waiter.set_result(Nichts)
 
     def _call(self, cb, *data):
-        wenn self._pending_calls is not None:
+        wenn self._pending_calls is not Nichts:
             self._pending_calls.append((cb, data))
         sonst:
             self._loop.call_soon(cb, *data)
@@ -228,12 +228,12 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         self._call(self._protocol.pipe_data_received, fd, data)
 
     def _process_exited(self, returncode):
-        assert returncode is not None, returncode
-        assert self._returncode is None, self._returncode
+        assert returncode is not Nichts, returncode
+        assert self._returncode is Nichts, self._returncode
         wenn self._loop.get_debug():
             logger.info('%r exited with return code %r', self, returncode)
         self._returncode = returncode
-        wenn self._proc.returncode is None:
+        wenn self._proc.returncode is Nichts:
             # asyncio uses a child watcher: copy the status into the Popen
             # object. On Python 3.6, it is required to avoid a ResourceWarning.
             self._proc.returncode = returncode
@@ -245,7 +245,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         """Wait until the process exit and return the process return code.
 
         This method is a coroutine."""
-        wenn self._returncode is not None:
+        wenn self._returncode is not Nichts:
             return self._returncode
 
         waiter = self._loop.create_future()
@@ -254,12 +254,12 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
 
     def _try_finish(self):
         assert not self._finished
-        wenn self._returncode is None:
+        wenn self._returncode is Nichts:
             return
-        wenn all(p is not None and p.disconnected
+        wenn all(p is not Nichts and p.disconnected
                fuer p in self._pipes.values()):
-            self._finished = True
-            self._call(self._call_connection_lost, None)
+            self._finished = Wahr
+            self._call(self._call_connection_lost, Nichts)
 
     def _call_connection_lost(self, exc):
         try:
@@ -269,10 +269,10 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             fuer waiter in self._exit_waiters:
                 wenn not waiter.cancelled():
                     waiter.set_result(self._returncode)
-            self._exit_waiters = None
-            self._loop = None
-            self._proc = None
-            self._protocol = None
+            self._exit_waiters = Nichts
+            self._loop = Nichts
+            self._proc = Nichts
+            self._protocol = Nichts
 
 
 klasse WriteSubprocessPipeProto(protocols.BaseProtocol):
@@ -280,8 +280,8 @@ klasse WriteSubprocessPipeProto(protocols.BaseProtocol):
     def __init__(self, proc, fd):
         self.proc = proc
         self.fd = fd
-        self.pipe = None
-        self.disconnected = False
+        self.pipe = Nichts
+        self.disconnected = Falsch
 
     def connection_made(self, transport):
         self.pipe = transport
@@ -290,9 +290,9 @@ klasse WriteSubprocessPipeProto(protocols.BaseProtocol):
         return f'<{self.__class__.__name__} fd={self.fd} pipe={self.pipe!r}>'
 
     def connection_lost(self, exc):
-        self.disconnected = True
+        self.disconnected = Wahr
         self.proc._pipe_connection_lost(self.fd, exc)
-        self.proc = None
+        self.proc = Nichts
 
     def pause_writing(self):
         self.proc._protocol.pause_writing()

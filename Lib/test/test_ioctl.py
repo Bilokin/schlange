@@ -65,18 +65,18 @@ klasse IoctlTestsTty(unittest.TestCase):
         with open("/dev/tty", "rb") as tty:
             buf = bytearray(b" "*8)
             save_buf = bytes(buf)
-            r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, False)
+            r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, Falsch)
             self.assertEqual(bytes(buf), save_buf)
             self.assertIsInstance(r, bytes)
             rpgrp = memoryview(r).cast('i')[0]
             self.assertIn(rpgrp, ids)
 
-    def _create_int_buf(self, nbytes=None):
+    def _create_int_buf(self, nbytes=Nichts):
         buf = array.array('i')
         intsize = buf.itemsize
         # A fill value unlikely to be in `ids`
         fill = -12345
-        wenn nbytes is not None:
+        wenn nbytes is not Nichts:
             # Extend the buffer so that it is exactly `nbytes` bytes long
             buf.extend([fill] * (nbytes // intsize))
             self.assertEqual(len(buf) * intsize, nbytes)   # sanity check
@@ -84,7 +84,7 @@ klasse IoctlTestsTty(unittest.TestCase):
             buf.append(fill)
         return buf
 
-    def _check_ioctl_mutate_len(self, nbytes=None):
+    def _check_ioctl_mutate_len(self, nbytes=Nichts):
         ids = (os.getpgrp(), os.getsid(0))
         buf = self._create_int_buf(nbytes)
         with open("/dev/tty", "rb") as tty:
@@ -93,12 +93,12 @@ klasse IoctlTestsTty(unittest.TestCase):
         self.assertEqual(r, 0)
         self.assertIn(rpgrp, ids)
 
-    def _check_ioctl_not_mutate_len(self, nbytes=None):
+    def _check_ioctl_not_mutate_len(self, nbytes=Nichts):
         ids = (os.getpgrp(), os.getsid(0))
         buf = self._create_int_buf(nbytes)
         save_buf = bytes(buf)
         with open("/dev/tty", "rb") as tty:
-            r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, False)
+            r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, Falsch)
         self.assertIsInstance(r, bytes)
         self.assertEqual(len(r), len(save_buf))
         self.assertEqual(bytes(buf), save_buf)
@@ -108,7 +108,7 @@ klasse IoctlTestsTty(unittest.TestCase):
 
         buf = bytes(buf)
         with open("/dev/tty", "rb") as tty:
-            r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, True)
+            r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, Wahr)
         self.assertIsInstance(r, bytes)
         self.assertEqual(len(r), len(save_buf))
         self.assertEqual(buf, save_buf)
@@ -175,7 +175,7 @@ klasse IoctlTestsPty(unittest.TestCase):
 
         def writer():
             os.write(wfd, b'abc')
-            self.assertTrue(write_suspended.wait(support.SHORT_TIMEOUT))
+            self.assertWahr(write_suspended.wait(support.SHORT_TIMEOUT))
             os.write(wfd, b'def')
             write_finished.set()
 
@@ -186,11 +186,11 @@ klasse IoctlTestsPty(unittest.TestCase):
                     fcntl.ioctl(wfd, termios.TCXONC, termios.TCOOFF)
                 finally:
                     write_suspended.set()
-                self.assertFalse(write_finished.wait(0.5),
+                self.assertFalsch(write_finished.wait(0.5),
                                  'output was not suspended')
             finally:
                 fcntl.ioctl(wfd, termios.TCXONC, termios.TCOON)
-            self.assertTrue(write_finished.wait(support.SHORT_TIMEOUT),
+            self.assertWahr(write_finished.wait(support.SHORT_TIMEOUT),
                             'output was not resumed')
             self.assertEqual(os.read(rfd, 1024), b'def')
 

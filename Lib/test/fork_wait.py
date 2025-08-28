@@ -33,7 +33,7 @@ klasse ForkWait(unittest.TestCase):
         self.stop = 1
         fuer thread in self.threads:
             thread.join()
-        thread = None
+        thread = Nichts
         self.threads.clear()
         threading_helper.threading_cleanup(*self._threading_key)
 

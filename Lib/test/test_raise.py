@@ -20,7 +20,7 @@ klasse Context:
     def __enter__(self):
         return self
     def __exit__(self, exc_type, exc_value, exc_tb):
-        return True
+        return Wahr
 
 
 klasse TestRaise(unittest.TestCase):
@@ -77,15 +77,15 @@ klasse TestRaise(unittest.TestCase):
                 nested_reraise()
         self.assertRaises(TypeError, reraise)
 
-    def test_raise_from_None(self):
+    def test_raise_from_Nichts(self):
         try:
             try:
                 raise TypeError("foo")
             except TypeError:
-                raise ValueError() from None
+                raise ValueError() from Nichts
         except ValueError as e:
             self.assertIsInstance(e.__context__, TypeError)
-            self.assertIsNone(e.__cause__)
+            self.assertIsNichts(e.__cause__)
 
     def test_with_reraise1(self):
         def reraise():
@@ -142,7 +142,7 @@ klasse TestRaise(unittest.TestCase):
 
     def test_assert_with_tuple_arg(self):
         try:
-            assert False, (3,)
+            assert Falsch, (3,)
         except AssertionError as e:
             self.assertEqual(str(e), "(3,)")
 
@@ -156,17 +156,17 @@ klasse TestCause(unittest.TestCase):
                 try:
                     raise TypeError
                 except Exception:
-                    raise ValueError from None
+                    raise ValueError from Nichts
             except ValueError as exc:
-                self.assertIsNone(exc.__cause__)
-                self.assertTrue(exc.__suppress_context__)
-                exc.__suppress_context__ = False
+                self.assertIsNichts(exc.__cause__)
+                self.assertWahr(exc.__suppress_context__)
+                exc.__suppress_context__ = Falsch
                 raise exc
         except ValueError as exc:
             e = exc
 
-        self.assertIsNone(e.__cause__)
-        self.assertFalse(e.__suppress_context__)
+        self.assertIsNichts(e.__cause__)
+        self.assertFalsch(e.__suppress_context__)
         self.assertIsInstance(e.__context__, TypeError)
 
     def test_invalid_cause(self):
@@ -186,12 +186,12 @@ klasse TestCause(unittest.TestCase):
             self.fail("No exception raised")
 
     def test_class_cause_nonexception_result(self):
-        klasse ConstructsNone(BaseException):
+        klasse ConstructsNichts(BaseException):
             @classmethod
             def __new__(*args, **kwargs):
-                return None
+                return Nichts
         try:
-            raise IndexError from ConstructsNone
+            raise IndexError from ConstructsNichts
         except TypeError as e:
             self.assertIn("should have returned an instance of BaseException", str(e))
         except IndexError:
@@ -258,7 +258,7 @@ klasse TestTracebackType(unittest.TestCase):
         self.assertIsInstance(tb.tb_lasti, int)
         self.assertIsInstance(tb.tb_lineno, int)
 
-        self.assertIs(tb.tb_next.tb_next, None)
+        self.assertIs(tb.tb_next.tb_next, Nichts)
 
         # Invalid assignments
         with self.assertRaises(TypeError):
@@ -275,8 +275,8 @@ klasse TestTracebackType(unittest.TestCase):
             tb.tb_next.tb_next = tb
 
         # Valid assignments
-        tb.tb_next = None
-        self.assertIs(tb.tb_next, None)
+        tb.tb_next = Nichts
+        self.assertIs(tb.tb_next, Nichts)
 
         new_tb = get_tb()
         tb.tb_next = new_tb
@@ -292,8 +292,8 @@ klasse TestTracebackType(unittest.TestCase):
         self.assertEqual(tb.tb_lasti, 1)
         self.assertEqual(tb.tb_lineno, 2)
 
-        tb = types.TracebackType(None, frame, 1, 2)
-        self.assertEqual(tb.tb_next, None)
+        tb = types.TracebackType(Nichts, frame, 1, 2)
+        self.assertEqual(tb.tb_next, Nichts)
 
         with self.assertRaises(TypeError):
             types.TracebackType("no", frame, 1, 2)
@@ -376,7 +376,7 @@ klasse TestContext(unittest.TestCase):
             finally:
                 raise OSError
         except OSError as e:
-            self.assertIsNone(e.__context__)
+            self.assertIsNichts(e.__context__)
         sonst:
             self.fail("No exception raised")
 
@@ -413,7 +413,7 @@ klasse TestContext(unittest.TestCase):
             except ZeroDivisionError as e:
                 raise e
         except ZeroDivisionError as e:
-            self.assertIsNone(e.__context__)
+            self.assertIsNichts(e.__context__)
 
     def test_reraise_cycle_broken(self):
         # Non-trivial context cycles (through re-raising a previous exception)
@@ -427,7 +427,7 @@ klasse TestContext(unittest.TestCase):
                 except ZeroDivisionError:
                     raise a
         except NameError as e:
-            self.assertIsNone(e.__context__.__context__)
+            self.assertIsNichts(e.__context__.__context__)
 
     def test_not_last(self):
         # Context is not necessarily the last exception
@@ -489,7 +489,7 @@ klasse TestContext(unittest.TestCase):
                     gc.collect()  # For PyPy or other GCs.
                     raise TypeError
             except Exception as e:
-                self.assertNotEqual(e.__context__, None)
+                self.assertNotEqual(e.__context__, Nichts)
                 self.assertIsInstance(e.__context__, AttributeError)
 
         with support.catch_unraisable_exception() as cm:

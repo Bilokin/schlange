@@ -53,7 +53,7 @@ klasse TracebackCases(unittest.TestCase):
     def setUp(self):
         super().setUp()
         self.colorize = _colorize.COLORIZE
-        _colorize.COLORIZE = False
+        _colorize.COLORIZE = Falsch
 
     def tearDown(self):
         super().tearDown()
@@ -126,7 +126,7 @@ klasse TracebackCases(unittest.TestCase):
         self.assertEqual(err[2].count("^"), 1)
 
     def test_nocaret(self):
-        exc = SyntaxError("error", ("x.py", 23, None, "bad syntax"))
+        exc = SyntaxError("error", ("x.py", 23, Nichts, "bad syntax"))
         err = traceback.format_exception_only(SyntaxError, exc)
         self.assertEqual(len(err), 3)
         self.assertEqual(err[1].strip(), "bad syntax")
@@ -240,7 +240,7 @@ klasse TracebackCases(unittest.TestCase):
 
     def test_format_exception_group(self):
         eg = ExceptionGroup('A', [ValueError('B')])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A (1 sub-exception)\n',
             '   ValueError: B\n',
@@ -248,7 +248,7 @@ klasse TracebackCases(unittest.TestCase):
 
     def test_format_base_exception_group(self):
         eg = BaseExceptionGroup('A', [BaseException('B')])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'BaseExceptionGroup: A (1 sub-exception)\n',
             '   BaseException: B\n',
@@ -258,7 +258,7 @@ klasse TracebackCases(unittest.TestCase):
         exc = ValueError('B')
         exc.add_note('Note')
         eg = ExceptionGroup('A', [exc])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A (1 sub-exception)\n',
             '   ValueError: B\n',
@@ -267,7 +267,7 @@ klasse TracebackCases(unittest.TestCase):
 
     def test_format_exception_group_explicit_class(self):
         eg = ExceptionGroup('A', [ValueError('B')])
-        err = traceback.format_exception_only(ExceptionGroup, eg, show_group=True)
+        err = traceback.format_exception_only(ExceptionGroup, eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A (1 sub-exception)\n',
             '   ValueError: B\n',
@@ -275,7 +275,7 @@ klasse TracebackCases(unittest.TestCase):
 
     def test_format_exception_group_multiple_exceptions(self):
         eg = ExceptionGroup('A', [ValueError('B'), TypeError('C')])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A (2 sub-exceptions)\n',
             '   ValueError: B\n',
@@ -284,7 +284,7 @@ klasse TracebackCases(unittest.TestCase):
 
     def test_format_exception_group_multiline_messages(self):
         eg = ExceptionGroup('A\n1', [ValueError('B\n2')])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A\n1 (1 sub-exception)\n',
             '   ValueError: B\n',
@@ -295,7 +295,7 @@ klasse TracebackCases(unittest.TestCase):
         exc = ValueError('B\n\n2\n')
         exc.add_note('\nC\n\n3')
         eg = ExceptionGroup('A\n\n1\n', [exc, IndexError('D')])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A\n\n1\n (2 sub-exceptions)\n',
             '   ValueError: B\n',
@@ -310,9 +310,9 @@ klasse TracebackCases(unittest.TestCase):
         ])
 
     def test_format_exception_group_syntax_error(self):
-        exc = SyntaxError("error", ("x.py", 23, None, "bad syntax"))
+        exc = SyntaxError("error", ("x.py", 23, Nichts, "bad syntax"))
         eg = ExceptionGroup('A\n1', [exc])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A\n1 (1 sub-exception)\n',
             '     File "x.py", line 23\n',
@@ -328,7 +328,7 @@ klasse TracebackCases(unittest.TestCase):
             ExceptionGroup('C', [exc, LookupError('E')]),
             TypeError('F'),
         ])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A (3 sub-exceptions)\n',
             '   ValueError: B\n',
@@ -357,7 +357,7 @@ klasse TracebackCases(unittest.TestCase):
             f(),
             ExceptionGroup('B', [g()]),
         ])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A (2 sub-exceptions)\n',
             '   ZeroDivisionError: division by zero\n',
@@ -376,7 +376,7 @@ klasse TracebackCases(unittest.TestCase):
                 return e
 
         eg = ExceptionGroup('A', [f()])
-        err = traceback.format_exception_only(eg, show_group=True)
+        err = traceback.format_exception_only(eg, show_group=Wahr)
         self.assertEqual(err, [
             'ExceptionGroup: A (1 sub-exception)\n',
             '   ValueError: 0\n',
@@ -386,22 +386,22 @@ klasse TracebackCases(unittest.TestCase):
         # See https://github.com/python/cpython/issues/128894
         fuer exc in [
             SyntaxError('error', 'abcd'),
-            SyntaxError('error', [None] * 4),
+            SyntaxError('error', [Nichts] * 4),
             SyntaxError('error', (1, 2, 3, 4)),
             SyntaxError('error', (1, 2, 3, 4)),
             SyntaxError('error', (1, 'a', 'b', 2)),
             # with end_lineno and end_offset:
             SyntaxError('error', 'abcdef'),
-            SyntaxError('error', [None] * 6),
+            SyntaxError('error', [Nichts] * 6),
             SyntaxError('error', (1, 2, 3, 4, 5, 6)),
             SyntaxError('error', (1, 'a', 'b', 2, 'c', 'd')),
         ]:
             with self.subTest(exc=exc):
-                err = traceback.format_exception_only(exc, show_group=True)
+                err = traceback.format_exception_only(exc, show_group=Wahr)
                 # Should not raise an exception:
-                wenn exc.lineno is not None:
+                wenn exc.lineno is not Nichts:
                     self.assertEqual(len(err), 2)
-                    self.assertTrue(err[0].startswith('  File'))
+                    self.assertWahr(err[0].startswith('  File'))
                 sonst:
                     self.assertEqual(len(err), 1)
                 self.assertEqual(err[-1], 'SyntaxError: error\n')
@@ -487,7 +487,7 @@ klasse TracebackCases(unittest.TestCase):
                         # self.exc.__traceback__ contains frames:
                         # explicitly clear the reference to self in the current
                         # frame to break a reference cycle
-                        self = None
+                        self = Nichts
 
                 def __del__(self):
                     traceback.print_exception(self.exc)
@@ -507,7 +507,7 @@ klasse TracebackCases(unittest.TestCase):
     def test_print_exception(self):
         output = StringIO()
         traceback.print_exception(
-            Exception, Exception("projector"), None, file=output
+            Exception, Exception("projector"), Nichts, file=output
         )
         self.assertEqual(output.getvalue(), "Exception: projector\n")
 
@@ -537,43 +537,43 @@ klasse TracebackCases(unittest.TestCase):
         output = traceback.format_exception_only(Exception("projector"))
         self.assertEqual(output, ["Exception: projector\n"])
 
-    def test_exception_is_None(self):
-        NONE_EXC_STRING = 'NoneType: None\n'
+    def test_exception_is_Nichts(self):
+        NONE_EXC_STRING = 'NoneType: Nichts\n'
         excfile = StringIO()
-        traceback.print_exception(None, file=excfile)
+        traceback.print_exception(Nichts, file=excfile)
         self.assertEqual(excfile.getvalue(), NONE_EXC_STRING)
 
         excfile = StringIO()
-        traceback.print_exception(None, None, None, file=excfile)
+        traceback.print_exception(Nichts, Nichts, Nichts, file=excfile)
         self.assertEqual(excfile.getvalue(), NONE_EXC_STRING)
 
         excfile = StringIO()
-        traceback.print_exc(None, file=excfile)
+        traceback.print_exc(Nichts, file=excfile)
         self.assertEqual(excfile.getvalue(), NONE_EXC_STRING)
 
-        self.assertEqual(traceback.format_exc(None), NONE_EXC_STRING)
-        self.assertEqual(traceback.format_exception(None), [NONE_EXC_STRING])
+        self.assertEqual(traceback.format_exc(Nichts), NONE_EXC_STRING)
+        self.assertEqual(traceback.format_exception(Nichts), [NONE_EXC_STRING])
         self.assertEqual(
-            traceback.format_exception(None, None, None), [NONE_EXC_STRING])
+            traceback.format_exception(Nichts, Nichts, Nichts), [NONE_EXC_STRING])
         self.assertEqual(
-            traceback.format_exception_only(None), [NONE_EXC_STRING])
+            traceback.format_exception_only(Nichts), [NONE_EXC_STRING])
         self.assertEqual(
-            traceback.format_exception_only(None, None), [NONE_EXC_STRING])
+            traceback.format_exception_only(Nichts, Nichts), [NONE_EXC_STRING])
 
     def test_signatures(self):
         self.assertEqual(
             str(inspect.signature(traceback.print_exception)),
             ('(exc, /, value=<implicit>, tb=<implicit>, '
-             'limit=None, file=None, chain=True, **kwargs)'))
+             'limit=Nichts, file=Nichts, chain=Wahr, **kwargs)'))
 
         self.assertEqual(
             str(inspect.signature(traceback.format_exception)),
-            ('(exc, /, value=<implicit>, tb=<implicit>, limit=None, '
-             'chain=True, **kwargs)'))
+            ('(exc, /, value=<implicit>, tb=<implicit>, limit=Nichts, '
+             'chain=Wahr, **kwargs)'))
 
         self.assertEqual(
             str(inspect.signature(traceback.format_exception_only)),
-            '(exc, /, value=<implicit>, *, show_group=False, **kwargs)')
+            '(exc, /, value=<implicit>, *, show_group=Falsch, **kwargs)')
 
 
 klasse PurePythonExceptionFormattingMixin:
@@ -612,10 +612,10 @@ klasse TracebackErrorLocationCaretTestBase:
     Tests fuer printing code error expressions as part of PEP 657
     """
     def test_basic_caret(self):
-        # NOTE: In caret tests, "if True:" is used as a way to force indicator
+        # NOTE: In caret tests, "if Wahr:" is used as a way to force indicator
         #   display, since the raising expression spans only part of the line.
         def f():
-            wenn True: raise ValueError("basic caret tests")
+            wenn Wahr: raise ValueError("basic caret tests")
 
         lineno_f = f.__code__.co_firstlineno
         expected_f = (
@@ -624,7 +624,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+1}, in f\n'
-            '    wenn True: raise ValueError("basic caret tests")\n'
+            '    wenn Wahr: raise ValueError("basic caret tests")\n'
             '             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'
         )
         result_lines = self.get_exception(f)
@@ -634,7 +634,7 @@ klasse TracebackErrorLocationCaretTestBase:
         # Make sure that even wenn a line contains multi-byte unicode characters
         # the correct carets are printed.
         def f_with_unicode():
-            wenn True: raise ValueError("Ĥellö Wörld")
+            wenn Wahr: raise ValueError("Ĥellö Wörld")
 
         lineno_f = f_with_unicode.__code__.co_firstlineno
         expected_f = (
@@ -643,7 +643,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+1}, in f_with_unicode\n'
-            '    wenn True: raise ValueError("Ĥellö Wörld")\n'
+            '    wenn Wahr: raise ValueError("Ĥellö Wörld")\n'
             '             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'
         )
         result_lines = self.get_exception(f_with_unicode)
@@ -674,7 +674,7 @@ klasse TracebackErrorLocationCaretTestBase:
         # Make sure no carets are printed fuer expressions spanning multiple
         # lines.
         def f_with_multiline():
-            wenn True: raise ValueError(
+            wenn Wahr: raise ValueError(
                 "error over multiple lines"
             )
 
@@ -685,7 +685,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+1}, in f_with_multiline\n'
-            '    wenn True: raise ValueError(\n'
+            '    wenn Wahr: raise ValueError(\n'
             '             ^^^^^^^^^^^^^^^^^\n'
             '        "error over multiple lines"\n'
             '        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'
@@ -943,7 +943,7 @@ klasse TracebackErrorLocationCaretTestBase:
 
     def test_caret_for_subscript(self):
         def f_with_subscript():
-            some_dict = {'x': {'y': None}}
+            some_dict = {'x': {'y': Nichts}}
             return some_dict['x']['y']['z']
 
         lineno_f = f_with_subscript.__code__.co_firstlineno
@@ -1135,7 +1135,7 @@ klasse TracebackErrorLocationCaretTestBase:
     def test_many_lines(self):
         def f():
             x = 1
-            wenn True: x += (
+            wenn Wahr: x += (
                 "a" +
                 "a"
             )  # test
@@ -1147,7 +1147,7 @@ klasse TracebackErrorLocationCaretTestBase:
             '    callable()\n'
             '    ~~~~~~~~^^\n'
             f'  File "{__file__}", line {lineno_f+2}, in f\n'
-            '    wenn True: x += (\n'
+            '    wenn Wahr: x += (\n'
             '             ^^^^^^\n'
             '    ...<2 lines>...\n'
             '    )  # test\n'
@@ -1240,7 +1240,7 @@ klasse TracebackErrorLocationCaretTestBase:
         self.assertEqual(result_lines, expected_error.splitlines())
 
     def test_traceback_very_long_line(self):
-        source = "if True: " + "a" * 256
+        source = "if Wahr: " + "a" * 256
         bytecode = compile(source, TESTFN, "exec")
 
         with open(TESTFN, "w") as file:
@@ -1258,14 +1258,14 @@ klasse TracebackErrorLocationCaretTestBase:
             '    ~~~~~~~~^^\n'
             f'  File "{TESTFN}", line {lineno_f}, in <module>\n'
             f'    {source}\n'
-            f'    {" "*len("if True: ") + "^"*256}\n'
+            f'    {" "*len("if Wahr: ") + "^"*256}\n'
         )
         self.assertEqual(result_lines, expected_error.splitlines())
 
     def test_secondary_caret_not_elided(self):
         # Always show a line's indicators wenn they include the secondary character.
         def f_with_subscript():
-            some_dict = {'x': {'y': None}}
+            some_dict = {'x': {'y': Nichts}}
             some_dict['x']['y']['z']
 
         lineno_f = f_with_subscript.__code__.co_firstlineno
@@ -1287,7 +1287,7 @@ klasse TracebackErrorLocationCaretTestBase:
         # The implementation must account fuer both "indent" and "margin" offsets.
 
         def exc():
-            wenn True: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])
+            wenn Wahr: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])
 
         expected_error = (
              f'  + Exception Group Traceback (most recent call last):\n'
@@ -1295,7 +1295,7 @@ klasse TracebackErrorLocationCaretTestBase:
              f'  |     callable()\n'
              f'  |     ~~~~~~~~^^\n'
              f'  |   File "{__file__}", line {exc.__code__.co_firstlineno + 1}, in exc\n'
-             f'  |     wenn True: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])\n'
+             f'  |     wenn Wahr: raise ExceptionGroup("eg", [ValueError(1), TypeError(2)])\n'
              f'  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'
              f'  | ExceptionGroup: eg (2 sub-exceptions)\n'
              f'  +-+---------------- 1 ----------------\n'
@@ -1389,7 +1389,7 @@ klasse TracebackErrorLocationCaretTestBase:
 
     def test_multiline_method_call_a(self):
         def f():
-            (None
+            (Nichts
                 .method
             )()
         actual = self.get_exception(f)
@@ -1406,7 +1406,7 @@ klasse TracebackErrorLocationCaretTestBase:
 
     def test_multiline_method_call_b(self):
         def f():
-            (None.
+            (Nichts.
                 method
             )()
         actual = self.get_exception(f)
@@ -1422,7 +1422,7 @@ klasse TracebackErrorLocationCaretTestBase:
 
     def test_multiline_method_call_c(self):
         def f():
-            (None
+            (Nichts
                 . method
             )()
         actual = self.get_exception(f)
@@ -1531,7 +1531,7 @@ klasse TracebackErrorLocationCaretTestBase:
             my_dct = {
                 "✨🚛✨": {
                     "说明": {
-                        "🐍🐍🐍": None
+                        "🐍🐍🐍": Nichts
                     }
                 }
             }
@@ -1745,7 +1745,7 @@ klasse TestKeywordTypoSuggestions(unittest.TestCase):
         ("with block ad something:\n  pass", "and"),
         ("fur a in b:\n  pass", "for"),
         ("for a in b:\n  pass\nelso:\n  pass", "else"),
-        ("whille True:\n  pass", "while"),
+        ("whille Wahr:\n  pass", "while"),
         ("iff x > 5:\n  pass", "if"),
         ("if x:\n  pass\nelseif y:\n  pass", "elif"),
         ("tyo:\n  pass\nexcept y:\n  pass", "try"),
@@ -1823,7 +1823,7 @@ klasse CPythonTracebackLegacyErrorCaretTests(
 
 
 klasse TracebackFormatMixin:
-    DEBUG_RANGES = True
+    DEBUG_RANGES = Wahr
 
     def some_exception(self):
         raise KeyError('blah')
@@ -1837,13 +1837,13 @@ klasse TracebackFormatMixin:
         return expected
 
     @cpython_only
-    def check_traceback_format(self, cleanup_func=None):
+    def check_traceback_format(self, cleanup_func=Nichts):
         from _testcapi import traceback_print
         try:
             self.some_exception()
         except KeyError as e:
             tb = e.__traceback__
-            wenn cleanup_func is not None:
+            wenn cleanup_func is not Nichts:
                 # Clear the inner frames, not this one
                 cleanup_func(tb.tb_next)
             traceback_fmt = 'Traceback (most recent call last):\n' + \
@@ -1926,7 +1926,7 @@ klasse TracebackFormatMixin:
         # Always show full diffs when this test fails
         # Note that rearranging things may require adjusting
         # the relative line numbers in the expected tracebacks
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         # Check hitting the recursion limit
         def f():
@@ -2145,7 +2145,7 @@ klasse TracebackFormatMixin:
 
         klasse UnhashableException(Exception):
             def __eq__(self, other):
-                return True
+                return Wahr
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
@@ -2232,15 +2232,15 @@ klasse TestTracebackFormat(unittest.TestCase, TracebackFormatMixin):
 @cpython_only
 @force_not_colorized_test_class
 klasse TestFallbackTracebackFormat(unittest.TestCase, TracebackFormatMixin):
-    DEBUG_RANGES = False
-    def setUp(self) -> None:
+    DEBUG_RANGES = Falsch
+    def setUp(self) -> Nichts:
         self.original_unraisable_hook = sys.unraisablehook
-        sys.unraisablehook = lambda *args: None
+        sys.unraisablehook = lambda *args: Nichts
         self.original_hook = traceback._print_exception_bltin
         traceback._print_exception_bltin = lambda *args: 1/0
         return super().setUp()
 
-    def tearDown(self) -> None:
+    def tearDown(self) -> Nichts:
         traceback._print_exception_bltin = self.original_hook
         sys.unraisablehook = self.original_unraisable_hook
         return super().tearDown()
@@ -2319,7 +2319,7 @@ klasse BaseExceptionReportingTests:
             try:
                 raise Exception
             except Exception:
-                raise ZeroDivisionError from None
+                raise ZeroDivisionError from Nichts
         except ZeroDivisionError as _:
             e = _
         lines = self.get_report(e).splitlines()
@@ -2327,7 +2327,7 @@ klasse BaseExceptionReportingTests:
         self.assertStartsWith(lines[3], 'ZeroDivisionError')
         self.assertStartsWith(lines[0], 'Traceback')
         self.assertStartsWith(lines[1], '  File')
-        self.assertIn('ZeroDivisionError from None', lines[2])
+        self.assertIn('ZeroDivisionError from Nichts', lines[2])
 
     def test_cause_and_context(self):
         # When both a cause and a context are set, only the cause should be
@@ -2409,11 +2409,11 @@ klasse BaseExceptionReportingTests:
             ['  File "myfile.py", line 100', 'SyntaxError: bad syntax'])
 
     def test_message_none(self):
-        # A message that looks like "None" should not be treated specially
-        err = self.get_report(Exception(None))
-        self.assertIn('Exception: None\n', err)
-        err = self.get_report(Exception('None'))
-        self.assertIn('Exception: None\n', err)
+        # A message that looks like "Nichts" should not be treated specially
+        err = self.get_report(Exception(Nichts))
+        self.assertIn('Exception: Nichts\n', err)
+        err = self.get_report(Exception('Nichts'))
+        self.assertIn('Exception: Nichts\n', err)
         err = self.get_report(Exception())
         self.assertIn('Exception\n', err)
         err = self.get_report(Exception(''))
@@ -2504,14 +2504,14 @@ klasse BaseExceptionReportingTests:
 
         # an exception with a broken __getattr__ raising a non expected error
         klasse BrokenException(Exception):
-            broken = False
+            broken = Falsch
             def __getattr__(self, name):
                 wenn self.broken:
                     raise ValueError(f'no {name}')
 
         e = BrokenException(123)
         vanilla = self.get_report(e)
-        e.broken = True
+        e.broken = Wahr
         self.assertEqual(
             self.get_report(e),
             vanilla + "Ignored error getting __notes__: ValueError('no __notes__')\n")
@@ -3024,7 +3024,7 @@ klasse BaseExceptionReportingTests:
         def f():
             return sys._getframe()
 
-        tb_next = None
+        tb_next = Nichts
         frame = f()
         lasti = 0
         lineno = f.__code__.co_firstlineno
@@ -3253,22 +3253,22 @@ klasse TestFrame(unittest.TestCase):
         # Since tuple.__eq__ doesn't support FrameSummary, the equality
         # operator fallbacks to FrameSummary.__eq__.
         self.assertEqual(tuple(f), f)
-        self.assertIsNone(f.locals)
+        self.assertIsNichts(f.locals)
         self.assertNotEqual(f, object())
         self.assertEqual(f, ALWAYS_EQ)
 
     def test_lazy_lines(self):
         linecache.clearcache()
-        f = traceback.FrameSummary("f", 1, "dummy", lookup_line=False)
-        self.assertEqual(None, f._lines)
+        f = traceback.FrameSummary("f", 1, "dummy", lookup_line=Falsch)
+        self.assertEqual(Nichts, f._lines)
         linecache.lazycache("f", globals())
         self.assertEqual(
             '"""Test cases fuer traceback module"""',
             f.line)
 
     def test_no_line(self):
-        f = traceback.FrameSummary("f", None, "dummy")
-        self.assertEqual(f.line, None)
+        f = traceback.FrameSummary("f", Nichts, "dummy")
+        self.assertEqual(f.line, Nichts)
 
     def test_explicit_line(self):
         f = traceback.FrameSummary("f", 1, "dummy", line="line")
@@ -3283,14 +3283,14 @@ klasse TestStack(unittest.TestCase):
 
     def test_walk_stack(self):
         def deeper():
-            return list(traceback.walk_stack(None))
-        s1, s2 = list(traceback.walk_stack(None)), deeper()
+            return list(traceback.walk_stack(Nichts))
+        s1, s2 = list(traceback.walk_stack(Nichts)), deeper()
         self.assertEqual(len(s2) - len(s1), 1)
         self.assertEqual(s2[1:], s1)
 
     def test_walk_innermost_frame(self):
         def inner():
-            return list(traceback.walk_stack(None))
+            return list(traceback.walk_stack(Nichts))
         frames = inner()
         innermost_frame, _ = frames[0]
         self.assertEqual(innermost_frame.f_code.co_name, "inner")
@@ -3304,27 +3304,27 @@ klasse TestStack(unittest.TestCase):
         self.assertEqual(len(s), 1)
 
     def test_extract_stack(self):
-        s = traceback.StackSummary.extract(traceback.walk_stack(None))
+        s = traceback.StackSummary.extract(traceback.walk_stack(Nichts))
         self.assertIsInstance(s, traceback.StackSummary)
 
     def test_extract_stack_limit(self):
-        s = traceback.StackSummary.extract(traceback.walk_stack(None), limit=5)
+        s = traceback.StackSummary.extract(traceback.walk_stack(Nichts), limit=5)
         self.assertEqual(len(s), 5)
 
     def test_extract_stack_lookup_lines(self):
         linecache.clearcache()
         linecache.updatecache('/foo.py', globals())
         c = test_code('/foo.py', 'method')
-        f = test_frame(c, None, None)
-        s = traceback.StackSummary.extract(iter([(f, 6)]), lookup_lines=True)
+        f = test_frame(c, Nichts, Nichts)
+        s = traceback.StackSummary.extract(iter([(f, 6)]), lookup_lines=Wahr)
         linecache.clearcache()
         self.assertEqual(s[0].line, "import sys")
 
     def test_extract_stackup_deferred_lookup_lines(self):
         linecache.clearcache()
         c = test_code('/foo.py', 'method')
-        f = test_frame(c, None, None)
-        s = traceback.StackSummary.extract(iter([(f, 6)]), lookup_lines=False)
+        f = test_frame(c, Nichts, Nichts)
+        s = traceback.StackSummary.extract(iter([(f, 6)]), lookup_lines=Falsch)
         self.assertEqual({}, linecache.cache)
         linecache.updatecache('/foo.py', globals())
         self.assertEqual(s[0].line, "import sys")
@@ -3355,7 +3355,7 @@ klasse TestStack(unittest.TestCase):
         linecache.updatecache('/foo.py', globals())
         c = test_code('/foo.py', 'method')
         f = test_frame(c, globals(), {'something': 1})
-        s = traceback.StackSummary.extract(iter([(f, 6)]), capture_locals=True)
+        s = traceback.StackSummary.extract(iter([(f, 6)]), capture_locals=Wahr)
         self.assertEqual(s[0].locals, {'something': '1'})
 
     def test_no_locals(self):
@@ -3363,14 +3363,14 @@ klasse TestStack(unittest.TestCase):
         c = test_code('/foo.py', 'method')
         f = test_frame(c, globals(), {'something': 1})
         s = traceback.StackSummary.extract(iter([(f, 6)]))
-        self.assertEqual(s[0].locals, None)
+        self.assertEqual(s[0].locals, Nichts)
 
     def test_format_locals(self):
         def some_inner(k, v):
             a = 1
             b = 2
             return traceback.StackSummary.extract(
-                traceback.walk_stack(None), capture_locals=True, limit=1)
+                traceback.walk_stack(Nichts), capture_locals=Wahr, limit=1)
         s = some_inner(3, 4)
         self.assertEqual(
             ['  File "%s", line %d, in some_inner\n'
@@ -3383,12 +3383,12 @@ klasse TestStack(unittest.TestCase):
 
     def test_custom_format_frame(self):
         klasse CustomStackSummary(traceback.StackSummary):
-            def format_frame_summary(self, frame_summary, colorize=False):
+            def format_frame_summary(self, frame_summary, colorize=Falsch):
                 return f'{frame_summary.filename}:{frame_summary.lineno}'
 
         def some_inner():
             return CustomStackSummary.extract(
-                traceback.walk_stack(None), limit=1)
+                traceback.walk_stack(Nichts), limit=1)
 
         s = some_inner()
         self.assertEqual(
@@ -3408,9 +3408,9 @@ klasse TestStack(unittest.TestCase):
         tb = g()
 
         klasse Skip_G(traceback.StackSummary):
-            def format_frame_summary(self, frame_summary, colorize=False):
+            def format_frame_summary(self, frame_summary, colorize=Falsch):
                 wenn frame_summary.name == 'g':
-                    return None
+                    return Nichts
                 return super().format_frame_summary(frame_summary)
 
         stack = Skip_G.extract(
@@ -3456,7 +3456,7 @@ klasse TestStack(unittest.TestCase):
                         f'    {cached_line}'
                      ]
                 )
-                ff.assert_called_with(colno, end_colno, [cached_line], None)
+                ff.assert_called_with(colno, end_colno, [cached_line], Nichts)
 
 klasse Unrepresentable:
     def __repr__(self) -> str:
@@ -3465,14 +3465,14 @@ klasse Unrepresentable:
 
 # Used in test_dont_swallow_cause_or_context_of_falsey_exception and
 # test_dont_swallow_subexceptions_of_falsey_exceptiongroup.
-klasse FalseyException(Exception):
+klasse FalschyException(Exception):
     def __bool__(self):
-        return False
+        return Falsch
 
 
-klasse FalseyExceptionGroup(ExceptionGroup):
+klasse FalschyExceptionGroup(ExceptionGroup):
     def __bool__(self):
-        return False
+        return Falsch
 
 
 klasse TestTracebackException(unittest.TestCase):
@@ -3484,9 +3484,9 @@ klasse TestTracebackException(unittest.TestCase):
             exc = traceback.TracebackException.from_exception(e)
             expected_stack = traceback.StackSummary.extract(
                 traceback.walk_tb(e.__traceback__))
-        self.assertEqual(None, exc.__cause__)
-        self.assertEqual(None, exc.__context__)
-        self.assertEqual(False, exc.__suppress_context__)
+        self.assertEqual(Nichts, exc.__cause__)
+        self.assertEqual(Nichts, exc.__context__)
+        self.assertEqual(Falsch, exc.__suppress_context__)
         self.assertEqual(expected_stack, exc.stack)
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(type(exc_obj), exc.exc_type)
@@ -3518,15 +3518,15 @@ klasse TestTracebackException(unittest.TestCase):
             exc_obj = e
             tb = e.__traceback__
             self.expected_stack = traceback.StackSummary.extract(
-                traceback.walk_tb(tb), limit=1, lookup_lines=False,
-                capture_locals=True)
+                traceback.walk_tb(tb), limit=1, lookup_lines=Falsch,
+                capture_locals=Wahr)
             self.exc = traceback.TracebackException.from_exception(
-                e, limit=1, lookup_lines=False, capture_locals=True)
+                e, limit=1, lookup_lines=Falsch, capture_locals=Wahr)
         expected_stack = self.expected_stack
         exc = self.exc
-        self.assertEqual(None, exc.__cause__)
-        self.assertEqual(None, exc.__context__)
-        self.assertEqual(False, exc.__suppress_context__)
+        self.assertEqual(Nichts, exc.__cause__)
+        self.assertEqual(Nichts, exc.__context__)
+        self.assertEqual(Falsch, exc.__suppress_context__)
         self.assertEqual(expected_stack, exc.stack)
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(type(exc_obj), exc.exc_type)
@@ -3547,10 +3547,10 @@ klasse TestTracebackException(unittest.TestCase):
             exc = traceback.TracebackException.from_exception(e)
             expected_stack = traceback.StackSummary.extract(
                 traceback.walk_tb(e.__traceback__))
-        exc_cause = traceback.TracebackException(Exception, cause, None)
+        exc_cause = traceback.TracebackException(Exception, cause, Nichts)
         self.assertEqual(exc_cause, exc.__cause__)
         self.assertEqual(exc_context, exc.__context__)
-        self.assertEqual(True, exc.__suppress_context__)
+        self.assertEqual(Wahr, exc.__suppress_context__)
         self.assertEqual(expected_stack, exc.stack)
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(type(exc_obj), exc.exc_type)
@@ -3570,9 +3570,9 @@ klasse TestTracebackException(unittest.TestCase):
             exc = traceback.TracebackException.from_exception(e)
             expected_stack = traceback.StackSummary.extract(
                 traceback.walk_tb(e.__traceback__))
-        self.assertEqual(None, exc.__cause__)
+        self.assertEqual(Nichts, exc.__cause__)
         self.assertEqual(exc_context, exc.__context__)
-        self.assertEqual(False, exc.__suppress_context__)
+        self.assertEqual(Falsch, exc.__suppress_context__)
         self.assertEqual(expected_stack, exc.stack)
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(type(exc_obj), exc.exc_type)
@@ -3613,13 +3613,13 @@ klasse TestTracebackException(unittest.TestCase):
                 raise Exception("uh oh") from cause
         except Exception as e:
             exc_obj = e
-            exc = traceback.TracebackException.from_exception(exc_obj, compact=True)
+            exc = traceback.TracebackException.from_exception(exc_obj, compact=Wahr)
             expected_stack = traceback.StackSummary.extract(
                 traceback.walk_tb(exc_obj.__traceback__))
-        exc_cause = traceback.TracebackException(Exception, cause, None)
+        exc_cause = traceback.TracebackException(Exception, cause, Nichts)
         self.assertEqual(exc_cause, exc.__cause__)
-        self.assertEqual(None, exc.__context__)
-        self.assertEqual(True, exc.__suppress_context__)
+        self.assertEqual(Nichts, exc.__context__)
+        self.assertEqual(Wahr, exc.__suppress_context__)
         self.assertEqual(expected_stack, exc.stack)
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(type(exc_obj), exc.exc_type)
@@ -3636,12 +3636,12 @@ klasse TestTracebackException(unittest.TestCase):
                 raise Exception("uh oh")
         except Exception as e:
             exc_obj = e
-            exc = traceback.TracebackException.from_exception(e, compact=True)
+            exc = traceback.TracebackException.from_exception(e, compact=Wahr)
             expected_stack = traceback.StackSummary.extract(
                 traceback.walk_tb(exc_obj.__traceback__))
-        self.assertEqual(None, exc.__cause__)
+        self.assertEqual(Nichts, exc.__cause__)
         self.assertEqual(exc_context, exc.__context__)
-        self.assertEqual(False, exc.__suppress_context__)
+        self.assertEqual(Falsch, exc.__suppress_context__)
         self.assertEqual(expected_stack, exc.stack)
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(type(exc_obj), exc.exc_type)
@@ -3655,12 +3655,12 @@ klasse TestTracebackException(unittest.TestCase):
             exc = e
 
         te = traceback.TracebackException.from_exception(
-                 exc, save_exc_type=False)
+                 exc, save_exc_type=Falsch)
         with self.assertWarns(DeprecationWarning):
-            self.assertIsNone(te.exc_type)
+            self.assertIsNichts(te.exc_type)
 
     def test_no_refs_to_exception_and_traceback_objects(self):
-        exc_obj = None
+        exc_obj = Nichts
         try:
             1/0
         except Exception as e:
@@ -3708,17 +3708,17 @@ klasse TestTracebackException(unittest.TestCase):
         self.assertNotEqual(exc, exc2)   # limit=2 truncates the output
 
         # locals change the output
-        exc3 = traceback.TracebackException.from_exception(exc_obj, capture_locals=True)
+        exc3 = traceback.TracebackException.from_exception(exc_obj, capture_locals=Wahr)
         self.assertNotEqual(exc, exc3)
 
         # there are no locals in the innermost frame
         exc4 = traceback.TracebackException.from_exception(exc_obj, limit=-1)
-        exc5 = traceback.TracebackException.from_exception(exc_obj, limit=-1, capture_locals=True)
+        exc5 = traceback.TracebackException.from_exception(exc_obj, limit=-1, capture_locals=Wahr)
         self.assertEqual(exc4, exc5)
 
         # there are locals in the next-to-innermost frame
         exc6 = traceback.TracebackException.from_exception(exc_obj, limit=-2)
-        exc7 = traceback.TracebackException.from_exception(exc_obj, limit=-2, capture_locals=True)
+        exc7 = traceback.TracebackException.from_exception(exc_obj, limit=-2, capture_locals=Wahr)
         self.assertNotEqual(exc6, exc7)
 
     def test_comparison_equivalent_exceptions_are_equal(self):
@@ -3734,7 +3734,7 @@ klasse TestTracebackException(unittest.TestCase):
     def test_unhashable(self):
         klasse UnhashableException(Exception):
             def __eq__(self, other):
-                return True
+                return Wahr
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
@@ -3768,9 +3768,9 @@ klasse TestTracebackException(unittest.TestCase):
         linecache.clearcache()
         e = Exception("uh oh")
         c = test_code('/foo.py', 'method')
-        f = test_frame(c, None, None)
-        tb = test_tb(f, 6, None, 0)
-        exc = traceback.TracebackException(Exception, e, tb, lookup_lines=False)
+        f = test_frame(c, Nichts, Nichts)
+        tb = test_tb(f, 6, Nichts, 0)
+        exc = traceback.TracebackException(Exception, e, tb, lookup_lines=Falsch)
         self.assertEqual(linecache.cache, {})
         linecache.updatecache('/foo.py', globals())
         self.assertEqual(exc.stack[0].line, "import sys")
@@ -3780,9 +3780,9 @@ klasse TestTracebackException(unittest.TestCase):
         e = Exception("uh oh")
         c = test_code('/foo.py', 'method')
         f = test_frame(c, globals(), {'something': 1, 'other': 'string', 'unrepresentable': Unrepresentable()})
-        tb = test_tb(f, 6, None, 0)
+        tb = test_tb(f, 6, Nichts, 0)
         exc = traceback.TracebackException(
-            Exception, e, tb, capture_locals=True)
+            Exception, e, tb, capture_locals=Wahr)
         self.assertEqual(
             exc.stack[0].locals,
             {'something': '1', 'other': "'string'", 'unrepresentable': '<local repr() failed>'})
@@ -3792,14 +3792,14 @@ klasse TestTracebackException(unittest.TestCase):
         e = Exception("uh oh")
         c = test_code('/foo.py', 'method')
         f = test_frame(c, globals(), {'something': 1})
-        tb = test_tb(f, 6, None, 0)
+        tb = test_tb(f, 6, Nichts, 0)
         exc = traceback.TracebackException(Exception, e, tb)
-        self.assertEqual(exc.stack[0].locals, None)
+        self.assertEqual(exc.stack[0].locals, Nichts)
 
     def test_traceback_header(self):
-        # do not print a traceback header wenn exc_traceback is None
+        # do not print a traceback header wenn exc_traceback is Nichts
         # see issue #24695
-        exc = traceback.TracebackException(Exception, Exception("haven"), None)
+        exc = traceback.TracebackException(Exception, Exception("haven"), Nichts)
         self.assertEqual(list(exc.format()), ["Exception: haven\n"])
 
     @requires_debug_ranges()
@@ -3810,7 +3810,7 @@ klasse TestTracebackException(unittest.TestCase):
                 x/0
             except Exception as e:
                 return e
-        exc = traceback.TracebackException.from_exception(f(), capture_locals=True)
+        exc = traceback.TracebackException.from_exception(f(), capture_locals=Wahr)
         output = StringIO()
         exc.print(file=output)
         self.assertEqual(
@@ -3827,16 +3827,16 @@ klasse TestTracebackException(unittest.TestCase):
         # see https://docs.python.org/3/library/stdtypes.html#truth-value-testing.
 
         try:
-            raise FalseyException from KeyError
-        except FalseyException as e:
+            raise FalschyException from KeyError
+        except FalschyException as e:
             self.assertIn(cause_message, traceback.format_exception(e))
 
         try:
             try:
                 1/0
             except ZeroDivisionError:
-                raise FalseyException
-        except FalseyException as e:
+                raise FalschyException
+        except FalschyException as e:
             self.assertIn(context_message, traceback.format_exception(e))
 
 
@@ -3893,7 +3893,7 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
 
     def test_exception_group_format_exception_onlyi_recursive(self):
         teg = traceback.TracebackException.from_exception(self.eg)
-        formatted = ''.join(teg.format_exception_only(show_group=True)).split('\n')
+        formatted = ''.join(teg.format_exception_only(show_group=Wahr)).split('\n')
         expected = [
                      'ExceptionGroup: eg2 (2 sub-exceptions)',
                      '   ExceptionGroup: eg1 (2 sub-exceptions)',
@@ -4046,7 +4046,7 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
         # see https://docs.python.org/3/library/stdtypes.html#truth-value-testing.
 
         try:
-            raise FalseyExceptionGroup("Gih", (KeyError(), NameError()))
+            raise FalschyExceptionGroup("Gih", (KeyError(), NameError()))
         except Exception as ee:
             str_exc = ''.join(traceback.format_exception(ee))
             self.assertIn('+---------------- 1 ----------------', str_exc)
@@ -4055,27 +4055,27 @@ klasse TestTracebackException_ExceptionGroups(unittest.TestCase):
         # Test with a falsey exception, in last position, as sub-exceptions.
         msg = 'bool'
         try:
-            raise FalseyExceptionGroup("Gah", (KeyError(), FalseyException(msg)))
+            raise FalschyExceptionGroup("Gah", (KeyError(), FalschyException(msg)))
         except Exception as ee:
             str_exc = traceback.format_exception(ee)
-            self.assertIn(f'{FalseyException.__name__}: {msg}', str_exc[-2])
+            self.assertIn(f'{FalschyException.__name__}: {msg}', str_exc[-2])
 
 
-global_for_suggestions = None
+global_for_suggestions = Nichts
 
 
 klasse SuggestionFormattingTestMixin:
     attr_function = getattr
 
-    def get_suggestion(self, obj, attr_name=None):
-        wenn attr_name is not None:
+    def get_suggestion(self, obj, attr_name=Nichts):
+        wenn attr_name is not Nichts:
             def callable():
                 self.attr_function(obj, attr_name)
         sonst:
             callable = obj
 
         result_lines = self.get_exception(
-            callable, slice_start=-1, slice_end=None
+            callable, slice_start=-1, slice_end=Nichts
         )
         return result_lines[0]
 
@@ -4083,33 +4083,33 @@ klasse SuggestionFormattingTestMixin:
 klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
     def test_suggestions(self):
         klasse Substitution:
-            noise = more_noise = a = bc = None
-            blech = None
+            noise = more_noise = a = bc = Nichts
+            blech = Nichts
 
         klasse Elimination:
-            noise = more_noise = a = bc = None
-            blch = None
+            noise = more_noise = a = bc = Nichts
+            blch = Nichts
 
         klasse Addition:
-            noise = more_noise = a = bc = None
-            bluchin = None
+            noise = more_noise = a = bc = Nichts
+            bluchin = Nichts
 
         klasse SubstitutionOverElimination:
-            blach = None
-            bluc = None
+            blach = Nichts
+            bluc = Nichts
 
         klasse SubstitutionOverAddition:
-            blach = None
-            bluchi = None
+            blach = Nichts
+            bluchi = Nichts
 
         klasse EliminationOverAddition:
-            blucha = None
-            bluc = None
+            blucha = Nichts
+            bluc = Nichts
 
         klasse CaseChangeOverSubstitution:
-            Luch = None
-            fluch = None
-            BLuch = None
+            Luch = Nichts
+            fluch = Nichts
+            BLuch = Nichts
 
         fuer cls, suggestion in [
             (Addition, "'bluchin'?"),
@@ -4126,7 +4126,7 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
 
     def test_suggestions_underscored(self):
         klasse A:
-            bluch = None
+            bluch = Nichts
 
         self.assertIn("'bluch'", self.get_suggestion(A(), 'blach'))
         self.assertIn("'bluch'", self.get_suggestion(A(), '_luch'))
@@ -4134,7 +4134,7 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
 
         attr_function = self.attr_function
         klasse B:
-            _bluch = None
+            _bluch = Nichts
             def method(self, name):
                 attr_function(self, name)
 
@@ -4149,14 +4149,14 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
 
     def test_do_not_trigger_for_long_attributes(self):
         klasse A:
-            blech = None
+            blech = Nichts
 
         actual = self.get_suggestion(A(), 'somethingverywrong')
         self.assertNotIn("blech", actual)
 
     def test_do_not_trigger_for_small_names(self):
         klasse MyClass:
-            vvv = mom = w = id = pytho = None
+            vvv = mom = w = id = pytho = Nichts
 
         fuer name in ("b", "v", "m", "py"):
             with self.subTest(name=name):
@@ -4170,11 +4170,11 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
 
     def test_do_not_trigger_for_big_dicts(self):
         klasse A:
-            blech = None
+            blech = Nichts
         # A klasse with a very big __dict__ will not be considered
         # fuer suggestions.
         fuer index in range(2000):
-            setattr(A, f"index_{index}", None)
+            setattr(A, f"index_{index}", Nichts)
 
         actual = self.get_suggestion(A(), 'bluch')
         self.assertNotIn("blech", actual)
@@ -4190,7 +4190,7 @@ klasse BaseSuggestionTests(SuggestionFormattingTestMixin):
 klasse GetattrSuggestionTests(BaseSuggestionTests):
     def test_suggestions_no_args(self):
         klasse A:
-            blech = None
+            blech = Nichts
             def __getattr__(self, attr):
                 raise AttributeError()
 
@@ -4198,7 +4198,7 @@ klasse GetattrSuggestionTests(BaseSuggestionTests):
         self.assertIn("blech", actual)
 
         klasse A:
-            blech = None
+            blech = Nichts
             def __getattr__(self, attr):
                 raise AttributeError
 
@@ -4207,21 +4207,21 @@ klasse GetattrSuggestionTests(BaseSuggestionTests):
 
     def test_suggestions_invalid_args(self):
         klasse NonStringifyClass:
-            __str__ = None
-            __repr__ = None
+            __str__ = Nichts
+            __repr__ = Nichts
 
         klasse A:
-            blech = None
+            blech = Nichts
             def __getattr__(self, attr):
                 raise AttributeError(NonStringifyClass())
 
         klasse B:
-            blech = None
+            blech = Nichts
             def __getattr__(self, attr):
                 raise AttributeError("Error", 23)
 
         klasse C:
-            blech = None
+            blech = Nichts
             def __getattr__(self, attr):
                 raise AttributeError(23)
 
@@ -4259,7 +4259,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             raise AttributeError(name=12, obj=23)
 
         result_lines = self.get_exception(
-            raise_attribute_error_with_bad_name, slice_start=-1, slice_end=None
+            raise_attribute_error_with_bad_name, slice_start=-1, slice_end=Nichts
         )
         self.assertNotIn("?", result_lines[-1])
 
@@ -4474,51 +4474,51 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             try:
                 exec(f"from {modname} import {name}")
             except ImportError as e:
-                raise e from None
+                raise e from Nichts
             except Exception as e:
                 self.fail(f"Expected ImportError but got {type(e)}")
         self.addCleanup(forget, modname)
 
         result_lines = self.get_exception(
-            callable, slice_start=-1, slice_end=None
+            callable, slice_start=-1, slice_end=Nichts
         )
         return result_lines[0]
 
     def test_import_from_suggestions(self):
         substitution = textwrap.dedent("""\
-            noise = more_noise = a = bc = None
-            blech = None
+            noise = more_noise = a = bc = Nichts
+            blech = Nichts
         """)
 
         elimination = textwrap.dedent("""
-            noise = more_noise = a = bc = None
-            blch = None
+            noise = more_noise = a = bc = Nichts
+            blch = Nichts
         """)
 
         addition = textwrap.dedent("""
-            noise = more_noise = a = bc = None
-            bluchin = None
+            noise = more_noise = a = bc = Nichts
+            bluchin = Nichts
         """)
 
         substitutionOverElimination = textwrap.dedent("""
-            blach = None
-            bluc = None
+            blach = Nichts
+            bluc = Nichts
         """)
 
         substitutionOverAddition = textwrap.dedent("""
-            blach = None
-            bluchi = None
+            blach = Nichts
+            bluchi = Nichts
         """)
 
         eliminationOverAddition = textwrap.dedent("""
-            blucha = None
-            bluc = None
+            blucha = Nichts
+            bluc = Nichts
         """)
 
         caseChangeOverSubstitution = textwrap.dedent("""
-            Luch = None
-            fluch = None
-            BLuch = None
+            Luch = Nichts
+            fluch = Nichts
+            BLuch = Nichts
         """)
 
         fuer code, suggestion in [
@@ -4535,12 +4535,12 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             self.assertIn(suggestion, actual)
 
     def test_import_from_suggestions_underscored(self):
-        code = "bluch = None"
+        code = "bluch = Nichts"
         self.assertIn("'bluch'", self.get_import_from_suggestion(code, 'blach'))
         self.assertIn("'bluch'", self.get_import_from_suggestion(code, '_luch'))
         self.assertIn("'bluch'", self.get_import_from_suggestion(code, '_bluch'))
 
-        code = "_bluch = None"
+        code = "_bluch = Nichts"
         self.assertIn("'_bluch'", self.get_import_from_suggestion(code, '_blach'))
         self.assertIn("'_bluch'", self.get_import_from_suggestion(code, '_luch'))
         self.assertNotIn("'_bluch'", self.get_import_from_suggestion(code, 'bluch'))
@@ -4553,13 +4553,13 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
         self.assertIn("'bluch'", self.get_import_from_suggestion(modWithNonStringAttr, 'blech'))
 
     def test_import_from_suggestions_do_not_trigger_for_long_attributes(self):
-        code = "blech = None"
+        code = "blech = Nichts"
 
         actual = self.get_suggestion(code, 'somethingverywrong')
         self.assertNotIn("blech", actual)
 
     def test_import_from_error_bad_suggestions_do_not_trigger_for_small_names(self):
-        code = "vvv = mom = w = id = pytho = None"
+        code = "vvv = mom = w = id = pytho = Nichts"
 
         fuer name in ("b", "v", "m", "py"):
             with self.subTest(name=name):
@@ -4574,7 +4574,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
     def test_import_from_suggestions_do_not_trigger_for_big_namespaces(self):
         # A module with lots of names will not be considered fuer suggestions.
         chunks = [f"index_{index} = " fuer index in range(200)]
-        chunks.append(" None")
+        chunks.append(" Nichts")
         code = " ".join(chunks)
         actual = self.get_import_from_suggestion(code, 'bluch')
         self.assertNotIn("blech", actual)
@@ -4584,39 +4584,39 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             raise ImportError(name=12, obj=23, name_from=11)
 
         result_lines = self.get_exception(
-            raise_attribute_error_with_bad_name, slice_start=-1, slice_end=None
+            raise_attribute_error_with_bad_name, slice_start=-1, slice_end=Nichts
         )
         self.assertNotIn("?", result_lines[-1])
 
     def test_name_error_suggestions(self):
         def Substitution():
-            noise = more_noise = a = bc = None
-            blech = None
+            noise = more_noise = a = bc = Nichts
+            blech = Nichts
             print(bluch)
 
         def Elimination():
-            noise = more_noise = a = bc = None
-            blch = None
+            noise = more_noise = a = bc = Nichts
+            blch = Nichts
             print(bluch)
 
         def Addition():
-            noise = more_noise = a = bc = None
-            bluchin = None
+            noise = more_noise = a = bc = Nichts
+            bluchin = Nichts
             print(bluch)
 
         def SubstitutionOverElimination():
-            blach = None
-            bluc = None
+            blach = Nichts
+            bluc = Nichts
             print(bluch)
 
         def SubstitutionOverAddition():
-            blach = None
-            bluchi = None
+            blach = Nichts
+            bluchi = Nichts
             print(bluch)
 
         def EliminationOverAddition():
-            blucha = None
-            bluc = None
+            blucha = Nichts
+            bluc = Nichts
             print(bluch)
 
         fuer func, suggestion in [(Substitution, "'blech'?"),
@@ -4659,7 +4659,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_name_error_suggestions_do_not_trigger_for_long_names(self):
         def func():
-            somethingverywronghehehehehehe = None
+            somethingverywronghehehehehehe = Nichts
             print(somethingverywronghe)
         actual = self.get_suggestion(func)
         self.assertNotIn("somethingverywronghehe", actual)
@@ -4667,19 +4667,19 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
     def test_name_error_bad_suggestions_do_not_trigger_for_small_names(self):
 
         def f_b():
-            vvv = mom = w = id = pytho = None
+            vvv = mom = w = id = pytho = Nichts
             b
 
         def f_v():
-            vvv = mom = w = id = pytho = None
+            vvv = mom = w = id = pytho = Nichts
             v
 
         def f_m():
-            vvv = mom = w = id = pytho = None
+            vvv = mom = w = id = pytho = Nichts
             m
 
         def f_py():
-            vvv = mom = w = id = pytho = None
+            vvv = mom = w = id = pytho = Nichts
             py
 
         fuer name, func in (("b", f_b), ("v", f_v), ("m", f_m), ("py", f_py)):
@@ -4775,7 +4775,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
             a771 = a772 = a773 = a774 = a775 = a776 = a777 = a778 = a779 = a780 = \
             a781 = a782 = a783 = a784 = a785 = a786 = a787 = a788 = a789 = a790 = \
             a791 = a792 = a793 = a794 = a795 = a796 = a797 = a798 = a799 = a800 \
-                = None
+                = Nichts
             print(a0)
 
         actual = self.get_suggestion(func)
@@ -4783,14 +4783,14 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
 
     def test_name_error_with_custom_exceptions(self):
         def func():
-            blech = None
+            blech = Nichts
             raise NameError()
 
         actual = self.get_suggestion(func)
         self.assertNotIn("blech", actual)
 
         def func():
-            blech = None
+            blech = Nichts
             raise NameError
 
         actual = self.get_suggestion(func)
@@ -4799,7 +4799,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
     def test_name_error_with_instance(self):
         klasse A:
             def __init__(self):
-                self.blech = None
+                self.blech = Nichts
             def foo(self):
                 blich = 1
                 x = blech
@@ -4811,7 +4811,7 @@ klasse SuggestionFormattingTestBase(SuggestionFormattingTestMixin):
     def test_unbound_local_error_with_instance(self):
         klasse A:
             def __init__(self):
-                self.blech = None
+                self.blech = Nichts
             def foo(self):
                 blich = 1
                 x = blech
@@ -4943,7 +4943,7 @@ klasse MiscTest(unittest.TestCase):
             wenn name.startswith('_'):
                 continue
             module_object = getattr(traceback, name)
-            wenn getattr(module_object, '__module__', None) == 'traceback':
+            wenn getattr(module_object, '__module__', Nichts) == 'traceback':
                 expected.add(name)
         self.assertCountEqual(traceback.__all__, expected)
 
@@ -5018,7 +5018,7 @@ klasse MiscTest(unittest.TestCase):
                 ["hovercraft"],
                 "eels"
             ),
-            None
+            Nichts
         )
 
         # gh-131936: _generate_suggestions() doesn't accept list subclasses
@@ -5051,11 +5051,11 @@ klasse MiscTest(unittest.TestCase):
 
 
 klasse TestColorizedTraceback(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
 
     def test_colorized_traceback(self):
         def foo(*args):
-            x = {'a':{'b': None}}
+            x = {'a':{'b': Nichts}}
             y = x['a']['b']['c']
 
         def baz2(*args):
@@ -5072,9 +5072,9 @@ klasse TestColorizedTraceback(unittest.TestCase):
             bar()
         except Exception as e:
             exc = traceback.TracebackException.from_exception(
-                e, capture_locals=True
+                e, capture_locals=Wahr
             )
-        lines = "".join(exc.format(colorize=True))
+        lines = "".join(exc.format(colorize=Wahr))
         red = colors["e"]
         boldr = colors["E"]
         reset = colors["z"]
@@ -5090,9 +5090,9 @@ klasse TestColorizedTraceback(unittest.TestCase):
             compile("a $ b", "<string>", "exec")
         except SyntaxError as e:
             exc = traceback.TracebackException.from_exception(
-                e, capture_locals=True
+                e, capture_locals=Wahr
             )
-        actual = "".join(exc.format(colorize=True))
+        actual = "".join(exc.format(colorize=Wahr))
         def expected(t, m, fn, l, f, E, e, z):
             return "".join(
                 [
@@ -5114,7 +5114,7 @@ klasse TestColorizedTraceback(unittest.TestCase):
             self.fail("No exception thrown.")
         except Exception as e:
             with captured_output("stderr") as tbstderr:
-                with unittest.mock.patch('_colorize.can_colorize', return_value=True):
+                with unittest.mock.patch('_colorize.can_colorize', return_value=Wahr):
                     exception_print(e)
             actual = tbstderr.getvalue().splitlines()
 
@@ -5147,11 +5147,11 @@ klasse TestColorizedTraceback(unittest.TestCase):
             foo()
         except Exception as e:
             exc = traceback.TracebackException.from_exception(
-                e, capture_locals=True
+                e, capture_locals=Wahr
             )
 
         lno_foo = foo.__code__.co_firstlineno
-        actual = "".join(exc.format(colorize=True)).splitlines()
+        actual = "".join(exc.format(colorize=Wahr)).splitlines()
         def expected(t, m, fn, l, f, E, e, z):
             return [
                 f"  + Exception Group Traceback (most recent call last):",

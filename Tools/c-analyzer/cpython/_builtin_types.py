@@ -66,23 +66,23 @@ REGEX = re.compile(textwrap.dedent(rf'''
 def _parse_line(line):
     m = re.match(REGEX, line)
     wenn not m:
-        return None
+        return Nichts
     (static, extern, capi,
      name,
      def_, decl,
      excname,
      ) = m.groups()
     wenn def_:
-        isdecl = False
+        isdecl = Falsch
         wenn extern or capi:
             raise NotImplementedError(line)
-        kind = 'static' wenn static sonst None
+        kind = 'static' wenn static sonst Nichts
     sowenn excname:
         name = f'_PyExc_{excname}'
-        isdecl = False
+        isdecl = Falsch
         kind = 'static'
     sonst:
-        isdecl = True
+        isdecl = Wahr
         wenn static:
             kind = 'static'
         sowenn extern:
@@ -90,7 +90,7 @@ def _parse_line(line):
         sowenn capi:
             kind = 'capi'
         sonst:
-            kind = None
+            kind = Nichts
     return name, isdecl, kind
 
 
@@ -108,10 +108,10 @@ klasse BuiltinTypeDecl(namedtuple('BuiltinTypeDecl', 'file lno name kind')):
         # This is similar to ._capi.CAPIItem.from_line().
         parsed = _parse_line(line)
         wenn not parsed:
-            return None
+            return Nichts
         name, isdecl, kind = parsed
         wenn not isdecl:
-            return None
+            return Nichts
         return cls.from_parsed(name, kind, filename, lno)
 
     @classmethod
@@ -146,37 +146,37 @@ klasse BuiltinTypeDecl(namedtuple('BuiltinTypeDecl', 'file lno name kind')):
     @property
     def private(self):
         wenn not self.name.startswith('_'):
-            return False
+            return Falsch
         return self.api and not self.internal
 
     @property
     def public(self):
         wenn self.kind != 'capi':
-            return False
+            return Falsch
         return not self.internal and not self.private
 
 
 klasse BuiltinTypeInfo(namedtuple('BuiltinTypeInfo', 'file lno name static decl')):
 
     @classmethod
-    def from_line(cls, line, filename, lno, *, decls=None):
+    def from_line(cls, line, filename, lno, *, decls=Nichts):
         parsed = _parse_line(line)
         wenn not parsed:
-            return None
+            return Nichts
         name, isdecl, kind = parsed
         wenn isdecl:
-            return None
+            return Nichts
         return cls.from_parsed(name, kind, filename, lno, decls=decls)
 
     @classmethod
-    def from_parsed(cls, name, kind, filename, lno, *, decls=None):
+    def from_parsed(cls, name, kind, filename, lno, *, decls=Nichts):
         wenn not kind:
-            static = False
+            static = Falsch
         sowenn kind == 'static':
-            static = True
+            static = Wahr
         sonst:
             raise NotImplementedError((filename, line, kind))
-        decl = decls.get(name) wenn decls sonst None
+        decl = decls.get(name) wenn decls sonst Nichts
         return cls(filename, lno, name, static, decl)
 
     @property
@@ -190,25 +190,25 @@ klasse BuiltinTypeInfo(namedtuple('BuiltinTypeInfo', 'file lno name static decl'
     @property
     def api(self):
         wenn not self.decl:
-            return False
+            return Falsch
         return self.decl.api
 
     @property
     def internal(self):
         wenn not self.decl:
-            return False
+            return Falsch
         return self.decl.internal
 
     @property
     def private(self):
         wenn not self.decl:
-            return False
+            return Falsch
         return self.decl.private
 
     @property
     def public(self):
         wenn not self.decl:
-            return False
+            return Falsch
         return self.decl.public
 
     @property
@@ -241,16 +241,16 @@ def _ensure_decl(decl, decls):
     prev = decls.get(decl.name)
     wenn prev:
         wenn decl.kind == 'forward':
-            return None
+            return Nichts
         wenn prev.kind != 'forward':
             wenn decl.kind == prev.kind and decl.file == prev.file:
                 assert decl.lno != prev.lno, (decl, prev)
-                return None
+                return Nichts
             raise NotImplementedError(f'duplicate {decl} (was {prev}')
     decls[decl.name] = decl
 
 
-def iter_builtin_types(filenames=None):
+def iter_builtin_types(filenames=Nichts):
     decls = {}
     seen = set()
     fuer filename in iter_header_files():
@@ -297,13 +297,13 @@ def iter_builtin_types(filenames=None):
                     yield builtin
 
 
-def resolve_matcher(showmodules=False):
-    def match(info, *, log=None):
+def resolve_matcher(showmodules=Falsch):
+    def match(info, *, log=Nichts):
         wenn not info.inmodule:
-            return True
-        wenn log is not None:
+            return Wahr
+        wenn log is not Nichts:
             log(f'ignored {info.name!r}')
-        return False
+        return Falsch
     return match
 
 

@@ -12,7 +12,7 @@ from test.support import import_helper, os_helper
 _ctypes_test = import_helper.import_module("_ctypes_test")
 
 
-libc_name = None
+libc_name = Nichts
 
 
 def setUpModule():
@@ -33,7 +33,7 @@ klasse LoaderTest(unittest.TestCase):
     unknowndll = "xxrandomnamexx"
 
     def test_load(self):
-        wenn libc_name is not None:
+        wenn libc_name is not Nichts:
             test_lib = libc_name
         sonst:
             wenn os.name == "nt":
@@ -46,7 +46,7 @@ klasse LoaderTest(unittest.TestCase):
         self.assertRaises(OSError, CDLL, self.unknowndll)
 
     def test_load_version(self):
-        wenn libc_name is None:
+        wenn libc_name is Nichts:
             self.skipTest('could not find libc')
         wenn os.path.basename(libc_name) != 'libc.so.6':
             self.skipTest('wrong libc path fuer test')
@@ -56,11 +56,11 @@ klasse LoaderTest(unittest.TestCase):
         self.assertRaises(OSError, cdll.LoadLibrary, self.unknowndll)
 
     def test_find(self):
-        found = False
+        found = Falsch
         fuer name in ("c", "m"):
             lib = find_library(name)
             wenn lib:
-                found = True
+                found = Wahr
                 cdll.LoadLibrary(lib)
                 CDLL(lib)
         wenn not found:
@@ -71,7 +71,7 @@ klasse LoaderTest(unittest.TestCase):
     def test_load_library(self):
         # CRT is no longer directly loadable. See issue23606 fuer the
         # discussion about alternative approaches.
-        #self.assertIsNotNone(libc_name)
+        #self.assertIsNotNichts(libc_name)
         wenn test.support.verbose:
             print(find_library("kernel32"))
             print(find_library("user32"))
@@ -120,16 +120,16 @@ klasse LoaderTest(unittest.TestCase):
         advapi32 = ctypes.windll.advapi32
         # Calling CloseEventLog with a NULL argument should fail,
         # but the call should not segfault or so.
-        self.assertEqual(0, advapi32.CloseEventLog(None))
+        self.assertEqual(0, advapi32.CloseEventLog(Nichts))
 
         kernel32 = ctypes.windll.kernel32
         kernel32.GetProcAddress.argtypes = c_void_p, c_char_p
         kernel32.GetProcAddress.restype = c_void_p
         proc = kernel32.GetProcAddress(advapi32._handle, b"CloseEventLog")
-        self.assertTrue(proc)
+        self.assertWahr(proc)
 
         # This is the real test: call the function via 'call_function'
-        self.assertEqual(0, _ctypes.call_function(proc, (None,)))
+        self.assertEqual(0, _ctypes.call_function(proc, (Nichts,)))
 
     @unittest.skipUnless(os.name == "nt",
                          'test specific to Windows')
@@ -182,7 +182,7 @@ klasse LoaderTest(unittest.TestCase):
 
             # Insecure load flags should succeed
             # Clear the DLL directory to avoid safe search settings propagating
-            should_pass("windll.kernel32.SetDllDirectoryW(None); WinDLL('_sqlite3.dll', winmode=0)")
+            should_pass("windll.kernel32.SetDllDirectoryW(Nichts); WinDLL('_sqlite3.dll', winmode=0)")
 
             # Full path load without DLL_LOAD_DIR shouldn't find dependency
             should_fail("WinDLL(nt._getfullpathname('_sqlite3.dll'), " +

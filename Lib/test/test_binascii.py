@@ -121,8 +121,8 @@ klasse BinASCIITest(unittest.TestCase):
         # Test base64 with strict mode on
         def _assertRegexTemplate(assert_regex: str, data: bytes, non_strict_mode_expected_result: bytes):
             with self.assertRaisesRegex(binascii.Error, assert_regex):
-                binascii.a2b_base64(self.type2test(data), strict_mode=True)
-            self.assertEqual(binascii.a2b_base64(self.type2test(data), strict_mode=False),
+                binascii.a2b_base64(self.type2test(data), strict_mode=Wahr)
+            self.assertEqual(binascii.a2b_base64(self.type2test(data), strict_mode=Falsch),
                              non_strict_mode_expected_result)
             self.assertEqual(binascii.a2b_base64(self.type2test(data)),
                              non_strict_mode_expected_result)
@@ -209,7 +209,7 @@ klasse BinASCIITest(unittest.TestCase):
 
     def test_uu(self):
         MAX_UU = 45
-        fuer backtick in (True, False):
+        fuer backtick in (Wahr, Falsch):
             lines = []
             fuer i in range(0, len(self.data), MAX_UU):
                 b = self.type2test(self.rawdata[i:i+MAX_UU])
@@ -233,16 +233,16 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertEqual(binascii.b2a_uu(b'x'), b'!>   \n')
 
         self.assertEqual(binascii.b2a_uu(b''), b' \n')
-        self.assertEqual(binascii.b2a_uu(b'', backtick=True), b'`\n')
+        self.assertEqual(binascii.b2a_uu(b'', backtick=Wahr), b'`\n')
         self.assertEqual(binascii.a2b_uu(b' \n'), b'')
         self.assertEqual(binascii.a2b_uu(b'`\n'), b'')
         self.assertEqual(binascii.b2a_uu(b'\x00Cat'), b'$ $-A=   \n')
-        self.assertEqual(binascii.b2a_uu(b'\x00Cat', backtick=True),
+        self.assertEqual(binascii.b2a_uu(b'\x00Cat', backtick=Wahr),
                          b'$`$-A=```\n')
         self.assertEqual(binascii.a2b_uu(b'$`$-A=```\n'),
                          binascii.a2b_uu(b'$ $-A=   \n'))
         with self.assertRaises(TypeError):
-            binascii.b2a_uu(b"", True)
+            binascii.b2a_uu(b"", Wahr)
 
     @hypothesis.given(
         binary=hypothesis.strategies.binary(max_size=45),
@@ -313,7 +313,7 @@ klasse BinASCIITest(unittest.TestCase):
         a2b_qp = binascii.a2b_qp
         b2a_qp = binascii.b2a_qp
 
-        a2b_qp(data=b"", header=False)  # Keyword arguments allowed
+        a2b_qp(data=b"", header=Falsch)  # Keyword arguments allowed
 
         # A test fuer SF bug 534347 (segfaults without the proper fix)
         try:
@@ -337,7 +337,7 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertEqual(a2b_qp(type2test(b"=AB")[:-1]), b"=A")
 
         self.assertEqual(a2b_qp(type2test(b'_')), b'_')
-        self.assertEqual(a2b_qp(type2test(b'_'), header=True), b' ')
+        self.assertEqual(a2b_qp(type2test(b'_'), header=Wahr), b' ')
 
         self.assertRaises(TypeError, b2a_qp, foo="bar")
         self.assertEqual(a2b_qp(type2test(b"=00\r\n=00")), b"\x00\r\n\x00")
@@ -350,12 +350,12 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertEqual(b2a_qp(type2test(b'=')), b'=3D')
 
         self.assertEqual(b2a_qp(type2test(b'_')), b'_')
-        self.assertEqual(b2a_qp(type2test(b'_'), header=True), b'=5F')
-        self.assertEqual(b2a_qp(type2test(b'x y'), header=True), b'x_y')
-        self.assertEqual(b2a_qp(type2test(b'x '), header=True), b'x=20')
-        self.assertEqual(b2a_qp(type2test(b'x y'), header=True, quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'_'), header=Wahr), b'=5F')
+        self.assertEqual(b2a_qp(type2test(b'x y'), header=Wahr), b'x_y')
+        self.assertEqual(b2a_qp(type2test(b'x '), header=Wahr), b'x=20')
+        self.assertEqual(b2a_qp(type2test(b'x y'), header=Wahr, quotetabs=Wahr),
                          b'x=20y')
-        self.assertEqual(b2a_qp(type2test(b'x\ty'), header=True), b'x\ty')
+        self.assertEqual(b2a_qp(type2test(b'x\ty'), header=Wahr), b'x\ty')
 
         self.assertEqual(b2a_qp(type2test(b' ')), b'=20')
         self.assertEqual(b2a_qp(type2test(b'\t')), b'=09')
@@ -366,41 +366,41 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertEqual(b2a_qp(type2test(b'\0')), b'=00')
 
         self.assertEqual(b2a_qp(type2test(b'\0\n')), b'=00\n')
-        self.assertEqual(b2a_qp(type2test(b'\0\n'), quotetabs=True), b'=00\n')
+        self.assertEqual(b2a_qp(type2test(b'\0\n'), quotetabs=Wahr), b'=00\n')
 
         self.assertEqual(b2a_qp(type2test(b'x y\tz')), b'x y\tz')
-        self.assertEqual(b2a_qp(type2test(b'x y\tz'), quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x y\tz'), quotetabs=Wahr),
                          b'x=20y=09z')
-        self.assertEqual(b2a_qp(type2test(b'x y\tz'), istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x y\tz'), istext=Falsch),
                          b'x y\tz')
         self.assertEqual(b2a_qp(type2test(b'x \ny\t\n')),
                          b'x=20\ny=09\n')
-        self.assertEqual(b2a_qp(type2test(b'x \ny\t\n'), quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x \ny\t\n'), quotetabs=Wahr),
                          b'x=20\ny=09\n')
-        self.assertEqual(b2a_qp(type2test(b'x \ny\t\n'), istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x \ny\t\n'), istext=Falsch),
                          b'x =0Ay\t=0A')
         self.assertEqual(b2a_qp(type2test(b'x \ry\t\r')),
                          b'x \ry\t\r')
-        self.assertEqual(b2a_qp(type2test(b'x \ry\t\r'), quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x \ry\t\r'), quotetabs=Wahr),
                          b'x=20\ry=09\r')
-        self.assertEqual(b2a_qp(type2test(b'x \ry\t\r'), istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x \ry\t\r'), istext=Falsch),
                          b'x =0Dy\t=0D')
         self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n')),
                          b'x=20\r\ny=09\r\n')
-        self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n'), quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n'), quotetabs=Wahr),
                          b'x=20\r\ny=09\r\n')
-        self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n'), istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x \r\ny\t\r\n'), istext=Falsch),
                          b'x =0D=0Ay\t=0D=0A')
 
         self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1]), b'x \r')
         self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1]), b'x\t\r')
-        self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1], quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1], quotetabs=Wahr),
                          b'x=20\r')
-        self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1], quotetabs=True),
+        self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1], quotetabs=Wahr),
                          b'x=09\r')
-        self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1], istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x \r\n')[:-1], istext=Falsch),
                          b'x =0D')
-        self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1], istext=False),
+        self.assertEqual(b2a_qp(type2test(b'x\t\r\n')[:-1], istext=Falsch),
                          b'x\t=0D')
 
         self.assertEqual(b2a_qp(type2test(b'.')), b'=2E')
@@ -475,9 +475,9 @@ klasse BinASCIITest(unittest.TestCase):
         b = self.type2test(b'hello')
         self.assertEqual(binascii.b2a_base64(b),
                          b'aGVsbG8=\n')
-        self.assertEqual(binascii.b2a_base64(b, newline=True),
+        self.assertEqual(binascii.b2a_base64(b, newline=Wahr),
                          b'aGVsbG8=\n')
-        self.assertEqual(binascii.b2a_base64(b, newline=False),
+        self.assertEqual(binascii.b2a_base64(b, newline=Falsch),
                          b'aGVsbG8=')
 
     @hypothesis.given(
@@ -511,7 +511,7 @@ klasse MemoryviewBinASCIITest(BinASCIITest):
 klasse ChecksumBigBufferTestCase(unittest.TestCase):
     """bpo-38256 - check that inputs >=4 GiB are handled correctly."""
 
-    @bigmemtest(size=_4G + 4, memuse=1, dry_run=False)
+    @bigmemtest(size=_4G + 4, memuse=1, dry_run=Falsch)
     def test_big_buffer(self, size):
         data = b"nyan" * (_1G + 1)
         self.assertEqual(binascii.crc32(data), 1044521549)

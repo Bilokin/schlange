@@ -62,11 +62,11 @@ klasse InstrumentationMultiThreadedMixin:
 
         self.after_threads()
 
-        while True:
-            any_alive = False
+        while Wahr:
+            any_alive = Falsch
             fuer t in threads:
                 wenn t.is_alive():
-                    any_alive = True
+                    any_alive = Wahr
                     break
 
             wenn not any_alive:
@@ -80,7 +80,7 @@ klasse InstrumentationMultiThreadedMixin:
 klasse MonitoringTestMixin:
     def setUp(self):
         fuer i in range(6):
-            wenn monitoring.get_tool(i) is None:
+            wenn monitoring.get_tool(i) is Nichts:
                 self.tool_id = i
                 monitoring.use_tool_id(i, self.__class__.__name__)
                 break
@@ -95,13 +95,13 @@ klasse SetPreTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
 
     def setUp(self):
         super().setUp()
-        self.called = False
+        self.called = Falsch
 
     def after_test(self):
-        self.assertTrue(self.called)
+        self.assertWahr(self.called)
 
     def trace_func(self, frame, event, arg):
-        self.called = True
+        self.called = Wahr
         return self.trace_func
 
     def after_threads(self):
@@ -116,8 +116,8 @@ klasse MonitoringMultiThreaded(
 
     def setUp(self):
         super().setUp()
-        self.set = False
-        self.called = False
+        self.set = Falsch
+        self.called = Falsch
         monitoring.register_callback(
             self.tool_id, monitoring.events.LINE, self.callback
         )
@@ -127,10 +127,10 @@ klasse MonitoringMultiThreaded(
         super().tearDown()
 
     def callback(self, *args):
-        self.called = True
+        self.called = Wahr
 
     def after_test(self):
-        self.assertTrue(self.called)
+        self.assertWahr(self.called)
 
     def during_threads(self):
         wenn self.set:
@@ -147,24 +147,24 @@ klasse SetTraceMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
     """Uses sys.settrace and repeatedly toggles instrumentation on and off"""
 
     def setUp(self):
-        self.set = False
-        self.called = False
+        self.set = Falsch
+        self.called = Falsch
 
     def after_test(self):
-        self.assertTrue(self.called)
+        self.assertWahr(self.called)
 
     def tearDown(self):
-        sys.settrace(None)
+        sys.settrace(Nichts)
 
     def trace_func(self, frame, event, arg):
-        self.called = True
+        self.called = Wahr
         return self.trace_func
 
     def during_threads(self):
         wenn self.set:
             sys.settrace(self.trace_func)
         sonst:
-            sys.settrace(None)
+            sys.settrace(Nichts)
         self.set = not self.set
 
 
@@ -173,24 +173,24 @@ klasse SetProfileMultiThreaded(InstrumentationMultiThreadedMixin, TestCase):
     """Uses sys.setprofile and repeatedly toggles instrumentation on and off"""
 
     def setUp(self):
-        self.set = False
-        self.called = False
+        self.set = Falsch
+        self.called = Falsch
 
     def after_test(self):
-        self.assertTrue(self.called)
+        self.assertWahr(self.called)
 
     def tearDown(self):
-        sys.setprofile(None)
+        sys.setprofile(Nichts)
 
     def trace_func(self, frame, event, arg):
-        self.called = True
+        self.called = Wahr
         return self.trace_func
 
     def during_threads(self):
         wenn self.set:
             sys.setprofile(self.trace_func)
         sonst:
-            sys.setprofile(None)
+            sys.setprofile(Nichts)
         self.set = not self.set
 
 
@@ -199,24 +199,24 @@ klasse SetProfileAllThreadsMultiThreaded(InstrumentationMultiThreadedMixin, Test
     """Uses threading.setprofile_all_threads and repeatedly toggles instrumentation on and off"""
 
     def setUp(self):
-        self.set = False
-        self.called = False
+        self.set = Falsch
+        self.called = Falsch
 
     def after_test(self):
-        self.assertTrue(self.called)
+        self.assertWahr(self.called)
 
     def tearDown(self):
-        threading.setprofile_all_threads(None)
+        threading.setprofile_all_threads(Nichts)
 
     def trace_func(self, frame, event, arg):
-        self.called = True
+        self.called = Wahr
         return self.trace_func
 
     def during_threads(self):
         wenn self.set:
             threading.setprofile_all_threads(self.trace_func)
         sonst:
-            threading.setprofile_all_threads(None)
+            threading.setprofile_all_threads(Nichts)
         self.set = not self.set
 
 
@@ -236,7 +236,7 @@ klasse SetProfileAllMultiThreaded(TestCase):
                 func()
 
         def my_profile(frame, event, arg):
-            return None
+            return Nichts
 
         bg_threads = []
         fuer i in range(10):
@@ -246,7 +246,7 @@ klasse SetProfileAllMultiThreaded(TestCase):
 
         fuer i in range(100):
             threading.setprofile_all_threads(my_profile)
-            threading.setprofile_all_threads(None)
+            threading.setprofile_all_threads(Nichts)
 
         done.set()
         fuer t in bg_threads:
@@ -288,13 +288,13 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         fuer thread in threads:
             thread.join()
 
-        monitoring.register_callback(self.tool_id, monitoring.events.LINE, None)
+        monitoring.register_callback(self.tool_id, monitoring.events.LINE, Nichts)
         fuer ref in self.refs:
-            self.assertEqual(ref(), None)
+            self.assertEqual(ref(), Nichts)
 
     def test_set_local_trace_opcodes(self):
         def trace(frame, event, arg):
-            frame.f_trace_opcodes = True
+            frame.f_trace_opcodes = Wahr
             return trace
 
         loops = 1_000
@@ -315,7 +315,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
                     pass
             t.join()
         finally:
-            sys.settrace(None)
+            sys.settrace(Nichts)
 
     def test_toggle_setprofile_no_new_events(self):
         # gh-136396: Make sure that profile functions are called fuer newly
@@ -336,7 +336,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
         try:
             a(1, 2)
         finally:
-            sys.setprofile(None)
+            sys.setprofile(Nichts)
         traces.clear()
 
         def thread_main(x, y):
@@ -344,14 +344,14 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             try:
                 a(x, y)
             finally:
-                sys.setprofile(None)
+                sys.setprofile(Nichts)
         t = Thread(target=thread_main, args=(100, 200))
         t.start()
         t.join()
 
         expected = [
-            ("a", "call", None),
-            ("b", "call", None),
+            ("a", "call", Nichts),
+            ("b", "call", Nichts),
             ("b", "c_call", max),
             ("b", "c_return", max),
             ("b", "return", 200),
@@ -405,7 +405,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             try:
                 yield
             finally:
-                sys.setprofile(None)
+                sys.setprofile(Nichts)
 
         self.observe_threads(profile, buf)
 
@@ -422,7 +422,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             try:
                 yield
             finally:
-                sys.settrace(None)
+                sys.settrace(Nichts)
 
         self.observe_threads(trace, buf)
 
@@ -475,7 +475,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             b.wait()
             noop()
         finally:
-            sys.settrace(None)
+            sys.settrace(Nichts)
         t.join()
 
 

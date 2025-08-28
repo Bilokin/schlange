@@ -16,20 +16,20 @@ from test import support
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse PipeTests(unittest.TestCase):
 
     def test_pipe_overlapped(self):
-        h1, h2 = windows_utils.pipe(overlapped=(True, True))
+        h1, h2 = windows_utils.pipe(overlapped=(Wahr, Wahr))
         try:
             ov1 = _overlapped.Overlapped()
-            self.assertFalse(ov1.pending)
+            self.assertFalsch(ov1.pending)
             self.assertEqual(ov1.error, 0)
 
             ov1.ReadFile(h1, 100)
-            self.assertTrue(ov1.pending)
+            self.assertWahr(ov1.pending)
             self.assertEqual(ov1.error, _winapi.ERROR_IO_PENDING)
             ERROR_IO_INCOMPLETE = 996
             try:
@@ -40,18 +40,18 @@ klasse PipeTests(unittest.TestCase):
                 raise RuntimeError('expected ERROR_IO_INCOMPLETE')
 
             ov2 = _overlapped.Overlapped()
-            self.assertFalse(ov2.pending)
+            self.assertFalsch(ov2.pending)
             self.assertEqual(ov2.error, 0)
 
             ov2.WriteFile(h2, b"hello")
             self.assertIn(ov2.error, {0, _winapi.ERROR_IO_PENDING})
 
-            res = _winapi.WaitForMultipleObjects([ov2.event], False, 100)
+            res = _winapi.WaitForMultipleObjects([ov2.event], Falsch, 100)
             self.assertEqual(res, _winapi.WAIT_OBJECT_0)
 
-            self.assertFalse(ov1.pending)
+            self.assertFalsch(ov1.pending)
             self.assertEqual(ov1.error, ERROR_IO_INCOMPLETE)
-            self.assertFalse(ov2.pending)
+            self.assertFalsch(ov2.pending)
             self.assertIn(ov2.error, {0, _winapi.ERROR_IO_PENDING})
             self.assertEqual(ov1.getresult(), b"hello")
         finally:
@@ -59,7 +59,7 @@ klasse PipeTests(unittest.TestCase):
             _winapi.CloseHandle(h2)
 
     def test_pipe_handle(self):
-        h, _ = windows_utils.pipe(overlapped=(True, True))
+        h, _ = windows_utils.pipe(overlapped=(Wahr, Wahr))
         _winapi.CloseHandle(_)
         p = windows_utils.PipeHandle(h)
         self.assertEqual(p.fileno(), h)
@@ -107,12 +107,12 @@ klasse PopenTests(unittest.TestCase):
 
         events = [ovin.event, ovout.event, overr.event]
         # Super-long timeout fuer slow buildbots.
-        res = _winapi.WaitForMultipleObjects(events, True,
+        res = _winapi.WaitForMultipleObjects(events, Wahr,
                                              int(support.SHORT_TIMEOUT * 1000))
         self.assertEqual(res, _winapi.WAIT_OBJECT_0)
-        self.assertFalse(ovout.pending)
-        self.assertFalse(overr.pending)
-        self.assertFalse(ovin.pending)
+        self.assertFalsch(ovout.pending)
+        self.assertFalsch(overr.pending)
+        self.assertFalsch(ovin.pending)
 
         self.assertEqual(ovin.getresult(), len(msg))
         out = ovout.getresult().rstrip()

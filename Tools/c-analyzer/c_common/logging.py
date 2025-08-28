@@ -10,14 +10,14 @@ _logger = logging.getLogger(__name__.rpartition('.')[0])
 
 
 def configure_logger(logger, verbosity=VERBOSITY, *,
-                     logfile=None,
+                     logfile=Nichts,
                      maxlevel=logging.CRITICAL,
                      ):
     level = max(1,  # 0 disables it, so we use the next lowest.
                 min(maxlevel,
                     maxlevel - verbosity * 10))
     logger.setLevel(level)
-    #logger.propagate = False
+    #logger.propagate = Falsch
 
     wenn not logger.handlers:
         wenn logfile:
@@ -47,7 +47,7 @@ def hide_emit_errors():
     # specific ones (e.g. BrokenPipeError) then we would need to use
     # a Handler subclass with a custom handleError() method.
     orig = logging.raiseExceptions
-    logging.raiseExceptions = False
+    logging.raiseExceptions = Falsch
     def restore():
         logging.raiseExceptions = orig
     return restore

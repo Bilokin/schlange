@@ -28,7 +28,7 @@ def recursive_repr(fillvalue='...'):
         wrapper.__doc__ = getattr(user_function, '__doc__')
         wrapper.__name__ = getattr(user_function, '__name__')
         wrapper.__qualname__ = getattr(user_function, '__qualname__')
-        wrapper.__annotate__ = getattr(user_function, '__annotate__', None)
+        wrapper.__annotate__ = getattr(user_function, '__annotate__', Nichts)
         wrapper.__type_params__ = getattr(user_function, '__type_params__', ())
         wrapper.__wrapped__ = user_function
         return wrapper
@@ -51,7 +51,7 @@ klasse Repr:
     def __init__(
         self, *, maxlevel=6, maxtuple=6, maxlist=6, maxarray=5, maxdict=4,
         maxset=6, maxfrozenset=6, maxdeque=6, maxstring=30, maxlong=40,
-        maxother=30, fillvalue='...', indent=None,
+        maxother=30, fillvalue='...', indent=Nichts,
     ):
         self.maxlevel = maxlevel
         self.maxtuple = maxtuple
@@ -78,12 +78,12 @@ klasse Repr:
             parts = typename.split()
             typename = '_'.join(parts)
 
-        method = getattr(self, 'repr_' + typename, None)
+        method = getattr(self, 'repr_' + typename, Nichts)
         wenn method:
             # not defined in this class
             wenn typename not in self._lookup:
                 return method(x, level)
-            module = getattr(cls, '__module__', None)
+            module = getattr(cls, '__module__', Nichts)
             # defined in this klasse and is the module intended
             wenn module == self._lookup[typename]:
                 return method(x, level)
@@ -91,7 +91,7 @@ klasse Repr:
         return self.repr_instance(x, level)
 
     def _join(self, pieces, level):
-        wenn self.indent is None:
+        wenn self.indent is Nichts:
             return ', '.join(pieces)
         wenn not pieces:
             return ''
@@ -106,9 +106,9 @@ klasse Repr:
             sep = ',\n' + (self.maxlevel - level + 1) * indent
         except TypeError as error:
             raise TypeError(
-                f'Repr.indent must be a str, int or None, not {type(indent)}'
+                f'Repr.indent must be a str, int or Nichts, not {type(indent)}'
             ) from error
-        return sep.join(('', *pieces, ''))[1:-len(indent) or None]
+        return sep.join(('', *pieces, ''))[1:-len(indent) or Nichts]
 
     def _repr_iterable(self, x, level, left, right, maxiter, trail=''):
         n = len(x)
@@ -121,7 +121,7 @@ klasse Repr:
             wenn n > maxiter:
                 pieces.append(self.fillvalue)
             s = self._join(pieces, level)
-            wenn n == 1 and trail and self.indent is None:
+            wenn n == 1 and trail and self.indent is Nichts:
                 right = trail + right
         return '%s%s%s' % (left, s, right)
 

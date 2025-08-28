@@ -234,7 +234,7 @@ Make sure that the function doesn't stomp the dictionary
     >>> g(1, d=4, **d)
     1 () {'a': 1, 'b': 2, 'c': 3, 'd': 4}
     >>> d == d2
-    True
+    Wahr
 
 What about willful misconduct?
 
@@ -283,11 +283,11 @@ What about willful misconduct?
       ...
     TypeError: dir() argument after * must be an iterable, not function
 
-    >>> nothing = None
+    >>> nothing = Nichts
     >>> nothing(*h)
     Traceback (most recent call last):
       ...
-    TypeError: None argument after * must be an iterable, \
+    TypeError: Nichts argument after * must be an iterable, \
 not function
 
     >>> h(**h)
@@ -328,7 +328,7 @@ not function
     >>> nothing(**h)
     Traceback (most recent call last):
       ...
-    TypeError: None argument after ** must be a mapping, \
+    TypeError: Nichts argument after ** must be a mapping, \
 not function
 
     >>> dir(b=1, **{'b': 1})
@@ -415,7 +415,7 @@ Another helper function
     ...     d[key] = i
     >>> a, b = f2(1, *(2,3), **d)
     >>> len(a), len(b), b == d
-    (3, 512, True)
+    (3, 512, Wahr)
 
     >>> klasse Foo:
     ...     def method(self, arg1, arg2):
@@ -437,10 +437,10 @@ TypeError wenn te dictionary is not empty
 
     >>> try:
     ...     silence = id(1, *{})
-    ...     True
+    ...     Wahr
     ... except:
-    ...     False
-    True
+    ...     Falsch
+    Wahr
 
     >>> id(1, **{'foo': 1})
     Traceback (most recent call last):

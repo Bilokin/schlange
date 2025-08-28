@@ -21,7 +21,7 @@ klasse CFunctionTests(DebuggerTests):
             cmds_after_breakpoint=['bt', 'py-bt'],
             # bpo-45207: Ignore 'Function "meth_varargs" not
             # defined.' message in stderr.
-            ignore_stderr=True,
+            ignore_stderr=Wahr,
         )
         self.assertIn(f'<built-in method {func_name}', gdb_output)
 
@@ -62,7 +62,7 @@ klasse CFunctionTests(DebuggerTests):
                     bar()
                 ''')
                 wenn support.verbose:
-                    print(f'  test call: {call}', flush=True)
+                    print(f'  test call: {call}', flush=Wahr)
 
                 self.check(func_name, cmd)
 

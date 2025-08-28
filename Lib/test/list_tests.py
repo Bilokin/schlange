@@ -269,7 +269,7 @@ klasse CommonTest(seq_tests.CommonTest):
         a.extend("eggs")
         self.assertEqual(a, list("spameggs"))
 
-        self.assertRaises(TypeError, a.extend, None)
+        self.assertRaises(TypeError, a.extend, Nichts)
         self.assertRaises(TypeError, a.extend)
 
         # overflow test. issue1621
@@ -347,7 +347,7 @@ klasse CommonTest(seq_tests.CommonTest):
             def __eq__(self, other):
                 wenn other == 2:
                     raise BadExc()
-                return False
+                return Falsch
 
         a = self.type2test([0, 1, 2, 3])
         self.assertRaises(BadExc, a.remove, BadCmp())
@@ -385,11 +385,11 @@ klasse CommonTest(seq_tests.CommonTest):
                 self.victim = victim
             def __eq__(self, other):
                 del self.victim[:]
-                return False
+                return Falsch
         a = self.type2test()
         a[:] = [EvilCmp(a) fuer _ in range(100)]
         # This used to seg fault before patch #1005778
-        self.assertRaises(ValueError, a.index, None)
+        self.assertRaises(ValueError, a.index, Nichts)
 
     def test_reverse(self):
         u = self.type2test([-2, -1, 0, 1, 2])
@@ -416,7 +416,7 @@ klasse CommonTest(seq_tests.CommonTest):
         u.append(2)
         self.assertEqual(u, [2])
 
-        self.assertRaises(TypeError, u.clear, None)
+        self.assertRaises(TypeError, u.clear, Nichts)
 
     def test_copy(self):
         u = self.type2test([1, 2, 3])
@@ -440,7 +440,7 @@ klasse CommonTest(seq_tests.CommonTest):
         self.assertEqual(u, v)
         self.assertIs(v[3], u[3])
 
-        self.assertRaises(TypeError, u.copy, None)
+        self.assertRaises(TypeError, u.copy, Nichts)
 
     def test_sort(self):
         u = self.type2test([1, 0])
@@ -506,7 +506,7 @@ klasse CommonTest(seq_tests.CommonTest):
         u += "eggs"
         self.assertEqual(u, self.type2test("spameggs"))
 
-        self.assertRaises(TypeError, u.__iadd__, None)
+        self.assertRaises(TypeError, u.__iadd__, Nichts)
 
     def test_imul(self):
         super().test_imul()

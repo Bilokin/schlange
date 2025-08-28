@@ -223,16 +223,16 @@ klasse CookieTests(unittest.TestCase):
 
     def test_set_secure_httponly_attrs(self):
         C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
-        C['Customer']['secure'] = True
-        C['Customer']['httponly'] = True
+        C['Customer']['secure'] = Wahr
+        C['Customer']['httponly'] = Wahr
         self.assertEqual(C.output(),
             'Set-Cookie: Customer="WILE_E_COYOTE"; HttpOnly; Secure')
 
     def test_set_secure_httponly_partitioned_attrs(self):
         C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
-        C['Customer']['secure'] = True
-        C['Customer']['httponly'] = True
-        C['Customer']['partitioned'] = True
+        C['Customer']['secure'] = Wahr
+        C['Customer']['httponly'] = Wahr
+        C['Customer']['partitioned'] = Wahr
         self.assertEqual(C.output(),
             'Set-Cookie: Customer="WILE_E_COYOTE"; HttpOnly; Partitioned; Secure')
 
@@ -252,23 +252,23 @@ klasse CookieTests(unittest.TestCase):
     def test_secure_httponly_false_if_not_present(self):
         C = cookies.SimpleCookie()
         C.load('eggs=scrambled; Path=/bacon')
-        self.assertFalse(C['eggs']['httponly'])
-        self.assertFalse(C['eggs']['secure'])
+        self.assertFalsch(C['eggs']['httponly'])
+        self.assertFalsch(C['eggs']['secure'])
 
     def test_secure_httponly_true_if_present(self):
         # Issue 16611
         C = cookies.SimpleCookie()
         C.load('eggs=scrambled; httponly; secure; Path=/bacon')
-        self.assertTrue(C['eggs']['httponly'])
-        self.assertTrue(C['eggs']['secure'])
+        self.assertWahr(C['eggs']['httponly'])
+        self.assertWahr(C['eggs']['secure'])
 
     def test_secure_httponly_true_if_have_value(self):
         # This isn't really valid, but demonstrates what the current code
         # is expected to do in this case.
         C = cookies.SimpleCookie()
         C.load('eggs=scrambled; httponly=foo; secure=bar; Path=/bacon')
-        self.assertTrue(C['eggs']['httponly'])
-        self.assertTrue(C['eggs']['secure'])
+        self.assertWahr(C['eggs']['httponly'])
+        self.assertWahr(C['eggs']['secure'])
         # Here is what it actually does; don't depend on this behavior.  These
         # checks are testing backward compatibility fuer issue 16611.
         self.assertEqual(C['eggs']['httponly'], 'foo')
@@ -351,9 +351,9 @@ klasse MorselTests(unittest.TestCase):
 
     def test_defaults(self):
         morsel = cookies.Morsel()
-        self.assertIsNone(morsel.key)
-        self.assertIsNone(morsel.value)
-        self.assertIsNone(morsel.coded_value)
+        self.assertIsNichts(morsel.key)
+        self.assertIsNichts(morsel.value)
+        self.assertIsNichts(morsel.coded_value)
         self.assertEqual(morsel.keys(), cookies.Morsel._reserved.keys())
         fuer key, val in morsel.items():
             self.assertEqual(val, '', key)
@@ -363,7 +363,7 @@ klasse MorselTests(unittest.TestCase):
         # tests valid and invalid reserved keys fuer Morsels
         fuer i in M._reserved:
             # Test that all valid keys are reported as reserved and set them
-            self.assertTrue(M.isReservedKey(i))
+            self.assertWahr(M.isReservedKey(i))
             M[i] = '%s_value' % i
         fuer i in M._reserved:
             # Test that valid key values come out fine
@@ -427,8 +427,8 @@ klasse MorselTests(unittest.TestCase):
         morsel_b = cookies.Morsel()
         morsel_b.update(attribs)
         morsel_b.set(*base_case)
-        self.assertTrue(morsel_a == morsel_b)
-        self.assertFalse(morsel_a != morsel_b)
+        self.assertWahr(morsel_a == morsel_b)
+        self.assertFalsch(morsel_a != morsel_b)
         cases = (
             ('key', 'value', 'mismatch'),
             ('key', 'mismatch', '"value"'),
@@ -439,31 +439,31 @@ klasse MorselTests(unittest.TestCase):
                 morsel_b = cookies.Morsel()
                 morsel_b.update(attribs)
                 morsel_b.set(*case_b)
-                self.assertFalse(morsel_a == morsel_b)
-                self.assertTrue(morsel_a != morsel_b)
+                self.assertFalsch(morsel_a == morsel_b)
+                self.assertWahr(morsel_a != morsel_b)
 
         morsel_b = cookies.Morsel()
         morsel_b.update(attribs)
         morsel_b.set(*base_case)
         morsel_b['comment'] = 'bar'
-        self.assertFalse(morsel_a == morsel_b)
-        self.assertTrue(morsel_a != morsel_b)
+        self.assertFalsch(morsel_a == morsel_b)
+        self.assertWahr(morsel_a != morsel_b)
 
         # test mismatched types
-        self.assertFalse(cookies.Morsel() == 1)
-        self.assertTrue(cookies.Morsel() != 1)
-        self.assertFalse(cookies.Morsel() == '')
-        self.assertTrue(cookies.Morsel() != '')
+        self.assertFalsch(cookies.Morsel() == 1)
+        self.assertWahr(cookies.Morsel() != 1)
+        self.assertFalsch(cookies.Morsel() == '')
+        self.assertWahr(cookies.Morsel() != '')
         items = list(cookies.Morsel().items())
-        self.assertFalse(cookies.Morsel() == items)
-        self.assertTrue(cookies.Morsel() != items)
+        self.assertFalsch(cookies.Morsel() == items)
+        self.assertWahr(cookies.Morsel() != items)
 
         # morsel/dict
         morsel = cookies.Morsel()
         morsel.set(*base_case)
         morsel.update(attribs)
-        self.assertTrue(morsel == dict(morsel))
-        self.assertFalse(morsel != dict(morsel))
+        self.assertWahr(morsel == dict(morsel))
+        self.assertFalsch(morsel != dict(morsel))
 
     def test_copy(self):
         morsel_a = cookies.Morsel()
@@ -556,8 +556,8 @@ klasse MorselTests(unittest.TestCase):
 
     def test_repr(self):
         morsel = cookies.Morsel()
-        self.assertEqual(repr(morsel), '<Morsel: None=None>')
-        self.assertEqual(str(morsel), 'Set-Cookie: None=None')
+        self.assertEqual(repr(morsel), '<Morsel: Nichts=Nichts>')
+        self.assertEqual(str(morsel), 'Set-Cookie: Nichts=Nichts')
         morsel.set('key', 'val', 'coded_val')
         self.assertEqual(repr(morsel), '<Morsel: key=coded_val>')
         self.assertEqual(str(morsel), 'Set-Cookie: key=coded_val')
@@ -575,7 +575,7 @@ klasse MorselTests(unittest.TestCase):
         self.assertEqual(str(morsel),
                 'Set-Cookie: key=coded_val; Comment=foo; Domain=example.com; '
                 'Max-Age=0; Path=/; Version=1')
-        morsel['secure'] = True
+        morsel['secure'] = Wahr
         morsel['httponly'] = 1
         self.assertEqual(repr(morsel),
                 '<Morsel: key=coded_val; Comment=foo; Domain=example.com; '

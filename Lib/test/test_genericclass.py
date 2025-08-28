@@ -154,7 +154,7 @@ klasse TestClassGetitem(unittest.TestCase):
         klasse C:
             def __class_getitem__(*args, **kwargs):
                 getitem_args.extend([args, kwargs])
-                return None
+                return Nichts
         C[int, str]
         self.assertEqual(getitem_args[0], (C, (int, str)))
         self.assertEqual(getitem_args[1], {})
@@ -205,33 +205,33 @@ klasse TestClassGetitem(unittest.TestCase):
 
     def test_class_getitem_with_builtins(self):
         klasse A(dict):
-            called_with = None
+            called_with = Nichts
 
             def __class_getitem__(cls, item):
                 cls.called_with = item
         klasse B(A):
             pass
-        self.assertIs(B.called_with, None)
+        self.assertIs(B.called_with, Nichts)
         B[int]
         self.assertIs(B.called_with, int)
 
     def test_class_getitem_errors(self):
         klasse C_too_few:
             def __class_getitem__(cls):
-                return None
+                return Nichts
         with self.assertRaises(TypeError):
             C_too_few[int]
 
         klasse C_too_many:
             def __class_getitem__(cls, one, two):
-                return None
+                return Nichts
         with self.assertRaises(TypeError):
             C_too_many[int]
 
     def test_class_getitem_errors_2(self):
         klasse C:
             def __class_getitem__(cls, item):
-                return None
+                return Nichts
         with self.assertRaises(TypeError):
             C()[int]
 
@@ -247,7 +247,7 @@ klasse TestClassGetitem(unittest.TestCase):
             C_not_callable[int]
 
         klasse C_is_none(tuple):
-            __class_getitem__ = None
+            __class_getitem__ = Nichts
         with self.assertRaisesRegex(TypeError, "C_is_none"):
             C_is_none[int]
 

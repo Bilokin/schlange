@@ -14,7 +14,7 @@ from test.support.script_helper import assert_python_ok
 try:
     import _testcapi
 except ImportError:
-    _testcapi = None
+    _testcapi = Nichts
 
 
 klasse AsyncYieldFrom:
@@ -43,12 +43,12 @@ def run_async(coro):
     assert coro.__class__ in {types.GeneratorType, types.CoroutineType}
 
     buffer = []
-    result = None
-    while True:
+    result = Nichts
+    while Wahr:
         try:
-            buffer.append(coro.send(None))
+            buffer.append(coro.send(Nichts))
         except StopIteration as ex:
-            result = ex.args[0] wenn ex.args sonst None
+            result = ex.args[0] wenn ex.args sonst Nichts
             break
     return buffer, result
 
@@ -57,17 +57,17 @@ def run_async__await__(coro):
     assert coro.__class__ is types.CoroutineType
     aw = coro.__await__()
     buffer = []
-    result = None
+    result = Nichts
     i = 0
-    while True:
+    while Wahr:
         try:
             wenn i % 2:
                 buffer.append(next(aw))
             sonst:
-                buffer.append(aw.send(None))
+                buffer.append(aw.send(Nichts))
             i += 1
         except StopIteration as ex:
-            result = ex.args[0] wenn ex.args sonst None
+            result = ex.args[0] wenn ex.args sonst Nichts
             break
     return buffer, result
 
@@ -490,7 +490,7 @@ klasse AsyncBadSyntaxTest(unittest.TestCase):
                 async def bar(): return await_
                 await_ = await
                 try:
-                    bar().send(None)
+                    bar().send(Nichts)
                 except StopIteration as ex:
                     return ex.args[0] + 1
             '''
@@ -520,7 +520,7 @@ klasse TokenizerRegrTest(unittest.TestCase):
         ns = {}
         exec(buf, ns, ns)
         self.assertEqual(ns['i499'](), 499)
-        self.assertTrue(inspect.iscoroutinefunction(ns['foo']))
+        self.assertWahr(inspect.iscoroutinefunction(ns['foo']))
 
 
 klasse CoroutineTest(unittest.TestCase):
@@ -535,16 +535,16 @@ klasse CoroutineTest(unittest.TestCase):
 
         f = foo()
         self.assertIsInstance(f, types.CoroutineType)
-        self.assertTrue(bool(foo.__code__.co_flags & inspect.CO_COROUTINE))
-        self.assertFalse(bool(foo.__code__.co_flags & inspect.CO_GENERATOR))
-        self.assertTrue(bool(f.cr_code.co_flags & inspect.CO_COROUTINE))
-        self.assertFalse(bool(f.cr_code.co_flags & inspect.CO_GENERATOR))
+        self.assertWahr(bool(foo.__code__.co_flags & inspect.CO_COROUTINE))
+        self.assertFalsch(bool(foo.__code__.co_flags & inspect.CO_GENERATOR))
+        self.assertWahr(bool(f.cr_code.co_flags & inspect.CO_COROUTINE))
+        self.assertFalsch(bool(f.cr_code.co_flags & inspect.CO_GENERATOR))
         self.assertEqual(run_async(f), ([], 10))
 
         self.assertEqual(run_async__await__(foo()), ([], 10))
 
         def bar(): pass
-        self.assertFalse(bool(bar.__code__.co_flags & inspect.CO_COROUTINE))
+        self.assertFalsch(bool(bar.__code__.co_flags & inspect.CO_COROUTINE))
 
     def test_func_2(self):
         async def foo():
@@ -626,10 +626,10 @@ klasse CoroutineTest(unittest.TestCase):
             await bar()
 
         f = foo()
-        self.assertEqual(f.send(None), 1)
-        self.assertEqual(f.send(None), 2)
+        self.assertEqual(f.send(Nichts), 1)
+        self.assertEqual(f.send(Nichts), 2)
         with self.assertRaises(StopIteration):
-            f.send(None)
+            f.send(Nichts)
 
     def test_func_7(self):
         async def bar():
@@ -721,7 +721,7 @@ klasse CoroutineTest(unittest.TestCase):
         next(aw)
         with self.assertRaises(ZeroDivisionError):
             with self.assertWarns(DeprecationWarning):
-                aw.throw(ZeroDivisionError, ZeroDivisionError(), None)
+                aw.throw(ZeroDivisionError, ZeroDivisionError(), Nichts)
 
     def test_func_11(self):
         async def func(): pass
@@ -735,12 +735,12 @@ klasse CoroutineTest(unittest.TestCase):
 
     def test_func_12(self):
         async def g():
-            me.send(None)
+            me.send(Nichts)
             await foo
         me = g()
         with self.assertRaisesRegex(ValueError,
                                     "coroutine already executing"):
-            me.send(None)
+            me.send(Nichts)
 
     def test_func_13(self):
         async def g():
@@ -749,7 +749,7 @@ klasse CoroutineTest(unittest.TestCase):
         coro = g()
         with self.assertRaisesRegex(
                 TypeError,
-                "can't send non-None value to a just-started coroutine"):
+                "can't send non-Nichts value to a just-started coroutine"):
             coro.send('spam')
 
         coro.close()
@@ -764,7 +764,7 @@ klasse CoroutineTest(unittest.TestCase):
             except GeneratorExit:
                 await gen()
         c = coro()
-        c.send(None)
+        c.send(Nichts)
         with self.assertRaisesRegex(RuntimeError,
                                     "coroutine ignored GeneratorExit"):
             c.close()
@@ -780,11 +780,11 @@ klasse CoroutineTest(unittest.TestCase):
         spammer_coro = spammer()
 
         with self.assertRaisesRegex(StopIteration, 'spam'):
-            reader(spammer_coro).send(None)
+            reader(spammer_coro).send(Nichts)
 
         with self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
-            reader(spammer_coro).send(None)
+            reader(spammer_coro).send(Nichts)
 
     def test_func_16(self):
         # See http://bugs.python.org/issue25887 fuer details
@@ -802,16 +802,16 @@ klasse CoroutineTest(unittest.TestCase):
         spammer = send()
 
         reader = read(spammer)
-        reader.send(None)
-        reader.send(None)
+        reader.send(Nichts)
+        reader.send(Nichts)
         with self.assertRaisesRegex(Exception, 'ham'):
             reader.throw(Exception('ham'))
 
         reader = read(spammer)
-        reader.send(None)
+        reader.send(Nichts)
         with self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
-            reader.send(None)
+            reader.send(Nichts)
 
         with self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
@@ -825,11 +825,11 @@ klasse CoroutineTest(unittest.TestCase):
 
         coro = coroutine()
         with self.assertRaisesRegex(StopIteration, 'spam'):
-            coro.send(None)
+            coro.send(Nichts)
 
         with self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
-            coro.send(None)
+            coro.send(Nichts)
 
         with self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
@@ -851,11 +851,11 @@ klasse CoroutineTest(unittest.TestCase):
         it = iter(await_iter)
 
         with self.assertRaisesRegex(StopIteration, 'spam'):
-            it.send(None)
+            it.send(Nichts)
 
         with self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
-            it.send(None)
+            it.send(Nichts)
 
         with self.assertRaisesRegex(RuntimeError,
                                     'cannot reuse already awaited coroutine'):
@@ -897,8 +897,8 @@ klasse CoroutineTest(unittest.TestCase):
 
         coro = coroutine()
 
-        coro.send(None)
-        coro.send(None)
+        coro.send(Nichts)
+        coro.send(Nichts)
 
         self.assertEqual(CHK, 0)
         coro.close()
@@ -929,31 +929,31 @@ klasse CoroutineTest(unittest.TestCase):
         @types.coroutine
         def a():
             self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_RUNNING)
-            self.assertIsNone(coro_b.cr_await)
+            self.assertIsNichts(coro_b.cr_await)
             yield
             self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_RUNNING)
-            self.assertIsNone(coro_b.cr_await)
+            self.assertIsNichts(coro_b.cr_await)
 
         async def c():
             await a()
 
         async def b():
-            self.assertIsNone(coro_b.cr_await)
+            self.assertIsNichts(coro_b.cr_await)
             await c()
-            self.assertIsNone(coro_b.cr_await)
+            self.assertIsNichts(coro_b.cr_await)
 
         coro_b = b()
         self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_CREATED)
-        self.assertIsNone(coro_b.cr_await)
+        self.assertIsNichts(coro_b.cr_await)
 
-        coro_b.send(None)
+        coro_b.send(Nichts)
         self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_SUSPENDED)
         self.assertEqual(coro_b.cr_await.cr_await.gi_code.co_name, 'a')
 
         with self.assertRaises(StopIteration):
-            coro_b.send(None)  # complete coroutine
+            coro_b.send(Nichts)  # complete coroutine
         self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_CLOSED)
-        self.assertIsNone(coro_b.cr_await)
+        self.assertIsNichts(coro_b.cr_await)
 
     def test_corotype_1(self):
         ct = types.CoroutineType
@@ -987,8 +987,8 @@ klasse CoroutineTest(unittest.TestCase):
         async def foo():
             await AsyncYieldFrom([1, 2, 3])
 
-        self.assertEqual(run_async(foo()), ([1, 2, 3], None))
-        self.assertEqual(run_async__await__(foo()), ([1, 2, 3], None))
+        self.assertEqual(run_async(foo()), ([1, 2, 3], Nichts))
+        self.assertEqual(run_async__await__(foo()), ([1, 2, 3], Nichts))
 
     def test_await_4(self):
         async def bar():
@@ -1020,7 +1020,7 @@ klasse CoroutineTest(unittest.TestCase):
         async def foo():
             return (await Awaitable())
 
-        self.assertEqual(run_async(foo()), ([52], None))
+        self.assertEqual(run_async(foo()), ([52], Nichts))
 
     def test_await_7(self):
         klasse Awaitable:
@@ -1149,12 +1149,12 @@ klasse CoroutineTest(unittest.TestCase):
             return await Wrapper(coro1())
 
         c = coro2()
-        c.send(None)
+        c.send(Nichts)
         with self.assertRaisesRegex(StopIteration, 'spam'):
             c.send('spam')
 
         c = coro2()
-        c.send(None)
+        c.send(Nichts)
         with self.assertRaises(Marker):
             c.throw(ZeroDivisionError)
 
@@ -1170,11 +1170,11 @@ klasse CoroutineTest(unittest.TestCase):
             await coro
 
         coro = coroutine()
-        coro.send(None)
+        coro.send(Nichts)
 
         with self.assertRaisesRegex(RuntimeError,
                                     "coroutine is being awaited already"):
-            waiter(coro).send(None)
+            waiter(coro).send(Nichts)
 
     def test_await_16(self):
         # See https://bugs.python.org/issue29600 fuer details.
@@ -1189,7 +1189,7 @@ klasse CoroutineTest(unittest.TestCase):
                 return await f()
 
         _, result = run_async(g())
-        self.assertIsNone(result.__context__)
+        self.assertIsNichts(result.__context__)
 
     def test_await_17(self):
         # See https://github.com/python/cpython/issues/131666 fuer details.
@@ -1217,7 +1217,7 @@ klasse CoroutineTest(unittest.TestCase):
                                       'exit-2-' + self.name])
 
                 wenn self.name == 'B':
-                    return True
+                    return Wahr
 
 
         async def foo():
@@ -1247,47 +1247,47 @@ klasse CoroutineTest(unittest.TestCase):
             def __aenter__(self):
                 pass
 
-        body_executed = None
+        body_executed = Nichts
         async def foo():
             nonlocal body_executed
-            body_executed = False
+            body_executed = Falsch
             async with CM():
-                body_executed = True
+                body_executed = Wahr
 
         with self.assertRaisesRegex(TypeError, 'asynchronous context manager.*__aexit__'):
             run_async(foo())
-        self.assertIs(body_executed, False)
+        self.assertIs(body_executed, Falsch)
 
     def test_with_3(self):
         klasse CM:
             def __aexit__(self):
                 pass
 
-        body_executed = None
+        body_executed = Nichts
         async def foo():
             nonlocal body_executed
-            body_executed = False
+            body_executed = Falsch
             async with CM():
-                body_executed = True
+                body_executed = Wahr
 
         with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
             run_async(foo())
-        self.assertIs(body_executed, False)
+        self.assertIs(body_executed, Falsch)
 
     def test_with_4(self):
         klasse CM:
             pass
 
-        body_executed = None
+        body_executed = Nichts
         async def foo():
             nonlocal body_executed
-            body_executed = False
+            body_executed = Falsch
             async with CM():
-                body_executed = True
+                body_executed = Wahr
 
         with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
             run_async(foo())
-        self.assertIs(body_executed, False)
+        self.assertIs(body_executed, Falsch)
 
     def test_with_5(self):
         # While this test doesn't make a lot of sense,
@@ -1347,8 +1347,8 @@ klasse CoroutineTest(unittest.TestCase):
                 exc.args[0],
                 "'async with' received an object from __aexit__ "
                 "that does not implement __await__: int")
-            self.assertTrue(exc.__context__ is not None)
-            self.assertTrue(isinstance(exc.__context__, ZeroDivisionError))
+            self.assertWahr(exc.__context__ is not Nichts)
+            self.assertWahr(isinstance(exc.__context__, ZeroDivisionError))
         sonst:
             self.fail('invalid asynchronous context manager did not fail')
 
@@ -1456,9 +1456,9 @@ klasse CoroutineTest(unittest.TestCase):
         try:
             run_async(foo())
         except ZeroDivisionError as exc:
-            self.assertTrue(exc.__context__ is not None)
-            self.assertTrue(isinstance(exc.__context__, ZeroDivisionError))
-            self.assertTrue(isinstance(exc.__context__.__context__,
+            self.assertWahr(exc.__context__ is not Nichts)
+            self.assertWahr(isinstance(exc.__context__, ZeroDivisionError))
+            self.assertWahr(isinstance(exc.__context__.__context__,
                                        RuntimeError))
         sonst:
             self.fail('exception from __aexit__ did not propagate')
@@ -1481,7 +1481,7 @@ klasse CoroutineTest(unittest.TestCase):
         try:
             run_async(foo())
         except NotImplementedError as exc:
-            self.assertTrue(exc.__context__ is None)
+            self.assertWahr(exc.__context__ is Nichts)
         sonst:
             self.fail('exception from __aenter__ did not propagate')
 
@@ -1493,7 +1493,7 @@ klasse CoroutineTest(unittest.TestCase):
                 return self
 
             async def __aexit__(self, *e):
-                return True
+                return Wahr
 
         async def foo():
             nonlocal CNT
@@ -1511,7 +1511,7 @@ klasse CoroutineTest(unittest.TestCase):
                 1/0
 
             async def __aexit__(self, *e):
-                return True
+                return Wahr
 
         async def foo():
             nonlocal CNT
@@ -1793,7 +1793,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         with self.assertRaisesRegex(TypeError,
                                     'an invalid object from __anext__') as c:
-            main().send(None)
+            main().send(Nichts)
 
         err = c.exception
         self.assertIsInstance(err.__cause__, ZeroDivisionError)
@@ -1818,7 +1818,7 @@ klasse CoroutineTest(unittest.TestCase):
             raise Done
 
         with self.assertRaises(Done):
-            foo().send(None)
+            foo().send(Nichts)
         self.assertEqual(result, [42])
 
     def test_for_stop_iteration(self):
@@ -1841,7 +1841,7 @@ klasse CoroutineTest(unittest.TestCase):
             raise Done
 
         with self.assertRaises(Done):
-            foo().send(None)
+            foo().send(Nichts)
         self.assertEqual(result, [42])
 
     def test_comp_1(self):
@@ -2144,7 +2144,7 @@ klasse CoroutineTest(unittest.TestCase):
             coro = func()
             # only store repr() to avoid keeping the coroutine alive
             coro_repr = repr(coro)
-            coro = None
+            coro = Nichts
             support.gc_collect()
 
             self.assertEqual(cm.unraisable.err_msg,
@@ -2177,7 +2177,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def run_gen():
             gen = (0 async fuer tgt[0] in source())
-            a = gen.asend(None)
+            a = gen.asend(Nichts)
             with self.assertRaises(RuntimeError) as cm:
                 await a
             self.assertIsInstance(cm.exception.__cause__, StopAsyncIteration)
@@ -2209,7 +2209,7 @@ klasse CoroutineTest(unittest.TestCase):
 
         async def run_gen():
             gen = (0 async fuer i, j in badpairs())
-            a = gen.asend(None)
+            a = gen.asend(Nichts)
             with self.assertRaises(RuntimeError) as cm:
                 await a
             self.assertIsInstance(cm.exception.__cause__, StopAsyncIteration)
@@ -2238,9 +2238,9 @@ klasse CoroutineTest(unittest.TestCase):
         async def f():
             pass
         gen = f()
-        self.assertIsNotNone(gen.cr_frame)
+        self.assertIsNotNichts(gen.cr_frame)
         gen.close()
-        self.assertIsNone(gen.cr_frame)
+        self.assertIsNichts(gen.cr_frame)
 
     def test_stack_in_coroutine_throw(self):
         # Regression test fuer https://github.com/python/cpython/issues/93592
@@ -2260,7 +2260,7 @@ klasse CoroutineTest(unittest.TestCase):
                 yield len(traceback.extract_stack())
 
         coro = a()
-        len_send = coro.send(None)
+        len_send = coro.send(Nichts)
         len_throw = coro.throw(ZeroDivisionError)
         # before fixing, visible stack from throw would be shorter than from send.
         self.assertEqual(len_send, len_throw)
@@ -2307,7 +2307,7 @@ klasse CoroAsyncIOCompatTest(unittest.TestCase):
             pass
         finally:
             loop.close()
-            asyncio.events._set_event_loop_policy(None)
+            asyncio.events._set_event_loop_policy(Nichts)
 
         self.assertEqual(buffer, [1, 2, 'MyException'])
 
@@ -2327,7 +2327,7 @@ klasse OriginTrackingTest(unittest.TestCase):
             self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 0)
 
             with contextlib.closing(corofn()) as coro:
-                self.assertIsNone(coro.cr_origin)
+                self.assertIsNichts(coro.cr_origin)
 
             sys.set_coroutine_origin_tracking_depth(1)
             self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 1)
@@ -2352,7 +2352,7 @@ klasse OriginTrackingTest(unittest.TestCase):
             # Check we handle running out of frames correctly
             sys.set_coroutine_origin_tracking_depth(1000)
             with contextlib.closing(corofn()) as coro:
-                self.assertTrue(2 < len(coro.cr_origin) < 1000)
+                self.assertWahr(2 < len(coro.cr_origin) < 1000)
 
             # We can't set depth negative
             with self.assertRaises(ValueError):
@@ -2464,7 +2464,7 @@ klasse UnawaitedWarningDuringShutdownTest(unittest.TestCase):
 
 
 @support.cpython_only
-@unittest.skipIf(_testcapi is None, "requires _testcapi")
+@unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
 klasse CAPITest(unittest.TestCase):
 
     def test_tp_await_1(self):
@@ -2474,7 +2474,7 @@ klasse CAPITest(unittest.TestCase):
             future = at(iter([1]))
             return (await future)
 
-        self.assertEqual(foo().send(None), 1)
+        self.assertEqual(foo().send(Nichts), 1)
 
     def test_tp_await_2(self):
         # Test tp_await to __await__ mapping
@@ -2491,7 +2491,7 @@ klasse CAPITest(unittest.TestCase):
 
         with self.assertRaisesRegex(
                 TypeError, "__await__.*must return an iterator, not int"):
-            self.assertEqual(foo().send(None), 1)
+            self.assertEqual(foo().send(Nichts), 1)
 
 
 wenn __name__=="__main__":

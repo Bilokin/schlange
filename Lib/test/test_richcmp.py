@@ -45,7 +45,7 @@ klasse Vector:
     def __setitem__(self, i, v):
         self.data[i] = v
 
-    __hash__ = None # Vectors cannot be hashed
+    __hash__ = Nichts # Vectors cannot be hashed
 
     def __bool__(self):
         raise TypeError("Vectors cannot be used in Boolean contexts")
@@ -100,7 +100,7 @@ klasse VectorTest(unittest.TestCase):
             self.assertEqual(len(realres), len(expres))
             fuer i in range(len(realres)):
                 # results are bool, so we can use "is" here
-                self.assertTrue(realres[i] is expres[i])
+                self.assertWahr(realres[i] is expres[i])
 
     def test_mixed(self):
         # check that comparisons involving Vector objects
@@ -117,12 +117,12 @@ klasse VectorTest(unittest.TestCase):
         # try mixed arguments (but not (a, b) as that won't return a bool vector)
         args = [(a, Vector(b)), (Vector(a), b), (Vector(a), Vector(b))]
         fuer (a, b) in args:
-            self.checkequal("lt", a, b, [True,  True,  False, False, False])
-            self.checkequal("le", a, b, [True,  True,  True,  False, False])
-            self.checkequal("eq", a, b, [False, False, True,  False, False])
-            self.checkequal("ne", a, b, [True,  True,  False, True,  True ])
-            self.checkequal("gt", a, b, [False, False, False, True,  True ])
-            self.checkequal("ge", a, b, [False, False, True,  True,  True ])
+            self.checkequal("lt", a, b, [Wahr,  Wahr,  Falsch, Falsch, Falsch])
+            self.checkequal("le", a, b, [Wahr,  Wahr,  Wahr,  Falsch, Falsch])
+            self.checkequal("eq", a, b, [Falsch, Falsch, Wahr,  Falsch, Falsch])
+            self.checkequal("ne", a, b, [Wahr,  Wahr,  Falsch, Wahr,  Wahr ])
+            self.checkequal("gt", a, b, [Falsch, Falsch, Falsch, Wahr,  Wahr ])
+            self.checkequal("ge", a, b, [Falsch, Falsch, Wahr,  Wahr,  Wahr ])
 
             fuer ops in opmap.values():
                 fuer op in ops:
@@ -157,30 +157,30 @@ klasse NumberTest(unittest.TestCase):
                 fuer op in opmap[opname]:
                     realres = op(ta, tb)
                     realres = getattr(realres, "x", realres)
-                    self.assertTrue(realres is expres)
+                    self.assertWahr(realres is expres)
 
     def test_values(self):
         # check all operators and all comparison results
-        self.checkvalue("lt", 0, 0, False)
-        self.checkvalue("le", 0, 0, True )
-        self.checkvalue("eq", 0, 0, True )
-        self.checkvalue("ne", 0, 0, False)
-        self.checkvalue("gt", 0, 0, False)
-        self.checkvalue("ge", 0, 0, True )
+        self.checkvalue("lt", 0, 0, Falsch)
+        self.checkvalue("le", 0, 0, Wahr )
+        self.checkvalue("eq", 0, 0, Wahr )
+        self.checkvalue("ne", 0, 0, Falsch)
+        self.checkvalue("gt", 0, 0, Falsch)
+        self.checkvalue("ge", 0, 0, Wahr )
 
-        self.checkvalue("lt", 0, 1, True )
-        self.checkvalue("le", 0, 1, True )
-        self.checkvalue("eq", 0, 1, False)
-        self.checkvalue("ne", 0, 1, True )
-        self.checkvalue("gt", 0, 1, False)
-        self.checkvalue("ge", 0, 1, False)
+        self.checkvalue("lt", 0, 1, Wahr )
+        self.checkvalue("le", 0, 1, Wahr )
+        self.checkvalue("eq", 0, 1, Falsch)
+        self.checkvalue("ne", 0, 1, Wahr )
+        self.checkvalue("gt", 0, 1, Falsch)
+        self.checkvalue("ge", 0, 1, Falsch)
 
-        self.checkvalue("lt", 1, 0, False)
-        self.checkvalue("le", 1, 0, False)
-        self.checkvalue("eq", 1, 0, False)
-        self.checkvalue("ne", 1, 0, True )
-        self.checkvalue("gt", 1, 0, True )
-        self.checkvalue("ge", 1, 0, True )
+        self.checkvalue("lt", 1, 0, Falsch)
+        self.checkvalue("le", 1, 0, Falsch)
+        self.checkvalue("eq", 1, 0, Falsch)
+        self.checkvalue("ne", 1, 0, Wahr )
+        self.checkvalue("gt", 1, 0, Wahr )
+        self.checkvalue("ge", 1, 0, Wahr )
 
 klasse MiscTest(unittest.TestCase):
 
@@ -233,8 +233,8 @@ klasse MiscTest(unittest.TestCase):
         b.append(17)
         # Even recursive lists of different lengths are different,
         # but they cannot be ordered
-        self.assertTrue(not (a == b))
-        self.assertTrue(a != b)
+        self.assertWahr(not (a == b))
+        self.assertWahr(a != b)
         self.assertRaises(RecursionError, operator.lt, a, b)
         self.assertRaises(RecursionError, operator.le, a, b)
         self.assertRaises(RecursionError, operator.gt, a, b)
@@ -244,25 +244,25 @@ klasse MiscTest(unittest.TestCase):
         self.assertRaises(RecursionError, operator.ne, a, b)
         a.insert(0, 11)
         b.insert(0, 12)
-        self.assertTrue(not (a == b))
-        self.assertTrue(a != b)
-        self.assertTrue(a < b)
+        self.assertWahr(not (a == b))
+        self.assertWahr(a != b)
+        self.assertWahr(a < b)
 
     def test_exception_message(self):
         klasse Spam:
             pass
 
         tests = [
-            (lambda: 42 < None, r"'<' .* of 'int' and 'NoneType'"),
-            (lambda: None < 42, r"'<' .* of 'NoneType' and 'int'"),
-            (lambda: 42 > None, r"'>' .* of 'int' and 'NoneType'"),
-            (lambda: "foo" < None, r"'<' .* of 'str' and 'NoneType'"),
+            (lambda: 42 < Nichts, r"'<' .* of 'int' and 'NoneType'"),
+            (lambda: Nichts < 42, r"'<' .* of 'NoneType' and 'int'"),
+            (lambda: 42 > Nichts, r"'>' .* of 'int' and 'NoneType'"),
+            (lambda: "foo" < Nichts, r"'<' .* of 'str' and 'NoneType'"),
             (lambda: "foo" >= 666, r"'>=' .* of 'str' and 'int'"),
-            (lambda: 42 <= None, r"'<=' .* of 'int' and 'NoneType'"),
-            (lambda: 42 >= None, r"'>=' .* of 'int' and 'NoneType'"),
+            (lambda: 42 <= Nichts, r"'<=' .* of 'int' and 'NoneType'"),
+            (lambda: 42 >= Nichts, r"'>=' .* of 'int' and 'NoneType'"),
             (lambda: 42 < [], r"'<' .* of 'int' and 'list'"),
             (lambda: () > [], r"'>' .* of 'tuple' and 'list'"),
-            (lambda: None >= None, r"'>=' .* of 'NoneType' and 'NoneType'"),
+            (lambda: Nichts >= Nichts, r"'>=' .* of 'NoneType' and 'NoneType'"),
             (lambda: Spam() < 42, r"'<' .* of 'Spam' and 'int'"),
             (lambda: 42 < Spam(), r"'<' .* of 'int' and 'Spam'"),
             (lambda: Spam() <= Spam(), r"'<=' .* of 'Spam' and 'Spam'"),
@@ -293,7 +293,7 @@ klasse DictTest(unittest.TestCase):
         self.assertEqual(imag1a, imag1a)
         self.assertEqual(imag1a, imag1b)
         self.assertEqual(imag2, imag2)
-        self.assertTrue(imag1a != imag2)
+        self.assertWahr(imag1a != imag2)
         fuer opname in ("lt", "le", "gt", "ge"):
             fuer op in opmap[opname]:
                 self.assertRaises(TypeError, op, imag1a, imag2)
@@ -303,19 +303,19 @@ klasse ListTest(unittest.TestCase):
     def test_coverage(self):
         # exercise all comparisons fuer lists
         x = [42]
-        self.assertIs(x<x, False)
-        self.assertIs(x<=x, True)
-        self.assertIs(x==x, True)
-        self.assertIs(x!=x, False)
-        self.assertIs(x>x, False)
-        self.assertIs(x>=x, True)
+        self.assertIs(x<x, Falsch)
+        self.assertIs(x<=x, Wahr)
+        self.assertIs(x==x, Wahr)
+        self.assertIs(x!=x, Falsch)
+        self.assertIs(x>x, Falsch)
+        self.assertIs(x>=x, Wahr)
         y = [42, 42]
-        self.assertIs(x<y, True)
-        self.assertIs(x<=y, True)
-        self.assertIs(x==y, False)
-        self.assertIs(x!=y, True)
-        self.assertIs(x>y, False)
-        self.assertIs(x>=y, False)
+        self.assertIs(x<y, Wahr)
+        self.assertIs(x<=y, Wahr)
+        self.assertIs(x==y, Falsch)
+        self.assertIs(x!=y, Wahr)
+        self.assertIs(x>y, Falsch)
+        self.assertIs(x>=y, Falsch)
 
     def test_badentry(self):
         # make sure that exceptions fuer item comparison are properly
@@ -337,13 +337,13 @@ klasse ListTest(unittest.TestCase):
         # in Objects/listobject.c::list_richcompare()
         klasse Good:
             def __lt__(self, other):
-                return True
+                return Wahr
 
         x = [Good()]
         y = [Good()]
 
         fuer op in opmap["lt"]:
-            self.assertIs(op(x, y), True)
+            self.assertIs(op(x, y), Wahr)
 
 
 wenn __name__ == "__main__":

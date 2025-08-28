@@ -19,106 +19,106 @@ klasse BoolTest(unittest.TestCase):
         self.assertRaises(TypeError, int.__new__, bool, 0)
 
     def test_repr(self):
-        self.assertEqual(repr(False), 'False')
-        self.assertEqual(repr(True), 'True')
-        self.assertIs(eval(repr(False)), False)
-        self.assertIs(eval(repr(True)), True)
+        self.assertEqual(repr(Falsch), 'Falsch')
+        self.assertEqual(repr(Wahr), 'Wahr')
+        self.assertIs(eval(repr(Falsch)), Falsch)
+        self.assertIs(eval(repr(Wahr)), Wahr)
 
     def test_str(self):
-        self.assertEqual(str(False), 'False')
-        self.assertEqual(str(True), 'True')
+        self.assertEqual(str(Falsch), 'Falsch')
+        self.assertEqual(str(Wahr), 'Wahr')
 
     def test_int(self):
-        self.assertEqual(int(False), 0)
-        self.assertIsNot(int(False), False)
-        self.assertEqual(int(True), 1)
-        self.assertIsNot(int(True), True)
+        self.assertEqual(int(Falsch), 0)
+        self.assertIsNot(int(Falsch), Falsch)
+        self.assertEqual(int(Wahr), 1)
+        self.assertIsNot(int(Wahr), Wahr)
 
     def test_float(self):
-        self.assertEqual(float(False), 0.0)
-        self.assertIsNot(float(False), False)
-        self.assertEqual(float(True), 1.0)
-        self.assertIsNot(float(True), True)
+        self.assertEqual(float(Falsch), 0.0)
+        self.assertIsNot(float(Falsch), Falsch)
+        self.assertEqual(float(Wahr), 1.0)
+        self.assertIsNot(float(Wahr), Wahr)
 
     def test_complex(self):
-        self.assertEqual(complex(False), 0j)
-        self.assertEqual(complex(False), False)
-        self.assertEqual(complex(True), 1+0j)
-        self.assertEqual(complex(True), True)
+        self.assertEqual(complex(Falsch), 0j)
+        self.assertEqual(complex(Falsch), Falsch)
+        self.assertEqual(complex(Wahr), 1+0j)
+        self.assertEqual(complex(Wahr), Wahr)
 
     def test_math(self):
-        self.assertEqual(+False, 0)
-        self.assertIsNot(+False, False)
-        self.assertEqual(-False, 0)
-        self.assertIsNot(-False, False)
-        self.assertEqual(abs(False), 0)
-        self.assertIsNot(abs(False), False)
-        self.assertEqual(+True, 1)
-        self.assertIsNot(+True, True)
-        self.assertEqual(-True, -1)
-        self.assertEqual(abs(True), 1)
-        self.assertIsNot(abs(True), True)
+        self.assertEqual(+Falsch, 0)
+        self.assertIsNot(+Falsch, Falsch)
+        self.assertEqual(-Falsch, 0)
+        self.assertIsNot(-Falsch, Falsch)
+        self.assertEqual(abs(Falsch), 0)
+        self.assertIsNot(abs(Falsch), Falsch)
+        self.assertEqual(+Wahr, 1)
+        self.assertIsNot(+Wahr, Wahr)
+        self.assertEqual(-Wahr, -1)
+        self.assertEqual(abs(Wahr), 1)
+        self.assertIsNot(abs(Wahr), Wahr)
         with self.assertWarns(DeprecationWarning):
             # We need to put the bool in a variable, because the constant
-            # ~False is evaluated at compile time due to constant folding;
+            # ~Falsch is evaluated at compile time due to constant folding;
             # consequently the DeprecationWarning would be issued during
             # module loading and not during test execution.
-            false = False
+            false = Falsch
             self.assertEqual(~false, -1)
         with self.assertWarns(DeprecationWarning):
             # also check that the warning is issued in case of constant
             # folding at compile time
-            self.assertEqual(eval("~False"), -1)
+            self.assertEqual(eval("~Falsch"), -1)
         with self.assertWarns(DeprecationWarning):
-            true = True
+            true = Wahr
             self.assertEqual(~true, -2)
         with self.assertWarns(DeprecationWarning):
-            self.assertEqual(eval("~True"), -2)
+            self.assertEqual(eval("~Wahr"), -2)
 
-        self.assertEqual(False+2, 2)
-        self.assertEqual(True+2, 3)
-        self.assertEqual(2+False, 2)
-        self.assertEqual(2+True, 3)
+        self.assertEqual(Falsch+2, 2)
+        self.assertEqual(Wahr+2, 3)
+        self.assertEqual(2+Falsch, 2)
+        self.assertEqual(2+Wahr, 3)
 
-        self.assertEqual(False+False, 0)
-        self.assertIsNot(False+False, False)
-        self.assertEqual(False+True, 1)
-        self.assertIsNot(False+True, True)
-        self.assertEqual(True+False, 1)
-        self.assertIsNot(True+False, True)
-        self.assertEqual(True+True, 2)
+        self.assertEqual(Falsch+Falsch, 0)
+        self.assertIsNot(Falsch+Falsch, Falsch)
+        self.assertEqual(Falsch+Wahr, 1)
+        self.assertIsNot(Falsch+Wahr, Wahr)
+        self.assertEqual(Wahr+Falsch, 1)
+        self.assertIsNot(Wahr+Falsch, Wahr)
+        self.assertEqual(Wahr+Wahr, 2)
 
-        self.assertEqual(True-True, 0)
-        self.assertIsNot(True-True, False)
-        self.assertEqual(False-False, 0)
-        self.assertIsNot(False-False, False)
-        self.assertEqual(True-False, 1)
-        self.assertIsNot(True-False, True)
-        self.assertEqual(False-True, -1)
+        self.assertEqual(Wahr-Wahr, 0)
+        self.assertIsNot(Wahr-Wahr, Falsch)
+        self.assertEqual(Falsch-Falsch, 0)
+        self.assertIsNot(Falsch-Falsch, Falsch)
+        self.assertEqual(Wahr-Falsch, 1)
+        self.assertIsNot(Wahr-Falsch, Wahr)
+        self.assertEqual(Falsch-Wahr, -1)
 
-        self.assertEqual(True*1, 1)
-        self.assertEqual(False*1, 0)
-        self.assertIsNot(False*1, False)
+        self.assertEqual(Wahr*1, 1)
+        self.assertEqual(Falsch*1, 0)
+        self.assertIsNot(Falsch*1, Falsch)
 
-        self.assertEqual(True/1, 1)
-        self.assertIsNot(True/1, True)
-        self.assertEqual(False/1, 0)
-        self.assertIsNot(False/1, False)
+        self.assertEqual(Wahr/1, 1)
+        self.assertIsNot(Wahr/1, Wahr)
+        self.assertEqual(Falsch/1, 0)
+        self.assertIsNot(Falsch/1, Falsch)
 
-        self.assertEqual(True%1, 0)
-        self.assertIsNot(True%1, False)
-        self.assertEqual(True%2, 1)
-        self.assertIsNot(True%2, True)
-        self.assertEqual(False%1, 0)
-        self.assertIsNot(False%1, False)
+        self.assertEqual(Wahr%1, 0)
+        self.assertIsNot(Wahr%1, Falsch)
+        self.assertEqual(Wahr%2, 1)
+        self.assertIsNot(Wahr%2, Wahr)
+        self.assertEqual(Falsch%1, 0)
+        self.assertIsNot(Falsch%1, Falsch)
 
-        fuer b in False, True:
+        fuer b in Falsch, Wahr:
             fuer i in 0, 1, 2:
                 self.assertEqual(b**i, int(b)**i)
                 self.assertIsNot(b**i, bool(int(b)**i))
 
-        fuer a in False, True:
-            fuer b in False, True:
+        fuer a in Falsch, Wahr:
+            fuer b in Falsch, Wahr:
                 self.assertIs(a&b, bool(int(a)&int(b)))
                 self.assertIs(a|b, bool(int(a)|int(b)))
                 self.assertIs(a^b, bool(int(a)^int(b)))
@@ -135,128 +135,128 @@ klasse BoolTest(unittest.TestCase):
                 self.assertEqual(int(a)^b, int(a)^int(b))
                 self.assertIsNot(int(a)^b, bool(int(a)^int(b)))
 
-        self.assertIs(1==1, True)
-        self.assertIs(1==0, False)
-        self.assertIs(0<1, True)
-        self.assertIs(1<0, False)
-        self.assertIs(0<=0, True)
-        self.assertIs(1<=0, False)
-        self.assertIs(1>0, True)
-        self.assertIs(1>1, False)
-        self.assertIs(1>=1, True)
-        self.assertIs(0>=1, False)
-        self.assertIs(0!=1, True)
-        self.assertIs(0!=0, False)
+        self.assertIs(1==1, Wahr)
+        self.assertIs(1==0, Falsch)
+        self.assertIs(0<1, Wahr)
+        self.assertIs(1<0, Falsch)
+        self.assertIs(0<=0, Wahr)
+        self.assertIs(1<=0, Falsch)
+        self.assertIs(1>0, Wahr)
+        self.assertIs(1>1, Falsch)
+        self.assertIs(1>=1, Wahr)
+        self.assertIs(0>=1, Falsch)
+        self.assertIs(0!=1, Wahr)
+        self.assertIs(0!=0, Falsch)
 
         x = [1]
-        self.assertIs(x is x, True)
-        self.assertIs(x is not x, False)
+        self.assertIs(x is x, Wahr)
+        self.assertIs(x is not x, Falsch)
 
-        self.assertIs(1 in x, True)
-        self.assertIs(0 in x, False)
-        self.assertIs(1 not in x, False)
-        self.assertIs(0 not in x, True)
+        self.assertIs(1 in x, Wahr)
+        self.assertIs(0 in x, Falsch)
+        self.assertIs(1 not in x, Falsch)
+        self.assertIs(0 not in x, Wahr)
 
         x = {1: 2}
-        self.assertIs(x is x, True)
-        self.assertIs(x is not x, False)
+        self.assertIs(x is x, Wahr)
+        self.assertIs(x is not x, Falsch)
 
-        self.assertIs(1 in x, True)
-        self.assertIs(0 in x, False)
-        self.assertIs(1 not in x, False)
-        self.assertIs(0 not in x, True)
+        self.assertIs(1 in x, Wahr)
+        self.assertIs(0 in x, Falsch)
+        self.assertIs(1 not in x, Falsch)
+        self.assertIs(0 not in x, Wahr)
 
-        self.assertIs(not True, False)
-        self.assertIs(not False, True)
+        self.assertIs(not Wahr, Falsch)
+        self.assertIs(not Falsch, Wahr)
 
     def test_convert(self):
         self.assertRaises(TypeError, bool, 42, 42)
-        self.assertIs(bool(10), True)
-        self.assertIs(bool(1), True)
-        self.assertIs(bool(-1), True)
-        self.assertIs(bool(0), False)
-        self.assertIs(bool("hello"), True)
-        self.assertIs(bool(""), False)
-        self.assertIs(bool(), False)
+        self.assertIs(bool(10), Wahr)
+        self.assertIs(bool(1), Wahr)
+        self.assertIs(bool(-1), Wahr)
+        self.assertIs(bool(0), Falsch)
+        self.assertIs(bool("hello"), Wahr)
+        self.assertIs(bool(""), Falsch)
+        self.assertIs(bool(), Falsch)
 
     def test_keyword_args(self):
         with self.assertRaisesRegex(TypeError, 'keyword argument'):
             bool(x=10)
 
     def test_format(self):
-        self.assertEqual("%d" % False, "0")
-        self.assertEqual("%d" % True, "1")
-        self.assertEqual("%x" % False, "0")
-        self.assertEqual("%x" % True, "1")
+        self.assertEqual("%d" % Falsch, "0")
+        self.assertEqual("%d" % Wahr, "1")
+        self.assertEqual("%x" % Falsch, "0")
+        self.assertEqual("%x" % Wahr, "1")
 
     def test_hasattr(self):
-        self.assertIs(hasattr([], "append"), True)
-        self.assertIs(hasattr([], "wobble"), False)
+        self.assertIs(hasattr([], "append"), Wahr)
+        self.assertIs(hasattr([], "wobble"), Falsch)
 
     def test_callable(self):
-        self.assertIs(callable(len), True)
-        self.assertIs(callable(1), False)
+        self.assertIs(callable(len), Wahr)
+        self.assertIs(callable(1), Falsch)
 
     def test_isinstance(self):
-        self.assertIs(isinstance(True, bool), True)
-        self.assertIs(isinstance(False, bool), True)
-        self.assertIs(isinstance(True, int), True)
-        self.assertIs(isinstance(False, int), True)
-        self.assertIs(isinstance(1, bool), False)
-        self.assertIs(isinstance(0, bool), False)
+        self.assertIs(isinstance(Wahr, bool), Wahr)
+        self.assertIs(isinstance(Falsch, bool), Wahr)
+        self.assertIs(isinstance(Wahr, int), Wahr)
+        self.assertIs(isinstance(Falsch, int), Wahr)
+        self.assertIs(isinstance(1, bool), Falsch)
+        self.assertIs(isinstance(0, bool), Falsch)
 
     def test_issubclass(self):
-        self.assertIs(issubclass(bool, int), True)
-        self.assertIs(issubclass(int, bool), False)
+        self.assertIs(issubclass(bool, int), Wahr)
+        self.assertIs(issubclass(int, bool), Falsch)
 
     def test_contains(self):
-        self.assertIs(1 in {}, False)
-        self.assertIs(1 in {1:1}, True)
+        self.assertIs(1 in {}, Falsch)
+        self.assertIs(1 in {1:1}, Wahr)
 
     def test_string(self):
-        self.assertIs("xyz".endswith("z"), True)
-        self.assertIs("xyz".endswith("x"), False)
-        self.assertIs("xyz0123".isalnum(), True)
-        self.assertIs("@#$%".isalnum(), False)
-        self.assertIs("xyz".isalpha(), True)
-        self.assertIs("@#$%".isalpha(), False)
-        self.assertIs("0123".isdigit(), True)
-        self.assertIs("xyz".isdigit(), False)
-        self.assertIs("xyz".islower(), True)
-        self.assertIs("XYZ".islower(), False)
-        self.assertIs("0123".isdecimal(), True)
-        self.assertIs("xyz".isdecimal(), False)
-        self.assertIs("0123".isnumeric(), True)
-        self.assertIs("xyz".isnumeric(), False)
-        self.assertIs(" ".isspace(), True)
-        self.assertIs("\xa0".isspace(), True)
-        self.assertIs("\u3000".isspace(), True)
-        self.assertIs("XYZ".isspace(), False)
-        self.assertIs("X".istitle(), True)
-        self.assertIs("x".istitle(), False)
-        self.assertIs("XYZ".isupper(), True)
-        self.assertIs("xyz".isupper(), False)
-        self.assertIs("xyz".startswith("x"), True)
-        self.assertIs("xyz".startswith("z"), False)
+        self.assertIs("xyz".endswith("z"), Wahr)
+        self.assertIs("xyz".endswith("x"), Falsch)
+        self.assertIs("xyz0123".isalnum(), Wahr)
+        self.assertIs("@#$%".isalnum(), Falsch)
+        self.assertIs("xyz".isalpha(), Wahr)
+        self.assertIs("@#$%".isalpha(), Falsch)
+        self.assertIs("0123".isdigit(), Wahr)
+        self.assertIs("xyz".isdigit(), Falsch)
+        self.assertIs("xyz".islower(), Wahr)
+        self.assertIs("XYZ".islower(), Falsch)
+        self.assertIs("0123".isdecimal(), Wahr)
+        self.assertIs("xyz".isdecimal(), Falsch)
+        self.assertIs("0123".isnumeric(), Wahr)
+        self.assertIs("xyz".isnumeric(), Falsch)
+        self.assertIs(" ".isspace(), Wahr)
+        self.assertIs("\xa0".isspace(), Wahr)
+        self.assertIs("\u3000".isspace(), Wahr)
+        self.assertIs("XYZ".isspace(), Falsch)
+        self.assertIs("X".istitle(), Wahr)
+        self.assertIs("x".istitle(), Falsch)
+        self.assertIs("XYZ".isupper(), Wahr)
+        self.assertIs("xyz".isupper(), Falsch)
+        self.assertIs("xyz".startswith("x"), Wahr)
+        self.assertIs("xyz".startswith("z"), Falsch)
 
     def test_boolean(self):
-        self.assertEqual(True & 1, 1)
-        self.assertNotIsInstance(True & 1, bool)
-        self.assertIs(True & True, True)
+        self.assertEqual(Wahr & 1, 1)
+        self.assertNotIsInstance(Wahr & 1, bool)
+        self.assertIs(Wahr & Wahr, Wahr)
 
-        self.assertEqual(True | 1, 1)
-        self.assertNotIsInstance(True | 1, bool)
-        self.assertIs(True | True, True)
+        self.assertEqual(Wahr | 1, 1)
+        self.assertNotIsInstance(Wahr | 1, bool)
+        self.assertIs(Wahr | Wahr, Wahr)
 
-        self.assertEqual(True ^ 1, 0)
-        self.assertNotIsInstance(True ^ 1, bool)
-        self.assertIs(True ^ True, False)
+        self.assertEqual(Wahr ^ 1, 0)
+        self.assertNotIsInstance(Wahr ^ 1, bool)
+        self.assertIs(Wahr ^ Wahr, Falsch)
 
     def test_fileclosed(self):
         try:
             with open(os_helper.TESTFN, "w", encoding="utf-8") as f:
-                self.assertIs(f.closed, False)
-            self.assertIs(f.closed, True)
+                self.assertIs(f.closed, Falsch)
+            self.assertIs(f.closed, Wahr)
         finally:
             os.remove(os_helper.TESTFN)
 
@@ -264,43 +264,43 @@ klasse BoolTest(unittest.TestCase):
         # types are always true.
         fuer t in [bool, complex, dict, float, int, list, object,
                   set, str, tuple, type]:
-            self.assertIs(bool(t), True)
+            self.assertIs(bool(t), Wahr)
 
     def test_operator(self):
         import operator
-        self.assertIs(operator.truth(0), False)
-        self.assertIs(operator.truth(1), True)
-        self.assertIs(operator.not_(1), False)
-        self.assertIs(operator.not_(0), True)
-        self.assertIs(operator.contains([], 1), False)
-        self.assertIs(operator.contains([1], 1), True)
-        self.assertIs(operator.lt(0, 0), False)
-        self.assertIs(operator.lt(0, 1), True)
-        self.assertIs(operator.is_(True, True), True)
-        self.assertIs(operator.is_(True, False), False)
-        self.assertIs(operator.is_not(True, True), False)
-        self.assertIs(operator.is_not(True, False), True)
+        self.assertIs(operator.truth(0), Falsch)
+        self.assertIs(operator.truth(1), Wahr)
+        self.assertIs(operator.not_(1), Falsch)
+        self.assertIs(operator.not_(0), Wahr)
+        self.assertIs(operator.contains([], 1), Falsch)
+        self.assertIs(operator.contains([1], 1), Wahr)
+        self.assertIs(operator.lt(0, 0), Falsch)
+        self.assertIs(operator.lt(0, 1), Wahr)
+        self.assertIs(operator.is_(Wahr, Wahr), Wahr)
+        self.assertIs(operator.is_(Wahr, Falsch), Falsch)
+        self.assertIs(operator.is_not(Wahr, Wahr), Falsch)
+        self.assertIs(operator.is_not(Wahr, Falsch), Wahr)
 
     def test_marshal(self):
         import marshal
-        self.assertIs(marshal.loads(marshal.dumps(True)), True)
-        self.assertIs(marshal.loads(marshal.dumps(False)), False)
+        self.assertIs(marshal.loads(marshal.dumps(Wahr)), Wahr)
+        self.assertIs(marshal.loads(marshal.dumps(Falsch)), Falsch)
 
     def test_pickle(self):
         import pickle
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            self.assertIs(pickle.loads(pickle.dumps(True, proto)), True)
-            self.assertIs(pickle.loads(pickle.dumps(False, proto)), False)
+            self.assertIs(pickle.loads(pickle.dumps(Wahr, proto)), Wahr)
+            self.assertIs(pickle.loads(pickle.dumps(Falsch, proto)), Falsch)
 
     def test_picklevalues(self):
         # Test fuer specific backwards-compatible pickle values
         import pickle
-        self.assertEqual(pickle.dumps(True, protocol=0), b"I01\n.")
-        self.assertEqual(pickle.dumps(False, protocol=0), b"I00\n.")
-        self.assertEqual(pickle.dumps(True, protocol=1), b"I01\n.")
-        self.assertEqual(pickle.dumps(False, protocol=1), b"I00\n.")
-        self.assertEqual(pickle.dumps(True, protocol=2), b'\x80\x02\x88.')
-        self.assertEqual(pickle.dumps(False, protocol=2), b'\x80\x02\x89.')
+        self.assertEqual(pickle.dumps(Wahr, protocol=0), b"I01\n.")
+        self.assertEqual(pickle.dumps(Falsch, protocol=0), b"I00\n.")
+        self.assertEqual(pickle.dumps(Wahr, protocol=1), b"I01\n.")
+        self.assertEqual(pickle.dumps(Falsch, protocol=1), b"I00\n.")
+        self.assertEqual(pickle.dumps(Wahr, protocol=2), b'\x80\x02\x88.')
+        self.assertEqual(pickle.dumps(Falsch, protocol=2), b'\x80\x02\x89.')
 
     def test_convert_to_bool(self):
         # Verify that TypeError occurs when bad things are returned
@@ -354,8 +354,8 @@ klasse BoolTest(unittest.TestCase):
         del x
 
     def test_from_bytes(self):
-        self.assertIs(bool.from_bytes(b'\x00'*8, 'big'), False)
-        self.assertIs(bool.from_bytes(b'abcd', 'little'), True)
+        self.assertIs(bool.from_bytes(b'\x00'*8, 'big'), Falsch)
+        self.assertIs(bool.from_bytes(b'abcd', 'little'), Wahr)
 
     def test_sane_len(self):
         # this test just tests our assumptions about __len__
@@ -374,28 +374,28 @@ klasse BoolTest(unittest.TestCase):
 
     def test_blocked(self):
         klasse A:
-            __bool__ = None
+            __bool__ = Nichts
         self.assertRaises(TypeError, bool, A())
 
         klasse B:
             def __len__(self):
                 return 10
-            __bool__ = None
+            __bool__ = Nichts
         self.assertRaises(TypeError, bool, B())
 
         klasse C:
-            __len__ = None
+            __len__ = Nichts
         self.assertRaises(TypeError, bool, C())
 
     def test_real_and_imag(self):
-        self.assertEqual(True.real, 1)
-        self.assertEqual(True.imag, 0)
-        self.assertIs(type(True.real), int)
-        self.assertIs(type(True.imag), int)
-        self.assertEqual(False.real, 0)
-        self.assertEqual(False.imag, 0)
-        self.assertIs(type(False.real), int)
-        self.assertIs(type(False.imag), int)
+        self.assertEqual(Wahr.real, 1)
+        self.assertEqual(Wahr.imag, 0)
+        self.assertIs(type(Wahr.real), int)
+        self.assertIs(type(Wahr.imag), int)
+        self.assertEqual(Falsch.real, 0)
+        self.assertEqual(Falsch.imag, 0)
+        self.assertIs(type(Falsch.real), int)
+        self.assertIs(type(Falsch.imag), int)
 
     def test_bool_called_at_least_once(self):
         klasse X:
@@ -403,10 +403,10 @@ klasse BoolTest(unittest.TestCase):
                 self.count = 0
             def __bool__(self):
                 self.count += 1
-                return True
+                return Wahr
 
         def f(x):
-            wenn x or True:
+            wenn x or Wahr:
                 pass
 
         x = X()
@@ -414,11 +414,11 @@ klasse BoolTest(unittest.TestCase):
         self.assertGreaterEqual(x.count, 1)
 
     def test_bool_new(self):
-        self.assertIs(bool.__new__(bool), False)
-        self.assertIs(bool.__new__(bool, 1), True)
-        self.assertIs(bool.__new__(bool, 0), False)
-        self.assertIs(bool.__new__(bool, False), False)
-        self.assertIs(bool.__new__(bool, True), True)
+        self.assertIs(bool.__new__(bool), Falsch)
+        self.assertIs(bool.__new__(bool, 1), Wahr)
+        self.assertIs(bool.__new__(bool, 0), Falsch)
+        self.assertIs(bool.__new__(bool, Falsch), Falsch)
+        self.assertIs(bool.__new__(bool, Wahr), Wahr)
 
 
 wenn __name__ == "__main__":

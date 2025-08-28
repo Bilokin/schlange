@@ -20,9 +20,9 @@ import sys
 
 try:
     import ssl
-    HAVE_SSL = True
+    HAVE_SSL = Wahr
 except ImportError:
-    HAVE_SSL = False
+    HAVE_SSL = Falsch
 
 __all__ = ["POP3","error_proto"]
 
@@ -58,7 +58,7 @@ klasse POP3:
             USER name               user(name)
             PASS string             pass_(string)
             STAT                    stat()
-            LIST [msg]              list(msg = None)
+            LIST [msg]              list(msg = Nichts)
             RETR msg                retr(msg)
             DELE msg                dele(msg)
             NOOP                    noop()
@@ -69,7 +69,7 @@ klasse POP3:
             RPOP name               rpop(name)
             APOP name digest        apop(name, digest)
             TOP msg n               top(msg, n)
-            UIDL [msg]              uidl(msg = None)
+            UIDL [msg]              uidl(msg = Nichts)
             CAPA                    capa()
             STLS                    stls()
             UTF8                    utf8()
@@ -99,7 +99,7 @@ klasse POP3:
                  timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         self.host = host
         self.port = port
-        self._tls_established = False
+        self._tls_established = Falsch
         sys.audit("poplib.connect", self, host, port)
         self.sock = self._create_socket(timeout)
         self.file = self.sock.makefile('rb')
@@ -107,7 +107,7 @@ klasse POP3:
         self.welcome = self._getresp()
 
     def _create_socket(self, timeout):
-        wenn timeout is not None and not timeout:
+        wenn timeout is not Nichts and not timeout:
             raise ValueError('Non-blocking socket (timeout=0) is not supported')
         return socket.create_connection((self.host, self.port), timeout)
 
@@ -242,7 +242,7 @@ klasse POP3:
         return (numMessages, sizeMessages)
 
 
-    def list(self, which=None):
+    def list(self, which=Nichts):
         """Request listing, return result.
 
         Result without a message number argument is in form
@@ -251,7 +251,7 @@ klasse POP3:
         Result when a message number argument is given is a
         single response: the "scan listing" fuer that message.
         """
-        wenn which is not None:
+        wenn which is not Nichts:
             return self._shortcmd('LIST %s' % which)
         return self._longcmd('LIST')
 
@@ -295,13 +295,13 @@ klasse POP3:
         """Close the connection without assuming anything about it."""
         try:
             file = self.file
-            self.file = None
-            wenn file is not None:
+            self.file = Nichts
+            wenn file is not Nichts:
                 file.close()
         finally:
             sock = self.sock
-            self.sock = None
-            wenn sock is not None:
+            self.sock = Nichts
+            wenn sock is not Nichts:
                 try:
                     sock.shutdown(socket.SHUT_RDWR)
                 except OSError as exc:
@@ -356,14 +356,14 @@ klasse POP3:
         return self._longcmd('TOP %s %s' % (which, howmuch))
 
 
-    def uidl(self, which=None):
+    def uidl(self, which=Nichts):
         """Return message digest (unique id) list.
 
         If 'which', result contains unique id fuer that message
         in the form 'response mesgnum uid', otherwise result is
         the list ['response', ['mesgnum uid', ...], octets]
         """
-        wenn which is not None:
+        wenn which is not Nichts:
             return self._shortcmd('UIDL %s' % which)
         return self._longcmd('UIDL')
 
@@ -403,7 +403,7 @@ klasse POP3:
         return caps
 
 
-    def stls(self, context=None):
+    def stls(self, context=Nichts):
         """Start a TLS session on the active connection as specified in RFC 2595.
 
                 context - a ssl.SSLContext
@@ -415,13 +415,13 @@ klasse POP3:
         caps = self.capa()
         wenn not 'STLS' in caps:
             raise error_proto('-ERR STLS not supported by server')
-        wenn context is None:
+        wenn context is Nichts:
             context = ssl._create_stdlib_context()
         resp = self._shortcmd('STLS')
         self.sock = context.wrap_socket(self.sock,
                                         server_hostname=self.host)
         self.file = self.sock.makefile('rb')
-        self._tls_established = True
+        self._tls_established = Wahr
         return resp
 
 
@@ -430,7 +430,7 @@ wenn HAVE_SSL:
     klasse POP3_SSL(POP3):
         """POP3 client klasse over SSL connection
 
-        Instantiate with: POP3_SSL(hostname, port=995, context=None)
+        Instantiate with: POP3_SSL(hostname, port=995, context=Nichts)
 
                hostname - the hostname of the pop3 over ssl server
                port - port number
@@ -440,8 +440,8 @@ wenn HAVE_SSL:
         """
 
         def __init__(self, host, port=POP3_SSL_PORT,
-                     *, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, context=None):
-            wenn context is None:
+                     *, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, context=Nichts):
+            wenn context is Nichts:
                 context = ssl._create_stdlib_context()
             self.context = context
             POP3.__init__(self, host, port, timeout)
@@ -452,7 +452,7 @@ wenn HAVE_SSL:
                                             server_hostname=self.host)
             return sock
 
-        def stls(self, context=None):
+        def stls(self, context=Nichts):
             """The method unconditionally raises an exception since the
             STLS command doesn't make any sense on an already established
             SSL/TLS session.

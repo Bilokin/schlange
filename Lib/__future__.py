@@ -32,7 +32,7 @@ in releases at or after that, modules no longer need
 
 to use the feature in question, but may continue to use such imports.
 
-MandatoryRelease may also be None, meaning that a planned feature got
+MandatoryRelease may also be Nichts, meaning that a planned feature got
 dropped or that the release version is undetermined.
 
 Instances of klasse _Feature have two corresponding methods,
@@ -96,7 +96,7 @@ klasse _Feature:
         """Return release in which this feature will become mandatory.
 
         This is a 5-tuple, of the same form as sys.version_info, or, if
-        the feature was dropped, or the release date is undetermined, is None.
+        the feature was dropped, or the release date is undetermined, is Nichts.
         """
         return self.mandatory
 
@@ -143,5 +143,5 @@ generator_stop = _Feature((3, 5, 0, "beta", 1),
                           CO_FUTURE_GENERATOR_STOP)
 
 annotations = _Feature((3, 7, 0, "beta", 1),
-                       None,
+                       Nichts,
                        CO_FUTURE_ANNOTATIONS)

@@ -26,7 +26,7 @@ klasse FunctionalTest(unittest.TestCase):
         """)
         res = script_helper.assert_python_ok("-c", code)
         self.assertEqual(res.out.decode().splitlines(), ["two", "one"])
-        self.assertFalse(res.err)
+        self.assertFalsch(res.err)
 
     def test_atexit_instances(self):
         # bpo-42639: It is safe to have more than one atexit instance.
@@ -44,7 +44,7 @@ klasse FunctionalTest(unittest.TestCase):
         """)
         res = script_helper.assert_python_ok("-c", code)
         self.assertEqual(res.out.decode().splitlines(), ["atexit2", "atexit1"])
-        self.assertFalse(res.err)
+        self.assertFalsch(res.err)
 
     @threading_helper.requires_working_threading()
     @support.requires_resource("cpu")

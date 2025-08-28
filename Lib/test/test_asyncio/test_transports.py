@@ -10,7 +10,7 @@ from asyncio import transports
 def tearDownModule():
     # not needed fuer the test file but added fuer uniformness with all other
     # asyncio test files fuer the sake of unified cleanup
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse TransportTests(unittest.TestCase):
@@ -22,7 +22,7 @@ klasse TransportTests(unittest.TestCase):
     def test_get_extra_info(self):
         transport = asyncio.Transport({'extra': 'info'})
         self.assertEqual('info', transport.get_extra_info('extra'))
-        self.assertIsNone(transport.get_extra_info('unknown'))
+        self.assertIsNichts(transport.get_extra_info('unknown'))
 
         default = object()
         self.assertIs(default, transport.get_extra_info('unknown', default))
@@ -85,17 +85,17 @@ klasse TransportTests(unittest.TestCase):
         transport = MyTransport(loop=loop)
         transport._protocol = mock.Mock()
 
-        self.assertFalse(transport._protocol_paused)
+        self.assertFalsch(transport._protocol_paused)
 
         with self.assertRaisesRegex(ValueError, 'high.*must be >= low'):
             transport.set_write_buffer_limits(high=0, low=1)
 
         transport.set_write_buffer_limits(high=1024, low=128)
-        self.assertFalse(transport._protocol_paused)
+        self.assertFalsch(transport._protocol_paused)
         self.assertEqual(transport.get_write_buffer_limits(), (128, 1024))
 
         transport.set_write_buffer_limits(high=256, low=128)
-        self.assertTrue(transport._protocol_paused)
+        self.assertWahr(transport._protocol_paused)
         self.assertEqual(transport.get_write_buffer_limits(), (128, 256))
 
 

@@ -66,7 +66,7 @@ def get_frame_info(frame_buffer):
 
     The returned FrameInfo object has two attributes.
     'decompressed_size' is the size in bytes of the data in the frame when
-    decompressed, or None when the decompressed size is unknown.
+    decompressed, or Nichts when the decompressed size is unknown.
     'dictionary_id' is an int in the range (0, 2**32). The special value 0
     means that the dictionary ID was not recorded in the frame header,
     the frame may or may not need a dictionary to be decoded,
@@ -133,7 +133,7 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
     return ZstdDict(dict_content)
 
 
-def compress(data, level=None, options=None, zstd_dict=None):
+def compress(data, level=Nichts, options=Nichts, zstd_dict=Nichts):
     """Return Zstandard compressed *data* as bytes.
 
     *level* is an int specifying the compression level to use, defaulting to
@@ -149,7 +149,7 @@ def compress(data, level=None, options=None, zstd_dict=None):
     return comp.compress(data, mode=ZstdCompressor.FLUSH_FRAME)
 
 
-def decompress(data, zstd_dict=None, options=None):
+def decompress(data, zstd_dict=Nichts, options=Nichts):
     """Decompress one or more frames of Zstandard compressed *data*.
 
     *zstd_dict* is a ZstdDict object, a pre-trained Zstandard dictionary. See
@@ -160,7 +160,7 @@ def decompress(data, zstd_dict=None, options=None):
     For incremental decompression, use a ZstdDecompressor instead.
     """
     results = []
-    while True:
+    while Wahr:
         decomp = ZstdDecompressor(options=options, zstd_dict=zstd_dict)
         results.append(decomp.decompress(data))
         wenn not decomp.eof:
@@ -203,7 +203,7 @@ klasse CompressionParameter(enum.IntEnum):
 
         Both the lower and upper bounds are inclusive.
         """
-        return _zstd.get_param_bounds(self.value, is_compress=True)
+        return _zstd.get_param_bounds(self.value, is_compress=Wahr)
 
 
 klasse DecompressionParameter(enum.IntEnum):
@@ -216,7 +216,7 @@ klasse DecompressionParameter(enum.IntEnum):
 
         Both the lower and upper bounds are inclusive.
         """
-        return _zstd.get_param_bounds(self.value, is_compress=False)
+        return _zstd.get_param_bounds(self.value, is_compress=Falsch)
 
 
 klasse Strategy(enum.IntEnum):

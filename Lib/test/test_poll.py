@@ -19,7 +19,7 @@ try:
 except AttributeError:
     raise unittest.SkipTest("select.poll not defined")
 
-requires_working_socket(module=True)
+requires_working_socket(module=Wahr)
 
 def find_ready_matching(ready, flag):
     match = []
@@ -127,7 +127,7 @@ klasse PollTests(unittest.TestCase):
     @requires_resource('walltime')
     def test_poll2(self):
         cmd = 'for i in 0 1 2 3 4 5 6 7 8 9; do echo testing...; sleep 1; done'
-        proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+        proc = subprocess.Popen(cmd, shell=Wahr, stdout=subprocess.PIPE,
                                 bufsize=0)
         self.enterContext(proc)
         p = proc.stdout
@@ -216,7 +216,7 @@ klasse PollTests(unittest.TestCase):
     @unittest.skipUnless(threading, 'Threading required fuer this test.')
     @threading_helper.reap_threads
     def test_poll_blocks_with_negative_ms(self):
-        fuer timeout_ms in [None, -1000, -1, -1.0, -0.1, -1e-100]:
+        fuer timeout_ms in [Nichts, -1000, -1, -1.0, -0.1, -1e-100]:
             # Create two file descriptors. This will be used to unlock
             # the blocking call to poll.poll inside the thread
             r, w = os.pipe()
@@ -226,12 +226,12 @@ klasse PollTests(unittest.TestCase):
             poll_thread = threading.Thread(target=pollster.poll, args=(timeout_ms,))
             poll_thread.start()
             poll_thread.join(timeout=0.1)
-            self.assertTrue(poll_thread.is_alive())
+            self.assertWahr(poll_thread.is_alive())
 
             # Write to the pipe so pollster.poll unblocks and the thread ends.
             os.write(w, b'spam')
             poll_thread.join()
-            self.assertFalse(poll_thread.is_alive())
+            self.assertFalsch(poll_thread.is_alive())
             os.close(r)
             os.close(w)
 

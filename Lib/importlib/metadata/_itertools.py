@@ -2,13 +2,13 @@ from collections import defaultdict, deque
 from itertools import filterfalse
 
 
-def unique_everseen(iterable, key=None):
+def unique_everseen(iterable, key=Nichts):
     "List unique elements, preserving order. Remember all elements ever seen."
     # unique_everseen('AAAABBBCCDAABBB') --> A B C D
     # unique_everseen('ABBCcAD', str.lower) --> A B C D
     seen = set()
     seen_add = seen.add
-    wenn key is None:
+    wenn key is Nichts:
         fuer element in filterfalse(seen.__contains__, iterable):
             seen_add(element)
             yield element
@@ -34,10 +34,10 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> list(always_iterable(obj))
         [1]
 
-    If *obj* is ``None``, return an empty iterable:
+    If *obj* is ``Nichts``, return an empty iterable:
 
-        >>> obj = None
-        >>> list(always_iterable(None))
+        >>> obj = Nichts
+        >>> list(always_iterable(Nichts))
         []
 
     By default, binary and text strings are not considered iterable::
@@ -47,7 +47,7 @@ def always_iterable(obj, base_type=(str, bytes)):
         ['foo']
 
     If *base_type* is set, objects fuer which ``isinstance(obj, base_type)``
-    returns ``True`` won't be considered iterable.
+    returns ``Wahr`` won't be considered iterable.
 
         >>> obj = {'a': 1}
         >>> list(always_iterable(obj))  # Iterate over the dict's keys
@@ -55,17 +55,17 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> list(always_iterable(obj, base_type=dict))  # Treat dicts as a unit
         [{'a': 1}]
 
-    Set *base_type* to ``None`` to avoid any special handling and treat objects
+    Set *base_type* to ``Nichts`` to avoid any special handling and treat objects
     Python considers iterable as iterable:
 
         >>> obj = 'foo'
-        >>> list(always_iterable(obj, base_type=None))
+        >>> list(always_iterable(obj, base_type=Nichts))
         ['f', 'o', 'o']
     """
-    wenn obj is None:
+    wenn obj is Nichts:
         return iter(())
 
-    wenn (base_type is not None) and isinstance(obj, base_type):
+    wenn (base_type is not Nichts) and isinstance(obj, base_type):
         return iter((obj,))
 
     try:
@@ -105,30 +105,30 @@ klasse bucket:
         >>> validator = lambda x: x in {1, 3, 5, 7, 9}  # Odd digits only
         >>> s = bucket(it, key=key, validator=validator)
         >>> 2 in s
-        False
+        Falsch
         >>> list(s[2])
         []
 
     """
 
-    def __init__(self, iterable, key, validator=None):
+    def __init__(self, iterable, key, validator=Nichts):
         self._it = iter(iterable)
         self._key = key
         self._cache = defaultdict(deque)
-        self._validator = validator or (lambda x: True)
+        self._validator = validator or (lambda x: Wahr)
 
     def __contains__(self, value):
         wenn not self._validator(value):
-            return False
+            return Falsch
 
         try:
             item = next(self[value])
         except StopIteration:
-            return False
+            return Falsch
         sonst:
             self._cache[value].appendleft(item)
 
-        return True
+        return Wahr
 
     def _get_values(self, value):
         """
@@ -136,7 +136,7 @@ klasse bucket:
         Items that don't match are stored in the local cache as they
         are encountered.
         """
-        while True:
+        while Wahr:
             # If we've cached some items that match the target value, emit
             # the first one and evict it from the cache.
             wenn self._cache[value]:
@@ -144,7 +144,7 @@ klasse bucket:
             # Otherwise we need to advance the parent iterator to search for
             # a matching item, caching the rest.
             sonst:
-                while True:
+                while Wahr:
                     try:
                         item = next(self._it)
                     except StopIteration:

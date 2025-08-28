@@ -2,8 +2,8 @@
 
 from typing import TypeVar, Generic, Optional, TypeAliasType
 
-default_a: Optional['A'] = None
-default_b: Optional['B'] = None
+default_a: Optional['A'] = Nichts
+default_b: Optional['B'] = Nichts
 
 T = TypeVar('T')
 

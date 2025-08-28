@@ -16,7 +16,7 @@ klasse CodePicklerTest(unittest.TestCase):
         self.assertEqual(code.co_names, ('a', 'b', 'c'))
 
     def test_code_pickler(self):
-        self.assertIn(type((lambda:None).__code__),
+        self.assertIn(type((lambda:Nichts).__code__),
                       rpc.CodePickler.dispatch_table)
 
     def test_dumps(self):

@@ -4,7 +4,7 @@ import re
 try:
     from _json import make_scanner as c_make_scanner
 except ImportError:
-    c_make_scanner = None
+    c_make_scanner = Nichts
 
 __all__ = ['make_scanner']
 
@@ -29,7 +29,7 @@ def py_make_scanner(context):
         try:
             nextchar = string[idx]
         except IndexError:
-            raise StopIteration(idx) from None
+            raise StopIteration(idx) from Nichts
 
         wenn nextchar == '"':
             return parse_string(string, idx + 1, strict)
@@ -39,14 +39,14 @@ def py_make_scanner(context):
         sowenn nextchar == '[':
             return parse_array((string, idx + 1), _scan_once)
         sowenn nextchar == 'n' and string[idx:idx + 4] == 'null':
-            return None, idx + 4
+            return Nichts, idx + 4
         sowenn nextchar == 't' and string[idx:idx + 4] == 'true':
-            return True, idx + 4
+            return Wahr, idx + 4
         sowenn nextchar == 'f' and string[idx:idx + 5] == 'false':
-            return False, idx + 5
+            return Falsch, idx + 5
 
         m = match_number(string, idx)
-        wenn m is not None:
+        wenn m is not Nichts:
             integer, frac, exp = m.groups()
             wenn frac or exp:
                 res = parse_float(integer + (frac or '') + (exp or ''))

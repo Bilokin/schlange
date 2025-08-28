@@ -23,7 +23,7 @@ towards the cumulative line count; the filename is not changed until
 after the first line of the next file has been read.  Function close()
 closes the sequence.
 
-Before any lines have been read, filename() returns None and both line
+Before any lines have been read, filename() returns Nichts and both line
 numbers are zero; nextfile() has no effect.  After all lines have been
 read, filename() and the line number functions return the values
 pertaining to the last line read; nextfile() has no effect.
@@ -53,7 +53,7 @@ __getitem__() method which implements the sequence behavior.  The
 sequence must be accessed in strictly sequential order; sequence
 access and readline() cannot be mixed.
 
-Optional in-place filtering: wenn the keyword argument inplace=True is
+Optional in-place filtering: wenn the keyword argument inplace=Wahr is
 passed to input() or to the FileInput constructor, the file is moved
 to a backup file and standard output is directed to the input file.
 This makes it possible to write a filter that rewrites its input file
@@ -73,10 +73,10 @@ __all__ = ["input", "close", "nextfile", "filename", "lineno", "filelineno",
            "fileno", "isfirstline", "isstdin", "FileInput", "hook_compressed",
            "hook_encoded"]
 
-_state = None
+_state = Nichts
 
-def input(files=None, inplace=False, backup="", *, mode="r", openhook=None,
-          encoding=None, errors=None):
+def input(files=Nichts, inplace=Falsch, backup="", *, mode="r", openhook=Nichts,
+          encoding=Nichts, errors=Nichts):
     """Return an instance of the FileInput class, which can be iterated.
 
     The parameters are passed to the constructor of the FileInput class.
@@ -94,7 +94,7 @@ def close():
     """Close the sequence."""
     global _state
     state = _state
-    _state = None
+    _state = Nichts
     wenn state:
         state.close()
 
@@ -115,7 +115,7 @@ def nextfile():
 def filename():
     """
     Return the name of the file currently being read.
-    Before the first line has been read, returns None.
+    Before the first line has been read, returns Nichts.
     """
     wenn not _state:
         raise RuntimeError("no active input()")
@@ -169,7 +169,7 @@ def isstdin():
     return _state.isstdin()
 
 klasse FileInput:
-    """FileInput([files[, inplace[, backup]]], *, mode=None, openhook=None)
+    """FileInput([files[, inplace[, backup]]], *, mode=Nichts, openhook=Nichts)
 
     Class FileInput is the implementation of the module; its methods
     filename(), lineno(), fileline(), isfirstline(), isstdin(), fileno(),
@@ -181,14 +181,14 @@ klasse FileInput:
     sequential order; random access and readline() cannot be mixed.
     """
 
-    def __init__(self, files=None, inplace=False, backup="", *,
-                 mode="r", openhook=None, encoding=None, errors=None):
+    def __init__(self, files=Nichts, inplace=Falsch, backup="", *,
+                 mode="r", openhook=Nichts, encoding=Nichts, errors=Nichts):
         wenn isinstance(files, str):
             files = (files,)
         sowenn isinstance(files, os.PathLike):
             files = (os.fspath(files), )
         sonst:
-            wenn files is None:
+            wenn files is Nichts:
                 files = sys.argv[1:]
             wenn not files:
                 files = ('-',)
@@ -197,21 +197,21 @@ klasse FileInput:
         self._files = files
         self._inplace = inplace
         self._backup = backup
-        self._savestdout = None
-        self._output = None
-        self._filename = None
+        self._savestdout = Nichts
+        self._output = Nichts
+        self._filename = Nichts
         self._startlineno = 0
         self._filelineno = 0
-        self._file = None
-        self._isstdin = False
-        self._backupfilename = None
+        self._file = Nichts
+        self._isstdin = Falsch
+        self._backupfilename = Nichts
         self._encoding = encoding
         self._errors = errors
 
         # We can not use io.text_encoding() here because old openhook doesn't
         # take encoding parameter.
         wenn (sys.flags.warn_default_encoding and
-                "b" not in mode and encoding is None and openhook is None):
+                "b" not in mode and encoding is Nichts and openhook is Nichts):
             import warnings
             warnings.warn("'encoding' argument not specified.",
                           EncodingWarning, 2)
@@ -247,7 +247,7 @@ klasse FileInput:
         return self
 
     def __next__(self):
-        while True:
+        while Wahr:
             line = self._readline()
             wenn line:
                 self._filelineno += 1
@@ -259,18 +259,18 @@ klasse FileInput:
 
     def nextfile(self):
         savestdout = self._savestdout
-        self._savestdout = None
+        self._savestdout = Nichts
         wenn savestdout:
             sys.stdout = savestdout
 
         output = self._output
-        self._output = None
+        self._output = Nichts
         try:
             wenn output:
                 output.close()
         finally:
             file = self._file
-            self._file = None
+            self._file = Nichts
             try:
                 del self._readline  # restore FileInput._readline
             except AttributeError:
@@ -280,15 +280,15 @@ klasse FileInput:
                     file.close()
             finally:
                 backupfilename = self._backupfilename
-                self._backupfilename = None
+                self._backupfilename = Nichts
                 wenn backupfilename and not self._backup:
                     try: os.unlink(backupfilename)
                     except OSError: pass
 
-                self._isstdin = False
+                self._isstdin = Falsch
 
     def readline(self):
-        while True:
+        while Wahr:
             line = self._readline()
             wenn line:
                 self._filelineno += 1
@@ -308,15 +308,15 @@ klasse FileInput:
         self._files = self._files[1:]
         self._startlineno = self.lineno()
         self._filelineno = 0
-        self._file = None
-        self._isstdin = False
+        self._file = Nichts
+        self._isstdin = Falsch
         self._backupfilename = 0
 
         # EncodingWarning is emitted in __init__() already
         wenn "b" not in self._mode:
             encoding = self._encoding or "locale"
         sonst:
-            encoding = None
+            encoding = Nichts
 
         wenn self._filename == '-':
             self._filename = '<stdin>'
@@ -324,7 +324,7 @@ klasse FileInput:
                 self._file = getattr(sys.stdin, 'buffer', sys.stdin)
             sonst:
                 self._file = sys.stdin
-            self._isstdin = True
+            self._isstdin = Wahr
         sonst:
             wenn self._inplace:
                 self._backupfilename = (
@@ -361,7 +361,7 @@ klasse FileInput:
                 wenn self._openhook:
                     # Custom hooks made previous to Python 3.10 didn't have
                     # encoding argument
-                    wenn self._encoding is None:
+                    wenn self._encoding is Nichts:
                         self._file = self._openhook(self._filename, self._mode)
                     sonst:
                         self._file = self._openhook(
@@ -398,8 +398,8 @@ klasse FileInput:
     __class_getitem__ = classmethod(GenericAlias)
 
 
-def hook_compressed(filename, mode, *, encoding=None, errors=None):
-    wenn encoding is None and "b" not in mode:  # EncodingWarning is emitted in FileInput() already.
+def hook_compressed(filename, mode, *, encoding=Nichts, errors=Nichts):
+    wenn encoding is Nichts and "b" not in mode:  # EncodingWarning is emitted in FileInput() already.
         encoding = "locale"
     ext = os.path.splitext(filename)[1]
     wenn ext == '.gz':
@@ -417,7 +417,7 @@ def hook_compressed(filename, mode, *, encoding=None, errors=None):
     return stream
 
 
-def hook_encoded(encoding, errors=None):
+def hook_encoded(encoding, errors=Nichts):
     def openhook(filename, mode):
         return open(filename, mode, encoding=encoding, errors=errors)
     return openhook
@@ -425,11 +425,11 @@ def hook_encoded(encoding, errors=None):
 
 def _test():
     import getopt
-    inplace = False
-    backup = False
+    inplace = Falsch
+    backup = Falsch
     opts, args = getopt.getopt(sys.argv[1:], "ib:")
     fuer o, a in opts:
-        wenn o == '-i': inplace = True
+        wenn o == '-i': inplace = Wahr
         wenn o == '-b': backup = a
     fuer line in input(args, inplace=inplace, backup=backup):
         wenn line[-1:] == '\n': line = line[:-1]

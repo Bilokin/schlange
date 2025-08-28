@@ -15,7 +15,7 @@ from test.test_asyncio.utils import await_without_task
 
 # To prevent a warning "test altered the execution environment"
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse MyExc(Exception):
@@ -50,7 +50,7 @@ def set_gc_state(enabled):
 
 @contextlib.contextmanager
 def disable_gc():
-    was_enabled = set_gc_state(enabled=False)
+    was_enabled = set_gc_state(enabled=Falsch)
     try:
         yield
     finally:
@@ -113,14 +113,14 @@ klasse BaseTestTaskGroup:
 
             t2 = g.create_task(foo2())
 
-        self.assertTrue(t1.cancelled())
+        self.assertWahr(t1.cancelled())
         self.assertEqual(t2.result(), 11)
 
     async def test_taskgroup_04(self):
 
         NUM = 0
-        t2_cancel = False
-        t2 = None
+        t2_cancel = Falsch
+        t2 = Nichts
 
         async def foo1():
             await asyncio.sleep(0.1)
@@ -131,7 +131,7 @@ klasse BaseTestTaskGroup:
             try:
                 await asyncio.sleep(1)
             except asyncio.CancelledError:
-                t2_cancel = True
+                t2_cancel = Wahr
                 raise
             NUM += 1
 
@@ -150,16 +150,16 @@ klasse BaseTestTaskGroup:
         self.assertEqual(get_error_types(cm.exception), {ZeroDivisionError})
 
         self.assertEqual(NUM, 0)
-        self.assertTrue(t2_cancel)
-        self.assertTrue(t2.cancelled())
+        self.assertWahr(t2_cancel)
+        self.assertWahr(t2.cancelled())
 
     async def test_cancel_children_on_child_error(self):
         # When a child task raises an error, the rest of the children
         # are cancelled and the errors are gathered into an EG.
 
         NUM = 0
-        t2_cancel = False
-        runner_cancel = False
+        t2_cancel = Falsch
+        runner_cancel = Falsch
 
         async def foo1():
             await asyncio.sleep(0.1)
@@ -170,7 +170,7 @@ klasse BaseTestTaskGroup:
             try:
                 await asyncio.sleep(5)
             except asyncio.CancelledError:
-                t2_cancel = True
+                t2_cancel = Wahr
                 raise
             NUM += 1
 
@@ -185,7 +185,7 @@ klasse BaseTestTaskGroup:
                 try:
                     await asyncio.sleep(10)
                 except asyncio.CancelledError:
-                    runner_cancel = True
+                    runner_cancel = Wahr
                     raise
 
             NUM += 10
@@ -197,8 +197,8 @@ klasse BaseTestTaskGroup:
 
         self.assertEqual(get_error_types(cm.exception), {ZeroDivisionError})
         self.assertEqual(NUM, 0)
-        self.assertTrue(t2_cancel)
-        self.assertTrue(runner_cancel)
+        self.assertWahr(t2_cancel)
+        self.assertWahr(runner_cancel)
 
     async def test_cancellation(self):
 
@@ -220,7 +220,7 @@ klasse BaseTestTaskGroup:
         r = asyncio.create_task(runner())
         await asyncio.sleep(0.1)
 
-        self.assertFalse(r.done())
+        self.assertFalsch(r.done())
         r.cancel()
         with self.assertRaises(asyncio.CancelledError) as cm:
             await r
@@ -254,7 +254,7 @@ klasse BaseTestTaskGroup:
         r = asyncio.create_task(runner())
         await asyncio.sleep(0.1)
 
-        self.assertFalse(r.done())
+        self.assertFalsch(r.done())
         r.cancel()
         with self.assertRaises(asyncio.CancelledError):
             await r
@@ -279,7 +279,7 @@ klasse BaseTestTaskGroup:
         r = asyncio.create_task(runner())
         await asyncio.sleep(0.1)
 
-        self.assertFalse(r.done())
+        self.assertFalsch(r.done())
         r.cancel()
         with self.assertRaises(ExceptionGroup) as cm:
             await r
@@ -287,7 +287,7 @@ klasse BaseTestTaskGroup:
 
     async def test_taskgroup_09(self):
 
-        t1 = t2 = None
+        t1 = t2 = Nichts
 
         async def foo1():
             await asyncio.sleep(1)
@@ -312,12 +312,12 @@ klasse BaseTestTaskGroup:
         sonst:
             self.fail('ExceptionGroup was not raised')
 
-        self.assertTrue(t1.cancelled())
-        self.assertTrue(t2.cancelled())
+        self.assertWahr(t1.cancelled())
+        self.assertWahr(t2.cancelled())
 
     async def test_taskgroup_10(self):
 
-        t1 = t2 = None
+        t1 = t2 = Nichts
 
         async def foo1():
             await asyncio.sleep(1)
@@ -341,8 +341,8 @@ klasse BaseTestTaskGroup:
         sonst:
             self.fail('ExceptionGroup was not raised')
 
-        self.assertTrue(t1.cancelled())
-        self.assertTrue(t2.cancelled())
+        self.assertWahr(t1.cancelled())
+        self.assertWahr(t2.cancelled())
 
     async def test_taskgroup_11(self):
 
@@ -363,7 +363,7 @@ klasse BaseTestTaskGroup:
         r = asyncio.create_task(runner())
         await asyncio.sleep(0.1)
 
-        self.assertFalse(r.done())
+        self.assertFalsch(r.done())
         r.cancel()
         with self.assertRaises(ExceptionGroup) as cm:
             await r
@@ -392,7 +392,7 @@ klasse BaseTestTaskGroup:
         r = asyncio.create_task(runner())
         await asyncio.sleep(0.1)
 
-        self.assertFalse(r.done())
+        self.assertFalsch(r.done())
         r.cancel()
         with self.assertRaises(ExceptionGroup) as cm:
             await r
@@ -457,7 +457,7 @@ klasse BaseTestTaskGroup:
         r = asyncio.create_task(runner())
         await asyncio.sleep(0.1)
 
-        self.assertFalse(r.done())
+        self.assertFalsch(r.done())
         r.cancel()
         with self.assertRaises(ExceptionGroup) as cm:
             await r
@@ -485,7 +485,7 @@ klasse BaseTestTaskGroup:
         r = asyncio.create_task(runner())
         await asyncio.sleep(0.1)
 
-        self.assertFalse(r.done())
+        self.assertFalsch(r.done())
         r.cancel()
         with self.assertRaises(ExceptionGroup) as cm:
             await r
@@ -506,7 +506,7 @@ klasse BaseTestTaskGroup:
         r = asyncio.create_task(runner())
         await asyncio.sleep(0.1)
 
-        self.assertFalse(r.done())
+        self.assertFalsch(r.done())
         r.cancel()
         with self.assertRaises(asyncio.CancelledError):
             await r
@@ -530,7 +530,7 @@ klasse BaseTestTaskGroup:
         r = asyncio.create_task(runner())
         await asyncio.sleep(0.1)
 
-        self.assertFalse(r.done())
+        self.assertFalsch(r.done())
         r.cancel()
 
         try:
@@ -750,7 +750,7 @@ klasse BaseTestTaskGroup:
 
         async with taskgroups.TaskGroup() as g:
             ctx = contextvars.copy_context()
-            self.assertIsNone(ctx.get(cvar))
+            self.assertIsNichts(ctx.get(cvar))
             t1 = g.create_task(coro(1), context=ctx)
             await t1
             self.assertEqual(1, ctx.get(cvar))
@@ -833,7 +833,7 @@ klasse BaseTestTaskGroup:
 
         # Make sure the coroutine was closed when submitted to the inactive tg
         # (if not closed, a RuntimeWarning should have been raised)
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=Wahr) as w:
             await create_task_after_tg_finish()
         self.assertEqual(len(w), 0)
 
@@ -923,14 +923,14 @@ klasse BaseTestTaskGroup:
             self.assertEqual(t.cancelling(), 1)
             with self.assertRaises(asyncio.CancelledError):
                 await t
-            self.assertTrue(t.cancelled())
+            self.assertWahr(t.cancelled())
 
         await outer()
 
     async def test_exception_refcycles_direct(self):
         """Test that TaskGroup doesn't keep a reference to the raised ExceptionGroup"""
         tg = asyncio.TaskGroup()
-        exc = None
+        exc = Nichts
 
         klasse _Done(Exception):
             pass
@@ -941,14 +941,14 @@ klasse BaseTestTaskGroup:
         except ExceptionGroup as e:
             exc = e
 
-        self.assertIsNotNone(exc)
+        self.assertIsNotNichts(exc)
         self.assertListEqual(gc.get_referrers(exc), no_other_refs())
 
 
     async def test_exception_refcycles_errors(self):
         """Test that TaskGroup deletes self._errors, and __aexit__ args"""
         tg = asyncio.TaskGroup()
-        exc = None
+        exc = Nichts
 
         klasse _Done(Exception):
             pass
@@ -966,7 +966,7 @@ klasse BaseTestTaskGroup:
     async def test_exception_refcycles_parent_task(self):
         """Test that TaskGroup deletes self._parent_task"""
         tg = asyncio.TaskGroup()
-        exc = None
+        exc = Nichts
 
         klasse _Done(Exception):
             pass
@@ -988,7 +988,7 @@ klasse BaseTestTaskGroup:
     async def test_exception_refcycles_parent_task_wr(self):
         """Test that TaskGroup deletes self._parent_task and create_task() deletes task"""
         tg = asyncio.TaskGroup()
-        exc = None
+        exc = Nichts
 
         klasse _Done(Exception):
             pass
@@ -1004,14 +1004,14 @@ klasse BaseTestTaskGroup:
             except* _Done as excs:
                 exc = excs.exceptions[0].exceptions[0]
 
-        self.assertIsNone(task_wr())
+        self.assertIsNichts(task_wr())
         self.assertIsInstance(exc, _Done)
         self.assertListEqual(gc.get_referrers(exc), no_other_refs())
 
     async def test_exception_refcycles_propagate_cancellation_error(self):
         """Test that TaskGroup deletes propagate_cancellation_error"""
         tg = asyncio.TaskGroup()
-        exc = None
+        exc = Nichts
 
         try:
             async with asyncio.timeout(-1):
@@ -1029,7 +1029,7 @@ klasse BaseTestTaskGroup:
             pass
 
         tg = asyncio.TaskGroup()
-        exc = None
+        exc = Nichts
 
         try:
             async with tg:
@@ -1037,11 +1037,11 @@ klasse BaseTestTaskGroup:
         except MyKeyboardInterrupt as e:
             exc = e
 
-        self.assertIsNotNone(exc)
+        self.assertIsNotNichts(exc)
         self.assertListEqual(gc.get_referrers(exc), no_other_refs())
 
     async def test_name(self):
-        name = None
+        name = Nichts
 
         async def asyncfn():
             nonlocal name
@@ -1055,11 +1055,11 @@ klasse BaseTestTaskGroup:
 
     async def test_cancels_task_if_created_during_creation(self):
         # regression test fuer gh-128550
-        ran = False
+        ran = Falsch
         klasse MyError(Exception):
             pass
 
-        exc = None
+        exc = Nichts
         try:
             async with asyncio.TaskGroup() as tg:
                 async def third_task():
@@ -1071,13 +1071,13 @@ klasse BaseTestTaskGroup:
                     with self.assertRaises(asyncio.CancelledError):
                         await asyncio.sleep(0)  # eager tasks cancel here
                         await asyncio.sleep(0)  # lazy tasks cancel here
-                    ran = True
+                    ran = Wahr
 
                 tg.create_task(second_task())
         except* MyError as excs:
             exc = excs.exceptions[0]
 
-        self.assertTrue(ran)
+        self.assertWahr(ran)
         self.assertIsInstance(exc, MyError)
 
 

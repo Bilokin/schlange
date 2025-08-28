@@ -56,7 +56,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         acp.autocompletewindow = m = Mock()
         acp._remove_autocomplete_window()
         m.hide_window.assert_called_once()
-        self.assertIsNone(acp.autocompletewindow)
+        self.assertIsNichts(acp.autocompletewindow)
 
     def test_force_open_completions_event(self):
         # Call _open_completions and break.
@@ -70,30 +70,30 @@ klasse AutoCompleteTest(unittest.TestCase):
         Equal = self.assertEqual
         acp = self.autocomplete
 
-        # Result of autocomplete event: If modified tab, None.
-        ev = Event(mc_state=True)
-        self.assertIsNone(acp.autocomplete_event(ev))
+        # Result of autocomplete event: If modified tab, Nichts.
+        ev = Event(mc_state=Wahr)
+        self.assertIsNichts(acp.autocomplete_event(ev))
         del ev.mc_state
 
-        # If tab after whitespace, None.
+        # If tab after whitespace, Nichts.
         self.text.insert('1.0', '        """Docstring.\n    ')
-        self.assertIsNone(acp.autocomplete_event(ev))
+        self.assertIsNichts(acp.autocomplete_event(ev))
         self.text.delete('1.0', 'end')
 
         # If active autocomplete window, complete() and 'break'.
         self.text.insert('1.0', 're.')
         acp.autocompletewindow = mock = Mock()
-        mock.is_active = Mock(return_value=True)
+        mock.is_active = Mock(return_value=Wahr)
         Equal(acp.autocomplete_event(ev), 'break')
         mock.complete.assert_called_once()
-        acp.autocompletewindow = None
+        acp.autocompletewindow = Nichts
 
-        # If no active autocomplete window, open_completions(), None/break.
-        open_c = Func(result=False)
+        # If no active autocomplete window, open_completions(), Nichts/break.
+        open_c = Func(result=Falsch)
         acp.open_completions = open_c
-        Equal(acp.autocomplete_event(ev), None)
+        Equal(acp.autocomplete_event(ev), Nichts)
         Equal(open_c.args[0], ac.TAB)
-        open_c.result = True
+        open_c.result = Wahr
         Equal(acp.autocomplete_event(ev), 'break')
         Equal(open_c.args[0], ac.TAB)
 
@@ -114,7 +114,7 @@ klasse AutoCompleteTest(unittest.TestCase):
 
         # Attribute needed, no existing callback.
         text.insert('insert', ' re.')
-        acp._delayed_completion_id = None
+        acp._delayed_completion_id = Nichts
         trycompletions()
         Equal(acp._delayed_completion_index, text.index('insert'))
         Equal(after.args,
@@ -141,12 +141,12 @@ klasse AutoCompleteTest(unittest.TestCase):
         acp.open_completions = open_c
         self.text.insert('1.0', '"dict.')
 
-        # Set autocomplete._delayed_completion_id to None.
+        # Set autocomplete._delayed_completion_id to Nichts.
         # Text index changed, don't call open_completions.
         acp._delayed_completion_id = 'after'
         acp._delayed_completion_index = self.text.index('insert+1c')
         acp._delayed_open_completions('dummy')
-        self.assertIsNone(acp._delayed_completion_id)
+        self.assertIsNichts(acp._delayed_completion_id)
         Equal(open_c.called, 0)
 
         # Text index unchanged, call open_completions.
@@ -155,7 +155,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         self.assertEqual(open_c.args[0], (1, 2, 3, ac.FILES))
 
     def test_oc_cancel_comment(self):
-        none = self.assertIsNone
+        none = self.assertIsNichts
         acp = self.autocomplete
 
         # Comment is in neither code or string.
@@ -171,15 +171,15 @@ klasse AutoCompleteTest(unittest.TestCase):
         fetch = Func(result=([],[]))
         acp.fetch_completions = fetch
         self.text.insert('1.0', 'object')
-        self.assertIsNone(acp.open_completions(ac.TAB))
+        self.assertIsNichts(acp.open_completions(ac.TAB))
         self.text.insert('insert', '.')
-        self.assertIsNone(acp.open_completions(ac.TAB))
+        self.assertIsNichts(acp.open_completions(ac.TAB))
         self.assertEqual(fetch.called, 2)
 
 
     def test_open_completions_none(self):
-        # Test other two None returns.
-        none = self.assertIsNone
+        # Test other two Nichts returns.
+        none = self.assertIsNichts
         acp = self.autocomplete
 
         # No object fuer attributes or need call not allowed.
@@ -190,14 +190,14 @@ klasse AutoCompleteTest(unittest.TestCase):
 
         # Blank or quote trigger 'if complete ...'.
         self.text.delete(1.0, 'end')
-        self.assertFalse(acp.open_completions(ac.TAB))
+        self.assertFalsch(acp.open_completions(ac.TAB))
         self.text.insert('1.0', '"')
-        self.assertFalse(acp.open_completions(ac.TAB))
+        self.assertFalsch(acp.open_completions(ac.TAB))
         self.text.delete('1.0', 'end')
 
     klasse dummy_acw:
         __init__ = Func()
-        show_window = Func(result=False)
+        show_window = Func(result=Falsch)
         hide_window = Func()
 
     def test_open_completions(self):
@@ -215,13 +215,13 @@ klasse AutoCompleteTest(unittest.TestCase):
 
         # Test files.
         self.text.insert('1.0', '"t')
-        self.assertTrue(acp.open_completions(ac.TAB))
+        self.assertWahr(acp.open_completions(ac.TAB))
         self.text.delete('1.0', 'end')
 
     def test_completion_kwds(self):
         self.assertIn('and', ac.completion_kwds)
         self.assertIn('case', ac.completion_kwds)
-        self.assertNotIn('None', ac.completion_kwds)
+        self.assertNotIn('Nichts', ac.completion_kwds)
 
     def test_fetch_completions(self):
         # Test that fetch_completions returns 2 lists:
@@ -238,8 +238,8 @@ klasse AutoCompleteTest(unittest.TestCase):
         # Test attributes
         s, b = acp.fetch_completions('', ac.ATTRS)
         self.assertLess(len(small), len(large))
-        self.assertTrue(all(filter(lambda x: x.startswith('_'), s)))
-        self.assertTrue(any(filter(lambda x: x.startswith('_'), b)))
+        self.assertWahr(all(filter(lambda x: x.startswith('_'), s)))
+        self.assertWahr(any(filter(lambda x: x.startswith('_'), b)))
 
         # Test smalll should respect to __all__.
         with patch.dict('__main__.__dict__', {'__all__': ['a', 'b']}):
@@ -248,8 +248,8 @@ klasse AutoCompleteTest(unittest.TestCase):
             self.assertIn('__name__', b)  # From __main__.__dict__.
             self.assertIn('sum', b)       # From __main__.__builtins__.__dict__.
             self.assertIn('nonlocal', b)  # From keyword.kwlist.
-            pos = b.index('False')        # Test False not included twice.
-            self.assertNotEqual(b[pos+1], 'False')
+            pos = b.index('Falsch')        # Test Falsch not included twice.
+            self.assertNotEqual(b[pos+1], 'Falsch')
 
         # Test attributes with name entity.
         mock = Mock()

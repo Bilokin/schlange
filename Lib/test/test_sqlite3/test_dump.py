@@ -150,8 +150,8 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
         self.cu.execute("BEGIN TRANSACTION")
         self.cu.execute("CREATE TABLE t1 (id integer primary key autoincrement)")
         self.cu.execute("CREATE TABLE t2 (id integer primary key autoincrement)")
-        self.cu.executemany("INSERT INTO t1 VALUES(?)", ((None,) fuer _ in range(9)))
-        self.cu.executemany("INSERT INTO t2 VALUES(?)", ((None,) fuer _ in range(4)))
+        self.cu.executemany("INSERT INTO t1 VALUES(?)", ((Nichts,) fuer _ in range(9)))
+        self.cu.executemany("INSERT INTO t2 VALUES(?)", ((Nichts,) fuer _ in range(4)))
         self.cx.commit()
 
         with memory_database() as cx2:

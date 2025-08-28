@@ -41,8 +41,8 @@ klasse PathMemoryTests(PathTests, unittest.TestCase):
         self.data = util.create_package(
             file=file, path=FileNotFoundError("package exists only in memory")
         )
-        self.data.__spec__.origin = None
-        self.data.__spec__.has_location = False
+        self.data.__spec__.origin = Nichts
+        self.data.__spec__.has_location = Falsch
 
 
 klasse PathZipTests(PathTests, util.ZipSetup, unittest.TestCase):

@@ -25,12 +25,12 @@ __all__ = (
 # top level asyncio namespace, and want to avoid future name clashes.
 
 
-@dataclasses.dataclass(frozen=True, slots=True)
+@dataclasses.dataclass(frozen=Wahr, slots=Wahr)
 klasse FrameCallGraphEntry:
     frame: types.FrameType
 
 
-@dataclasses.dataclass(frozen=True, slots=True)
+@dataclasses.dataclass(frozen=Wahr, slots=Wahr)
 klasse FutureCallGraph:
     future: futures.Future
     call_stack: tuple["FrameCallGraphEntry", ...]
@@ -40,7 +40,7 @@ klasse FutureCallGraph:
 def _build_graph_for_future(
     future: futures.Future,
     *,
-    limit: int | None = None,
+    limit: int | Nichts = Nichts,
 ) -> FutureCallGraph:
     wenn not isinstance(future, futures.Future):
         raise TypeError(
@@ -48,14 +48,14 @@ def _build_graph_for_future(
             f"with asyncio.Future"
         )
 
-    coro = None
-    wenn get_coro := getattr(future, 'get_coro', None):
-        coro = get_coro() wenn limit != 0 sonst None
+    coro = Nichts
+    wenn get_coro := getattr(future, 'get_coro', Nichts):
+        coro = get_coro() wenn limit != 0 sonst Nichts
 
     st: list[FrameCallGraphEntry] = []
     awaited_by: list[FutureCallGraph] = []
 
-    while coro is not None:
+    while coro is not Nichts:
         wenn hasattr(coro, 'cr_await'):
             # A native coroutine or duck-type compatible iterator
             st.append(FrameCallGraphEntry(coro.cr_frame))
@@ -71,7 +71,7 @@ def _build_graph_for_future(
         fuer parent in future._asyncio_awaited_by:
             awaited_by.append(_build_graph_for_future(parent, limit=limit))
 
-    wenn limit is not None:
+    wenn limit is not Nichts:
         wenn limit > 0:
             st = st[:limit]
         sowenn limit < 0:
@@ -81,12 +81,12 @@ def _build_graph_for_future(
 
 
 def capture_call_graph(
-    future: futures.Future | None = None,
+    future: futures.Future | Nichts = Nichts,
     /,
     *,
     depth: int = 1,
-    limit: int | None = None,
-) -> FutureCallGraph | None:
+    limit: int | Nichts = Nichts,
+) -> FutureCallGraph | Nichts:
     """Capture the async call graph fuer the current task or the provided Future.
 
     The graph is represented with three data structures:
@@ -106,7 +106,7 @@ def capture_call_graph(
 
     Receives an optional 'future' argument. If not passed,
     the current task will be used. If there's no current task, the function
-    returns None.
+    returns Nichts.
 
     If "capture_call_graph()" is introspecting *the current task*, the
     optional keyword-only 'depth' argument can be used to skip the specified
@@ -116,32 +116,32 @@ def capture_call_graph(
     in the resulting graph is truncated to include at most ``abs(limit)``
     entries. If 'limit' is positive, the entries left are the closest to
     the invocation point. If 'limit' is negative, the topmost entries are
-    left. If 'limit' is omitted or None, all entries are present.
+    left. If 'limit' is omitted or Nichts, all entries are present.
     If 'limit' is 0, the call stack is not captured at all, only
     "awaited by" information is present.
     """
 
     loop = events._get_running_loop()
 
-    wenn future is not None:
+    wenn future is not Nichts:
         # Check wenn we're in a context of a running event loop;
         # wenn yes - check wenn the passed future is the currently
         # running task or not.
-        wenn loop is None or future is not tasks.current_task(loop=loop):
+        wenn loop is Nichts or future is not tasks.current_task(loop=loop):
             return _build_graph_for_future(future, limit=limit)
         # sonst: future is the current task, move on.
     sonst:
-        wenn loop is None:
+        wenn loop is Nichts:
             raise RuntimeError(
                 'capture_call_graph() is called outside of a running '
                 'event loop and no *future* to introspect was provided')
         future = tasks.current_task(loop=loop)
 
-    wenn future is None:
+    wenn future is Nichts:
         # This isn't a generic call stack introspection utility. If we
         # can't determine the current task and none was provided, we
         # just return.
-        return None
+        return Nichts
 
     wenn not isinstance(future, futures.Future):
         raise TypeError(
@@ -151,14 +151,14 @@ def capture_call_graph(
 
     call_stack: list[FrameCallGraphEntry] = []
 
-    f = sys._getframe(depth) wenn limit != 0 sonst None
+    f = sys._getframe(depth) wenn limit != 0 sonst Nichts
     try:
-        while f is not None:
-            is_async = f.f_generator is not None
+        while f is not Nichts:
+            is_async = f.f_generator is not Nichts
             call_stack.append(FrameCallGraphEntry(f))
 
             wenn is_async:
-                wenn f.f_back is not None and f.f_back.f_generator is None:
+                wenn f.f_back is not Nichts and f.f_back.f_generator is Nichts:
                     # We've reached the bottom of the coroutine stack, which
                     # must be the Task that runs it.
                     break
@@ -172,7 +172,7 @@ def capture_call_graph(
         fuer parent in future._asyncio_awaited_by:
             awaited_by.append(_build_graph_for_future(parent, limit=limit))
 
-    wenn limit is not None:
+    wenn limit is not Nichts:
         limit *= -1
         wenn limit > 0:
             call_stack = call_stack[:limit]
@@ -183,19 +183,19 @@ def capture_call_graph(
 
 
 def format_call_graph(
-    future: futures.Future | None = None,
+    future: futures.Future | Nichts = Nichts,
     /,
     *,
     depth: int = 1,
-    limit: int | None = None,
+    limit: int | Nichts = Nichts,
 ) -> str:
     """Return the async call graph as a string fuer `future`.
 
     If `future` is not provided, format the call graph fuer the current task.
     """
 
-    def render_level(st: FutureCallGraph, buf: list[str], level: int) -> None:
-        def add_line(line: str) -> None:
+    def render_level(st: FutureCallGraph, buf: list[str], level: int) -> Nichts:
+        def add_line(line: str) -> Nichts:
             buf.append(level * '    ' + line)
 
         wenn isinstance(st.future, tasks.Task):
@@ -214,7 +214,7 @@ def format_call_graph(
             fuer ste in st.call_stack:
                 f = ste.frame
 
-                wenn f.f_generator is None:
+                wenn f.f_generator is Nichts:
                     f = ste.frame
                     add_line(
                         f'  |   File {f.f_code.co_filename!r},'
@@ -252,7 +252,7 @@ def format_call_graph(
                 render_level(fut, buf, level + 1)
 
     graph = capture_call_graph(future, depth=depth + 1, limit=limit)
-    wenn graph is None:
+    wenn graph is Nichts:
         return ""
 
     buf: list[str] = []
@@ -265,12 +265,12 @@ def format_call_graph(
     return '\n'.join(buf)
 
 def print_call_graph(
-    future: futures.Future | None = None,
+    future: futures.Future | Nichts = Nichts,
     /,
     *,
-    file: io.Writer[str] | None = None,
+    file: io.Writer[str] | Nichts = Nichts,
     depth: int = 1,
-    limit: int | None = None,
-) -> None:
+    limit: int | Nichts = Nichts,
+) -> Nichts:
     """Print the async call graph fuer the current task or the provided Future."""
     print(format_call_graph(future, depth=depth, limit=limit), file=file)

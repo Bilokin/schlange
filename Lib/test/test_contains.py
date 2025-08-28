@@ -37,7 +37,7 @@ klasse TestContains(unittest.TestCase):
         self.assertIn('', '')
         self.assertIn('', 'abc')
 
-        self.assertRaises(TypeError, lambda: None in 'abc')
+        self.assertRaises(TypeError, lambda: Nichts in 'abc')
 
     def test_builtin_sequence_types(self):
         # a collection of tests on builtin sequence types
@@ -73,39 +73,39 @@ klasse TestContains(unittest.TestCase):
         # containment and equality tests involving elements that are
         # not necessarily equal to themselves
 
-        values = float('nan'), 1, None, 'abc', NEVER_EQ
+        values = float('nan'), 1, Nichts, 'abc', NEVER_EQ
         constructors = list, tuple, dict.fromkeys, set, frozenset, deque
         fuer constructor in constructors:
             container = constructor(values)
             fuer elem in container:
                 self.assertIn(elem, container)
-            self.assertTrue(container == constructor(values))
-            self.assertTrue(container == container)
+            self.assertWahr(container == constructor(values))
+            self.assertWahr(container == container)
 
     def test_block_fallback(self):
-        # blocking fallback with __contains__ = None
+        # blocking fallback with __contains__ = Nichts
         klasse ByContains(object):
             def __contains__(self, other):
-                return False
+                return Falsch
         c = ByContains()
         klasse BlockContains(ByContains):
             """Is not a container
 
             This klasse is a perfectly good iterable (as tested by
             list(bc)), as well as inheriting from a perfectly good
-            container, but __contains__ = None prevents the usual
+            container, but __contains__ = Nichts prevents the usual
             fallback to iteration in the container protocol. That
             is, normally, 0 in bc would fall back to the equivalent
             of any(x==0 fuer x in bc), but here it's blocked from
             doing so.
             """
             def __iter__(self):
-                while False:
-                    yield None
-            __contains__ = None
+                while Falsch:
+                    yield Nichts
+            __contains__ = Nichts
         bc = BlockContains()
-        self.assertFalse(0 in c)
-        self.assertFalse(0 in list(bc))
+        self.assertFalsch(0 in c)
+        self.assertFalsch(0 in list(bc))
         self.assertRaises(TypeError, lambda: 0 in bc)
 
 wenn __name__ == '__main__':

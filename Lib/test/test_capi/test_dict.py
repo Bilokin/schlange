@@ -9,7 +9,7 @@ _testcapi = import_helper.import_module("_testcapi")
 _testlimitedcapi = import_helper.import_module("_testlimitedcapi")
 
 
-NULL = None
+NULL = Nichts
 INVALID_UTF8 = b'\xff'
 
 klasse DictSubclass(dict):
@@ -30,20 +30,20 @@ klasse CAPITest(unittest.TestCase):
 
     def test_dict_check(self):
         check = _testlimitedcapi.dict_check
-        self.assertTrue(check({1: 2}))
-        self.assertTrue(check(OrderedDict({1: 2})))
-        self.assertFalse(check(UserDict({1: 2})))
-        self.assertFalse(check([1, 2]))
-        self.assertFalse(check(object()))
+        self.assertWahr(check({1: 2}))
+        self.assertWahr(check(OrderedDict({1: 2})))
+        self.assertFalsch(check(UserDict({1: 2})))
+        self.assertFalsch(check([1, 2]))
+        self.assertFalsch(check(object()))
         # CRASHES check(NULL)
 
     def test_dict_checkexact(self):
         check = _testlimitedcapi.dict_checkexact
-        self.assertTrue(check({1: 2}))
-        self.assertFalse(check(OrderedDict({1: 2})))
-        self.assertFalse(check(UserDict({1: 2})))
-        self.assertFalse(check([1, 2]))
-        self.assertFalse(check(object()))
+        self.assertWahr(check({1: 2}))
+        self.assertFalsch(check(OrderedDict({1: 2})))
+        self.assertFalsch(check(UserDict({1: 2})))
+        self.assertFalsch(check([1, 2]))
+        self.assertFalsch(check(object()))
         # CRASHES check(NULL)
 
     def test_dict_new(self):
@@ -212,13 +212,13 @@ klasse CAPITest(unittest.TestCase):
     def test_dict_contains(self):
         contains = _testlimitedcapi.dict_contains
         dct = {'a': 1, '\U0001f40d': 2}
-        self.assertTrue(contains(dct, 'a'))
-        self.assertFalse(contains(dct, 'b'))
-        self.assertTrue(contains(dct, '\U0001f40d'))
+        self.assertWahr(contains(dct, 'a'))
+        self.assertFalsch(contains(dct, 'b'))
+        self.assertWahr(contains(dct, '\U0001f40d'))
 
         dct2 = DictSubclass(dct)
-        self.assertTrue(contains(dct2, 'a'))
-        self.assertFalse(contains(dct2, 'b'))
+        self.assertWahr(contains(dct2, 'a'))
+        self.assertFalsch(contains(dct2, 'b'))
 
         self.assertRaises(TypeError, contains, {}, [])  # unhashable
         # CRASHES contains({}, NULL)
@@ -229,14 +229,14 @@ klasse CAPITest(unittest.TestCase):
     def test_dict_contains_string(self):
         contains_string = _testcapi.dict_containsstring
         dct = {'a': 1, '\U0001f40d': 2}
-        self.assertTrue(contains_string(dct, b'a'))
-        self.assertFalse(contains_string(dct, b'b'))
-        self.assertTrue(contains_string(dct, '\U0001f40d'.encode()))
+        self.assertWahr(contains_string(dct, b'a'))
+        self.assertFalsch(contains_string(dct, b'b'))
+        self.assertWahr(contains_string(dct, '\U0001f40d'.encode()))
         self.assertRaises(UnicodeDecodeError, contains_string, dct, INVALID_UTF8)
 
         dct2 = DictSubclass(dct)
-        self.assertTrue(contains_string(dct2, b'a'))
-        self.assertFalse(contains_string(dct2, b'b'))
+        self.assertWahr(contains_string(dct2, b'a'))
+        self.assertFalsch(contains_string(dct2, b'b'))
 
         # CRASHES contains({}, NULL)
         # CRASHES contains(NULL, b'a')
@@ -368,11 +368,11 @@ klasse CAPITest(unittest.TestCase):
     def test_mapping_keys_valuesitems(self):
         klasse BadMapping(dict):
             def keys(self):
-                return None
+                return Nichts
             def values(self):
-                return None
+                return Nichts
             def items(self):
-                return None
+                return Nichts
         dict_obj = {'foo': 1, 'bar': 2, 'spam': 3}
         fuer mapping in [dict_obj, DictSubclass(dict_obj), BadMapping(dict_obj)]:
             self.assertListEqual(_testlimitedcapi.dict_keys(mapping),
@@ -390,13 +390,13 @@ klasse CAPITest(unittest.TestCase):
 
     def test_dict_next(self):
         dict_next = _testlimitedcapi.dict_next
-        self.assertIsNone(dict_next({}, 0))
+        self.assertIsNichts(dict_next({}, 0))
         dct = {'a': 1, 'b': 2, 'c': 3}
         pos = 0
         pairs = []
-        while True:
+        while Wahr:
             res = dict_next(dct, pos)
-            wenn res is None:
+            wenn res is Nichts:
                 break
             rc, pos, key, value = res
             self.assertEqual(rc, 1)

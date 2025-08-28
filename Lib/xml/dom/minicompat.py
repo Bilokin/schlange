@@ -66,7 +66,7 @@ klasse NodeList(list):
 
     # For backward compatibility
     def __setstate__(self, state):
-        wenn state is None:
+        wenn state is Nichts:
             state = []
         self[:] = state
 
@@ -85,7 +85,7 @@ klasse EmptyNodeList(tuple):
         return NL
 
     def item(self, index):
-        return None
+        return Nichts
 
     def _get_length(self):
         return 0

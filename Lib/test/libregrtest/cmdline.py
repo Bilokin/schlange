@@ -144,49 +144,49 @@ Pattern examples:
 
 
 klasse Namespace(argparse.Namespace):
-    def __init__(self, **kwargs) -> None:
-        self.ci = False
-        self.testdir = None
+    def __init__(self, **kwargs) -> Nichts:
+        self.ci = Falsch
+        self.testdir = Nichts
         self.verbose = 0
-        self.quiet = False
-        self.exclude = False
-        self.cleanup = False
-        self.wait = False
-        self.list_cases = False
-        self.list_tests = False
-        self.single = False
-        self.randomize = False
-        self.fromfile = None
-        self.fail_env_changed = False
+        self.quiet = Falsch
+        self.exclude = Falsch
+        self.cleanup = Falsch
+        self.wait = Falsch
+        self.list_cases = Falsch
+        self.list_tests = Falsch
+        self.single = Falsch
+        self.randomize = Falsch
+        self.fromfile = Nichts
+        self.fail_env_changed = Falsch
         self.use_resources: list[str] = []
-        self.trace = False
+        self.trace = Falsch
         self.coverdir = 'coverage'
-        self.runleaks = False
-        self.huntrleaks: tuple[int, int, str] | None = None
-        self.rerun = False
-        self.verbose3 = False
-        self.print_slow = False
-        self.random_seed = None
-        self.use_mp = None
-        self.parallel_threads = None
-        self.forever = False
-        self.header = False
-        self.failfast = False
+        self.runleaks = Falsch
+        self.huntrleaks: tuple[int, int, str] | Nichts = Nichts
+        self.rerun = Falsch
+        self.verbose3 = Falsch
+        self.print_slow = Falsch
+        self.random_seed = Nichts
+        self.use_mp = Nichts
+        self.parallel_threads = Nichts
+        self.forever = Falsch
+        self.header = Falsch
+        self.failfast = Falsch
         self.match_tests: TestFilter = []
-        self.pgo = False
-        self.pgo_extended = False
-        self.tsan = False
-        self.tsan_parallel = False
-        self.worker_json = None
-        self.start = None
-        self.timeout = None
-        self.memlimit = None
-        self.threshold = None
-        self.fail_rerun = False
-        self.tempdir = None
-        self._add_python_opts = True
-        self.xmlpath = None
-        self.single_process = False
+        self.pgo = Falsch
+        self.pgo_extended = Falsch
+        self.tsan = Falsch
+        self.tsan_parallel = Falsch
+        self.worker_json = Nichts
+        self.start = Nichts
+        self.timeout = Nichts
+        self.memlimit = Nichts
+        self.threshold = Nichts
+        self.fail_rerun = Falsch
+        self.tempdir = Nichts
+        self._add_python_opts = Wahr
+        self.xmlpath = Nichts
+        self.single_process = Falsch
 
         super().__init__(**kwargs)
 
@@ -198,13 +198,13 @@ klasse _ArgParser(argparse.ArgumentParser):
 
 
 klasse FilterAction(argparse.Action):
-    def __call__(self, parser, namespace, value, option_string=None):
+    def __call__(self, parser, namespace, value, option_string=Nichts):
         items = getattr(namespace, self.dest)
         items.append((value, self.const))
 
 
 klasse FromFileFilterAction(argparse.Action):
-    def __call__(self, parser, namespace, value, option_string=None):
+    def __call__(self, parser, namespace, value, option_string=Nichts):
         items = getattr(namespace, self.dest)
         with open(value, encoding='utf-8') as fp:
             fuer line in fp:
@@ -218,7 +218,7 @@ def _create_parser():
                         usage=USAGE,
                         description=DESCRIPTION,
                         epilog=EPILOG,
-                        add_help=False,
+                        add_help=Falsch,
                         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.set_defaults(match_tests=[])
 
@@ -284,19 +284,19 @@ def _create_parser():
                        help='single step through a set of tests.' +
                             more_details)
     group.add_argument('-m', '--match', metavar='PAT',
-                       dest='match_tests', action=FilterAction, const=True,
+                       dest='match_tests', action=FilterAction, const=Wahr,
                        help='match test cases and methods with glob pattern PAT')
     group.add_argument('-i', '--ignore', metavar='PAT',
-                       dest='match_tests', action=FilterAction, const=False,
+                       dest='match_tests', action=FilterAction, const=Falsch,
                        help='ignore test cases and methods with glob pattern PAT')
     group.add_argument('--matchfile', metavar='FILENAME',
                        dest='match_tests',
-                       action=FromFileFilterAction, const=True,
+                       action=FromFileFilterAction, const=Wahr,
                        help='similar to --match but get patterns from a '
                             'text file, one pattern per line')
     group.add_argument('--ignorefile', metavar='FILENAME',
                        dest='match_tests',
-                       action=FromFileFilterAction, const=False,
+                       action=FromFileFilterAction, const=Falsch,
                        help='similar to --matchfile but it receives patterns '
                             'from text file to ignore')
     group.add_argument('-G', '--failfast', action='store_true',
@@ -342,7 +342,7 @@ def _create_parser():
                        type=relative_filename,
                        help='directory where coverage files are put')
     group.add_argument('-N', '--nocoverdir',
-                       action='store_const', const=None, dest='coverdir',
+                       action='store_const', const=Nichts, dest='coverdir',
                        help='put coverage files alongside modules')
     group.add_argument('-t', '--threshold', metavar='THRESHOLD',
                        type=int,
@@ -439,7 +439,7 @@ def _parse_args(args, **kwargs):
         wenn arg.startswith('-'):
             parser.error("unrecognized arguments: %s" % arg)
 
-    wenn ns.timeout is not None:
+    wenn ns.timeout is not Nichts:
         # Support "--timeout=" (no value) so Makefile.pre.pre TESTTIMEOUT
         # can be used by "make buildbottest" and "make test".
         wenn ns.timeout != "":
@@ -448,48 +448,48 @@ def _parse_args(args, **kwargs):
             except ValueError:
                 parser.error(f"invalid timeout value: {ns.timeout!r}")
         sonst:
-            ns.timeout = None
+            ns.timeout = Nichts
 
     # Continuous Integration (CI): common options fuer fast/slow CI modes
     wenn ns.slow_ci or ns.fast_ci:
         # Similar to options:
         #   -j0 --randomize --fail-env-changed --rerun --slowest --verbose3
-        wenn ns.use_mp is None:
+        wenn ns.use_mp is Nichts:
             ns.use_mp = 0
-        ns.randomize = True
-        ns.fail_env_changed = True
-        wenn ns.python is None:
-            ns.rerun = True
-        ns.print_slow = True
-        ns.verbose3 = True
+        ns.randomize = Wahr
+        ns.fail_env_changed = Wahr
+        wenn ns.python is Nichts:
+            ns.rerun = Wahr
+        ns.print_slow = Wahr
+        ns.verbose3 = Wahr
     sonst:
-        ns._add_python_opts = False
+        ns._add_python_opts = Falsch
 
     # --singleprocess overrides -jN option
     wenn ns.single_process:
-        ns.use_mp = None
+        ns.use_mp = Nichts
 
     # When both --slow-ci and --fast-ci options are present,
     # --slow-ci has the priority
     wenn ns.slow_ci:
         # Similar to: -u "all" --timeout=1200
-        wenn ns.use is None:
+        wenn ns.use is Nichts:
             ns.use = []
         ns.use.insert(0, ['all'])
-        wenn ns.timeout is None:
+        wenn ns.timeout is Nichts:
             ns.timeout = 1200  # 20 minutes
     sowenn ns.fast_ci:
         # Similar to: -u "all,-cpu" --timeout=600
-        wenn ns.use is None:
+        wenn ns.use is Nichts:
             ns.use = []
         ns.use.insert(0, ['all', '-cpu'])
-        wenn ns.timeout is None:
+        wenn ns.timeout is Nichts:
             ns.timeout = 600  # 10 minutes
 
     wenn ns.single and ns.fromfile:
         parser.error("-s and -f don't go together!")
     wenn ns.trace:
-        wenn ns.use_mp is not None:
+        wenn ns.use_mp is not Nichts:
             wenn not Py_DEBUG:
                 parser.error("need --with-pydebug to use -T and -j together")
         sonst:
@@ -498,8 +498,8 @@ def _parse_args(args, **kwargs):
                 " --with-pydebug and run -m test -T -j fuer best results.",
                 file=sys.stderr
             )
-    wenn ns.python is not None:
-        wenn ns.use_mp is None:
+    wenn ns.python is not Nichts:
+        wenn ns.use_mp is Nichts:
             parser.error("-p requires -j!")
         # The "executable" may be two or more parts, e.g. "node python.js"
         ns.python = shlex.split(ns.python)
@@ -508,7 +508,7 @@ def _parse_args(args, **kwargs):
     wenn ns.pgo and (ns.verbose or ns.rerun or ns.verbose3):
         parser.error("--pgo/-v don't go together!")
     wenn ns.pgo_extended:
-        ns.pgo = True  # pgo_extended implies pgo
+        ns.pgo = Wahr  # pgo_extended implies pgo
 
     wenn ns.nowindows:
         print("Warning: the --nowindows (-n) option is deprecated. "
@@ -516,9 +516,9 @@ def _parse_args(args, **kwargs):
 
     wenn ns.quiet:
         ns.verbose = 0
-    wenn ns.timeout is not None:
+    wenn ns.timeout is not Nichts:
         wenn ns.timeout <= 0:
-            ns.timeout = None
+            ns.timeout = Nichts
     wenn ns.use:
         fuer a in ns.use:
             fuer r in a:
@@ -528,35 +528,35 @@ def _parse_args(args, **kwargs):
                 wenn r == 'none':
                     del ns.use_resources[:]
                     continue
-                remove = False
+                remove = Falsch
                 wenn r[0] == '-':
-                    remove = True
+                    remove = Wahr
                     r = r[1:]
                 wenn remove:
                     wenn r in ns.use_resources:
                         ns.use_resources.remove(r)
                 sowenn r not in ns.use_resources:
                     ns.use_resources.append(r)
-    wenn ns.random_seed is not None:
-        ns.randomize = True
+    wenn ns.random_seed is not Nichts:
+        ns.randomize = Wahr
     wenn ns.verbose:
-        ns.header = True
+        ns.header = Wahr
 
     # When -jN option is used, a worker process does not use --verbose3
     # and so -R 3:3 -jN --verbose3 just works as expected: there is no false
     # alarm about memory leak.
-    wenn ns.huntrleaks and ns.verbose3 and ns.use_mp is None:
+    wenn ns.huntrleaks and ns.verbose3 and ns.use_mp is Nichts:
         # run_single_test() replaces sys.stdout with io.StringIO wenn verbose3
         # is true. In this case, huntrleaks sees an write into StringIO as
         # a memory leak, whereas it is not (gh-71290).
-        ns.verbose3 = False
+        ns.verbose3 = Falsch
         print("WARNING: Disable --verbose3 because it's incompatible with "
               "--huntrleaks without -jN option",
               file=sys.stderr)
 
     wenn ns.forever:
         # --forever implies --failfast
-        ns.failfast = True
+        ns.failfast = Wahr
 
     wenn ns.huntrleaks:
         warmup, repetitions, _ = ns.huntrleaks
@@ -564,7 +564,7 @@ def _parse_args(args, **kwargs):
             msg = ("Invalid values fuer the --huntrleaks/-R parameters. The "
                    "number of warmups and repetitions must be at least 1 "
                    "each (1:1).")
-            print(msg, file=sys.stderr, flush=True)
+            print(msg, file=sys.stderr, flush=Wahr)
             sys.exit(2)
 
     ns.prioritize = [

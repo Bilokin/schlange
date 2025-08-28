@@ -20,25 +20,25 @@ klasse SetAttributeTest(unittest.TestCase):
         self.parser = expat.ParserCreate(namespace_separator='!')
 
     def test_buffer_text(self):
-        self.assertIs(self.parser.buffer_text, False)
+        self.assertIs(self.parser.buffer_text, Falsch)
         fuer x in 0, 1, 2, 0:
             self.parser.buffer_text = x
             self.assertIs(self.parser.buffer_text, bool(x))
 
     def test_namespace_prefixes(self):
-        self.assertIs(self.parser.namespace_prefixes, False)
+        self.assertIs(self.parser.namespace_prefixes, Falsch)
         fuer x in 0, 1, 2, 0:
             self.parser.namespace_prefixes = x
             self.assertIs(self.parser.namespace_prefixes, bool(x))
 
     def test_ordered_attributes(self):
-        self.assertIs(self.parser.ordered_attributes, False)
+        self.assertIs(self.parser.ordered_attributes, Falsch)
         fuer x in 0, 1, 2, 0:
             self.parser.ordered_attributes = x
             self.assertIs(self.parser.ordered_attributes, bool(x))
 
     def test_specified_attributes(self):
-        self.assertIs(self.parser.specified_attributes, False)
+        self.assertIs(self.parser.specified_attributes, Falsch)
         fuer x in 0, 1, 2, 0:
             self.parser.specified_attributes = x
             self.assertIs(self.parser.specified_attributes, bool(x))
@@ -194,17 +194,17 @@ klasse ParseTest(unittest.TestCase):
             'PI: \'xml-stylesheet\' \'href="stylesheet.css"\'',
             "Comment: ' comment data '",
             "Not standalone",
-            ("Start doctype", ('quotations', 'quotations.dtd', None, 1)),
-            ('Element declaration', ('root', (2, 0, None, ()))),
-            ('Attribute list declaration', ('root', 'attr1', 'CDATA', None,
+            ("Start doctype", ('quotations', 'quotations.dtd', Nichts, 1)),
+            ('Element declaration', ('root', (2, 0, Nichts, ()))),
+            ('Attribute list declaration', ('root', 'attr1', 'CDATA', Nichts,
                 1)),
-            ('Attribute list declaration', ('root', 'attr2', 'CDATA', None,
+            ('Attribute list declaration', ('root', 'attr2', 'CDATA', Nichts,
                 0)),
-            "Notation declared: ('notation', None, 'notation.jpeg', None)",
-            ('Entity declaration', ('acirc', 0, '\xe2', None, None, None, None)),
-            ('Entity declaration', ('external_entity', 0, None, None,
-                'entity.file', None, None)),
-            "Unparsed entity decl: ('unparsed_entity', None, 'entity.file', None, 'notation')",
+            "Notation declared: ('notation', Nichts, 'notation.jpeg', Nichts)",
+            ('Entity declaration', ('acirc', 0, '\xe2', Nichts, Nichts, Nichts, Nichts)),
+            ('Entity declaration', ('external_entity', 0, Nichts, Nichts,
+                'entity.file', Nichts, Nichts)),
+            "Unparsed entity decl: ('unparsed_entity', Nichts, 'entity.file', Nichts, 'notation')",
             "Not standalone",
             "End doctype",
             "Start element: 'root' {'attr1': 'value1', 'attr2': 'value2\u1f40'}",
@@ -218,7 +218,7 @@ klasse ParseTest(unittest.TestCase):
             "Character data: 'contents of CDATA section'",
             'End of CDATA section',
             "End element: 'sub2'",
-            "External entity ref: (None, 'entity.file', None)",
+            "External entity ref: (Nichts, 'entity.file', Nichts)",
             ('Skipped entity', ('skipped_entity', 0)),
             "Character data: '\xb5'",
             "End element: 'root'",
@@ -231,7 +231,7 @@ klasse ParseTest(unittest.TestCase):
         parser = expat.ParserCreate(namespace_separator='!')
         self._hookup_callbacks(parser, out)
 
-        parser.Parse(data, True)
+        parser.Parse(data, Wahr)
 
         operations = out.out
         self._verify_parse_output(operations)
@@ -243,7 +243,7 @@ klasse ParseTest(unittest.TestCase):
         parser = expat.ParserCreate(namespace_separator='!')
         self._hookup_callbacks(parser, out)
 
-        parser.Parse(data.decode('iso-8859-1'), True)
+        parser.Parse(data.decode('iso-8859-1'), Wahr)
 
         operations = out.out
         self._verify_parse_output(operations)
@@ -277,13 +277,13 @@ klasse NamespaceSeparatorTest(unittest.TestCase):
         # Tests that make sure we get errors when the namespace_separator value
         # is illegal, and that we don't fuer good values:
         expat.ParserCreate()
-        expat.ParserCreate(namespace_separator=None)
+        expat.ParserCreate(namespace_separator=Nichts)
         expat.ParserCreate(namespace_separator=' ')
 
     def test_illegal(self):
         with self.assertRaisesRegex(TypeError,
                 r"ParserCreate\(\) argument (2|'namespace_separator') "
-                r"must be str or None, not int"):
+                r"must be str or Nichts, not int"):
             expat.ParserCreate(namespace_separator=42)
 
         try:
@@ -291,7 +291,7 @@ klasse NamespaceSeparatorTest(unittest.TestCase):
             self.fail()
         except ValueError as e:
             self.assertEqual(str(e),
-                'namespace_separator must be at most one character, omitted, or None')
+                'namespace_separator must be at most one character, omitted, or Nichts')
 
     def test_zero_length(self):
         # ParserCreate() needs to accept a namespace_separator of zero length
@@ -314,30 +314,30 @@ klasse InterningTest(unittest.TestCase):
             L.append(name)
         p.StartElementHandler = collector
         p.EndElementHandler = collector
-        p.Parse(b"<e> <e/> <e></e> </e>", True)
+        p.Parse(b"<e> <e/> <e></e> </e>", Wahr)
         tag = L[0]
         self.assertEqual(len(L), 6)
         fuer entry in L:
             # L should have the same string repeated over and over.
-            self.assertTrue(tag is entry)
+            self.assertWahr(tag is entry)
 
     def test_issue9402(self):
         # create an ExternalEntityParserCreate with buffer text
         klasse ExternalOutputter:
             def __init__(self, parser):
                 self.parser = parser
-                self.parser_result = None
+                self.parser_result = Nichts
 
             def ExternalEntityRefHandler(self, context, base, sysId, pubId):
                 external_parser = self.parser.ExternalEntityParserCreate("")
-                self.parser_result = external_parser.Parse(b"", True)
+                self.parser_result = external_parser.Parse(b"", Wahr)
                 return 1
 
         parser = expat.ParserCreate(namespace_separator='!')
         parser.buffer_text = 1
         out = ExternalOutputter(parser)
         parser.ExternalEntityRefHandler = out.ExternalEntityRefHandler
-        parser.Parse(data, True)
+        parser.Parse(data, Wahr)
         self.assertEqual(out.parser_result, 1)
 
 
@@ -376,12 +376,12 @@ klasse BufferTextTest(unittest.TestCase):
 
     def test_default_to_disabled(self):
         parser = expat.ParserCreate()
-        self.assertFalse(parser.buffer_text)
+        self.assertFalsch(parser.buffer_text)
 
     def test_buffering_enabled(self):
         # Make sure buffering is turned on
-        self.assertTrue(self.parser.buffer_text)
-        self.parser.Parse(b"<a>1<b/>2<c/>3</a>", True)
+        self.assertWahr(self.parser.buffer_text)
+        self.parser.Parse(b"<a>1<b/>2<c/>3</a>", Wahr)
         self.assertEqual(self.stuff, ['123'],
                          "buffered text not properly collapsed")
 
@@ -389,39 +389,39 @@ klasse BufferTextTest(unittest.TestCase):
         # XXX This test exposes more detail of Expat's text chunking than we
         # XXX like, but it tests what we need to concisely.
         self.setHandlers(["StartElementHandler"])
-        self.parser.Parse(b"<a>1<b buffer-text='no'/>2\n3<c buffer-text='yes'/>4\n5</a>", True)
+        self.parser.Parse(b"<a>1<b buffer-text='no'/>2\n3<c buffer-text='yes'/>4\n5</a>", Wahr)
         self.assertEqual(self.stuff,
                          ["<a>", "1", "<b>", "2", "\n", "3", "<c>", "4\n5"],
                          "buffering control not reacting as expected")
 
     def test2(self):
-        self.parser.Parse(b"<a>1<b/>&lt;2&gt;<c/>&#32;\n&#x20;3</a>", True)
+        self.parser.Parse(b"<a>1<b/>&lt;2&gt;<c/>&#32;\n&#x20;3</a>", Wahr)
         self.assertEqual(self.stuff, ["1<2> \n 3"],
                          "buffered text not properly collapsed")
 
     def test3(self):
         self.setHandlers(["StartElementHandler"])
-        self.parser.Parse(b"<a>1<b/>2<c/>3</a>", True)
+        self.parser.Parse(b"<a>1<b/>2<c/>3</a>", Wahr)
         self.assertEqual(self.stuff, ["<a>", "1", "<b>", "2", "<c>", "3"],
                          "buffered text not properly split")
 
     def test4(self):
         self.setHandlers(["StartElementHandler", "EndElementHandler"])
-        self.parser.CharacterDataHandler = None
-        self.parser.Parse(b"<a>1<b/>2<c/>3</a>", True)
+        self.parser.CharacterDataHandler = Nichts
+        self.parser.Parse(b"<a>1<b/>2<c/>3</a>", Wahr)
         self.assertEqual(self.stuff,
                          ["<a>", "<b>", "</b>", "<c>", "</c>", "</a>"])
 
     def test5(self):
         self.setHandlers(["StartElementHandler", "EndElementHandler"])
-        self.parser.Parse(b"<a>1<b></b>2<c/>3</a>", True)
+        self.parser.Parse(b"<a>1<b></b>2<c/>3</a>", Wahr)
         self.assertEqual(self.stuff,
             ["<a>", "1", "<b>", "</b>", "2", "<c>", "</c>", "3", "</a>"])
 
     def test6(self):
         self.setHandlers(["CommentHandler", "EndElementHandler",
                     "StartElementHandler"])
-        self.parser.Parse(b"<a>1<b/>2<c></c>345</a> ", True)
+        self.parser.Parse(b"<a>1<b/>2<c></c>345</a> ", Wahr)
         self.assertEqual(self.stuff,
             ["<a>", "1", "<b>", "</b>", "2", "<c>", "</c>", "345", "</a>"],
             "buffered text not properly split")
@@ -429,7 +429,7 @@ klasse BufferTextTest(unittest.TestCase):
     def test7(self):
         self.setHandlers(["CommentHandler", "EndElementHandler",
                     "StartElementHandler"])
-        self.parser.Parse(b"<a>1<b/>2<c></c>3<!--abc-->4<!--def-->5</a> ", True)
+        self.parser.Parse(b"<a>1<b/>2<c></c>3<!--abc-->4<!--def-->5</a> ", Wahr)
         self.assertEqual(self.stuff,
                          ["<a>", "1", "<b>", "</b>", "2", "<c>", "</c>", "3",
                           "<!--abc-->", "4", "<!--def-->", "5", "</a>"],
@@ -437,16 +437,16 @@ klasse BufferTextTest(unittest.TestCase):
 
     def test_change_character_data_handler_in_callback(self):
         # Test that xmlparse_handler_setter() properly handles
-        # the special case "parser.CharacterDataHandler = None".
+        # the special case "parser.CharacterDataHandler = Nichts".
         def handler(*args):
-            parser.CharacterDataHandler = None
+            parser.CharacterDataHandler = Nichts
 
         handler_wrapper = mock.Mock(wraps=handler)
         parser = expat.ParserCreate()
         parser.CharacterDataHandler = handler_wrapper
-        parser.Parse(b"<a>1<b/>2<c></c>3<!--abc-->4<!--def-->5</a> ", True)
+        parser.Parse(b"<a>1<b/>2<c></c>3<!--abc-->4<!--def-->5</a> ", Wahr)
         handler_wrapper.assert_called_once()
-        self.assertIsNone(parser.CharacterDataHandler)
+        self.assertIsNichts(parser.CharacterDataHandler)
 
 
 # Test handling of exception from callback:
@@ -468,7 +468,7 @@ klasse HandlerExceptionTest(unittest.TestCase):
         wenn src_dir:
             have_source = os.path.isdir(src_dir)
         sonst:
-            have_source = False
+            have_source = Falsch
         wenn have_source:
             with os_helper.change_cwd(src_dir):
                 self._test_exception(have_source)
@@ -483,7 +483,7 @@ klasse HandlerExceptionTest(unittest.TestCase):
         parser = expat.ParserCreate()
         parser.StartElementHandler = self.StartElementHandler
         try:
-            parser.Parse(b"<a><b><c/></b></a>", True)
+            parser.Parse(b"<a><b><c/></b></a>", Wahr)
 
             self.fail("the parser did not raise RuntimeError")
         except RuntimeError as exc:
@@ -520,7 +520,7 @@ klasse PositionTest(unittest.TestCase):
                self.parser.CurrentByteIndex,
                self.parser.CurrentLineNumber,
                self.parser.CurrentColumnNumber)
-        self.assertTrue(self.upto < len(self.expected_list),
+        self.assertWahr(self.upto < len(self.expected_list),
                         'too many parser events')
         expected = self.expected_list[self.upto]
         self.assertEqual(pos, expected,
@@ -536,7 +536,7 @@ klasse PositionTest(unittest.TestCase):
                               ('e', 15, 3, 6), ('e', 17, 4, 1), ('e', 22, 5, 0)]
 
         xml = b'<a>\n <b>\n  <c/>\n </b>\n</a>'
-        self.parser.Parse(xml, True)
+        self.parser.Parse(xml, Wahr)
 
 
 klasse sf1296433Test(unittest.TestCase):
@@ -616,22 +616,22 @@ klasse ChardataBufferTest(unittest.TestCase):
 
         # Parse one chunk of XML
         self.n = 0
-        parser.Parse(xml1, False)
+        parser.Parse(xml1, Falsch)
         self.assertEqual(parser.buffer_size, 1024)
         self.assertEqual(self.n, 1)
 
         # Turn off buffering and parse the next chunk.
         parser.buffer_text = 0
-        self.assertFalse(parser.buffer_text)
+        self.assertFalsch(parser.buffer_text)
         self.assertEqual(parser.buffer_size, 1024)
         fuer i in range(10):
-            parser.Parse(xml2, False)
+            parser.Parse(xml2, Falsch)
         self.assertEqual(self.n, 11)
 
         parser.buffer_text = 1
-        self.assertTrue(parser.buffer_text)
+        self.assertWahr(parser.buffer_text)
         self.assertEqual(parser.buffer_size, 1024)
-        parser.Parse(xml3, True)
+        parser.Parse(xml3, Wahr)
         self.assertEqual(self.n, 12)
 
     def counting_handler(self, text):
@@ -658,10 +658,10 @@ klasse ChardataBufferTest(unittest.TestCase):
         self.assertEqual(parser.buffer_size, 1024)
 
         self.n = 0
-        parser.Parse(xml1, False)
+        parser.Parse(xml1, Falsch)
         parser.buffer_size *= 2
         self.assertEqual(parser.buffer_size, 2048)
-        parser.Parse(xml2, True)
+        parser.Parse(xml2, Wahr)
         self.assertEqual(self.n, 2)
 
     def test_change_size_2(self):
@@ -674,10 +674,10 @@ klasse ChardataBufferTest(unittest.TestCase):
         self.assertEqual(parser.buffer_size, 2048)
 
         self.n=0
-        parser.Parse(xml1, False)
+        parser.Parse(xml1, Falsch)
         parser.buffer_size = parser.buffer_size // 2
         self.assertEqual(parser.buffer_size, 1024)
-        parser.Parse(xml2, True)
+        parser.Parse(xml2, Wahr)
         self.assertEqual(self.n, 4)
 
 klasse MalformedInputTest(unittest.TestCase):
@@ -685,7 +685,7 @@ klasse MalformedInputTest(unittest.TestCase):
         xml = b"\0\r\n"
         parser = expat.ParserCreate()
         try:
-            parser.Parse(xml, True)
+            parser.Parse(xml, Wahr)
             self.fail()
         except expat.ExpatError as e:
             self.assertEqual(str(e), 'unclosed token: line 2, column 0')
@@ -696,7 +696,7 @@ klasse MalformedInputTest(unittest.TestCase):
         parser = expat.ParserCreate()
         err_pattern = r'XML declaration not well-formed: line 1, column \d+'
         with self.assertRaisesRegex(expat.ExpatError, err_pattern):
-            parser.Parse(xml, True)
+            parser.Parse(xml, Wahr)
 
 klasse ErrorMessageTest(unittest.TestCase):
     def test_codes(self):
@@ -708,7 +708,7 @@ klasse ErrorMessageTest(unittest.TestCase):
         xml = b'<'
         parser = expat.ParserCreate()
         try:
-            parser.Parse(xml, True)
+            parser.Parse(xml, Wahr)
             self.fail()
         except expat.ExpatError as e:
             self.assertEqual(e.code,
@@ -721,9 +721,9 @@ klasse ForeignDTDTests(unittest.TestCase):
     """
     def test_use_foreign_dtd(self):
         """
-        If UseForeignDTD is passed True and a document without an external
+        If UseForeignDTD is passed Wahr and a document without an external
         entity reference is parsed, ExternalEntityRefHandler is first called
-        with None fuer the public and system ids.
+        with Nichts fuer the public and system ids.
         """
         handler_call_args = []
         def resolve_entity(context, base, system_id, public_id):
@@ -731,13 +731,13 @@ klasse ForeignDTDTests(unittest.TestCase):
             return 1
 
         parser = expat.ParserCreate()
-        parser.UseForeignDTD(True)
+        parser.UseForeignDTD(Wahr)
         parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
         parser.ExternalEntityRefHandler = resolve_entity
         parser.Parse(b"<?xml version='1.0'?><element/>")
-        self.assertEqual(handler_call_args, [(None, None)])
+        self.assertEqual(handler_call_args, [(Nichts, Nichts)])
 
-        # test UseForeignDTD() is equal to UseForeignDTD(True)
+        # test UseForeignDTD() is equal to UseForeignDTD(Wahr)
         handler_call_args[:] = []
 
         parser = expat.ParserCreate()
@@ -745,11 +745,11 @@ klasse ForeignDTDTests(unittest.TestCase):
         parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
         parser.ExternalEntityRefHandler = resolve_entity
         parser.Parse(b"<?xml version='1.0'?><element/>")
-        self.assertEqual(handler_call_args, [(None, None)])
+        self.assertEqual(handler_call_args, [(Nichts, Nichts)])
 
     def test_ignore_use_foreign_dtd(self):
         """
-        If UseForeignDTD is passed True and a document with an external
+        If UseForeignDTD is passed Wahr and a document with an external
         entity reference is parsed, ExternalEntityRefHandler is called with
         the public and system ids from the document.
         """
@@ -759,7 +759,7 @@ klasse ForeignDTDTests(unittest.TestCase):
             return 1
 
         parser = expat.ParserCreate()
-        parser.UseForeignDTD(True)
+        parser.UseForeignDTD(Wahr)
         parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_ALWAYS)
         parser.ExternalEntityRefHandler = resolve_entity
         parser.Parse(
@@ -773,9 +773,9 @@ klasse ReparseDeferralTest(unittest.TestCase):
         enabled = (expat.version_info >= (2, 6, 0))
 
         self.assertIs(parser.GetReparseDeferralEnabled(), enabled)
-        parser.SetReparseDeferralEnabled(False)
-        self.assertIs(parser.GetReparseDeferralEnabled(), False)
-        parser.SetReparseDeferralEnabled(True)
+        parser.SetReparseDeferralEnabled(Falsch)
+        self.assertIs(parser.GetReparseDeferralEnabled(), Falsch)
+        parser.SetReparseDeferralEnabled(Wahr)
         self.assertIs(parser.GetReparseDeferralEnabled(), enabled)
 
     def test_reparse_deferral_enabled(self):
@@ -790,15 +790,15 @@ klasse ReparseDeferralTest(unittest.TestCase):
 
         parser = expat.ParserCreate()
         parser.StartElementHandler = start_element
-        self.assertTrue(parser.GetReparseDeferralEnabled())
+        self.assertWahr(parser.GetReparseDeferralEnabled())
 
         fuer chunk in (b'<doc', b'/>'):
-            parser.Parse(chunk, False)
+            parser.Parse(chunk, Falsch)
 
         # The key test: Have handlers already fired?  Expecting: no.
         self.assertEqual(started, [])
 
-        parser.Parse(b'', True)
+        parser.Parse(b'', Wahr)
 
         self.assertEqual(started, ['doc'])
 
@@ -811,11 +811,11 @@ klasse ReparseDeferralTest(unittest.TestCase):
         parser = expat.ParserCreate()
         parser.StartElementHandler = start_element
         wenn expat.version_info >= (2, 6, 0):
-            parser.SetReparseDeferralEnabled(False)
-        self.assertFalse(parser.GetReparseDeferralEnabled())
+            parser.SetReparseDeferralEnabled(Falsch)
+        self.assertFalsch(parser.GetReparseDeferralEnabled())
 
         fuer chunk in (b'<doc', b'/>'):
-            parser.Parse(chunk, False)
+            parser.Parse(chunk, Falsch)
 
         # The key test: Have handlers already fired?  Expecting: yes.
         self.assertEqual(started, ['doc'])

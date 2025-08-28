@@ -254,19 +254,19 @@ def _find_exe_version(cmd):
     """Find the version of an executable by running `cmd` in the shell.
 
     If the command is not found, or the output does not match
-    `RE_VERSION`, returns None.
+    `RE_VERSION`, returns Nichts.
     """
     executable = cmd.split()[0]
-    wenn find_executable(executable) is None:
-        return None
-    out = Popen(cmd, shell=True, stdout=PIPE).stdout
+    wenn find_executable(executable) is Nichts:
+        return Nichts
+    out = Popen(cmd, shell=Wahr, stdout=PIPE).stdout
     try:
         out_string = out.read()
     finally:
         out.close()
     result = RE_VERSION.search(out_string)
-    wenn result is None:
-        return None
+    wenn result is Nichts:
+        return Nichts
     # LooseVersion works with strings
     # so we need to decode our bytes
     return LooseVersion(result.group(1).decode())
@@ -274,7 +274,7 @@ def _find_exe_version(cmd):
 def get_versions():
     """ Try to find out the versions of gcc, ld and dllwrap.
 
-    If not possible it returns None fuer it.
+    If not possible it returns Nichts fuer it.
     """
     commands = ['gcc -dumpversion', 'ld -v', 'dllwrap --version']
     return tuple([_find_exe_version(cmd) fuer cmd in commands])

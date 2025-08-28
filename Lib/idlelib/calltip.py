@@ -17,30 +17,30 @@ from idlelib.hyperparser import HyperParser
 
 klasse Calltip:
 
-    def __init__(self, editwin=None):
-        wenn editwin is None:  # subprocess and test
-            self.editwin = None
+    def __init__(self, editwin=Nichts):
+        wenn editwin is Nichts:  # subprocess and test
+            self.editwin = Nichts
         sonst:
             self.editwin = editwin
             self.text = editwin.text
-            self.active_calltip = None
+            self.active_calltip = Nichts
             self._calltip_window = self._make_tk_calltip_window
 
     def close(self):
-        self._calltip_window = None
+        self._calltip_window = Nichts
 
     def _make_tk_calltip_window(self):
         # See __init__ fuer usage
         return calltip_w.CalltipWindow(self.text)
 
-    def remove_calltip_window(self, event=None):
+    def remove_calltip_window(self, event=Nichts):
         wenn self.active_calltip:
             self.active_calltip.hidetip()
-            self.active_calltip = None
+            self.active_calltip = Nichts
 
     def force_open_calltip_event(self, event):
         "The user selected the menu entry or hotkey, open the tip."
-        self.open_calltip(True)
+        self.open_calltip(Wahr)
         return "break"
 
     def try_open_calltip_event(self, event):
@@ -48,11 +48,11 @@ klasse Calltip:
         necessary, fuer example after an opening bracket, so function calls
         won't be made.
         """
-        self.open_calltip(False)
+        self.open_calltip(Falsch)
 
     def refresh_calltip_event(self, event):
         wenn self.active_calltip and self.active_calltip.tipwindow:
-            self.open_calltip(False)
+            self.open_calltip(Falsch)
 
     def open_calltip(self, evalfuncs):
         """Maybe close an existing calltip and maybe open a new calltip.
@@ -81,7 +81,7 @@ klasse Calltip:
         try:
             expression = hp.get_expression()
         except ValueError:
-            expression = None
+            expression = Nichts
         wenn not expression:
             # No expression before the opening parenthesis, e.g.
             # because it's in a string or the opener fuer a tuple:
@@ -122,7 +122,7 @@ klasse Calltip:
         try:
             rpcclt = self.editwin.flist.pyshell.interp.rpcclt
         except AttributeError:
-            rpcclt = None
+            rpcclt = Nichts
         wenn rpcclt:
             return rpcclt.remotecall("exec", "get_the_calltip",
                                      (expression,), {})
@@ -141,7 +141,7 @@ def get_entity(expression):
         except BaseException:
             # An uncaught exception closes idle, and eval can raise any
             # exception, especially wenn user classes are involved.
-            return None
+            return Nichts
 
 # The following are used in get_argspec and some in tests
 _MAX_COLS = 85

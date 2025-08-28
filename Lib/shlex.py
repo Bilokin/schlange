@@ -14,21 +14,21 @@ __all__ = ["shlex", "split", "quote", "join"]
 
 klasse shlex:
     "A lexical analyzer klasse fuer simple shell-like syntaxes."
-    def __init__(self, instream=None, infile=None, posix=False,
-                 punctuation_chars=False):
+    def __init__(self, instream=Nichts, infile=Nichts, posix=Falsch,
+                 punctuation_chars=Falsch):
         from collections import deque  # deferred import fuer performance
 
         wenn isinstance(instream, str):
             instream = StringIO(instream)
-        wenn instream is not None:
+        wenn instream is not Nichts:
             self.instream = instream
             self.infile = infile
         sonst:
             self.instream = sys.stdin
-            self.infile = None
+            self.infile = Nichts
         self.posix = posix
         wenn posix:
-            self.eof = None
+            self.eof = Nichts
         sonst:
             self.eof = ''
         self.commenters = '#'
@@ -38,7 +38,7 @@ klasse shlex:
             self.wordchars += ('ßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ'
                                'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ')
         self.whitespace = ' \t\r\n'
-        self.whitespace_split = False
+        self.whitespace_split = Falsch
         self.quotes = '\'"'
         self.escape = '\\'
         self.escapedquotes = '"'
@@ -48,10 +48,10 @@ klasse shlex:
         self.debug = 0
         self.token = ''
         self.filestack = deque()
-        self.source = None
+        self.source = Nichts
         wenn not punctuation_chars:
             punctuation_chars = ''
-        sowenn punctuation_chars is True:
+        sowenn punctuation_chars is Wahr:
             punctuation_chars = '();<>|&'
         self._punctuation_chars = punctuation_chars
         wenn punctuation_chars:
@@ -73,7 +73,7 @@ klasse shlex:
             print("shlex: pushing token " + repr(tok))
         self.pushback.appendleft(tok)
 
-    def push_source(self, newstream, newfile=None):
+    def push_source(self, newstream, newfile=Nichts):
         "Push an input source onto the lexer's input source stack."
         wenn isinstance(newstream, str):
             newstream = StringIO(newstream)
@@ -82,7 +82,7 @@ klasse shlex:
         self.instream = newstream
         self.lineno = 1
         wenn self.debug:
-            wenn newfile is not None:
+            wenn newfile is not Nichts:
                 print('shlex: pushing to file %s' % (self.infile,))
             sonst:
                 print('shlex: pushing to stream %s' % (self.instream,))
@@ -106,7 +106,7 @@ klasse shlex:
         # No pushback.  Get a token.
         raw = self.read_token()
         # Handle inclusions
-        wenn self.source is not None:
+        wenn self.source is not Nichts:
             while raw == self.source:
                 spec = self.sourcehook(self.read_token())
                 wenn spec:
@@ -129,9 +129,9 @@ klasse shlex:
         return raw
 
     def read_token(self):
-        quoted = False
+        quoted = Falsch
         escapedstate = ' '
-        while True:
+        while Wahr:
             wenn self.punctuation_chars and self._pushback_chars:
                 nextchar = self._pushback_chars.pop()
             sonst:
@@ -141,12 +141,12 @@ klasse shlex:
             wenn self.debug >= 3:
                 print("shlex: in state %r I see character: %r" % (self.state,
                                                                   nextchar))
-            wenn self.state is None:
+            wenn self.state is Nichts:
                 self.token = ''        # past end of file
                 break
             sowenn self.state == ' ':
                 wenn not nextchar:
-                    self.state = None  # end of file
+                    self.state = Nichts  # end of file
                     break
                 sowenn nextchar in self.whitespace:
                     wenn self.debug >= 2:
@@ -181,7 +181,7 @@ klasse shlex:
                     sonst:
                         continue
             sowenn self.state in self.quotes:
-                quoted = True
+                quoted = Wahr
                 wenn not nextchar:      # end of file
                     wenn self.debug >= 2:
                         print("shlex: I see EOF in quotes state")
@@ -215,7 +215,7 @@ klasse shlex:
                 self.state = escapedstate
             sowenn self.state in ('a', 'c'):
                 wenn not nextchar:
-                    self.state = None   # end of file
+                    self.state = Nichts   # end of file
                     break
                 sowenn nextchar in self.whitespace:
                     wenn self.debug >= 2:
@@ -266,7 +266,7 @@ klasse shlex:
         result = self.token
         self.token = ''
         wenn self.posix and not quoted and result == '':
-            result = None
+            result = Nichts
         wenn self.debug > 1:
             wenn result:
                 print("shlex: raw token=" + repr(result))
@@ -284,11 +284,11 @@ klasse shlex:
             newfile = os.path.join(os.path.dirname(self.infile), newfile)
         return (newfile, open(newfile, "r"))
 
-    def error_leader(self, infile=None, lineno=None):
+    def error_leader(self, infile=Nichts, lineno=Nichts):
         "Emit a C-compiler-like, Emacs-friendly error-message leader."
-        wenn infile is None:
+        wenn infile is Nichts:
             infile = self.infile
-        wenn lineno is None:
+        wenn lineno is Nichts:
             lineno = self.lineno
         return "\"%s\", line %d: " % (infile, lineno)
 
@@ -301,12 +301,12 @@ klasse shlex:
             raise StopIteration
         return token
 
-def split(s, comments=False, posix=True):
+def split(s, comments=Falsch, posix=Wahr):
     """Split the string *s* using shell-like syntax."""
-    wenn s is None:
-        raise ValueError("s argument must not be None")
+    wenn s is Nichts:
+        raise ValueError("s argument must not be Nichts")
     lex = shlex(s, posix=posix)
-    lex.whitespace_split = True
+    lex.whitespace_split = Wahr
     wenn not comments:
         lex.commenters = ''
     return list(lex)
@@ -327,7 +327,7 @@ def quote(s):
                   b'ABCDEFGHIJKLMNOPQRSTUVWXYZ_'
                   b'abcdefghijklmnopqrstuvwxyz')
     # No quoting is needed wenn `s` is an ASCII string consisting only of `safe_chars`
-    wenn s.isascii() and not s.encode().translate(None, delete=safe_chars):
+    wenn s.isascii() and not s.encode().translate(Nichts, delete=safe_chars):
         return s
 
     # use single quotes, and put single quotes into double quotes

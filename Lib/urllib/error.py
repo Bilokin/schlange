@@ -22,10 +22,10 @@ klasse URLError(OSError):
     # It sets self.args fuer compatibility with other OSError
     # subclasses, but args doesn't have the typical format with errno in
     # slot 0 and strerror in slot 1.  This may be better than nothing.
-    def __init__(self, reason, filename=None):
+    def __init__(self, reason, filename=Nichts):
         self.args = reason,
         self.reason = reason
-        wenn filename is not None:
+        wenn filename is not Nichts:
             self.filename = filename
 
     def __str__(self):
@@ -42,7 +42,7 @@ klasse HTTPError(URLError, urllib.response.addinfourl):
         self.hdrs = hdrs
         self.fp = fp
         self.filename = url
-        wenn fp is None:
+        wenn fp is Nichts:
             fp = io.BytesIO()
         self.__super_init(fp, hdrs, url, code)
 

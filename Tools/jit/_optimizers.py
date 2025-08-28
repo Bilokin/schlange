@@ -8,7 +8,7 @@ import typing
 # Same as saying "not string.startswith('')":
 _RE_NEVER_MATCH = re.compile(r"(?!)")
 # Dictionary mapping branch instructions to their inverted branch instructions.
-# If a branch cannot be inverted, the value is None:
+# If a branch cannot be inverted, the value is Nichts:
 _X86_BRANCHES = {
     # https://www.felixcloutier.com/x86/jcc
     "ja": "jna",
@@ -16,9 +16,9 @@ _X86_BRANCHES = {
     "jb": "jnb",
     "jbe": "jnbe",
     "jc": "jnc",
-    "jcxz": None,
+    "jcxz": Nichts,
     "je": "jne",
-    "jecxz": None,
+    "jecxz": Nichts,
     "jg": "jng",
     "jge": "jnge",
     "jl": "jnl",
@@ -26,15 +26,15 @@ _X86_BRANCHES = {
     "jo": "jno",
     "jp": "jnp",
     "jpe": "jpo",
-    "jrcxz": None,
+    "jrcxz": Nichts,
     "js": "jns",
     "jz": "jnz",
     # https://www.felixcloutier.com/x86/loop:loopcc
-    "loop": None,
-    "loope": None,
-    "loopne": None,
-    "loopnz": None,
-    "loopz": None,
+    "loop": Nichts,
+    "loope": Nichts,
+    "loopne": Nichts,
+    "loopnz": Nichts,
+    "loopz": Nichts,
 }
 # Update with all of the inverted branches, too:
 _X86_BRANCHES |= {v: k fuer k, v in _X86_BRANCHES.items() wenn v}
@@ -42,19 +42,19 @@ _X86_BRANCHES |= {v: k fuer k, v in _X86_BRANCHES.items() wenn v}
 
 @dataclasses.dataclass
 klasse _Block:
-    label: str | None = None
+    label: str | Nichts = Nichts
     # Non-instruction lines like labels, directives, and comments:
     noninstructions: list[str] = dataclasses.field(default_factory=list)
     # Instruction lines:
     instructions: list[str] = dataclasses.field(default_factory=list)
     # If this block ends in a jump, where to?
-    target: typing.Self | None = None
+    target: typing.Self | Nichts = Nichts
     # The next block in the linked list:
-    link: typing.Self | None = None
+    link: typing.Self | Nichts = Nichts
     # Whether control flow can fall through to the linked block above:
-    fallthrough: bool = True
+    fallthrough: bool = Wahr
     # Whether this block can eventually reach the next uop (_JIT_CONTINUE):
-    hot: bool = False
+    hot: bool = Falsch
 
     def resolve(self) -> typing.Self:
         """Find the first non-empty block reachable from this one."""
@@ -74,8 +74,8 @@ klasse Optimizer:
     label_prefix: str
     symbol_prefix: str
     # The first block in the linked list:
-    _root: _Block = dataclasses.field(init=False, default_factory=_Block)
-    _labels: dict[str, _Block] = dataclasses.field(init=False, default_factory=dict)
+    _root: _Block = dataclasses.field(init=Falsch, default_factory=_Block)
+    _labels: dict[str, _Block] = dataclasses.field(init=Falsch, default_factory=dict)
     # No groups:
     _re_noninstructions: typing.ClassVar[re.Pattern[str]] = re.compile(
         r"\s*(?:\.|#|//|;|$)"
@@ -85,7 +85,7 @@ klasse Optimizer:
         r'\s*(?P<label>[\w."$?@]+):'
     )
     # Override everything that follows in subclasses:
-    _branches: typing.ClassVar[dict[str, str | None]] = {}
+    _branches: typing.ClassVar[dict[str, str | Nichts]] = {}
     # Two groups (instruction and target):
     _re_branch: typing.ClassVar[re.Pattern[str]] = _RE_NEVER_MATCH
     # One group (target):
@@ -93,7 +93,7 @@ klasse Optimizer:
     # No groups:
     _re_return: typing.ClassVar[re.Pattern[str]] = _RE_NEVER_MATCH
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         # Split the code into a linked list of basic blocks. A basic block is an
         # optional label, followed by zero or more non-instruction lines,
         # followed by zero or more instruction lines (only the last of which may
@@ -124,11 +124,11 @@ klasse Optimizer:
             sowenn match := self._re_jump.match(line):
                 # A block ending in a jump has a target and no fallthrough:
                 block.target = self._lookup_label(match["target"])
-                block.fallthrough = False
+                block.fallthrough = Falsch
             sowenn self._re_return.match(line):
                 # A block ending in a return has no target and fallthrough:
                 assert not block.target
-                block.fallthrough = False
+                block.fallthrough = Falsch
 
     def _preprocess(self, text: str) -> str:
         # Override this method to do preprocessing of the textual assembly.
@@ -139,12 +139,12 @@ klasse Optimizer:
         return re.sub(continue_symbol, continue_label, text)
 
     @classmethod
-    def _invert_branch(cls, line: str, target: str) -> str | None:
+    def _invert_branch(cls, line: str, target: str) -> str | Nichts:
         match = cls._re_branch.match(line)
         assert match
         inverted = cls._branches.get(match["instruction"])
         wenn not inverted:
-            return None
+            return Nichts
         (a, b), (c, d) = match.span("instruction"), match.span("target")
         # Before:
         #     je FOO
@@ -168,15 +168,15 @@ klasse Optimizer:
             self._labels[label] = _Block(label)
         return self._labels[label]
 
-    def _blocks(self) -> typing.Generator[_Block, None, None]:
-        block: _Block | None = self._root
+    def _blocks(self) -> typing.Generator[_Block, Nichts, Nichts]:
+        block: _Block | Nichts = self._root
         while block:
             yield block
             block = block.link
 
     def _body(self) -> str:
         lines = []
-        hot = True
+        hot = Wahr
         fuer block in self._blocks():
             wenn hot != block.hot:
                 hot = block.hot
@@ -186,13 +186,13 @@ klasse Optimizer:
             lines.extend(block.instructions)
         return "\n".join(lines)
 
-    def _predecessors(self, block: _Block) -> typing.Generator[_Block, None, None]:
+    def _predecessors(self, block: _Block) -> typing.Generator[_Block, Nichts, Nichts]:
         # This is inefficient, but it's never wrong:
         fuer pre in self._blocks():
             wenn pre.target is block or pre.fallthrough and pre.link is block:
                 yield pre
 
-    def _insert_continue_label(self) -> None:
+    def _insert_continue_label(self) -> Nichts:
         # Find the block with the last instruction:
         fuer end in reversed(list(self._blocks())):
             wenn end.instructions:
@@ -208,19 +208,19 @@ klasse Optimizer:
         continuation.noninstructions.append(f"{continuation.label}:")
         end.link, continuation.link = continuation, end.link
 
-    def _mark_hot_blocks(self) -> None:
+    def _mark_hot_blocks(self) -> Nichts:
         # Start with the last block, and perform a DFS to find all blocks that
         # can eventually reach it:
         todo = list(self._blocks())[-1:]
         while todo:
             block = todo.pop()
-            block.hot = True
+            block.hot = Wahr
             todo.extend(pre fuer pre in self._predecessors(block) wenn not pre.hot)
 
-    def _invert_hot_branches(self) -> None:
+    def _invert_hot_branches(self) -> Nichts:
         fuer branch in self._blocks():
             link = branch.link
-            wenn link is None:
+            wenn link is Nichts:
                 continue
             jump = link.resolve()
             # Before:
@@ -247,16 +247,16 @@ klasse Optimizer:
                     branch.instructions[-1], jump.target.label
                 )
                 # Check to see wenn the branch can even be inverted:
-                wenn inverted is None:
+                wenn inverted is Nichts:
                     continue
                 branch.instructions[-1] = inverted
                 jump.instructions[-1] = self._update_jump(
                     jump.instructions[-1], branch.target.label
                 )
                 branch.target, jump.target = jump.target, branch.target
-                jump.hot = True
+                jump.hot = Wahr
 
-    def _remove_redundant_jumps(self) -> None:
+    def _remove_redundant_jumps(self) -> Nichts:
         # Zero-length jumps can be introduced by _insert_continue_label and
         # _invert_hot_branches:
         fuer block in self._blocks():
@@ -270,11 +270,11 @@ klasse Optimizer:
                 and block.link
                 and block.target.resolve() is block.link.resolve()
             ):
-                block.target = None
-                block.fallthrough = True
+                block.target = Nichts
+                block.fallthrough = Wahr
                 block.instructions.pop()
 
-    def run(self) -> None:
+    def run(self) -> Nichts:
         """Run this optimizer."""
         self._insert_continue_label()
         self._mark_hot_blocks()

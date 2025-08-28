@@ -15,9 +15,9 @@ from test.support import threading_helper
 try:
     import ssl
 except ImportError:
-    ssl = None
+    ssl = Nichts
 
-support.requires_working_socket(module=True)
+support.requires_working_socket(module=Wahr)
 
 here = os.path.dirname(__file__)
 # Self-signed cert file fuer 'localhost'
@@ -59,7 +59,7 @@ klasse LoopbackHttpServerThread(threading.Thread):
 
     def __init__(self, request_handler):
         threading.Thread.__init__(self)
-        self._stop_server = False
+        self._stop_server = Falsch
         self.ready = threading.Event()
         request_handler.protocol_version = "HTTP/1.0"
         self.httpd = LoopbackHttpServer(("127.0.0.1", 0),
@@ -69,7 +69,7 @@ klasse LoopbackHttpServerThread(threading.Thread):
     def stop(self):
         """Stops the webserver wenn it's currently running."""
 
-        self._stop_server = True
+        self._stop_server = Wahr
 
         self.join()
         self.httpd.server_close()
@@ -155,19 +155,19 @@ klasse DigestAuthHandler:
         #request_handler.send_header('Connection', 'close')
         request_handler.end_headers()
         request_handler.wfile.write(b"Proxy Authentication Required.")
-        return False
+        return Falsch
 
     def handle_request(self, request_handler):
         """Performs digest authentication on the given HTTP request
-        handler.  Returns True wenn authentication was successful, False
+        handler.  Returns Wahr wenn authentication was successful, Falsch
         otherwise.
 
         If no users have been set, then digest auth is effectively
-        disabled and this method will always return True.
+        disabled and this method will always return Wahr.
         """
 
         wenn len(self._users) == 0:
-            return True
+            return Wahr
 
         wenn "Proxy-Authorization" not in request_handler.headers:
             return self._return_auth_challenge(request_handler)
@@ -184,7 +184,7 @@ klasse DigestAuthHandler:
             sonst:
                 self._nonces.remove(auth_dict["nonce"])
 
-            auth_validated = False
+            auth_validated = Falsch
 
             # MSIE uses short_path in its validation, but Python's
             # urllib.request uses the full path, so we're going to see if
@@ -195,11 +195,11 @@ klasse DigestAuthHandler:
                                        password,
                                        request_handler.command,
                                        path):
-                    auth_validated = True
+                    auth_validated = Wahr
 
             wenn not auth_validated:
                 return self._return_auth_challenge(request_handler)
-            return True
+            return Wahr
 
 
 klasse BasicAuthHandler(http.server.BaseHTTPRequestHandler):
@@ -298,7 +298,7 @@ klasse BasicAuthTests(unittest.TestCase):
 
     def stop_server(self):
         self.server.stop()
-        self.server = None
+        self.server = Nichts
 
     def tearDown(self):
         super(BasicAuthTests, self).tearDown()
@@ -308,7 +308,7 @@ klasse BasicAuthTests(unittest.TestCase):
         ah.add_password(self.REALM, self.server_url, self.USER, self.PASSWD)
         urllib.request.install_opener(urllib.request.build_opener(ah))
         try:
-            self.assertTrue(urllib.request.urlopen(self.server_url))
+            self.assertWahr(urllib.request.urlopen(self.server_url))
         except urllib.error.HTTPError:
             self.fail("Basic auth failed fuer the url: %s" % self.server_url)
 
@@ -321,7 +321,7 @@ klasse BasicAuthTests(unittest.TestCase):
         cm.exception.close()
 
 
-@hashlib_helper.requires_hashdigest("md5", openssl=True)
+@hashlib_helper.requires_hashdigest("md5", openssl=Wahr)
 klasse ProxyAuthTests(unittest.TestCase):
     URL = "http://localhost"
 
@@ -358,7 +358,7 @@ klasse ProxyAuthTests(unittest.TestCase):
 
     def stop_server(self):
         self.server.stop()
-        self.server = None
+        self.server = Nichts
 
     def test_proxy_with_bad_password_raises_httperror(self):
         self.proxy_digest_handler.add_password(self.REALM, self.URL,
@@ -465,7 +465,7 @@ klasse TestUrlopen(unittest.TestCase):
         os.environ['NO_PROXY'] = '*'
         os.environ['no_proxy'] = '*'
 
-    def urlopen(self, url, data=None, **kwargs):
+    def urlopen(self, url, data=Nichts, **kwargs):
         l = []
         f = urllib.request.urlopen(url, data, **kwargs)
         try:
@@ -480,10 +480,10 @@ klasse TestUrlopen(unittest.TestCase):
 
     def stop_server(self):
         self.server.stop()
-        self.server = None
+        self.server = Nichts
 
-    def start_server(self, responses=None):
-        wenn responses is None:
+    def start_server(self, responses=Nichts):
+        wenn responses is Nichts:
             responses = [(200, [], b"we don't care")]
         handler = GetRequestHandler(responses)
 
@@ -495,11 +495,11 @@ klasse TestUrlopen(unittest.TestCase):
         handler.port = port
         return handler
 
-    def start_https_server(self, responses=None, **kwargs):
+    def start_https_server(self, responses=Nichts, **kwargs):
         wenn not hasattr(urllib.request, 'HTTPSHandler'):
             self.skipTest('ssl support required')
         from test.ssl_servers import make_https_server
-        wenn responses is None:
+        wenn responses is Nichts:
             responses = [(200, [], b"we care a bit")]
         handler = GetRequestHandler(responses)
         server = make_https_server(self, handler_class=handler, **kwargs)
@@ -570,11 +570,11 @@ klasse TestUrlopen(unittest.TestCase):
         self.assertEqual(data, b"we care a bit")
 
     def test_https_sni(self):
-        wenn ssl is None:
+        wenn ssl is Nichts:
             self.skipTest("ssl module required")
         wenn not ssl.HAS_SNI:
             self.skipTest("SNI support required in OpenSSL")
-        sni_name = None
+        sni_name = Nichts
         def cb_sni(ssl_sock, server_name, initial_context):
             nonlocal sni_name
             sni_name = server_name
@@ -607,7 +607,7 @@ klasse TestUrlopen(unittest.TestCase):
         with urllib.request.urlopen("http://localhost:%s" % handler.port) as open_url:
             fuer attr in ("read", "close", "info", "geturl"):
                 self.assertHasAttr(open_url, attr)
-            self.assertTrue(open_url.read(), "calling 'read' failed")
+            self.assertWahr(open_url.read(), "calling 'read' failed")
 
     def test_info(self):
         handler = self.start_server()
@@ -656,7 +656,7 @@ klasse TestUrlopen(unittest.TestCase):
         ])
         opener = urllib.request.build_opener()
         request = urllib.request.Request("http://localhost:%s" % handler.port)
-        self.assertEqual(None, request.data)
+        self.assertEqual(Nichts, request.data)
 
         opener.open(request, "1".encode("us-ascii"))
         self.assertEqual(b"1", request.data)

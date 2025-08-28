@@ -44,8 +44,8 @@ def wrap_frame(frame):
 
 def wrap_info(info):
     "replace info[2], a traceback instance, by its ID"
-    wenn info is None:
-        return None
+    wenn info is Nichts:
+        return Nichts
     sonst:
         traceback = info[2]
         assert isinstance(traceback, types.TracebackType)
@@ -60,7 +60,7 @@ klasse GUIProxy:
         self.conn = conn
         self.oid = gui_adap_oid
 
-    def interaction(self, message, frame, info=None):
+    def interaction(self, message, frame, info=Nichts):
         # calls rpc.SocketIO.remotecall() via run.MyHandler instance
         # pass frame and traceback object IDs instead of the objects themselves
         self.conn.remotecall(self.oid, "interaction",
@@ -93,8 +93,8 @@ klasse IdbAdapter:
 
     def get_stack(self, fid, tbid):
         frame = frametable[fid]
-        wenn tbid is None:
-            tb = None
+        wenn tbid is Nichts:
+            tb = Nichts
         sonst:
             tb = tracebacktable[tbid]
         stack, i = self.idb.get_stack(frame, tb)
@@ -387,4 +387,4 @@ def restart_subprocess_debugger(rpcclt):
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_debugger_r', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_debugger_r', verbosity=2, exit=Falsch)

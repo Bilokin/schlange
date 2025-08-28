@@ -148,8 +148,8 @@ def from_triple(sign, coeff, exp):
 
 
 # Close to 10**n
-def un_close_to_pow10(prec, maxexp, itr=None):
-    wenn itr is None:
+def un_close_to_pow10(prec, maxexp, itr=Nichts):
+    wenn itr is Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -165,8 +165,8 @@ def un_close_to_pow10(prec, maxexp, itr=None):
         yield -coeff
 
 # Close to 10**n
-def bin_close_to_pow10(prec, maxexp, itr=None):
-    wenn itr is None:
+def bin_close_to_pow10(prec, maxexp, itr=Nichts):
+    wenn itr is Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -266,15 +266,15 @@ close_funcs = [
 ]
 
 
-def un_close_numbers(prec, emax, emin, itr=None):
-    wenn itr is None:
+def un_close_numbers(prec, emax, emin, itr=Nichts):
+    wenn itr is Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func in close_funcs:
             yield func(prec, emax, emin)
 
-def bin_close_numbers(prec, emax, emin, itr=None):
-    wenn itr is None:
+def bin_close_numbers(prec, emax, emin, itr=Nichts):
+    wenn itr is Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func1 in close_funcs:
@@ -285,7 +285,7 @@ def bin_close_numbers(prec, emax, emin, itr=None):
             yield func(prec, emax, emin), randdec(prec, emax)
 
 def tern_close_numbers(prec, emax, emin, itr):
-    wenn itr is None:
+    wenn itr is Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func1 in close_funcs:
@@ -309,9 +309,9 @@ def tern_close_numbers(prec, emax, emin, itr):
                    randdec(prec, emax))
 
 
-# If itr == None, test all digit lengths up to prec + 30
+# If itr == Nichts, test all digit lengths up to prec + 30
 def un_incr_digits(prec, maxexp, itr):
-    wenn itr is None:
+    wenn itr is Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -321,10 +321,10 @@ def un_incr_digits(prec, maxexp, itr):
         yield from_triple(1, ndigits(m), randrange(maxexp))
         yield from_triple(-1, ndigits(m), randrange(maxexp))
 
-# If itr == None, test all digit lengths up to prec + 30
+# If itr == Nichts, test all digit lengths up to prec + 30
 # Also output decimals im tuple form.
 def un_incr_digits_tuple(prec, maxexp, itr):
-    wenn itr is None:
+    wenn itr is Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -339,9 +339,9 @@ def un_incr_digits_tuple(prec, maxexp, itr):
         yield (0, tuple(map(int, str(ndigits(m)))), randrange(maxexp))
         yield (1, tuple(map(int, str(ndigits(m)))), randrange(maxexp))
 
-# If itr == None, test all combinations of digit lengths up to prec + 30
+# If itr == Nichts, test all combinations of digit lengths up to prec + 30
 def bin_incr_digits(prec, maxexp, itr):
-    wenn itr is None:
+    wenn itr is Nichts:
         lst1 = range(prec+30)
         lst2 = range(prec+30)
     sonst:
@@ -387,9 +387,9 @@ def bin_incr_digits(prec, maxexp, itr):
 def randsign():
     return (1, -1)[randrange(2)]
 
-# If itr == None, test all combinations of digit lengths up to prec + 30
+# If itr == Nichts, test all combinations of digit lengths up to prec + 30
 def tern_incr_digits(prec, maxexp, itr):
-    wenn itr is None:
+    wenn itr is Nichts:
         lst1 = range(prec+30)
         lst2 = range(prec+30)
         lst3 = range(prec+30)
@@ -414,7 +414,7 @@ def bindigits(prec):
     return z
 
 def logical_un_incr_digits(prec, itr):
-    wenn itr is None:
+    wenn itr is Nichts:
         lst = range(prec+30)
     sonst:
         lst = sample(range(prec+30), itr)
@@ -422,7 +422,7 @@ def logical_un_incr_digits(prec, itr):
         yield from_triple(1, bindigits(m), 0)
 
 def logical_bin_incr_digits(prec, itr):
-    wenn itr is None:
+    wenn itr is Nichts:
         lst1 = range(prec+30)
         lst2 = range(prec+30)
     sonst:
@@ -468,8 +468,8 @@ def randfraction():
 
 number_funcs = [randint, randfloat, randcomplex, randfraction]
 
-def un_random_mixed_op(itr=None):
-    wenn itr is None:
+def un_random_mixed_op(itr=Nichts):
+    wenn itr is Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func in number_funcs:
@@ -478,8 +478,8 @@ def un_random_mixed_op(itr=None):
     fuer x in (['x'], ('y',), {'z'}, {1:'z'}):
         yield x
 
-def bin_random_mixed_op(prec, emax, emin, itr=None):
-    wenn itr is None:
+def bin_random_mixed_op(prec, emax, emin, itr=Nichts):
+    wenn itr is Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func in number_funcs:
@@ -494,7 +494,7 @@ def bin_random_mixed_op(prec, emax, emin, itr=None):
             yield x, y
 
 def tern_random_mixed_op(prec, emax, emin, itr):
-    wenn itr is None:
+    wenn itr is Nichts:
         itr = 1000
     fuer _ in range(itr):
         fuer func in number_funcs:
@@ -527,8 +527,8 @@ def all_unary(prec, exp_range, itr):
 
 def unary_optarg(prec, exp_range, itr):
     fuer _ in range(100):
-        yield randdec(prec, exp_range), None
-        yield randdec(prec, exp_range), None, None
+        yield randdec(prec, exp_range), Nichts
+        yield randdec(prec, exp_range), Nichts, Nichts
 
 def all_binary(prec, exp_range, itr):
     fuer a, b in bin_close_to_pow10(prec, exp_range, itr):
@@ -548,8 +548,8 @@ def all_binary(prec, exp_range, itr):
 
 def binary_optarg(prec, exp_range, itr):
     fuer _ in range(100):
-        yield randdec(prec, exp_range), randdec(prec, exp_range), None
-        yield randdec(prec, exp_range), randdec(prec, exp_range), None, None
+        yield randdec(prec, exp_range), randdec(prec, exp_range), Nichts
+        yield randdec(prec, exp_range), randdec(prec, exp_range), Nichts, Nichts
 
 def all_ternary(prec, exp_range, itr):
     fuer a, b, c in tern_close_numbers(prec, exp_range, -exp_range, itr):
@@ -571,5 +571,5 @@ def ternary_optarg(prec, exp_range, itr):
         a = randdec(prec, 2*exp_range)
         b = randdec(prec, 2*exp_range)
         c = randdec(prec, 2*exp_range)
-        yield a, b, c, None
-        yield a, b, c, None, None
+        yield a, b, c, Nichts
+        yield a, b, c, Nichts, Nichts

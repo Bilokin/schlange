@@ -163,13 +163,13 @@ klasse ShlexTest(unittest.TestCase):
             tok = lex.get_token()
         return ret
 
-    def testSplitNone(self):
+    def testSplitNichts(self):
         with self.assertRaises(ValueError):
-            shlex.split(None)
+            shlex.split(Nichts)
 
     def testSplitPosix(self):
         """Test data splitting with posix parser"""
-        self.splitTest(self.posix_data, comments=True)
+        self.splitTest(self.posix_data, comments=Wahr)
 
     def testCompat(self):
         """Test compatibility interface"""
@@ -189,8 +189,8 @@ klasse ShlexTest(unittest.TestCase):
             src = ['echo hi %s echo bye' % delimiter,
                    'echo hi%secho bye' % delimiter]
             ref = ['echo', 'hi', delimiter, 'echo', 'bye']
-            fuer ss, ws in itertools.product(src, (False, True)):
-                s = shlex.shlex(ss, punctuation_chars=True)
+            fuer ss, ws in itertools.product(src, (Falsch, Wahr)):
+                s = shlex.shlex(ss, punctuation_chars=Wahr)
                 s.whitespace_split = ws
                 result = list(s)
                 self.assertEqual(ref, result,
@@ -205,8 +205,8 @@ klasse ShlexTest(unittest.TestCase):
                    'echo hi%s echo bye' % delimiter,
                    'echo hi%secho bye' % delimiter]
             ref = ['echo', 'hi', delimiter, 'echo', 'bye']
-            fuer ss, ws in itertools.product(src, (False, True)):
-                s = shlex.shlex(ss, punctuation_chars=True)
+            fuer ss, ws in itertools.product(src, (Falsch, Wahr)):
+                s = shlex.shlex(ss, punctuation_chars=Wahr)
                 s.whitespace_split = ws
                 result = list(s)
                 self.assertEqual(ref, result,
@@ -221,8 +221,8 @@ klasse ShlexTest(unittest.TestCase):
                    'echo hi%s out' % delimiter,
                    'echo hi%sout' % delimiter]
             ref = ['echo', 'hi', delimiter, 'out']
-            fuer ss, ws in itertools.product(src, (False, True)):
-                s = shlex.shlex(ss, punctuation_chars=True)
+            fuer ss, ws in itertools.product(src, (Falsch, Wahr)):
+                s = shlex.shlex(ss, punctuation_chars=Wahr)
                 result = list(s)
                 self.assertEqual(ref, result,
                                  "While splitting '%s' [ws=%s]" % (ss, ws))
@@ -233,8 +233,8 @@ klasse ShlexTest(unittest.TestCase):
         src = ['( echo hi )',
                '(echo hi)']
         ref = ['(', 'echo', 'hi', ')']
-        fuer ss, ws in itertools.product(src, (False, True)):
-            s = shlex.shlex(ss, punctuation_chars=True)
+        fuer ss, ws in itertools.product(src, (Falsch, Wahr)):
+            s = shlex.shlex(ss, punctuation_chars=Wahr)
             s.whitespace_split = ws
             result = list(s)
             self.assertEqual(ref, result,
@@ -246,12 +246,12 @@ klasse ShlexTest(unittest.TestCase):
         ref = ['~/a', '&', '&', 'b-c', '--color=auto', '||', 'd', '*.py?']
         s = shlex.shlex(ss, punctuation_chars="|")
         result = list(s)
-        self.assertEqual(ref, result, "While splitting '%s' [ws=False]" % ss)
+        self.assertEqual(ref, result, "While splitting '%s' [ws=Falsch]" % ss)
         ref = ['~/a&&b-c', '--color=auto', '||', 'd', '*.py?']
         s = shlex.shlex(ss, punctuation_chars="|")
-        s.whitespace_split = True
+        s.whitespace_split = Wahr
         result = list(s)
-        self.assertEqual(ref, result, "While splitting '%s' [ws=True]" % ss)
+        self.assertEqual(ref, result, "While splitting '%s' [ws=Wahr]" % ss)
 
     def testTokenTypes(self):
         """Test that tokens are split with types as expected."""
@@ -260,9 +260,9 @@ klasse ShlexTest(unittest.TestCase):
                                  [('a', 'a'), ('&&', 'c'), ('b', 'a'),
                                   ('||', 'c'), ('c', 'a')]),
                               ):
-            s = shlex.shlex(source, punctuation_chars=True)
+            s = shlex.shlex(source, punctuation_chars=Wahr)
             observed = []
-            while True:
+            while Wahr:
                 t = s.get_token()
                 wenn t == s.eof:
                     break
@@ -282,46 +282,46 @@ klasse ShlexTest(unittest.TestCase):
     def testPunctuationWithWhitespaceSplit(self):
         """Test that with whitespace_split, behaviour is as expected"""
         s = shlex.shlex('a  && b  ||  c', punctuation_chars='&')
-        # whitespace_split is False, so splitting will be based on
+        # whitespace_split is Falsch, so splitting will be based on
         # punctuation_chars
         self.assertEqual(list(s), ['a', '&&', 'b', '|', '|', 'c'])
         s = shlex.shlex('a  && b  ||  c', punctuation_chars='&')
-        s.whitespace_split = True
-        # whitespace_split is True, so splitting will be based on
+        s.whitespace_split = Wahr
+        # whitespace_split is Wahr, so splitting will be based on
         # white space
         self.assertEqual(list(s), ['a', '&&', 'b', '||', 'c'])
 
     def testPunctuationWithPosix(self):
         """Test that punctuation_chars and posix behave correctly together."""
         # see Issue #29132
-        s = shlex.shlex('f >"abc"', posix=True, punctuation_chars=True)
+        s = shlex.shlex('f >"abc"', posix=Wahr, punctuation_chars=Wahr)
         self.assertEqual(list(s), ['f', '>', 'abc'])
-        s = shlex.shlex('f >\\"abc\\"', posix=True, punctuation_chars=True)
+        s = shlex.shlex('f >\\"abc\\"', posix=Wahr, punctuation_chars=Wahr)
         self.assertEqual(list(s), ['f', '>', '"abc"'])
 
     def testEmptyStringHandling(self):
         """Test that parsing of empty strings is correctly handled."""
         # see Issue #21999
         expected = ['', ')', 'abc']
-        fuer punct in (False, True):
-            s = shlex.shlex("'')abc", posix=True, punctuation_chars=punct)
+        fuer punct in (Falsch, Wahr):
+            s = shlex.shlex("'')abc", posix=Wahr, punctuation_chars=punct)
             slist = list(s)
             self.assertEqual(slist, expected)
         expected = ["''", ')', 'abc']
-        s = shlex.shlex("'')abc", punctuation_chars=True)
+        s = shlex.shlex("'')abc", punctuation_chars=Wahr)
         self.assertEqual(list(s), expected)
 
     def testUnicodeHandling(self):
         """Test punctuation_chars and whitespace_split handle unicode."""
         ss = "\u2119\u01b4\u2602\u210c\u00f8\u1f24"
-        # Should be parsed as one complete token (whitespace_split=True).
+        # Should be parsed as one complete token (whitespace_split=Wahr).
         ref = ['\u2119\u01b4\u2602\u210c\u00f8\u1f24']
-        s = shlex.shlex(ss, punctuation_chars=True)
-        s.whitespace_split = True
+        s = shlex.shlex(ss, punctuation_chars=Wahr)
+        s.whitespace_split = Wahr
         self.assertEqual(list(s), ref)
         # Without whitespace_split, uses wordchars and splits on all.
         ref = ['\u2119', '\u01b4', '\u2602', '\u210c', '\u00f8', '\u1f24']
-        s = shlex.shlex(ss, punctuation_chars=True)
+        s = shlex.shlex(ss, punctuation_chars=Wahr)
         self.assertEqual(list(s), ref)
 
     def testQuote(self):
@@ -363,7 +363,7 @@ klasse ShlexTest(unittest.TestCase):
         shlex_instance = shlex.shlex(punctuation_chars=punctuation_chars)
         self.assertEqual(shlex_instance.punctuation_chars, punctuation_chars)
         with self.assertRaises(AttributeError):
-            shlex_instance.punctuation_chars = False
+            shlex_instance.punctuation_chars = Falsch
 
     @cpython_only
     def test_lazy_imports(self):
@@ -371,7 +371,7 @@ klasse ShlexTest(unittest.TestCase):
 
 
 # Allow this test to be used with old shlex.py
-wenn not getattr(shlex, "split", None):
+wenn not getattr(shlex, "split", Nichts):
     fuer methname in dir(ShlexTest):
         wenn methname.startswith("test") and methname != "testCompat":
             delattr(ShlexTest, methname)

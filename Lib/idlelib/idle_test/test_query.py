@@ -33,43 +33,43 @@ klasse QueryTest(unittest.TestCase):
         def __init__(self, dummy_entry):
             self.entry = Var(value=dummy_entry)
             self.entry_error = {'text': ''}
-            self.result = None
-            self.destroyed = False
+            self.result = Nichts
+            self.destroyed = Falsch
         def showerror(self, message):
             self.entry_error['text'] = message
         def destroy(self):
-            self.destroyed = True
+            self.destroyed = Wahr
 
     def test_entry_ok_blank(self):
         dialog = self.Dummy_Query(' ')
-        self.assertEqual(dialog.entry_ok(), None)
-        self.assertEqual((dialog.result, dialog.destroyed), (None, False))
+        self.assertEqual(dialog.entry_ok(), Nichts)
+        self.assertEqual((dialog.result, dialog.destroyed), (Nichts, Falsch))
         self.assertIn('blank line', dialog.entry_error['text'])
 
     def test_entry_ok_good(self):
         dialog = self.Dummy_Query('  good ')
         Equal = self.assertEqual
         Equal(dialog.entry_ok(), 'good')
-        Equal((dialog.result, dialog.destroyed), (None, False))
+        Equal((dialog.result, dialog.destroyed), (Nichts, Falsch))
         Equal(dialog.entry_error['text'], '')
 
     def test_ok_blank(self):
         dialog = self.Dummy_Query('')
         dialog.entry.focus_set = mock.Mock()
-        self.assertEqual(dialog.ok(), None)
-        self.assertTrue(dialog.entry.focus_set.called)
+        self.assertEqual(dialog.ok(), Nichts)
+        self.assertWahr(dialog.entry.focus_set.called)
         del dialog.entry.focus_set
-        self.assertEqual((dialog.result, dialog.destroyed), (None, False))
+        self.assertEqual((dialog.result, dialog.destroyed), (Nichts, Falsch))
 
     def test_ok_good(self):
         dialog = self.Dummy_Query('good')
-        self.assertEqual(dialog.ok(), None)
-        self.assertEqual((dialog.result, dialog.destroyed), ('good', True))
+        self.assertEqual(dialog.ok(), Nichts)
+        self.assertEqual((dialog.result, dialog.destroyed), ('good', Wahr))
 
     def test_cancel(self):
         dialog = self.Dummy_Query('does not matter')
-        self.assertEqual(dialog.cancel(), None)
-        self.assertEqual((dialog.result, dialog.destroyed), (None, True))
+        self.assertEqual(dialog.cancel(), Nichts)
+        self.assertEqual((dialog.result, dialog.destroyed), (Nichts, Wahr))
 
 
 klasse SectionNameTest(unittest.TestCase):
@@ -86,17 +86,17 @@ klasse SectionNameTest(unittest.TestCase):
 
     def test_blank_section_name(self):
         dialog = self.Dummy_SectionName(' ')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Nichts)
         self.assertIn('no name', dialog.entry_error['text'])
 
     def test_used_section_name(self):
         dialog = self.Dummy_SectionName('used')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Nichts)
         self.assertIn('use', dialog.entry_error['text'])
 
     def test_long_section_name(self):
         dialog = self.Dummy_SectionName('good'*8)
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Nichts)
         self.assertIn('longer than 30', dialog.entry_error['text'])
 
     def test_good_section_name(self):
@@ -119,17 +119,17 @@ klasse ModuleNameTest(unittest.TestCase):
 
     def test_blank_module_name(self):
         dialog = self.Dummy_ModuleName(' ')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Nichts)
         self.assertIn('no name', dialog.entry_error['text'])
 
     def test_bogus_module_name(self):
         dialog = self.Dummy_ModuleName('__name_xyz123_should_not_exist__')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Nichts)
         self.assertIn('not found', dialog.entry_error['text'])
 
     def test_c_source_name(self):
         dialog = self.Dummy_ModuleName('itertools')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Nichts)
         self.assertIn('source-based', dialog.entry_error['text'])
 
     def test_good_module_name(self):
@@ -154,12 +154,12 @@ klasse GotoTest(unittest.TestCase):
 
     def test_bogus_goto(self):
         dialog = self.Dummy_ModuleName('a')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Nichts)
         self.assertIn('not a base 10 integer', dialog.entry_error['text'])
 
     def test_bad_goto(self):
         dialog = self.Dummy_ModuleName('0')
-        self.assertEqual(dialog.entry_ok(), None)
+        self.assertEqual(dialog.entry_ok(), Nichts)
         self.assertIn('not a positive integer', dialog.entry_error['text'])
 
     def test_good_goto(self):
@@ -203,7 +203,7 @@ klasse HelpsourcePathokTest(unittest.TestCase):
         def __init__(self, dummy_path):
             self.path = Var(value=dummy_path)
             self.path_error = {'text': ''}
-        def showerror(self, message, widget=None):
+        def showerror(self, message, widget=Nichts):
             self.path_error['text'] = message
 
     orig_platform = query.platform  # Set in test_path_ok_file.
@@ -213,12 +213,12 @@ klasse HelpsourcePathokTest(unittest.TestCase):
 
     def test_path_ok_blank(self):
         dialog = self.Dummy_HelpSource(' ')
-        self.assertEqual(dialog.path_ok(), None)
+        self.assertEqual(dialog.path_ok(), Nichts)
         self.assertIn('no help file', dialog.path_error['text'])
 
     def test_path_ok_bad(self):
         dialog = self.Dummy_HelpSource(__file__ + 'bad-bad-bad')
-        self.assertEqual(dialog.path_ok(), None)
+        self.assertEqual(dialog.path_ok(), Nichts)
         self.assertIn('not exist', dialog.path_error['text'])
 
     def test_path_ok_web(self):
@@ -254,9 +254,9 @@ klasse HelpsourceEntryokTest(unittest.TestCase):
 
     def test_entry_ok_helpsource(self):
         dialog = self.Dummy_HelpSource()
-        fuer name, path, result in ((None, None, None),
-                                   (None, 'doc.txt', None),
-                                   ('doc', None, None),
+        fuer name, path, result in ((Nichts, Nichts, Nichts),
+                                   (Nichts, 'doc.txt', Nichts),
+                                   ('doc', Nichts, Nichts),
                                    ('doc', 'doc.txt', ('doc', 'doc.txt'))):
             with self.subTest():
                 dialog.name, dialog.path = name, path
@@ -282,7 +282,7 @@ klasse CustomRunCLIargsokTest(unittest.TestCase):
 
     def test_invalid_args(self):
         dialog = self.Dummy_CustomRun("'no-closing-quote")
-        self.assertEqual(dialog.cli_args_ok(), None)
+        self.assertEqual(dialog.cli_args_ok(), Nichts)
         self.assertIn('No closing', dialog.entry_error['text'])
 
     def test_good_args(self):
@@ -304,9 +304,9 @@ klasse CustomRunEntryokTest(unittest.TestCase):
 
     def test_entry_ok_customrun(self):
         dialog = self.Dummy_CustomRun()
-        fuer restart in {True, False}:
+        fuer restart in {Wahr, Falsch}:
             dialog.restartvar.set(restart)
-            fuer cli_args, result in ((None, None),
+            fuer cli_args, result in ((Nichts, Nichts),
                                      (['my arg'], (['my arg'], restart))):
                 with self.subTest(restart=restart, cli_args=cli_args):
                     dialog.cli_args = cli_args
@@ -322,7 +322,7 @@ klasse QueryGuiTest(unittest.TestCase):
         requires('gui')
         cls.root = root = Tk()
         cls.root.withdraw()
-        cls.dialog = query.Query(root, 'TEST', 'test', _utest=True)
+        cls.dialog = query.Query(root, 'TEST', 'test', _utest=Wahr)
         cls.dialog.destroy = mock.Mock()
 
     @classmethod
@@ -334,7 +334,7 @@ klasse QueryGuiTest(unittest.TestCase):
 
     def setUp(self):
         self.dialog.entry.delete(0, 'end')
-        self.dialog.result = None
+        self.dialog.result = Nichts
         self.dialog.destroy.reset_mock()
 
     def test_click_ok(self):
@@ -342,20 +342,20 @@ klasse QueryGuiTest(unittest.TestCase):
         dialog.entry.insert(0, 'abc')
         dialog.button_ok.invoke()
         self.assertEqual(dialog.result, 'abc')
-        self.assertTrue(dialog.destroy.called)
+        self.assertWahr(dialog.destroy.called)
 
     def test_click_blank(self):
         dialog = self.dialog
         dialog.button_ok.invoke()
-        self.assertEqual(dialog.result, None)
-        self.assertFalse(dialog.destroy.called)
+        self.assertEqual(dialog.result, Nichts)
+        self.assertFalsch(dialog.destroy.called)
 
     def test_click_cancel(self):
         dialog = self.dialog
         dialog.entry.insert(0, 'abc')
         dialog.button_cancel.invoke()
-        self.assertEqual(dialog.result, None)
-        self.assertTrue(dialog.destroy.called)
+        self.assertEqual(dialog.result, Nichts)
+        self.assertWahr(dialog.destroy.called)
 
 
 klasse SectionnameGuiTest(unittest.TestCase):
@@ -367,7 +367,7 @@ klasse SectionnameGuiTest(unittest.TestCase):
     def test_click_section_name(self):
         root = Tk()
         root.withdraw()
-        dialog =  query.SectionName(root, 'T', 't', {'abc'}, _utest=True)
+        dialog =  query.SectionName(root, 'T', 't', {'abc'}, _utest=Wahr)
         Equal = self.assertEqual
         self.assertEqual(dialog.used_names, {'abc'})
         dialog.entry.insert(0, 'okay')
@@ -385,7 +385,7 @@ klasse ModulenameGuiTest(unittest.TestCase):
     def test_click_module_name(self):
         root = Tk()
         root.withdraw()
-        dialog =  query.ModuleName(root, 'T', 't', 'idlelib', _utest=True)
+        dialog =  query.ModuleName(root, 'T', 't', 'idlelib', _utest=Wahr)
         self.assertEqual(dialog.text0, 'idlelib')
         self.assertEqual(dialog.entry.get(), 'idlelib')
         dialog.button_ok.invoke()
@@ -402,7 +402,7 @@ klasse GotoGuiTest(unittest.TestCase):
     def test_click_module_name(self):
         root = Tk()
         root.withdraw()
-        dialog =  query.Goto(root, 'T', 't', _utest=True)
+        dialog =  query.Goto(root, 'T', 't', _utest=Wahr)
         dialog.entry.insert(0, '22')
         dialog.button_ok.invoke()
         self.assertEqual(dialog.result, 22)
@@ -419,7 +419,7 @@ klasse HelpsourceGuiTest(unittest.TestCase):
         root = Tk()
         root.withdraw()
         dialog =  query.HelpSource(root, 'T', menuitem='__test__',
-                                   filepath=__file__, _utest=True)
+                                   filepath=__file__, _utest=Wahr)
         Equal = self.assertEqual
         Equal(dialog.entry.get(), '__test__')
         Equal(dialog.path.get(), __file__)
@@ -439,13 +439,13 @@ klasse CustomRunGuiTest(unittest.TestCase):
         root = Tk()
         root.withdraw()
         dialog =  query.CustomRun(root, 'Title',
-                                  cli_args=['a', 'b=1'], _utest=True)
+                                  cli_args=['a', 'b=1'], _utest=Wahr)
         self.assertEqual(dialog.entry.get(), 'a b=1')
         dialog.entry.insert(END, ' c')
         dialog.button_ok.invoke()
-        self.assertEqual(dialog.result, (['a', 'b=1', 'c'], True))
+        self.assertEqual(dialog.result, (['a', 'b=1', 'c'], Wahr))
         root.destroy()
 
 
 wenn __name__ == '__main__':
-    unittest.main(verbosity=2, exit=False)
+    unittest.main(verbosity=2, exit=Falsch)

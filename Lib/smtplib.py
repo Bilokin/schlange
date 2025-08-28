@@ -181,17 +181,17 @@ def _fix_eols(data):
 try:
     hmac.digest(b'', b'', 'md5')
 except ValueError:
-    _have_cram_md5_support = False
+    _have_cram_md5_support = Falsch
 sonst:
-    _have_cram_md5_support = True
+    _have_cram_md5_support = Wahr
 
 
 try:
     import ssl
 except ImportError:
-    _have_ssl = False
+    _have_ssl = Falsch
 sonst:
-    _have_ssl = True
+    _have_ssl = Wahr
 
 
 klasse SMTP:
@@ -207,7 +207,7 @@ klasse SMTP:
                 most recent EHLO command. This is usually multiline.
 
             does_esmtp
-                This is a True value _after you do an EHLO command_, wenn the
+                This is a Wahr value _after you do an EHLO command_, wenn the
                 server supports ESMTP.
 
             esmtp_features
@@ -225,17 +225,17 @@ klasse SMTP:
         """
     debuglevel = 0
 
-    sock = None
-    file = None
-    helo_resp = None
+    sock = Nichts
+    file = Nichts
+    helo_resp = Nichts
     ehlo_msg = "ehlo"
-    ehlo_resp = None
-    does_esmtp = False
+    ehlo_resp = Nichts
+    does_esmtp = Falsch
     default_port = SMTP_PORT
 
-    def __init__(self, host='', port=0, local_hostname=None,
+    def __init__(self, host='', port=0, local_hostname=Nichts,
                  timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
-                 source_address=None):
+                 source_address=Nichts):
         """Initialize a new instance.
 
         If specified, `host` is the name of the remote host to which to
@@ -263,7 +263,7 @@ klasse SMTP:
             wenn code != 220:
                 self.close()
                 raise SMTPConnectError(code, msg)
-        wenn local_hostname is not None:
+        wenn local_hostname is not Nichts:
             self.local_hostname = local_hostname
         sonst:
             # RFC 2821 says we should use the fqdn in the EHLO/HELO verb, and
@@ -312,14 +312,14 @@ klasse SMTP:
     def _get_socket(self, host, port, timeout):
         # This makes it simpler fuer SMTP_SSL to use the SMTP connect code
         # and just alter the socket connection bit.
-        wenn timeout is not None and not timeout:
+        wenn timeout is not Nichts and not timeout:
             raise ValueError('Non-blocking socket (timeout=0) is not supported')
         wenn self.debuglevel > 0:
             self._print_debug('connect: to', (host, port), self.source_address)
         return socket.create_connection((host, port), timeout,
                                         self.source_address)
 
-    def connect(self, host='localhost', port=0, source_address=None):
+    def connect(self, host='localhost', port=0, source_address=Nichts):
         """Connect to a host on a given port.
 
         If the hostname ends with a colon (':') followed by a number, and
@@ -346,7 +346,7 @@ klasse SMTP:
             port = self.default_port
         sys.audit("smtplib.connect", self, host, port)
         self.sock = self._get_socket(host, port, self.timeout)
-        self.file = None
+        self.file = Nichts
         (code, msg) = self.getreply()
         wenn self.debuglevel > 0:
             self._print_debug('connect:', repr(msg))
@@ -398,7 +398,7 @@ klasse SMTP:
         Raises SMTPServerDisconnected wenn end-of-file is reached.
         """
         resp = []
-        wenn self.file is None:
+        wenn self.file is Nichts:
             self.file = self.sock.makefile('rb')
         while 1:
             try:
@@ -466,7 +466,7 @@ klasse SMTP:
         self.ehlo_resp = msg
         wenn code != 250:
             return (code, msg)
-        self.does_esmtp = True
+        self.does_esmtp = Wahr
         #parse the ehlo response -ddm
         assert isinstance(self.ehlo_resp, bytes), repr(self.ehlo_resp)
         resp = self.ehlo_resp.decode("latin-1").split('\n')
@@ -614,13 +614,13 @@ klasse SMTP:
          SMTPHeloError            The server didn't reply properly to
                                   the helo greeting.
         """
-        wenn self.helo_resp is None and self.ehlo_resp is None:
+        wenn self.helo_resp is Nichts and self.ehlo_resp is Nichts:
             wenn not (200 <= self.ehlo()[0] <= 299):
                 (code, resp) = self.helo()
                 wenn not (200 <= code <= 299):
                     raise SMTPHeloError(code, resp)
 
-    def auth(self, mechanism, authobject, *, initial_response_ok=True):
+    def auth(self, mechanism, authobject, *, initial_response_ok=Wahr):
         """Authentication command - requires response processing.
 
         'mechanism' specifies which authentication mechanism is to
@@ -641,10 +641,10 @@ klasse SMTP:
         """
         # RFC 4954 allows auth methods to provide an initial response.  Not all
         # methods support it.  By definition, wenn they return something other
-        # than None when challenge is None, then they do.  See issue #15014.
+        # than Nichts when challenge is Nichts, then they do.  See issue #15014.
         mechanism = mechanism.upper()
-        initial_response = (authobject() wenn initial_response_ok sonst None)
-        wenn initial_response is not None:
+        initial_response = (authobject() wenn initial_response_ok sonst Nichts)
+        wenn initial_response is not Nichts:
             response = encode_base64(initial_response.encode('ascii'), eol='')
             (code, resp) = self.docmd("AUTH", mechanism + " " + response)
             self._auth_challenge_count = 1
@@ -668,32 +668,32 @@ klasse SMTP:
             return (code, resp)
         raise SMTPAuthenticationError(code, resp)
 
-    def auth_cram_md5(self, challenge=None):
+    def auth_cram_md5(self, challenge=Nichts):
         """ Authobject to use with CRAM-MD5 authentication. Requires self.user
         and self.password to be set."""
         # CRAM-MD5 does not support initial-response.
-        wenn challenge is None:
-            return None
+        wenn challenge is Nichts:
+            return Nichts
         wenn not _have_cram_md5_support:
             raise SMTPException("CRAM-MD5 is not supported")
         password = self.password.encode('ascii')
         authcode = hmac.HMAC(password, challenge, 'md5')
         return f"{self.user} {authcode.hexdigest()}"
 
-    def auth_plain(self, challenge=None):
+    def auth_plain(self, challenge=Nichts):
         """ Authobject to use with PLAIN authentication. Requires self.user and
         self.password to be set."""
         return "\0%s\0%s" % (self.user, self.password)
 
-    def auth_login(self, challenge=None):
+    def auth_login(self, challenge=Nichts):
         """ Authobject to use with LOGIN authentication. Requires self.user and
         self.password to be set."""
-        wenn challenge is None or self._auth_challenge_count < 2:
+        wenn challenge is Nichts or self._auth_challenge_count < 2:
             return self.user
         sonst:
             return self.password
 
-    def login(self, user, password, *, initial_response_ok=True):
+    def login(self, user, password, *, initial_response_ok=Wahr):
         """Log in on an SMTP server that requires authentication.
 
         The arguments are:
@@ -761,7 +761,7 @@ klasse SMTP:
         # We could not login successfully.  Return result of last attempt.
         raise last_exception
 
-    def starttls(self, *, context=None):
+    def starttls(self, *, context=Nichts):
         """Puts the connection to the SMTP server into TLS mode.
 
         If there has been no previous EHLO or HELO command this session, this
@@ -786,19 +786,19 @@ klasse SMTP:
         wenn resp == 220:
             wenn not _have_ssl:
                 raise RuntimeError("No SSL support included in this Python")
-            wenn context is None:
+            wenn context is Nichts:
                 context = ssl._create_stdlib_context()
             self.sock = context.wrap_socket(self.sock,
                                             server_hostname=self._host)
-            self.file = None
+            self.file = Nichts
             # RFC 3207:
             # The client MUST discard any knowledge obtained from
             # the server, such as the list of SMTP service extensions,
             # which was not obtained from the TLS negotiation itself.
-            self.helo_resp = None
-            self.ehlo_resp = None
+            self.helo_resp = Nichts
+            self.ehlo_resp = Nichts
             self.esmtp_features = {}
-            self.does_esmtp = False
+            self.does_esmtp = Falsch
         sonst:
             # RFC 3207:
             # 501 Syntax error (no parameters allowed)
@@ -910,13 +910,13 @@ klasse SMTP:
         #if we got here then somebody got our mail
         return senderrs
 
-    def send_message(self, msg, from_addr=None, to_addrs=None,
+    def send_message(self, msg, from_addr=Nichts, to_addrs=Nichts,
                      mail_options=(), rcpt_options=()):
         """Converts message to a bytestring and passes it to sendmail.
 
         The arguments are as fuer sendmail, except that msg is an
-        email.message.Message object.  If from_addr is None or to_addrs is
-        None, these arguments are taken from the headers of the Message as
+        email.message.Message object.  If from_addr is Nichts or to_addrs is
+        Nichts, these arguments are taken from the headers of the Message as
         described in RFC 2822 (a ValueError is raised wenn there is more than
         one set of 'Resent-' headers).  Regardless of the values of from_addr and
         to_addr, any Bcc field (or Resent-Bcc field, when the Message is a
@@ -924,7 +924,7 @@ klasse SMTP:
         object is then serialized using email.generator.BytesGenerator and
         sendmail is called to transmit the message.  If the sender or any of
         the recipient addresses contain non-ASCII and the server advertises the
-        SMTPUTF8 capability, the policy is cloned with utf8 set to True fuer the
+        SMTPUTF8 capability, the policy is cloned with utf8 set to Wahr fuer the
         serialization, and SMTPUTF8 and BODY=8BITMIME are asserted on the send.
         If the server does not support SMTPUTF8, an SMTPNotSupported error is
         raised.  Otherwise the generator is called without modifying the
@@ -943,29 +943,29 @@ klasse SMTP:
 
         self.ehlo_or_helo_if_needed()
         resent = msg.get_all('Resent-Date')
-        wenn resent is None:
+        wenn resent is Nichts:
             header_prefix = ''
         sowenn len(resent) == 1:
             header_prefix = 'Resent-'
         sonst:
             raise ValueError("message has more than one 'Resent-' header block")
-        wenn from_addr is None:
+        wenn from_addr is Nichts:
             # Prefer the sender field per RFC 2822:3.6.2.
             from_addr = (msg[header_prefix + 'Sender']
                            wenn (header_prefix + 'Sender') in msg
                            sonst msg[header_prefix + 'From'])
             from_addr = email.utils.getaddresses([from_addr])[0][1]
-        wenn to_addrs is None:
+        wenn to_addrs is Nichts:
             addr_fields = [f fuer f in (msg[header_prefix + 'To'],
                                        msg[header_prefix + 'Bcc'],
                                        msg[header_prefix + 'Cc'])
-                           wenn f is not None]
+                           wenn f is not Nichts]
             to_addrs = [a[1] fuer a in email.utils.getaddresses(addr_fields)]
         # Make a local copy so we can delete the bcc headers.
         msg_copy = copy.copy(msg)
         del msg_copy['Bcc']
         del msg_copy['Resent-Bcc']
-        international = False
+        international = Falsch
         try:
             ''.join([from_addr, *to_addrs]).encode('ascii')
         except UnicodeEncodeError:
@@ -974,11 +974,11 @@ klasse SMTP:
                     "One or more source or delivery addresses require"
                     " internationalized email support, but the server"
                     " does not advertise the required SMTPUTF8 capability")
-            international = True
+            international = Wahr
         with io.BytesIO() as bytesmsg:
             wenn international:
                 g = email.generator.BytesGenerator(
-                    bytesmsg, policy=msg.policy.clone(utf8=True))
+                    bytesmsg, policy=msg.policy.clone(utf8=Wahr))
                 mail_options = (*mail_options, 'SMTPUTF8', 'BODY=8BITMIME')
             sonst:
                 g = email.generator.BytesGenerator(bytesmsg)
@@ -991,12 +991,12 @@ klasse SMTP:
         """Close the connection to the SMTP server."""
         try:
             file = self.file
-            self.file = None
+            self.file = Nichts
             wenn file:
                 file.close()
         finally:
             sock = self.sock
-            self.sock = None
+            self.sock = Nichts
             wenn sock:
                 sock.close()
 
@@ -1004,9 +1004,9 @@ klasse SMTP:
         """Terminate the SMTP session."""
         res = self.docmd("quit")
         # A new EHLO is required after reconnecting with connect()
-        self.ehlo_resp = self.helo_resp = None
+        self.ehlo_resp = self.helo_resp = Nichts
         self.esmtp_features = {}
-        self.does_esmtp = False
+        self.does_esmtp = Falsch
         self.close()
         return res
 
@@ -1025,10 +1025,10 @@ wenn _have_ssl:
 
         default_port = SMTP_SSL_PORT
 
-        def __init__(self, host='', port=0, local_hostname=None,
+        def __init__(self, host='', port=0, local_hostname=Nichts,
                      *, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
-                     source_address=None, context=None):
-            wenn context is None:
+                     source_address=Nichts, context=Nichts):
+            wenn context is Nichts:
                 context = ssl._create_stdlib_context()
             self.context = context
             SMTP.__init__(self, host, port, local_hostname, timeout,
@@ -1065,18 +1065,18 @@ klasse LMTP(SMTP):
 
     ehlo_msg = "lhlo"
 
-    def __init__(self, host='', port=LMTP_PORT, local_hostname=None,
-                 source_address=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+    def __init__(self, host='', port=LMTP_PORT, local_hostname=Nichts,
+                 source_address=Nichts, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         """Initialize a new instance."""
         super().__init__(host, port, local_hostname=local_hostname,
                          source_address=source_address, timeout=timeout)
 
-    def connect(self, host='localhost', port=0, source_address=None):
+    def connect(self, host='localhost', port=0, source_address=Nichts):
         """Connect to the LMTP daemon, on either a Unix or a TCP socket."""
         wenn host[0] != '/':
             return super().connect(host, port, source_address=source_address)
 
-        wenn self.timeout is not None and not self.timeout:
+        wenn self.timeout is not Nichts and not self.timeout:
             raise ValueError('Non-blocking socket (timeout=0) is not supported')
 
         # Handle Unix-domain sockets.
@@ -1084,14 +1084,14 @@ klasse LMTP(SMTP):
             self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             wenn self.timeout is not socket._GLOBAL_DEFAULT_TIMEOUT:
                 self.sock.settimeout(self.timeout)
-            self.file = None
+            self.file = Nichts
             self.sock.connect(host)
         except OSError:
             wenn self.debuglevel > 0:
                 self._print_debug('connect fail:', host)
             wenn self.sock:
                 self.sock.close()
-            self.sock = None
+            self.sock = Nichts
             raise
         (code, msg) = self.getreply()
         wenn self.debuglevel > 0:

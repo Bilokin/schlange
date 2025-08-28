@@ -15,7 +15,7 @@ klasse MockTkApp:
         return arg.split(':')
 
     def wantobjects(self):
-        return True
+        return Wahr
 
 
 klasse MockTclObj(object):
@@ -48,7 +48,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
                 self.fail("result still got elements: %s" % result)
 
         # passing an empty dict should return an empty object (tuple here)
-        self.assertFalse(ttk._format_optdict({}))
+        self.assertFalsch(ttk._format_optdict({}))
 
         # check list formatting
         check_against(
@@ -71,16 +71,16 @@ klasse InternalFunctionsTest(unittest.TestCase):
                 {'test': [1, -1, '', '2m', 0], 'test2': 3,
                  'test3': '', 'test4': 'abc def',
                  'test5': '"abc"', 'test6': '{}',
-                 'test7': '} -spam {'}, script=True),
+                 'test7': '} -spam {'}, script=Wahr),
             {'-test': '{1 -1 {} 2m 0}', '-test2': '3',
              '-test3': '{}', '-test4': '{abc def}',
              '-test5': '{"abc"}', '-test6': r'\{\}',
              '-test7': r'\}\ -spam\ \{'})
 
-        opts = {'αβγ': True, 'á': False}
+        opts = {'αβγ': Wahr, 'á': Falsch}
         orig_opts = opts.copy()
         # check wenn giving unicode keys is fine
-        check_against(ttk._format_optdict(opts), {'-αβγ': True, '-á': False})
+        check_against(ttk._format_optdict(opts), {'-αβγ': Wahr, '-á': Falsch})
         # opts should remain unchanged
         self.assertEqual(opts, orig_opts)
 
@@ -125,7 +125,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
         self.assertEqual(amount_opts, len(opts) - 1)
 
         # ignore every option
-        self.assertFalse(ttk._format_optdict(opts, ignore=list(opts.keys())))
+        self.assertFalsch(ttk._format_optdict(opts, ignore=list(opts.keys())))
 
 
     def test_format_mapdict(self):
@@ -133,7 +133,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
         result = ttk._format_mapdict(opts)
         self.assertEqual(len(result), len(list(opts.keys())) * 2)
         self.assertEqual(result, ('-a', '{b c} val d otherval {} single'))
-        self.assertEqual(ttk._format_mapdict(opts, script=True),
+        self.assertEqual(ttk._format_mapdict(opts, script=Wahr),
             ('-a', '{{b c} val d otherval {} single}'))
 
         self.assertEqual(ttk._format_mapdict({2: []}), ('-2', ''))
@@ -157,19 +157,19 @@ klasse InternalFunctionsTest(unittest.TestCase):
         # but when passing a single state, it can be anything
         valid = {'opt': [[1, 'value']]}
         self.assertEqual(ttk._format_mapdict(valid), ('-opt', '1 value'))
-        # special attention to single states which evaluate to False
-        fuer stateval in (None, 0, False, '', set()): # just some samples
+        # special attention to single states which evaluate to Falsch
+        fuer stateval in (Nichts, 0, Falsch, '', set()): # just some samples
             valid = {'opt': [(stateval, 'value')]}
             self.assertEqual(ttk._format_mapdict(valid),
                 ('-opt', '{} value'))
 
         # values must be iterable
-        opts = {'a': None}
+        opts = {'a': Nichts}
         self.assertRaises(TypeError, ttk._format_mapdict, opts)
 
 
     def test_format_elemcreate(self):
-        self.assertTrue(ttk._format_elemcreate(None), (None, ()))
+        self.assertWahr(ttk._format_elemcreate(Nichts), (Nichts, ()))
 
         ## Testing type = image
         # image type expects at least an image name, so this should raise
@@ -178,20 +178,20 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
         # don't format returned values as a tcl script
         # minimum acceptable fuer image type
-        self.assertEqual(ttk._format_elemcreate('image', False, 'test'),
+        self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test'),
             ("test", ()))
         # specifying a state spec
-        self.assertEqual(ttk._format_elemcreate('image', False, 'test',
+        self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test',
             ('', 'a')), ("test {} a", ()))
         # state spec with multiple states
-        self.assertEqual(ttk._format_elemcreate('image', False, 'test',
+        self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test',
             ('a', 'b', 'c')), ("test {a b} c", ()))
         # state spec and options
-        self.assertEqual(ttk._format_elemcreate('image', False, 'test',
+        self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test',
             ('a', 'b'), a='x'), ("test a b", ("-a", "x")))
         # format returned values as a tcl script
         # state spec with multiple states and an option with a multivalue
-        self.assertEqual(ttk._format_elemcreate('image', True, 'test',
+        self.assertEqual(ttk._format_elemcreate('image', Wahr, 'test',
             ('a', 'b', 'c', 'd'), x=[2, 3]), ("{test {a b c} d}", "-x {2 3}"))
 
         ## Testing type = vsapi
@@ -202,30 +202,30 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
         # don't format returned values as a tcl script
         # minimum acceptable fuer vsapi
-        self.assertEqual(ttk._format_elemcreate('vsapi', False, 'a', 'b'),
+        self.assertEqual(ttk._format_elemcreate('vsapi', Falsch, 'a', 'b'),
             ('a', 'b', ('', 1), ()))
         # now with a state spec with multiple states
-        self.assertEqual(ttk._format_elemcreate('vsapi', False, 'a', 'b',
+        self.assertEqual(ttk._format_elemcreate('vsapi', Falsch, 'a', 'b',
             [('a', 'b', 'c')]), ('a', 'b', ('a b', 'c'), ()))
         # state spec and option
-        self.assertEqual(ttk._format_elemcreate('vsapi', False, 'a', 'b',
+        self.assertEqual(ttk._format_elemcreate('vsapi', Falsch, 'a', 'b',
             [('a', 'b')], opt='x'), ('a', 'b', ('a', 'b'), ("-opt", "x")))
         # format returned values as a tcl script
         # state spec with a multivalue and an option
-        self.assertEqual(ttk._format_elemcreate('vsapi', True, 'a', 'b',
+        self.assertEqual(ttk._format_elemcreate('vsapi', Wahr, 'a', 'b',
             opt='x'), ("a b {{} 1}", "-opt x"))
-        self.assertEqual(ttk._format_elemcreate('vsapi', True, 'a', 'b',
+        self.assertEqual(ttk._format_elemcreate('vsapi', Wahr, 'a', 'b',
             [('a', 'b', [1, 2])], opt='x'), ("a b {{a b} {1 2}}", "-opt x"))
 
         # Testing type = from
         # from type expects at least a type name
         self.assertRaises(IndexError, ttk._format_elemcreate, 'from')
 
-        self.assertEqual(ttk._format_elemcreate('from', False, 'a'),
+        self.assertEqual(ttk._format_elemcreate('from', Falsch, 'a'),
             ('a', ()))
-        self.assertEqual(ttk._format_elemcreate('from', False, 'a', 'b'),
+        self.assertEqual(ttk._format_elemcreate('from', Falsch, 'a', 'b'),
             ('a', ('b',)))
-        self.assertEqual(ttk._format_elemcreate('from', True, 'a', 'b'),
+        self.assertEqual(ttk._format_elemcreate('from', Wahr, 'a', 'b'),
             ('a', 'b'))
 
 
@@ -257,11 +257,11 @@ klasse InternalFunctionsTest(unittest.TestCase):
         self.assertEqual(ttk._format_layoutlist([])[0], '')
 
         # _format_layoutlist always expects the second item (in every item)
-        # to act like a dict (except when the value evaluates to False).
+        # to act like a dict (except when the value evaluates to Falsch).
         self.assertRaises(AttributeError,
             ttk._format_layoutlist, [('a', 'b')])
 
-        smallest = ttk._format_layoutlist([('a', None)], indent=0)
+        smallest = ttk._format_layoutlist([('a', Nichts)], indent=0)
         self.assertEqual(smallest,
             ttk._format_layoutlist([('a', '')], indent=0))
         self.assertEqual(smallest[0], 'a')
@@ -283,25 +283,25 @@ klasse InternalFunctionsTest(unittest.TestCase):
            [('name', 'bad')])
         # bad children formatting
         self.assertRaises(ValueError, ttk._format_layoutlist,
-            [('name', {'children': {'a': None}})])
+            [('name', {'children': {'a': Nichts}})])
 
 
     def test_script_from_settings(self):
         # empty options
-        self.assertFalse(ttk._script_from_settings({'name':
-            {'configure': None, 'map': None, 'element create': None}}))
+        self.assertFalsch(ttk._script_from_settings({'name':
+            {'configure': Nichts, 'map': Nichts, 'element create': Nichts}}))
 
         # empty layout
         self.assertEqual(
-            ttk._script_from_settings({'name': {'layout': None}}),
+            ttk._script_from_settings({'name': {'layout': Nichts}}),
             "ttk::style layout name {\nnull\n}")
 
-        configdict = {'αβγ': True, 'á': False}
-        self.assertTrue(
+        configdict = {'αβγ': Wahr, 'á': Falsch}
+        self.assertWahr(
             ttk._script_from_settings({'name': {'configure': configdict}}))
 
         mapdict = {'üñíćódè': [('á', 'vãl')]}
-        self.assertTrue(
+        self.assertWahr(
             ttk._script_from_settings({'name': {'map': mapdict}}))
 
         # invalid image element
@@ -309,7 +309,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
             ttk._script_from_settings, {'name': {'element create': ['image']}})
 
         # minimal valid image
-        self.assertTrue(ttk._script_from_settings({'name':
+        self.assertWahr(ttk._script_from_settings({'name':
             {'element create': ['image', 'name']}}))
 
         image = {'thing': {'element create':
@@ -375,7 +375,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
         tk = MockTkApp()
 
         # empty layout tuple
-        self.assertFalse(ttk._list_from_layouttuple(tk, ()))
+        self.assertFalsch(ttk._list_from_layouttuple(tk, ()))
 
         # shortest layout tuple
         self.assertEqual(ttk._list_from_layouttuple(tk, ('name', )),
@@ -418,10 +418,10 @@ klasse InternalFunctionsTest(unittest.TestCase):
 
 
     def test_val_or_dict(self):
-        def func(res, opt=None, val=None):
-            wenn opt is None:
+        def func(res, opt=Nichts, val=Nichts):
+            wenn opt is Nichts:
                 return res
-            wenn val is None:
+            wenn val is Nichts:
                 return "test val"
             return (opt, val)
 
@@ -433,7 +433,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
         self.assertEqual(ttk._val_or_dict(tk, {}, ('-test', 3)),
                          {'test': 3})
 
-        self.assertEqual(ttk._val_or_dict(tk, {'test': None}, 'x:y'),
+        self.assertEqual(ttk._val_or_dict(tk, {'test': Nichts}, 'x:y'),
                          'test val')
 
         self.assertEqual(ttk._val_or_dict(tk, {'test': 3}, 'x:y'),
@@ -443,7 +443,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
     def test_convert_stringval(self):
         tests = (
             (0, 0), ('09', 9), ('a', 'a'), ('áÚ', 'áÚ'), ([], '[]'),
-            (None, 'None')
+            (Nichts, 'Nichts')
         )
         fuer orig, expected in tests:
             self.assertEqual(ttk._convert_stringval(orig), expected)

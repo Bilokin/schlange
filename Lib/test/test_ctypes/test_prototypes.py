@@ -53,7 +53,7 @@ klasse CharPointersTestCase(unittest.TestCase):
     def setUp(self):
         func = testdll._testfunc_p_p
         func.restype = c_long
-        func.argtypes = None
+        func.argtypes = Nichts
 
     def test_paramflags(self):
         # function returns c_void_p result,
@@ -69,8 +69,8 @@ klasse CharPointersTestCase(unittest.TestCase):
         sonst:
             self.fail("TypeError not raised")
 
-        self.assertEqual(func(None), None)
-        self.assertEqual(func(input=None), None)
+        self.assertEqual(func(Nichts), Nichts)
+        self.assertEqual(func(input=Nichts), Nichts)
 
 
     def test_int_pointer_arg(self):
@@ -101,9 +101,9 @@ klasse CharPointersTestCase(unittest.TestCase):
         func.restype = c_char_p
         func.argtypes = POINTER(c_char),
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Nichts, func(Nichts))
         self.assertEqual(b"123", func(b"123"))
-        self.assertEqual(None, func(c_char_p(None)))
+        self.assertEqual(Nichts, func(c_char_p(Nichts)))
         self.assertEqual(b"123", func(c_char_p(b"123")))
 
         self.assertEqual(b"123", func(create_string_buffer(b"123")))
@@ -116,9 +116,9 @@ klasse CharPointersTestCase(unittest.TestCase):
         func.restype = c_char_p
         func.argtypes = c_char_p,
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Nichts, func(Nichts))
         self.assertEqual(b"123", func(b"123"))
-        self.assertEqual(None, func(c_char_p(None)))
+        self.assertEqual(Nichts, func(c_char_p(Nichts)))
         self.assertEqual(b"123", func(c_char_p(b"123")))
 
         self.assertEqual(b"123", func(create_string_buffer(b"123")))
@@ -131,10 +131,10 @@ klasse CharPointersTestCase(unittest.TestCase):
         func.restype = c_char_p
         func.argtypes = c_void_p,
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Nichts, func(Nichts))
         self.assertEqual(b"123", func(b"123"))
         self.assertEqual(b"123", func(c_char_p(b"123")))
-        self.assertEqual(None, func(c_char_p(None)))
+        self.assertEqual(Nichts, func(c_char_p(Nichts)))
 
         self.assertEqual(b"123", func(create_string_buffer(b"123")))
         ca = c_char(b"a")
@@ -150,7 +150,7 @@ klasse CharPointersTestCase(unittest.TestCase):
         func.restype = c_wchar_p
         func.argtypes = c_void_p,
 
-        self.assertEqual(None, func(c_wchar_p(None)))
+        self.assertEqual(Nichts, func(c_wchar_p(Nichts)))
         self.assertEqual("123", func(c_wchar_p("123")))
 
     def test_instance(self):
@@ -158,20 +158,20 @@ klasse CharPointersTestCase(unittest.TestCase):
         func.restype = c_void_p
 
         klasse X:
-            _as_parameter_ = None
+            _as_parameter_ = Nichts
 
         func.argtypes = c_void_p,
-        self.assertEqual(None, func(X()))
+        self.assertEqual(Nichts, func(X()))
 
-        func.argtypes = None
-        self.assertEqual(None, func(X()))
+        func.argtypes = Nichts
+        self.assertEqual(Nichts, func(X()))
 
 
 klasse WCharPointersTestCase(unittest.TestCase):
     def setUp(self):
         func = testdll._testfunc_p_p
         func.restype = c_int
-        func.argtypes = None
+        func.argtypes = Nichts
 
 
     def test_POINTER_c_wchar_arg(self):
@@ -179,9 +179,9 @@ klasse WCharPointersTestCase(unittest.TestCase):
         func.restype = c_wchar_p
         func.argtypes = POINTER(c_wchar),
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Nichts, func(Nichts))
         self.assertEqual("123", func("123"))
-        self.assertEqual(None, func(c_wchar_p(None)))
+        self.assertEqual(Nichts, func(c_wchar_p(Nichts)))
         self.assertEqual("123", func(c_wchar_p("123")))
 
         self.assertEqual("123", func(c_wbuffer("123")))
@@ -196,9 +196,9 @@ klasse WCharPointersTestCase(unittest.TestCase):
 
         c_wchar_p.from_param("123")
 
-        self.assertEqual(None, func(None))
+        self.assertEqual(Nichts, func(Nichts))
         self.assertEqual("123", func("123"))
-        self.assertEqual(None, func(c_wchar_p(None)))
+        self.assertEqual(Nichts, func(c_wchar_p(Nichts)))
         self.assertEqual("123", func(c_wchar_p("123")))
 
         # XXX Currently, these raise TypeErrors, although they shouldn't:
@@ -219,7 +219,7 @@ klasse ArrayTest(unittest.TestCase):
         # This did crash before:
 
         def func(): pass
-        CFUNCTYPE(None, c_int * 3)(func)
+        CFUNCTYPE(Nichts, c_int * 3)(func)
 
 
 wenn __name__ == '__main__':

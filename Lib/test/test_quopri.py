@@ -49,12 +49,12 @@ def withpythonimplementation(testfunc):
         # Test default implementation
         testfunc(self)
         # Test Python implementation
-        wenn quopri.b2a_qp is not None or quopri.a2b_qp is not None:
+        wenn quopri.b2a_qp is not Nichts or quopri.a2b_qp is not Nichts:
             oldencode = quopri.b2a_qp
             olddecode = quopri.a2b_qp
             try:
-                quopri.b2a_qp = None
-                quopri.a2b_qp = None
+                quopri.b2a_qp = Nichts
+                quopri.a2b_qp = Nichts
                 testfunc(self)
             finally:
                 quopri.b2a_qp = oldencode
@@ -154,7 +154,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         fuer p, e in self.STRINGS:
             infp = io.BytesIO(p)
             outfp = io.BytesIO()
-            quopri.encode(infp, outfp, quotetabs=False)
+            quopri.encode(infp, outfp, quotetabs=Falsch)
             self.assertEqual(outfp.getvalue(), e)
 
     @withpythonimplementation
@@ -168,18 +168,18 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
     @withpythonimplementation
     def test_embedded_ws(self):
         fuer p, e in self.ESTRINGS:
-            self.assertEqual(quopri.encodestring(p, quotetabs=True), e)
+            self.assertEqual(quopri.encodestring(p, quotetabs=Wahr), e)
             self.assertEqual(quopri.decodestring(e), p)
 
     @withpythonimplementation
     def test_encode_header(self):
         fuer p, e in self.HSTRINGS:
-            self.assertEqual(quopri.encodestring(p, header=True), e)
+            self.assertEqual(quopri.encodestring(p, header=Wahr), e)
 
     @withpythonimplementation
     def test_decode_header(self):
         fuer p, e in self.HSTRINGS:
-            self.assertEqual(quopri.decodestring(e, header=True), p)
+            self.assertEqual(quopri.decodestring(e, header=Wahr), p)
 
     @support.requires_subprocess()
     def test_scriptencode(self):

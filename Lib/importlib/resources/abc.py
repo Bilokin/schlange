@@ -43,7 +43,7 @@ klasse ResourceReader(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def is_resource(self, path: Text) -> bool:
-        """Return True wenn the named 'path' is a resource.
+        """Return Wahr wenn the named 'path' is a resource.
 
         Files are resources, directories are not.
         """
@@ -82,7 +82,7 @@ klasse Traversable(Protocol):
         with self.open('rb') as strm:
             return strm.read()
 
-    def read_text(self, encoding: Optional[str] = None) -> str:
+    def read_text(self, encoding: Optional[str] = Nichts) -> str:
         """
         Read contents of self as text
         """
@@ -92,13 +92,13 @@ klasse Traversable(Protocol):
     @abc.abstractmethod
     def is_dir(self) -> bool:
         """
-        Return True wenn self is a directory
+        Return Wahr wenn self is a directory
         """
 
     @abc.abstractmethod
     def is_file(self) -> bool:
         """
-        Return True wenn self is a file
+        Return Wahr wenn self is a file
         """
 
     def joinpath(self, *descendants: StrPath) -> "Traversable":

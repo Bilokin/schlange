@@ -12,14 +12,14 @@ from libclinic.function import (
     Module, Class, Function)
 
 
-@dc.dataclass(slots=True, repr=False)
+@dc.dataclass(slots=Wahr, repr=Falsch)
 klasse Block:
     r"""
     Represents a single block of text embedded in
-    another file.  If dsl_name is None, the block represents
+    another file.  If dsl_name is Nichts, the block represents
     verbatim text, raw original text from the file, in
     which case "input" will be the only non-false member.
-    If dsl_name is not None, the block represents a Clinic
+    If dsl_name is not Nichts, the block represents a Clinic
     block.
 
     input is always str, with embedded \n characters.
@@ -27,7 +27,7 @@ klasse Block:
     wenn it's a Clinic block, it is the original text with
     the body_prefix and redundant leading whitespace removed.
 
-    dsl_name is either str or None.  If str, it's the text
+    dsl_name is either str or Nichts.  If str, it's the text
     found on the start line of the block between the square
     brackets.
 
@@ -36,7 +36,7 @@ klasse Block:
     clinic.Function objects.  At the moment it should
     contain at most one of each.
 
-    output is either str or None.  If str, it's the output
+    output is either str or Nichts.  If str, it's the output
     from this block, with embedded '\n' characters.
 
     indent is a str.  It's the leading whitespace
@@ -63,9 +63,9 @@ klasse Block:
 
     """
     input: str
-    dsl_name: str | None = None
+    dsl_name: str | Nichts = Nichts
     signatures: list[Module | Class | Function] = dc.field(default_factory=list)
-    output: Any = None  # TODO: Very dynamic; probably untypeable in its current form?
+    output: Any = Nichts  # TODO: Very dynamic; probably untypeable in its current form?
     indent: str = ''
 
     def __repr__(self) -> str:
@@ -94,8 +94,8 @@ klasse BlockParser:
             input: str,
             language: Language,
             *,
-            verify: bool = True
-    ) -> None:
+            verify: bool = Wahr
+    ) -> Nichts:
         """
         "input" should be a str object
         with embedded \n characters.
@@ -104,26 +104,26 @@ klasse BlockParser:
         """
         language.validate()
 
-        self.input = collections.deque(reversed(input.splitlines(keepends=True)))
+        self.input = collections.deque(reversed(input.splitlines(keepends=Wahr)))
         self.block_start_line_number = self.line_number = 0
 
         self.language = language
         before, _, after = language.start_line.partition('{dsl_name}')
         assert _ == '{dsl_name}'
         self.find_start_re = libclinic.create_regex(before, after,
-                                                    whole_line=False)
+                                                    whole_line=Falsch)
         self.start_re = libclinic.create_regex(before, after)
         self.verify = verify
-        self.last_checksum_re: re.Pattern[str] | None = None
-        self.last_dsl_name: str | None = None
-        self.dsl_name: str | None = None
-        self.first_block = True
+        self.last_checksum_re: re.Pattern[str] | Nichts = Nichts
+        self.last_dsl_name: str | Nichts = Nichts
+        self.dsl_name: str | Nichts = Nichts
+        self.first_block = Wahr
 
     def __iter__(self) -> BlockParser:
         return self
 
     def __next__(self) -> Block:
-        while True:
+        while Wahr:
             wenn not self.input:
                 raise StopIteration
 
@@ -134,21 +134,21 @@ klasse BlockParser:
                     exc.filename = self.language.filename
                     exc.lineno = self.line_number
                     raise
-                self.dsl_name = None
-                self.first_block = False
+                self.dsl_name = Nichts
+                self.first_block = Falsch
                 return return_value
             block = self.parse_verbatim_block()
             wenn self.first_block and not block.input:
                 continue
-            self.first_block = False
+            self.first_block = Falsch
             return block
 
 
-    def is_start_line(self, line: str) -> str | None:
+    def is_start_line(self, line: str) -> str | Nichts:
         match = self.start_re.match(line.lstrip())
-        return match.group(1) wenn match sonst None
+        return match.group(1) wenn match sonst Nichts
 
-    def _line(self, lookahead: bool = False) -> str:
+    def _line(self, lookahead: bool = Falsch) -> str:
         self.line_number += 1
         line = self.input.pop()
         wenn not lookahead:
@@ -182,12 +182,12 @@ klasse BlockParser:
                 remainder = line.removeprefix(stop_line)
                 wenn remainder and not remainder.isspace():
                     fail(f"Garbage after stop line: {remainder!r}")
-                return True
+                return Wahr
             sonst:
                 # gh-92256: don't allow incorrectly formatted stop lines
                 wenn line.lstrip().startswith(stop_line):
                     fail(f"Whitespace is not allowed before the stop line: {line!r}")
-                return False
+                return Falsch
 
         # consume body of program
         while self.input:
@@ -206,25 +206,25 @@ klasse BlockParser:
         sonst:
             before, _, after = self.language.checksum_line.format(dsl_name=dsl_name, arguments='{arguments}').partition('{arguments}')
             assert _ == '{arguments}'
-            checksum_re = libclinic.create_regex(before, after, word=False)
+            checksum_re = libclinic.create_regex(before, after, word=Falsch)
             self.last_dsl_name = dsl_name
             self.last_checksum_re = checksum_re
-        assert checksum_re is not None
+        assert checksum_re is not Nichts
 
         # scan forward fuer checksum line
         out_lines = []
-        arguments = None
+        arguments = Nichts
         while self.input:
-            line = self._line(lookahead=True)
+            line = self._line(lookahead=Wahr)
             match = checksum_re.match(line.lstrip())
-            arguments = match.group(1) wenn match sonst None
+            arguments = match.group(1) wenn match sonst Nichts
             wenn arguments:
                 break
             out_lines.append(line)
             wenn self.is_start_line(line):
                 break
 
-        output: str | None
+        output: str | Nichts
         output = "".join(out_lines)
         wenn arguments:
             d = {}
@@ -248,9 +248,9 @@ klasse BlockParser:
                          "the end marker, or use the '-f' option.")
         sonst:
             # put back output
-            output_lines = output.splitlines(keepends=True)
+            output_lines = output.splitlines(keepends=Wahr)
             self.line_number -= len(output_lines)
             self.input.extend(reversed(output_lines))
-            output = None
+            output = Nichts
 
         return Block("".join(in_lines), dsl_name, output=output)

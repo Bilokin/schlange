@@ -29,7 +29,7 @@ from .reader import Reader
 
 # types
 Command = commands.Command
-wenn False:
+wenn Falsch:
     from .types import KeySpec, CommandName
 
 
@@ -86,7 +86,7 @@ def build_menu(
     rows = int((len(wordlist) - 1)/cols + 1)
 
     wenn sort_in_column:
-        # sort_in_column=False (default)     sort_in_column=True
+        # sort_in_column=Falsch (default)     sort_in_column=Wahr
         #          A B C                       A D G
         #          D E F                       B E
         #          G                           C F
@@ -127,8 +127,8 @@ def build_menu(
 # (2) whether the last command was a completion
 # (3) wenn we can assume that the completer is going to return the same set of
 #     completions: this is controlled by the ``assume_immutable_completions``
-#     variable on the reader, which is True by default to match the historical
-#     behaviour of pyrepl, but e.g. False in the ReadlineAlikeReader to match
+#     variable on the reader, which is Wahr by default to match the historical
+#     behaviour of pyrepl, but e.g. Falsch in the ReadlineAlikeReader to match
 #     more closely readline's semantics (this is needed e.g. by
 #     fancycompleter)
 #
@@ -137,7 +137,7 @@ def build_menu(
 #
 # wenn there's only one possible completion, stick it in.  wenn the last thing
 # user did was a completion, point out that he isn't getting anywhere, but
-# only wenn the ``assume_immutable_completions`` is True.
+# only wenn the ``assume_immutable_completions`` is Wahr.
 #
 # now it gets complicated.
 #
@@ -164,7 +164,7 @@ def build_menu(
 
 
 klasse complete(commands.Command):
-    def do(self) -> None:
+    def do(self) -> Nichts:
         r: CompletingReader
         r = self.reader  # type: ignore[assignment]
         last_is_completer = r.last_command_is(self.__class__)
@@ -180,31 +180,31 @@ klasse complete(commands.Command):
         sowenn len(completions) == 1:
             wenn completions_unchangable and len(completions[0]) == len(stem):
                 r.msg = "[ sole completion ]"
-                r.dirty = True
+                r.dirty = Wahr
             r.insert(completions[0][len(stem):])
         sonst:
             p = prefix(completions, len(stem))
             wenn p:
                 r.insert(p)
             wenn last_is_completer:
-                r.cmpltn_menu_visible = True
-                r.cmpltn_message_visible = False
+                r.cmpltn_menu_visible = Wahr
+                r.cmpltn_message_visible = Falsch
                 r.cmpltn_menu, r.cmpltn_menu_end = build_menu(
                     r.console, completions, r.cmpltn_menu_end,
                     r.use_brackets, r.sort_in_column)
-                r.dirty = True
+                r.dirty = Wahr
             sowenn not r.cmpltn_menu_visible:
-                r.cmpltn_message_visible = True
+                r.cmpltn_message_visible = Wahr
                 wenn stem + p in completions:
                     r.msg = "[ complete but not unique ]"
-                    r.dirty = True
+                    r.dirty = Wahr
                 sonst:
                     r.msg = "[ not unique ]"
-                    r.dirty = True
+                    r.dirty = Wahr
 
 
 klasse self_insert(commands.self_insert):
-    def do(self) -> None:
+    def do(self) -> Nichts:
         r: CompletingReader
         r = self.reader  # type: ignore[assignment]
 
@@ -230,18 +230,18 @@ klasse CompletingReader(Reader):
 
     ### Class variables
     # see the comment fuer the complete command
-    assume_immutable_completions = True
-    use_brackets = True  # display completions inside []
-    sort_in_column = False
+    assume_immutable_completions = Wahr
+    use_brackets = Wahr  # display completions inside []
+    sort_in_column = Falsch
 
     ### Instance variables
-    cmpltn_menu: list[str] = field(init=False)
-    cmpltn_menu_visible: bool = field(init=False)
-    cmpltn_message_visible: bool = field(init=False)
-    cmpltn_menu_end: int = field(init=False)
-    cmpltn_menu_choices: list[str] = field(init=False)
+    cmpltn_menu: list[str] = field(init=Falsch)
+    cmpltn_menu_visible: bool = field(init=Falsch)
+    cmpltn_message_visible: bool = field(init=Falsch)
+    cmpltn_menu_end: int = field(init=Falsch)
+    cmpltn_menu_choices: list[str] = field(init=Falsch)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         super().__post_init__()
         self.cmpltn_reset()
         fuer c in (complete, self_insert):
@@ -252,7 +252,7 @@ klasse CompletingReader(Reader):
         return super().collect_keymap() + (
             (r'\t', 'complete'),)
 
-    def after_command(self, cmd: Command) -> None:
+    def after_command(self, cmd: Command) -> Nichts:
         super().after_command(cmd)
         wenn not isinstance(cmd, (complete, self_insert)):
             self.cmpltn_reset()
@@ -271,14 +271,14 @@ klasse CompletingReader(Reader):
                 self.screeninfo[ly:ly] = [(0, [])]*len(self.cmpltn_menu)
         return screen
 
-    def finish(self) -> None:
+    def finish(self) -> Nichts:
         super().finish()
         self.cmpltn_reset()
 
-    def cmpltn_reset(self) -> None:
+    def cmpltn_reset(self) -> Nichts:
         self.cmpltn_menu = []
-        self.cmpltn_menu_visible = False
-        self.cmpltn_message_visible = False
+        self.cmpltn_menu_visible = Falsch
+        self.cmpltn_message_visible = Falsch
         self.cmpltn_menu_end = 0
         self.cmpltn_menu_choices = []
 

@@ -92,7 +92,7 @@ handle_events_unix_console_height_3 = partial(
         ],
     ],
 )
-@patch("termios.tcsetattr", lambda a, b, c: None)
+@patch("termios.tcsetattr", lambda a, b, c: Nichts)
 @patch("os.write")
 @force_not_colorized_test_class
 klasse TestConsole(TestCase):
@@ -192,7 +192,7 @@ klasse TestConsole(TestCase):
             code_to_events(code),
             [
                 Event(evt="key", data="up", raw=bytearray(b"\x1bOA")),
-                Event(evt="scroll", data=None),
+                Event(evt="scroll", data=Nichts),
             ],
         )
         _, con = handle_events_short_unix_console(events)
@@ -211,9 +211,9 @@ klasse TestConsole(TestCase):
             code_to_events(code),
             [
                 Event(evt="key", data="up", raw=bytearray(b"\x1bOA")),
-                Event(evt="scroll", data=None),
+                Event(evt="scroll", data=Nichts),
                 Event(evt="key", data="down", raw=bytearray(b"\x1bOB")),
-                Event(evt="scroll", data=None),
+                Event(evt="scroll", data=Nichts),
             ],
         )
         _, con = handle_events_short_unix_console(events)
@@ -243,7 +243,7 @@ klasse TestConsole(TestCase):
             return console
 
         _, con = handle_all_events(
-            [Event(evt="resize", data=None)],
+            [Event(evt="resize", data=Nichts)],
             prepare_reader=same_reader,
             prepare_console=same_console,
         )
@@ -279,7 +279,7 @@ klasse TestConsole(TestCase):
             return console
 
         _, con = handle_all_events(
-            [Event(evt="resize", data=None)],
+            [Event(evt="resize", data=Nichts)],
             prepare_reader=same_reader,
             prepare_console=same_console,
         )

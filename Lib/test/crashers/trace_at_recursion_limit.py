@@ -11,7 +11,7 @@ def x():
     pass
 
 def g(*args):
-    wenn True: # change to True to crash interpreter
+    wenn Wahr: # change to Wahr to crash interpreter
         try:
             x()
         except:

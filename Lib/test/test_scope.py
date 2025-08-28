@@ -294,7 +294,7 @@ klasse ScopeTests(unittest.TestCase):
 
         f3 = lambda x: lambda y: global_x + y
         global_x = 1
-        inc = f3(None)
+        inc = f3(Nichts)
         self.assertEqual(inc(2), 3)
 
         f8 = lambda x, y, z: lambda a, b, c: lambda : z * (b + y)
@@ -492,14 +492,14 @@ klasse ScopeTests(unittest.TestCase):
             x = -1
             self.assertEqual(test(3)(2), 5)
 
-            looked_up_by_load_name = False
+            looked_up_by_load_name = Falsch
             klasse X:
                 # Implicit globals inside classes are be looked up by LOAD_NAME, not
                 # LOAD_GLOBAL.
-                locals()['looked_up_by_load_name'] = True
+                locals()['looked_up_by_load_name'] = Wahr
                 passed = looked_up_by_load_name
 
-            self.assertTrue(X.passed)
+            self.assertWahr(X.passed)
             """)
 
     def testLocalsFunction(self):
@@ -559,7 +559,7 @@ klasse ScopeTests(unittest.TestCase):
         # variables are not inserted...
         import sys
         self.addCleanup(sys.settrace, sys.gettrace())
-        sys.settrace(lambda a,b,c:None)
+        sys.settrace(lambda a,b,c:Nichts)
         x = 12
 
         klasse C:
@@ -601,7 +601,7 @@ klasse ScopeTests(unittest.TestCase):
         self.addCleanup(sys.settrace, sys.gettrace())
         sys.settrace(tracer)
         adaptgetter("foo", TestClass, (1, ""))
-        sys.settrace(None)
+        sys.settrace(Nichts)
 
         self.assertRaises(TypeError, sys.settrace)
 
@@ -788,11 +788,11 @@ klasse ScopeTests(unittest.TestCase):
         # The issue was that wenn self was part of a cycle involving the
         # frame of a method call, *and* the method contained a nested
         # function referencing self, thereby forcing 'self' into a
-        # cell, setting self to None would not be enough to break the
+        # cell, setting self to Nichts would not be enough to break the
         # frame -- the frame had another reference to the instance,
         # which could not be cleared by the code running in the frame
         # (though it will be cleared when the frame is collected).
-        # Without the lambda, setting self to None is enough to break
+        # Without the lambda, setting self to Nichts is enough to break
         # the cycle.
         klasse Tester:
             def dig(self):
@@ -802,13 +802,13 @@ klasse ScopeTests(unittest.TestCase):
                     1/0
                 except Exception as exc:
                     self.exc = exc
-                self = None  # Break the cycle
+                self = Nichts  # Break the cycle
         tester = Tester()
         tester.dig()
         ref = weakref.ref(tester)
         del tester
         gc_collect()  # For PyPy or other GCs.
-        self.assertIsNone(ref())
+        self.assertIsNichts(ref())
 
     def test_multiple_nesting(self):
         # Regression test fuer https://github.com/python/cpython/issues/121863

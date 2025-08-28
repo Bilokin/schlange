@@ -10,11 +10,11 @@ EMPTY = '-'
 UNKNOWN = '???'
 
 
-def parse_markers(markers, default=None):
+def parse_markers(markers, default=Nichts):
     wenn markers is NOT_SET:
         return default
     wenn not markers:
-        return None
+        return Nichts
     wenn type(markers) is not str:
         return markers
     wenn markers == markers[0] * len(markers):
@@ -27,7 +27,7 @@ def fix_row(row, **markers):
         raise NotImplementedError(row)
     empty = parse_markers(markers.pop('empty', ('-',)))
     unknown = parse_markers(markers.pop('unknown', ('???',)))
-    row = (val wenn val sonst None fuer val in row)
+    row = (val wenn val sonst Nichts fuer val in row)
     wenn not empty:
         wenn unknown:
             row = (UNKNOWN wenn val in unknown sonst val fuer val in row)
@@ -46,11 +46,11 @@ def _fix_read_default(row):
 
 def _fix_write_default(row, empty=''):
     fuer value in row:
-        yield empty wenn value is None sonst str(value)
+        yield empty wenn value is Nichts sonst str(value)
 
 
 def _normalize_fix_read(fix):
-    wenn fix is None:
+    wenn fix is Nichts:
         fix = ''
     wenn callable(fix):
         def fix_row(row):
@@ -59,7 +59,7 @@ def _normalize_fix_read(fix):
     sowenn isinstance(fix, str):
         def fix_row(row):
             values = _fix_read_default(row)
-            return (None wenn v == fix sonst v
+            return (Nichts wenn v == fix sonst v
                     fuer v in values)
     sonst:
         raise NotImplementedError(fix)
@@ -67,7 +67,7 @@ def _normalize_fix_read(fix):
 
 
 def _normalize_fix_write(fix, empty=''):
-    wenn fix is None:
+    wenn fix is Nichts:
         fix = empty
     wenn callable(fix):
         def fix_row(row):
@@ -83,7 +83,7 @@ def _normalize_fix_write(fix, empty=''):
 
 def read_table(infile, header, *,
                sep='\t',
-               fix=None,
+               fix=Nichts,
                _open=open,
                _get_reader=csv.reader,
                ):
@@ -118,8 +118,8 @@ def read_table(infile, header, *,
 
 def write_table(outfile, header, rows, *,
                 sep='\t',
-                fix=None,
-                backup=True,
+                fix=Nichts,
+                backup=Wahr,
                 _open=open,
                 _get_writer=csv.writer,
                 ):
@@ -150,19 +150,19 @@ def write_table(outfile, header, rows, *,
         )
 
 
-def parse_table(entries, sep, header=None, rawsep=None, *,
+def parse_table(entries, sep, header=Nichts, rawsep=Nichts, *,
                 default=NOT_SET,
-                strict=True,
+                strict=Wahr,
                 ):
     header, sep = _normalize_table_file_props(header, sep)
     wenn not sep:
         raise ValueError('missing "sep"')
 
-    ncols = None
+    ncols = Nichts
     wenn header:
         wenn strict:
             ncols = len(header.split(sep))
-        cur_file = None
+        cur_file = Nichts
     fuer line, filename in strutil.parse_entries(entries, ignoresep=sep):
         _sep = sep
         wenn filename:
@@ -183,7 +183,7 @@ def parse_table(entries, sep, header=None, rawsep=None, *,
         yield row, filename
 
 
-def parse_row(line, sep, *, ncols=None, default=NOT_SET):
+def parse_row(line, sep, *, ncols=Nichts, default=NOT_SET):
     wenn not sep:
         raise ValueError('missing "sep"')
     return _parse_row(line, sep, ncols, default)
@@ -202,7 +202,7 @@ def _parse_row(line, sep, ncols, default):
 
 def _normalize_table_file_props(header, sep):
     wenn not header:
-        return None, sep
+        return Nichts, sep
 
     wenn not isinstance(header, str):
         wenn not sep:
@@ -213,7 +213,7 @@ def _normalize_table_file_props(header, sep):
             wenn sep in header:
                 break
         sonst:
-            sep = None
+            sep = Nichts
     return header, sep
 
 
@@ -233,7 +233,7 @@ def resolve_columns(specs):
     return resolved
 
 
-def build_table(specs, *, sep=' ', defaultwidth=None):
+def build_table(specs, *, sep=' ', defaultwidth=Nichts):
     columns = resolve_columns(specs)
     return _build_table(columns, sep=sep, defaultwidth=defaultwidth)
 
@@ -283,7 +283,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
             *values, _ = cls._parse(raw)
         sonst:
             *values, _ = cls._normalize(raw)
-        wenn values is None:
+        wenn values is Nichts:
             raise ValueError(f'unsupported column spec {raw!r}')
         return cls(*values)
 
@@ -291,7 +291,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
     def parse(cls, specstr):
         parsed = cls._parse(specstr)
         wenn not parsed:
-            return None
+            return Nichts
         *values, _ = parsed
         return cls(*values)
 
@@ -299,7 +299,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
     def _parse(cls, specstr):
         m = cls.REGEX.match(specstr)
         wenn not m:
-            return None
+            return Nichts
         (label, field,
          align, width1,
          width2, fmt,
@@ -324,7 +324,7 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
                 width = int(width1) wenn width1 sonst len(label)
                 fmt = f'{align}{width}'
             sonst:
-                width = None
+                width = Nichts
         return field, label, fmt, width
 
     @classmethod
@@ -344,16 +344,16 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
         sowenn len(raw) == 3:
             label, field, fmt = spec
             wenn not field:
-                label, field = None, label
+                label, field = Nichts, label
             sowenn not isinstance(field, str) or not field.isidentifier():
                 # XXX This doesn't seem right...
                 fmt = f'{field}:{fmt}' wenn fmt sonst field
-                label, field = None, label
+                label, field = Nichts, label
         sowenn len(raw) == 2:
-            label = None
+            label = Nichts
             field, fmt = raw
             wenn not field:
-                field, fmt = fmt, None
+                field, fmt = fmt, Nichts
             sowenn not field.isidentifier() or fmt.isidentifier():
                 label, field = field, fmt
         sonst:
@@ -368,14 +368,14 @@ klasse ColumnSpec(namedtuple('ColumnSpec', 'field label fmt')):
     @property
     def width(self):
         wenn not self.fmt:
-            return None
+            return Nichts
         parsed = _parse_fmt(self.fmt)
         wenn not parsed:
-            return None
+            return Nichts
         width, _ = parsed
         return width
 
-    def resolve_width(self, default=None):
+    def resolve_width(self, default=Nichts):
         return _resolve_width(self.width, self.fmt, self.label, default)
 
 
@@ -387,7 +387,7 @@ def _parse_fmt(fmt):
             return int(width), align
     sowenn fmt.isdigit():
         return int(fmt), '<'
-    return None
+    return Nichts
 
 
 def _resolve_width(width, fmt, label, default):
@@ -406,13 +406,13 @@ def _resolve_width(width, fmt, label, default):
         return WIDTH
     sowenn hasattr(default, 'get'):
         defaults = default
-        default = defaults.get(None) or WIDTH
+        default = defaults.get(Nichts) or WIDTH
         return defaults.get(label) or default
     sonst:
         return default or WIDTH
 
 
-def _build_table(columns, *, sep=' ', defaultwidth=None):
+def _build_table(columns, *, sep=' ', defaultwidth=Nichts):
     header = []
     div = []
     rowfmt = []

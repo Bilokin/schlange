@@ -27,10 +27,10 @@ klasse DawgNode:
     def __init__(self, dawg):
         self.id = dawg.next_id
         dawg.next_id += 1
-        self.final = False
+        self.final = Falsch
         self.edges = {}
 
-        self.linear_edges = None # later: list of (string, next_state)
+        self.linear_edges = Nichts # later: list of (string, next_state)
 
     def __str__(self):
         wenn self.final:
@@ -129,7 +129,7 @@ klasse Dawg:
             self.unchecked_nodes.append((node, letter, next_node))
             node = next_node
 
-        node.final = True
+        node.final = Wahr
         self.previous_word = word
 
     def finish(self):
@@ -171,10 +171,10 @@ klasse Dawg:
                         node = child
                         break
                     sonst:
-                        return None
+                        return Nichts
                 skipped += child.num_reachable_linear
             sonst:
-                return None
+                return Nichts
         return skipped
 
     def enum_all_nodes(self):
@@ -285,7 +285,7 @@ klasse Dawg:
         # unique number in the 0 <= number < len(data). We then put the data in
         # self.data into a linear list using these numbers as indexes.
         topoorder[0].num_reachable_linear
-        linear_data = [None] * len(self.data)
+        linear_data = [Nichts] * len(self.data)
         inverse = {} # maps value back to index
         fuer word, value in self.data.items():
             index = self._lookup(word)
@@ -326,19 +326,19 @@ klasse Dawg:
             """ Given a list of chunks, compute the new offsets (by adding the
             chunk lengths together). Also check wenn we cannot shrink the output
             further because none of the node offsets are smaller now. wenn that's
-            the case return None. """
+            the case return Nichts. """
             new_offsets = {}
             curr_offset = 0
-            should_continue = False
+            should_continue = Falsch
             fuer node, result in zip(order, chunks):
                 wenn curr_offset < offsets[node]:
                     # the new offset is below the current assumption, this
                     # means we can shrink the output more
-                    should_continue = True
+                    should_continue = Wahr
                 new_offsets[node] = curr_offset
                 curr_offset += len(result)
             wenn not should_continue:
-                return None
+                return Nichts
             return new_offsets
 
         # assign initial offsets to every node
@@ -355,12 +355,12 @@ klasse Dawg:
         # more until we can't any more. at any point we can stop and use the
         # output, but we might need padding zero bytes when joining the chunks
         # to have the correct jump distances
-        last_offsets = None
+        last_offsets = Nichts
         while 1:
             chunks = [compute_chunk(node, offsets) fuer node in order]
             last_offsets = offsets
             offsets = compute_new_offsets(chunks, offsets)
-            wenn offsets is None: # couldn't shrink
+            wenn offsets is Nichts: # couldn't shrink
                 break
 
         # build the final packed string
@@ -387,7 +387,7 @@ def number_add_bits(x, *bits):
 
 def encode_varint_unsigned(i, res):
     # https://en.wikipedia.org/wiki/LEB128 unsigned variant
-    more = True
+    more = Wahr
     startlen = len(res)
     wenn i < 0:
         raise ValueError("only positive numbers supported", i)
@@ -395,7 +395,7 @@ def encode_varint_unsigned(i, res):
         lowest7bits = i & 0b1111111
         i >>= 7
         wenn i == 0:
-            more = False
+            more = Falsch
         sonst:
             lowest7bits |= 0b10000000
         res.append(lowest7bits)
@@ -411,7 +411,7 @@ def number_split_bits(x, n, acc=()):
 def decode_varint_unsigned(b, index=0):
     res = 0
     shift = 0
-    while True:
+    while Wahr:
         byte = b[index]
         res = res | ((byte & 0b1111111) << shift)
         index += 1
@@ -439,15 +439,15 @@ def decode_edge(packed, edgeindex, prev_child_offset, offset):
 def _match_edge(packed, s, size, node_offset, stringpos):
     wenn size > 1 and stringpos + size > len(s):
         # past the end of the string, can't match
-        return False
+        return Falsch
     fuer i in range(size):
         wenn packed[node_offset + i] != s[stringpos + i]:
             # wenn a subsequent char of an edge doesn't match, the word isn't in
             # the dawg
             wenn i > 0:
                 raise KeyError
-            return False
-    return True
+            return Falsch
+    return Wahr
 
 def lookup(packed, data, s):
     return data[_lookup(packed, s)]
@@ -456,7 +456,7 @@ def _lookup(packed, s):
     stringpos = 0
     node_offset = 0
     skipped = 0  # keep track of number of final nodes that we skipped
-    false = False
+    false = Falsch
     while stringpos < len(s):
         #print(f"{node_offset=} {stringpos=}")
         _, final, edge_offset = decode_node(packed, node_offset)

@@ -14,7 +14,7 @@ klasse AbstractTkTest:
         # Some window managers can maximize new windows.
         cls.root.wm_state('normal')
         try:
-            cls.root.wm_attributes(zoomed=False)
+            cls.root.wm_attributes(zoomed=Falsch)
         except tkinter.TclError:
             pass
 
@@ -23,7 +23,7 @@ klasse AbstractTkTest:
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
-        tkinter._default_root = None
+        tkinter._default_root = Nichts
         tkinter._support_default_root = cls._old_support_default_root
 
     def setUp(self):
@@ -40,18 +40,18 @@ klasse AbstractDefaultRootTest:
     def setUp(self):
         self._old_support_default_root = tkinter._support_default_root
         destroy_default_root()
-        tkinter._support_default_root = True
+        tkinter._support_default_root = Wahr
         self.wantobjects = tkinter.wantobjects
 
     def tearDown(self):
         destroy_default_root()
-        tkinter._default_root = None
+        tkinter._default_root = Nichts
         tkinter._support_default_root = self._old_support_default_root
 
     def _test_widget(self, constructor):
         # no master passing
         x = constructor()
-        self.assertIsNotNone(tkinter._default_root)
+        self.assertIsNotNichts(tkinter._default_root)
         self.assertIs(x.master, tkinter._default_root)
         self.assertIs(x.tk, tkinter._default_root.tk)
         x.destroy()
@@ -62,10 +62,10 @@ klasse AbstractDefaultRootTest:
 
 
 def destroy_default_root():
-    wenn getattr(tkinter, '_default_root', None):
+    wenn getattr(tkinter, '_default_root', Nichts):
         tkinter._default_root.update_idletasks()
         tkinter._default_root.destroy()
-        tkinter._default_root = None
+        tkinter._default_root = Nichts
 
 def simulate_mouse_click(widget, x, y):
     """Generate proper events to click at the x, y position (tries to act
@@ -87,7 +87,7 @@ def requires_tk(*version):
     def deco(test):
         @functools.wraps(test)
         def newtest(self):
-            root = getattr(self, 'root', None)
+            root = getattr(self, 'root', Nichts)
             wenn get_tk_patchlevel(root) < version:
                 self.skipTest('requires Tk version >= ' +
                                 '.'.join(map(str, version)))
@@ -95,10 +95,10 @@ def requires_tk(*version):
         return newtest
     return deco
 
-_tk_patchlevel = None
+_tk_patchlevel = Nichts
 def get_tk_patchlevel(root):
     global _tk_patchlevel
-    wenn _tk_patchlevel is None:
+    wenn _tk_patchlevel is Nichts:
         _tk_patchlevel = tkinter._parse_version(root.tk.globalgetvar('tk_patchLevel'))
     return _tk_patchlevel
 
@@ -114,7 +114,7 @@ def pixels_conv(value):
 
 def tcl_obj_eq(actual, expected):
     wenn actual == expected:
-        return True
+        return Wahr
     wenn isinstance(actual, _tkinter.Tcl_Obj):
         wenn isinstance(expected, str):
             return str(actual) == expected
@@ -123,12 +123,12 @@ def tcl_obj_eq(actual, expected):
             return (len(actual) == len(expected) and
                     all(tcl_obj_eq(act, exp)
                         fuer act, exp in zip(actual, expected)))
-    return False
+    return Falsch
 
 def widget_eq(actual, expected):
     wenn actual == expected:
-        return True
+        return Wahr
     wenn isinstance(actual, (str, tkinter.Widget)):
         wenn isinstance(expected, (str, tkinter.Widget)):
             return str(actual) == str(expected)
-    return False
+    return Falsch

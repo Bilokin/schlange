@@ -6,7 +6,7 @@ from test.test_json import PyTest, CTest
 klasse TestIndent:
     def test_indent(self):
         h = [['blorpie'], ['whoops'], [], 'd-shtaeou', 'd-nthiouh', 'i-vhbjkhnth',
-             {'nifty': 87}, {'field': 'yes', 'morefield': False} ]
+             {'nifty': 87}, {'field': 'yes', 'morefield': Falsch} ]
 
         expect = textwrap.dedent("""\
         [
@@ -30,10 +30,10 @@ klasse TestIndent:
         ]""")
 
         d1 = self.dumps(h)
-        d2 = self.dumps(h, indent=2, sort_keys=True, separators=(',', ': '))
-        d3 = self.dumps(h, indent='\t', sort_keys=True, separators=(',', ': '))
-        d4 = self.dumps(h, indent=2, sort_keys=True)
-        d5 = self.dumps(h, indent='\t', sort_keys=True)
+        d2 = self.dumps(h, indent=2, sort_keys=Wahr, separators=(',', ': '))
+        d3 = self.dumps(h, indent='\t', sort_keys=Wahr, separators=(',', ': '))
+        d4 = self.dumps(h, indent=2, sort_keys=Wahr)
+        d5 = self.dumps(h, indent='\t', sort_keys=Wahr)
 
         h1 = self.loads(d1)
         h2 = self.loads(d2)
@@ -59,8 +59,8 @@ klasse TestIndent:
 
         # indent=0 should emit newlines
         check(0, '{\n"3": 1\n}')
-        # indent=None is more compact
-        check(None, '{"3": 1}')
+        # indent=Nichts is more compact
+        check(Nichts, '{"3": 1}')
 
 
 klasse TestPyIndent(TestIndent, PyTest): pass

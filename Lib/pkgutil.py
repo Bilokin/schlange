@@ -28,17 +28,17 @@ def read_code(stream):
 
     magic = stream.read(4)
     wenn magic != importlib.util.MAGIC_NUMBER:
-        return None
+        return Nichts
 
     stream.read(12) # Skip rest of the header
     return marshal.load(stream)
 
 
-def walk_packages(path=None, prefix='', onerror=None):
+def walk_packages(path=Nichts, prefix='', onerror=Nichts):
     """Yields ModuleInfo fuer all modules recursively
-    on path, or, wenn path is None, all accessible modules.
+    on path, or, wenn path is Nichts, all accessible modules.
 
-    'path' should be either None or a list of paths to look for
+    'path' should be either Nichts or a list of paths to look for
     modules in.
 
     'prefix' is a string to output on the front of every module name
@@ -65,8 +65,8 @@ def walk_packages(path=None, prefix='', onerror=None):
 
     def seen(p, m={}):
         wenn p in m:
-            return True
-        m[p] = True
+            return Wahr
+        m[p] = Wahr
 
     fuer info in iter_modules(path, prefix):
         yield info
@@ -75,15 +75,15 @@ def walk_packages(path=None, prefix='', onerror=None):
             try:
                 __import__(info.name)
             except ImportError:
-                wenn onerror is not None:
+                wenn onerror is not Nichts:
                     onerror(info.name)
             except Exception:
-                wenn onerror is not None:
+                wenn onerror is not Nichts:
                     onerror(info.name)
                 sonst:
                     raise
             sonst:
-                path = getattr(sys.modules[info.name], '__path__', None) or []
+                path = getattr(sys.modules[info.name], '__path__', Nichts) or []
 
                 # don't traverse path items we've seen before
                 path = [p fuer p in path wenn not seen(p)]
@@ -91,20 +91,20 @@ def walk_packages(path=None, prefix='', onerror=None):
                 yield from walk_packages(path, info.name+'.', onerror)
 
 
-def iter_modules(path=None, prefix=''):
+def iter_modules(path=Nichts, prefix=''):
     """Yields ModuleInfo fuer all submodules on path,
-    or, wenn path is None, all top-level modules on sys.path.
+    or, wenn path is Nichts, all top-level modules on sys.path.
 
-    'path' should be either None or a list of paths to look for
+    'path' should be either Nichts or a list of paths to look for
     modules in.
 
     'prefix' is a string to output on the front of every module name
     on output.
     """
-    wenn path is None:
+    wenn path is Nichts:
         importers = iter_importers()
     sowenn isinstance(path, str):
-        raise ValueError("path must be None or list of paths to look fuer "
+        raise ValueError("path must be Nichts or list of paths to look fuer "
                         "modules in")
     sonst:
         importers = map(get_importer, path)
@@ -126,7 +126,7 @@ def iter_importer_modules(importer, prefix=''):
 
 # Implement a file walker fuer the normal importlib path hook
 def _iter_file_finder_modules(importer, prefix=''):
-    wenn importer.path is None or not os.path.isdir(importer.path):
+    wenn importer.path is Nichts or not os.path.isdir(importer.path):
         return
 
     yielded = {}
@@ -144,7 +144,7 @@ def _iter_file_finder_modules(importer, prefix=''):
             continue
 
         path = os.path.join(importer.path, fn)
-        ispkg = False
+        ispkg = Falsch
 
         wenn not modname and os.path.isdir(path) and '.' not in fn:
             modname = fn
@@ -156,7 +156,7 @@ def _iter_file_finder_modules(importer, prefix=''):
             fuer fn in dircontents:
                 subname = inspect.getmodulename(fn)
                 wenn subname=='__init__':
-                    ispkg = True
+                    ispkg = Wahr
                     break
             sonst:
                 continue    # not a package
@@ -188,7 +188,7 @@ try:
             wenn len(fn)==2 and fn[1].startswith('__init__.py'):
                 wenn fn[0] not in yielded:
                     yielded[fn[0]] = 1
-                    yield prefix + fn[0], True
+                    yield prefix + fn[0], Wahr
 
             wenn len(fn)!=1:
                 continue
@@ -199,7 +199,7 @@ try:
 
             wenn modname and '.' not in modname and modname not in yielded:
                 yielded[modname] = 1
-                yield prefix + modname, False
+                yield prefix + modname, Falsch
 
     iter_importer_modules.register(zipimporter, iter_zipimport_modules)
 
@@ -228,7 +228,7 @@ def get_importer(path_item):
             except ImportError:
                 pass
         sonst:
-            importer = None
+            importer = Nichts
     return importer
 
 
@@ -251,8 +251,8 @@ def iter_importers(fullname=""):
         # Get the containing package's __path__
         pkg_name = fullname.rpartition(".")[0]
         pkg = importlib.import_module(pkg_name)
-        path = getattr(pkg, '__path__', None)
-        wenn path is None:
+        path = getattr(pkg, '__path__', Nichts)
+        wenn path is Nichts:
             return
     sonst:
         yield from sys.meta_path
@@ -308,7 +308,7 @@ def extend_path(path, name):
         try:
             search_path = sys.modules[parent_package].__path__
         except (KeyError, AttributeError):
-            # We can't do anything: find_loader() returns None when
+            # We can't do anything: find_loader() returns Nichts when
             # passed a dotted name.
             return path
     sonst:
@@ -319,11 +319,11 @@ def extend_path(path, name):
             continue
 
         finder = get_importer(dir)
-        wenn finder is not None:
+        wenn finder is not Nichts:
             portions = []
             wenn hasattr(finder, 'find_spec'):
                 spec = finder.find_spec(final_name)
-                wenn spec is not None:
+                wenn spec is not Nichts:
                     portions = spec.submodule_search_locations or []
             # Is this finder PEP 420 compliant?
             sowenn hasattr(finder, 'find_loader'):
@@ -374,20 +374,20 @@ def get_data(package, resource):
         data = open(os.path.join(d, resource), 'rb').read()
 
     If the package cannot be located or loaded, or it uses a PEP 302 loader
-    which does not support get_data(), then None is returned.
+    which does not support get_data(), then Nichts is returned.
     """
 
     spec = importlib.util.find_spec(package)
-    wenn spec is None:
-        return None
+    wenn spec is Nichts:
+        return Nichts
     loader = spec.loader
-    wenn loader is None or not hasattr(loader, 'get_data'):
-        return None
+    wenn loader is Nichts or not hasattr(loader, 'get_data'):
+        return Nichts
     # XXX needs test
     mod = (sys.modules.get(package) or
            importlib._bootstrap._load(spec))
-    wenn mod is None or not hasattr(mod, '__file__'):
-        return None
+    wenn mod is Nichts or not hasattr(mod, '__file__'):
+        return Nichts
 
     # Modify the resource name to be compatible with the loader.get_data
     # signature - an os.path format "filename" starting with the dirname of
@@ -398,7 +398,7 @@ def get_data(package, resource):
     return loader.get_data(resource_name)
 
 
-_NAME_PATTERN = None
+_NAME_PATTERN = Nichts
 
 def resolve_name(name):
     """
@@ -433,7 +433,7 @@ def resolve_name(name):
                      within the imported package to get to the desired object.
     """
     global _NAME_PATTERN
-    wenn _NAME_PATTERN is None:
+    wenn _NAME_PATTERN is Nichts:
         # Lazy import to speedup Python startup time
         import re
         dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'

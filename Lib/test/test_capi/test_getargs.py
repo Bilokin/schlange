@@ -60,7 +60,7 @@ NAN = float('nan')
 SCHAR_MAX = UCHAR_MAX // 2
 SCHAR_MIN = SCHAR_MAX - UCHAR_MAX
 
-NULL = None
+NULL = Nichts
 
 klasse CustomError(Exception):
     pass
@@ -79,11 +79,11 @@ klasse BadIndex:
 
 klasse BadIndex2:
     def __index__(self):
-        return True
+        return Wahr
 
 klasse BadIndex3(int):
     def __index__(self):
-        return True
+        return Wahr
 
 
 klasse Int:
@@ -100,11 +100,11 @@ klasse BadInt:
 
 klasse BadInt2:
     def __int__(self):
-        return True
+        return Wahr
 
 klasse BadInt3(int):
     def __int__(self):
-        return True
+        return Wahr
 
 
 klasse Float:
@@ -574,8 +574,8 @@ klasse Paradox:
 klasse Boolean_TestCase(unittest.TestCase):
     def test_p(self):
         from _testcapi import getargs_p
-        self.assertEqual(0, getargs_p(False))
-        self.assertEqual(0, getargs_p(None))
+        self.assertEqual(0, getargs_p(Falsch))
+        self.assertEqual(0, getargs_p(Nichts))
         self.assertEqual(0, getargs_p(0))
         self.assertEqual(0, getargs_p(0.0))
         self.assertEqual(0, getargs_p(0j))
@@ -584,7 +584,7 @@ klasse Boolean_TestCase(unittest.TestCase):
         self.assertEqual(0, getargs_p([]))
         self.assertEqual(0, getargs_p({}))
 
-        self.assertEqual(1, getargs_p(True))
+        self.assertEqual(1, getargs_p(Wahr))
         self.assertEqual(1, getargs_p(1))
         self.assertEqual(1, getargs_p(1.0))
         self.assertEqual(1, getargs_p(1j))
@@ -618,12 +618,12 @@ klasse Tuple_TestCase(unittest.TestCase):
         self.assertIs(type(ret), tuple)
 
         ret = get_args()
-        self.assertIn(ret, ((), None))
-        self.assertIn(type(ret), (tuple, type(None)))
+        self.assertIn(ret, ((), Nichts))
+        self.assertIn(type(ret), (tuple, type(Nichts)))
 
         ret = get_args(*())
-        self.assertIn(ret, ((), None))
-        self.assertIn(type(ret), (tuple, type(None)))
+        self.assertIn(ret, ((), Nichts))
+        self.assertIn(type(ret), (tuple, type(Nichts)))
 
     def test_tuple(self):
         from _testcapi import getargs_tuple
@@ -656,12 +656,12 @@ klasse Keywords_TestCase(unittest.TestCase):
         self.assertIs(type(ret), dict)
 
         ret = get_kwargs()
-        self.assertIn(ret, ({}, None))
-        self.assertIn(type(ret), (dict, type(None)))
+        self.assertIn(ret, ({}, Nichts))
+        self.assertIn(type(ret), (dict, type(Nichts)))
 
         ret = get_kwargs(**{})
-        self.assertIn(ret, ({}, None))
-        self.assertIn(type(ret), (dict, type(None)))
+        self.assertIn(ret, ({}, Nichts))
+        self.assertIn(type(ret), (dict, type(Nichts)))
 
     def test_positional_args(self):
         # using all positional args
@@ -800,7 +800,7 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
     def test_weird_str_subclass(self):
         klasse BadStr(str):
             def __eq__(self, other):
-                return True
+                return Wahr
             def __hash__(self):
                 # Guaranteed different hash
                 return str.__hash__(self) ^ 3
@@ -814,7 +814,7 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
     def test_weird_str_subclass2(self):
         klasse BadStr(str):
             def __eq__(self, other):
-                return False
+                return Falsch
             def __hash__(self):
                 return str.__hash__(self)
         with self.assertRaisesRegex(TypeError,
@@ -867,7 +867,7 @@ klasse Bytes_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_c, memoryview(b'a'))
         self.assertRaises(TypeError, getargs_c, 's')
         self.assertRaises(TypeError, getargs_c, 97)
-        self.assertRaises(TypeError, getargs_c, None)
+        self.assertRaises(TypeError, getargs_c, Nichts)
 
     def test_y(self):
         from _testcapi import getargs_y
@@ -876,7 +876,7 @@ klasse Bytes_TestCase(unittest.TestCase):
         self.assertRaises(ValueError, getargs_y, b'nul:\0')
         self.assertRaises(TypeError, getargs_y, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_y, memoryview(b'memoryview'))
-        self.assertRaises(TypeError, getargs_y, None)
+        self.assertRaises(TypeError, getargs_y, Nichts)
 
     def test_y_star(self):
         from _testcapi import getargs_y_star
@@ -885,7 +885,7 @@ klasse Bytes_TestCase(unittest.TestCase):
         self.assertEqual(getargs_y_star(b'nul:\0'), b'nul:\0')
         self.assertEqual(getargs_y_star(bytearray(b'bytearray')), b'bytearray')
         self.assertEqual(getargs_y_star(memoryview(b'memoryview')), b'memoryview')
-        self.assertRaises(TypeError, getargs_y_star, None)
+        self.assertRaises(TypeError, getargs_y_star, Nichts)
         self.assertRaises(BufferError, getargs_y_star, NONCONTIG_WRITABLE)
         self.assertRaises(BufferError, getargs_y_star, NONCONTIG_READONLY)
 
@@ -896,7 +896,7 @@ klasse Bytes_TestCase(unittest.TestCase):
         self.assertEqual(getargs_y_hash(b'nul:\0'), b'nul:\0')
         self.assertRaises(TypeError, getargs_y_hash, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_y_hash, memoryview(b'memoryview'))
-        self.assertRaises(TypeError, getargs_y_hash, None)
+        self.assertRaises(TypeError, getargs_y_hash, Nichts)
         # TypeError: must be read-only bytes-like object, not memoryview
         self.assertRaises(TypeError, getargs_y_hash, NONCONTIG_WRITABLE)
         self.assertRaises(TypeError, getargs_y_hash, NONCONTIG_READONLY)
@@ -918,13 +918,13 @@ klasse Bytes_TestCase(unittest.TestCase):
                 buf = bytearray(b'memoryview')
                 self.assertEqual(func(memoryview(buf)), b'[emoryvie]')
                 self.assertEqual(buf, bytearray(b'[emoryvie]'))
-                self.assertRaises(TypeError, func, None)
+                self.assertRaises(TypeError, func, Nichts)
                 self.assertRaises(TypeError, func, NONCONTIG_WRITABLE)
                 self.assertRaises(TypeError, func, NONCONTIG_READONLY)
 
     def test_getargs_empty(self):
         from _testcapi import getargs_empty
-        self.assertTrue(getargs_empty())
+        self.assertWahr(getargs_empty())
         self.assertRaises(TypeError, getargs_empty, 1)
         self.assertRaises(TypeError, getargs_empty, 1, 2, 3)
         self.assertRaises(TypeError, getargs_empty, a=1)
@@ -943,7 +943,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_C, bytearray(b'a'))
         self.assertRaises(TypeError, getargs_C, memoryview(b'a'))
         self.assertRaises(TypeError, getargs_C, 97)
-        self.assertRaises(TypeError, getargs_C, None)
+        self.assertRaises(TypeError, getargs_C, Nichts)
 
     def test_s(self):
         from _testcapi import getargs_s
@@ -952,7 +952,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_s, b'bytes')
         self.assertRaises(TypeError, getargs_s, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_s, memoryview(b'memoryview'))
-        self.assertRaises(TypeError, getargs_s, None)
+        self.assertRaises(TypeError, getargs_s, Nichts)
 
     def test_s_star(self):
         from _testcapi import getargs_s_star
@@ -961,7 +961,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertEqual(getargs_s_star(b'bytes'), b'bytes')
         self.assertEqual(getargs_s_star(bytearray(b'bytearray')), b'bytearray')
         self.assertEqual(getargs_s_star(memoryview(b'memoryview')), b'memoryview')
-        self.assertRaises(TypeError, getargs_s_star, None)
+        self.assertRaises(TypeError, getargs_s_star, Nichts)
         self.assertRaises(BufferError, getargs_s_star, NONCONTIG_WRITABLE)
         self.assertRaises(BufferError, getargs_s_star, NONCONTIG_READONLY)
 
@@ -972,7 +972,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertEqual(getargs_s_hash(b'bytes'), b'bytes')
         self.assertRaises(TypeError, getargs_s_hash, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_s_hash, memoryview(b'memoryview'))
-        self.assertRaises(TypeError, getargs_s_hash, None)
+        self.assertRaises(TypeError, getargs_s_hash, Nichts)
         # TypeError: must be read-only bytes-like object, not memoryview
         self.assertRaises(TypeError, getargs_s_hash, NONCONTIG_WRITABLE)
         self.assertRaises(TypeError, getargs_s_hash, NONCONTIG_READONLY)
@@ -984,7 +984,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_z, b'bytes')
         self.assertRaises(TypeError, getargs_z, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_z, memoryview(b'memoryview'))
-        self.assertIsNone(getargs_z(None))
+        self.assertIsNichts(getargs_z(Nichts))
 
     def test_z_star(self):
         from _testcapi import getargs_z_star
@@ -993,7 +993,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertEqual(getargs_z_star(b'bytes'), b'bytes')
         self.assertEqual(getargs_z_star(bytearray(b'bytearray')), b'bytearray')
         self.assertEqual(getargs_z_star(memoryview(b'memoryview')), b'memoryview')
-        self.assertIsNone(getargs_z_star(None))
+        self.assertIsNichts(getargs_z_star(Nichts))
         self.assertRaises(BufferError, getargs_z_star, NONCONTIG_WRITABLE)
         self.assertRaises(BufferError, getargs_z_star, NONCONTIG_READONLY)
 
@@ -1004,7 +1004,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertEqual(getargs_z_hash(b'bytes'), b'bytes')
         self.assertRaises(TypeError, getargs_z_hash, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_z_hash, memoryview(b'memoryview'))
-        self.assertIsNone(getargs_z_hash(None))
+        self.assertIsNichts(getargs_z_hash(Nichts))
         # TypeError: must be read-only bytes-like object, not memoryview
         self.assertRaises(TypeError, getargs_z_hash, NONCONTIG_WRITABLE)
         self.assertRaises(TypeError, getargs_z_hash, NONCONTIG_READONLY)
@@ -1018,7 +1018,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_es, b'bytes', 'latin1')
         self.assertRaises(TypeError, getargs_es, bytearray(b'bytearray'), 'latin1')
         self.assertRaises(TypeError, getargs_es, memoryview(b'memoryview'), 'latin1')
-        self.assertRaises(TypeError, getargs_es, None, 'latin1')
+        self.assertRaises(TypeError, getargs_es, Nichts, 'latin1')
         self.assertRaises(TypeError, getargs_es, 'nul:\0', 'latin1')
 
     def test_et(self):
@@ -1030,7 +1030,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertEqual(getargs_et(b'bytes', 'latin1'), b'bytes')
         self.assertEqual(getargs_et(bytearray(b'bytearray'), 'latin1'), b'bytearray')
         self.assertRaises(TypeError, getargs_et, memoryview(b'memoryview'), 'latin1')
-        self.assertRaises(TypeError, getargs_et, None, 'latin1')
+        self.assertRaises(TypeError, getargs_et, Nichts, 'latin1')
         self.assertRaises(TypeError, getargs_et, 'nul:\0', 'latin1')
         self.assertRaises(TypeError, getargs_et, b'nul:\0', 'latin1')
         self.assertRaises(TypeError, getargs_et, bytearray(b'nul:\0'), 'latin1')
@@ -1044,7 +1044,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_es_hash, b'bytes', 'latin1')
         self.assertRaises(TypeError, getargs_es_hash, bytearray(b'bytearray'), 'latin1')
         self.assertRaises(TypeError, getargs_es_hash, memoryview(b'memoryview'), 'latin1')
-        self.assertRaises(TypeError, getargs_es_hash, None, 'latin1')
+        self.assertRaises(TypeError, getargs_es_hash, Nichts, 'latin1')
         self.assertEqual(getargs_es_hash('nul:\0', 'latin1'), b'nul:\0')
 
         buf = bytearray(b'x'*8)
@@ -1068,7 +1068,7 @@ klasse String_TestCase(unittest.TestCase):
         self.assertEqual(getargs_et_hash(b'bytes', 'latin1'), b'bytes')
         self.assertEqual(getargs_et_hash(bytearray(b'bytearray'), 'latin1'), b'bytearray')
         self.assertRaises(TypeError, getargs_et_hash, memoryview(b'memoryview'), 'latin1')
-        self.assertRaises(TypeError, getargs_et_hash, None, 'latin1')
+        self.assertRaises(TypeError, getargs_et_hash, Nichts, 'latin1')
         self.assertEqual(getargs_et_hash('nul:\0', 'latin1'), b'nul:\0')
         self.assertEqual(getargs_et_hash(b'nul:\0', 'latin1'), b'nul:\0')
         self.assertEqual(getargs_et_hash(bytearray(b'nul:\0'), 'latin1'), b'nul:\0')
@@ -1097,7 +1097,7 @@ klasse Object_TestCase(unittest.TestCase):
         self.assertIs(getargs_S(obj), obj)
         self.assertRaises(TypeError, getargs_S, bytearray(b'bytearray'))
         self.assertRaises(TypeError, getargs_S, 'str')
-        self.assertRaises(TypeError, getargs_S, None)
+        self.assertRaises(TypeError, getargs_S, Nichts)
         self.assertRaises(TypeError, getargs_S, memoryview(obj))
 
     def test_Y(self):
@@ -1106,7 +1106,7 @@ klasse Object_TestCase(unittest.TestCase):
         self.assertIs(getargs_Y(obj), obj)
         self.assertRaises(TypeError, getargs_Y, b'bytes')
         self.assertRaises(TypeError, getargs_Y, 'str')
-        self.assertRaises(TypeError, getargs_Y, None)
+        self.assertRaises(TypeError, getargs_Y, Nichts)
         self.assertRaises(TypeError, getargs_Y, memoryview(obj))
 
     def test_U(self):
@@ -1115,7 +1115,7 @@ klasse Object_TestCase(unittest.TestCase):
         self.assertIs(getargs_U(obj), obj)
         self.assertRaises(TypeError, getargs_U, b'bytes')
         self.assertRaises(TypeError, getargs_U, bytearray(b'bytearray'))
-        self.assertRaises(TypeError, getargs_U, None)
+        self.assertRaises(TypeError, getargs_U, Nichts)
 
 
 # Bug #6012
@@ -1173,19 +1173,19 @@ klasse SkipitemTest(unittest.TestCase):
             try:
                 _testcapi.parse_tuple_and_keywords(tuple_1, dict_b,
                     format, keywords)
-                when_not_skipped = False
+                when_not_skipped = Falsch
             except SystemError as e:
                 s = "argument 1 (impossible<bad format char>)"
                 when_not_skipped = (str(e) == s)
             except TypeError:
-                when_not_skipped = False
+                when_not_skipped = Falsch
 
             # test the format unit when skipped
             optional_format = "|" + format
             try:
                 _testcapi.parse_tuple_and_keywords(empty_tuple, dict_b,
                     optional_format, keywords)
-                when_skipped = False
+                when_skipped = Falsch
             except SystemError as e:
                 s = "impossible<bad format char>: '{}'".format(format)
                 when_skipped = (str(e) == s)
@@ -1390,8 +1390,8 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                 "argument 1 must be 2-item tuple, not int"):
             parse((1,), {}, '(ii)', ['a'])
         with self.assertRaisesRegex(TypeError,
-                "argument 1 must be 2-item tuple, not None$"):
-            parse((None,), {}, '(ii)', ['a'])
+                "argument 1 must be 2-item tuple, not Nichts$"):
+            parse((Nichts,), {}, '(ii)', ['a'])
         with self.assertRaisesRegex(TypeError,
                 "argument 1 must be 2-item tuple, not str"):
             parse(('ab',), {}, '(CC)', ['a'])
@@ -1429,22 +1429,22 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                     "argument 1 must be sequence of length 1, not 0"):
                 parse(([],), {}, '(' + f + ')', ['a'])
 
-    @unittest.skipIf(_testinternalcapi is None, 'needs _testinternalcapi')
+    @unittest.skipIf(_testinternalcapi is Nichts, 'needs _testinternalcapi')
     def test_gh_119213(self):
-        rc, out, err = script_helper.assert_python_ok("-c", """if True:
+        rc, out, err = script_helper.assert_python_ok("-c", """if Wahr:
             from test import support
-            script = '''if True:
+            script = '''if Wahr:
                 import _testinternalcapi
                 _testinternalcapi.gh_119213_getargs(spam='eggs')
                 '''
             config = dict(
-                allow_fork=False,
-                allow_exec=False,
-                allow_threads=True,
-                allow_daemon_threads=False,
-                use_main_obmalloc=False,
+                allow_fork=Falsch,
+                allow_exec=Falsch,
+                allow_threads=Wahr,
+                allow_daemon_threads=Falsch,
+                use_main_obmalloc=Falsch,
                 gil=2,
-                check_multi_interp_extensions=True,
+                check_multi_interp_extensions=Wahr,
             )
             rc = support.run_in_subinterp_with_config(script, **config)
             assert rc == 0

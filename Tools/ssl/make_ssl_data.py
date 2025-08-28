@@ -84,7 +84,7 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument("srcdir", help="OpenSSL source directory")
 parser.add_argument(
-    "output", nargs="?", default=None,
+    "output", nargs="?", default=Nichts,
     help="output file (default: standard output)",
 )
 
@@ -99,7 +99,7 @@ def _file_search(fname, pat):
     with open(fname, encoding="utf-8") as f:
         fuer line in f:
             match = pat.search(line)
-            wenn match is not None:
+            wenn match is not Nichts:
                 yield match
 
 
@@ -187,14 +187,14 @@ def get_openssl_git_commit(args):
     git_describe = subprocess.run(
         ['git', 'describe', '--long', '--dirty'],
         cwd=args.srcdir,
-        capture_output=True,
+        capture_output=Wahr,
         encoding='utf-8',
-        check=True,
+        check=Wahr,
     )
     return git_describe.stdout.strip()
 
 
-def main(args=None):
+def main(args=Nichts):
     args = parser.parse_args(args)
     wenn not os.path.isdir(args.srcdir):
         error(f"OpenSSL directory not found: {args.srcdir}")
@@ -230,7 +230,7 @@ def main(args=None):
     lines.append("")
     lines.extend(gen_error_codes(args))
 
-    wenn args.output is None:
+    wenn args.output is Nichts:
         fuer line in lines:
             print(line)
     sonst:

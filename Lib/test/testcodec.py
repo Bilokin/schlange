@@ -37,7 +37,7 @@ decoding_map = codecs.make_identity_dict(range(256))
 decoding_map.update({
         0x78: "abc", # 1-n decoding mapping
         b"abc": 0x0078,# 1-n encoding mapping
-        0x01: None,   # decoding mapping to <undefined>
+        0x01: Nichts,   # decoding mapping to <undefined>
         0x79: "",    # decoding mapping to <remove character>
 })
 

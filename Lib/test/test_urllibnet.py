@@ -23,7 +23,7 @@ klasse URLTimeoutTest(unittest.TestCase):
         socket.setdefaulttimeout(support.INTERNET_TIMEOUT)
 
     def tearDown(self):
-        socket.setdefaulttimeout(None)
+        socket.setdefaulttimeout(Nichts)
 
     def testURLread(self):
         # clear _opener global variable
@@ -72,7 +72,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
             fuer attr in ("read", "readline", "readlines", "fileno", "close",
                          "info", "geturl"):
                 self.assertHasAttr(open_url, attr)
-            self.assertTrue(open_url.read(), "calling 'read' failed")
+            self.assertWahr(open_url.read(), "calling 'read' failed")
 
     def test_readlines(self):
         # Test both readline and readlines.
@@ -167,10 +167,10 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
     def test_basic(self):
         # Test basic functionality.
         with self.urlretrieve(self.logo) as (file_location, info):
-            self.assertTrue(os.path.exists(file_location), "file location returned by"
+            self.assertWahr(os.path.exists(file_location), "file location returned by"
                             " urlretrieve is not a valid path")
             with open(file_location, 'rb') as f:
-                self.assertTrue(f.read(), "reading from the file location returned"
+                self.assertWahr(f.read(), "reading from the file location returned"
                                 " by urlretrieve failed")
 
     def test_specified_path(self):
@@ -178,9 +178,9 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
         with self.urlretrieve(self.logo,
                               os_helper.TESTFN) as (file_location, info):
             self.assertEqual(file_location, os_helper.TESTFN)
-            self.assertTrue(os.path.exists(file_location))
+            self.assertWahr(os.path.exists(file_location))
             with open(file_location, 'rb') as f:
-                self.assertTrue(f.read(), "reading from temporary file failed")
+                self.assertWahr(f.read(), "reading from temporary file failed")
 
     def test_header(self):
         # Make sure header returned as 2nd value from urlretrieve is good.

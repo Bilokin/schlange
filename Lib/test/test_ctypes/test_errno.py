@@ -10,10 +10,10 @@ from ctypes.util import find_library
 klasse Test(unittest.TestCase):
     def test_open(self):
         libc_name = find_library("c")
-        wenn libc_name is None:
+        wenn libc_name is Nichts:
             self.skipTest("Unable to find C library")
 
-        libc = CDLL(libc_name, use_errno=True)
+        libc = CDLL(libc_name, use_errno=Wahr)
         wenn os.name == "nt":
             libc_open = libc._open
         sonst:
@@ -30,7 +30,7 @@ klasse Test(unittest.TestCase):
         def _worker():
             set_errno(0)
 
-            libc = CDLL(libc_name, use_errno=False)
+            libc = CDLL(libc_name, use_errno=Falsch)
             wenn os.name == "nt":
                 libc_open = libc._open
             sonst:
@@ -48,7 +48,7 @@ klasse Test(unittest.TestCase):
 
     @unittest.skipUnless(os.name == "nt", 'Test specific to Windows')
     def test_GetLastError(self):
-        dll = ctypes.WinDLL("kernel32", use_last_error=True)
+        dll = ctypes.WinDLL("kernel32", use_last_error=Wahr)
         GetModuleHandle = dll.GetModuleHandleA
         GetModuleHandle.argtypes = [c_wchar_p]
 
@@ -61,7 +61,7 @@ klasse Test(unittest.TestCase):
         def _worker():
             ctypes.set_last_error(0)
 
-            dll = ctypes.WinDLL("kernel32", use_last_error=False)
+            dll = ctypes.WinDLL("kernel32", use_last_error=Falsch)
             GetModuleHandle = dll.GetModuleHandleW
             GetModuleHandle.argtypes = [c_wchar_p]
             GetModuleHandle("bar")

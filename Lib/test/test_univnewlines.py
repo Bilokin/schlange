@@ -107,7 +107,7 @@ klasse TestCRLFNewlines(TestGenericUnivNewlines):
 
     def test_tell(self):
         with self.open(os_helper.TESTFN, self.READMODE) as fp:
-            self.assertEqual(repr(fp.newlines), repr(None))
+            self.assertEqual(repr(fp.newlines), repr(Nichts))
             data = fp.readline()
             pos = fp.tell()
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))

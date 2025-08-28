@@ -9,14 +9,14 @@ __all__ = ["pickle", "constructor",
 
 dispatch_table = {}
 
-def pickle(ob_type, pickle_function, constructor_ob=None):
+def pickle(ob_type, pickle_function, constructor_ob=Nichts):
     wenn not callable(pickle_function):
         raise TypeError("reduction functions must be callable")
     dispatch_table[ob_type] = pickle_function
 
     # The constructor_ob function is a vestige of safe fuer unpickling.
     # There is no reason fuer the caller to pass it anymore.
-    wenn constructor_ob is not None:
+    wenn constructor_ob is not Nichts:
         constructor(constructor_ob)
 
 def constructor(object):
@@ -69,7 +69,7 @@ def _reduce_ex(self, proto):
     sonst:
         base = object # not really reachable
     wenn base is object:
-        state = None
+        state = Nichts
     sonst:
         wenn base is cls:
             raise TypeError(f"cannot pickle {cls.__name__!r} object")
@@ -78,18 +78,18 @@ def _reduce_ex(self, proto):
     try:
         getstate = self.__getstate__
     except AttributeError:
-        wenn getattr(self, "__slots__", None):
+        wenn getattr(self, "__slots__", Nichts):
             raise TypeError(f"cannot pickle {cls.__name__!r} object: "
                             f"a klasse that defines __slots__ without "
                             f"defining __getstate__ cannot be pickled "
-                            f"with protocol {proto}") from None
+                            f"with protocol {proto}") from Nichts
         try:
             dict = self.__dict__
         except AttributeError:
-            dict = None
+            dict = Nichts
     sonst:
         wenn (type(self).__getstate__ is object.__getstate__ and
-            getattr(self, "__slots__", None)):
+            getattr(self, "__slots__", Nichts)):
             raise TypeError("a klasse that defines __slots__ without "
                             "defining __getstate__ cannot be pickled")
         dict = getstate()
@@ -122,7 +122,7 @@ def _slotnames(cls):
 
     # Get the value from a cache in the klasse wenn possible
     names = cls.__dict__.get("__slotnames__")
-    wenn names is not None:
+    wenn names is not Nichts:
         return names
 
     # Not cached -- calculate the value

@@ -15,7 +15,7 @@ from time import monotonic as time
 try:
     import resource
 except ImportError:
-    resource = None
+    resource = Nichts
 
 
 wenn support.is_emscripten or support.is_wasi:
@@ -33,7 +33,7 @@ sonst:
             try:
                 c.connect(l.getsockname())
                 caddr = c.getsockname()
-                while True:
+                while Wahr:
                     a, addr = l.accept()
                     # check that we've got the correct client
                     wenn addr == caddr:
@@ -177,8 +177,8 @@ klasse BaseSelectorTestCase:
         s.unregister = unittest.mock.Mock()
 
         s.modify(rd, selectors.EVENT_READ, d3)
-        self.assertFalse(s.register.called)
-        self.assertFalse(s.unregister.called)
+        self.assertFalsch(s.register.called)
+        self.assertFalsch(s.unregister.called)
 
     def test_modify_unregister(self):
         # Make sure the fd is unregister()ed in case of error on
@@ -222,8 +222,8 @@ klasse BaseSelectorTestCase:
         self.assertRaises(RuntimeError, s.get_key, wr)
         self.assertRaises(KeyError, mapping.__getitem__, rd)
         self.assertRaises(KeyError, mapping.__getitem__, wr)
-        self.assertEqual(mapping.get(rd), None)
-        self.assertEqual(mapping.get(wr), None)
+        self.assertEqual(mapping.get(rd), Nichts)
+        self.assertEqual(mapping.get(wr), Nichts)
 
     def test_get_key(self):
         s = self.SELECTOR()
@@ -245,10 +245,10 @@ klasse BaseSelectorTestCase:
         sentinel = object()
 
         keys = s.get_map()
-        self.assertFalse(keys)
+        self.assertFalsch(keys)
         self.assertEqual(len(keys), 0)
         self.assertEqual(list(keys), [])
-        self.assertEqual(keys.get(rd), None)
+        self.assertEqual(keys.get(rd), Nichts)
         self.assertEqual(keys.get(rd, sentinel), sentinel)
         key = s.register(rd, selectors.EVENT_READ, "data")
         self.assertIn(rd, keys)
@@ -277,9 +277,9 @@ klasse BaseSelectorTestCase:
 
         result = s.select()
         fuer key, events in result:
-            self.assertTrue(isinstance(key, selectors.SelectorKey))
-            self.assertTrue(events)
-            self.assertFalse(events & ~(selectors.EVENT_READ |
+            self.assertWahr(isinstance(key, selectors.SelectorKey))
+            self.assertWahr(events)
+            self.assertFalsch(events & ~(selectors.EVENT_READ |
                                         selectors.EVENT_WRITE))
 
         self.assertEqual([(wr_key, selectors.EVENT_WRITE)], result)
@@ -294,24 +294,24 @@ klasse BaseSelectorTestCase:
         sock2.send(b"foo")
         my_key = s.register(sock1, selectors.EVENT_READ | selectors.EVENT_WRITE)
 
-        seen_read, seen_write = False, False
+        seen_read, seen_write = Falsch, Falsch
         result = s.select()
         # We get the read and write either in the same result entry or in two
         # distinct entries with the same key.
         self.assertLessEqual(len(result), 2)
         fuer key, events in result:
-            self.assertTrue(isinstance(key, selectors.SelectorKey))
+            self.assertWahr(isinstance(key, selectors.SelectorKey))
             self.assertEqual(key, my_key)
-            self.assertFalse(events & ~(selectors.EVENT_READ |
+            self.assertFalsch(events & ~(selectors.EVENT_READ |
                                         selectors.EVENT_WRITE))
             wenn events & selectors.EVENT_READ:
-                self.assertFalse(seen_read)
-                seen_read = True
+                self.assertFalsch(seen_read)
+                seen_read = Wahr
             wenn events & selectors.EVENT_WRITE:
-                self.assertFalse(seen_write)
-                seen_write = True
-        self.assertTrue(seen_read)
-        self.assertTrue(seen_write)
+                self.assertFalsch(seen_write)
+                seen_write = Wahr
+        self.assertWahr(seen_read)
+        self.assertWahr(seen_write)
 
     def test_context_manager(self):
         s = self.SELECTOR()
@@ -332,7 +332,7 @@ klasse BaseSelectorTestCase:
 
         wenn hasattr(s, 'fileno'):
             fd = s.fileno()
-            self.assertTrue(isinstance(fd, int))
+            self.assertWahr(isinstance(fd, int))
             self.assertGreaterEqual(fd, 0)
 
     def test_selector(self):
@@ -412,16 +412,16 @@ klasse BaseSelectorTestCase:
         s.unregister(wr)
         s.register(rd, selectors.EVENT_READ)
         t = time()
-        self.assertFalse(s.select(0))
-        self.assertFalse(s.select(-1))
+        self.assertFalsch(s.select(0))
+        self.assertFalsch(s.select(-1))
         self.assertLess(time() - t, 0.5)
 
         t0 = time()
-        self.assertFalse(s.select(1))
+        self.assertFalsch(s.select(1))
         t1 = time()
         dt = t1 - t0
         # Tolerate 2.0 seconds fuer very slow buildbots
-        self.assertTrue(0.8 <= dt <= 2.0, dt)
+        self.assertWahr(0.8 <= dt <= 2.0, dt)
 
     @unittest.skipUnless(hasattr(signal, "alarm"),
                          "signal.alarm() required fuer this test")
@@ -461,7 +461,7 @@ klasse BaseSelectorTestCase:
 
         rd, wr = self.make_socketpair()
 
-        orig_alrm_handler = signal.signal(signal.SIGALRM, lambda *args: None)
+        orig_alrm_handler = signal.signal(signal.SIGALRM, lambda *args: Nichts)
         self.addCleanup(signal.signal, signal.SIGALRM, orig_alrm_handler)
 
         try:
@@ -472,7 +472,7 @@ klasse BaseSelectorTestCase:
             # select() is interrupted by a signal, but the signal handler doesn't
             # raise an exception, so select() should by retries with a recomputed
             # timeout
-            self.assertFalse(s.select(1.5))
+            self.assertFalsch(s.select(1.5))
             self.assertGreaterEqual(time() - t, 1.0)
         finally:
             signal.alarm(0)
@@ -547,7 +547,7 @@ klasse SelectSelectorTestCase(BaseSelectorTestCase, unittest.TestCase):
 klasse PollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
                            unittest.TestCase):
 
-    SELECTOR = getattr(selectors, 'PollSelector', None)
+    SELECTOR = getattr(selectors, 'PollSelector', Nichts)
 
 
 @unittest.skipUnless(hasattr(selectors, 'EpollSelector'),
@@ -555,7 +555,7 @@ klasse PollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
 klasse EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
                             unittest.TestCase):
 
-    SELECTOR = getattr(selectors, 'EpollSelector', None)
+    SELECTOR = getattr(selectors, 'EpollSelector', Nichts)
 
     def test_register_file(self):
         # epoll(7) returns EPERM when given a file to watch
@@ -573,7 +573,7 @@ klasse EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
 klasse KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
                              unittest.TestCase):
 
-    SELECTOR = getattr(selectors, 'KqueueSelector', None)
+    SELECTOR = getattr(selectors, 'KqueueSelector', Nichts)
 
     def test_register_bad_fd(self):
         # a file descriptor that's been closed should raise an OSError
@@ -598,7 +598,7 @@ klasse KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
         t1 = time()
         dt = t1 - t0
         # Tolerate 2.0 seconds fuer very slow buildbots
-        self.assertTrue(0.8 <= dt <= 2.0, dt)
+        self.assertWahr(0.8 <= dt <= 2.0, dt)
 
 
 @unittest.skipUnless(hasattr(selectors, 'DevpollSelector'),
@@ -606,7 +606,7 @@ klasse KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
 klasse DevpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
                               unittest.TestCase):
 
-    SELECTOR = getattr(selectors, 'DevpollSelector', None)
+    SELECTOR = getattr(selectors, 'DevpollSelector', Nichts)
 
 
 def tearDownModule():

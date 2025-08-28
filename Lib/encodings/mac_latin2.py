@@ -20,11 +20,11 @@ klasse Codec(codecs.Codec):
         return codecs.charmap_decode(input,errors,decoding_table)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return codecs.charmap_encode(input,self.errors,encoding_table)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         return codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 klasse StreamWriter(Codec,codecs.StreamWriter):

@@ -298,7 +298,7 @@ def open_file(path):
 
 
 def create_package(test_dir, source):
-    ofi = None
+    ofi = Nichts
     try:
         fuer line in source.splitlines():
             wenn type(line) != bytes:
@@ -323,7 +323,7 @@ klasse ModuleFinderTest(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.test_dir)
 
-    def _do_test(self, info, report=False, debug=0, replace_paths=[], modulefinder_class=modulefinder.ModuleFinder):
+    def _do_test(self, info, report=Falsch, debug=0, replace_paths=[], modulefinder_class=modulefinder.ModuleFinder):
         import_this, modules, missing, maybe_missing, source = info
         create_package(self.test_dir, source)
         mf = modulefinder_class(path=self.test_path, debug=debug,
@@ -385,7 +385,7 @@ klasse ModuleFinderTest(unittest.TestCase):
         source_path = base_path + importlib.machinery.SOURCE_SUFFIXES[0]
         bytecode_path = base_path + importlib.machinery.BYTECODE_SUFFIXES[0]
         with open_file(source_path) as file:
-            file.write('testing_modulefinder = True\n'.encode('utf-8'))
+            file.write('testing_modulefinder = Wahr\n'.encode('utf-8'))
         py_compile.compile(source_path, cfile=bytecode_path)
         os.remove(source_path)
         self._do_test(bytecode_test)

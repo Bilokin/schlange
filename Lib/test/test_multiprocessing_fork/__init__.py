@@ -12,7 +12,7 @@ wenn sys.platform == "win32":
 wenn sys.platform == 'darwin':
     raise unittest.SkipTest("test may crash on macOS (bpo-33725)")
 
-wenn support.check_sanitizer(thread=True):
+wenn support.check_sanitizer(thread=Wahr):
     raise unittest.SkipTest("TSAN doesn't support threads after fork")
 
 def load_tests(*args):

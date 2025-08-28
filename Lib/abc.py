@@ -21,7 +21,7 @@ def abstractmethod(funcobj):
             def my_abstract_method(self, arg1, arg2, argN):
                 ...
     """
-    funcobj.__isabstractmethod__ = True
+    funcobj.__isabstractmethod__ = Wahr
     return funcobj
 
 
@@ -38,10 +38,10 @@ klasse abstractclassmethod(classmethod):
 
     """
 
-    __isabstractmethod__ = True
+    __isabstractmethod__ = Wahr
 
     def __init__(self, callable):
-        callable.__isabstractmethod__ = True
+        callable.__isabstractmethod__ = Wahr
         super().__init__(callable)
 
 
@@ -58,10 +58,10 @@ klasse abstractstaticmethod(staticmethod):
 
     """
 
-    __isabstractmethod__ = True
+    __isabstractmethod__ = Wahr
 
     def __init__(self, callable):
-        callable.__isabstractmethod__ = True
+        callable.__isabstractmethod__ = Wahr
         super().__init__(callable)
 
 
@@ -78,7 +78,7 @@ klasse abstractproperty(property):
 
     """
 
-    __isabstractmethod__ = True
+    __isabstractmethod__ = Wahr
 
 
 try:
@@ -122,7 +122,7 @@ sonst:
             """Override fuer issubclass(subclass, cls)."""
             return _abc_subclasscheck(cls, subclass)
 
-        def _dump_registry(cls, file=None):
+        def _dump_registry(cls, file=Nichts):
             """Debug helper to print the ABC registry."""
             print(f"Class: {cls.__module__}.{cls.__qualname__}", file=file)
             print(f"Inv. counter: {get_cache_token()}", file=file)
@@ -170,12 +170,12 @@ def update_abstractmethods(cls):
     # that are not implemented.
     fuer scls in cls.__bases__:
         fuer name in getattr(scls, '__abstractmethods__', ()):
-            value = getattr(cls, name, None)
-            wenn getattr(value, "__isabstractmethod__", False):
+            value = getattr(cls, name, Nichts)
+            wenn getattr(value, "__isabstractmethod__", Falsch):
                 abstracts.add(name)
     # Also add any other newly added abstract methods.
     fuer name, value in cls.__dict__.items():
-        wenn getattr(value, "__isabstractmethod__", False):
+        wenn getattr(value, "__isabstractmethod__", Falsch):
             abstracts.add(name)
     cls.__abstractmethods__ = frozenset(abstracts)
     return cls

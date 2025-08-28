@@ -46,7 +46,7 @@ klasse StatsTestCase(unittest.TestCase):
         stats.add(self.stats, self.stats)
 
     def test_dump_and_load_works_correctly(self):
-        temp_storage_new = tempfile.NamedTemporaryFile(delete=False)
+        temp_storage_new = tempfile.NamedTemporaryFile(delete=Falsch)
         try:
             self.stats.dump_stats(filename=temp_storage_new.name)
             tmp_stats = pstats.Stats(temp_storage_new.name)
@@ -57,7 +57,7 @@ klasse StatsTestCase(unittest.TestCase):
 
     def test_load_equivalent_to_init(self):
         stats = pstats.Stats()
-        self.temp_storage = tempfile.NamedTemporaryFile(delete=False)
+        self.temp_storage = tempfile.NamedTemporaryFile(delete=Falsch)
         try:
             cProfile.run('import os', filename=self.temp_storage.name)
             stats.load_stats(self.temp_storage.name)

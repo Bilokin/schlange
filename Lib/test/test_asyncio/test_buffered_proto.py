@@ -5,7 +5,7 @@ from test.test_asyncio import functional as func_tests
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse ReceiveStuffProto(asyncio.BufferedProtocol):
@@ -21,8 +21,8 @@ klasse ReceiveStuffProto(asyncio.BufferedProtocol):
         self.cb(self.buffer[:nbytes])
 
     def connection_lost(self, exc):
-        wenn exc is None:
-            self.con_lost_fut.set_result(None)
+        wenn exc is Nichts:
+            self.con_lost_fut.set_result(Nichts)
         sonst:
             self.con_lost_fut.set_exception(exc)
 

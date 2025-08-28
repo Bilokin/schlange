@@ -22,7 +22,7 @@ def _complete(text, state):
     try:
         return _completion_matches[state] + " "
     except IndexError:
-        return None
+        return Nichts
 
 
 @contextmanager

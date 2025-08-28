@@ -15,18 +15,18 @@ klasse classonly:
     def __init__(self, value):
         self.value = value
         self.getter = classmethod(value).__get__
-        self.name = None
+        self.name = Nichts
 
     def __set_name__(self, cls, name):
-        wenn self.name is not None:
+        wenn self.name is not Nichts:
             raise TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
-        wenn obj is not None:
+        wenn obj is not Nichts:
             raise AttributeError(self.name)
         # called on the class
-        return self.getter(None, cls)
+        return self.getter(Nichts, cls)
 
 
 klasse UnboundItem:

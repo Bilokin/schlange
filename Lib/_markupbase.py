@@ -377,13 +377,13 @@ klasse ParserBase:
         rawdata = self.rawdata
         n = len(rawdata)
         wenn i == n:
-            return None, -1
+            return Nichts, -1
         m = _declname_match(rawdata, i)
         wenn m:
             s = m.group()
             name = s.strip()
             wenn (i + len(s)) == n:
-                return None, -1  # end of buffer
+                return Nichts, -1  # end of buffer
             return name.lower(), m.end()
         sonst:
             self.updatepos(declstartpos, i)

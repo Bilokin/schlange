@@ -148,37 +148,37 @@ klasse TestSetups(unittest.TestCase):
 
     def test_class_not_torndown_when_setup_fails(self):
         klasse Test(unittest.TestCase):
-            tornDown = False
+            tornDown = Falsch
             @classmethod
             def setUpClass(cls):
                 raise TypeError
             @classmethod
             def tearDownClass(cls):
-                Test.tornDown = True
+                Test.tornDown = Wahr
                 raise TypeError('foo')
             def test_one(self):
                 pass
 
         self.runTests(Test)
-        self.assertFalse(Test.tornDown)
+        self.assertFalsch(Test.tornDown)
 
     def test_class_not_setup_or_torndown_when_skipped(self):
         klasse Test(unittest.TestCase):
-            classSetUp = False
-            tornDown = False
+            classSetUp = Falsch
+            tornDown = Falsch
             @classmethod
             def setUpClass(cls):
-                Test.classSetUp = True
+                Test.classSetUp = Wahr
             @classmethod
             def tearDownClass(cls):
-                Test.tornDown = True
+                Test.tornDown = Wahr
             def test_one(self):
                 pass
 
         Test = unittest.skip("hop")(Test)
         self.runTests(Test)
-        self.assertFalse(Test.classSetUp)
-        self.assertFalse(Test.tornDown)
+        self.assertFalsch(Test.classSetUp)
+        self.assertFalsch(Test.tornDown)
 
     def test_setup_teardown_order_with_pathological_suite(self):
         results = []
@@ -295,14 +295,14 @@ klasse TestSetups(unittest.TestCase):
                 Module.moduleTornDown += 1
 
         klasse Test(unittest.TestCase):
-            classSetUp = False
-            classTornDown = False
+            classSetUp = Falsch
+            classTornDown = Falsch
             @classmethod
             def setUpClass(cls):
-                Test.classSetUp = True
+                Test.classSetUp = Wahr
             @classmethod
             def tearDownClass(cls):
-                Test.classTornDown = True
+                Test.classTornDown = Wahr
             def test_one(self):
                 pass
             def test_two(self):
@@ -321,8 +321,8 @@ klasse TestSetups(unittest.TestCase):
         self.assertEqual(Module.moduleSetup, 1)
         self.assertEqual(Module.moduleTornDown, 0)
         self.assertEqual(result.testsRun, 0)
-        self.assertFalse(Test.classSetUp)
-        self.assertFalse(Test.classTornDown)
+        self.assertFalsch(Test.classSetUp)
+        self.assertFalsch(Test.classTornDown)
         self.assertEqual(len(result.errors), 1)
         error, _ = result.errors[0]
         self.assertEqual(str(error), 'setUpModule (Module)')
@@ -334,7 +334,7 @@ klasse TestSetups(unittest.TestCase):
             def test_two(self):
                 pass
         Test.__module__ = 'Module'
-        sys.modules.pop('Module', None)
+        sys.modules.pop('Module', Nichts)
 
         result = self.runTests(Test)
         self.assertEqual(result.testsRun, 2)
@@ -368,14 +368,14 @@ klasse TestSetups(unittest.TestCase):
                 raise TypeError('foo')
 
         klasse Test(unittest.TestCase):
-            classSetUp = False
-            classTornDown = False
+            classSetUp = Falsch
+            classTornDown = Falsch
             @classmethod
             def setUpClass(cls):
-                Test.classSetUp = True
+                Test.classSetUp = Wahr
             @classmethod
             def tearDownClass(cls):
-                Test.classTornDown = True
+                Test.classTornDown = Wahr
             def test_one(self):
                 pass
             def test_two(self):
@@ -393,8 +393,8 @@ klasse TestSetups(unittest.TestCase):
         result = self.runTests(Test, Test2)
         self.assertEqual(Module.moduleTornDown, 1)
         self.assertEqual(result.testsRun, 4)
-        self.assertTrue(Test.classSetUp)
-        self.assertTrue(Test.classTornDown)
+        self.assertWahr(Test.classSetUp)
+        self.assertWahr(Test.classTornDown)
         self.assertEqual(len(result.errors), 1)
         error, _ = result.errors[0]
         self.assertEqual(str(error), 'tearDownModule (Module)')

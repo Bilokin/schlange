@@ -47,7 +47,7 @@ klasse HyperParser:
                 parser.set_code(text.get(startatindex, stopatindex)+' \n')
                 bod = parser.find_good_parse_start(
                           editwin._build_char_in_string_func(startatindex))
-                wenn bod is not None or startat == 1:
+                wenn bod is not Nichts or startat == 1:
                     break
             parser.set_lo(bod or 0)
         sonst:
@@ -113,8 +113,8 @@ klasse HyperParser:
                 self.rawtext[self.bracketing[self.indexbracket][0]]
                 not in ('#', '"', "'"))
 
-    def get_surrounding_brackets(self, openers='([{', mustclose=False):
-        """Return bracket indexes or None.
+    def get_surrounding_brackets(self, openers='([{', mustclose=Falsch):
+        """Return bracket indexes or Nichts.
 
         If the index given to the HyperParser is surrounded by a
         bracket defined in openers (or at least has one before it),
@@ -122,7 +122,7 @@ klasse HyperParser:
         bracket (or the end of line, whichever comes first).
 
         If it is not surrounded by brackets, or the end of line comes
-        before the closing bracket and mustclose is True, returns None.
+        before the closing bracket and mustclose is Wahr, returns Nichts.
         """
 
         bracketinglevel = self.bracketing[self.indexbracket][1]
@@ -132,7 +132,7 @@ klasse HyperParser:
               self.bracketing[before][1] > bracketinglevel):
             before -= 1
             wenn before < 0:
-                return None
+                return Nichts
             bracketinglevel = min(bracketinglevel, self.bracketing[before][1])
         after = self.indexbracket + 1
         while (after < len(self.bracketing) and
@@ -144,7 +144,7 @@ klasse HyperParser:
         wenn (after >= len(self.bracketing) or
            self.bracketing[after][0] > len(self.rawtext)):
             wenn mustclose:
-                return None
+                return Nichts
             afterindex = self.stopatindex
         sonst:
             # We are after a real char, so it is a ')' and we give the
@@ -156,8 +156,8 @@ klasse HyperParser:
         return beforeindex, afterindex
 
     # the set of built-in identifiers which are also keywords,
-    # i.e. keyword.iskeyword() returns True fuer them
-    _ID_KEYWORDS = frozenset({"True", "False", "None"})
+    # i.e. keyword.iskeyword() returns Wahr fuer them
+    _ID_KEYWORDS = frozenset({"Wahr", "Falsch", "Nichts"})
 
     @classmethod
     def _eat_identifier(cls, str, limit, pos):
@@ -207,7 +207,7 @@ klasse HyperParser:
                 return 0
 
         # All keywords are valid identifiers, but should not be
-        # considered identifiers here, except fuer True, False and None.
+        # considered identifiers here, except fuer Wahr, Falsch and Nichts.
         wenn i < pos and (
                 iskeyword(str[i:pos]) and
                 str[i:pos] not in cls._ID_KEYWORDS
@@ -235,11 +235,11 @@ klasse HyperParser:
         pos = self.indexinrawtext
 
         last_identifier_pos = pos
-        postdot_phase = True
+        postdot_phase = Wahr
 
-        while True:
-            # Eat whitespaces, comments, and wenn postdot_phase is False - a dot
-            while True:
+        while Wahr:
+            # Eat whitespaces, comments, and wenn postdot_phase is Falsch - a dot
+            while Wahr:
                 wenn pos>brck_limit and rawtext[pos-1] in self._whitespace_chars:
                     # Eat a whitespace
                     pos -= 1
@@ -247,7 +247,7 @@ klasse HyperParser:
                       pos > brck_limit and rawtext[pos-1] == '.'):
                     # Eat a dot
                     pos -= 1
-                    postdot_phase = True
+                    postdot_phase = Wahr
                 # The next line will fail wenn we are *inside* a comment,
                 # but we shouldn't be.
                 sowenn (pos == brck_limit and brck_index > 0 and
@@ -271,7 +271,7 @@ klasse HyperParser:
                 pos = pos - ret
                 last_identifier_pos = pos
                 # Now, to continue the search, we must find a dot.
-                postdot_phase = False
+                postdot_phase = Falsch
                 # (the loop continues now)
 
             sowenn pos == brck_limit:
@@ -289,7 +289,7 @@ klasse HyperParser:
                 last_identifier_pos = pos
                 wenn rawtext[pos] in "([":
                     # [] and () may be used after an identifier, so we
-                    # continue. postdot_phase is True, so we don't allow a dot.
+                    # continue. postdot_phase is Wahr, so we don't allow a dot.
                     pass
                 sonst:
                     # We can't continue after other types of brackets

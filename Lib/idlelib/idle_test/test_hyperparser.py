@@ -30,7 +30,7 @@ klasse HyperParserTest(unittest.TestCase):
             'x.__len__\n'
             "z = ((r'asdf')+('a')))\n"
             '[x fuer x in\n'
-            'for = False\n'
+            'for = Falsch\n'
             'cliché = "this is a string with unicode, what a cliché"'
             )
 
@@ -85,52 +85,52 @@ klasse HyperParserTest(unittest.TestCase):
         get = self.get_parser
 
         p = get('1.0')
-        self.assertFalse(p.is_in_string())
+        self.assertFalsch(p.is_in_string())
         p = get('1.4')
-        self.assertTrue(p.is_in_string())
+        self.assertWahr(p.is_in_string())
         p = get('2.3')
-        self.assertFalse(p.is_in_string())
+        self.assertFalsch(p.is_in_string())
         p = get('3.3')
-        self.assertFalse(p.is_in_string())
+        self.assertFalsch(p.is_in_string())
         p = get('3.7')
-        self.assertTrue(p.is_in_string())
+        self.assertWahr(p.is_in_string())
         p = get('4.6')
-        self.assertTrue(p.is_in_string())
+        self.assertWahr(p.is_in_string())
         p = get('12.54')
-        self.assertTrue(p.is_in_string())
+        self.assertWahr(p.is_in_string())
 
     def test_is_in_code(self):
         get = self.get_parser
 
         p = get('1.0')
-        self.assertTrue(p.is_in_code())
+        self.assertWahr(p.is_in_code())
         p = get('1.1')
-        self.assertFalse(p.is_in_code())
+        self.assertFalsch(p.is_in_code())
         p = get('2.5')
-        self.assertFalse(p.is_in_code())
+        self.assertFalsch(p.is_in_code())
         p = get('3.4')
-        self.assertTrue(p.is_in_code())
+        self.assertWahr(p.is_in_code())
         p = get('3.6')
-        self.assertFalse(p.is_in_code())
+        self.assertFalsch(p.is_in_code())
         p = get('4.14')
-        self.assertFalse(p.is_in_code())
+        self.assertFalsch(p.is_in_code())
 
     def test_get_surrounding_bracket(self):
         get = self.get_parser
 
         def without_mustclose(parser):
             # a utility function to get surrounding bracket
-            # with mustclose=False
-            return parser.get_surrounding_brackets(mustclose=False)
+            # with mustclose=Falsch
+            return parser.get_surrounding_brackets(mustclose=Falsch)
 
         def with_mustclose(parser):
             # a utility function to get surrounding bracket
-            # with mustclose=True
-            return parser.get_surrounding_brackets(mustclose=True)
+            # with mustclose=Wahr
+            return parser.get_surrounding_brackets(mustclose=Wahr)
 
         p = get('3.2')
-        self.assertIsNone(with_mustclose(p))
-        self.assertIsNone(without_mustclose(p))
+        self.assertIsNichts(with_mustclose(p))
+        self.assertIsNichts(without_mustclose(p))
 
         p = get('5.6')
         self.assertTupleEqual(without_mustclose(p), ('5.4', '5.25'))
@@ -142,11 +142,11 @@ klasse HyperParserTest(unittest.TestCase):
 
         p = get('6.15')
         self.assertTupleEqual(without_mustclose(p), ('6.4', '6.end'))
-        self.assertIsNone(with_mustclose(p))
+        self.assertIsNichts(with_mustclose(p))
 
         p = get('9.end')
-        self.assertIsNone(with_mustclose(p))
-        self.assertIsNone(without_mustclose(p))
+        self.assertIsNichts(with_mustclose(p))
+        self.assertIsNichts(without_mustclose(p))
 
     def test_get_expression(self):
         get = self.get_parser
@@ -195,7 +195,7 @@ klasse HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), '')
 
         p = get('11.11')
-        self.assertEqual(p.get_expression(), 'False')
+        self.assertEqual(p.get_expression(), 'Falsch')
 
         p = get('12.6')
         self.assertEqual(p.get_expression(), 'cliché')
@@ -204,9 +204,9 @@ klasse HyperParserTest(unittest.TestCase):
         def is_valid_id(candidate):
             result = HyperParser._eat_identifier(candidate, 0, len(candidate))
             wenn result == len(candidate):
-                return True
+                return Wahr
             sowenn result == 0:
-                return False
+                return Falsch
             sonst:
                 err_msg = "Unexpected result: {} (expected 0 or {}".format(
                     result, len(candidate)
@@ -214,33 +214,33 @@ klasse HyperParserTest(unittest.TestCase):
                 raise Exception(err_msg)
 
         # invalid first character which is valid elsewhere in an identifier
-        self.assertFalse(is_valid_id('2notid'))
+        self.assertFalsch(is_valid_id('2notid'))
 
         # ASCII-only valid identifiers
-        self.assertTrue(is_valid_id('valid_id'))
-        self.assertTrue(is_valid_id('_valid_id'))
-        self.assertTrue(is_valid_id('valid_id_'))
-        self.assertTrue(is_valid_id('_2valid_id'))
+        self.assertWahr(is_valid_id('valid_id'))
+        self.assertWahr(is_valid_id('_valid_id'))
+        self.assertWahr(is_valid_id('valid_id_'))
+        self.assertWahr(is_valid_id('_2valid_id'))
 
         # keywords which should be "eaten"
-        self.assertTrue(is_valid_id('True'))
-        self.assertTrue(is_valid_id('False'))
-        self.assertTrue(is_valid_id('None'))
+        self.assertWahr(is_valid_id('Wahr'))
+        self.assertWahr(is_valid_id('Falsch'))
+        self.assertWahr(is_valid_id('Nichts'))
 
         # keywords which should not be "eaten"
-        self.assertFalse(is_valid_id('for'))
-        self.assertFalse(is_valid_id('import'))
-        self.assertFalse(is_valid_id('return'))
+        self.assertFalsch(is_valid_id('for'))
+        self.assertFalsch(is_valid_id('import'))
+        self.assertFalsch(is_valid_id('return'))
 
         # valid unicode identifiers
-        self.assertTrue(is_valid_id('cliche'))
-        self.assertTrue(is_valid_id('cliché'))
-        self.assertTrue(is_valid_id('a٢'))
+        self.assertWahr(is_valid_id('cliche'))
+        self.assertWahr(is_valid_id('cliché'))
+        self.assertWahr(is_valid_id('a٢'))
 
         # invalid unicode identifiers
-        self.assertFalse(is_valid_id('2a'))
-        self.assertFalse(is_valid_id('٢a'))
-        self.assertFalse(is_valid_id('a²'))
+        self.assertFalsch(is_valid_id('2a'))
+        self.assertFalsch(is_valid_id('٢a'))
+        self.assertFalsch(is_valid_id('a²'))
 
         # valid identifier after "punctuation"
         self.assertEqual(HyperParser._eat_identifier('+ var', 0, 5), len('var'))
@@ -248,14 +248,14 @@ klasse HyperParserTest(unittest.TestCase):
         self.assertEqual(HyperParser._eat_identifier('.var', 0, 4), len('var'))
 
         # invalid identifiers
-        self.assertFalse(is_valid_id('+'))
-        self.assertFalse(is_valid_id(' '))
-        self.assertFalse(is_valid_id(':'))
-        self.assertFalse(is_valid_id('?'))
-        self.assertFalse(is_valid_id('^'))
-        self.assertFalse(is_valid_id('\\'))
-        self.assertFalse(is_valid_id('"'))
-        self.assertFalse(is_valid_id('"a string"'))
+        self.assertFalsch(is_valid_id('+'))
+        self.assertFalsch(is_valid_id(' '))
+        self.assertFalsch(is_valid_id(':'))
+        self.assertFalsch(is_valid_id('?'))
+        self.assertFalsch(is_valid_id('^'))
+        self.assertFalsch(is_valid_id('\\'))
+        self.assertFalsch(is_valid_id('"'))
+        self.assertFalsch(is_valid_id('"a string"'))
 
     def test_eat_identifier_various_lengths(self):
         eat_id = HyperParser._eat_identifier

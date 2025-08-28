@@ -20,7 +20,7 @@ from test.support.import_helper import import_module
 try:
     import pty
 except ImportError:
-    pty = None
+    pty = Nichts
 
 
 wenn not has_subprocess_support:
@@ -50,7 +50,7 @@ def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     env['TERM'] = 'vt100'
     return subprocess.Popen(cmd_line,
                             executable=sys.executable,
-                            text=True,
+                            text=Wahr,
                             stdin=subprocess.PIPE,
                             stdout=stdout, stderr=stderr,
                             **kw)
@@ -195,7 +195,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
             return subprocess.Popen(
                 [os.path.join(os.path.dirname(sys.executable), '<stdin>'), "-i"],
                 executable=sys.executable,
-                text=True,
+                text=Wahr,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
@@ -280,7 +280,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         p.stdin.write(user_input2)
         output = kill_python(p)
         self.assertEqual(p.returncode, 0)
-        expected = "(30, None, [\'def foo(x):\\n\', \'    return x + 1\\n\', \'\\n\'], \'<stdin>\')"
+        expected = "(30, Nichts, [\'def foo(x):\\n\', \'    return x + 1\\n\', \'\\n\'], \'<stdin>\')"
         self.assertIn(expected, output, expected)
 
     def test_asyncio_repl_reaches_python_startup_script(self):
@@ -311,8 +311,8 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
             stdin=s,
             stdout=s,
             stderr=s,
-            text=True,
-            close_fds=True,
+            text=Wahr,
+            close_fds=Wahr,
             env=env,
         )
         os.close(s)

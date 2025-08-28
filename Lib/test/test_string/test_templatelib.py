@@ -60,29 +60,29 @@ world"""
 
     def test_creation_interleaving(self):
         # Should add strings on either side
-        t = Template(Interpolation('Maria', 'name', None, ''))
+        t = Template(Interpolation('Maria', 'name', Nichts, ''))
         self.assertTStringEqual(t, ('', ''), [('Maria', 'name')])
         self.assertEqual(fstring(t), 'Maria')
 
         # Should prepend empty string
-        t = Template(Interpolation('Maria', 'name', None, ''), ' is my name')
+        t = Template(Interpolation('Maria', 'name', Nichts, ''), ' is my name')
         self.assertTStringEqual(t, ('', ' is my name'), [('Maria', 'name')])
         self.assertEqual(fstring(t), 'Maria is my name')
 
         # Should append empty string
-        t = Template('Hello, ', Interpolation('Maria', 'name', None, ''))
+        t = Template('Hello, ', Interpolation('Maria', 'name', Nichts, ''))
         self.assertTStringEqual(t, ('Hello, ', ''), [('Maria', 'name')])
         self.assertEqual(fstring(t), 'Hello, Maria')
 
         # Should concatenate strings
-        t = Template('Hello', ', ', Interpolation('Maria', 'name', None, ''),
+        t = Template('Hello', ', ', Interpolation('Maria', 'name', Nichts, ''),
                      '!')
         self.assertTStringEqual(t, ('Hello, ', '!'), [('Maria', 'name')])
         self.assertEqual(fstring(t), 'Hello, Maria!')
 
         # Should add strings on either side and in between
-        t = Template(Interpolation('Maria', 'name', None, ''),
-                     Interpolation('Python', 'language', None, ''))
+        t = Template(Interpolation('Maria', 'name', Nichts, ''),
+                     Interpolation('Python', 'language', Nichts, ''))
         self.assertTStringEqual(
             t, ('', '', ''), [('Maria', 'name'), ('Python', 'language')]
         )
@@ -111,7 +111,7 @@ world"""
             t'With format {1 / 0.3:.2f}',
             Template(),
             Template('a'),
-            Template(Interpolation('Nikita', 'name', None, '')),
+            Template(Interpolation('Nikita', 'name', Nichts, '')),
             Template('a', Interpolation('Nikita', 'name', 'r', '')),
         ):
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -124,9 +124,9 @@ world"""
 
     def test_pickle_interpolation(self):
         fuer interpolation in (
-            Interpolation('Nikita', 'name', None, ''),
+            Interpolation('Nikita', 'name', Nichts, ''),
             Interpolation('Nikita', 'name', 'r', ''),
-            Interpolation(1/3, 'x', None, '.2f'),
+            Interpolation(1/3, 'x', Nichts, '.2f'),
         ):
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 with self.subTest(proto=proto, interpolation=interpolation):
@@ -157,7 +157,7 @@ klasse TemplateIterTests(unittest.TestCase):
         self.assertIsInstance(res[1], Interpolation)
         self.assertEqual(res[1].value, 1)
         self.assertEqual(res[1].expression, 'x')
-        self.assertEqual(res[1].conversion, None)
+        self.assertEqual(res[1].conversion, Nichts)
         self.assertEqual(res[1].format_spec, '')
         self.assertEqual(res[2], ' yz')
 
@@ -173,9 +173,9 @@ klasse TestFunctions(unittest.TestCase):
     def test_convert(self):
         from fractions import Fraction
 
-        fuer obj in ('Café', None, 3.14, Fraction(1, 2)):
+        fuer obj in ('Café', Nichts, 3.14, Fraction(1, 2)):
             with self.subTest(f'{obj=}'):
-                self.assertEqual(convert(obj, None), obj)
+                self.assertEqual(convert(obj, Nichts), obj)
                 self.assertEqual(convert(obj, 's'), str(obj))
                 self.assertEqual(convert(obj, 'r'), repr(obj))
                 self.assertEqual(convert(obj, 'a'), ascii(obj))

@@ -31,7 +31,7 @@ import re
 import sys
 
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 
 wenn TYPE_CHECKING:
     from typing import IO
@@ -72,19 +72,19 @@ klasse Console(ABC):
             self.output_fd = f_out.fileno()
 
     @abstractmethod
-    def refresh(self, screen: list[str], xy: tuple[int, int]) -> None: ...
+    def refresh(self, screen: list[str], xy: tuple[int, int]) -> Nichts: ...
 
     @abstractmethod
-    def prepare(self) -> None: ...
+    def prepare(self) -> Nichts: ...
 
     @abstractmethod
-    def restore(self) -> None: ...
+    def restore(self) -> Nichts: ...
 
     @abstractmethod
-    def move_cursor(self, x: int, y: int) -> None: ...
+    def move_cursor(self, x: int, y: int) -> Nichts: ...
 
     @abstractmethod
-    def set_cursor_vis(self, visible: bool) -> None: ...
+    def set_cursor_vis(self, visible: bool) -> Nichts: ...
 
     @abstractmethod
     def getheightwidth(self) -> tuple[int, int]:
@@ -93,41 +93,41 @@ klasse Console(ABC):
         ...
 
     @abstractmethod
-    def get_event(self, block: bool = True) -> Event | None:
-        """Return an Event instance.  Returns None wenn |block| is false
+    def get_event(self, block: bool = Wahr) -> Event | Nichts:
+        """Return an Event instance.  Returns Nichts wenn |block| is false
         and there is no event pending, otherwise waits fuer the
         completion of an event."""
         ...
 
     @abstractmethod
-    def push_char(self, char: int | bytes) -> None:
+    def push_char(self, char: int | bytes) -> Nichts:
         """
         Push a character to the console event queue.
         """
         ...
 
     @abstractmethod
-    def beep(self) -> None: ...
+    def beep(self) -> Nichts: ...
 
     @abstractmethod
-    def clear(self) -> None:
+    def clear(self) -> Nichts:
         """Wipe the screen"""
         ...
 
     @abstractmethod
-    def finish(self) -> None:
+    def finish(self) -> Nichts:
         """Move the cursor to the end of the display and otherwise get
         ready fuer end.  XXX could be merged with restore?  Hmm."""
         ...
 
     @abstractmethod
-    def flushoutput(self) -> None:
+    def flushoutput(self) -> Nichts:
         """Flush all output to the screen (assuming there's some
         buffering going on somewhere)."""
         ...
 
     @abstractmethod
-    def forgetinput(self) -> None:
+    def forgetinput(self) -> Nichts:
         """Forget all pending, but not yet processed input."""
         ...
 
@@ -138,19 +138,19 @@ klasse Console(ABC):
         ...
 
     @abstractmethod
-    def wait(self, timeout: float | None) -> bool:
-        """Wait fuer an event. The return value is True wenn an event is
-        available, False wenn the timeout has been reached. If timeout is
-        None, wait forever. The timeout is in milliseconds."""
+    def wait(self, timeout: float | Nichts) -> bool:
+        """Wait fuer an event. The return value is Wahr wenn an event is
+        available, Falsch wenn the timeout has been reached. If timeout is
+        Nichts, wait forever. The timeout is in milliseconds."""
         ...
 
     @property
-    def input_hook(self) -> Callable[[], int] | None:
+    def input_hook(self) -> Callable[[], int] | Nichts:
         """Returns the current input hook."""
         ...
 
     @abstractmethod
-    def repaint(self) -> None: ...
+    def repaint(self) -> Nichts: ...
 
 
 klasse InteractiveColoredConsole(code.InteractiveConsole):
@@ -158,15 +158,15 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
 
     def __init__(
         self,
-        locals: dict[str, object] | None = None,
+        locals: dict[str, object] | Nichts = Nichts,
         filename: str = "<console>",
         *,
-        local_exit: bool = False,
-    ) -> None:
+        local_exit: bool = Falsch,
+    ) -> Nichts:
         super().__init__(locals=locals, filename=filename, local_exit=local_exit)
         self.can_colorize = _colorize.can_colorize()
 
-    def showsyntaxerror(self, filename=None, **kwargs):
+    def showsyntaxerror(self, filename=Nichts, **kwargs):
         super().showsyntaxerror(filename=filename, **kwargs)
 
     def _excepthook(self, typ, value, tb):
@@ -185,7 +185,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
         except BaseException:
             self.showtraceback()
             return self.STATEMENT_FAILED
-        return None
+        return Nichts
 
     def runsource(self, source, filename="<input>", symbol="single"):
         try:
@@ -194,7 +194,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                 filename,
                 "exec",
                 ast.PyCF_ONLY_AST,
-                incomplete_input=False,
+                incomplete_input=Falsch,
             )
         except SyntaxError as e:
             # If it looks like pip install was entered (a common beginner
@@ -207,10 +207,10 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                     " command prompt."
                 )
             self.showsyntaxerror(filename, source=source)
-            return False
+            return Falsch
         except (OverflowError, ValueError):
             self.showsyntaxerror(filename, source=source)
-            return False
+            return Falsch
         wenn tree.body:
             *_, last_stmt = tree.body
         fuer stmt in tree.body:
@@ -228,15 +228,15 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                         f" top-level 'await' and run background asyncio tasks."
                     )
                 self.showsyntaxerror(filename, source=source)
-                return False
+                return Falsch
             except (OverflowError, ValueError):
                 self.showsyntaxerror(filename, source=source)
-                return False
+                return Falsch
 
-            wenn code is None:
-                return True
+            wenn code is Nichts:
+                return Wahr
 
             result = self.runcode(code)
             wenn result is self.STATEMENT_FAILED:
                 break
-        return False
+        return Falsch

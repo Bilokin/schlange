@@ -80,7 +80,7 @@ def main():
     # Remove existing -std or /std options from CC command line.
     # Python adds -std=c11 option.
     cmd = (sysconfig.get_config_var('CC') or '')
-    wenn cmd is not None:
+    wenn cmd is not Nichts:
         wenn support.MS_WINDOWS:
             std_prefix = '/std'
         sonst:

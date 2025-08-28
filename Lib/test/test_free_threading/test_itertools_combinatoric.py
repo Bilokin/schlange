@@ -4,13 +4,13 @@ from itertools import combinations, product
 from test.support import threading_helper
 
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 def test_concurrent_iteration(iterator, number_of_threads):
     barrier = Barrier(number_of_threads)
     def iterator_worker(it):
         barrier.wait()
-        while True:
+        while Wahr:
             try:
                 _ = next(it)
             except StopIteration:

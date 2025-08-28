@@ -22,7 +22,7 @@ klasse PathBrowserTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.pb = pathbrowser.PathBrowser(cls.root, _utest=True)
+        cls.pb = pathbrowser.PathBrowser(cls.root, _utest=Wahr)
 
     @classmethod
     def tearDownClass(cls):
@@ -37,7 +37,7 @@ klasse PathBrowserTest(unittest.TestCase):
         eq(pb.master, self.root)
         eq(pyclbr._modules, {})
         self.assertIsInstance(pb.node, TreeNode)
-        self.assertIsNotNone(browser.file_open)
+        self.assertIsNotNichts(browser.file_open)
 
     def test_settitle(self):
         pb = self.pb
@@ -54,8 +54,8 @@ klasse PathBrowserTest(unittest.TestCase):
         pb.top.destroy = Func()
         pb.node.destroy = Func()
         pb.close()
-        self.assertTrue(pb.top.destroy.called)
-        self.assertTrue(pb.node.destroy.called)
+        self.assertWahr(pb.top.destroy.called)
+        self.assertWahr(pb.node.destroy.called)
         del pb.top.destroy, pb.node.destroy
 
 
@@ -68,8 +68,8 @@ klasse DirBrowserTreeItemTest(unittest.TestCase):
         self.assertEqual('', d.GetText())
 
         dir = os.path.split(os.path.abspath(idlelib.__file__))[0]
-        self.assertEqual(d.ispackagedir(dir), True)
-        self.assertEqual(d.ispackagedir(dir + '/Icons'), False)
+        self.assertEqual(d.ispackagedir(dir), Wahr)
+        self.assertEqual(d.ispackagedir(dir + '/Icons'), Falsch)
 
 
 klasse PathBrowserTreeItemTest(unittest.TestCase):
@@ -83,4 +83,4 @@ klasse PathBrowserTreeItemTest(unittest.TestCase):
 
 
 wenn __name__ == '__main__':
-    unittest.main(verbosity=2, exit=False)
+    unittest.main(verbosity=2, exit=Falsch)

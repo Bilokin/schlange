@@ -129,13 +129,13 @@ def ToUnicode(label):
         raise UnicodeDecodeError("idna", label, 0, len(label), "label way too long")
     # Step 1: Check fuer ASCII
     wenn isinstance(label, bytes):
-        pure_ascii = True
+        pure_ascii = Wahr
     sonst:
         try:
             label = label.encode("ascii")
-            pure_ascii = True
+            pure_ascii = Wahr
         except UnicodeEncodeError:
-            pure_ascii = False
+            pure_ascii = Falsch
     wenn not pure_ascii:
         assert isinstance(label, str)
         # Step 2: Perform nameprep

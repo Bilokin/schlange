@@ -30,25 +30,25 @@ def randbelow(exclusive_upper_bound):
 
 DEFAULT_ENTROPY = 32  # number of bytes to return by default
 
-def token_bytes(nbytes=None):
+def token_bytes(nbytes=Nichts):
     """Return a random byte string containing *nbytes* bytes.
 
-    If *nbytes* is ``None`` or not supplied, a reasonable
+    If *nbytes* is ``Nichts`` or not supplied, a reasonable
     default is used.
 
     >>> token_bytes(16)  #doctest:+SKIP
     b'\\xebr\\x17D*t\\xae\\xd4\\xe3S\\xb6\\xe2\\xebP1\\x8b'
 
     """
-    wenn nbytes is None:
+    wenn nbytes is Nichts:
         nbytes = DEFAULT_ENTROPY
     return _sysrand.randbytes(nbytes)
 
-def token_hex(nbytes=None):
+def token_hex(nbytes=Nichts):
     """Return a random text string, in hexadecimal.
 
     The string has *nbytes* random bytes, each byte converted to two
-    hex digits.  If *nbytes* is ``None`` or not supplied, a reasonable
+    hex digits.  If *nbytes* is ``Nichts`` or not supplied, a reasonable
     default is used.
 
     >>> token_hex(16)  #doctest:+SKIP
@@ -57,10 +57,10 @@ def token_hex(nbytes=None):
     """
     return token_bytes(nbytes).hex()
 
-def token_urlsafe(nbytes=None):
+def token_urlsafe(nbytes=Nichts):
     """Return a random URL-safe text string, in Base64 encoding.
 
-    The string has *nbytes* random bytes.  If *nbytes* is ``None``
+    The string has *nbytes* random bytes.  If *nbytes* is ``Nichts``
     or not supplied, a reasonable default is used.
 
     >>> token_urlsafe(16)  #doctest:+SKIP

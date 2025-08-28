@@ -24,7 +24,7 @@ klasse TestPEP479(unittest.TestCase):
         except RuntimeError as exc:
             self.assertIs(type(exc.__cause__), StopIteration)
             self.assertIs(type(exc.__context__), StopIteration)
-            self.assertTrue(exc.__suppress_context__)
+            self.assertWahr(exc.__suppress_context__)
         sonst:
             self.fail('__cause__, __context__, or __suppress_context__ '
                       'were not properly set')

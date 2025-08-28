@@ -5,11 +5,11 @@ import unittest
 klasse UnaryOpTestCase(unittest.TestCase):
 
     def test_negative(self):
-        self.assertTrue(-2 == 0 - 2)
+        self.assertWahr(-2 == 0 - 2)
         self.assertEqual(-0, 0)
         self.assertEqual(--2, 2)
-        self.assertTrue(-2.0 == 0 - 2.0)
-        self.assertTrue(-2j == 0 - 2j)
+        self.assertWahr(-2.0 == 0 - 2.0)
+        self.assertWahr(-2j == 0 - 2j)
 
     def test_positive(self):
         self.assertEqual(+2, 2)
@@ -19,15 +19,15 @@ klasse UnaryOpTestCase(unittest.TestCase):
         self.assertEqual(+2j, 2j)
 
     def test_invert(self):
-        self.assertTrue(~2 == -(2+1))
+        self.assertWahr(~2 == -(2+1))
         self.assertEqual(~0, -1)
         self.assertEqual(~~2, 2)
 
     def test_no_overflow(self):
         nines = "9" * 32
-        self.assertTrue(eval("+" + nines) == 10**32-1)
-        self.assertTrue(eval("-" + nines) == -(10**32-1))
-        self.assertTrue(eval("~" + nines) == ~(10**32-1))
+        self.assertWahr(eval("+" + nines) == 10**32-1)
+        self.assertWahr(eval("-" + nines) == -(10**32-1))
+        self.assertWahr(eval("~" + nines) == ~(10**32-1))
 
     def test_negation_of_exponentiation(self):
         # Make sure '**' does the right thing; these form a

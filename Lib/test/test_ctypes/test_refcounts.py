@@ -30,7 +30,7 @@ klasse RefcountTestCase(unittest.TestCase):
         self.assertGreater(sys.getrefcount(callback), orig_refcount)
         result = f(-10, cb)
         self.assertEqual(result, -18)
-        cb = None
+        cb = Nichts
 
         gc.collect()
 
@@ -96,16 +96,16 @@ klasse AnotherLeak(unittest.TestCase):
 
     @support.refcount_test
     def test_callback_py_object_none_return(self):
-        # bpo-36880: test that returning None from a py_object callback
-        # does not decrement the refcount of None.
+        # bpo-36880: test that returning Nichts from a py_object callback
+        # does not decrement the refcount of Nichts.
 
         fuer FUNCTYPE in (ctypes.CFUNCTYPE, ctypes.PYFUNCTYPE):
             with self.subTest(FUNCTYPE=FUNCTYPE):
                 @FUNCTYPE(ctypes.py_object)
                 def func():
-                    return None
+                    return Nichts
 
-                # Check that calling func does not affect None's refcount.
+                # Check that calling func does not affect Nichts's refcount.
                 fuer _ in range(10000):
                     func()
 

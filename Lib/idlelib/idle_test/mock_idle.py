@@ -19,12 +19,12 @@ klasse Func:
     Given klasse instance, can set and delete as instance attribute.
     Mock_tk.Var and Mbox_func are special variants of this.
     '''
-    def __init__(self, result=None, return_self=False):
+    def __init__(self, result=Nichts, return_self=Falsch):
         self.called = 0
         self.result = result
         self.return_self = return_self
-        self.args = None
-        self.kwds = None
+        self.args = Nichts
+        self.kwds = Nichts
     def __call__(self, *args, **kwds):
         self.called += 1
         self.args = args
@@ -40,8 +40,8 @@ klasse Func:
 klasse Editor:
     '''Minimally imitate editor.EditorWindow class.
     '''
-    def __init__(self, flist=None, filename=None, key=None, root=None,
-                 text=None):  # Allow real Text with mock Editor.
+    def __init__(self, flist=Nichts, filename=Nichts, key=Nichts, root=Nichts,
+                 text=Nichts):  # Allow real Text with mock Editor.
         self.text = text or Text()
         self.undo = UndoDelegator()
 

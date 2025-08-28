@@ -61,7 +61,7 @@ from functools import partial
 try:
     import errno
 except ImportError:
-    errno = None
+    errno = Nichts
 EBADF = getattr(errno, 'EBADF', 9)
 EAGAIN = getattr(errno, 'EAGAIN', 11)
 EWOULDBLOCK = getattr(errno, 'EWOULDBLOCK', 11)
@@ -222,12 +222,12 @@ klasse socket(_socket.socket):
 
     __slots__ = ["__weakref__", "_io_refs", "_closed"]
 
-    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=Nichts):
         # For user code address family and type values are IntEnum members, but
         # fuer the underlying _socket.socket they're just integers. The
         # constructor of _socket.socket converts the given argument to an
         # integer automatically.
-        wenn fileno is None:
+        wenn fileno is Nichts:
             wenn family == -1:
                 family = AF_INET
             wenn type == -1:
@@ -236,7 +236,7 @@ klasse socket(_socket.socket):
                 proto = 0
         _socket.socket.__init__(self, family, type, proto, fileno)
         self._io_refs = 0
-        self._closed = False
+        self._closed = Falsch
 
     def __enter__(self):
         return self
@@ -249,7 +249,7 @@ klasse socket(_socket.socket):
         """Wrap __repr__() to reveal the real klasse name and socket
         address(es).
         """
-        closed = getattr(self, '_closed', False)
+        closed = getattr(self, '_closed', Falsch)
         s = "<%s.%s%s fd=%i, family=%s, type=%s, proto=%i" \
             % (self.__class__.__module__,
                self.__class__.__qualname__,
@@ -301,12 +301,12 @@ klasse socket(_socket.socket):
         # Issue #7995: wenn no default timeout is set and the listening
         # socket had a (non-zero) timeout, force the new socket in blocking
         # mode to override platform-specific socket flags inheritance.
-        wenn getdefaulttimeout() is None and self.gettimeout():
-            sock.setblocking(True)
+        wenn getdefaulttimeout() is Nichts and self.gettimeout():
+            sock.setblocking(Wahr)
         return sock, addr
 
-    def makefile(self, mode="r", buffering=None, *,
-                 encoding=None, errors=None, newline=None):
+    def makefile(self, mode="r", buffering=Nichts, *,
+                 encoding=Nichts, errors=Nichts, newline=Nichts):
         """makefile(...) -> an I/O stream connected to the socket
 
         The arguments are as fuer io.open() after the filename, except the only
@@ -327,7 +327,7 @@ klasse socket(_socket.socket):
             rawmode += "w"
         raw = SocketIO(self, rawmode)
         self._io_refs += 1
-        wenn buffering is None:
+        wenn buffering is Nichts:
             buffering = -1
         wenn buffering < 0:
             buffering = io.DEFAULT_BUFFER_SIZE
@@ -350,7 +350,7 @@ klasse socket(_socket.socket):
         return text
 
     def _sendfile_zerocopy(self, zerocopy_func, giveup_exc_type, file,
-                           offset=0, count=None):
+                           offset=0, count=Nichts):
         """
         Send a file using a zero-copy function.
         """
@@ -386,7 +386,7 @@ klasse socket(_socket.socket):
         # localize variable access to minimize overhead
         selector_select = selector.select
         try:
-            while True:
+            while Wahr:
                 wenn timeout and not selector_select(timeout):
                     raise TimeoutError('timed out')
                 wenn count:
@@ -408,7 +408,7 @@ klasse socket(_socket.socket):
                         # file, in which case we'll fall back on using
                         # plain send().
                         raise giveup_exc_type(err)
-                    raise err from None
+                    raise err from Nichts
                 sonst:
                     wenn sent == 0:
                         break  # EOF
@@ -420,18 +420,18 @@ klasse socket(_socket.socket):
                 file.seek(offset)
 
     wenn hasattr(os, 'sendfile'):
-        def _sendfile_use_sendfile(self, file, offset=0, count=None):
+        def _sendfile_use_sendfile(self, file, offset=0, count=Nichts):
             return self._sendfile_zerocopy(
                 partial(os.sendfile, self.fileno()),
                 _GiveupOnSendfile,
                 file, offset, count,
             )
     sonst:
-        def _sendfile_use_sendfile(self, file, offset=0, count=None):
+        def _sendfile_use_sendfile(self, file, offset=0, count=Nichts):
             raise _GiveupOnSendfile(
                 "os.sendfile() not available on this platform")
 
-    def _sendfile_use_send(self, file, offset=0, count=None):
+    def _sendfile_use_send(self, file, offset=0, count=Nichts):
         self._check_sendfile_params(file, offset, count)
         wenn self.gettimeout() == 0:
             raise ValueError("non-blocking sockets are not supported")
@@ -443,7 +443,7 @@ klasse socket(_socket.socket):
         file_read = file.read
         sock_send = self.send
         try:
-            while True:
+            while Wahr:
                 wenn count:
                     blocksize = min(count - total_sent, blocksize)
                     wenn blocksize <= 0:
@@ -451,7 +451,7 @@ klasse socket(_socket.socket):
                 data = memoryview(file_read(blocksize))
                 wenn not data:
                     break  # EOF
-                while True:
+                while Wahr:
                     try:
                         sent = sock_send(data)
                     except BlockingIOError:
@@ -472,7 +472,7 @@ klasse socket(_socket.socket):
             raise ValueError("file should be opened in binary mode")
         wenn not self.type & SOCK_STREAM:
             raise ValueError("only SOCK_STREAM type sockets are supported")
-        wenn count is not None:
+        wenn count is not Nichts:
             wenn not isinstance(count, int):
                 raise TypeError(
                     "count must be a positive integer (got {!r})".format(count))
@@ -480,7 +480,7 @@ klasse socket(_socket.socket):
                 raise ValueError(
                     "count must be a positive integer (got {!r})".format(count))
 
-    def sendfile(self, file, offset=0, count=None):
+    def sendfile(self, file, offset=0, count=Nichts):
         """sendfile(file[, offset[, count]]) -> sent
 
         Send a file until EOF is reached by using high-performance
@@ -515,7 +515,7 @@ klasse socket(_socket.socket):
 
     def close(self):
         # This function should not reference any globals. See issue #808164.
-        self._closed = True
+        self._closed = Wahr
         wenn self._io_refs <= 0:
             self._real_close()
 
@@ -526,7 +526,7 @@ klasse socket(_socket.socket):
         The object cannot be used after this call, but the file descriptor
         can be reused fuer other purposes.  The file descriptor is returned.
         """
-        self._closed = True
+        self._closed = Wahr
         return super().detach()
 
     @property
@@ -564,7 +564,7 @@ def fromfd(fd, family, type, proto=0):
     return socket(family, type, proto, nfd)
 
 wenn hasattr(_socket.socket, "sendmsg"):
-    def send_fds(sock, buffers, fds, flags=0, address=None):
+    def send_fds(sock, buffers, fds, flags=0, address=Nichts):
         """ send_fds(sock, buffers, fds[, flags[, address]]) -> integer
 
         Send the list of file descriptors fds over an AF_UNIX socket.
@@ -624,7 +624,7 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
         raise ValueError("Only protocol zero is supported")
 
     # We create a connected TCP socket. Note the trick with
-    # setblocking(False) that prevents us from having to create a thread.
+    # setblocking(Falsch) that prevents us from having to create a thread.
     lsock = socket(family, type, proto)
     try:
         lsock.bind((host, 0))
@@ -633,12 +633,12 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
         addr, port = lsock.getsockname()[:2]
         csock = socket(family, type, proto)
         try:
-            csock.setblocking(False)
+            csock.setblocking(Falsch)
             try:
                 csock.connect((addr, port))
             except (BlockingIOError, InterruptedError):
                 pass
-            csock.setblocking(True)
+            csock.setblocking(Wahr)
             ssock, _ = lsock.accept()
         except:
             csock.close()
@@ -665,8 +665,8 @@ def _fallback_socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
     return (ssock, csock)
 
 wenn hasattr(_socket, "socketpair"):
-    def socketpair(family=None, type=SOCK_STREAM, proto=0):
-        wenn family is None:
+    def socketpair(family=Nichts, type=SOCK_STREAM, proto=0):
+        wenn family is Nichts:
             try:
                 family = AF_UNIX
             except NameError:
@@ -716,12 +716,12 @@ klasse SocketIO(io.RawIOBase):
         self._mode = mode
         self._reading = "r" in mode
         self._writing = "w" in mode
-        self._timeout_occurred = False
+        self._timeout_occurred = Falsch
 
     def readinto(self, b):
         """Read up to len(b) bytes into the writable buffer *b* and return
         the number of bytes read.  If the socket is non-blocking and no bytes
-        are available, None is returned.
+        are available, Nichts is returned.
 
         If *b* is non-empty, a 0 return value indicates that the connection
         was shutdown at the other end.
@@ -733,18 +733,18 @@ klasse SocketIO(io.RawIOBase):
         try:
             return self._sock.recv_into(b)
         except timeout:
-            self._timeout_occurred = True
+            self._timeout_occurred = Wahr
             raise
         except error as e:
             wenn e.errno in _blocking_errnos:
-                return None
+                return Nichts
             raise
 
     def write(self, b):
         """Write the given bytes or bytearray object *b* to the socket
         and return the number of bytes written.  This can be less than
         len(b) wenn not all data could be written.  If the socket is
-        non-blocking and no bytes could be written None is returned.
+        non-blocking and no bytes could be written Nichts is returned.
         """
         self._checkClosed()
         self._checkWritable()
@@ -753,25 +753,25 @@ klasse SocketIO(io.RawIOBase):
         except error as e:
             # XXX what about EINTR?
             wenn e.errno in _blocking_errnos:
-                return None
+                return Nichts
             raise
 
     def readable(self):
-        """True wenn the SocketIO is open fuer reading.
+        """Wahr wenn the SocketIO is open fuer reading.
         """
         wenn self.closed:
             raise ValueError("I/O operation on closed socket.")
         return self._reading
 
     def writable(self):
-        """True wenn the SocketIO is open fuer writing.
+        """Wahr wenn the SocketIO is open fuer writing.
         """
         wenn self.closed:
             raise ValueError("I/O operation on closed socket.")
         return self._writing
 
     def seekable(self):
-        """True wenn the SocketIO is open fuer seeking.
+        """Wahr wenn the SocketIO is open fuer seeking.
         """
         wenn self.closed:
             raise ValueError("I/O operation on closed socket.")
@@ -802,7 +802,7 @@ klasse SocketIO(io.RawIOBase):
             return
         io.RawIOBase.close(self)
         self._sock._decref_socketios()
-        self._sock = None
+        self._sock = Nichts
 
 
 def getfqdn(name=''):
@@ -835,7 +835,7 @@ def getfqdn(name=''):
 _GLOBAL_DEFAULT_TIMEOUT = object()
 
 def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
-                      source_address=None, *, all_errors=False):
+                      source_address=Nichts, *, all_errors=Falsch):
     """Connect to *address* and return the socket object.
 
     Convenience function.  Connect to *address* (a 2-tuple ``(host,
@@ -846,15 +846,15 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
     is used.  If *source_address* is set it must be a tuple of (host, port)
     fuer the socket to bind as a source address before making the connection.
     A host of '' or port 0 tells the OS to use the default. When a connection
-    cannot be created, raises the last error wenn *all_errors* is False,
-    and an ExceptionGroup of all errors wenn *all_errors* is True.
+    cannot be created, raises the last error wenn *all_errors* is Falsch,
+    and an ExceptionGroup of all errors wenn *all_errors* is Wahr.
     """
 
     host, port = address
     exceptions = []
     fuer res in getaddrinfo(host, port, 0, SOCK_STREAM):
         af, socktype, proto, canonname, sa = res
-        sock = None
+        sock = Nichts
         try:
             sock = socket(af, socktype, proto)
             wenn timeout is not _GLOBAL_DEFAULT_TIMEOUT:
@@ -870,7 +870,7 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
             wenn not all_errors:
                 exceptions.clear()  # raise only the last error
             exceptions.append(exc)
-            wenn sock is not None:
+            wenn sock is not Nichts:
                 sock.close()
 
     wenn len(exceptions):
@@ -886,23 +886,23 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
 
 
 def has_dualstack_ipv6():
-    """Return True wenn the platform supports creating a SOCK_STREAM socket
+    """Return Wahr wenn the platform supports creating a SOCK_STREAM socket
     which can handle both AF_INET and AF_INET6 (IPv4 / IPv6) connections.
     """
     wenn not has_ipv6 \
             or not hasattr(_socket, 'IPPROTO_IPV6') \
             or not hasattr(_socket, 'IPV6_V6ONLY'):
-        return False
+        return Falsch
     try:
         with socket(AF_INET6, SOCK_STREAM) as sock:
             sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 0)
-            return True
+            return Wahr
     except error:
-        return False
+        return Falsch
 
 
-def create_server(address, *, family=AF_INET, backlog=None, reuse_port=False,
-                  dualstack_ipv6=False):
+def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
+                  dualstack_ipv6=Falsch):
     """Convenience function which creates a SOCK_STREAM type socket
     bound to *address* (a 2-tuple (host, port)) and return the socket
     object.
@@ -916,7 +916,7 @@ def create_server(address, *, family=AF_INET, backlog=None, reuse_port=False,
     platforms that enable it by default (e.g. Linux).
 
     >>> with create_server(('', 8000)) as server:
-    ...     while True:
+    ...     while Wahr:
     ...         conn, addr = server.accept()
     ...         # handle new connection
     """
@@ -961,8 +961,8 @@ def create_server(address, *, family=AF_INET, backlog=None, reuse_port=False,
         except error as err:
             msg = '%s (while attempting to bind on address %r)' % \
                 (err.strerror, address)
-            raise error(err.errno, msg) from None
-        wenn backlog is None:
+            raise error(err.errno, msg) from Nichts
+        wenn backlog is Nichts:
             sock.listen()
         sonst:
             sock.listen(backlog)
@@ -978,8 +978,8 @@ def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
     Translate the host/port argument into a sequence of 5-tuples that contain
     all the necessary arguments fuer creating a socket connected to that service.
     host is a domain name, a string representation of an IPv4/v6 address or
-    None. port is a string service name such as 'http', a numeric port number or
-    None. By passing None as the value of host and port, you can pass NULL to
+    Nichts. port is a string service name such as 'http', a numeric port number or
+    Nichts. By passing Nichts as the value of host and port, you can pass NULL to
     the underlying C API.
 
     The family, type and proto arguments can be optionally specified in order to

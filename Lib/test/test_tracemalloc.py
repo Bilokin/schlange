@@ -16,8 +16,8 @@ try:
     import _testcapi
     import _testinternalcapi
 except ImportError:
-    _testcapi = None
-    _testinternalcapi = None
+    _testcapi = Nichts
+    _testinternalcapi = Nichts
 
 
 DEFAULT_DOMAIN = 0
@@ -34,7 +34,7 @@ def get_frames(nframe, lineno_delta):
         frames.append((code.co_filename, lineno))
         lineno_delta = 0
         frame = frame.f_back
-        wenn frame is None:
+        wenn frame is Nichts:
             break
     return tuple(frames)
 
@@ -144,7 +144,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
         # Create a list and "destroy it": put it in the PyListObject free list
         obj = []
-        obj = None
+        obj = Nichts
 
         # Create a list which should reuse the previously created empty list
         obj = []
@@ -154,7 +154,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         obj_traceback = tracemalloc.Traceback(frames, min(len(frames), nframe))
 
         traceback = tracemalloc.get_object_traceback(obj)
-        self.assertIsNotNone(traceback)
+        self.assertIsNotNichts(traceback)
         self.assertEqual(traceback, obj_traceback)
 
     def test_set_traceback_limit(self):
@@ -246,7 +246,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         self.assertLessEqual(peak_size - size, max_error)
 
         # destroy the object
-        obj = None
+        obj = Nichts
         size2, peak_size2 = tracemalloc.get_traced_memory()
         self.assertLess(size2, size)
         self.assertGreaterEqual(size - size2, obj_size - max_error)
@@ -268,11 +268,11 @@ klasse TestTracemallocEnabled(unittest.TestCase):
     def test_clear_traces(self):
         obj, obj_traceback = allocate_bytes(123)
         traceback = tracemalloc.get_object_traceback(obj)
-        self.assertIsNotNone(traceback)
+        self.assertIsNotNichts(traceback)
 
         tracemalloc.clear_traces()
         traceback2 = tracemalloc.get_object_traceback(obj)
-        self.assertIsNone(traceback2)
+        self.assertIsNichts(traceback2)
 
     def test_reset_peak(self):
         # Python allocates some internals objects, so the test must tolerate
@@ -300,10 +300,10 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
     def test_is_tracing(self):
         tracemalloc.stop()
-        self.assertFalse(tracemalloc.is_tracing())
+        self.assertFalsch(tracemalloc.is_tracing())
 
         tracemalloc.start()
-        self.assertTrue(tracemalloc.is_tracing())
+        self.assertWahr(tracemalloc.is_tracing())
 
     def test_snapshot(self):
         obj, source = allocate_bytes(123)
@@ -348,7 +348,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
         obj_size = 12345
         obj, obj_traceback = allocate_bytes(obj_size)
         traceback = tracemalloc.get_object_traceback(obj)
-        wenn traceback is None:
+        wenn traceback is Nichts:
             return 3
 
         # everything is fine
@@ -392,7 +392,7 @@ klasse TestSnapshot(unittest.TestCase):
 
         with contextlib.ExitStack() as stack:
             stack.enter_context(patch.object(tracemalloc, 'is_tracing',
-                                             return_value=True))
+                                             return_value=Wahr))
             stack.enter_context(patch.object(tracemalloc, 'get_traceback_limit',
                                              return_value=5))
             stack.enter_context(patch.object(tracemalloc, '_get_traces',
@@ -410,9 +410,9 @@ klasse TestSnapshot(unittest.TestCase):
 
     def test_filter_traces(self):
         snapshot, snapshot2 = create_snapshots()
-        filter1 = tracemalloc.Filter(False, "b.py")
-        filter2 = tracemalloc.Filter(True, "a.py", 2)
-        filter3 = tracemalloc.Filter(True, "a.py", 5)
+        filter1 = tracemalloc.Filter(Falsch, "b.py")
+        filter2 = tracemalloc.Filter(Wahr, "a.py", 2)
+        filter3 = tracemalloc.Filter(Wahr, "a.py", 5)
 
         original_traces = list(snapshot.traces._traces)
 
@@ -448,8 +448,8 @@ klasse TestSnapshot(unittest.TestCase):
 
     def test_filter_traces_domain(self):
         snapshot, snapshot2 = create_snapshots()
-        filter1 = tracemalloc.Filter(False, "a.py", domain=1)
-        filter2 = tracemalloc.Filter(True, "a.py", domain=1)
+        filter1 = tracemalloc.Filter(Falsch, "a.py", domain=1)
+        filter2 = tracemalloc.Filter(Wahr, "a.py", domain=1)
 
         original_traces = list(snapshot.traces._traces)
 
@@ -475,8 +475,8 @@ klasse TestSnapshot(unittest.TestCase):
 
     def test_filter_traces_domain_filter(self):
         snapshot, snapshot2 = create_snapshots()
-        filter1 = tracemalloc.DomainFilter(False, domain=3)
-        filter2 = tracemalloc.DomainFilter(True, domain=3)
+        filter1 = tracemalloc.DomainFilter(Falsch, domain=3)
+        filter2 = tracemalloc.DomainFilter(Wahr, domain=3)
 
         # exclude domain 2
         snapshot3 = snapshot.filter_traces((filter1,))
@@ -596,7 +596,7 @@ klasse TestSnapshot(unittest.TestCase):
         ])
 
         self.assertRaises(ValueError,
-                          snapshot.statistics, 'traceback', cumulative=True)
+                          snapshot.statistics, 'traceback', cumulative=Wahr)
 
     def test_snapshot_group_by_cumulative(self):
         snapshot, snapshot2 = create_snapshots()
@@ -609,7 +609,7 @@ klasse TestSnapshot(unittest.TestCase):
         tb_b_4 = traceback_lineno('b.py', 4)
 
         # per file
-        stats = snapshot.statistics('filename', True)
+        stats = snapshot.statistics('filename', Wahr)
         self.assertEqual(stats, [
             tracemalloc.Statistic(tb_b, 98, 5),
             tracemalloc.Statistic(tb_a, 32, 4),
@@ -617,7 +617,7 @@ klasse TestSnapshot(unittest.TestCase):
         ])
 
         # per line
-        stats = snapshot.statistics('lineno', True)
+        stats = snapshot.statistics('lineno', Wahr)
         self.assertEqual(stats, [
             tracemalloc.Statistic(tb_b_1, 66, 1),
             tracemalloc.Statistic(tb_b_4, 32, 4),
@@ -679,17 +679,17 @@ klasse TestSnapshot(unittest.TestCase):
                              ['  File "b.py", line 4',
                               '    <b.py, 4>'])
 
-            self.assertEqual(tb.format(most_recent_first=True),
+            self.assertEqual(tb.format(most_recent_first=Wahr),
                              ['  File "a.py", line 2',
                               '    <a.py, 2>',
                               '  File "b.py", line 4',
                               '    <b.py, 4>'])
 
-            self.assertEqual(tb.format(limit=1, most_recent_first=True),
+            self.assertEqual(tb.format(limit=1, most_recent_first=Wahr),
                              ['  File "a.py", line 2',
                               '    <a.py, 2>'])
 
-            self.assertEqual(tb.format(limit=-1, most_recent_first=True),
+            self.assertEqual(tb.format(limit=-1, most_recent_first=Wahr),
                              ['  File "b.py", line 4',
                               '    <b.py, 4>'])
 
@@ -699,162 +699,162 @@ klasse TestFilters(unittest.TestCase):
 
     def test_filter_attributes(self):
         # test default values
-        f = tracemalloc.Filter(True, "abc")
-        self.assertEqual(f.inclusive, True)
+        f = tracemalloc.Filter(Wahr, "abc")
+        self.assertEqual(f.inclusive, Wahr)
         self.assertEqual(f.filename_pattern, "abc")
-        self.assertIsNone(f.lineno)
-        self.assertEqual(f.all_frames, False)
+        self.assertIsNichts(f.lineno)
+        self.assertEqual(f.all_frames, Falsch)
 
         # test custom values
-        f = tracemalloc.Filter(False, "test.py", 123, True)
-        self.assertEqual(f.inclusive, False)
+        f = tracemalloc.Filter(Falsch, "test.py", 123, Wahr)
+        self.assertEqual(f.inclusive, Falsch)
         self.assertEqual(f.filename_pattern, "test.py")
         self.assertEqual(f.lineno, 123)
-        self.assertEqual(f.all_frames, True)
+        self.assertEqual(f.all_frames, Wahr)
 
         # parameters passed by keyword
-        f = tracemalloc.Filter(inclusive=False, filename_pattern="test.py", lineno=123, all_frames=True)
-        self.assertEqual(f.inclusive, False)
+        f = tracemalloc.Filter(inclusive=Falsch, filename_pattern="test.py", lineno=123, all_frames=Wahr)
+        self.assertEqual(f.inclusive, Falsch)
         self.assertEqual(f.filename_pattern, "test.py")
         self.assertEqual(f.lineno, 123)
-        self.assertEqual(f.all_frames, True)
+        self.assertEqual(f.all_frames, Wahr)
 
         # read-only attribute
         self.assertRaises(AttributeError, setattr, f, "filename_pattern", "abc")
 
     def test_filter_match(self):
         # filter without line number
-        f = tracemalloc.Filter(True, "abc")
-        self.assertTrue(f._match_frame("abc", 0))
-        self.assertTrue(f._match_frame("abc", 5))
-        self.assertTrue(f._match_frame("abc", 10))
-        self.assertFalse(f._match_frame("12356", 0))
-        self.assertFalse(f._match_frame("12356", 5))
-        self.assertFalse(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Wahr, "abc")
+        self.assertWahr(f._match_frame("abc", 0))
+        self.assertWahr(f._match_frame("abc", 5))
+        self.assertWahr(f._match_frame("abc", 10))
+        self.assertFalsch(f._match_frame("12356", 0))
+        self.assertFalsch(f._match_frame("12356", 5))
+        self.assertFalsch(f._match_frame("12356", 10))
 
-        f = tracemalloc.Filter(False, "abc")
-        self.assertFalse(f._match_frame("abc", 0))
-        self.assertFalse(f._match_frame("abc", 5))
-        self.assertFalse(f._match_frame("abc", 10))
-        self.assertTrue(f._match_frame("12356", 0))
-        self.assertTrue(f._match_frame("12356", 5))
-        self.assertTrue(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Falsch, "abc")
+        self.assertFalsch(f._match_frame("abc", 0))
+        self.assertFalsch(f._match_frame("abc", 5))
+        self.assertFalsch(f._match_frame("abc", 10))
+        self.assertWahr(f._match_frame("12356", 0))
+        self.assertWahr(f._match_frame("12356", 5))
+        self.assertWahr(f._match_frame("12356", 10))
 
         # filter with line number > 0
-        f = tracemalloc.Filter(True, "abc", 5)
-        self.assertFalse(f._match_frame("abc", 0))
-        self.assertTrue(f._match_frame("abc", 5))
-        self.assertFalse(f._match_frame("abc", 10))
-        self.assertFalse(f._match_frame("12356", 0))
-        self.assertFalse(f._match_frame("12356", 5))
-        self.assertFalse(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Wahr, "abc", 5)
+        self.assertFalsch(f._match_frame("abc", 0))
+        self.assertWahr(f._match_frame("abc", 5))
+        self.assertFalsch(f._match_frame("abc", 10))
+        self.assertFalsch(f._match_frame("12356", 0))
+        self.assertFalsch(f._match_frame("12356", 5))
+        self.assertFalsch(f._match_frame("12356", 10))
 
-        f = tracemalloc.Filter(False, "abc", 5)
-        self.assertTrue(f._match_frame("abc", 0))
-        self.assertFalse(f._match_frame("abc", 5))
-        self.assertTrue(f._match_frame("abc", 10))
-        self.assertTrue(f._match_frame("12356", 0))
-        self.assertTrue(f._match_frame("12356", 5))
-        self.assertTrue(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Falsch, "abc", 5)
+        self.assertWahr(f._match_frame("abc", 0))
+        self.assertFalsch(f._match_frame("abc", 5))
+        self.assertWahr(f._match_frame("abc", 10))
+        self.assertWahr(f._match_frame("12356", 0))
+        self.assertWahr(f._match_frame("12356", 5))
+        self.assertWahr(f._match_frame("12356", 10))
 
         # filter with line number 0
-        f = tracemalloc.Filter(True, "abc", 0)
-        self.assertTrue(f._match_frame("abc", 0))
-        self.assertFalse(f._match_frame("abc", 5))
-        self.assertFalse(f._match_frame("abc", 10))
-        self.assertFalse(f._match_frame("12356", 0))
-        self.assertFalse(f._match_frame("12356", 5))
-        self.assertFalse(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Wahr, "abc", 0)
+        self.assertWahr(f._match_frame("abc", 0))
+        self.assertFalsch(f._match_frame("abc", 5))
+        self.assertFalsch(f._match_frame("abc", 10))
+        self.assertFalsch(f._match_frame("12356", 0))
+        self.assertFalsch(f._match_frame("12356", 5))
+        self.assertFalsch(f._match_frame("12356", 10))
 
-        f = tracemalloc.Filter(False, "abc", 0)
-        self.assertFalse(f._match_frame("abc", 0))
-        self.assertTrue(f._match_frame("abc", 5))
-        self.assertTrue(f._match_frame("abc", 10))
-        self.assertTrue(f._match_frame("12356", 0))
-        self.assertTrue(f._match_frame("12356", 5))
-        self.assertTrue(f._match_frame("12356", 10))
+        f = tracemalloc.Filter(Falsch, "abc", 0)
+        self.assertFalsch(f._match_frame("abc", 0))
+        self.assertWahr(f._match_frame("abc", 5))
+        self.assertWahr(f._match_frame("abc", 10))
+        self.assertWahr(f._match_frame("12356", 0))
+        self.assertWahr(f._match_frame("12356", 5))
+        self.assertWahr(f._match_frame("12356", 10))
 
     def test_filter_match_filename(self):
         def fnmatch(inclusive, filename, pattern):
             f = tracemalloc.Filter(inclusive, pattern)
             return f._match_frame(filename, 0)
 
-        self.assertTrue(fnmatch(True, "abc", "abc"))
-        self.assertFalse(fnmatch(True, "12356", "abc"))
-        self.assertFalse(fnmatch(True, "<unknown>", "abc"))
+        self.assertWahr(fnmatch(Wahr, "abc", "abc"))
+        self.assertFalsch(fnmatch(Wahr, "12356", "abc"))
+        self.assertFalsch(fnmatch(Wahr, "<unknown>", "abc"))
 
-        self.assertFalse(fnmatch(False, "abc", "abc"))
-        self.assertTrue(fnmatch(False, "12356", "abc"))
-        self.assertTrue(fnmatch(False, "<unknown>", "abc"))
+        self.assertFalsch(fnmatch(Falsch, "abc", "abc"))
+        self.assertWahr(fnmatch(Falsch, "12356", "abc"))
+        self.assertWahr(fnmatch(Falsch, "<unknown>", "abc"))
 
     def test_filter_match_filename_joker(self):
         def fnmatch(filename, pattern):
-            filter = tracemalloc.Filter(True, pattern)
+            filter = tracemalloc.Filter(Wahr, pattern)
             return filter._match_frame(filename, 0)
 
         # empty string
-        self.assertFalse(fnmatch('abc', ''))
-        self.assertFalse(fnmatch('', 'abc'))
-        self.assertTrue(fnmatch('', ''))
-        self.assertTrue(fnmatch('', '*'))
+        self.assertFalsch(fnmatch('abc', ''))
+        self.assertFalsch(fnmatch('', 'abc'))
+        self.assertWahr(fnmatch('', ''))
+        self.assertWahr(fnmatch('', '*'))
 
         # no *
-        self.assertTrue(fnmatch('abc', 'abc'))
-        self.assertFalse(fnmatch('abc', 'abcd'))
-        self.assertFalse(fnmatch('abc', 'def'))
+        self.assertWahr(fnmatch('abc', 'abc'))
+        self.assertFalsch(fnmatch('abc', 'abcd'))
+        self.assertFalsch(fnmatch('abc', 'def'))
 
         # a*
-        self.assertTrue(fnmatch('abc', 'a*'))
-        self.assertTrue(fnmatch('abc', 'abc*'))
-        self.assertFalse(fnmatch('abc', 'b*'))
-        self.assertFalse(fnmatch('abc', 'abcd*'))
+        self.assertWahr(fnmatch('abc', 'a*'))
+        self.assertWahr(fnmatch('abc', 'abc*'))
+        self.assertFalsch(fnmatch('abc', 'b*'))
+        self.assertFalsch(fnmatch('abc', 'abcd*'))
 
         # a*b
-        self.assertTrue(fnmatch('abc', 'a*c'))
-        self.assertTrue(fnmatch('abcdcx', 'a*cx'))
-        self.assertFalse(fnmatch('abb', 'a*c'))
-        self.assertFalse(fnmatch('abcdce', 'a*cx'))
+        self.assertWahr(fnmatch('abc', 'a*c'))
+        self.assertWahr(fnmatch('abcdcx', 'a*cx'))
+        self.assertFalsch(fnmatch('abb', 'a*c'))
+        self.assertFalsch(fnmatch('abcdce', 'a*cx'))
 
         # a*b*c
-        self.assertTrue(fnmatch('abcde', 'a*c*e'))
-        self.assertTrue(fnmatch('abcbdefeg', 'a*bd*eg'))
-        self.assertFalse(fnmatch('abcdd', 'a*c*e'))
-        self.assertFalse(fnmatch('abcbdefef', 'a*bd*eg'))
+        self.assertWahr(fnmatch('abcde', 'a*c*e'))
+        self.assertWahr(fnmatch('abcbdefeg', 'a*bd*eg'))
+        self.assertFalsch(fnmatch('abcdd', 'a*c*e'))
+        self.assertFalsch(fnmatch('abcbdefef', 'a*bd*eg'))
 
         # replace .pyc suffix with .py
-        self.assertTrue(fnmatch('a.pyc', 'a.py'))
-        self.assertTrue(fnmatch('a.py', 'a.pyc'))
+        self.assertWahr(fnmatch('a.pyc', 'a.py'))
+        self.assertWahr(fnmatch('a.py', 'a.pyc'))
 
         wenn os.name == 'nt':
             # case insensitive
-            self.assertTrue(fnmatch('aBC', 'ABc'))
-            self.assertTrue(fnmatch('aBcDe', 'Ab*dE'))
+            self.assertWahr(fnmatch('aBC', 'ABc'))
+            self.assertWahr(fnmatch('aBcDe', 'Ab*dE'))
 
-            self.assertTrue(fnmatch('a.pyc', 'a.PY'))
-            self.assertTrue(fnmatch('a.py', 'a.PYC'))
+            self.assertWahr(fnmatch('a.pyc', 'a.PY'))
+            self.assertWahr(fnmatch('a.py', 'a.PYC'))
         sonst:
             # case sensitive
-            self.assertFalse(fnmatch('aBC', 'ABc'))
-            self.assertFalse(fnmatch('aBcDe', 'Ab*dE'))
+            self.assertFalsch(fnmatch('aBC', 'ABc'))
+            self.assertFalsch(fnmatch('aBcDe', 'Ab*dE'))
 
-            self.assertFalse(fnmatch('a.pyc', 'a.PY'))
-            self.assertFalse(fnmatch('a.py', 'a.PYC'))
+            self.assertFalsch(fnmatch('a.pyc', 'a.PY'))
+            self.assertFalsch(fnmatch('a.py', 'a.PYC'))
 
         wenn os.name == 'nt':
             # normalize alternate separator "/" to the standard separator "\"
-            self.assertTrue(fnmatch(r'a/b', r'a\b'))
-            self.assertTrue(fnmatch(r'a\b', r'a/b'))
-            self.assertTrue(fnmatch(r'a/b\c', r'a\b/c'))
-            self.assertTrue(fnmatch(r'a/b/c', r'a\b\c'))
+            self.assertWahr(fnmatch(r'a/b', r'a\b'))
+            self.assertWahr(fnmatch(r'a\b', r'a/b'))
+            self.assertWahr(fnmatch(r'a/b\c', r'a\b/c'))
+            self.assertWahr(fnmatch(r'a/b/c', r'a\b\c'))
         sonst:
             # there is no alternate separator
-            self.assertFalse(fnmatch(r'a/b', r'a\b'))
-            self.assertFalse(fnmatch(r'a\b', r'a/b'))
-            self.assertFalse(fnmatch(r'a/b\c', r'a\b/c'))
-            self.assertFalse(fnmatch(r'a/b/c', r'a\b\c'))
+            self.assertFalsch(fnmatch(r'a/b', r'a\b'))
+            self.assertFalsch(fnmatch(r'a\b', r'a/b'))
+            self.assertFalsch(fnmatch(r'a/b\c', r'a\b/c'))
+            self.assertFalsch(fnmatch(r'a/b/c', r'a\b\c'))
 
         # as of 3.5, .pyo is no longer munged to .py
-        self.assertFalse(fnmatch('a.pyo', 'a.py'))
+        self.assertFalsch(fnmatch('a.pyo', 'a.py'))
 
     def test_filter_match_trace(self):
         t1 = (("a.py", 2), ("b.py", 3))
@@ -862,47 +862,47 @@ klasse TestFilters(unittest.TestCase):
         t3 = (("c.py", 5), ('<unknown>', 0))
         unknown = (('<unknown>', 0),)
 
-        f = tracemalloc.Filter(True, "b.py", all_frames=True)
-        self.assertTrue(f._match_traceback(t1))
-        self.assertTrue(f._match_traceback(t2))
-        self.assertFalse(f._match_traceback(t3))
-        self.assertFalse(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Wahr, "b.py", all_frames=Wahr)
+        self.assertWahr(f._match_traceback(t1))
+        self.assertWahr(f._match_traceback(t2))
+        self.assertFalsch(f._match_traceback(t3))
+        self.assertFalsch(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(True, "b.py", all_frames=False)
-        self.assertFalse(f._match_traceback(t1))
-        self.assertTrue(f._match_traceback(t2))
-        self.assertFalse(f._match_traceback(t3))
-        self.assertFalse(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Wahr, "b.py", all_frames=Falsch)
+        self.assertFalsch(f._match_traceback(t1))
+        self.assertWahr(f._match_traceback(t2))
+        self.assertFalsch(f._match_traceback(t3))
+        self.assertFalsch(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(False, "b.py", all_frames=True)
-        self.assertFalse(f._match_traceback(t1))
-        self.assertFalse(f._match_traceback(t2))
-        self.assertTrue(f._match_traceback(t3))
-        self.assertTrue(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Falsch, "b.py", all_frames=Wahr)
+        self.assertFalsch(f._match_traceback(t1))
+        self.assertFalsch(f._match_traceback(t2))
+        self.assertWahr(f._match_traceback(t3))
+        self.assertWahr(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(False, "b.py", all_frames=False)
-        self.assertTrue(f._match_traceback(t1))
-        self.assertFalse(f._match_traceback(t2))
-        self.assertTrue(f._match_traceback(t3))
-        self.assertTrue(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Falsch, "b.py", all_frames=Falsch)
+        self.assertWahr(f._match_traceback(t1))
+        self.assertFalsch(f._match_traceback(t2))
+        self.assertWahr(f._match_traceback(t3))
+        self.assertWahr(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(False, "<unknown>", all_frames=False)
-        self.assertTrue(f._match_traceback(t1))
-        self.assertTrue(f._match_traceback(t2))
-        self.assertTrue(f._match_traceback(t3))
-        self.assertFalse(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Falsch, "<unknown>", all_frames=Falsch)
+        self.assertWahr(f._match_traceback(t1))
+        self.assertWahr(f._match_traceback(t2))
+        self.assertWahr(f._match_traceback(t3))
+        self.assertFalsch(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(True, "<unknown>", all_frames=True)
-        self.assertFalse(f._match_traceback(t1))
-        self.assertFalse(f._match_traceback(t2))
-        self.assertTrue(f._match_traceback(t3))
-        self.assertTrue(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Wahr, "<unknown>", all_frames=Wahr)
+        self.assertFalsch(f._match_traceback(t1))
+        self.assertFalsch(f._match_traceback(t2))
+        self.assertWahr(f._match_traceback(t3))
+        self.assertWahr(f._match_traceback(unknown))
 
-        f = tracemalloc.Filter(False, "<unknown>", all_frames=True)
-        self.assertTrue(f._match_traceback(t1))
-        self.assertTrue(f._match_traceback(t2))
-        self.assertFalse(f._match_traceback(t3))
-        self.assertFalse(f._match_traceback(unknown))
+        f = tracemalloc.Filter(Falsch, "<unknown>", all_frames=Wahr)
+        self.assertWahr(f._match_traceback(t1))
+        self.assertWahr(f._match_traceback(t2))
+        self.assertFalsch(f._match_traceback(t3))
+        self.assertFalsch(f._match_traceback(unknown))
 
 
 klasse TestCommandLine(unittest.TestCase):
@@ -911,7 +911,7 @@ klasse TestCommandLine(unittest.TestCase):
         code = 'import tracemalloc; print(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code)
         stdout = stdout.rstrip()
-        self.assertEqual(stdout, b'False')
+        self.assertEqual(stdout, b'Falsch')
 
     @unittest.skipIf(interpreter_requires_environment(),
                      'Cannot run -E tests when PYTHON env vars are required.')
@@ -920,21 +920,21 @@ klasse TestCommandLine(unittest.TestCase):
         code = 'import tracemalloc; print(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-E', '-c', code, PYTHONTRACEMALLOC='1')
         stdout = stdout.rstrip()
-        self.assertEqual(stdout, b'False')
+        self.assertEqual(stdout, b'Falsch')
 
     def test_env_var_disabled(self):
         # tracing at startup
         code = 'import tracemalloc; print(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='0')
         stdout = stdout.rstrip()
-        self.assertEqual(stdout, b'False')
+        self.assertEqual(stdout, b'Falsch')
 
     def test_env_var_enabled_at_startup(self):
         # tracing at startup
         code = 'import tracemalloc; print(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='1')
         stdout = stdout.rstrip()
-        self.assertEqual(stdout, b'True')
+        self.assertEqual(stdout, b'Wahr')
 
     def test_env_limit(self):
         # start and set the number of frames
@@ -990,7 +990,7 @@ klasse TestCommandLine(unittest.TestCase):
             with self.subTest(nframe=nframe):
                 self.check_sys_xoptions_invalid(nframe)
 
-    @unittest.skipIf(_testcapi is None, 'need _testcapi')
+    @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
     def test_pymem_alloc0(self):
         # Issue #21639: Check that PyMem_Malloc(0) with tracemalloc enabled
         # does not crash.
@@ -998,7 +998,7 @@ klasse TestCommandLine(unittest.TestCase):
         assert_python_ok('-X', 'tracemalloc', '-c', code)
 
 
-@unittest.skipIf(_testcapi is None, 'need _testcapi')
+@unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
 klasse TestCAPI(unittest.TestCase):
     maxDiff = 80 * 20
 
@@ -1019,24 +1019,24 @@ klasse TestCAPI(unittest.TestCase):
 
     def get_traceback(self):
         frames = _testinternalcapi._PyTraceMalloc_GetTraceback(self.domain, self.ptr)
-        wenn frames is not None:
+        wenn frames is not Nichts:
             return tracemalloc.Traceback(frames)
         sonst:
-            return None
+            return Nichts
 
-    def track(self, release_gil=False, nframe=1):
+    def track(self, release_gil=Falsch, nframe=1):
         frames = get_frames(nframe, 1)
         _testcapi.tracemalloc_track(self.domain, self.ptr, self.size,
                                     release_gil)
         return frames
 
-    def untrack(self, release_gil=False):
+    def untrack(self, release_gil=Falsch):
         _testcapi.tracemalloc_untrack(self.domain, self.ptr, release_gil)
 
     def get_traced_memory(self):
         # Get the traced size in the domain
         snapshot = tracemalloc.take_snapshot()
-        domain_filter = tracemalloc.DomainFilter(True, self.domain)
+        domain_filter = tracemalloc.DomainFilter(Wahr, self.domain)
         snapshot = snapshot.filter_traces([domain_filter])
         return sum(trace.size fuer trace in snapshot.traces)
 
@@ -1053,12 +1053,12 @@ klasse TestCAPI(unittest.TestCase):
         self.assertEqual(self.get_traced_memory(), self.size)
 
     def test_track(self):
-        self.check_track(False)
+        self.check_track(Falsch)
 
     def test_track_without_gil(self):
         # check that calling _PyTraceMalloc_Track() without holding the GIL
         # works too
-        self.check_track(True)
+        self.check_track(Wahr)
 
     def test_track_already_tracked(self):
         nframe = 5
@@ -1077,12 +1077,12 @@ klasse TestCAPI(unittest.TestCase):
         tracemalloc.start()
 
         self.track()
-        self.assertIsNotNone(self.get_traceback())
+        self.assertIsNotNichts(self.get_traceback())
         self.assertEqual(self.get_traced_memory(), self.size)
 
         # untrack must remove the trace
         self.untrack(release_gil)
-        self.assertIsNone(self.get_traceback())
+        self.assertIsNichts(self.get_traceback())
         self.assertEqual(self.get_traced_memory(), 0)
 
         # calling _PyTraceMalloc_Untrack() multiple times must not crash
@@ -1090,10 +1090,10 @@ klasse TestCAPI(unittest.TestCase):
         self.untrack(release_gil)
 
     def test_untrack(self):
-        self.check_untrack(False)
+        self.check_untrack(Falsch)
 
     def test_untrack_without_gil(self):
-        self.check_untrack(True)
+        self.check_untrack(Wahr)
 
     def test_stop_track(self):
         tracemalloc.start()
@@ -1101,7 +1101,7 @@ klasse TestCAPI(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             self.track()
-        self.assertIsNone(self.get_traceback())
+        self.assertIsNichts(self.get_traceback())
 
     def test_stop_untrack(self):
         tracemalloc.start()
@@ -1111,11 +1111,11 @@ klasse TestCAPI(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             self.untrack()
 
-    @unittest.skipIf(_testcapi is None, 'need _testcapi')
+    @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
     @threading_helper.requires_working_threading()
     # gh-128679: Test crash on a debug build (especially on FreeBSD).
     @unittest.skipIf(support.Py_DEBUG, 'need release build')
-    @support.skip_if_sanitizer('gh-131566: race when setting allocator', thread=True)
+    @support.skip_if_sanitizer('gh-131566: race when setting allocator', thread=Wahr)
     def test_tracemalloc_track_race(self):
         # gh-128679: Test fix fuer tracemalloc.stop() race condition
         _testcapi.tracemalloc_track_race()

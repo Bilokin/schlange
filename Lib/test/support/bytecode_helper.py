@@ -7,7 +7,7 @@ import opcode
 try:
     import _testinternalcapi
 except ImportError:
-    _testinternalcapi = None
+    _testinternalcapi = Nichts
 
 _UNSPECIFIED = object()
 
@@ -130,12 +130,12 @@ klasse CompilationStepTestCase(unittest.TestCase):
             wenn isinstance(op, str):
                 op = opcode.opmap[op]
             self.assertEqual(op in opcode.hasarg,
-                             arg is not None,
+                             arg is not Nichts,
                              f"{opcode.opname[op]=} {arg=}")
-            self.assertTrue(all(isinstance(l, int) fuer l in loc))
+            self.assertWahr(all(isinstance(l, int) fuer l in loc))
 
 
-@unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
+@unittest.skipIf(_testinternalcapi is Nichts, "requires _testinternalcapi")
 klasse CodegenTestCase(CompilationStepTestCase):
 
     def generate_code(self, ast):
@@ -143,14 +143,14 @@ klasse CodegenTestCase(CompilationStepTestCase):
         return insts
 
 
-@unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
+@unittest.skipIf(_testinternalcapi is Nichts, "requires _testinternalcapi")
 klasse CfgOptimizationTestCase(CompilationStepTestCase):
 
     def get_optimized(self, seq, consts, nlocals=0):
         insts = _testinternalcapi.optimize_cfg(seq, consts, nlocals)
         return insts, consts
 
-@unittest.skipIf(_testinternalcapi is None, "requires _testinternalcapi")
+@unittest.skipIf(_testinternalcapi is Nichts, "requires _testinternalcapi")
 klasse AssemblerTestCase(CompilationStepTestCase):
 
     def get_code_object(self, filename, insts, metadata):

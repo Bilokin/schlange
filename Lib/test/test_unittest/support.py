@@ -100,7 +100,7 @@ klasse LoggingResult(_BaseLoggingResult):
     """
 
     def addSubTest(self, test, subtest, err):
-        wenn err is None:
+        wenn err is Nichts:
             self._events.append('addSubTestSuccess')
         sonst:
             self._events.append('addSubTestFailure')
@@ -117,7 +117,7 @@ klasse ResultWithNoStartTestRunStopTestRun(object):
         self.skipped = []
         self.expectedFailures = []
         self.unexpectedSuccesses = []
-        self.shouldStop = False
+        self.shouldStop = Falsch
 
     def startTest(self, test):
         pass
@@ -135,7 +135,7 @@ klasse ResultWithNoStartTestRunStopTestRun(object):
         pass
 
     def wasSuccessful(self):
-        return True
+        return Wahr
 
 
 klasse BufferedWriter:

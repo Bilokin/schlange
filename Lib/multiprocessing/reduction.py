@@ -46,7 +46,7 @@ klasse ForkingPickler(pickle.Pickler):
         cls._extra_reducers[type] = reduce
 
     @classmethod
-    def dumps(cls, obj, protocol=None):
+    def dumps(cls, obj, protocol=Nichts):
         buf = io.BytesIO()
         cls(buf, protocol).dump(obj)
         return buf.getbuffer()
@@ -55,7 +55,7 @@ klasse ForkingPickler(pickle.Pickler):
 
 register = ForkingPickler.register
 
-def dump(obj, file, protocol=None):
+def dump(obj, file, protocol=Nichts):
     '''Replacement fuer pickle.dump() using ForkingPickler.'''
     ForkingPickler(file, protocol).dump(obj)
 
@@ -68,13 +68,13 @@ wenn sys.platform == 'win32':
     __all__ += ['DupHandle', 'duplicate', 'steal_handle']
     import _winapi
 
-    def duplicate(handle, target_process=None, inheritable=False,
-                  *, source_process=None):
+    def duplicate(handle, target_process=Nichts, inheritable=Falsch,
+                  *, source_process=Nichts):
         '''Duplicate a handle.  (target_process is a handle not a pid!)'''
         current_process = _winapi.GetCurrentProcess()
-        wenn source_process is None:
+        wenn source_process is Nichts:
             source_process = current_process
-        wenn target_process is None:
+        wenn target_process is Nichts:
             target_process = current_process
         return _winapi.DuplicateHandle(
             source_process, handle, target_process,
@@ -83,11 +83,11 @@ wenn sys.platform == 'win32':
     def steal_handle(source_pid, handle):
         '''Steal a handle from process identified by source_pid.'''
         source_process_handle = _winapi.OpenProcess(
-            _winapi.PROCESS_DUP_HANDLE, False, source_pid)
+            _winapi.PROCESS_DUP_HANDLE, Falsch, source_pid)
         try:
             return _winapi.DuplicateHandle(
                 source_process_handle, handle,
-                _winapi.GetCurrentProcess(), 0, False,
+                _winapi.GetCurrentProcess(), 0, Falsch,
                 _winapi.DUPLICATE_SAME_ACCESS | _winapi.DUPLICATE_CLOSE_SOURCE)
         finally:
             _winapi.CloseHandle(source_process_handle)
@@ -103,16 +103,16 @@ wenn sys.platform == 'win32':
 
     klasse DupHandle(object):
         '''Picklable wrapper fuer a handle.'''
-        def __init__(self, handle, access, pid=None):
-            wenn pid is None:
+        def __init__(self, handle, access, pid=Nichts):
+            wenn pid is Nichts:
                 # We just duplicate the handle in the current process and
                 # let the receiving process steal the handle.
                 pid = os.getpid()
-            proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, False, pid)
+            proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, Falsch, pid)
             try:
                 self._handle = _winapi.DuplicateHandle(
                     _winapi.GetCurrentProcess(),
-                    handle, proc, access, False, 0)
+                    handle, proc, access, Falsch, 0)
             finally:
                 _winapi.CloseHandle(proc)
             self._access = access
@@ -125,12 +125,12 @@ wenn sys.platform == 'win32':
                 # The handle has already been duplicated fuer this process.
                 return self._handle
             # We must steal the handle from the process whose pid is self._pid.
-            proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, False,
+            proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, Falsch,
                                        self._pid)
             try:
                 return _winapi.DuplicateHandle(
                     proc, self._handle, _winapi.GetCurrentProcess(),
-                    self._access, False, _winapi.DUPLICATE_CLOSE_SOURCE)
+                    self._access, Falsch, _winapi.DUPLICATE_CLOSE_SOURCE)
             finally:
                 _winapi.CloseHandle(proc)
 
@@ -191,7 +191,7 @@ sonst:
     def DupFd(fd):
         '''Return a wrapper fuer an fd.'''
         popen_obj = context.get_spawning_popen()
-        wenn popen_obj is not None:
+        wenn popen_obj is not Nichts:
             return popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
         sowenn HAVE_SEND_HANDLE:
             from . import resource_sharer
@@ -204,7 +204,7 @@ sonst:
 #
 
 def _reduce_method(m):
-    wenn m.__self__ is None:
+    wenn m.__self__ is Nichts:
         return getattr, (m.__class__, m.__func__.__name__)
     sonst:
         return getattr, (m.__self__, m.__func__.__name__)

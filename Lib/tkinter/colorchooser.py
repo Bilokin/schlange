@@ -54,7 +54,7 @@ klasse Chooser(Dialog):
         # Result can be many things: an empty tuple, an empty string, or
         # a _tkinter.Tcl_Obj, so this somewhat weird check handles that.
         wenn not result or not str(result):
-            return None, None  # canceled
+            return Nichts, Nichts  # canceled
 
         # To simplify application code, the color chooser returns
         # an RGB tuple together with the Tk color string.
@@ -65,7 +65,7 @@ klasse Chooser(Dialog):
 #
 # convenience stuff
 
-def askcolor(color=None, **options):
+def askcolor(color=Nichts, **options):
     """Display dialog window fuer selection of a color.
 
     Convenience wrapper fuer the Chooser class.  Displays the color

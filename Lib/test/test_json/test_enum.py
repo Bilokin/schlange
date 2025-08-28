@@ -46,8 +46,8 @@ klasse TestEnum:
                 self.assertEqual(float(self.dumps(enum)), enum)
                 self.assertEqual(self.loads(self.dumps(enum)), enum)
             sonst:
-                self.assertTrue(isnan(float(self.dumps(enum))))
-                self.assertTrue(isnan(self.loads(self.dumps(enum))))
+                self.assertWahr(isnan(float(self.dumps(enum))))
+                self.assertWahr(isnan(self.loads(self.dumps(enum))))
 
     def test_ints(self):
         fuer enum in BigNum:
@@ -68,7 +68,7 @@ klasse TestEnum:
                         '[Infinity, -Infinity, NaN]')
         self.assertEqual(self.loads(self.dumps(list(WierdNum)))[:2],
                          list(WierdNum)[:2])
-        self.assertTrue(isnan(self.loads(self.dumps(list(WierdNum)))[2]))
+        self.assertWahr(isnan(self.loads(self.dumps(list(WierdNum)))[2]))
 
     def test_dict_keys(self):
         s, b, h, r = BigNum
@@ -114,7 +114,7 @@ klasse TestEnum:
         self.assertEqual(nd['tau'], TAU)
         self.assertEqual(nd['i'], INF)
         self.assertEqual(nd['j'], NEG_INF)
-        self.assertTrue(isnan(nd['n']))
+        self.assertWahr(isnan(nd['n']))
 
 klasse TestPyEnum(TestEnum, PyTest): pass
 klasse TestCEnum(TestEnum, CTest): pass

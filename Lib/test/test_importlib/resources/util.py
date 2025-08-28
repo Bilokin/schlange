@@ -52,7 +52,7 @@ klasse Reader(ResourceReader):
         yield from self._contents
 
 
-def create_package_from_loader(loader, is_package=True):
+def create_package_from_loader(loader, is_package=Wahr):
     name = 'testingpackage'
     module = types.ModuleType(name)
     spec = ModuleSpec(name, loader, origin='does-not-exist', is_package=is_package)
@@ -61,7 +61,7 @@ def create_package_from_loader(loader, is_package=True):
     return module
 
 
-def create_package(file=None, path=None, is_package=True, contents=()):
+def create_package(file=Nichts, path=Nichts, is_package=Wahr, contents=()):
     return create_package_from_loader(
         Reader(file=file, path=path, _contents=contents),
         is_package,

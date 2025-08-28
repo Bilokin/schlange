@@ -5,7 +5,7 @@ import warnings
 
 from .case import TestCase
 
-__unittest = True
+__unittest = Wahr
 
 klasse IsolatedAsyncioTestCase(TestCase):
     # Names intentionally have a long prefix
@@ -28,17 +28,17 @@ klasse IsolatedAsyncioTestCase(TestCase):
     # Note: the test case modifies event loop policy wenn the policy was not instantiated
     # yet, unless loop_factory=asyncio.EventLoop is set.
     # asyncio.get_event_loop_policy() creates a default policy on demand but never
-    # returns None
+    # returns Nichts
     # I believe this is not an issue in user level tests but python itself fuer testing
     # should reset a policy in every test module
-    # by calling asyncio.set_event_loop_policy(None) in tearDownModule()
+    # by calling asyncio.set_event_loop_policy(Nichts) in tearDownModule()
     # or set loop_factory=asyncio.EventLoop
 
-    loop_factory = None
+    loop_factory = Nichts
 
     def __init__(self, methodName='runTest'):
         super().__init__(methodName)
-        self._asyncioRunner = None
+        self._asyncioRunner = Nichts
         self._asyncioTestContext = contextvars.copy_context()
 
     async def asyncSetUp(self):
@@ -85,9 +85,9 @@ klasse IsolatedAsyncioTestCase(TestCase):
             sonst:
                 msg += (" but it supports the context manager protocol. "
                         "Did you mean to use enterContext()?")
-            raise TypeError(msg) from None
+            raise TypeError(msg) from Nichts
         result = await enter(cm)
-        self.addAsyncCleanup(exit, cm, None, None, None)
+        self.addAsyncCleanup(exit, cm, Nichts, Nichts, Nichts)
         return result
 
     def _callSetUp(self):
@@ -100,9 +100,9 @@ klasse IsolatedAsyncioTestCase(TestCase):
 
     def _callTestMethod(self, method):
         result = self._callMaybeAsync(method)
-        wenn result is not None:
+        wenn result is not Nichts:
             msg = (
-                f'It is deprecated to return a value that is not None '
+                f'It is deprecated to return a value that is not Nichts '
                 f'from a test case ({method} returned {type(result).__name__!r})',
             )
             warnings.warn(msg, DeprecationWarning, stacklevel=4)
@@ -115,7 +115,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
         self._callMaybeAsync(function, *args, **kwargs)
 
     def _callAsync(self, func, /, *args, **kwargs):
-        assert self._asyncioRunner is not None, 'asyncio runner is not initialized'
+        assert self._asyncioRunner is not Nichts, 'asyncio runner is not initialized'
         assert inspect.iscoroutinefunction(func), f'{func!r} is not an async function'
         return self._asyncioRunner.run(
             func(*args, **kwargs),
@@ -123,7 +123,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
         )
 
     def _callMaybeAsync(self, func, /, *args, **kwargs):
-        assert self._asyncioRunner is not None, 'asyncio runner is not initialized'
+        assert self._asyncioRunner is not Nichts, 'asyncio runner is not initialized'
         wenn inspect.iscoroutinefunction(func):
             return self._asyncioRunner.run(
                 func(*args, **kwargs),
@@ -133,15 +133,15 @@ klasse IsolatedAsyncioTestCase(TestCase):
             return self._asyncioTestContext.run(func, *args, **kwargs)
 
     def _setupAsyncioRunner(self):
-        assert self._asyncioRunner is None, 'asyncio runner is already initialized'
-        runner = asyncio.Runner(debug=True, loop_factory=self.loop_factory)
+        assert self._asyncioRunner is Nichts, 'asyncio runner is already initialized'
+        runner = asyncio.Runner(debug=Wahr, loop_factory=self.loop_factory)
         self._asyncioRunner = runner
 
     def _tearDownAsyncioRunner(self):
         runner = self._asyncioRunner
         runner.close()
 
-    def run(self, result=None):
+    def run(self, result=Nichts):
         self._setupAsyncioRunner()
         try:
             return super().run(result)
@@ -154,5 +154,5 @@ klasse IsolatedAsyncioTestCase(TestCase):
         self._tearDownAsyncioRunner()
 
     def __del__(self):
-        wenn self._asyncioRunner is not None:
+        wenn self._asyncioRunner is not Nichts:
             self._tearDownAsyncioRunner()

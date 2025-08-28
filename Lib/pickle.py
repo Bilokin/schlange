@@ -41,9 +41,9 @@ __all__ = ["PickleError", "PicklingError", "UnpicklingError", "Pickler",
 try:
     from _pickle import PickleBuffer
     __all__.append("PickleBuffer")
-    _HAVE_PICKLE_BUFFER = True
+    _HAVE_PICKLE_BUFFER = Wahr
 except ImportError:
-    _HAVE_PICKLE_BUFFER = False
+    _HAVE_PICKLE_BUFFER = Falsch
 
 
 # Shortcut fuer use in isinstance testing
@@ -112,7 +112,7 @@ BININT         = b'J'   # push four-byte signed int
 BININT1        = b'K'   # push 1-byte unsigned int
 LONG           = b'L'   # push long; decimal string argument
 BININT2        = b'M'   # push 2-byte unsigned int
-NONE           = b'N'   # push None
+NONE           = b'N'   # push Nichts
 PERSID         = b'P'   # push persistent object; id is taken from string arg
 BINPERSID      = b'Q'   #  "       "         "  ;  "  "   "     "  stack
 REDUCE         = b'R'   # apply callable to argtuple, both on stack
@@ -156,8 +156,8 @@ EXT4           = b'\x84'  # ditto, but 4-byte index
 TUPLE1         = b'\x85'  # build 1-tuple from stack top
 TUPLE2         = b'\x86'  # build 2-tuple from two topmost stack items
 TUPLE3         = b'\x87'  # build 3-tuple from three topmost stack items
-NEWTRUE        = b'\x88'  # push True
-NEWFALSE       = b'\x89'  # push False
+NEWTRUE        = b'\x88'  # push Wahr
+NEWFALSE       = b'\x89'  # push Falsch
 LONG1          = b'\x8a'  # push long from < 256 bytes
 LONG4          = b'\x8b'  # push really big long
 
@@ -197,17 +197,17 @@ klasse _Framer:
 
     def __init__(self, file_write):
         self.file_write = file_write
-        self.current_frame = None
+        self.current_frame = Nichts
 
     def start_framing(self):
         self.current_frame = io.BytesIO()
 
     def end_framing(self):
         wenn self.current_frame and self.current_frame.tell() > 0:
-            self.commit_frame(force=True)
-            self.current_frame = None
+            self.commit_frame(force=Wahr)
+            self.current_frame = Nichts
 
-    def commit_frame(self, force=False):
+    def commit_frame(self, force=Falsch):
         wenn self.current_frame:
             f = self.current_frame
             wenn f.tell() >= self._FRAME_SIZE_TARGET or force:
@@ -241,7 +241,7 @@ klasse _Framer:
         write = self.file_write
         wenn self.current_frame:
             # Terminate the current frame and flush it to the file.
-            self.commit_frame(force=True)
+            self.commit_frame(force=Wahr)
 
         # Perform direct write of the header and payload of the large binary
         # object. Be careful not to concatenate the header and the payload
@@ -255,16 +255,16 @@ klasse _Framer:
 
 klasse _Unframer:
 
-    def __init__(self, file_read, file_readline, file_tell=None):
+    def __init__(self, file_read, file_readline, file_tell=Nichts):
         self.file_read = file_read
         self.file_readline = file_readline
-        self.current_frame = None
+        self.current_frame = Nichts
 
     def readinto(self, buf):
         wenn self.current_frame:
             n = self.current_frame.readinto(buf)
             wenn n == 0 and len(buf) != 0:
-                self.current_frame = None
+                self.current_frame = Nichts
                 n = len(buf)
                 buf[:] = self.file_read(n)
                 return n
@@ -281,7 +281,7 @@ klasse _Unframer:
         wenn self.current_frame:
             data = self.current_frame.read(n)
             wenn not data and n != 0:
-                self.current_frame = None
+                self.current_frame = Nichts
                 return self.file_read(n)
             wenn len(data) < n:
                 raise UnpicklingError(
@@ -294,7 +294,7 @@ klasse _Unframer:
         wenn self.current_frame:
             data = self.current_frame.readline()
             wenn not data:
-                self.current_frame = None
+                self.current_frame = Nichts
                 return self.file_readline()
             wenn data[-1] != b'\n'[0]:
                 raise UnpicklingError(
@@ -320,16 +320,16 @@ def _getattribute(obj, dotted_path):
 def whichmodule(obj, name):
     """Find the module an object belong to."""
     dotted_path = name.split('.')
-    module_name = getattr(obj, '__module__', None)
+    module_name = getattr(obj, '__module__', Nichts)
     wenn '<locals>' in dotted_path:
         raise PicklingError(f"Can't pickle local object {obj!r}")
-    wenn module_name is None:
+    wenn module_name is Nichts:
         # Protect the iteration by using a list copy of sys.modules against dynamic
         # modules that trigger imports of other modules upon calls to getattr.
         fuer module_name, module in sys.modules.copy().items():
             wenn (module_name == '__main__'
                 or module_name == '__mp_main__'  # bpo-42406
-                or module is None):
+                or module is Nichts):
                 continue
             try:
                 wenn _getattribute(module, dotted_path) is obj:
@@ -377,7 +377,7 @@ def encode_long(x):
     wenn x == 0:
         return b''
     nbytes = (x.bit_length() >> 3) + 1
-    result = x.to_bytes(nbytes, byteorder='little', signed=True)
+    result = x.to_bytes(nbytes, byteorder='little', signed=Wahr)
     wenn x < 0 and nbytes > 1:
         wenn result[-1] == 0xff and (result[-2] & 0x80) != 0:
             result = result[:-1]
@@ -401,12 +401,12 @@ def decode_long(data):
     >>> decode_long(b"\x7f")
     127
     """
-    return int.from_bytes(data, byteorder='little', signed=True)
+    return int.from_bytes(data, byteorder='little', signed=Wahr)
 
 def _T(obj):
     cls = type(obj)
     module = cls.__module__
-    wenn module in (None, 'builtins', '__main__'):
+    wenn module in (Nichts, 'builtins', '__main__'):
         return cls.__qualname__
     return f'{module}.{cls.__qualname__}'
 
@@ -417,8 +417,8 @@ _NoValue = object()
 
 klasse _Pickler:
 
-    def __init__(self, file, protocol=None, *, fix_imports=True,
-                 buffer_callback=None):
+    def __init__(self, file, protocol=Nichts, *, fix_imports=Wahr,
+                 buffer_callback=Nichts):
         """This takes a binary file fuer writing a pickle data stream.
 
         The optional *protocol* argument tells the pickler to use the
@@ -436,29 +436,29 @@ klasse _Pickler:
         binary writing, an io.BytesIO instance, or any other custom
         object that meets this interface.
 
-        If *fix_imports* is True and *protocol* is less than 3, pickle
+        If *fix_imports* is Wahr and *protocol* is less than 3, pickle
         will try to map the new Python 3 names to the old module names
         used in Python 2, so that the pickle data stream is readable
         with Python 2.
 
-        If *buffer_callback* is None (the default), buffer views are
+        If *buffer_callback* is Nichts (the default), buffer views are
         serialized into *file* as part of the pickle stream.
 
-        If *buffer_callback* is not None, then it can be called any number
+        If *buffer_callback* is not Nichts, then it can be called any number
         of times with a buffer view.  If the callback returns a false value
-        (such as None), the given buffer is out-of-band; otherwise the
+        (such as Nichts), the given buffer is out-of-band; otherwise the
         buffer is serialized in-band, i.e. inside the pickle stream.
 
-        It is an error wenn *buffer_callback* is not None and *protocol*
-        is None or smaller than 5.
+        It is an error wenn *buffer_callback* is not Nichts and *protocol*
+        is Nichts or smaller than 5.
         """
-        wenn protocol is None:
+        wenn protocol is Nichts:
             protocol = DEFAULT_PROTOCOL
         wenn protocol < 0:
             protocol = HIGHEST_PROTOCOL
         sowenn not 0 <= protocol <= HIGHEST_PROTOCOL:
             raise ValueError("pickle protocol must be <= %d" % HIGHEST_PROTOCOL)
-        wenn buffer_callback is not None and protocol < 5:
+        wenn buffer_callback is not Nichts and protocol < 5:
             raise ValueError("buffer_callback needs protocol >= 5")
         self._buffer_callback = buffer_callback
         try:
@@ -543,19 +543,19 @@ klasse _Pickler:
 
         return GET + repr(i).encode("ascii") + b'\n'
 
-    def save(self, obj, save_persistent_id=True):
+    def save(self, obj, save_persistent_id=Wahr):
         self.framer.commit_frame()
 
         # Check fuer persistent id (defined by a subclass)
         wenn save_persistent_id:
             pid = self.persistent_id(obj)
-            wenn pid is not None:
+            wenn pid is not Nichts:
                 self.save_pers(pid)
                 return
 
         # Check the memo
         x = self.memo.get(id(obj))
-        wenn x is not None:
+        wenn x is not Nichts:
             self.write(self.get(x[0]))
             return
 
@@ -568,7 +568,7 @@ klasse _Pickler:
             # Check the type dispatch table
             t = type(obj)
             f = self.dispatch.get(t)
-            wenn f is not None:
+            wenn f is not Nichts:
                 f(self, obj)  # Call unbound method with explicit self
                 return
 
@@ -619,12 +619,12 @@ klasse _Pickler:
 
     def persistent_id(self, obj):
         # This exists so a subclass can override it
-        return None
+        return Nichts
 
     def save_pers(self, pid):
         # Save a persistent id reference
         wenn self.bin:
-            self.save(pid, save_persistent_id=False)
+            self.save(pid, save_persistent_id=Falsch)
             self.write(BINPERSID)
         sonst:
             try:
@@ -633,8 +633,8 @@ klasse _Pickler:
                 raise PicklingError(
                     "persistent IDs in protocol 0 must be ASCII strings")
 
-    def save_reduce(self, func, args, state=None, listitems=None,
-                    dictitems=None, state_setter=None, *, obj=None):
+    def save_reduce(self, func, args, state=Nichts, listitems=Nichts,
+                    dictitems=Nichts, state_setter=Nichts, *, obj=Nichts):
         # This API is called by some subclasses
 
         wenn not callable(func):
@@ -652,7 +652,7 @@ klasse _Pickler:
             cls, args, kwargs = args
             wenn not hasattr(cls, "__new__"):
                 raise PicklingError("first argument to __newobj_ex__() has no __new__")
-            wenn obj is not None and cls is not obj.__class__:
+            wenn obj is not Nichts and cls is not obj.__class__:
                 raise PicklingError(f"first argument to __newobj_ex__() "
                                     f"must be {obj.__class__!r}, not {cls!r}")
             wenn self.proto >= 4:
@@ -707,7 +707,7 @@ klasse _Pickler:
             cls = args[0]
             wenn not hasattr(cls, "__new__"):
                 raise PicklingError("first argument to __newobj__() has no __new__")
-            wenn obj is not None and cls is not obj.__class__:
+            wenn obj is not Nichts and cls is not obj.__class__:
                 raise PicklingError(f"first argument to __newobj__() "
                                     f"must be {obj.__class__!r}, not {cls!r}")
             args = args[1:]
@@ -735,7 +735,7 @@ klasse _Pickler:
                 raise
             write(REDUCE)
 
-        wenn obj is not None:
+        wenn obj is not Nichts:
             # If the object is already in the memo, this means it is
             # recursive. In this case, throw away everything we put on the
             # stack, and fetch the object back from the memo.
@@ -747,16 +747,16 @@ klasse _Pickler:
         # More new special cases (that work with older protocols as
         # well): when __reduce__ returns a tuple with 4 or 5 items,
         # the 4th and 5th item should be iterators that provide list
-        # items and dict items (as (key, value) tuples), or None.
+        # items and dict items (as (key, value) tuples), or Nichts.
 
-        wenn listitems is not None:
+        wenn listitems is not Nichts:
             self._batch_appends(listitems, obj)
 
-        wenn dictitems is not None:
+        wenn dictitems is not Nichts:
             self._batch_setitems(dictitems, obj)
 
-        wenn state is not None:
-            wenn state_setter is None:
+        wenn state is not Nichts:
+            wenn state_setter is Nichts:
                 try:
                     save(state)
                 except BaseException as exc:
@@ -794,7 +794,7 @@ klasse _Pickler:
 
     def save_none(self, obj):
         self.write(NONE)
-    dispatch[type(None)] = save_none
+    dispatch[type(Nichts)] = save_none
 
     def save_bool(self, obj):
         wenn self.proto >= 2:
@@ -897,8 +897,8 @@ klasse _Pickler:
                 wenn not m.contiguous:
                     raise PicklingError("PickleBuffer can not be pickled when "
                                         "pointing to a non-contiguous buffer")
-                in_band = True
-                wenn self._buffer_callback is not None:
+                in_band = Wahr
+                wenn self._buffer_callback is not Nichts:
                     in_band = bool(self._buffer_callback(obj))
                 wenn in_band:
                     # Write data in-band
@@ -1151,13 +1151,13 @@ klasse _Pickler:
         self.memoize(obj)
     dispatch[frozenset] = save_frozenset
 
-    def save_global(self, obj, name=None):
+    def save_global(self, obj, name=Nichts):
         write = self.write
         memo = self.memo
 
-        wenn name is None:
-            name = getattr(obj, '__qualname__', None)
-            wenn name is None:
+        wenn name is Nichts:
+            name = getattr(obj, '__qualname__', Nichts)
+            wenn name is Nichts:
                 name = obj.__name__
 
         module_name = whichmodule(obj, name)
@@ -1233,8 +1233,8 @@ klasse _Pickler:
                 f"pickle protocol {self.proto}")
 
     def save_type(self, obj):
-        wenn obj is type(None):
-            return self.save_reduce(type, (None,), obj=obj)
+        wenn obj is type(Nichts):
+            return self.save_reduce(type, (Nichts,), obj=obj)
         sowenn obj is type(NotImplemented):
             return self.save_reduce(type, (NotImplemented,), obj=obj)
         sowenn obj is type(...):
@@ -1249,8 +1249,8 @@ klasse _Pickler:
 
 klasse _Unpickler:
 
-    def __init__(self, file, *, fix_imports=True,
-                 encoding="ASCII", errors="strict", buffers=None):
+    def __init__(self, file, *, fix_imports=Wahr,
+                 encoding="ASCII", errors="strict", buffers=Nichts):
         """This takes a binary file fuer reading a pickle data stream.
 
         The protocol version of the pickle is detected automatically, so
@@ -1269,26 +1269,26 @@ klasse _Unpickler:
         reading, a BytesIO object, or any other custom object that
         meets this interface.
 
-        If *buffers* is not None, it should be an iterable of buffer-enabled
+        If *buffers* is not Nichts, it should be an iterable of buffer-enabled
         objects that is consumed each time the pickle stream references
         an out-of-band buffer view.  Such buffers have been given in order
         to the *buffer_callback* of a Pickler object.
 
-        If *buffers* is None (the default), then the buffers are taken
+        If *buffers* is Nichts (the default), then the buffers are taken
         from the pickle stream, assuming they are serialized there.
-        It is an error fuer *buffers* to be None wenn the pickle stream
-        was produced with a non-None *buffer_callback*.
+        It is an error fuer *buffers* to be Nichts wenn the pickle stream
+        was produced with a non-Nichts *buffer_callback*.
 
         Other optional arguments are *fix_imports*, *encoding* and
         *errors*, which are used to control compatibility support for
-        pickle stream generated by Python 2.  If *fix_imports* is True,
+        pickle stream generated by Python 2.  If *fix_imports* is Wahr,
         pickle will try to map the old Python 2 names to the new names
         used in Python 3.  The *encoding* and *errors* tell pickle how
         to decode 8-bit string instances pickled by Python 2; these
         default to 'ASCII' and 'strict', respectively. *encoding* can be
         'bytes' to read these 8-bit string instances as bytes objects.
         """
-        self._buffers = iter(buffers) wenn buffers is not None sonst None
+        self._buffers = iter(buffers) wenn buffers is not Nichts sonst Nichts
         self._file_readline = file.readline
         self._file_read = file.read
         self.memo = {}
@@ -1318,7 +1318,7 @@ klasse _Unpickler:
         read = self.read
         dispatch = self.dispatch
         try:
-            while True:
+            while Wahr:
                 key = read(1)
                 wenn not key:
                     raise EOFError
@@ -1368,23 +1368,23 @@ klasse _Unpickler:
     dispatch[BINPERSID[0]] = load_binpersid
 
     def load_none(self):
-        self.append(None)
+        self.append(Nichts)
     dispatch[NONE[0]] = load_none
 
     def load_false(self):
-        self.append(False)
+        self.append(Falsch)
     dispatch[NEWFALSE[0]] = load_false
 
     def load_true(self):
-        self.append(True)
+        self.append(Wahr)
     dispatch[NEWTRUE[0]] = load_true
 
     def load_int(self):
         data = self.readline()
         wenn data == FALSE[1:]:
-            val = False
+            val = Falsch
         sowenn data == TRUE[1:]:
-            val = True
+            val = Wahr
         sonst:
             val = int(data)
         self.append(val)
@@ -1507,7 +1507,7 @@ klasse _Unpickler:
     dispatch[BYTEARRAY8[0]] = load_bytearray8
 
     def load_next_buffer(self):
-        wenn self._buffers is None:
+        wenn self._buffers is Nichts:
             raise UnpicklingError("pickle stream refers to out-of-band data "
                                   "but no *buffers* argument was given")
         try:
@@ -1728,7 +1728,7 @@ klasse _Unpickler:
             self.append(self.memo[i])
         except KeyError:
             msg = f'Memo value not found at index {i}'
-            raise UnpicklingError(msg) from None
+            raise UnpicklingError(msg) from Nichts
     dispatch[GET[0]] = load_get
 
     def load_binget(self):
@@ -1737,7 +1737,7 @@ klasse _Unpickler:
             self.append(self.memo[i])
         except KeyError as exc:
             msg = f'Memo value not found at index {i}'
-            raise UnpicklingError(msg) from None
+            raise UnpicklingError(msg) from Nichts
     dispatch[BINGET[0]] = load_binget
 
     def load_long_binget(self):
@@ -1746,7 +1746,7 @@ klasse _Unpickler:
             self.append(self.memo[i])
         except KeyError as exc:
             msg = f'Memo value not found at index {i}'
-            raise UnpicklingError(msg) from None
+            raise UnpicklingError(msg) from Nichts
     dispatch[LONG_BINGET[0]] = load_long_binget
 
     def load_put(self):
@@ -1834,7 +1834,7 @@ klasse _Unpickler:
         wenn setstate is not _NoValue:
             setstate(state)
             return
-        slotstate = None
+        slotstate = Nichts
         wenn isinstance(state, tuple) and len(state) == 2:
             state, slotstate = state
         wenn state:
@@ -1864,11 +1864,11 @@ klasse _Unpickler:
 
 # Shorthands
 
-def _dump(obj, file, protocol=None, *, fix_imports=True, buffer_callback=None):
+def _dump(obj, file, protocol=Nichts, *, fix_imports=Wahr, buffer_callback=Nichts):
     _Pickler(file, protocol, fix_imports=fix_imports,
              buffer_callback=buffer_callback).dump(obj)
 
-def _dumps(obj, protocol=None, *, fix_imports=True, buffer_callback=None):
+def _dumps(obj, protocol=Nichts, *, fix_imports=Wahr, buffer_callback=Nichts):
     f = io.BytesIO()
     _Pickler(f, protocol, fix_imports=fix_imports,
              buffer_callback=buffer_callback).dump(obj)
@@ -1876,13 +1876,13 @@ def _dumps(obj, protocol=None, *, fix_imports=True, buffer_callback=None):
     assert isinstance(res, bytes_types)
     return res
 
-def _load(file, *, fix_imports=True, encoding="ASCII", errors="strict",
-          buffers=None):
+def _load(file, *, fix_imports=Wahr, encoding="ASCII", errors="strict",
+          buffers=Nichts):
     return _Unpickler(file, fix_imports=fix_imports, buffers=buffers,
                      encoding=encoding, errors=errors).load()
 
-def _loads(s, /, *, fix_imports=True, encoding="ASCII", errors="strict",
-           buffers=None):
+def _loads(s, /, *, fix_imports=Wahr, encoding="ASCII", errors="strict",
+           buffers=Nichts):
     wenn isinstance(s, str):
         raise TypeError("Can't load pickle from unicode string")
     file = io.BytesIO(s)
@@ -1907,12 +1907,12 @@ except ImportError:
     dump, dumps, load, loads = _dump, _dumps, _load, _loads
 
 
-def _main(args=None):
+def _main(args=Nichts):
     import argparse
     import pprint
     parser = argparse.ArgumentParser(
         description='display contents of the pickle files',
-        color=True,
+        color=Wahr,
     )
     parser.add_argument(
         'pickle_file',

@@ -7,14 +7,14 @@ WARNING: The '_objects' attribute is exposed ONLY fuer debugging ctypes itself,
 it MUST NEVER BE MODIFIED!
 
 '_objects' is initialized to a dictionary on first use, before that it
-is None.
+is Nichts.
 
 Here is an array of string pointers:
 
 >>> from ctypes import Structure, c_int, c_char_p
 >>> array = (c_char_p * 5)()
 >>> print(array._objects)
-None
+Nichts
 >>>
 
 The memory block stores pointers to strings, and the strings itself
@@ -35,11 +35,11 @@ in a 'base' object.
 ...
 >>> x = X()
 >>> print(x._objects)
-None
+Nichts
 >>>
 
 The'array' attribute of the 'x' object shares part of the memory buffer
-of 'x' ('_b_base_' is either None, or the root object owning the memory block):
+of 'x' ('_b_base_' is either Nichts, or the root object owning the memory block):
 
 >>> print(x.array._b_base_) # doctest: +ELLIPSIS
 <test.test_ctypes.test_objects.X object at 0x...>

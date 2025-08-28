@@ -33,7 +33,7 @@ klasse StandardTtkOptionsTests(StandardOptionsTests):
                 self.assertIsInstance(value, tuple)
                 return tuple(map(str, value))
         sonst:
-            padding_conv = None
+            padding_conv = Nichts
         self.checkParam(widget, 'padding', 0, expected=(0,), conv=padding_conv)
         self.checkParam(widget, 'padding', 5, expected=(5,), conv=padding_conv)
         self.checkParam(widget, 'padding', (5, 6),
@@ -84,14 +84,14 @@ klasse WidgetTest(AbstractTkTest, unittest.TestCase):
             ), "label")
         self.assertEqual(self.widget.identify(-1, -1), "")
 
-        self.assertRaises(tkinter.TclError, self.widget.identify, None, 5)
-        self.assertRaises(tkinter.TclError, self.widget.identify, 5, None)
+        self.assertRaises(tkinter.TclError, self.widget.identify, Nichts, 5)
+        self.assertRaises(tkinter.TclError, self.widget.identify, 5, Nichts)
         self.assertRaises(tkinter.TclError, self.widget.identify, 5, '')
 
     def test_widget_state(self):
         # XXX not sure about the portability of all these tests
         self.assertEqual(self.widget.state(), ())
-        self.assertEqual(self.widget.instate(['!disabled']), True)
+        self.assertEqual(self.widget.instate(['!disabled']), Wahr)
 
         # changing from !disabled to disabled
         self.assertEqual(self.widget.state(['disabled']), ('!disabled', ))
@@ -119,13 +119,13 @@ klasse WidgetTest(AbstractTkTest, unittest.TestCase):
         # verify that widget didn't change its state
         self.assertEqual(currstate, self.widget.state())
 
-        # ensuring that passing None as state doesn't modify current state
+        # ensuring that passing Nichts as state doesn't modify current state
         self.widget.state(['active', '!disabled'])
         self.assertEqual(self.widget.state(), ('active', ))
 
 
 klasse AbstractToplevelTest(AbstractWidgetTest, PixelSizeTests):
-    _rounds_pixels = False
+    _rounds_pixels = Falsch
     _clipped = {}
 
 
@@ -168,8 +168,8 @@ klasse LabelFrameTest(AbstractToplevelTest, unittest.TestCase):
 
 
 klasse AbstractLabelTest(AbstractWidgetTest):
-    _allow_empty_justify = True
-    _rounds_pixels = False
+    _allow_empty_justify = Wahr
+    _rounds_pixels = Falsch
     _clipped = {}
 
     def checkImageParam(self, widget, name):
@@ -193,7 +193,7 @@ klasse AbstractLabelTest(AbstractWidgetTest):
         wenn tk_version >= (8, 7):
             values += ('',)
         widget = self.create()
-        self.checkEnumParam(widget, 'compound', *values, allow_empty=True)
+        self.checkEnumParam(widget, 'compound', *values, allow_empty=Wahr)
 
     test_configure_justify = requires_tk(8, 7)(StandardOptionsTests.test_configure_justify)
 
@@ -211,7 +211,7 @@ klasse LabelTest(AbstractLabelTest, unittest.TestCase):
         'takefocus', 'text', 'textvariable',
         'underline', 'width', 'wraplength',
     )
-    _conv_pixels = False
+    _conv_pixels = Falsch
     _allow_empty_justify = tk_version >= (8, 7)
 
     def create(self, **kwargs):
@@ -242,7 +242,7 @@ klasse ButtonTest(AbstractLabelTest, unittest.TestCase):
         success = []
         btn = ttk.Button(self.root, command=lambda: success.append(1))
         btn.invoke()
-        self.assertTrue(success)
+        self.assertWahr(success)
 
 
 @add_configure_tests(StandardTtkOptionsTests)
@@ -284,7 +284,7 @@ klasse CheckbuttonTest(AbstractLabelTest, unittest.TestCase):
         self.assertEqual(res, "cb test called")
         self.assertEqual(cbtn['onvalue'],
             cbtn.tk.globalgetvar(cbtn['variable']))
-        self.assertTrue(success)
+        self.assertWahr(success)
 
         cbtn['command'] = ''
         res = cbtn.invoke()
@@ -342,7 +342,7 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
         'show', 'state', 'style', 'takefocus', 'textvariable',
         'validate', 'validatecommand', 'width', 'xscrollcommand',
     )
-    _rounds_pixels = False
+    _rounds_pixels = Falsch
     _clipped = {}
     # bpo-27313: macOS Tk/Tcl may or may not report 'Entry.field'.
     IDENTIFY_AS = {'Entry.field', 'textarea'}
@@ -376,7 +376,7 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
     def test_bbox(self):
         self.assertIsBoundingBox(self.entry.bbox(0))
         self.assertRaises(tkinter.TclError, self.entry.bbox, 'noindex')
-        self.assertRaises(tkinter.TclError, self.entry.bbox, None)
+        self.assertRaises(tkinter.TclError, self.entry.bbox, Nichts)
 
     def test_identify(self):
         wenn (tk_version >= (9, 0) and sys.platform == 'darwin'
@@ -389,27 +389,27 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
         self.assertIn(self.entry.identify(5, 5), self.IDENTIFY_AS)
         self.assertEqual(self.entry.identify(-1, -1), "")
 
-        self.assertRaises(tkinter.TclError, self.entry.identify, None, 5)
-        self.assertRaises(tkinter.TclError, self.entry.identify, 5, None)
+        self.assertRaises(tkinter.TclError, self.entry.identify, Nichts, 5)
+        self.assertRaises(tkinter.TclError, self.entry.identify, 5, Nichts)
         self.assertRaises(tkinter.TclError, self.entry.identify, 5, '')
 
     def test_validation_options(self):
         success = []
-        test_invalid = lambda: success.append(True)
+        test_invalid = lambda: success.append(Wahr)
 
         self.entry['validate'] = 'none'
-        self.entry['validatecommand'] = lambda: False
+        self.entry['validatecommand'] = lambda: Falsch
 
         self.entry['invalidcommand'] = test_invalid
         self.entry.validate()
-        self.assertTrue(success)
+        self.assertWahr(success)
 
         self.entry['invalidcommand'] = ''
         self.entry.validate()
         self.assertEqual(len(success), 1)
 
         self.entry['invalidcommand'] = test_invalid
-        self.entry['validatecommand'] = lambda: True
+        self.entry['validatecommand'] = lambda: Wahr
         self.entry.validate()
         self.assertEqual(len(success), 1)
 
@@ -417,48 +417,48 @@ klasse EntryTest(AbstractWidgetTest, unittest.TestCase):
         self.entry.validate()
         self.assertEqual(len(success), 1)
 
-        self.entry['validatecommand'] = True
+        self.entry['validatecommand'] = Wahr
         self.assertRaises(tkinter.TclError, self.entry.validate)
 
     def test_validation(self):
         validation = []
         def validate(to_insert):
             wenn not 'a' <= to_insert.lower() <= 'z':
-                validation.append(False)
-                return False
-            validation.append(True)
-            return True
+                validation.append(Falsch)
+                return Falsch
+            validation.append(Wahr)
+            return Wahr
 
         self.entry['validate'] = 'key'
         self.entry['validatecommand'] = self.entry.register(validate), '%S'
 
         self.entry.insert('end', 1)
         self.entry.insert('end', 'a')
-        self.assertEqual(validation, [False, True])
+        self.assertEqual(validation, [Falsch, Wahr])
         self.assertEqual(self.entry.get(), 'a')
 
     def test_revalidation(self):
         def validate(content):
             fuer letter in content:
                 wenn not 'a' <= letter.lower() <= 'z':
-                    return False
-            return True
+                    return Falsch
+            return Wahr
 
         self.entry['validatecommand'] = self.entry.register(validate), '%P'
 
         self.entry.insert('end', 'avocado')
-        self.assertEqual(self.entry.validate(), True)
+        self.assertEqual(self.entry.validate(), Wahr)
         self.assertEqual(self.entry.state(), ())
 
         self.entry.delete(0, 'end')
         self.assertEqual(self.entry.get(), '')
 
         self.entry.insert('end', 'a1b')
-        self.assertEqual(self.entry.validate(), False)
+        self.assertEqual(self.entry.validate(), Falsch)
         self.assertEqual(self.entry.state(), ('invalid', ))
 
         self.entry.delete(1)
-        self.assertEqual(self.entry.validate(), True)
+        self.assertEqual(self.entry.validate(), Wahr)
         self.assertEqual(self.entry.state(), ())
 
 
@@ -503,7 +503,7 @@ klasse ComboboxTest(EntryTest, unittest.TestCase):
 
         self.combo['values'] = [1]
         self.combo.bind('<<ComboboxSelected>>',
-            lambda evt: success.append(True))
+            lambda evt: success.append(Wahr))
         self.combo.pack()
         self.combo.update()
 
@@ -513,7 +513,7 @@ klasse ComboboxTest(EntryTest, unittest.TestCase):
         self.combo.event_generate('<Return>')
         self.combo.update()
 
-        self.assertTrue(success)
+        self.assertWahr(success)
 
     def test_configure_postcommand(self):
         wenn (tk_version >= (9, 0) and sys.platform == 'darwin'
@@ -522,12 +522,12 @@ klasse ComboboxTest(EntryTest, unittest.TestCase):
             # https://core.tcl-lang.org/tk/tktview/8b49e9cfa6
         success = []
 
-        self.combo['postcommand'] = lambda: success.append(True)
+        self.combo['postcommand'] = lambda: success.append(Wahr)
         self.combo.pack()
         self.combo.update()
 
         self._show_drop_down_listbox()
-        self.assertTrue(success)
+        self.assertWahr(success)
 
         # testing postcommand removal
         self.combo['postcommand'] = ''
@@ -601,7 +601,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         'class', 'cursor', 'height',
         'orient', 'style', 'takefocus', 'width',
     )
-    _rounds_pixels = False
+    _rounds_pixels = Falsch
     _clipped = {}
 
     def setUp(self):
@@ -650,7 +650,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.paned.pane, 0)
 
     def test_forget(self):
-        self.assertRaises(tkinter.TclError, self.paned.forget, None)
+        self.assertRaises(tkinter.TclError, self.paned.forget, Nichts)
         self.assertRaises(tkinter.TclError, self.paned.forget, 0)
 
         self.paned.add(ttk.Label(self.root))
@@ -658,8 +658,8 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.paned.forget, 0)
 
     def test_insert(self):
-        self.assertRaises(tkinter.TclError, self.paned.insert, None, 0)
-        self.assertRaises(tkinter.TclError, self.paned.insert, 0, None)
+        self.assertRaises(tkinter.TclError, self.paned.insert, Nichts, 0)
+        self.assertRaises(tkinter.TclError, self.paned.insert, 0, Nichts)
         self.assertRaises(tkinter.TclError, self.paned.insert, 0, 0)
 
         child = ttk.Label(self.root)
@@ -703,7 +703,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         child = ttk.Label(self.root)
         self.paned.add(child)
         self.assertIsInstance(self.paned.pane(0), dict)
-        self.assertEqual(self.paned.pane(0, weight=None),
+        self.assertEqual(self.paned.pane(0, weight=Nichts),
                          0 wenn self.wantobjects sonst '0')
         # newer form fuer querying a single option
         self.assertEqual(self.paned.pane(0, 'weight'),
@@ -714,7 +714,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
             badoption='somevalue')
 
     def test_sashpos(self):
-        self.assertRaises(tkinter.TclError, self.paned.sashpos, None)
+        self.assertRaises(tkinter.TclError, self.paned.sashpos, Nichts)
         self.assertRaises(tkinter.TclError, self.paned.sashpos, '')
         self.assertRaises(tkinter.TclError, self.paned.sashpos, 0)
 
@@ -725,7 +725,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.paned.add(child2)
         self.assertRaises(tkinter.TclError, self.paned.sashpos, 1)
 
-        self.paned.pack(expand=True, fill='both')
+        self.paned.pack(expand=Wahr, fill='both')
 
         curr_pos = self.paned.sashpos(0)
         self.paned.sashpos(0, 1000)
@@ -772,7 +772,7 @@ klasse RadiobuttonTest(AbstractLabelTest, unittest.TestCase):
         self.assertEqual(conv(cbtn['value']), myvar.get())
         self.assertEqual(myvar.get(),
             conv(cbtn.tk.globalgetvar(cbtn['variable'])))
-        self.assertTrue(success)
+        self.assertWahr(success)
 
         cbtn2['command'] = ''
         res = cbtn2.invoke()
@@ -818,7 +818,7 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
         'class', 'command', 'cursor', 'from', 'length',
         'orient', 'state', 'style', 'takefocus', 'to', 'value', 'variable',
     )
-    _rounds_pixels = False
+    _rounds_pixels = Falsch
     _clipped = {}
     default_orient = 'horizontal'
 
@@ -833,7 +833,7 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_configure_from(self):
         widget = self.create()
-        self.checkFloatParam(widget, 'from', 100, 14.9, 15.1, conv=False)
+        self.checkFloatParam(widget, 'from', 100, 14.9, 15.1, conv=Falsch)
 
     def test_configure_length(self):
         widget = self.create()
@@ -843,11 +843,11 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_configure_to(self):
         widget = self.create()
-        self.checkFloatParam(widget, 'to', 300, 14.9, 15.1, -10, conv=False)
+        self.checkFloatParam(widget, 'to', 300, 14.9, 15.1, -10, conv=Falsch)
 
     def test_configure_value(self):
         widget = self.create()
-        self.checkFloatParam(widget, 'value', 300, 14.9, 15.1, -10, conv=False)
+        self.checkFloatParam(widget, 'value', 300, 14.9, 15.1, -10, conv=Falsch)
 
     def test_custom_event(self):
         failure = [1, 1, 1] # will need to be empty
@@ -858,14 +858,14 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
         self.scale['from_'] = 10
         self.scale['to'] = 3
 
-        self.assertFalse(failure)
+        self.assertFalsch(failure)
 
         failure = [1, 1, 1]
         self.scale.configure(from_=2, to=5)
         self.scale.configure(from_=0, to=-2)
         self.scale.configure(to=10)
 
-        self.assertFalse(failure)
+        self.assertFalsch(failure)
 
     def test_get(self):
         wenn self.wantobjects:
@@ -918,7 +918,7 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(conv(self.scale.get(0, 0)), min)
         self.assertEqual(conv(self.scale.get(self.scale.winfo_width(), 0)), max)
 
-        self.assertRaises(tkinter.TclError, self.scale.set, None)
+        self.assertRaises(tkinter.TclError, self.scale.set, Nichts)
 
 
 @add_configure_tests(StandardTtkOptionsTests)
@@ -929,9 +929,9 @@ klasse ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
         'mode', 'maximum', 'phase', 'text', 'wraplength',
         'style', 'takefocus', 'value', 'variable',
     )
-    _rounds_pixels = False
+    _rounds_pixels = Falsch
     _clipped = {}
-    _allow_empty_justify = True
+    _allow_empty_justify = Wahr
     default_orient = 'horizontal'
 
     def create(self, **kwargs):
@@ -953,7 +953,7 @@ klasse ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_configure_maximum(self):
         widget = self.create()
-        self.checkFloatParam(widget, 'maximum', 150.2, 77.7, 0, -10, conv=False)
+        self.checkFloatParam(widget, 'maximum', 150.2, 77.7, 0, -10, conv=Falsch)
 
     def test_configure_mode(self):
         widget = self.create()
@@ -968,7 +968,7 @@ klasse ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
     def test_configure_value(self):
         widget = self.create()
         self.checkFloatParam(widget, 'value', 150.2, 77.7, 0, -10,
-                             conv=False)
+                             conv=Falsch)
 
     test_configure_wraplength = requires_tk(8, 7)(StandardOptionsTests.test_configure_wraplength)
 
@@ -980,7 +980,7 @@ klasse ScrollbarTest(AbstractWidgetTest, unittest.TestCase):
     OPTIONS = (
         'class', 'command', 'cursor', 'orient', 'style', 'takefocus',
     )
-    _rounds_pixels = False
+    _rounds_pixels = Falsch
     _clipped = {}
     default_orient = 'vertical'
 
@@ -994,7 +994,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
         'class', 'cursor', 'height', 'padding', 'style', 'takefocus', 'width',
     )
     _rounds_pixels = (tk_version < (9,0))
-    _converts_pixels = False
+    _converts_pixels = Falsch
     _clipped = {}
 
     def setUp(self):
@@ -1031,7 +1031,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.index('end'), 1)
         self.nb.select(self.child2)
 
-        self.assertTrue(self.nb.tab('current'))
+        self.assertWahr(self.nb.tab('current'))
         self.nb.add(self.child1, text='a')
 
         self.nb.pack()
@@ -1044,7 +1044,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
 
         fuer i in range(5, 100, 5):
             try:
-                wenn self.nb.tab('@%d, 5' % i, text=None) == 'a':
+                wenn self.nb.tab('@%d, 5' % i, text=Nichts) == 'a':
                     break
             except tkinter.TclError:
                 pass
@@ -1055,8 +1055,8 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
     def test_add_and_hidden(self):
         self.assertRaises(tkinter.TclError, self.nb.hide, -1)
         self.assertRaises(tkinter.TclError, self.nb.hide, 'hi')
-        self.assertRaises(tkinter.TclError, self.nb.hide, None)
-        self.assertRaises(tkinter.TclError, self.nb.add, None)
+        self.assertRaises(tkinter.TclError, self.nb.hide, Nichts)
+        self.assertRaises(tkinter.TclError, self.nb.add, Nichts)
         self.assertRaises(tkinter.TclError, self.nb.add, ttk.Label(self.root),
             unknown='option')
 
@@ -1083,7 +1083,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
     def test_forget(self):
         self.assertRaises(tkinter.TclError, self.nb.forget, -1)
         self.assertRaises(tkinter.TclError, self.nb.forget, 'hi')
-        self.assertRaises(tkinter.TclError, self.nb.forget, None)
+        self.assertRaises(tkinter.TclError, self.nb.forget, Nichts)
 
         tabs = self.nb.tabs()
         child1_index = self.nb.index(self.child1)
@@ -1097,7 +1097,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_index(self):
         self.assertRaises(tkinter.TclError, self.nb.index, -1)
-        self.assertRaises(tkinter.TclError, self.nb.index, None)
+        self.assertRaises(tkinter.TclError, self.nb.index, Nichts)
 
         self.assertIsInstance(self.nb.index('end'), int)
         self.assertEqual(self.nb.index(self.child1), 0)
@@ -1136,9 +1136,9 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertRaises(tkinter.TclError, self.nb.insert, -1, child3)
 
         # bad inserts
-        self.assertRaises(tkinter.TclError, self.nb.insert, 'end', None)
-        self.assertRaises(tkinter.TclError, self.nb.insert, None, 0)
-        self.assertRaises(tkinter.TclError, self.nb.insert, None, None)
+        self.assertRaises(tkinter.TclError, self.nb.insert, 'end', Nichts)
+        self.assertRaises(tkinter.TclError, self.nb.insert, Nichts, 0)
+        self.assertRaises(tkinter.TclError, self.nb.insert, Nichts, Nichts)
 
     def test_select(self):
         self.nb.pack()
@@ -1147,29 +1147,29 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
         success = []
         tab_changed = []
 
-        self.child1.bind('<Unmap>', lambda evt: success.append(True))
+        self.child1.bind('<Unmap>', lambda evt: success.append(Wahr))
         self.nb.bind('<<NotebookTabChanged>>',
-            lambda evt: tab_changed.append(True))
+            lambda evt: tab_changed.append(Wahr))
 
         self.assertEqual(self.nb.select(), str(self.child1))
         self.nb.select(self.child2)
-        self.assertTrue(success)
+        self.assertWahr(success)
         self.assertEqual(self.nb.select(), str(self.child2))
 
         self.nb.update()
-        self.assertTrue(tab_changed)
+        self.assertWahr(tab_changed)
 
     def test_tab(self):
         self.assertRaises(tkinter.TclError, self.nb.tab, -1)
         self.assertRaises(tkinter.TclError, self.nb.tab, 'notab')
-        self.assertRaises(tkinter.TclError, self.nb.tab, None)
+        self.assertRaises(tkinter.TclError, self.nb.tab, Nichts)
 
         self.assertIsInstance(self.nb.tab(self.child1), dict)
-        self.assertEqual(self.nb.tab(self.child1, text=None), 'a')
+        self.assertEqual(self.nb.tab(self.child1, text=Nichts), 'a')
         # newer form fuer querying a single option
         self.assertEqual(self.nb.tab(self.child1, 'text'), 'a')
         self.nb.tab(self.child1, text='abc')
-        self.assertEqual(self.nb.tab(self.child1, text=None), 'abc')
+        self.assertEqual(self.nb.tab(self.child1, text=Nichts), 'abc')
         self.assertEqual(self.nb.tab(self.child1, 'text'), 'abc')
 
     def test_configure_tabs(self):
@@ -1268,11 +1268,11 @@ klasse SpinboxTest(EntryTest, unittest.TestCase):
     def test_configure_command(self):
         success = []
 
-        self.spin['command'] = lambda: success.append(True)
+        self.spin['command'] = lambda: success.append(Wahr)
         self.spin.update()
         self._click_increment_arrow()
         self.spin.update()
-        self.assertTrue(success)
+        self.assertWahr(success)
 
         self._click_decrement_arrow()
         self.assertEqual(len(success), 2)
@@ -1335,14 +1335,14 @@ klasse SpinboxTest(EntryTest, unittest.TestCase):
         self.spin.update()
         self._click_increment_arrow()
         value = self.spin.get()
-        self.assertTrue('.' not in value)
+        self.assertWahr('.' not in value)
         self.assertEqual(len(value), 1)
 
     def test_configure_wrap(self):
         self.spin['to'] = 10
         self.spin['from'] = 1
         self.spin.set(1)
-        self.spin['wrap'] = True
+        self.spin['wrap'] = Wahr
         self.spin.update()
 
         self._click_decrement_arrow()
@@ -1351,7 +1351,7 @@ klasse SpinboxTest(EntryTest, unittest.TestCase):
         self._click_increment_arrow()
         self.assertEqual(self.spin.get(), '1')
 
-        self.spin['wrap'] = False
+        self.spin['wrap'] = Falsch
         self.spin.update()
 
         self._click_decrement_arrow()
@@ -1409,7 +1409,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         'style', 'takefocus', 'titlecolumns', 'titleitems',
         'xscrollcommand', 'yscrollcommand',
     )
-    _rounds_pixels = False
+    _rounds_pixels = Falsch
     _clipped = {}
 
     def setUp(self):
@@ -1447,9 +1447,9 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
     def test_configure_height(self):
         widget = self.create()
         self.checkPixelsParam(widget, 'height', 100, -100, 0, '3c',
-                                  conv=False)
+                                  conv=Falsch)
         self.checkPixelsParam(widget, 'height', 101.2, 102.6, '3c',
-                                  conv=False)
+                                  conv=Falsch)
 
     def test_configure_selectmode(self):
         widget = self.create()
@@ -1494,7 +1494,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         item_id = self.tv.insert('', 'end')
         children = self.tv.get_children()
-        self.assertTrue(children)
+        self.assertWahr(children)
 
         bbox = self.tv.bbox(children[0])
         self.assertIsBoundingBox(bbox)
@@ -1503,7 +1503,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv['columns'] = ['test']
         self.tv.column('test', width=50)
         bbox_column0 = self.tv.bbox(children[0], 0)
-        root_width = self.tv.column('#0', width=None)
+        root_width = self.tv.column('#0', width=Nichts)
         wenn not self.wantobjects:
             root_width = int(root_width)
         self.assertEqual(bbox_column0[0], bbox[0] + root_width)
@@ -1544,13 +1544,13 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertIsInstance(self.tv.column('#0'), dict)
         # return a single value of the given option
         wenn self.wantobjects:
-            self.assertIsInstance(self.tv.column('#0', width=None), int)
+            self.assertIsInstance(self.tv.column('#0', width=Nichts), int)
         # set a new value fuer an option
         self.tv.column('#0', width=10)
         # testing new way to get option value
         self.assertEqual(self.tv.column('#0', 'width'),
                          10 wenn self.wantobjects sonst '10')
-        self.assertEqual(self.tv.column('#0', width=None),
+        self.assertEqual(self.tv.column('#0', width=Nichts),
                          10 wenn self.wantobjects sonst '10')
         # check read-only option
         self.assertRaises(tkinter.TclError, self.tv.column, '#0', id='X')
@@ -1573,7 +1573,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(item_id), (item2, ))
 
         self.tv.delete(item_id)
-        self.assertFalse(self.tv.get_children())
+        self.assertFalsch(self.tv.get_children())
 
         # reattach should fail
         self.assertRaises(tkinter.TclError,
@@ -1585,7 +1585,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(), (item1, item2))
 
         self.tv.delete(item1, item2)
-        self.assertFalse(self.tv.get_children())
+        self.assertFalsch(self.tv.get_children())
 
     def test_detach_reattach(self):
         item_id = self.tv.insert('', 'end')
@@ -1601,7 +1601,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         # detach item with children
         self.tv.detach(item_id)
-        self.assertFalse(self.tv.get_children())
+        self.assertFalsch(self.tv.get_children())
 
         # reattach item with children
         self.tv.reattach(item_id, '', 'end')
@@ -1629,14 +1629,14 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(item_id), ())
 
     def test_exists(self):
-        self.assertEqual(self.tv.exists('something'), False)
-        self.assertEqual(self.tv.exists(''), True)
-        self.assertEqual(self.tv.exists({}), False)
+        self.assertEqual(self.tv.exists('something'), Falsch)
+        self.assertEqual(self.tv.exists(''), Wahr)
+        self.assertEqual(self.tv.exists({}), Falsch)
 
         # the following will make a tk.call equivalent to
         # tk.call(treeview, "exists") which should result in an error
         # in the tcl interpreter since tk requires an item.
-        self.assertRaises(tkinter.TclError, self.tv.exists, None)
+        self.assertRaises(tkinter.TclError, self.tv.exists, Nichts)
 
     def test_focus(self):
         # nothing is focused right now
@@ -1659,11 +1659,11 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         # check a value is returned
         self.tv.heading('#0', text='hi')
         self.assertEqual(self.tv.heading('#0', 'text'), 'hi')
-        self.assertEqual(self.tv.heading('#0', text=None), 'hi')
+        self.assertEqual(self.tv.heading('#0', text=Nichts), 'hi')
 
         # invalid option
         self.assertRaises(tkinter.TclError, self.tv.heading, '#0',
-            background=None)
+            background=Nichts)
         # invalid value
         self.assertRaises(tkinter.TclError, self.tv.heading, '#0',
             anchor=1)
@@ -1679,7 +1679,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         success = [] # no success fuer now
 
         self.tv.pack()
-        self.tv.heading('#0', command=lambda: success.append(True))
+        self.tv.heading('#0', command=lambda: success.append(Wahr))
         self.tv.column('#0', width=100)
         self.tv.update()
 
@@ -1691,7 +1691,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         success = []
         commands = self.tv.master._tclCommands
-        self.tv.heading('#0', command=str(self.tv.heading('#0', command=None)))
+        self.tv.heading('#0', command=str(self.tv.heading('#0', command=Nichts)))
         self.assertEqual(commands, self.tv.master._tclCommands)
         simulate_heading_click(5, 5)
         wenn not success:
@@ -1742,8 +1742,8 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             open='')
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end',
             open='please')
-        self.assertFalse(self.tv.delete(self.tv.insert('', 'end', open=True)))
-        self.assertFalse(self.tv.delete(self.tv.insert('', 'end', open=False)))
+        self.assertFalsch(self.tv.delete(self.tv.insert('', 'end', open=Wahr)))
+        self.assertFalsch(self.tv.delete(self.tv.insert('', 'end', open=Falsch)))
 
         # invalid index
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'middle')
@@ -1761,52 +1761,52 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         item = self.tv.insert('', 'end', values=(value, ))
         self.assertEqual(self.tv.item(item, 'values'),
                          (value,) wenn self.wantobjects sonst value)
-        self.assertEqual(self.tv.item(item, values=None),
+        self.assertEqual(self.tv.item(item, values=Nichts),
                          (value,) wenn self.wantobjects sonst value)
 
-        self.tv.item(item, values=self.root.splitlist(self.tv.item(item, values=None)))
-        self.assertEqual(self.tv.item(item, values=None),
+        self.tv.item(item, values=self.root.splitlist(self.tv.item(item, values=Nichts)))
+        self.assertEqual(self.tv.item(item, values=Nichts),
                          (value,) wenn self.wantobjects sonst value)
 
         self.assertIsInstance(self.tv.item(item), dict)
 
         # erase item values
         self.tv.item(item, values='')
-        self.assertFalse(self.tv.item(item, values=None))
+        self.assertFalsch(self.tv.item(item, values=Nichts))
 
         # item tags
         item = self.tv.insert('', 'end', tags=[1, 2, value])
-        self.assertEqual(self.tv.item(item, tags=None),
+        self.assertEqual(self.tv.item(item, tags=Nichts),
                          ('1', '2', value) wenn self.wantobjects sonst
                          '1 2 %s' % value)
         self.tv.item(item, tags=[])
-        self.assertFalse(self.tv.item(item, tags=None))
+        self.assertFalsch(self.tv.item(item, tags=Nichts))
         self.tv.item(item, tags=(1, 2))
-        self.assertEqual(self.tv.item(item, tags=None),
+        self.assertEqual(self.tv.item(item, tags=Nichts),
                          ('1', '2') wenn self.wantobjects sonst '1 2')
 
         # values with spaces
         item = self.tv.insert('', 'end', values=('a b c',
             '%s %s' % (value, value)))
-        self.assertEqual(self.tv.item(item, values=None),
+        self.assertEqual(self.tv.item(item, values=Nichts),
             ('a b c', '%s %s' % (value, value)) wenn self.wantobjects sonst
             '{a b c} {%s %s}' % (value, value))
 
         # text
         self.assertEqual(self.tv.item(
-            self.tv.insert('', 'end', text="Label here"), text=None),
+            self.tv.insert('', 'end', text="Label here"), text=Nichts),
             "Label here")
         self.assertEqual(self.tv.item(
-            self.tv.insert('', 'end', text=value), text=None),
+            self.tv.insert('', 'end', text=value), text=Nichts),
             value)
 
-        # test fuer values which are not None
+        # test fuer values which are not Nichts
         itemid = self.tv.insert('', 'end', 0)
         self.assertEqual(itemid, '0')
         itemid = self.tv.insert('', 'end', 0.0)
         self.assertEqual(itemid, '0.0')
-        # this is because False resolves to 0 and element with 0 iid is already present
-        self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', False)
+        # this is because Falsch resolves to 0 and element with 0 iid is already present
+        self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', Falsch)
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', '')
 
     def test_selection(self):
@@ -1885,7 +1885,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.set(item), {'A': 'a', 'B': 'b'})
 
         self.tv.set(item, 'B', 'a')
-        self.assertEqual(self.tv.item(item, values=None),
+        self.assertEqual(self.tv.item(item, values=Nichts),
                          ('a', 'a') wenn self.wantobjects sonst 'a a')
 
         self.tv['columns'] = ['B']
@@ -1893,13 +1893,13 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
         self.tv.set(item, 'B', 'b')
         self.assertEqual(self.tv.set(item, column='B'), 'b')
-        self.assertEqual(self.tv.item(item, values=None),
+        self.assertEqual(self.tv.item(item, values=Nichts),
                          ('b', 'a') wenn self.wantobjects sonst 'b a')
 
         self.tv.set(item, 'B', 123)
         self.assertEqual(self.tv.set(item, 'B'),
                          123 wenn self.wantobjects sonst '123')
-        self.assertEqual(self.tv.item(item, values=None),
+        self.assertEqual(self.tv.item(item, values=Nichts),
                          (123, 'a') wenn self.wantobjects sonst '123 a')
         self.assertEqual(self.tv.set(item),
                          {'B': 123} wenn self.wantobjects sonst {'B': '123'})
@@ -1951,7 +1951,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.tv.tag_configure('test', foreground='blue')
         self.assertEqual(str(self.tv.tag_configure('test', 'foreground')),
             'blue')
-        self.assertEqual(str(self.tv.tag_configure('test', foreground=None)),
+        self.assertEqual(str(self.tv.tag_configure('test', foreground=Nichts)),
             'blue')
         self.assertIsInstance(self.tv.tag_configure('test'), dict)
 
@@ -1960,12 +1960,12 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         item2 = self.tv.insert('', 'end', text='Item 2', tags=['tag2'])
         self.assertRaises(TypeError, self.tv.tag_has)
         self.assertRaises(TclError, self.tv.tag_has, 'tag1', 'non-existing')
-        self.assertTrue(self.tv.tag_has('tag1', item1))
-        self.assertFalse(self.tv.tag_has('tag1', item2))
-        self.assertFalse(self.tv.tag_has('tag2', item1))
-        self.assertTrue(self.tv.tag_has('tag2', item2))
-        self.assertFalse(self.tv.tag_has('tag3', item1))
-        self.assertFalse(self.tv.tag_has('tag3', item2))
+        self.assertWahr(self.tv.tag_has('tag1', item1))
+        self.assertFalsch(self.tv.tag_has('tag1', item2))
+        self.assertFalsch(self.tv.tag_has('tag2', item1))
+        self.assertWahr(self.tv.tag_has('tag2', item2))
+        self.assertFalsch(self.tv.tag_has('tag3', item1))
+        self.assertFalsch(self.tv.tag_has('tag3', item2))
         self.assertEqual(self.tv.tag_has('tag1'), (item1,))
         self.assertEqual(self.tv.tag_has('tag2'), (item2,))
         self.assertEqual(self.tv.tag_has('tag3'), ())
@@ -1977,7 +1977,7 @@ klasse SeparatorTest(AbstractWidgetTest, unittest.TestCase):
         'class', 'cursor', 'orient', 'style', 'takefocus',
         # 'state'?
     )
-    _rounds_pixels = False
+    _rounds_pixels = Falsch
     _clipped = {}
     default_orient = 'horizontal'
 
@@ -1991,7 +1991,7 @@ klasse SizegripTest(AbstractWidgetTest, unittest.TestCase):
         'class', 'cursor', 'style', 'takefocus',
         # 'state'?
     )
-    _rounds_pixels = False
+    _rounds_pixels = Falsch
     _clipped = {}
 
     def create(self, **kwargs):

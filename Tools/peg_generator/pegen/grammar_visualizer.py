@@ -24,11 +24,11 @@ klasse ASTGrammarPrinter:
             return repr(node)
         return node.__class__.__name__
 
-    def print_grammar_ast(self, grammar: Grammar, printer: Callable[..., None] = print) -> None:
+    def print_grammar_ast(self, grammar: Grammar, printer: Callable[..., Nichts] = print) -> Nichts:
         fuer rule in grammar.rules.values():
             printer(self.print_nodes_recursively(rule))
 
-    def print_nodes_recursively(self, node: Rule, prefix: str = "", istail: bool = True) -> str:
+    def print_nodes_recursively(self, node: Rule, prefix: str = "", istail: bool = Wahr) -> str:
         children = list(self.children(node))
         value = self.name(node)
 
@@ -40,13 +40,13 @@ klasse ASTGrammarPrinter:
 
         *children, last = children
         fuer child in children:
-            line += self.print_nodes_recursively(child, prefix + sufix, False)
-        line += self.print_nodes_recursively(last, prefix + sufix, True)
+            line += self.print_nodes_recursively(child, prefix + sufix, Falsch)
+        line += self.print_nodes_recursively(last, prefix + sufix, Wahr)
 
         return line
 
 
-def main() -> None:
+def main() -> Nichts:
     args = argparser.parse_args()
 
     try:

@@ -11,44 +11,44 @@ Unpack tuple
     >>> t = (1, 2, 3)
     >>> a, *b, c = t
     >>> a == 1 and b == [2] and c == 3
-    True
+    Wahr
 
 Unpack list
 
     >>> l = [4, 5, 6]
     >>> a, *b = l
     >>> a == 4 and b == [5, 6]
-    True
+    Wahr
 
 Unpack implied tuple
 
     >>> *a, = 7, 8, 9
     >>> a == [7, 8, 9]
-    True
+    Wahr
 
 Unpack nested implied tuple
 
     >>> [*[*a]] = [[7,8,9]]
     >>> a == [[7,8,9]]
-    True
+    Wahr
 
 Unpack string... fun!
 
     >>> a, *b = 'one'
     >>> a == 'o' and b == ['n', 'e']
-    True
+    Wahr
 
 Unpack long sequence
 
     >>> a, b, c, *d, e, f, g = range(10)
     >>> (a, b, c, d, e, f, g) == (0, 1, 2, [3, 4, 5, 6], 7, 8, 9)
-    True
+    Wahr
 
 Unpack short sequence
 
     >>> a, *b, c = (1, 2)
     >>> a == 1 and c == 2 and b == []
-    True
+    Wahr
 
 Unpack generic sequence
 
@@ -59,7 +59,7 @@ Unpack generic sequence
     ...
     >>> a, *b = Seq()
     >>> a == 0 and b == [1, 2]
-    True
+    Wahr
 
 Unpack in fuer statement
 
@@ -73,13 +73,13 @@ Unpack in list
 
     >>> [a, *b, c] = range(5)
     >>> a == 0 and b == [1, 2, 3] and c == 4
-    True
+    Wahr
 
 Multiple targets
 
     >>> a, *b, c = *d, e = range(5)
     >>> a == 0 and b == [1, 2, 3] and c == 4 and d == [0, 1, 2, 3] and e == 4
-    True
+    Wahr
 
 Assignment unpacking
 
@@ -147,7 +147,7 @@ List comprehension element unpacking
     >>> [*a, b, c]
     [0, 1, 2, 3, 4]
 
-    >>> l = [a, (3, 4), {5}, {6: None}, (i fuer i in range(7, 10))]
+    >>> l = [a, (3, 4), {5}, {6: Nichts}, (i fuer i in range(7, 10))]
     >>> [*item fuer item in l]
     Traceback (most recent call last):
     ...

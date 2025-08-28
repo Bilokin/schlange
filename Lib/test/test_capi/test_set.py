@@ -26,64 +26,64 @@ klasse BaseSetTests:
 klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
     def test_set_check(self):
         check = _testlimitedcapi.set_check
-        self.assertTrue(check(set()))
-        self.assertTrue(check({1, 2}))
-        self.assertFalse(check(frozenset()))
-        self.assertTrue(check(set_subclass()))
-        self.assertFalse(check(frozenset_subclass()))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(set()))
+        self.assertWahr(check({1, 2}))
+        self.assertFalsch(check(frozenset()))
+        self.assertWahr(check(set_subclass()))
+        self.assertFalsch(check(frozenset_subclass()))
+        self.assertFalsch(check(object()))
         # CRASHES: check(NULL)
 
     def test_set_check_exact(self):
         check = _testlimitedcapi.set_checkexact
-        self.assertTrue(check(set()))
-        self.assertTrue(check({1, 2}))
-        self.assertFalse(check(frozenset()))
-        self.assertFalse(check(set_subclass()))
-        self.assertFalse(check(frozenset_subclass()))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(set()))
+        self.assertWahr(check({1, 2}))
+        self.assertFalsch(check(frozenset()))
+        self.assertFalsch(check(set_subclass()))
+        self.assertFalsch(check(frozenset_subclass()))
+        self.assertFalsch(check(object()))
         # CRASHES: check(NULL)
 
     def test_frozenset_check(self):
         check = _testlimitedcapi.frozenset_check
-        self.assertFalse(check(set()))
-        self.assertTrue(check(frozenset()))
-        self.assertTrue(check(frozenset({1, 2})))
-        self.assertFalse(check(set_subclass()))
-        self.assertTrue(check(frozenset_subclass()))
-        self.assertFalse(check(object()))
+        self.assertFalsch(check(set()))
+        self.assertWahr(check(frozenset()))
+        self.assertWahr(check(frozenset({1, 2})))
+        self.assertFalsch(check(set_subclass()))
+        self.assertWahr(check(frozenset_subclass()))
+        self.assertFalsch(check(object()))
         # CRASHES: check(NULL)
 
     def test_frozenset_check_exact(self):
         check = _testlimitedcapi.frozenset_checkexact
-        self.assertFalse(check(set()))
-        self.assertTrue(check(frozenset()))
-        self.assertTrue(check(frozenset({1, 2})))
-        self.assertFalse(check(set_subclass()))
-        self.assertFalse(check(frozenset_subclass()))
-        self.assertFalse(check(object()))
+        self.assertFalsch(check(set()))
+        self.assertWahr(check(frozenset()))
+        self.assertWahr(check(frozenset({1, 2})))
+        self.assertFalsch(check(set_subclass()))
+        self.assertFalsch(check(frozenset_subclass()))
+        self.assertFalsch(check(object()))
         # CRASHES: check(NULL)
 
     def test_anyset_check(self):
         check = _testlimitedcapi.anyset_check
-        self.assertTrue(check(set()))
-        self.assertTrue(check({1, 2}))
-        self.assertTrue(check(frozenset()))
-        self.assertTrue(check(frozenset({1, 2})))
-        self.assertTrue(check(set_subclass()))
-        self.assertTrue(check(frozenset_subclass()))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(set()))
+        self.assertWahr(check({1, 2}))
+        self.assertWahr(check(frozenset()))
+        self.assertWahr(check(frozenset({1, 2})))
+        self.assertWahr(check(set_subclass()))
+        self.assertWahr(check(frozenset_subclass()))
+        self.assertFalsch(check(object()))
         # CRASHES: check(NULL)
 
     def test_anyset_check_exact(self):
         check = _testlimitedcapi.anyset_checkexact
-        self.assertTrue(check(set()))
-        self.assertTrue(check({1, 2}))
-        self.assertTrue(check(frozenset()))
-        self.assertTrue(check(frozenset({1, 2})))
-        self.assertFalse(check(set_subclass()))
-        self.assertFalse(check(frozenset_subclass()))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(set()))
+        self.assertWahr(check({1, 2}))
+        self.assertWahr(check(frozenset()))
+        self.assertWahr(check(frozenset({1, 2})))
+        self.assertFalsch(check(set_subclass()))
+        self.assertFalsch(check(frozenset_subclass()))
+        self.assertFalsch(check(object()))
         # CRASHES: check(NULL)
 
     def test_set_new(self):
@@ -140,8 +140,8 @@ klasse TestSetCAPI(BaseSetTests, unittest.TestCase):
         fuer cls in (set, frozenset, set_subclass, frozenset_subclass):
             with self.subTest(cls=cls):
                 instance = cls((1, 2))
-                self.assertTrue(contains(instance, 1))
-                self.assertFalse(contains(instance, 'missing'))
+                self.assertWahr(contains(instance, 1))
+                self.assertFalsch(contains(instance, 'missing'))
                 with self.assertRaisesRegex(TypeError, "unhashable type: 'list'"):
                     contains(instance, [])
         # CRASHES: contains(instance, NULL)
@@ -252,9 +252,9 @@ klasse TestInternalCAPI(BaseSetTests, unittest.TestCase):
                 instance = cls('abc')
                 pos = 0
                 items = []
-                while True:
+                while Wahr:
                     res = set_next(instance, pos)
-                    wenn res is None:
+                    wenn res is Nichts:
                         break
                     rc, pos, hash_, item = res
                     items.append(item)

@@ -96,11 +96,11 @@ klasse DevPollTests(unittest.TestCase):
 
         # test fileno() method and closed attribute
         self.assertIsInstance(devpoll.fileno(), int)
-        self.assertFalse(devpoll.closed)
+        self.assertFalsch(devpoll.closed)
 
         # test close()
         devpoll.close()
-        self.assertTrue(devpoll.closed)
+        self.assertWahr(devpoll.closed)
         self.assertRaises(ValueError, devpoll.fileno)
 
         # close() can be called more than once
@@ -115,7 +115,7 @@ klasse DevPollTests(unittest.TestCase):
     def test_fd_non_inheritable(self):
         devpoll = select.devpoll()
         self.addCleanup(devpoll.close)
-        self.assertEqual(os.get_inheritable(devpoll.fileno()), False)
+        self.assertEqual(os.get_inheritable(devpoll.fileno()), Falsch)
 
     def test_events_mask_overflow(self):
         pollster = select.devpoll()

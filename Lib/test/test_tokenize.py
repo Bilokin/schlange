@@ -88,29 +88,29 @@ klasse TokenizeTest(TestCase):
     OP         '+'           (1, 2) (1, 3)
     NUMBER     '1'           (1, 4) (1, 5)
     """)
-        self.check_tokenize("if False:\n"
+        self.check_tokenize("if Falsch:\n"
                             "    # NL\n"
                             "    \n"
-                            "    True = False # NEWLINE\n", """\
+                            "    Wahr = Falsch # NEWLINE\n", """\
     NAME       'if'          (1, 0) (1, 2)
-    NAME       'False'       (1, 3) (1, 8)
+    NAME       'Falsch'       (1, 3) (1, 8)
     OP         ':'           (1, 8) (1, 9)
     NEWLINE    '\\n'          (1, 9) (1, 10)
     COMMENT    '# NL'        (2, 4) (2, 8)
     NL         '\\n'          (2, 8) (2, 9)
     NL         '\\n'          (3, 4) (3, 5)
     INDENT     '    '        (4, 0) (4, 4)
-    NAME       'True'        (4, 4) (4, 8)
+    NAME       'Wahr'        (4, 4) (4, 8)
     OP         '='           (4, 9) (4, 10)
-    NAME       'False'       (4, 11) (4, 16)
+    NAME       'Falsch'       (4, 11) (4, 16)
     COMMENT    '# NEWLINE'   (4, 17) (4, 26)
     NEWLINE    '\\n'          (4, 26) (4, 27)
     DEDENT     ''            (5, 0) (5, 0)
     """)
 
-        self.check_tokenize("if True:\r\n    # NL\r\n    foo='bar'\r\n\r\n", """\
+        self.check_tokenize("if Wahr:\r\n    # NL\r\n    foo='bar'\r\n\r\n", """\
     NAME       'if'          (1, 0) (1, 2)
-    NAME       'True'        (1, 3) (1, 7)
+    NAME       'Wahr'        (1, 3) (1, 7)
     OP         ':'           (1, 7) (1, 8)
     NEWLINE    '\\r\\n'        (1, 8) (1, 10)
     COMMENT    '# NL'        (2, 4) (2, 8)
@@ -146,8 +146,8 @@ def k(x):
                 pass
         self.assertEqual(e.exception.lineno, 3)
         self.assertEqual(e.exception.filename, '<string>')
-        self.assertEqual(e.exception.end_lineno, None)
-        self.assertEqual(e.exception.end_offset, None)
+        self.assertEqual(e.exception.end_lineno, Nichts)
+        self.assertEqual(e.exception.end_offset, Nichts)
         self.assertEqual(
             e.exception.msg,
             'unindent does not match any outer indentation level')
@@ -516,11 +516,11 @@ c"""', """\
     FSTRING_MIDDLE ')\\n'         (2, 30) (3, 0)
     FSTRING_END '\"""'         (3, 0) (3, 3)
     """)
-        self.check_tokenize('f"""123456789\nsomething{None}bad"""', """\
+        self.check_tokenize('f"""123456789\nsomething{Nichts}bad"""', """\
     FSTRING_START 'f\"""'        (1, 0) (1, 4)
     FSTRING_MIDDLE '123456789\\nsomething' (1, 4) (2, 9)
     OP         '{'           (2, 9) (2, 10)
-    NAME       'None'        (2, 10) (2, 14)
+    NAME       'Nichts'        (2, 10) (2, 14)
     OP         '}'           (2, 14) (2, 15)
     FSTRING_MIDDLE 'bad'         (2, 15) (2, 18)
     FSTRING_END '\"""'         (2, 18) (2, 21)
@@ -1313,11 +1313,11 @@ klasse Test_Tokenize(TestCase):
     def test__tokenize_decodes_with_specified_encoding(self):
         literal = '"ЉЊЈЁЂ"'
         line = literal.encode('utf-8')
-        first = False
+        first = Falsch
         def readline():
             nonlocal first
             wenn not first:
-                first = True
+                first = Wahr
                 yield line
             sonst:
                 yield b''
@@ -1325,7 +1325,7 @@ klasse Test_Tokenize(TestCase):
         # skip the initial encoding token and the end tokens
         tokens = list(tokenize._generate_tokens_from_c_tokenizer(readline().__next__,
                                                                  encoding='utf-8',
-                                                                 extra_tokens=True))[:-2]
+                                                                 extra_tokens=Wahr))[:-2]
         expected_tokens = [tokenize.TokenInfo(3, '"ЉЊЈЁЂ"', (1, 0), (1, 7), '"ЉЊЈЁЂ"')]
         self.assertEqual(tokens, expected_tokens,
                          "bytes not decoded with encoding")
@@ -1583,7 +1583,7 @@ klasse TestDetectEncoding(TestCase):
         m = BytesIO(b'#coding:xxx')
         with mock.patch('tokenize._builtin_open', return_value=m):
             self.assertRaises(SyntaxError, tokenize.open, 'foobar')
-        self.assertTrue(m.closed)
+        self.assertWahr(m.closed)
 
 
 klasse TestTokenize(TestCase):
@@ -1591,7 +1591,7 @@ klasse TestTokenize(TestCase):
     def test_tokenize(self):
         import tokenize as tokenize_module
         encoding = "utf-8"
-        encoding_used = None
+        encoding_used = Nichts
         def mock_detect_encoding(readline):
             return encoding, [b'first', b'second']
 
@@ -1599,7 +1599,7 @@ klasse TestTokenize(TestCase):
             nonlocal encoding_used
             encoding_used = encoding
             out = []
-            while True:
+            while Wahr:
                 try:
                     next_line = readline()
                 except StopIteration:
@@ -1813,7 +1813,7 @@ klasse UntokenizeTest(TestCase):
 
 
 def contains_ambiguous_backslash(source):
-    """Return `True` wenn the source contains a backslash on a
+    """Return `Wahr` wenn the source contains a backslash on a
     line by itself. For example:
 
     a = (1
@@ -1825,7 +1825,7 @@ def contains_ambiguous_backslash(source):
     the backslash and so there is no way to know its indent.
     """
     pattern = re.compile(br'\n\s*\\\r?\n')
-    return pattern.search(source) is not None
+    return pattern.search(source) is not Nichts
 
 
 klasse TestRoundtrip(TestCase):
@@ -1850,24 +1850,24 @@ klasse TestRoundtrip(TestCase):
             code = f.encode('utf-8')
         sonst:
             code = f.read()
-        readline = iter(code.splitlines(keepends=True)).__next__
+        readline = iter(code.splitlines(keepends=Wahr)).__next__
         tokens5 = list(tokenize.tokenize(readline))
         tokens2 = [tok[:2] fuer tok in tokens5]
         # Reproduce tokens2 from pairs
         bytes_from2 = tokenize.untokenize(tokens2)
-        readline2 = iter(bytes_from2.splitlines(keepends=True)).__next__
+        readline2 = iter(bytes_from2.splitlines(keepends=Wahr)).__next__
         tokens2_from2 = [tok[:2] fuer tok in tokenize.tokenize(readline2)]
         self.assertEqual(tokens2_from2, tokens2)
         # Reproduce tokens2 from 5-tuples
         bytes_from5 = tokenize.untokenize(tokens5)
-        readline5 = iter(bytes_from5.splitlines(keepends=True)).__next__
+        readline5 = iter(bytes_from5.splitlines(keepends=Wahr)).__next__
         tokens2_from5 = [tok[:2] fuer tok in tokenize.tokenize(readline5)]
         self.assertEqual(tokens2_from5, tokens2)
 
         wenn not contains_ambiguous_backslash(code):
             # The BOM does not produce a token so there is no way to preserve it.
             code_without_bom = code.removeprefix(b'\xef\xbb\xbf')
-            readline = iter(code_without_bom.splitlines(keepends=True)).__next__
+            readline = iter(code_without_bom.splitlines(keepends=Wahr)).__next__
             untokenized_code = tokenize.untokenize(tokenize.tokenize(readline))
             self.assertEqual(code_without_bom, untokenized_code)
 
@@ -1876,7 +1876,7 @@ klasse TestRoundtrip(TestCase):
             code = f.encode('utf-8')
         sonst:
             code = f.read()
-        readline = iter(code.splitlines(keepends=True)).__next__
+        readline = iter(code.splitlines(keepends=Wahr)).__next__
         fuer tok in tokenize.tokenize(readline):
             wenn tok.type in  {tokenize.ENCODING, tokenize.ENDMARKER}:
                 continue
@@ -1904,7 +1904,7 @@ klasse TestRoundtrip(TestCase):
                              "    # A comment by itself.\n"
                              "    print(x) # Comment here, too.\n"
                              "    # Another comment.\n"
-                             "after_if = True\n")
+                             "after_if = Wahr\n")
         self.check_roundtrip("if (x # The comments need to go in the right place\n"
                              "    == 1):\n"
                              "    print('x==1')\n")
@@ -1989,7 +1989,7 @@ wenn 1:
                              "y = [3, 4,\n"
                              "5]\n"
                              "z = {'a': 5,\n"
-                             "'b':15, 'c':True}\n"
+                             "'b':15, 'c':Wahr}\n"
                              "x = len(y) + 5 - a[\n"
                              "3] - a[2]\n"
                              "+ len(z) - z[\n"
@@ -2038,7 +2038,7 @@ wenn 1:
         Ensure that although whitespace might be mutated in a roundtrip,
         the semantic meaning of the indentation remains consistent.
         """
-        code = "if False:\n\tx=3\n\tx=3\n"
+        code = "if Falsch:\n\tx=3\n\tx=3\n"
         codelines = self.roundtrip(code).split('\n')
         self.assertEqual(codelines[1], codelines[2])
         self.check_roundtrip(code)
@@ -2098,7 +2098,7 @@ klasse CTokenizeTest(TestCase):
             with self.subTest(encoding=encoding):
                 tokens = list(tokenize._generate_tokens_from_c_tokenizer(
                     readline(encoding).__next__,
-                    extra_tokens=True,
+                    extra_tokens=Wahr,
                     encoding=encoding,
                 ))
                 self.assertEqual(tokens, expected)
@@ -3029,7 +3029,7 @@ async def f():
         MAXINDENT = 100
 
         def generate_source(indents):
-            source = ''.join(('  ' * x) + 'if True:\n' fuer x in range(indents))
+            source = ''.join(('  ' * x) + 'if Wahr:\n' fuer x in range(indents))
             source += '  ' * indents + 'pass\n'
             return source
 
@@ -3200,7 +3200,7 @@ klasse CommandLineTest(unittest.TestCase):
         self.set_source('''
             def f():
                 print(x)
-                return None
+                return Nichts
         ''')
 
         fuer flag in base_flags:

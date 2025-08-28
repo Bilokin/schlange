@@ -88,7 +88,7 @@ def topsort(
         v.discard(k)  # Ignore self dependencies.
     fuer item in set.union(*data.values()) - set(data.keys()):
         data[item] = set()
-    while True:
+    while Wahr:
         ready = {item fuer item, dep in data.items() wenn not dep}
         wenn not ready:
             break

@@ -47,8 +47,8 @@ REQUIRED_PROPERTIES_PACKAGE = frozenset([
 
 klasse PackageFiles(typing.NamedTuple):
     """Structure fuer describing the files of a package"""
-    include: list[str] | None
-    exclude: list[str] | None = None
+    include: list[str] | Nichts
+    exclude: list[str] | Nichts = Nichts
 
 
 # SBOMS don't have a method to specify the sources of files
@@ -91,7 +91,7 @@ def spdx_id(value: str) -> str:
     return re.sub(r"[^a-zA-Z0-9.\-]+", "-", value)
 
 
-def error_if(value: bool, error_message: str) -> None:
+def error_if(value: bool, error_message: str) -> Nichts:
     """Prints an error wenn a comparison fails along with a link to the devguide"""
     wenn value:
         print(error_message)
@@ -108,8 +108,8 @@ def is_root_directory_git_index() -> bool:
             stderr=subprocess.DEVNULL,
         )
     except subprocess.CalledProcessError:
-        return False
-    return True
+        return Falsch
+    return Wahr
 
 
 def filter_gitignored_paths(paths: list[str]) -> list[str]:
@@ -133,7 +133,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
     git_check_ignore_proc = subprocess.run(
         ["git", "check-ignore", "--verbose", "--non-matching", *paths],
         cwd=CPYTHON_ROOT_DIR,
-        check=False,
+        check=Falsch,
         stdout=subprocess.PIPE,
     )
     # 1 means matches, 0 means no matches.
@@ -181,7 +181,7 @@ def download_with_retries(download_location: str,
             return resp
 
 
-def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> None:
+def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> Nichts:
     """Make a bunch of assertions about the SBOM package data to ensure it's consistent."""
 
     fuer package in sbom_data["packages"]:
@@ -275,7 +275,7 @@ def check_sbom_packages(sbom_data: dict[str, typing.Any]) -> None:
         )
 
 
-def create_source_sbom() -> None:
+def create_source_sbom() -> Nichts:
     sbom_path = CPYTHON_ROOT_DIR / "Misc/sbom.spdx.json"
     sbom_data = json.loads(sbom_path.read_bytes())
 
@@ -300,7 +300,7 @@ def create_source_sbom() -> None:
         exclude = files.exclude or ()
         fuer include in sorted(files.include or ()):
             # Find all the paths and then filter them through .gitignore.
-            paths = glob.glob(include, root_dir=CPYTHON_ROOT_DIR, recursive=True)
+            paths = glob.glob(include, root_dir=CPYTHON_ROOT_DIR, recursive=Wahr)
             paths = filter_gitignored_paths(paths)
             error_if(
                 len(paths) == 0,
@@ -343,10 +343,10 @@ def create_source_sbom() -> None:
                 })
 
     # Update the SBOM on disk
-    sbom_path.write_text(json.dumps(sbom_data, indent=2, sort_keys=True))
+    sbom_path.write_text(json.dumps(sbom_data, indent=2, sort_keys=Wahr))
 
 
-def create_externals_sbom() -> None:
+def create_externals_sbom() -> Nichts:
     sbom_path = CPYTHON_ROOT_DIR / "Misc/externals.spdx.json"
     sbom_data = json.loads(sbom_path.read_bytes())
 
@@ -391,15 +391,15 @@ def create_externals_sbom() -> None:
 
         # If the download URL has changed we want one to get recalulated.
         wenn download_location_changed:
-            package.pop("checksums", None)
+            package.pop("checksums", Nichts)
 
     check_sbom_packages(sbom_data)
 
     # Update the SBOM on disk
-    sbom_path.write_text(json.dumps(sbom_data, indent=2, sort_keys=True))
+    sbom_path.write_text(json.dumps(sbom_data, indent=2, sort_keys=Wahr))
 
 
-def main() -> None:
+def main() -> Nichts:
     # Don't regenerate the SBOM wenn we're not a git repository.
     wenn not is_root_directory_git_index():
         print("Skipping SBOM generation due to not being a git repository")

@@ -11,7 +11,7 @@ from unittest import TestCase
 try:
     import _testcapi
 except ImportError:
-    _testcapi = None
+    _testcapi = Nichts
 
 from test.support import threading_helper
 
@@ -72,7 +72,7 @@ klasse TestDict(TestCase):
 
         def writer_func(name):
             last = -1
-            while True:
+            while Wahr:
                 wenn CUR == last:
                     time.sleep(0.001)
                     continue
@@ -141,7 +141,7 @@ klasse TestDict(TestCase):
 
         fuer thread_list in lists:
             fuer ref in thread_list:
-                self.assertIsNone(ref())
+                self.assertIsNichts(ref())
 
     def test_racing_get_set_dict(self):
         """Races getting and setting a dict should be thread safe"""
@@ -151,7 +151,7 @@ klasse TestDict(TestCase):
             barrier.wait()
             fuer _ in range(1000):
                 d[10] = 0
-                d.get(10, None)
+                d.get(10, Nichts)
                 _ = d[10]
 
         d = {}
@@ -168,7 +168,7 @@ klasse TestDict(TestCase):
         """Races assigning to __dict__ should be thread safe"""
         klasse C: pass
         klasse MyDict(dict): pass
-        fuer cyclic in (False, True):
+        fuer cyclic in (Falsch, Wahr):
             f = C()
             f.__dict__ = {"foo": 42}
             THREAD_COUNT = 10
@@ -220,7 +220,7 @@ klasse TestDict(TestCase):
             ids = set()
             fuer thread_list in lists:
                 fuer i, ref in enumerate(thread_list):
-                    wenn ref() is None:
+                    wenn ref() is Nichts:
                         continue
                     count += 1
                     ids.add(id(ref()))

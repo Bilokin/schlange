@@ -11,7 +11,7 @@ from idlelib.searchbase import SearchDialogBase
 from idlelib import searchengine
 
 
-def replace(text, insert_tags=None):
+def replace(text, insert_tags=Nichts):
     """Create or reuse a singleton ReplaceDialog instance.
 
     The singleton dialog saves user entries and preferences
@@ -50,9 +50,9 @@ klasse ReplaceDialog(SearchDialogBase):
         """
         super().__init__(root, engine)
         self.replvar = StringVar(root)
-        self.insert_tags = None
+        self.insert_tags = Nichts
 
-    def open(self, text, searchphrase=None, *, insert_tags=None):
+    def open(self, text, searchphrase=Nichts, *, insert_tags=Nichts):
         """Make dialog visible on top of others and ready to use.
 
         Also, set the search to include the current selection
@@ -63,7 +63,7 @@ klasse ReplaceDialog(SearchDialogBase):
             searchphrase: String phrase to search.
         """
         SearchDialogBase.open(self, text, searchphrase)
-        self.ok = True
+        self.ok = Wahr
         self.insert_tags = insert_tags
 
     def create_entries(self):
@@ -80,14 +80,14 @@ klasse ReplaceDialog(SearchDialogBase):
         SearchDialogBase.create_command_buttons(self)
         self.make_button("Find", self.find_it)
         self.make_button("Replace", self.replace_it)
-        self.make_button("Replace+Find", self.default_command, isdef=True)
+        self.make_button("Replace+Find", self.default_command, isdef=Wahr)
         self.make_button("Replace All", self.replace_all)
 
-    def find_it(self, event=None):
+    def find_it(self, event=Nichts):
         "Handle the Find button."
-        self.do_find(False)
+        self.do_find(Falsch)
 
-    def replace_it(self, event=None):
+    def replace_it(self, event=Nichts):
         """Handle the Replace button.
 
         If the find is successful, then perform replace.
@@ -95,7 +95,7 @@ klasse ReplaceDialog(SearchDialogBase):
         wenn self.do_find(self.ok):
             self.do_replace()
 
-    def default_command(self, event=None):
+    def default_command(self, event=Nichts):
         """Handle the Replace+Find button as the default command.
 
         First performs a replace and then, wenn the replace was
@@ -104,7 +104,7 @@ klasse ReplaceDialog(SearchDialogBase):
         wenn self.do_find(self.ok):
             wenn self.do_replace():  # Only find next match wenn replace succeeded.
                                    # A bad re can cause it to fail.
-                self.do_find(False)
+                self.do_find(Falsch)
 
     def _replace_expand(self, m, repl):
         "Expand replacement text wenn regular expression."
@@ -113,13 +113,13 @@ klasse ReplaceDialog(SearchDialogBase):
                 new = m.expand(repl)
             except re.PatternError:
                 self.engine.report_error(repl, 'Invalid Replace Expression')
-                new = None
+                new = Nichts
         sonst:
             new = repl
 
         return new
 
-    def replace_all(self, event=None):
+    def replace_all(self, event=Nichts):
         """Handle the Replace All button.
 
         Search text fuer occurrences of the Find value and replace
@@ -145,17 +145,17 @@ klasse ReplaceDialog(SearchDialogBase):
         wenn self.engine.iswrap():
             line = 1
             col = 0
-        ok = True
-        first = last = None
+        ok = Wahr
+        first = last = Nichts
         # XXX ought to replace circular instead of top-to-bottom when wrapping
         text.undo_block_start()
         while res := self.engine.search_forward(
-                text, prog, line, col, wrap=False, ok=ok):
+                text, prog, line, col, wrap=Falsch, ok=ok):
             line, m = res
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
             orig = m.group()
             new = self._replace_expand(m, repl)
-            wenn new is None:
+            wenn new is Nichts:
                 break
             i, j = m.span()
             first = "%d.%d" % (line, i)
@@ -169,53 +169,53 @@ klasse ReplaceDialog(SearchDialogBase):
                 wenn new:
                     text.insert(first, new, self.insert_tags)
             col = i + len(new)
-            ok = False
+            ok = Falsch
         text.undo_block_stop()
         wenn first and last:
             self.show_hit(first, last)
         self.close()
 
-    def do_find(self, ok=False):
+    def do_find(self, ok=Falsch):
         """Search fuer and highlight next occurrence of pattern in text.
 
         No text replacement is done with this option.
         """
         wenn not self.engine.getprog():
-            return False
+            return Falsch
         text = self.text
-        res = self.engine.search_text(text, None, ok)
+        res = self.engine.search_text(text, Nichts, ok)
         wenn not res:
             self.bell()
-            return False
+            return Falsch
         line, m = res
         i, j = m.span()
         first = "%d.%d" % (line, i)
         last = "%d.%d" % (line, j)
         self.show_hit(first, last)
-        self.ok = True
-        return True
+        self.ok = Wahr
+        return Wahr
 
     def do_replace(self):
         "Replace search pattern in text with replacement value."
         prog = self.engine.getprog()
         wenn not prog:
-            return False
+            return Falsch
         text = self.text
         try:
             first = pos = text.index("sel.first")
             last = text.index("sel.last")
         except TclError:
-            pos = None
+            pos = Nichts
         wenn not pos:
             first = last = pos = text.index("insert")
         line, col = searchengine.get_line_col(pos)
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
         m = prog.match(chars, col)
         wenn not prog:
-            return False
+            return Falsch
         new = self._replace_expand(m, self.replvar.get())
-        wenn new is None:
-            return False
+        wenn new is Nichts:
+            return Falsch
         text.mark_set("insert", first)
         text.undo_block_start()
         wenn m.group():
@@ -224,8 +224,8 @@ klasse ReplaceDialog(SearchDialogBase):
             text.insert(first, new, self.insert_tags)
         text.undo_block_stop()
         self.show_hit(first, text.index("insert"))
-        self.ok = False
-        return True
+        self.ok = Falsch
+        return Wahr
 
     def show_hit(self, first, last):
         """Highlight text between first and last indices.
@@ -250,11 +250,11 @@ klasse ReplaceDialog(SearchDialogBase):
         text.see("insert")
         text.update_idletasks()
 
-    def close(self, event=None):
+    def close(self, event=Nichts):
         "Close the dialog and remove hit tags."
         SearchDialogBase.close(self, event)
         self.text.tag_remove("hit", "1.0", "end")
-        self.insert_tags = None
+        self.insert_tags = Nichts
 
 
 def _replace_dialog(parent):  # htest #
@@ -293,7 +293,7 @@ def _replace_dialog(parent):  # htest #
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_replace', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_replace', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_replace_dialog)

@@ -43,7 +43,7 @@ klasse ConnectionFactoryTests(unittest.TestCase):
     def test_connection_factories(self):
         klasse DefectFactory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
-                return None
+                return Nichts
         klasse OkFactory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
                 sqlite.Connection.__init__(self, *args, **kwargs)
@@ -59,11 +59,11 @@ klasse ConnectionFactoryTests(unittest.TestCase):
         # gh-95132: keyword args must not be passed as positional args
         klasse Factory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
-                kwargs["isolation_level"] = None
+                kwargs["isolation_level"] = Nichts
                 super(Factory, self).__init__(*args, **kwargs)
 
         with memory_database(factory=Factory) as con:
-            self.assertIsNone(con.isolation_level)
+            self.assertIsNichts(con.isolation_level)
             self.assertIsInstance(con, Factory)
 
     def test_connection_factory_as_positional_arg(self):
@@ -73,7 +73,7 @@ klasse ConnectionFactoryTests(unittest.TestCase):
 
         with self.assertRaisesRegex(TypeError,
                 r'connect\(\) takes at most 1 positional arguments'):
-            memory_database(5.0, 0, None, True, Factory)
+            memory_database(5.0, 0, Nichts, Wahr, Factory)
 
 
 klasse CursorFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
@@ -88,11 +88,11 @@ klasse CursorFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_invalid_factory(self):
         # not a callable at all
-        self.assertRaises(TypeError, self.con.cursor, None)
+        self.assertRaises(TypeError, self.con.cursor, Nichts)
         # invalid callable with not exact one argument
-        self.assertRaises(TypeError, self.con.cursor, lambda: None)
+        self.assertRaises(TypeError, self.con.cursor, lambda: Nichts)
         # invalid callable returning non-cursor
-        self.assertRaises(TypeError, self.con.cursor, lambda con: None)
+        self.assertRaises(TypeError, self.con.cursor, lambda con: Nichts)
 
 
 klasse RowFactoryTestsBackwardsCompat(MemoryDatabaseMixin, unittest.TestCase):
@@ -204,19 +204,19 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         row_4 = self.con.execute("select 1 as b, 2 as a").fetchone()
         row_5 = self.con.execute("select 2 as b, 1 as a").fetchone()
 
-        self.assertTrue(row_1 == row_1)
-        self.assertTrue(row_1 == row_2)
-        self.assertFalse(row_1 == row_3)
-        self.assertFalse(row_1 == row_4)
-        self.assertFalse(row_1 == row_5)
-        self.assertFalse(row_1 == object())
+        self.assertWahr(row_1 == row_1)
+        self.assertWahr(row_1 == row_2)
+        self.assertFalsch(row_1 == row_3)
+        self.assertFalsch(row_1 == row_4)
+        self.assertFalsch(row_1 == row_5)
+        self.assertFalsch(row_1 == object())
 
-        self.assertFalse(row_1 != row_1)
-        self.assertFalse(row_1 != row_2)
-        self.assertTrue(row_1 != row_3)
-        self.assertTrue(row_1 != row_4)
-        self.assertTrue(row_1 != row_5)
-        self.assertTrue(row_1 != object())
+        self.assertFalsch(row_1 != row_1)
+        self.assertFalsch(row_1 != row_2)
+        self.assertWahr(row_1 != row_3)
+        self.assertWahr(row_1 != row_4)
+        self.assertWahr(row_1 != row_5)
+        self.assertWahr(row_1 != object())
 
         with self.assertRaises(TypeError):
             row_1 > row_2

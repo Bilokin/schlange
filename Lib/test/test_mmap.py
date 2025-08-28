@@ -87,7 +87,7 @@ klasse MmapTests(unittest.TestCase):
 
         # Test doing a regular expression match in an mmap'ed file
         match = re.search(b'[A-Za-z]+', m)
-        wenn match is None:
+        wenn match is Nichts:
             self.fail('regex match on mmap failed!')
         sonst:
             start, end = match.span(0)
@@ -97,7 +97,7 @@ klasse MmapTests(unittest.TestCase):
             self.assertEqual(end, PAGESIZE + 6)
 
         # test seeking around (try to overflow the seek implementation)
-        self.assertTrue(m.seekable())
+        self.assertWahr(m.seekable())
         self.assertEqual(m.seek(0, 0), 0)
         self.assertEqual(m.tell(), 0)
         self.assertEqual(m.seek(42, 1), 42)
@@ -275,10 +275,10 @@ klasse MmapTests(unittest.TestCase):
         size = 64
         with open(TESTFN, "wb") as f:
             f.write(b"a"*size)
-        fuer close_original_fd in True, False:
+        fuer close_original_fd in Wahr, Falsch:
             with self.subTest(close_original_fd=close_original_fd):
                 with open(TESTFN, "r+b") as f:
-                    with mmap.mmap(f.fileno(), size, trackfd=False) as m:
+                    with mmap.mmap(f.fileno(), size, trackfd=Falsch) as m:
                         wenn close_original_fd:
                             f.close()
                         self.assertEqual(len(m), size)
@@ -289,7 +289,7 @@ klasse MmapTests(unittest.TestCase):
                             m.resize(size * 2)
                         with self.assertRaises(ValueError):
                             m.resize(size // 2)
-                        self.assertEqual(m.closed, False)
+                        self.assertEqual(m.closed, Falsch)
 
                         # Smoke-test other API
                         m.write_byte(ord('X'))
@@ -302,13 +302,13 @@ klasse MmapTests(unittest.TestCase):
                         self.assertEqual(m.tell(), 0)
                         self.assertEqual(m.read_byte(), ord('X'))
 
-                self.assertEqual(m.closed, True)
+                self.assertEqual(m.closed, Wahr)
                 self.assertEqual(os.stat(TESTFN).st_size, size)
 
     @unittest.skipIf(os.name == 'nt', 'trackfd not present on Windows')
     def test_trackfd_neg1(self):
         size = 64
-        with mmap.mmap(-1, size, trackfd=False) as m:
+        with mmap.mmap(-1, size, trackfd=Falsch) as m:
             with self.assertRaises(OSError):
                 m.size()
             with self.assertRaises(ValueError):
@@ -322,9 +322,9 @@ klasse MmapTests(unittest.TestCase):
         # 'trackffd' is an invalid keyword argument fuer this function
         size = 64
         with self.assertRaises(TypeError):
-            mmap.mmap(-1, size, trackfd=True)
+            mmap.mmap(-1, size, trackfd=Wahr)
         with self.assertRaises(TypeError):
-            mmap.mmap(-1, size, trackfd=False)
+            mmap.mmap(-1, size, trackfd=Falsch)
 
     def test_bad_file_desc(self):
         # Try opening a bad file descriptor...
@@ -510,7 +510,7 @@ klasse MmapTests(unittest.TestCase):
         m = mmap.mmap(-1, 16)
         self.addCleanup(m.close)
 
-        # With no parameters, or None or a negative argument, reads all
+        # With no parameters, or Nichts or a negative argument, reads all
         m.write(bytes(range(16)))
         m.seek(0)
         self.assertEqual(m.read(), bytes(range(16)))
@@ -519,7 +519,7 @@ klasse MmapTests(unittest.TestCase):
         m.seek(16)
         self.assertEqual(m.read(), b'')
         m.seek(3)
-        self.assertEqual(m.read(None), bytes(range(3, 16)))
+        self.assertEqual(m.read(Nichts), bytes(range(3, 16)))
         m.seek(4)
         self.assertEqual(m.read(-1), bytes(range(4, 16)))
         m.seek(5)
@@ -541,7 +541,7 @@ klasse MmapTests(unittest.TestCase):
         m = mmap.mmap(-1, len(s))
         m[:] = s
         self.assertEqual(m[:], s)
-        indices = (0, None, 1, 3, 19, 300, sys.maxsize, -1, -2, -31, -300)
+        indices = (0, Nichts, 1, 3, 19, 300, sys.maxsize, -1, -2, -31, -300)
         fuer start in indices:
             fuer stop in indices:
                 # Skip step 0 (invalid)
@@ -553,7 +553,7 @@ klasse MmapTests(unittest.TestCase):
         # Test extended slicing by comparing with list slicing.
         s = bytes(reversed(range(256)))
         m = mmap.mmap(-1, len(s))
-        indices = (0, None, 1, 3, 19, 300, sys.maxsize, -1, -2, -31, -300)
+        indices = (0, Nichts, 1, 3, 19, 300, sys.maxsize, -1, -2, -31, -300)
         fuer start in indices:
             fuer stop in indices:
                 # Skip invalid step 0
@@ -598,7 +598,7 @@ klasse MmapTests(unittest.TestCase):
             mapsize = halfsize * 2
             # Try invalid offset
             f = open(TESTFN, "r+b")
-            fuer offset in [-2, -1, None]:
+            fuer offset in [-2, -1, Nichts]:
                 try:
                     m = mmap.mmap(f.fileno(), mapsize, offset=offset)
                     self.assertEqual(0, 1)
@@ -784,8 +784,8 @@ klasse MmapTests(unittest.TestCase):
 
     def test_context_manager(self):
         with mmap.mmap(-1, 10) as m:
-            self.assertFalse(m.closed)
-        self.assertTrue(m.closed)
+            self.assertFalsch(m.closed)
+        self.assertWahr(m.closed)
 
     def test_context_manager_exception(self):
         # Test that the OSError gets passed through
@@ -794,7 +794,7 @@ klasse MmapTests(unittest.TestCase):
                 raise OSError
         self.assertIsInstance(exc.exception, OSError,
                               "wrong exception raised in context manager")
-        self.assertTrue(m.closed, "context manager failed")
+        self.assertWahr(m.closed, "context manager failed")
 
     def test_weakref(self):
         # Check mmap objects are weakrefable
@@ -803,7 +803,7 @@ klasse MmapTests(unittest.TestCase):
         self.assertIs(wr(), mm)
         del mm
         gc_collect()
-        self.assertIs(wr(), None)
+        self.assertIs(wr(), Nichts)
 
     def test_write_returning_the_number_of_bytes_written(self):
         mm = mmap.mmap(-1, 16)
@@ -833,13 +833,13 @@ klasse MmapTests(unittest.TestCase):
             m * 2
 
     def test_flush_return_value(self):
-        # mm.flush() should return None on success, raise an
+        # mm.flush() should return Nichts on success, raise an
         # exception on error under all platforms.
         mm = mmap.mmap(-1, 16)
         self.addCleanup(mm.close)
         mm.write(b'python')
         result = mm.flush()
-        self.assertIsNone(result)
+        self.assertIsNichts(result)
         wenn (sys.platform.startswith(('linux', 'android'))
             and not in_systemd_nspawn_sync_suppressed()):
             # 'offset' must be a multiple of mmap.PAGESIZE on Linux.
@@ -848,12 +848,12 @@ klasse MmapTests(unittest.TestCase):
 
     def test_repr(self):
         open_mmap_repr_pat = re.compile(
-            r"<mmap.mmap closed=False, "
+            r"<mmap.mmap closed=Falsch, "
             r"access=(?P<access>\S+), "
             r"length=(?P<length>\d+), "
             r"pos=(?P<pos>\d+), "
             r"offset=(?P<offset>\d+)>")
-        closed_mmap_repr_pat = re.compile(r"<mmap.mmap closed=True>")
+        closed_mmap_repr_pat = re.compile(r"<mmap.mmap closed=Wahr>")
         mapsizes = (50, 100, 1_000, 1_000_000, 10_000_000)
         offsets = tuple((mapsize // 2 // mmap.ALLOCATIONGRANULARITY)
                         * mmap.ALLOCATIONGRANULARITY fuer mapsize in mapsizes)
@@ -874,13 +874,13 @@ klasse MmapTests(unittest.TestCase):
                                    offset=offset) as mm:
                         mm.seek(pos)
                         match = open_mmap_repr_pat.match(repr(mm))
-                        self.assertIsNotNone(match)
+                        self.assertIsNotNichts(match)
                         self.assertEqual(match.group('access'), access)
                         self.assertEqual(match.group('length'), str(length))
                         self.assertEqual(match.group('pos'), str(pos))
                         self.assertEqual(match.group('offset'), str(offset))
                     match = closed_mmap_repr_pat.match(repr(mm))
-                    self.assertIsNotNone(match)
+                    self.assertIsNotNichts(match)
 
     @unittest.skipUnless(hasattr(mmap.mmap, 'madvise'), 'needs madvise')
     def test_madvise(self):
@@ -895,11 +895,11 @@ klasse MmapTests(unittest.TestCase):
             m.madvise(mmap.MADV_NORMAL, 0, -1)
         with self.assertRaisesRegex(OverflowError, "madvise length too large"):
             m.madvise(mmap.MADV_NORMAL, PAGESIZE, sys.maxsize)
-        self.assertEqual(m.madvise(mmap.MADV_NORMAL), None)
-        self.assertEqual(m.madvise(mmap.MADV_NORMAL, PAGESIZE), None)
-        self.assertEqual(m.madvise(mmap.MADV_NORMAL, PAGESIZE, size), None)
-        self.assertEqual(m.madvise(mmap.MADV_NORMAL, 0, 2), None)
-        self.assertEqual(m.madvise(mmap.MADV_NORMAL, 0, size), None)
+        self.assertEqual(m.madvise(mmap.MADV_NORMAL), Nichts)
+        self.assertEqual(m.madvise(mmap.MADV_NORMAL, PAGESIZE), Nichts)
+        self.assertEqual(m.madvise(mmap.MADV_NORMAL, PAGESIZE, size), Nichts)
+        self.assertEqual(m.madvise(mmap.MADV_NORMAL, 0, 2), Nichts)
+        self.assertEqual(m.madvise(mmap.MADV_NORMAL, 0, size), Nichts)
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_resize_up_when_mapped_to_pagefile(self):
@@ -983,7 +983,7 @@ klasse MmapTests(unittest.TestCase):
         """
 
         klasse MmapClosedByIntContext:
-            def __init__(self, access) -> None:
+            def __init__(self, access) -> Nichts:
                 self.access = access
 
             def __enter__(self):
@@ -1088,49 +1088,49 @@ klasse MmapTests(unittest.TestCase):
                 m._protect(PAGE_NOACCESS, 0, PAGESIZE)
                 with suppress(OSError):
                     m.read(PAGESIZE)
-                    assert False, 'mmap.read() did not raise'
+                    assert Falsch, 'mmap.read() did not raise'
                 with suppress(OSError):
                     m.read_byte()
-                    assert False, 'mmap.read_byte() did not raise'
+                    assert Falsch, 'mmap.read_byte() did not raise'
                 with suppress(OSError):
                     m.readline()
-                    assert False, 'mmap.readline() did not raise'
+                    assert Falsch, 'mmap.readline() did not raise'
                 with suppress(OSError):
                     m.write(b'A'* PAGESIZE)
-                    assert False, 'mmap.write() did not raise'
+                    assert Falsch, 'mmap.write() did not raise'
                 with suppress(OSError):
                     m.write_byte(0)
-                    assert False, 'mmap.write_byte() did not raise'
+                    assert Falsch, 'mmap.write_byte() did not raise'
                 with suppress(OSError):
                     m[0]  # test mmap_subscript
-                    assert False, 'mmap.__getitem__() did not raise'
+                    assert Falsch, 'mmap.__getitem__() did not raise'
                 with suppress(OSError):
                     m[0:10]  # test mmap_subscript
-                    assert False, 'mmap.__getitem__() did not raise'
+                    assert Falsch, 'mmap.__getitem__() did not raise'
                 with suppress(OSError):
                     m[0:10:2]  # test mmap_subscript
-                    assert False, 'mmap.__getitem__() did not raise'
+                    assert Falsch, 'mmap.__getitem__() did not raise'
                 with suppress(OSError):
                     m[0] = 1
-                    assert False, 'mmap.__setitem__() did not raise'
+                    assert Falsch, 'mmap.__setitem__() did not raise'
                 with suppress(OSError):
                     m[0:10] = b'A'* 10
-                    assert False, 'mmap.__setitem__() did not raise'
+                    assert Falsch, 'mmap.__setitem__() did not raise'
                 with suppress(OSError):
                     m[0:10:2] = b'A'* 5
-                    assert False, 'mmap.__setitem__() did not raise'
+                    assert Falsch, 'mmap.__setitem__() did not raise'
                 with suppress(OSError):
                     m.move(0, 10, 1)
-                    assert False, 'mmap.move() did not raise'
+                    assert Falsch, 'mmap.move() did not raise'
                 with suppress(OSError):
                     list(m)  # test mmap_item
-                    assert False, 'mmap.__getitem__() did not raise'
+                    assert Falsch, 'mmap.__getitem__() did not raise'
                 with suppress(OSError):
                     m.find(b'A')
-                    assert False, 'mmap.find() did not raise'
+                    assert Falsch, 'mmap.find() did not raise'
                 with suppress(OSError):
                     m.rfind(b'A')
-                    assert False, 'mmap.rfind() did not raise'
+                    assert Falsch, 'mmap.rfind() did not raise'
         """)
         rt, stdout, stderr = assert_python_ok("-c", code, TESTFN)
         self.assertEqual(stdout.strip(), b'')

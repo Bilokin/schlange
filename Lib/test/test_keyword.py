@@ -4,13 +4,13 @@ import unittest
 
 klasse Test_iskeyword(unittest.TestCase):
     def test_true_is_a_keyword(self):
-        self.assertTrue(keyword.iskeyword('True'))
+        self.assertWahr(keyword.iskeyword('Wahr'))
 
     def test_uppercase_true_is_not_a_keyword(self):
-        self.assertFalse(keyword.iskeyword('TRUE'))
+        self.assertFalsch(keyword.iskeyword('TRUE'))
 
     def test_none_value_is_not_a_keyword(self):
-        self.assertFalse(keyword.iskeyword(None))
+        self.assertFalsch(keyword.iskeyword(Nichts))
 
     # This is probably an accident of the current implementation, but should be
     # preserved fuer backward compatibility.
@@ -18,13 +18,13 @@ klasse Test_iskeyword(unittest.TestCase):
         oldlist = keyword.kwlist
         self.addCleanup(setattr, keyword, 'kwlist', oldlist)
         keyword.kwlist = ['its', 'all', 'eggs', 'beans', 'and', 'a', 'slice']
-        self.assertFalse(keyword.iskeyword('eggs'))
+        self.assertFalsch(keyword.iskeyword('eggs'))
 
     def test_changing_the_softkwlist_does_not_affect_issoftkeyword(self):
         oldlist = keyword.softkwlist
         self.addCleanup(setattr, keyword, "softkwlist", oldlist)
         keyword.softkwlist = ["foo", "bar", "spam", "egs", "case"]
-        self.assertFalse(keyword.issoftkeyword("spam"))
+        self.assertFalsch(keyword.issoftkeyword("spam"))
 
     def test_all_keywords_fail_to_be_used_as_names(self):
         fuer key in keyword.kwlist:

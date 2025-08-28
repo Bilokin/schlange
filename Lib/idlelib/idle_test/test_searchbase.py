@@ -37,7 +37,7 @@ klasse SearchDialogBaseTest(unittest.TestCase):
         del cls.root
 
     def setUp(self):
-        self.engine = se.SearchEngine(self.root)  # None also seems to work
+        self.engine = se.SearchEngine(self.root)  # Nichts also seems to work
         self.dialog = sdb.SearchDialogBase(root=self.root, engine=self.engine)
 
     def tearDown(self):
@@ -45,7 +45,7 @@ klasse SearchDialogBaseTest(unittest.TestCase):
 
     def test_open_and_close(self):
         # open calls create_widgets, which needs default_command
-        self.dialog.default_command = None
+        self.dialog.default_command = Nichts
 
         toplevel = Toplevel(self.root)
         text = Text(toplevel)
@@ -65,13 +65,13 @@ klasse SearchDialogBaseTest(unittest.TestCase):
         self.dialog.create_other_buttons = Func()
         self.dialog.create_command_buttons = Func()
 
-        self.dialog.default_command = None
+        self.dialog.default_command = Nichts
         self.dialog.create_widgets()
 
-        self.assertTrue(self.dialog.create_entries.called)
-        self.assertTrue(self.dialog.create_option_buttons.called)
-        self.assertTrue(self.dialog.create_other_buttons.called)
-        self.assertTrue(self.dialog.create_command_buttons.called)
+        self.assertWahr(self.dialog.create_entries.called)
+        self.assertWahr(self.dialog.create_option_buttons.called)
+        self.assertWahr(self.dialog.create_other_buttons.called)
+        self.assertWahr(self.dialog.create_command_buttons.called)
 
     def test_make_entry(self):
         equal = self.assertEqual
@@ -125,7 +125,7 @@ klasse SearchDialogBaseTest(unittest.TestCase):
                 self.assertEqual(var.get(), state)
 
     def test_create_other_buttons(self):
-        fuer state in (False, True):
+        fuer state in (Falsch, Wahr):
             var = self.engine.backvar
             var.set(state)
             frame, others = self.btn_test_setup(

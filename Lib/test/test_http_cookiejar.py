@@ -123,7 +123,7 @@ klasse DateTimeTests(unittest.TestCase):
             'Wed, 09 Feb 1994834 22:23:32 GMT',
         ])
     def test_http2time_garbage(self, test):
-        self.assertIsNone(http2time(test))
+        self.assertIsNichts(http2time(test))
 
     def test_http2time_redos_regression_actually_completes(self):
         # LOOSE_HTTP_DATE_RE was vulnerable to malicious input which caused catastrophic backtracking (REDoS).
@@ -184,7 +184,7 @@ klasse DateTimeTests(unittest.TestCase):
             '19800101T250000Z',
         ])
     def test_iso2time_garbage(self, test):
-        self.assertIsNone(iso2time(test))
+        self.assertIsNichts(iso2time(test))
 
     def test_iso2time_performance_regression(self):
         # If ISO_DATE_RE regresses to quadratic complexity, this test will take a very long time to succeed.
@@ -222,23 +222,23 @@ klasse HeaderTests(unittest.TestCase):
         self.assertEqual(parse_ns_headers([hdr]), expected)
 
     @support.subTests('src,expected', [
-            ([[("foo", None), ("bar", "baz")]], "foo; bar=baz"),
+            ([[("foo", Nichts), ("bar", "baz")]], "foo; bar=baz"),
             (([]), ""),
             (([[]]), ""),
             (([[("a", "_")]]), "a=_"),
             (([[("a", ";")]]), 'a=";"'),
-            ([[("n", None), ("foo", "foo;_")], [("bar", "foo_bar")]],
+            ([[("n", Nichts), ("foo", "foo;_")], [("bar", "foo_bar")]],
              'n; foo="foo;_", bar=foo_bar'),
-            ([[("n", "m"), ("foo", None)], [("bar", "foo_bar")]],
+            ([[("n", "m"), ("foo", Nichts)], [("bar", "foo_bar")]],
              'n=m; foo, bar=foo_bar'),
         ])
     def test_join_header_words(self, src, expected):
         self.assertEqual(join_header_words(src), expected)
 
     @support.subTests('arg,expect', [
-            ("foo", [[("foo", None)]]),
+            ("foo", [[("foo", Nichts)]]),
             ("foo=bar", [[("foo", "bar")]]),
-            ("   foo   ", [[("foo", None)]]),
+            ("   foo   ", [[("foo", Nichts)]]),
             ("   foo=   ", [[("foo", "")]]),
             ("   foo=", [[("foo", "")]]),
             ("   foo=   ; ", [[("foo", "")]]),
@@ -247,10 +247,10 @@ klasse HeaderTests(unittest.TestCase):
             # doesn't really matter wenn this next fails, but it works ATM
             ("foo= bar=baz", [[("foo", "bar=baz")]]),
             ("foo=bar;bar=baz", [[("foo", "bar"), ("bar", "baz")]]),
-            ('foo bar baz', [[("foo", None), ("bar", None), ("baz", None)]]),
-            ("a, b, c", [[("a", None)], [("b", None)], [("c", None)]]),
+            ('foo bar baz', [[("foo", Nichts), ("bar", Nichts), ("baz", Nichts)]]),
+            ("a, b, c", [[("a", Nichts)], [("b", Nichts)], [("c", Nichts)]]),
             (r'foo; bar=baz, spam=, foo="\,\;\"", bar= ',
-             [[("foo", None), ("bar", "baz")],
+             [[("foo", Nichts), ("bar", "baz")],
               [("spam", "")], [("foo", ',;"')], [("bar", "")]]),
         ])
     def test_split_header_words(self, arg, expect):
@@ -259,7 +259,7 @@ klasse HeaderTests(unittest.TestCase):
         except:
             import traceback, io
             f = io.StringIO()
-            traceback.print_exc(None, f)
+            traceback.print_exc(Nichts, f)
             result = "(error -- traceback follows)\n\n%s" % f.getvalue()
         self.assertEqual(result,  expect, """
 When parsing: '%s'
@@ -313,7 +313,7 @@ Input was:    '%s'
 
 
 klasse FakeResponse:
-    def __init__(self, headers=[], url=None):
+    def __init__(self, headers=[], url=Nichts):
         """
         headers: list of RFC822-style 'Key: value' strings
         """
@@ -353,8 +353,8 @@ klasse FileCookieJarTests(unittest.TestCase):
         self.assertEqual(c.filename, filename)
 
     def test_constructor_with_none(self):
-        c = LWPCookieJar(None)
-        self.assertIsNone(c.filename)
+        c = LWPCookieJar(Nichts)
+        self.assertIsNichts(c.filename)
 
     def test_constructor_with_other_types(self):
         klasse A:
@@ -371,14 +371,14 @@ klasse FileCookieJarTests(unittest.TestCase):
         filename = os_helper.TESTFN
         c = LWPCookieJar()
         interact_netscape(c, "http://www.acme.com/", 'boo')
-        self.assertEqual(c._cookies["www.acme.com"]["/"]["boo"].value, None)
+        self.assertEqual(c._cookies["www.acme.com"]["/"]["boo"].value, Nichts)
         try:
-            c.save(filename, ignore_discard=True)
+            c.save(filename, ignore_discard=Wahr)
             c = LWPCookieJar()
-            c.load(filename, ignore_discard=True)
+            c.load(filename, ignore_discard=Wahr)
         finally:
             os_helper.unlink(filename)
-        self.assertEqual(c._cookies["www.acme.com"]["/"]["boo"].value, None)
+        self.assertEqual(c._cookies["www.acme.com"]["/"]["boo"].value, Nichts)
 
     @unittest.skipIf(mswindows, "windows file permissions are incompatible with file modes")
     @os_helper.skip_unless_working_chmod
@@ -388,7 +388,7 @@ klasse FileCookieJarTests(unittest.TestCase):
         c = LWPCookieJar()
         interact_netscape(c, "http://www.acme.com/", 'boo')
         try:
-            c.save(filename, ignore_discard=True)
+            c.save(filename, ignore_discard=Wahr)
             st = os.stat(filename)
             self.assertEqual(stat.S_IMODE(st.st_mode), 0o600)
         finally:
@@ -402,7 +402,7 @@ klasse FileCookieJarTests(unittest.TestCase):
         c = MozillaCookieJar()
         interact_netscape(c, "http://www.acme.com/", 'boo')
         try:
-            c.save(filename, ignore_discard=True)
+            c.save(filename, ignore_discard=Wahr)
             st = os.stat(filename)
             self.assertEqual(stat.S_IMODE(st.st_mode), 0o600)
         finally:
@@ -507,25 +507,25 @@ klasse CookieTests(unittest.TestCase):
 ##   that...
 
     @support.subTests('url,domain,ok', [
-            ("http://foo.bar.com/", "blah.com", False),
-            ("http://foo.bar.com/", "rhubarb.blah.com", False),
-            ("http://foo.bar.com/", "rhubarb.foo.bar.com", False),
-            ("http://foo.bar.com/", ".foo.bar.com", True),
-            ("http://foo.bar.com/", "foo.bar.com", True),
-            ("http://foo.bar.com/", ".bar.com", True),
-            ("http://foo.bar.com/", "bar.com", True),
-            ("http://foo.bar.com/", "com", True),
-            ("http://foo.com/", "rhubarb.foo.com", False),
-            ("http://foo.com/", ".foo.com", True),
-            ("http://foo.com/", "foo.com", True),
-            ("http://foo.com/", "com", True),
-            ("http://foo/", "rhubarb.foo", False),
-            ("http://foo/", ".foo", True),
-            ("http://foo/", "foo", True),
-            ("http://foo/", "foo.local", True),
-            ("http://foo/", ".local", True),
-            ("http://barfoo.com", ".foo.com", False),
-            ("http://barfoo.com", "foo.com", False),
+            ("http://foo.bar.com/", "blah.com", Falsch),
+            ("http://foo.bar.com/", "rhubarb.blah.com", Falsch),
+            ("http://foo.bar.com/", "rhubarb.foo.bar.com", Falsch),
+            ("http://foo.bar.com/", ".foo.bar.com", Wahr),
+            ("http://foo.bar.com/", "foo.bar.com", Wahr),
+            ("http://foo.bar.com/", ".bar.com", Wahr),
+            ("http://foo.bar.com/", "bar.com", Wahr),
+            ("http://foo.bar.com/", "com", Wahr),
+            ("http://foo.com/", "rhubarb.foo.com", Falsch),
+            ("http://foo.com/", ".foo.com", Wahr),
+            ("http://foo.com/", "foo.com", Wahr),
+            ("http://foo.com/", "com", Wahr),
+            ("http://foo/", "rhubarb.foo", Falsch),
+            ("http://foo/", ".foo", Wahr),
+            ("http://foo/", "foo", Wahr),
+            ("http://foo/", "foo.local", Wahr),
+            ("http://foo/", ".local", Wahr),
+            ("http://barfoo.com", ".foo.com", Falsch),
+            ("http://barfoo.com", "foo.com", Falsch),
         ])
     def test_domain_return_ok(self, url, domain, ok):
         # test optimization: .domain_return_ok() should filter out most
@@ -536,8 +536,8 @@ klasse CookieTests(unittest.TestCase):
         pol = DefaultCookiePolicy()
         request = urllib.request.Request(url)
         r = pol.domain_return_ok(domain, request)
-        wenn ok: self.assertTrue(r)
-        sonst: self.assertFalse(r)
+        wenn ok: self.assertWahr(r)
+        sonst: self.assertFalsch(r)
 
     def test_missing_value(self):
         # missing = sign in Cookie: header is regarded by Mozilla as a missing
@@ -547,25 +547,25 @@ klasse CookieTests(unittest.TestCase):
         interact_netscape(c, "http://www.acme.com/", 'eggs')
         interact_netscape(c, "http://www.acme.com/", '"spam"; path=/foo/')
         cookie = c._cookies["www.acme.com"]["/"]["eggs"]
-        self.assertIsNone(cookie.value)
+        self.assertIsNichts(cookie.value)
         self.assertEqual(cookie.name, "eggs")
         cookie = c._cookies["www.acme.com"]['/foo/']['"spam"']
-        self.assertIsNone(cookie.value)
+        self.assertIsNichts(cookie.value)
         self.assertEqual(cookie.name, '"spam"')
         self.assertEqual(lwp_cookie_str(cookie), (
             r'"spam"; path="/foo/"; domain=www.acme.com; '
             'path_spec; discard; version=0'))
         old_str = repr(c)
-        c.save(ignore_expires=True, ignore_discard=True)
+        c.save(ignore_expires=Wahr, ignore_discard=Wahr)
         try:
             c = MozillaCookieJar(filename)
-            c.revert(ignore_expires=True, ignore_discard=True)
+            c.revert(ignore_expires=Wahr, ignore_discard=Wahr)
         finally:
             os_helper.unlink(c.filename)
         # cookies unchanged apart from lost info re. whether path was specified
         self.assertEqual(
             repr(c),
-            re.sub("path_specified=%s" % True, "path_specified=%s" % False,
+            re.sub("path_specified=%s" % Wahr, "path_specified=%s" % Falsch,
                    old_str)
             )
         self.assertEqual(interact_netscape(c, "http://www.acme.com/foo/"),
@@ -573,13 +573,13 @@ klasse CookieTests(unittest.TestCase):
 
     @support.subTests('rfc2109_as_netscape,rfc2965,version', [
             # default according to rfc2965 wenn not explicitly specified
-            (None, False, 0),
-            (None, True, 1),
+            (Nichts, Falsch, 0),
+            (Nichts, Wahr, 1),
             # explicit rfc2109_as_netscape
-            (False, False, None),  # version None here means no cookie stored
-            (False, True, 1),
-            (True, False, 0),
-            (True, True, 0),
+            (Falsch, Falsch, Nichts),  # version Nichts here means no cookie stored
+            (Falsch, Wahr, 1),
+            (Wahr, Falsch, 0),
+            (Wahr, Wahr, 0),
         ])
     def test_rfc2109_handling(self, rfc2109_as_netscape, rfc2965, version):
         # RFC 2109 cookies are handled as RFC 2965 or Netscape cookies,
@@ -592,7 +592,7 @@ klasse CookieTests(unittest.TestCase):
         try:
             cookie = c._cookies["www.example.com"]["/"]["ni"]
         except KeyError:
-            self.assertIsNone(version)  # didn't expect a stored cookie
+            self.assertIsNichts(version)  # didn't expect a stored cookie
         sonst:
             self.assertEqual(cookie.version, version)
             # 2965 cookies are unaffected
@@ -617,38 +617,38 @@ klasse CookieTests(unittest.TestCase):
 
         cookie = c._cookies[".acme.com"]["/"]["spam"]
         self.assertEqual(cookie.domain, ".acme.com")
-        self.assertTrue(cookie.domain_specified)
+        self.assertWahr(cookie.domain_specified)
         self.assertEqual(cookie.port, DEFAULT_HTTP_PORT)
-        self.assertFalse(cookie.port_specified)
+        self.assertFalsch(cookie.port_specified)
         # case is preserved
-        self.assertTrue(cookie.has_nonstandard_attr("blArgh"))
-        self.assertFalse(cookie.has_nonstandard_attr("blargh"))
+        self.assertWahr(cookie.has_nonstandard_attr("blArgh"))
+        self.assertFalsch(cookie.has_nonstandard_attr("blargh"))
 
         cookie = c._cookies["www.acme.com"]["/"]["ni"]
         self.assertEqual(cookie.domain, "www.acme.com")
-        self.assertFalse(cookie.domain_specified)
+        self.assertFalsch(cookie.domain_specified)
         self.assertEqual(cookie.port, "80,8080")
-        self.assertTrue(cookie.port_specified)
+        self.assertWahr(cookie.port_specified)
 
         cookie = c._cookies["www.acme.com"]["/"]["nini"]
-        self.assertIsNone(cookie.port)
-        self.assertFalse(cookie.port_specified)
+        self.assertIsNichts(cookie.port)
+        self.assertFalsch(cookie.port_specified)
 
         # invalid expires should not cause cookie to be dropped
         foo = c._cookies["www.acme.com"]["/"]["foo"]
         spam = c._cookies["www.acme.com"]["/"]["foo"]
-        self.assertIsNone(foo.expires)
-        self.assertIsNone(spam.expires)
+        self.assertIsNichts(foo.expires)
+        self.assertIsNichts(spam.expires)
 
         cookie = c._cookies['www.acme.com']['/']['fortytwo']
-        self.assertIsNotNone(cookie.value)
+        self.assertIsNotNichts(cookie.value)
         self.assertEqual(cookie.value, '')
 
         # there should be a distinction between a present but empty value
         # (above) and a value that's entirely missing (below)
 
         cookie = c._cookies['www.acme.com']['/']['holyhandgrenade']
-        self.assertIsNone(cookie.value)
+        self.assertIsNichts(cookie.value)
 
     def test_ns_parser_special_names(self):
         # names such as 'expires' are not special in first name=value pair
@@ -709,10 +709,10 @@ klasse CookieTests(unittest.TestCase):
 
         # test wenn fractional expiry is accepted
         cookie  = Cookie(0, "name", "value",
-                         None, False, "www.python.org",
-                         True, False, "/",
-                         False, False, "1444312383.018307",
-                         False, None, None,
+                         Nichts, Falsch, "www.python.org",
+                         Wahr, Falsch, "/",
+                         Falsch, Falsch, "1444312383.018307",
+                         Falsch, Nichts, Nichts,
                          {})
         self.assertEqual(cookie.expires, 1444312383)
 
@@ -720,7 +720,7 @@ klasse CookieTests(unittest.TestCase):
 
     def test_default_path(self):
         # RFC 2965
-        pol = DefaultCookiePolicy(rfc2965=True)
+        pol = DefaultCookiePolicy(rfc2965=Wahr)
 
         c = CookieJar(pol)
         interact_2965(c, "http://www.acme.com/", 'spam="bar"; Version="1"')
@@ -810,27 +810,27 @@ klasse CookieTests(unittest.TestCase):
 
     def test_path_prefix_match(self):
         pol = DefaultCookiePolicy()
-        strict_ns_path_pol = DefaultCookiePolicy(strict_ns_set_path=True)
+        strict_ns_path_pol = DefaultCookiePolicy(strict_ns_set_path=Wahr)
 
         c = CookieJar(pol)
         base_url = "http://bar.com"
         interact_netscape(c, base_url, 'spam=eggs; Path=/foo')
         cookie = c._cookies['bar.com']['/foo']['spam']
 
-        fuer path, ok in [('/foo', True),
-                         ('/foo/', True),
-                         ('/foo/bar', True),
-                         ('/', False),
-                         ('/foobad/foo', False)]:
+        fuer path, ok in [('/foo', Wahr),
+                         ('/foo/', Wahr),
+                         ('/foo/bar', Wahr),
+                         ('/', Falsch),
+                         ('/foobad/foo', Falsch)]:
             url = f'{base_url}{path}'
             req = urllib.request.Request(url)
             h = interact_netscape(c, url)
             wenn ok:
                 self.assertIn('spam=eggs', h, f"cookie not set fuer {path}")
-                self.assertTrue(strict_ns_path_pol.set_ok_path(cookie, req))
+                self.assertWahr(strict_ns_path_pol.set_ok_path(cookie, req))
             sonst:
                 self.assertNotIn('spam=eggs', h, f"cookie set fuer {path}")
-                self.assertFalse(strict_ns_path_pol.set_ok_path(cookie, req))
+                self.assertFalsch(strict_ns_path_pol.set_ok_path(cookie, req))
 
     def test_request_port(self):
         req = urllib.request.Request("http://www.acme.com:1234/",
@@ -857,14 +857,14 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(request_host(req), "www.acme.com")
 
     def test_is_HDN(self):
-        self.assertTrue(is_HDN("foo.bar.com"))
-        self.assertTrue(is_HDN("1foo2.3bar4.5com"))
-        self.assertFalse(is_HDN("192.168.1.1"))
-        self.assertFalse(is_HDN(""))
-        self.assertFalse(is_HDN("."))
-        self.assertFalse(is_HDN(".foo.bar.com"))
-        self.assertFalse(is_HDN("..foo"))
-        self.assertFalse(is_HDN("foo."))
+        self.assertWahr(is_HDN("foo.bar.com"))
+        self.assertWahr(is_HDN("1foo2.3bar4.5com"))
+        self.assertFalsch(is_HDN("192.168.1.1"))
+        self.assertFalsch(is_HDN(""))
+        self.assertFalsch(is_HDN("."))
+        self.assertFalsch(is_HDN(".foo.bar.com"))
+        self.assertFalsch(is_HDN("..foo"))
+        self.assertFalsch(is_HDN("foo."))
 
     def test_reach(self):
         self.assertEqual(reach("www.acme.com"), ".acme.com")
@@ -877,40 +877,40 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(reach("192.168.0.1"), "192.168.0.1")
 
     def test_domain_match(self):
-        self.assertTrue(domain_match("192.168.1.1", "192.168.1.1"))
-        self.assertFalse(domain_match("192.168.1.1", ".168.1.1"))
-        self.assertTrue(domain_match("x.y.com", "x.Y.com"))
-        self.assertTrue(domain_match("x.y.com", ".Y.com"))
-        self.assertFalse(domain_match("x.y.com", "Y.com"))
-        self.assertTrue(domain_match("a.b.c.com", ".c.com"))
-        self.assertFalse(domain_match(".c.com", "a.b.c.com"))
-        self.assertTrue(domain_match("example.local", ".local"))
-        self.assertFalse(domain_match("blah.blah", ""))
-        self.assertFalse(domain_match("", ".rhubarb.rhubarb"))
-        self.assertTrue(domain_match("", ""))
+        self.assertWahr(domain_match("192.168.1.1", "192.168.1.1"))
+        self.assertFalsch(domain_match("192.168.1.1", ".168.1.1"))
+        self.assertWahr(domain_match("x.y.com", "x.Y.com"))
+        self.assertWahr(domain_match("x.y.com", ".Y.com"))
+        self.assertFalsch(domain_match("x.y.com", "Y.com"))
+        self.assertWahr(domain_match("a.b.c.com", ".c.com"))
+        self.assertFalsch(domain_match(".c.com", "a.b.c.com"))
+        self.assertWahr(domain_match("example.local", ".local"))
+        self.assertFalsch(domain_match("blah.blah", ""))
+        self.assertFalsch(domain_match("", ".rhubarb.rhubarb"))
+        self.assertWahr(domain_match("", ""))
 
-        self.assertTrue(user_domain_match("acme.com", "acme.com"))
-        self.assertFalse(user_domain_match("acme.com", ".acme.com"))
-        self.assertTrue(user_domain_match("rhubarb.acme.com", ".acme.com"))
-        self.assertTrue(user_domain_match("www.rhubarb.acme.com", ".acme.com"))
-        self.assertTrue(user_domain_match("x.y.com", "x.Y.com"))
-        self.assertTrue(user_domain_match("x.y.com", ".Y.com"))
-        self.assertFalse(user_domain_match("x.y.com", "Y.com"))
-        self.assertTrue(user_domain_match("y.com", "Y.com"))
-        self.assertFalse(user_domain_match(".y.com", "Y.com"))
-        self.assertTrue(user_domain_match(".y.com", ".Y.com"))
-        self.assertTrue(user_domain_match("x.y.com", ".com"))
-        self.assertFalse(user_domain_match("x.y.com", "com"))
-        self.assertFalse(user_domain_match("x.y.com", "m"))
-        self.assertFalse(user_domain_match("x.y.com", ".m"))
-        self.assertFalse(user_domain_match("x.y.com", ""))
-        self.assertFalse(user_domain_match("x.y.com", "."))
-        self.assertTrue(user_domain_match("192.168.1.1", "192.168.1.1"))
+        self.assertWahr(user_domain_match("acme.com", "acme.com"))
+        self.assertFalsch(user_domain_match("acme.com", ".acme.com"))
+        self.assertWahr(user_domain_match("rhubarb.acme.com", ".acme.com"))
+        self.assertWahr(user_domain_match("www.rhubarb.acme.com", ".acme.com"))
+        self.assertWahr(user_domain_match("x.y.com", "x.Y.com"))
+        self.assertWahr(user_domain_match("x.y.com", ".Y.com"))
+        self.assertFalsch(user_domain_match("x.y.com", "Y.com"))
+        self.assertWahr(user_domain_match("y.com", "Y.com"))
+        self.assertFalsch(user_domain_match(".y.com", "Y.com"))
+        self.assertWahr(user_domain_match(".y.com", ".Y.com"))
+        self.assertWahr(user_domain_match("x.y.com", ".com"))
+        self.assertFalsch(user_domain_match("x.y.com", "com"))
+        self.assertFalsch(user_domain_match("x.y.com", "m"))
+        self.assertFalsch(user_domain_match("x.y.com", ".m"))
+        self.assertFalsch(user_domain_match("x.y.com", ""))
+        self.assertFalsch(user_domain_match("x.y.com", "."))
+        self.assertWahr(user_domain_match("192.168.1.1", "192.168.1.1"))
         # not both HDNs, so must string-compare equal to match
-        self.assertFalse(user_domain_match("192.168.1.1", ".168.1.1"))
-        self.assertFalse(user_domain_match("192.168.1.1", "."))
+        self.assertFalsch(user_domain_match("192.168.1.1", ".168.1.1"))
+        self.assertFalsch(user_domain_match("192.168.1.1", "."))
         # empty string is a special case
-        self.assertFalse(user_domain_match("192.168.1.1", ""))
+        self.assertFalsch(user_domain_match("192.168.1.1", ""))
 
     def test_wrong_domain(self):
         # Cookies whose effective request-host name does not domain-match the
@@ -925,7 +925,7 @@ klasse CookieTests(unittest.TestCase):
     def test_strict_domain(self):
         # Cookies whose domain is a country-code tld like .co.uk should
         # not be set wenn CookiePolicy.strict_domain is true.
-        cp = DefaultCookiePolicy(strict_domain=True)
+        cp = DefaultCookiePolicy(strict_domain=Wahr)
         cj = CookieJar(policy=cp)
         interact_netscape(cj, "http://example.co.uk/", 'no=problemo')
         interact_netscape(cj, "http://example.co.uk/",
@@ -1027,7 +1027,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(len(c), 0)
 
     def test_two_component_domain_rfc2965(self):
-        pol = DefaultCookiePolicy(rfc2965=True)
+        pol = DefaultCookiePolicy(rfc2965=Wahr)
         c = CookieJar(pol)
 
         # two-component V1 domain is OK
@@ -1099,11 +1099,11 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(len(c), 2)
         # ... and check is doesn't get returned
         c.add_cookie_header(req)
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(req.has_header("Cookie"))
 
     def test_domain_block(self):
         pol = DefaultCookiePolicy(
-            rfc2965=True, blocked_domains=[".acme.com"])
+            rfc2965=Wahr, blocked_domains=[".acme.com"])
         c = CookieJar(policy=pol)
         headers = ["Set-Cookie: CUSTOMER=WILE_E_COYOTE; path=/"]
 
@@ -1123,8 +1123,8 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(len(c), 1)
         req = urllib.request.Request("http://www.roadrunner.net/")
         c.add_cookie_header(req)
-        self.assertTrue(req.has_header("Cookie"))
-        self.assertTrue(req.has_header("Cookie2"))
+        self.assertWahr(req.has_header("Cookie"))
+        self.assertWahr(req.has_header("Cookie2"))
 
         c.clear()
         pol.set_blocked_domains([".acme.com"])
@@ -1139,7 +1139,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(len(c), 2)
         # ... and check is doesn't get returned
         c.add_cookie_header(req)
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(req.has_header("Cookie"))
 
         c.clear()
 
@@ -1152,42 +1152,42 @@ klasse CookieTests(unittest.TestCase):
 
         req = urllib.request.Request("http://acme.com/")
         c.add_cookie_header(req)
-        self.assertTrue(req.has_header("Cookie"))
+        self.assertWahr(req.has_header("Cookie"))
 
         req = urllib.request.Request("http://badacme.com/")
         c.add_cookie_header(req)
-        self.assertFalse(pol.return_ok(cookies[0], req))
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(pol.return_ok(cookies[0], req))
+        self.assertFalsch(req.has_header("Cookie"))
 
         p = pol.set_blocked_domains(["acme.com"])
         req = urllib.request.Request("http://acme.com/")
         c.add_cookie_header(req)
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(req.has_header("Cookie"))
 
         req = urllib.request.Request("http://badacme.com/")
         c.add_cookie_header(req)
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(req.has_header("Cookie"))
 
     def test_secure(self):
-        fuer ns in True, False:
+        fuer ns in Wahr, Falsch:
             fuer whitespace in " ", "":
                 c = CookieJar()
                 wenn ns:
-                    pol = DefaultCookiePolicy(rfc2965=False)
+                    pol = DefaultCookiePolicy(rfc2965=Falsch)
                     int = interact_netscape
                     vs = ""
                 sonst:
-                    pol = DefaultCookiePolicy(rfc2965=True)
+                    pol = DefaultCookiePolicy(rfc2965=Wahr)
                     int = interact_2965
                     vs = "; Version=1"
                 c.set_policy(pol)
                 url = "http://www.acme.com/"
                 int(c, url, "foo1=bar%s%s" % (vs, whitespace))
                 int(c, url, "foo2=bar%s; secure%s" %  (vs, whitespace))
-                self.assertFalse(
+                self.assertFalsch(
                     c._cookies["www.acme.com"]["/"]["foo1"].secure,
                     "non-secure cookie registered secure")
-                self.assertTrue(
+                self.assertWahr(
                     c._cookies["www.acme.com"]["/"]["foo2"].secure,
                     "secure cookie registered non-secure")
 
@@ -1203,21 +1203,21 @@ klasse CookieTests(unittest.TestCase):
 
         req = urllib.request.Request("https://www.acme.com/")
         c.add_cookie_header(req)
-        self.assertTrue(req.has_header("Cookie"))
+        self.assertWahr(req.has_header("Cookie"))
 
         req = urllib.request.Request("http://www.acme.com/")
         c.add_cookie_header(req)
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(req.has_header("Cookie"))
 
         # secure websocket protocol
         req = urllib.request.Request("wss://www.acme.com/")
         c.add_cookie_header(req)
-        self.assertTrue(req.has_header("Cookie"))
+        self.assertWahr(req.has_header("Cookie"))
 
         # non-secure websocket protocol
         req = urllib.request.Request("ws://www.acme.com/")
         c.add_cookie_header(req)
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(req.has_header("Cookie"))
 
     def test_custom_secure_protocols(self):
         pol = DefaultCookiePolicy(secure_protocols=["foos"])
@@ -1232,22 +1232,22 @@ klasse CookieTests(unittest.TestCase):
         # test https removed from secure protocol list
         req = urllib.request.Request("https://www.acme.com/")
         c.add_cookie_header(req)
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(req.has_header("Cookie"))
 
         req = urllib.request.Request("http://www.acme.com/")
         c.add_cookie_header(req)
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(req.has_header("Cookie"))
 
         req = urllib.request.Request("foos://www.acme.com/")
         c.add_cookie_header(req)
-        self.assertTrue(req.has_header("Cookie"))
+        self.assertWahr(req.has_header("Cookie"))
 
         req = urllib.request.Request("foo://www.acme.com/")
         c.add_cookie_header(req)
-        self.assertFalse(req.has_header("Cookie"))
+        self.assertFalsch(req.has_header("Cookie"))
 
     def test_quote_cookie_value(self):
-        c = CookieJar(policy=DefaultCookiePolicy(rfc2965=True))
+        c = CookieJar(policy=DefaultCookiePolicy(rfc2965=Wahr))
         interact_2965(c, "http://www.acme.com/", r'foo=\b"a"r; Version=1')
         h = interact_2965(c, "http://www.acme.com/")
         self.assertEqual(h, r'$Version=1; foo=\\b\"a\"r')
@@ -1255,15 +1255,15 @@ klasse CookieTests(unittest.TestCase):
     def test_missing_final_slash(self):
         # Missing slash from request URL's abs_path should be assumed present.
         url = "http://www.acme.com"
-        c = CookieJar(DefaultCookiePolicy(rfc2965=True))
+        c = CookieJar(DefaultCookiePolicy(rfc2965=Wahr))
         interact_2965(c, url, "foo=bar; Version=1")
         req = urllib.request.Request(url)
         self.assertEqual(len(c), 1)
         c.add_cookie_header(req)
-        self.assertTrue(req.has_header("Cookie"))
+        self.assertWahr(req.has_header("Cookie"))
 
     def test_domain_mirror(self):
-        pol = DefaultCookiePolicy(rfc2965=True)
+        pol = DefaultCookiePolicy(rfc2965=Wahr)
 
         c = CookieJar(pol)
         url = "http://foo.bar.com/"
@@ -1286,7 +1286,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertIn('$Domain="bar.com"', h, "domain not returned")
 
     def test_path_mirror(self):
-        pol = DefaultCookiePolicy(rfc2965=True)
+        pol = DefaultCookiePolicy(rfc2965=Wahr)
 
         c = CookieJar(pol)
         url = "http://foo.bar.com/"
@@ -1301,7 +1301,7 @@ klasse CookieTests(unittest.TestCase):
         self.assertIn('$Path="/"', h, "path not returned")
 
     def test_port_mirror(self):
-        pol = DefaultCookiePolicy(rfc2965=True)
+        pol = DefaultCookiePolicy(rfc2965=Wahr)
 
         c = CookieJar(pol)
         url = "http://foo.bar.com/"
@@ -1332,7 +1332,7 @@ klasse CookieTests(unittest.TestCase):
                       "values")
 
     def test_no_return_comment(self):
-        c = CookieJar(DefaultCookiePolicy(rfc2965=True))
+        c = CookieJar(DefaultCookiePolicy(rfc2965=Wahr))
         url = "http://foo.bar.com/"
         interact_2965(c, url, 'spam=eggs; Version=1; '
                       'Comment="does anybody read these?"; '
@@ -1342,7 +1342,7 @@ klasse CookieTests(unittest.TestCase):
             "Comment or CommentURL cookie-attributes returned to server")
 
     def test_Cookie_iterator(self):
-        cs = CookieJar(DefaultCookiePolicy(rfc2965=True))
+        cs = CookieJar(DefaultCookiePolicy(rfc2965=Wahr))
         # add some random cookies
         interact_2965(cs, "http://blah.spam.org/", 'foo=eggs; Version=1; '
                       'Comment="does anybody read these?"; '
@@ -1378,25 +1378,25 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(
             parse_ns_headers(["foo=bar; path=/; domain"]),
             [[("foo", "bar"),
-              ("path", "/"), ("domain", None), ("version", "0")]]
+              ("path", "/"), ("domain", Nichts), ("version", "0")]]
             )
         # invalid expires value
         self.assertEqual(
             parse_ns_headers(["foo=bar; expires=Foo Bar 12 33:22:11 2000"]),
-            [[("foo", "bar"), ("expires", None), ("version", "0")]]
+            [[("foo", "bar"), ("expires", Nichts), ("version", "0")]]
             )
         # missing cookie value (valid cookie)
         self.assertEqual(
             parse_ns_headers(["foo"]),
-            [[("foo", None), ("version", "0")]]
+            [[("foo", Nichts), ("version", "0")]]
             )
         # missing cookie values fuer parsed attributes
         self.assertEqual(
             parse_ns_headers(['foo=bar; expires']),
-            [[('foo', 'bar'), ('expires', None), ('version', '0')]])
+            [[('foo', 'bar'), ('expires', Nichts), ('version', '0')]])
         self.assertEqual(
             parse_ns_headers(['foo=bar; version']),
-            [[('foo', 'bar'), ('version', None)]])
+            [[('foo', 'bar'), ('version', Nichts)]])
         # shouldn't add version wenn header is empty
         self.assertEqual(parse_ns_headers([""]), [])
 
@@ -1431,7 +1431,7 @@ klasse CookieTests(unittest.TestCase):
         headers = ["Set-Cookie: c=foo; expires=Foo Bar 12 33:22:11 2000"]
         c = cookiejar_from_cookie_headers(headers)
         cookie = c._cookies["www.example.com"]["/"]["c"]
-        self.assertIsNone(cookie.expires)
+        self.assertIsNichts(cookie.expires)
 
 
 klasse LWPCookieTests(unittest.TestCase):
@@ -1478,7 +1478,7 @@ klasse LWPCookieTests(unittest.TestCase):
 
         headers = []
 
-        c = CookieJar(DefaultCookiePolicy(rfc2965 = True))
+        c = CookieJar(DefaultCookiePolicy(rfc2965 = Wahr))
 
         #req = urllib.request.Request("http://1.1.1.1/",
         #              headers={"Host": "www.acme.com:80"})
@@ -1585,7 +1585,7 @@ klasse LWPCookieTests(unittest.TestCase):
         #
         # 5.  EXAMPLES
 
-        c = CookieJar(DefaultCookiePolicy(rfc2965=True))
+        c = CookieJar(DefaultCookiePolicy(rfc2965=Wahr))
 
         #
         # 5.1  Example 1
@@ -1610,7 +1610,7 @@ klasse LWPCookieTests(unittest.TestCase):
         cookie = interact_2965(
             c, 'http://www.acme.com/acme/login',
             'Customer="WILE_E_COYOTE"; Version="1"; Path="/acme"')
-        self.assertFalse(cookie)
+        self.assertFalsch(cookie)
 
         #
         #   3.  User Agent -> Server
@@ -1698,7 +1698,7 @@ klasse LWPCookieTests(unittest.TestCase):
         # of request and response headers has been omitted.  Assume the user agent
         # has no stored cookies.
 
-        c = CookieJar(DefaultCookiePolicy(rfc2965=True))
+        c = CookieJar(DefaultCookiePolicy(rfc2965=Wahr))
 
         # Imagine the user agent has received, in response to earlier requests,
         # the response headers
@@ -1746,7 +1746,7 @@ klasse LWPCookieTests(unittest.TestCase):
 
     def test_rejection(self):
         # Test rejection of Set-Cookie2 responses based on domain, path, port.
-        pol = DefaultCookiePolicy(rfc2965=True)
+        pol = DefaultCookiePolicy(rfc2965=Wahr)
 
         c = LWPCookieJar(policy=pol)
 
@@ -1755,7 +1755,7 @@ klasse LWPCookieTests(unittest.TestCase):
         # illegal domain (no embedded dots)
         cookie = interact_2965(c, "http://www.acme.com",
                                'foo=bar; domain=".com"; version=1')
-        self.assertFalse(c)
+        self.assertFalsch(c)
 
         # legal domain
         cookie = interact_2965(c, "http://www.acme.com",
@@ -1824,11 +1824,11 @@ klasse LWPCookieTests(unittest.TestCase):
         filename = os_helper.TESTFN
 
         try:
-            c.save(filename, ignore_discard=True)
+            c.save(filename, ignore_discard=Wahr)
             old = repr(c)
 
             c = LWPCookieJar(policy=pol)
-            c.load(filename, ignore_discard=True)
+            c.load(filename, ignore_discard=Wahr)
         finally:
             os_helper.unlink(filename)
 
@@ -1837,7 +1837,7 @@ klasse LWPCookieTests(unittest.TestCase):
     def test_url_encoding(self):
         # Try some URL encodings of the PATHs.
         # (the behaviour here has changed from libwww-perl)
-        c = CookieJar(DefaultCookiePolicy(rfc2965=True))
+        c = CookieJar(DefaultCookiePolicy(rfc2965=Wahr))
         interact_2965(c, "http://www.acme.com/foo%2f%25/"
                          "%3c%3c%0Anew%C3%A5/%C3%A5",
                       "foo  =   bar; version    =   1")
@@ -1851,7 +1851,7 @@ klasse LWPCookieTests(unittest.TestCase):
 
         cookie = interact_2965(
             c, "http://www.acme.com/foo/%25/<<%0anew\345/\346\370\345")
-        self.assertFalse(cookie)
+        self.assertFalsch(cookie)
 
         # unicode URL doesn't raise exception
         cookie = interact_2965(c, "http://www.acme.com/\xfc")
@@ -1863,7 +1863,7 @@ klasse LWPCookieTests(unittest.TestCase):
         filename = os_helper.TESTFN
 
         c = MozillaCookieJar(filename,
-                             policy=DefaultCookiePolicy(rfc2965=True))
+                             policy=DefaultCookiePolicy(rfc2965=Wahr))
         interact_2965(c, "http://www.acme.com/",
                       "foo1=bar; max-age=100; Version=1")
         interact_2965(c, "http://www.acme.com/",
@@ -1886,18 +1886,18 @@ klasse LWPCookieTests(unittest.TestCase):
             try:
                 cj.save(ignore_discard=ignore_discard)
                 new_c = MozillaCookieJar(filename,
-                                         DefaultCookiePolicy(rfc2965=True))
+                                         DefaultCookiePolicy(rfc2965=Wahr))
                 new_c.load(ignore_discard=ignore_discard)
             finally:
                 os_helper.unlink(filename)
             return new_c
 
-        new_c = save_and_restore(c, True)
+        new_c = save_and_restore(c, Wahr)
         self.assertEqual(len(new_c), 6)  # none discarded
         self.assertIn("name='foo1', value='bar'", repr(new_c))
         self.assertIn("rest={'HTTPOnly': ''}", repr(new_c))
 
-        new_c = save_and_restore(c, False)
+        new_c = save_and_restore(c, Falsch)
         self.assertEqual(len(new_c), 4)  # 2 of them discarded on save
         self.assertIn("name='foo1', value='bar'", repr(new_c))
 
@@ -1926,7 +1926,7 @@ klasse LWPCookieTests(unittest.TestCase):
 
     def test_intranet_domains_2965(self):
         # Test handling of local intranet hostnames without a dot.
-        c = CookieJar(DefaultCookiePolicy(rfc2965=True))
+        c = CookieJar(DefaultCookiePolicy(rfc2965=Wahr))
         interact_2965(c, "http://example/",
                       "foo1=bar; PORT; Discard; Version=1;")
         cookie = interact_2965(c, "http://example/",
@@ -1939,7 +1939,7 @@ klasse LWPCookieTests(unittest.TestCase):
         self.assertEqual(len(c), 3)
 
     def test_intranet_domains_ns(self):
-        c = CookieJar(DefaultCookiePolicy(rfc2965 = False))
+        c = CookieJar(DefaultCookiePolicy(rfc2965 = Falsch))
         interact_netscape(c, "http://example/", "foo1=bar")
         cookie = interact_netscape(c, "http://example/",
                                    'foo2=bar; domain=.local')
@@ -1958,7 +1958,7 @@ klasse LWPCookieTests(unittest.TestCase):
         #
         # ie. with Path set to nothing.
         # In this case, extract_cookies() must set cookie to / (root)
-        c = CookieJar(DefaultCookiePolicy(rfc2965 = True))
+        c = CookieJar(DefaultCookiePolicy(rfc2965 = Wahr))
         headers = []
 
         req = urllib.request.Request("http://www.ants.com/")

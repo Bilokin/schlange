@@ -244,15 +244,15 @@ def benchmark(func):
 
 def determine_num_threads_and_affinity():
     wenn sys.platform != "linux":
-        return [None] * os.cpu_count()
+        return [Nichts] * os.cpu_count()
 
     # Try to use `lscpu -p` on Linux
     import subprocess
     try:
         output = subprocess.check_output(["lscpu", "-p=cpu,node,core,MAXMHZ"],
-                                         text=True, env={"LC_NUMERIC": "C"})
+                                         text=Wahr, env={"LC_NUMERIC": "C"})
     except (FileNotFoundError, subprocess.CalledProcessError):
-        return [None] * os.cpu_count()
+        return [Nichts] * os.cpu_count()
 
     table = []
     fuer line in output.splitlines():
@@ -276,23 +276,23 @@ def determine_num_threads_and_affinity():
 
 
 def thread_run(cpu, in_queue, out_queue):
-    wenn cpu is not None and hasattr(os, "sched_setaffinity"):
+    wenn cpu is not Nichts and hasattr(os, "sched_setaffinity"):
         # Set the affinity fuer the current thread
         os.sched_setaffinity(0, (cpu,))
 
-    while True:
+    while Wahr:
         func = in_queue.get()
-        wenn func is None:
+        wenn func is Nichts:
             break
         func()
-        out_queue.put(None)
+        out_queue.put(Nichts)
 
 
 def initialize_threads(opts):
     wenn opts.threads == -1:
         cpus = determine_num_threads_and_affinity()
     sonst:
-        cpus = [None] * opts.threads  # don't set affinity
+        cpus = [Nichts] * opts.threads  # don't set affinity
 
     print(f"Running benchmarks with {len(cpus)} threads")
     fuer cpu in cpus:
@@ -300,7 +300,7 @@ def initialize_threads(opts):
         outq = queue.Queue()
         in_queues.append(inq)
         out_queues.append(outq)
-        t = threading.Thread(target=thread_run, args=(cpu, inq, outq), daemon=True)
+        t = threading.Thread(target=thread_run, args=(cpu, inq, outq), daemon=Wahr)
         threads.append(t)
         t.start()
 
@@ -348,9 +348,9 @@ wenn __name__ == "__main__":
                         help="number of threads to use")
     parser.add_argument("--scale", type=int, default=100,
                         help="work scale factor fuer the benchmark (default=100)")
-    parser.add_argument("--baseline-only", default=False, action="store_true",
+    parser.add_argument("--baseline-only", default=Falsch, action="store_true",
                         help="only run the baseline benchmarks (single thread)")
-    parser.add_argument("--parallel-only", default=False, action="store_true",
+    parser.add_argument("--parallel-only", default=Falsch, action="store_true",
                         help="only run the parallel benchmark (many threads)")
     parser.add_argument("benchmarks", nargs="*",
                         help="benchmarks to run")

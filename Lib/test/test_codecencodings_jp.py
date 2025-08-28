@@ -11,8 +11,8 @@ klasse Test_CP932(multibytecodec_support.TestBase, unittest.TestCase):
     tstring = multibytecodec_support.load_teststring('shift_jis')
     codectests = (
         # invalid bytes
-        (b"abc\x81\x00\x81\x00\x82\x84", "strict",  None),
-        (b"abc\xf8", "strict",  None),
+        (b"abc\x81\x00\x81\x00\x82\x84", "strict",  Nichts),
+        (b"abc\xf8", "strict",  Nichts),
         (b"abc\x81\x00\x82\x84", "replace", "abc\ufffd\x00\uff44"),
         (b"abc\x81\x00\x82\x84\x88", "replace", "abc\ufffd\x00\uff44\ufffd"),
         (b"abc\x81\x00\x82\x84", "ignore",  "abc\x00\uff44"),
@@ -26,14 +26,14 @@ klasse Test_CP932(multibytecodec_support.TestBase, unittest.TestCase):
 
 euc_commontests = (
     # invalid bytes
-    (b"abc\x80\x80\xc1\xc4", "strict",  None),
+    (b"abc\x80\x80\xc1\xc4", "strict",  Nichts),
     (b"abc\x80\x80\xc1\xc4", "replace", "abc\ufffd\ufffd\u7956"),
     (b"abc\x80\x80\xc1\xc4\xc8", "replace", "abc\ufffd\ufffd\u7956\ufffd"),
     (b"abc\x80\x80\xc1\xc4", "ignore",  "abc\u7956"),
-    (b"abc\xc8", "strict",  None),
+    (b"abc\xc8", "strict",  Nichts),
     (b"abc\x8f\x83\x83", "replace", "abc\ufffd\ufffd\ufffd"),
     (b"\x82\xFCxy", "replace", "\ufffd\ufffdxy"),
-    (b"\xc1\x64", "strict", None),
+    (b"\xc1\x64", "strict", Nichts),
     (b"\xa1\xc0", "strict", "\uff3c"),
     (b"\xa1\xc0\\", "strict", "\uff3c\\"),
     (b"\x8eXY", "replace", "\ufffdXY"),
@@ -69,8 +69,8 @@ klasse Test_EUC_JP_COMPAT(multibytecodec_support.TestBase,
     )
 
 shiftjis_commonenctests = (
-    (b"abc\x80\x80\x82\x84", "strict",  None),
-    (b"abc\xf8", "strict",  None),
+    (b"abc\x80\x80\x82\x84", "strict",  Nichts),
+    (b"abc\xf8", "strict",  Nichts),
     (b"abc\x80\x80\x82\x84def", "ignore",  "abc\uff44def"),
 )
 

@@ -68,7 +68,7 @@ klasse Cmd:
     identchars = IDENTCHARS
     ruler = '='
     lastcmd = ''
-    intro = None
+    intro = Nichts
     doc_leader = ""
     doc_header = "Documented commands (type help <topic>):"
     misc_header = "Miscellaneous help topics:"
@@ -76,29 +76,29 @@ klasse Cmd:
     nohelp = "*** No help on %s"
     use_rawinput = 1
 
-    def __init__(self, completekey='tab', stdin=None, stdout=None):
+    def __init__(self, completekey='tab', stdin=Nichts, stdout=Nichts):
         """Instantiate a line-oriented interpreter framework.
 
         The optional argument 'completekey' is the readline name of a
         completion key; it defaults to the Tab key. If completekey is
-        not None and the readline module is available, command completion
+        not Nichts and the readline module is available, command completion
         is done automatically. The optional arguments stdin and stdout
         specify alternate input and output file objects; wenn not specified,
         sys.stdin and sys.stdout are used.
 
         """
-        wenn stdin is not None:
+        wenn stdin is not Nichts:
             self.stdin = stdin
         sonst:
             self.stdin = sys.stdin
-        wenn stdout is not None:
+        wenn stdout is not Nichts:
             self.stdout = stdout
         sonst:
             self.stdout = sys.stdout
         self.cmdqueue = []
         self.completekey = completekey
 
-    def cmdloop(self, intro=None):
+    def cmdloop(self, intro=Nichts):
         """Repeatedly issue a prompt, accept input, parse an initial prefix
         off the received input, and dispatch to action methods, passing them
         the remainder of the line as argument.
@@ -123,11 +123,11 @@ klasse Cmd:
             except ImportError:
                 pass
         try:
-            wenn intro is not None:
+            wenn intro is not Nichts:
                 self.intro = intro
             wenn self.intro:
                 self.stdout.write(str(self.intro)+"\n")
-            stop = None
+            stop = Nichts
             while not stop:
                 wenn self.cmdqueue:
                     line = self.cmdqueue.pop(0)
@@ -183,18 +183,18 @@ klasse Cmd:
     def parseline(self, line):
         """Parse the line into a command name and a string containing
         the arguments.  Returns a tuple containing (command, args, line).
-        'command' and 'args' may be None wenn the line couldn't be parsed.
+        'command' and 'args' may be Nichts wenn the line couldn't be parsed.
         """
         line = line.strip()
         wenn not line:
-            return None, None, line
+            return Nichts, Nichts, line
         sowenn line[0] == '?':
             line = 'help ' + line[1:]
         sowenn line[0] == '!':
             wenn hasattr(self, 'do_shell'):
                 line = 'shell ' + line[1:]
             sonst:
-                return None, None, line
+                return Nichts, Nichts, line
         i, n = 0, len(line)
         while i < n and line[i] in self.identchars: i = i+1
         cmd, arg = line[:i], line[i:].strip()
@@ -213,7 +213,7 @@ klasse Cmd:
         cmd, arg, line = self.parseline(line)
         wenn not line:
             return self.emptyline()
-        wenn cmd is None:
+        wenn cmd is Nichts:
             return self.default(line)
         self.lastcmd = line
         wenn line == 'EOF' :
@@ -221,8 +221,8 @@ klasse Cmd:
         wenn cmd == '':
             return self.default(line)
         sonst:
-            func = getattr(self, 'do_' + cmd, None)
-            wenn func is None:
+            func = getattr(self, 'do_' + cmd, Nichts)
+            wenn func is Nichts:
                 return self.default(line)
             return func(arg)
 
@@ -286,7 +286,7 @@ klasse Cmd:
         try:
             return self.completion_matches[state]
         except IndexError:
-            return None
+            return Nichts
 
     def get_names(self):
         # This method used to pull in base klasse attributes

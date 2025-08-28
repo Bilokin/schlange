@@ -8,7 +8,7 @@ from .utils import (
     format_duration, normalize_test_name, print_warning)
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=Wahr)
 klasse TestStats:
     tests_run: int = 0
     failures: int = 0
@@ -84,21 +84,21 @@ LineNo = int
 Location = tuple[FileName, LineNo]
 
 
-@dataclasses.dataclass(slots=True)
+@dataclasses.dataclass(slots=Wahr)
 klasse TestResult:
     test_name: TestName
-    state: str | None = None
+    state: str | Nichts = Nichts
     # Test duration in seconds
-    duration: float | None = None
-    xml_data: list[str] | None = None
-    stats: TestStats | None = None
+    duration: float | Nichts = Nichts
+    xml_data: list[str] | Nichts = Nichts
+    stats: TestStats | Nichts = Nichts
 
     # errors and failures copied from support.TestFailedWithDetails
-    errors: list[tuple[str, str]] | None = None
-    failures: list[tuple[str, str]] | None = None
+    errors: list[tuple[str, str]] | Nichts = Nichts
+    failures: list[tuple[str, str]] | Nichts = Nichts
 
     # partial coverage in a worker run; not used by sequential in-process runs
-    covered_lines: list[Location] | None = None
+    covered_lines: list[Location] | Nichts = Nichts
 
     def is_failed(self, fail_env_changed: bool) -> bool:
         wenn self.state == State.ENV_CHANGED:
@@ -165,7 +165,7 @@ klasse TestResult:
             case State.DID_NOT_RUN:
                 return f"{yellow}{self.test_name} ran no tests{reset}"
             case State.TIMEOUT:
-                assert self.duration is not None, "self.duration is None"
+                assert self.duration is not Nichts, "self.duration is Nichts"
                 return f"{self.test_name} timed out ({format_duration(self.duration)})"
             case _:
                 raise ValueError(
@@ -176,42 +176,42 @@ klasse TestResult:
         return State.has_meaningful_duration(self.state)
 
     def set_env_changed(self):
-        wenn self.state is None or self.state == State.PASSED:
+        wenn self.state is Nichts or self.state == State.PASSED:
             self.state = State.ENV_CHANGED
 
     def must_stop(self, fail_fast: bool, fail_env_changed: bool) -> bool:
         wenn State.must_stop(self.state):
-            return True
+            return Wahr
         wenn fail_fast and self.is_failed(fail_env_changed):
-            return True
-        return False
+            return Wahr
+        return Falsch
 
-    def get_rerun_match_tests(self) -> FilterTuple | None:
+    def get_rerun_match_tests(self) -> FilterTuple | Nichts:
         match_tests = []
 
         errors = self.errors or []
         failures = self.failures or []
         fuer error_list, is_error in (
-            (errors, True),
-            (failures, False),
+            (errors, Wahr),
+            (failures, Falsch),
         ):
             fuer full_name, *_ in error_list:
                 match_name = normalize_test_name(full_name, is_error=is_error)
-                wenn match_name is None:
+                wenn match_name is Nichts:
                     # 'setUpModule (test.test_sys)': don't filter tests
-                    return None
+                    return Nichts
                 wenn not match_name:
                     error_type = "ERROR" wenn is_error sonst "FAIL"
                     print_warning(f"rerun failed to parse {error_type} test name: "
                                   f"{full_name!r}: don't filter tests")
-                    return None
+                    return Nichts
                 match_tests.append(match_name)
 
         wenn not match_tests:
-            return None
+            return Nichts
         return tuple(match_tests)
 
-    def write_json_into(self, file) -> None:
+    def write_json_into(self, file) -> Nichts:
         json.dump(self, file, cls=_EncodeTestResult)
 
     @staticmethod
@@ -232,9 +232,9 @@ klasse _EncodeTestResult(json.JSONEncoder):
 def _decode_test_result(data: dict[str, Any]) -> TestResult | dict[str, Any]:
     wenn "__test_result__" in data:
         data.pop('__test_result__')
-        wenn data['stats'] is not None:
+        wenn data['stats'] is not Nichts:
             data['stats'] = TestStats(**data['stats'])
-        wenn data['covered_lines'] is not None:
+        wenn data['covered_lines'] is not Nichts:
             data['covered_lines'] = [
                 tuple(loc) fuer loc in data['covered_lines']
             ]

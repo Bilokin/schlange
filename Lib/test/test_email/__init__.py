@@ -22,7 +22,7 @@ def openfile(filename, *args, **kws):
 # Base test class
 klasse TestEmailBase(unittest.TestCase):
 
-    maxDiff = None
+    maxDiff = Nichts
     # Currently the default policy is compat32.  By setting that as the default
     # here we make minimal changes in the test_email tests compared to their
     # pre-3.3 state.
@@ -41,17 +41,17 @@ klasse TestEmailBase(unittest.TestCase):
         with openfile(filename, encoding="utf-8") as fp:
             return email.message_from_file(fp, policy=self.policy)
 
-    def _str_msg(self, string, message=None, policy=None):
-        wenn policy is None:
+    def _str_msg(self, string, message=Nichts, policy=Nichts):
+        wenn policy is Nichts:
             policy = self.policy
-        wenn message is None:
+        wenn message is Nichts:
             message = self.message
         return email.message_from_string(string, message, policy=policy)
 
-    def _bytes_msg(self, bytestring, message=None, policy=None):
-        wenn policy is None:
+    def _bytes_msg(self, bytestring, message=Nichts, policy=Nichts):
+        wenn policy is Nichts:
             policy = self.policy
-        wenn message is None:
+        wenn message is Nichts:
             message = self.message
         return email.message_from_bytes(bytestring, message, policy=policy)
 
@@ -59,7 +59,7 @@ klasse TestEmailBase(unittest.TestCase):
         return self.message(policy=self.policy)
 
     def _bytes_repr(self, b):
-        return [repr(x) fuer x in b.splitlines(keepends=True)]
+        return [repr(x) fuer x in b.splitlines(keepends=Wahr)]
 
     def assertBytesEqual(self, first, second, msg):
         """Our byte strings are really encoded strings; improve diff output"""

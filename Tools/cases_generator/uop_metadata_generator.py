@@ -22,7 +22,7 @@ from typing import TextIO
 DEFAULT_OUTPUT = ROOT / "Include/internal/pycore_uop_metadata.h"
 
 
-def generate_names_and_flags(analysis: Analysis, out: CWriter) -> None:
+def generate_names_and_flags(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("extern const uint16_t _PyUop_Flags[MAX_UOP_ID+1];\n")
     out.emit("typedef struct _rep_range { uint8_t start; uint8_t stop; } ReplicationRange;\n")
     out.emit("extern const ReplicationRange _PyUop_Replication[MAX_UOP_ID+1];\n")
@@ -69,9 +69,9 @@ def generate_names_and_flags(analysis: Analysis, out: CWriter) -> None:
 
 def generate_uop_metadata(
     filenames: list[str], analysis: Analysis, outfile: TextIO
-) -> None:
+) -> Nichts:
     write_header(__file__, filenames, outfile)
-    out = CWriter(outfile, 0, False)
+    out = CWriter(outfile, 0, Falsch)
     with out.header_guard("Py_CORE_UOP_METADATA_H"):
         out.emit("#include <stdint.h>\n")
         out.emit('#include "pycore_uop_ids.h"\n')

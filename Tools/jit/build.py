@@ -26,14 +26,14 @@ wenn __name__ == "__main__":
         "-o",
         "--output-dir",
         help="where to output generated files",
-        required=True,
+        required=Wahr,
         type=lambda p: pathlib.Path(p).resolve(),
     )
     parser.add_argument(
         "-p",
         "--pyconfig-dir",
         help="where to find pyconfig.h",
-        required=True,
+        required=Wahr,
         type=lambda p: pathlib.Path(p).resolve(),
     )
     parser.add_argument(

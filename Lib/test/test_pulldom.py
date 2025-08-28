@@ -70,7 +70,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         evt, node = next(items)
         self.assertEqual(pulldom.END_ELEMENT, evt)
         self.assertEqual("title", node.tagName)
-        self.assertTrue(title_node is node)
+        self.assertWahr(title_node is node)
         evt, node = next(items)
         self.assertEqual(pulldom.CHARACTERS, evt)
         evt, node = next(items)
@@ -131,8 +131,8 @@ klasse PullDOMTestCase(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(items)
         items.clear()
-        self.assertIsNone(items.parser)
-        self.assertIsNone(items.stream)
+        self.assertIsNichts(items.parser)
+        self.assertIsNichts(items.stream)
 
     @unittest.expectedFailure
     def test_comment(self):
@@ -164,7 +164,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         parser = pulldom.parseString(SMALL_SAMPLE)
         saxparser = parser.parser
         ges = saxparser.getFeature(feature_external_ges)
-        self.assertEqual(ges, False)
+        self.assertEqual(ges, Falsch)
 
 
 klasse ThoroughTestCase(unittest.TestCase):
@@ -172,20 +172,20 @@ klasse ThoroughTestCase(unittest.TestCase):
 
     def test_thorough_parse(self):
         """Test some of the hard-to-reach parts of PullDOM."""
-        self._test_thorough(pulldom.parse(None, parser=SAXExerciser()))
+        self._test_thorough(pulldom.parse(Nichts, parser=SAXExerciser()))
 
     @unittest.expectedFailure
     def test_sax2dom_fail(self):
         """SAX2DOM can"t handle a PI before the root element."""
-        pd = SAX2DOMTestHelper(None, SAXExerciser(), 12)
+        pd = SAX2DOMTestHelper(Nichts, SAXExerciser(), 12)
         self._test_thorough(pd)
 
     def test_thorough_sax2dom(self):
         """Test some of the hard-to-reach parts of SAX2DOM."""
-        pd = SAX2DOMTestHelper(None, SAX2DOMExerciser(), 12)
-        self._test_thorough(pd, False)
+        pd = SAX2DOMTestHelper(Nichts, SAX2DOMExerciser(), 12)
+        self._test_thorough(pd, Falsch)
 
-    def _test_thorough(self, pd, before_root=True):
+    def _test_thorough(self, pd, before_root=Wahr):
         """Test some of the hard-to-reach parts of the parser, using a mock
         parser."""
 
@@ -296,7 +296,7 @@ klasse SAX2DOMTestHelper(pulldom.DOMEventStream):
 klasse SAX2DOMTestCase(unittest.TestCase):
 
     def confirm(self, test, testname="Test"):
-        self.assertTrue(test, testname)
+        self.assertWahr(test, testname)
 
     def test_basic(self):
         """Ensure SAX2DOM can parse from a stream."""
@@ -328,14 +328,14 @@ klasse SAX2DOMTestCase(unittest.TestCase):
         (text1, elm1, text2) = root.childNodes
         text3 = elm1.childNodes[0]
 
-        self.assertIsNone(text1.previousSibling)
+        self.assertIsNichts(text1.previousSibling)
         self.assertIs(text1.nextSibling, elm1)
         self.assertIs(elm1.previousSibling, text1)
         self.assertIs(elm1.nextSibling, text2)
         self.assertIs(text2.previousSibling, elm1)
-        self.assertIsNone(text2.nextSibling)
-        self.assertIsNone(text3.previousSibling)
-        self.assertIsNone(text3.nextSibling)
+        self.assertIsNichts(text2.nextSibling)
+        self.assertIsNichts(text3.previousSibling)
+        self.assertIsNichts(text3.nextSibling)
 
         self.assertIs(root.parentNode, doc)
         self.assertIs(text1.parentNode, root)

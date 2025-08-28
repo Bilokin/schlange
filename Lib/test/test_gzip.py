@@ -37,7 +37,7 @@ TEMPDIR = os.path.abspath(os_helper.TESTFN) + '-gzdir'
 
 klasse UnseekableIO(io.BytesIO):
     def seekable(self):
-        return False
+        return Falsch
 
     def tell(self):
         raise io.UnsupportedOperation
@@ -133,7 +133,7 @@ klasse TestGzip(BaseTest):
         blocks = []
         nread = 0
         with gzip.GzipFile(self.filename, 'r') as f:
-            while True:
+            while Wahr:
                 d = f.read1()
                 wenn not d:
                     break
@@ -191,9 +191,9 @@ klasse TestGzip(BaseTest):
         self.test_write()
         f = gzip.GzipFile(self.filename, 'r')
         fileobj = f.fileobj
-        self.assertFalse(fileobj.closed)
+        self.assertFalsch(fileobj.closed)
         f.close()
-        self.assertTrue(fileobj.closed)
+        self.assertWahr(fileobj.closed)
         with self.assertRaises(ValueError):
             f.read(1)
         with self.assertRaises(ValueError):
@@ -203,9 +203,9 @@ klasse TestGzip(BaseTest):
         # Open the file fuer writing, then close it.
         f = gzip.GzipFile(self.filename, 'w')
         fileobj = f.fileobj
-        self.assertFalse(fileobj.closed)
+        self.assertFalsch(fileobj.closed)
         f.close()
-        self.assertTrue(fileobj.closed)
+        self.assertWahr(fileobj.closed)
         with self.assertRaises(ValueError):
             f.write(b'')
         with self.assertRaises(ValueError):
@@ -257,7 +257,7 @@ klasse TestGzip(BaseTest):
             with io.BufferedReader(f) as r:
                 lines = [line fuer line in r]
 
-        self.assertEqual(lines, 50 * data1.splitlines(keepends=True))
+        self.assertEqual(lines, 50 * data1.splitlines(keepends=Wahr))
 
     def test_readline(self):
         self.test_write()
@@ -268,7 +268,7 @@ klasse TestGzip(BaseTest):
             while 1:
                 L = f.readline(line_length)
                 wenn not L and line_length != 0: break
-                self.assertTrue(len(L) <= line_length)
+                self.assertWahr(len(L) <= line_length)
                 line_length = (line_length + 1) % 50
 
     def test_readlines(self):
@@ -345,7 +345,7 @@ klasse TestGzip(BaseTest):
             fWrite.write(data1)
         with gzip.GzipFile(self.filename) as fRead:
             self.assertHasAttr(fRead, 'mtime')
-            self.assertIsNone(fRead.mtime)
+            self.assertIsNichts(fRead.mtime)
             dataRead = fRead.read()
             self.assertEqual(dataRead, data1)
             self.assertEqual(fRead.mtime, mtime)
@@ -483,7 +483,7 @@ klasse TestGzip(BaseTest):
             f.write(uncompressed)
 
         def sizes():
-            while True:
+            while Wahr:
                 fuer n in range(5, 50, 10):
                     yield n
 
@@ -501,7 +501,7 @@ klasse TestGzip(BaseTest):
 
     def test_textio_readlines(self):
         # Issue #10791: TextIOWrapper.readlines() fails when wrapping GzipFile.
-        lines = (data1 * 50).decode("ascii").splitlines(keepends=True)
+        lines = (data1 * 50).decode("ascii").splitlines(keepends=Wahr)
         self.test_write()
         with gzip.GzipFile(self.filename, 'r') as f:
             with io.TextIOWrapper(f, encoding="ascii") as t:
@@ -514,17 +514,17 @@ klasse TestGzip(BaseTest):
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
                 self.assertEqual(f.mode, gzip.WRITE)
-                self.assertIs(f.readable(), False)
-                self.assertIs(f.writable(), True)
-                self.assertIs(f.seekable(), True)
-                self.assertIs(f.closed, False)
-            self.assertIs(f.closed, True)
+                self.assertIs(f.readable(), Falsch)
+                self.assertIs(f.writable(), Wahr)
+                self.assertIs(f.seekable(), Wahr)
+                self.assertIs(f.closed, Falsch)
+            self.assertIs(f.closed, Wahr)
             self.assertEqual(f.name, raw.name)
             self.assertRaises(AttributeError, f.fileno)
             self.assertEqual(f.mode, gzip.WRITE)
-            self.assertIs(f.readable(), False)
-            self.assertIs(f.writable(), True)
-            self.assertIs(f.seekable(), True)
+            self.assertIs(f.readable(), Falsch)
+            self.assertIs(f.writable(), Wahr)
+            self.assertIs(f.seekable(), Wahr)
 
         with open(self.filename, "wb") as raw:
             with gzip.GzipFile(fileobj=raw, mode="w") as f:
@@ -532,17 +532,17 @@ klasse TestGzip(BaseTest):
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
                 self.assertEqual(f.mode, gzip.WRITE)
-                self.assertIs(f.readable(), False)
-                self.assertIs(f.writable(), True)
-                self.assertIs(f.seekable(), True)
-                self.assertIs(f.closed, False)
-            self.assertIs(f.closed, True)
+                self.assertIs(f.readable(), Falsch)
+                self.assertIs(f.writable(), Wahr)
+                self.assertIs(f.seekable(), Wahr)
+                self.assertIs(f.closed, Falsch)
+            self.assertIs(f.closed, Wahr)
             self.assertEqual(f.name, raw.name)
             self.assertRaises(AttributeError, f.fileno)
             self.assertEqual(f.mode, gzip.WRITE)
-            self.assertIs(f.readable(), False)
-            self.assertIs(f.writable(), True)
-            self.assertIs(f.seekable(), True)
+            self.assertIs(f.readable(), Falsch)
+            self.assertIs(f.writable(), Wahr)
+            self.assertIs(f.seekable(), Wahr)
 
         with open(self.filename, "ab") as raw:
             with gzip.GzipFile(fileobj=raw, mode="a") as f:
@@ -550,17 +550,17 @@ klasse TestGzip(BaseTest):
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
                 self.assertEqual(f.mode, gzip.WRITE)
-                self.assertIs(f.readable(), False)
-                self.assertIs(f.writable(), True)
-                self.assertIs(f.seekable(), True)
-                self.assertIs(f.closed, False)
-            self.assertIs(f.closed, True)
+                self.assertIs(f.readable(), Falsch)
+                self.assertIs(f.writable(), Wahr)
+                self.assertIs(f.seekable(), Wahr)
+                self.assertIs(f.closed, Falsch)
+            self.assertIs(f.closed, Wahr)
             self.assertEqual(f.name, raw.name)
             self.assertRaises(AttributeError, f.fileno)
             self.assertEqual(f.mode, gzip.WRITE)
-            self.assertIs(f.readable(), False)
-            self.assertIs(f.writable(), True)
-            self.assertIs(f.seekable(), True)
+            self.assertIs(f.readable(), Falsch)
+            self.assertIs(f.writable(), Wahr)
+            self.assertIs(f.seekable(), Wahr)
 
         with open(self.filename, "rb") as raw:
             with gzip.GzipFile(fileobj=raw, mode="r") as f:
@@ -568,17 +568,17 @@ klasse TestGzip(BaseTest):
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
                 self.assertEqual(f.mode, gzip.READ)
-                self.assertIs(f.readable(), True)
-                self.assertIs(f.writable(), False)
-                self.assertIs(f.seekable(), True)
-                self.assertIs(f.closed, False)
-            self.assertIs(f.closed, True)
+                self.assertIs(f.readable(), Wahr)
+                self.assertIs(f.writable(), Falsch)
+                self.assertIs(f.seekable(), Wahr)
+                self.assertIs(f.closed, Falsch)
+            self.assertIs(f.closed, Wahr)
             self.assertEqual(f.name, raw.name)
             self.assertRaises(AttributeError, f.fileno)
             self.assertEqual(f.mode, gzip.READ)
-            self.assertIs(f.readable(), True)
-            self.assertIs(f.writable(), False)
-            self.assertIs(f.seekable(), True)
+            self.assertIs(f.readable(), Wahr)
+            self.assertIs(f.writable(), Falsch)
+            self.assertIs(f.seekable(), Wahr)
 
     def test_fileobj_from_fdopen(self):
         # Issue #13781: Opening a GzipFile fuer writing fails when using a
@@ -589,7 +589,7 @@ klasse TestGzip(BaseTest):
                 f.write(b'one')
                 self.assertEqual(f.name, '')
                 self.assertEqual(f.fileno(), raw.fileno())
-            self.assertIs(f.closed, True)
+            self.assertIs(f.closed, Wahr)
             self.assertEqual(f.name, '')
             self.assertRaises(AttributeError, f.fileno)
 
@@ -669,17 +669,17 @@ klasse TestGzip(BaseTest):
             self.assertEqual(f.name, '')
             self.assertRaises(io.UnsupportedOperation, f.fileno)
             self.assertEqual(f.mode, gzip.WRITE)
-            self.assertIs(f.readable(), False)
-            self.assertIs(f.writable(), True)
-            self.assertIs(f.seekable(), True)
-            self.assertIs(f.closed, False)
-        self.assertIs(f.closed, True)
+            self.assertIs(f.readable(), Falsch)
+            self.assertIs(f.writable(), Wahr)
+            self.assertIs(f.seekable(), Wahr)
+            self.assertIs(f.closed, Falsch)
+        self.assertIs(f.closed, Wahr)
         self.assertEqual(f.name, '')
         self.assertRaises(AttributeError, f.fileno)
         self.assertEqual(f.mode, gzip.WRITE)
-        self.assertIs(f.readable(), False)
-        self.assertIs(f.writable(), True)
-        self.assertIs(f.seekable(), True)
+        self.assertIs(f.readable(), Falsch)
+        self.assertIs(f.writable(), Wahr)
+        self.assertIs(f.seekable(), Wahr)
 
         bio.seek(0)
         with gzip.GzipFile(fileobj=bio, mode='rb') as f:
@@ -687,17 +687,17 @@ klasse TestGzip(BaseTest):
             self.assertEqual(f.name, '')
             self.assertRaises(io.UnsupportedOperation, f.fileno)
             self.assertEqual(f.mode, gzip.READ)
-            self.assertIs(f.readable(), True)
-            self.assertIs(f.writable(), False)
-            self.assertIs(f.seekable(), True)
-            self.assertIs(f.closed, False)
-        self.assertIs(f.closed, True)
+            self.assertIs(f.readable(), Wahr)
+            self.assertIs(f.writable(), Falsch)
+            self.assertIs(f.seekable(), Wahr)
+            self.assertIs(f.closed, Falsch)
+        self.assertIs(f.closed, Wahr)
         self.assertEqual(f.name, '')
         self.assertRaises(AttributeError, f.fileno)
         self.assertEqual(f.mode, gzip.READ)
-        self.assertIs(f.readable(), True)
-        self.assertIs(f.writable(), False)
-        self.assertIs(f.seekable(), True)
+        self.assertIs(f.readable(), Wahr)
+        self.assertIs(f.writable(), Falsch)
+        self.assertIs(f.seekable(), Wahr)
 
     def test_fileobj_and_filename(self):
         filename2 = self.filename + 'new'
@@ -752,7 +752,7 @@ klasse TestGzip(BaseTest):
         datac = gzip.compress(data1, mtime=0)
         datac2 = gzip.compress(data1)
         self.assertEqual(datac, datac2)
-        datac3 = gzip.compress(data1, mtime=None)
+        datac3 = gzip.compress(data1, mtime=Nichts)
         self.assertNotEqual(datac, datac3)
         with gzip.GzipFile(fileobj=io.BytesIO(datac3), mode="rb") as f:
             f.read(1) # to set mtime attribute
@@ -902,7 +902,7 @@ klasse TestGzip(BaseTest):
             with self.assertWarns(ResourceWarning):
                 gzip.GzipFile(fileobj=io.BytesIO(), mode="w")
                 gc.collect()
-                self.assertIsNone(cm.unraisable)
+                self.assertIsNichts(cm.unraisable)
 
 
 klasse TestOpen(BaseTest):
@@ -1076,7 +1076,7 @@ klasse TestCommandLine(unittest.TestCase):
     @create_and_remove_directory(TEMPDIR)
     def test_decompress_infile_outfile(self):
         gzipname = os.path.join(TEMPDIR, 'testgzip.gz')
-        self.assertFalse(os.path.exists(gzipname))
+        self.assertFalsch(os.path.exists(gzipname))
 
         with gzip.open(gzipname, mode='wb') as fp:
             fp.write(self.data)
@@ -1085,7 +1085,7 @@ klasse TestCommandLine(unittest.TestCase):
         with open(os.path.join(TEMPDIR, "testgzip"), "rb") as gunziped:
             self.assertEqual(gunziped.read(), self.data)
 
-        self.assertTrue(os.path.exists(gzipname))
+        self.assertWahr(os.path.exists(gzipname))
         self.assertEqual(rc, 0)
         self.assertEqual(out, b'')
         self.assertEqual(err, b'')
@@ -1110,14 +1110,14 @@ klasse TestCommandLine(unittest.TestCase):
     def test_compress_infile_outfile_default(self):
         local_testgzip = os.path.join(TEMPDIR, 'testgzip')
         gzipname = local_testgzip + '.gz'
-        self.assertFalse(os.path.exists(gzipname))
+        self.assertFalsch(os.path.exists(gzipname))
 
         with open(local_testgzip, 'wb') as fp:
             fp.write(self.data)
 
         rc, out, err = assert_python_ok('-m', 'gzip', local_testgzip)
 
-        self.assertTrue(os.path.exists(gzipname))
+        self.assertWahr(os.path.exists(gzipname))
         self.assertEqual(out, b'')
         self.assertEqual(err, b'')
 
@@ -1127,18 +1127,18 @@ klasse TestCommandLine(unittest.TestCase):
             with self.subTest(compress_level=compress_level):
                 local_testgzip = os.path.join(TEMPDIR, 'testgzip')
                 gzipname = local_testgzip + '.gz'
-                self.assertFalse(os.path.exists(gzipname))
+                self.assertFalsch(os.path.exists(gzipname))
 
                 with open(local_testgzip, 'wb') as fp:
                     fp.write(self.data)
 
                 rc, out, err = assert_python_ok('-m', 'gzip', compress_level, local_testgzip)
 
-                self.assertTrue(os.path.exists(gzipname))
+                self.assertWahr(os.path.exists(gzipname))
                 self.assertEqual(out, b'')
                 self.assertEqual(err, b'')
                 os.remove(gzipname)
-                self.assertFalse(os.path.exists(gzipname))
+                self.assertFalsch(os.path.exists(gzipname))
 
     def test_compress_fast_best_are_exclusive(self):
         rc, out, err = assert_python_failure('-m', 'gzip', '--fast', '--best')

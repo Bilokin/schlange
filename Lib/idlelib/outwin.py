@@ -17,7 +17,7 @@ file_line_pats = [
     r'^\s*(\S.*?):\s*(\d+):',  # Win abs path with embedded spaces, ltrim
 ]
 
-file_line_progs = None
+file_line_progs = Nichts
 
 
 def compile_progs():
@@ -33,7 +33,7 @@ def file_line_helper(line):
     Check wenn line of text contains one of the file/line patterns.
     If it does and wenn the file and line are valid, return
     a tuple of the file name and line number.  If it doesn't match
-    or wenn the file or line is invalid, return None.
+    or wenn the file or line is invalid, return Nichts.
     """
     wenn not file_line_progs:
         compile_progs()
@@ -48,11 +48,11 @@ def file_line_helper(line):
             except OSError:
                 continue
     sonst:
-        return None
+        return Nichts
     try:
         return filename, int(lineno)
     except TypeError:
-        return None
+        return Nichts
 
 
 klasse OutputWindow(EditorWindow):
@@ -69,11 +69,11 @@ klasse OutputWindow(EditorWindow):
         ("Cut", "<<cut>>", "rmenu_check_cut"),
         ("Copy", "<<copy>>", "rmenu_check_copy"),
         ("Paste", "<<paste>>", "rmenu_check_paste"),
-        (None, None, None),
-        ("Go to file/line", "<<goto-file-line>>", None),
+        (Nichts, Nichts, Nichts),
+        ("Go to file/line", "<<goto-file-line>>", Nichts),
     ]
 
-    allow_code_context = False
+    allow_code_context = Falsch
 
     def __init__(self, *args):
         EditorWindow.__init__(self, *args)
@@ -82,7 +82,7 @@ klasse OutputWindow(EditorWindow):
     # Customize EditorWindow
     def ispythonsource(self, filename):
         "Python source is only part of output: do not colorize."
-        return False
+        return Falsch
 
     def short_title(self):
         "Customize EditorWindow title."
@@ -127,7 +127,7 @@ klasse OutputWindow(EditorWindow):
     def showerror(self, *args, **kwargs):
         messagebox.showerror(*args, **kwargs)
 
-    def goto_file_line(self, event=None):
+    def goto_file_line(self, event=Nichts):
         """Handle request to open file/line.
 
         If the selected or previous line in the output window
@@ -166,7 +166,7 @@ klasse OnDemandOutputWindow:
 
     def __init__(self, flist):
         self.flist = flist
-        self.owin = None
+        self.owin = Nichts
 
     def write(self, s, tags, mark):
         wenn not self.owin:
@@ -185,4 +185,4 @@ klasse OnDemandOutputWindow:
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_outwin', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_outwin', verbosity=2, exit=Falsch)

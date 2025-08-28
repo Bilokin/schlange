@@ -68,9 +68,9 @@ klasse Test_MultibyteCodec(unittest.TestCase):
     def test_init_segfault(self):
         # bug #3305: this used to segfault
         self.assertRaises(AttributeError,
-                          _multibytecodec.MultibyteStreamReader, None)
+                          _multibytecodec.MultibyteStreamReader, Nichts)
         self.assertRaises(AttributeError,
-                          _multibytecodec.MultibyteStreamWriter, None)
+                          _multibytecodec.MultibyteStreamWriter, Nichts)
 
     def test_decode_unicode(self):
         # Trying to decode a unicode string should raise a TypeError
@@ -84,13 +84,13 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
         encoder = codecs.getincrementalencoder('cp949')()
         self.assertEqual(encoder.encode('\ud30c\uc774\uc36c \ub9c8\uc744'),
                          b'\xc6\xc4\xc0\xcc\xbd\xe3 \xb8\xb6\xc0\xbb')
-        self.assertEqual(encoder.reset(), None)
-        self.assertEqual(encoder.encode('\u2606\u223c\u2606', True),
+        self.assertEqual(encoder.reset(), Nichts)
+        self.assertEqual(encoder.encode('\u2606\u223c\u2606', Wahr),
                          b'\xa1\xd9\xa1\xad\xa1\xd9')
-        self.assertEqual(encoder.reset(), None)
-        self.assertEqual(encoder.encode('', True), b'')
-        self.assertEqual(encoder.encode('', False), b'')
-        self.assertEqual(encoder.reset(), None)
+        self.assertEqual(encoder.reset(), Nichts)
+        self.assertEqual(encoder.encode('', Wahr), b'')
+        self.assertEqual(encoder.encode('', Falsch), b'')
+        self.assertEqual(encoder.reset(), Nichts)
 
     def test_stateful(self):
         # jisx0213 encoder is stateful fuer a few code points. eg)
@@ -102,14 +102,14 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
         self.assertEqual(encoder.encode('\u00e6\u0300'), b'\xab\xc4')
         self.assertEqual(encoder.encode('\u00e6'), b'')
         self.assertEqual(encoder.encode('\u0300'), b'\xab\xc4')
-        self.assertEqual(encoder.encode('\u00e6', True), b'\xa9\xdc')
+        self.assertEqual(encoder.encode('\u00e6', Wahr), b'\xa9\xdc')
 
-        self.assertEqual(encoder.reset(), None)
+        self.assertEqual(encoder.reset(), Nichts)
         self.assertEqual(encoder.encode('\u0300'), b'\xab\xdc')
 
         self.assertEqual(encoder.encode('\u00e6'), b'')
-        self.assertEqual(encoder.encode('', True), b'\xa9\xdc')
-        self.assertEqual(encoder.encode('', True), b'')
+        self.assertEqual(encoder.encode('', Wahr), b'\xa9\xdc')
+        self.assertEqual(encoder.encode('', Wahr), b'')
 
     def test_stateful_keep_buffer(self):
         encoder = codecs.getincrementalencoder('jisx0213')()
@@ -117,11 +117,11 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
         self.assertRaises(UnicodeEncodeError, encoder.encode, '\u0123')
         self.assertEqual(encoder.encode('\u0300\u00e6'), b'\xab\xc4')
         self.assertRaises(UnicodeEncodeError, encoder.encode, '\u0123')
-        self.assertEqual(encoder.reset(), None)
+        self.assertEqual(encoder.reset(), Nichts)
         self.assertEqual(encoder.encode('\u0300'), b'\xab\xdc')
         self.assertEqual(encoder.encode('\u00e6'), b'')
         self.assertRaises(UnicodeEncodeError, encoder.encode, '\u0123')
-        self.assertEqual(encoder.encode('', True), b'\xa9\xdc')
+        self.assertEqual(encoder.encode('', Wahr), b'\xa9\xdc')
 
     def test_state_methods_with_buffer_state(self):
         # euc_jis_2004 stores state as a buffer of pending bytes
@@ -242,27 +242,27 @@ klasse Test_IncrementalDecoder(unittest.TestCase):
     def test_dbcs_keep_buffer(self):
         decoder = codecs.getincrementaldecoder('cp949')()
         self.assertEqual(decoder.decode(b'\xc6\xc4\xc0'), '\ud30c')
-        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', True)
+        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', Wahr)
         self.assertEqual(decoder.decode(b'\xcc'), '\uc774')
 
         self.assertEqual(decoder.decode(b'\xc6\xc4\xc0'), '\ud30c')
         self.assertRaises(UnicodeDecodeError, decoder.decode,
-                          b'\xcc\xbd', True)
+                          b'\xcc\xbd', Wahr)
         self.assertEqual(decoder.decode(b'\xcc'), '\uc774')
 
     def test_iso2022(self):
         decoder = codecs.getincrementaldecoder('iso2022-jp')()
         ESC = b'\x1b'
         self.assertEqual(decoder.decode(ESC + b'('), '')
-        self.assertEqual(decoder.decode(b'B', True), '')
+        self.assertEqual(decoder.decode(b'B', Wahr), '')
         self.assertEqual(decoder.decode(ESC + b'$'), '')
         self.assertEqual(decoder.decode(b'B@$'), '\u4e16')
         self.assertEqual(decoder.decode(b'@$@'), '\u4e16')
-        self.assertEqual(decoder.decode(b'$', True), '\u4e16')
-        self.assertEqual(decoder.reset(), None)
+        self.assertEqual(decoder.decode(b'$', Wahr), '\u4e16')
+        self.assertEqual(decoder.reset(), Nichts)
         self.assertEqual(decoder.decode(b'@$'), '@$')
         self.assertEqual(decoder.decode(ESC + b'$'), '')
-        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', True)
+        self.assertRaises(UnicodeDecodeError, decoder.decode, b'', Wahr)
         self.assertEqual(decoder.decode(b'B@$'), '\u4e16')
 
     def test_decode_unicode(self):
@@ -363,7 +363,7 @@ klasse Test_ISO2022(unittest.TestCase):
         self.assertNotIn(b'\x0e', '\N{SOFT HYPHEN}'.encode('iso-2022-jp-2'))
         fuer encoding in ('iso-2022-jp-2004', 'iso-2022-jp-3'):
             e = '\u3406'.encode(encoding)
-            self.assertFalse(any(x > 0x80 fuer x in e))
+            self.assertFalsch(any(x > 0x80 fuer x in e))
 
     @support.requires_resource('cpu')
     def test_bug1572832(self):
@@ -387,8 +387,8 @@ klasse TestStateful(unittest.TestCase):
             encoder.encode(char)
             fuer char in self.text)
         self.assertEqual(output, self.expected)
-        self.assertEqual(encoder.encode('', final=True), self.reset)
-        self.assertEqual(encoder.encode('', final=True), b'')
+        self.assertEqual(encoder.encode('', final=Wahr), self.reset)
+        self.assertEqual(encoder.encode('', final=Wahr), b'')
 
     def test_incrementalencoder_final(self):
         encoder = codecs.getincrementalencoder(self.encoding)()
@@ -397,7 +397,7 @@ klasse TestStateful(unittest.TestCase):
             encoder.encode(char, index == last_index)
             fuer index, char in enumerate(self.text))
         self.assertEqual(output, self.expected_reset)
-        self.assertEqual(encoder.encode('', final=True), b'')
+        self.assertEqual(encoder.encode('', final=Wahr), b'')
 
 klasse TestHZStateful(TestStateful):
     text = '\u804a\u804a'

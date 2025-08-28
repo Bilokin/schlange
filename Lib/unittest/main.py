@@ -7,7 +7,7 @@ import os
 from . import loader, runner
 from .signals import installHandler
 
-__unittest = True
+__unittest = Wahr
 _NO_TESTS_EXITCODE = 5
 
 MAIN_EXAMPLES = """\
@@ -58,23 +58,23 @@ klasse TestProgram(object):
        fuer making test modules conveniently executable.
     """
     # defaults fuer testing
-    module=None
+    module=Nichts
     verbosity = 1
-    failfast = catchbreak = buffer = progName = warnings = testNamePatterns = None
-    _discovery_parser = None
+    failfast = catchbreak = buffer = progName = warnings = testNamePatterns = Nichts
+    _discovery_parser = Nichts
 
-    def __init__(self, module='__main__', defaultTest=None, argv=None,
-                    testRunner=None, testLoader=loader.defaultTestLoader,
-                    exit=True, verbosity=1, failfast=None, catchbreak=None,
-                    buffer=None, warnings=None, *, tb_locals=False,
-                    durations=None):
+    def __init__(self, module='__main__', defaultTest=Nichts, argv=Nichts,
+                    testRunner=Nichts, testLoader=loader.defaultTestLoader,
+                    exit=Wahr, verbosity=1, failfast=Nichts, catchbreak=Nichts,
+                    buffer=Nichts, warnings=Nichts, *, tb_locals=Falsch,
+                    durations=Nichts):
         wenn isinstance(module, str):
             self.module = __import__(module)
             fuer part in module.split('.')[1:]:
                 self.module = getattr(self.module, part)
         sonst:
             self.module = module
-        wenn argv is None:
+        wenn argv is Nichts:
             argv = sys.argv
 
         self.exit = exit
@@ -84,16 +84,16 @@ klasse TestProgram(object):
         self.buffer = buffer
         self.tb_locals = tb_locals
         self.durations = durations
-        wenn warnings is None and not sys.warnoptions:
+        wenn warnings is Nichts and not sys.warnoptions:
             # even wenn DeprecationWarnings are ignored by default
             # print them anyway unless other warnings settings are
             # specified by the warnings arg or the -W python flag
             self.warnings = 'default'
         sonst:
             # here self.warnings is set either to the value passed
-            # to the warnings args or to None.
+            # to the warnings args or to Nichts.
             # If the user didn't pass a value self.warnings will
-            # be None. This means that the behavior is unchanged
+            # be Nichts. This means that the behavior is unchanged
             # and depends on the values passed to -W.
             self.warnings = warnings
         self.defaultTest = defaultTest
@@ -104,7 +104,7 @@ klasse TestProgram(object):
         self.runTests()
 
     def _print_help(self, *args, **kwargs):
-        wenn self.module is None:
+        wenn self.module is Nichts:
             print(self._main_parser.format_help())
             print(MAIN_EXAMPLES % {'prog': self.progName})
             self._discovery_parser.print_help()
@@ -114,7 +114,7 @@ klasse TestProgram(object):
 
     def parseArgs(self, argv):
         self._initArgParsers()
-        wenn self.module is None:
+        wenn self.module is Nichts:
             wenn len(argv) > 1 and argv[1].lower() == 'discover':
                 self._do_discovery(argv[2:])
                 return
@@ -131,23 +131,23 @@ klasse TestProgram(object):
             self.testNames = _convert_names(self.tests)
             wenn __name__ == '__main__':
                 # to support python -m unittest ...
-                self.module = None
-        sowenn self.defaultTest is None:
+                self.module = Nichts
+        sowenn self.defaultTest is Nichts:
             # createTests will load tests from self.module
-            self.testNames = None
+            self.testNames = Nichts
         sowenn isinstance(self.defaultTest, str):
             self.testNames = (self.defaultTest,)
         sonst:
             self.testNames = list(self.defaultTest)
         self.createTests()
 
-    def createTests(self, from_discovery=False, Loader=None):
+    def createTests(self, from_discovery=Falsch, Loader=Nichts):
         wenn self.testNamePatterns:
             self.testLoader.testNamePatterns = self.testNamePatterns
         wenn from_discovery:
-            loader = self.testLoader wenn Loader is None sonst Loader()
+            loader = self.testLoader wenn Loader is Nichts sonst Loader()
             self.test = loader.discover(self.start, self.pattern, self.top)
-        sowenn self.testNames is None:
+        sowenn self.testNames is Nichts:
             self.test = self.testLoader.loadTestsFromModule(self.module)
         sonst:
             self.test = self.testLoader.loadTestsFromNames(self.testNames,
@@ -159,7 +159,7 @@ klasse TestProgram(object):
         self._discovery_parser = self._getDiscoveryArgParser(parent_parser)
 
     def _getParentArgParser(self):
-        parser = argparse.ArgumentParser(add_help=False)
+        parser = argparse.ArgumentParser(add_help=Falsch)
 
         parser.add_argument('-v', '--verbose', dest='verbosity',
                             action='store_const', const=2,
@@ -171,24 +171,24 @@ klasse TestProgram(object):
                             action='store_true',
                             help='Show local variables in tracebacks')
         parser.add_argument('--durations', dest='durations', type=int,
-                            default=None, metavar="N",
+                            default=Nichts, metavar="N",
                             help='Show the N slowest test cases (N=0 fuer all)')
-        wenn self.failfast is None:
+        wenn self.failfast is Nichts:
             parser.add_argument('-f', '--failfast', dest='failfast',
                                 action='store_true',
                                 help='Stop on first fail or error')
-            self.failfast = False
-        wenn self.catchbreak is None:
+            self.failfast = Falsch
+        wenn self.catchbreak is Nichts:
             parser.add_argument('-c', '--catch', dest='catchbreak',
                                 action='store_true',
                                 help='Catch Ctrl-C and display results so far')
-            self.catchbreak = False
-        wenn self.buffer is None:
+            self.catchbreak = Falsch
+        wenn self.buffer is Nichts:
             parser.add_argument('-b', '--buffer', dest='buffer',
                                 action='store_true',
                                 help='Buffer stdout and stderr during tests')
-            self.buffer = False
-        wenn self.testNamePatterns is None:
+            self.buffer = Falsch
+        wenn self.testNamePatterns is Nichts:
             parser.add_argument('-k', dest='testNamePatterns',
                                 action='append', type=_convert_select_pattern,
                                 help='Only run tests which match the given substring')
@@ -197,7 +197,7 @@ klasse TestProgram(object):
         return parser
 
     def _getMainArgParser(self, parent):
-        parser = argparse.ArgumentParser(parents=[parent], color=True)
+        parser = argparse.ArgumentParser(parents=[parent], color=Wahr)
         parser.prog = self.progName
         parser.print_help = self._print_help
 
@@ -208,7 +208,7 @@ klasse TestProgram(object):
         return parser
 
     def _getDiscoveryArgParser(self, parent):
-        parser = argparse.ArgumentParser(parents=[parent], color=True)
+        parser = argparse.ArgumentParser(parents=[parent], color=Wahr)
         parser.prog = '%s discover' % self.progName
         parser.epilog = ('For test discovery all test modules must be '
                          'importable from the top level directory of the '
@@ -228,23 +228,23 @@ klasse TestProgram(object):
 
         return parser
 
-    def _do_discovery(self, argv, Loader=None):
+    def _do_discovery(self, argv, Loader=Nichts):
         self.start = '.'
         self.pattern = 'test*.py'
-        self.top = None
-        wenn argv is not None:
+        self.top = Nichts
+        wenn argv is not Nichts:
             # handle command line args fuer test discovery
-            wenn self._discovery_parser is None:
+            wenn self._discovery_parser is Nichts:
                 # fuer testing
                 self._initArgParsers()
             self._discovery_parser.parse_args(argv, self)
 
-        self.createTests(from_discovery=True, Loader=Loader)
+        self.createTests(from_discovery=Wahr, Loader=Loader)
 
     def runTests(self):
         wenn self.catchbreak:
             installHandler()
-        wenn self.testRunner is None:
+        wenn self.testRunner is Nichts:
             self.testRunner = runner.TextTestRunner
         wenn isinstance(self.testRunner, type):
             try:

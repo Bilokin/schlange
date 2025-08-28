@@ -28,7 +28,7 @@ def f():
 
 while_else = """\
 def g():
-    while True:
+    while Wahr:
         break
     sonst:
         y = 2
@@ -142,17 +142,17 @@ klasse ASTTestCase(ASTTestMixin, unittest.TestCase):
         with self.subTest(node=node):
             self.assertRaises(raises, ast.unparse, node)
 
-    def get_source(self, code1, code2=None, **kwargs):
+    def get_source(self, code1, code2=Nichts, **kwargs):
         code2 = code2 or code1
         code1 = ast.unparse(ast.parse(code1, **kwargs))
         return code1, code2
 
-    def check_src_roundtrip(self, code1, code2=None, **kwargs):
+    def check_src_roundtrip(self, code1, code2=Nichts, **kwargs):
         code1, code2 = self.get_source(code1, code2, **kwargs)
         with self.subTest(code1=code1, code2=code2):
             self.assertEqual(code2, code1)
 
-    def check_src_dont_roundtrip(self, code1, code2=None):
+    def check_src_dont_roundtrip(self, code1, code2=Nichts):
         code1, code2 = self.get_source(code1, code2)
         with self.subTest(code1=code1, code2=code2):
             self.assertNotEqual(code2, code1)
@@ -229,8 +229,8 @@ klasse UnparseTestCase(ASTTestCase):
         self.check_ast_roundtrip("(-1)**7")
         self.check_ast_roundtrip("(-1.)**8")
         self.check_ast_roundtrip("(-1j)**6")
-        self.check_ast_roundtrip("not True or False")
-        self.check_ast_roundtrip("True or not False")
+        self.check_ast_roundtrip("not Wahr or Falsch")
+        self.check_ast_roundtrip("Wahr or not Falsch")
 
     def test_integer_parens(self):
         self.check_ast_roundtrip("3 .__abs__()")
@@ -274,7 +274,7 @@ klasse UnparseTestCase(ASTTestCase):
         self.check_ast_roundtrip("def f(*, a = 1, b = 2): pass")
         self.check_ast_roundtrip("def f(*, a = 1, b): pass")
         self.check_ast_roundtrip("def f(*, a, b = 2): pass")
-        self.check_ast_roundtrip("def f(a, b = None, *, c, **kwds): pass")
+        self.check_ast_roundtrip("def f(a, b = Nichts, *, c, **kwds): pass")
         self.check_ast_roundtrip("def f(a=2, *args, c=5, d, **kwds): pass")
         self.check_ast_roundtrip("def f(*args, **kwargs): pass")
 
@@ -295,7 +295,7 @@ klasse UnparseTestCase(ASTTestCase):
         self.check_ast_roundtrip("def f(a: int = 5): pass")
         self.check_ast_roundtrip("def f(*args: [int]): pass")
         self.check_ast_roundtrip("def f(**kwargs: dict): pass")
-        self.check_ast_roundtrip("def f() -> None: pass")
+        self.check_ast_roundtrip("def f() -> Nichts: pass")
 
     def test_set_literal(self):
         self.check_ast_roundtrip("{'a', 'b', 'c'}")
@@ -376,7 +376,7 @@ klasse UnparseTestCase(ASTTestCase):
         self.check_ast_roundtrip("a[i:j, k]")
 
     def test_invalid_raise(self):
-        self.check_invalid(ast.Raise(exc=None, cause=ast.Name(id="X", ctx=ast.Load())))
+        self.check_invalid(ast.Raise(exc=Nichts, cause=ast.Name(id="X", ctx=ast.Load())))
 
     def test_invalid_fstring_value(self):
         self.check_invalid(
@@ -394,17 +394,17 @@ klasse UnparseTestCase(ASTTestCase):
                             ast.FormattedValue(
                                 value=ast.Constant(value="\\\\"),
                                 conversion=-1,
-                                format_spec=None,
+                                format_spec=Nichts,
                             )
                         ), "{'\\\\\\\\'}")
 
     def test_invalid_yield_from(self):
-        self.check_invalid(ast.YieldFrom(value=None))
+        self.check_invalid(ast.YieldFrom(value=Nichts))
 
     def test_import_from_level_none(self):
         tree = ast.ImportFrom(module='mod', names=[ast.alias(name='x')])
         self.assertEqual(ast.unparse(tree), "from mod import x")
-        tree = ast.ImportFrom(module='mod', names=[ast.alias(name='x')], level=None)
+        tree = ast.ImportFrom(module='mod', names=[ast.alias(name='x')], level=Nichts)
         self.assertEqual(ast.unparse(tree), "from mod import x")
 
     def test_docstrings(self):
@@ -439,7 +439,7 @@ klasse UnparseTestCase(ASTTestCase):
         fuer function_type in (
             "() -> int",
             "(int, int) -> int",
-            "(Callable[complex], More[Complex(call.to_typevar())]) -> None"
+            "(Callable[complex], More[Complex(call.to_typevar())]) -> Nichts"
         ):
             self.check_ast_roundtrip(function_type, mode="func_type")
 
@@ -448,16 +448,16 @@ klasse UnparseTestCase(ASTTestCase):
             "a = 5 # type:",
             "a = 5 # type: int",
             "a = 5 # type: int and more",
-            "def x(): # type: () -> None\n\tpass",
-            "def x(y): # type: (int) -> None and more\n\tpass",
-            "async def x(): # type: () -> None\n\tpass",
-            "async def x(y): # type: (int) -> None and more\n\tpass",
+            "def x(): # type: () -> Nichts\n\tpass",
+            "def x(y): # type: (int) -> Nichts and more\n\tpass",
+            "async def x(): # type: () -> Nichts\n\tpass",
+            "async def x(y): # type: (int) -> Nichts and more\n\tpass",
             "for x in y: # type: int\n\tpass",
             "async fuer x in y: # type: int\n\tpass",
             "with x(): # type: int\n\tpass",
             "async with x(): # type: int\n\tpass"
         ):
-            self.check_ast_roundtrip(statement, type_comments=True)
+            self.check_ast_roundtrip(statement, type_comments=Wahr)
 
     def test_type_ignore(self):
         fuer statement in (
@@ -472,7 +472,7 @@ klasse UnparseTestCase(ASTTestCase):
             "with x(): # type: ignore\n\tpass",
             "async with x(): # type: ignore\n\tpass"
         ):
-            self.check_ast_roundtrip(statement, type_comments=True)
+            self.check_ast_roundtrip(statement, type_comments=Wahr)
 
     def test_unparse_interactive_semicolons(self):
         # gh-129598: Fix ast.unparse() when ast.Interactive contains multiple statements
@@ -542,7 +542,7 @@ klasse UnparseTestCase(ASTTestCase):
             "def f(*, a=1, b=2):\n    pass",
             "def f(*, a=1, b):\n    pass",
             "def f(*, a, b=2):\n    pass",
-            "def f(a, b=None, *, c, **kwds):\n    pass",
+            "def f(a, b=Nichts, *, c, **kwds):\n    pass",
             "def f(a=2, *args, c=5, d, **kwds):\n    pass",
             "def f(*args, **kwargs):\n    pass",
             "class cls:\n\n    def f(self):\n        pass",
@@ -554,7 +554,7 @@ klasse UnparseTestCase(ASTTestCase):
             "class cls:\n\n    def f(self, *, a=1, b=2):\n        pass",
             "class cls:\n\n    def f(self, *, a=1, b):\n        pass",
             "class cls:\n\n    def f(self, *, a, b=2):\n        pass",
-            "class cls:\n\n    def f(self, a, b=None, *, c, **kwds):\n        pass",
+            "class cls:\n\n    def f(self, a, b=Nichts, *, c, **kwds):\n        pass",
             "class cls:\n\n    def f(self, a=2, *args, c=5, d, **kwds):\n        pass",
             "class cls:\n\n    def f(self, *args, **kwargs):\n        pass",
         ):
@@ -579,7 +579,7 @@ klasse UnparseTestCase(ASTTestCase):
             "def f(*, a=1, b=2):",
             "def f(*, a=1, b):",
             "def f(*, a, b=2):",
-            "def f(a, b=None, *, c, **kwds):",
+            "def f(a, b=Nichts, *, c, **kwds):",
             "def f(a=2, *args, c=5, d, **kwds):",
             "def f(*args, **kwargs):",
         ):
@@ -670,7 +670,7 @@ klasse CosmeticTestCase(ASTTestCase):
     def test_docstrings_negative_cases(self):
         # Test some cases that involve strings in the children of the
         # first node but aren't docstrings to make sure we don't have
-        # False positives.
+        # Falsch positives.
         docstrings_negative = (
             'a = """false"""',
             '"""false""" + """unless its optimized"""',
@@ -717,8 +717,8 @@ klasse CosmeticTestCase(ASTTestCase):
         self.check_src_roundtrip("square = lambda n: n ** 2")
         self.check_src_roundtrip("lambda x, y: x + y")
         self.check_src_roundtrip("add = lambda x, y: x + y")
-        self.check_src_roundtrip("lambda x, y, /, z, q, *, u: None")
-        self.check_src_roundtrip("lambda x, *y, **z: None")
+        self.check_src_roundtrip("lambda x, y, /, z, q, *, u: Nichts")
+        self.check_src_roundtrip("lambda x, *y, **z: Nichts")
 
     def test_star_expr_assign_target(self):
         fuer source_type, source in [
@@ -840,10 +840,10 @@ klasse ManualASTCreationTestCase(unittest.TestCase):
     def test_function(self):
         node = ast.FunctionDef(
             name="f",
-            args=ast.arguments(posonlyargs=[], args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+            args=ast.arguments(posonlyargs=[], args=[], vararg=Nichts, kwonlyargs=[], kw_defaults=[], kwarg=Nichts, defaults=[]),
             body=[ast.Pass()],
             decorator_list=[],
-            returns=None,
+            returns=Nichts,
         )
         ast.fix_missing_locations(node)
         self.assertEqual(ast.unparse(node), "def f():\n    pass")
@@ -851,10 +851,10 @@ klasse ManualASTCreationTestCase(unittest.TestCase):
     def test_function_with_type_params(self):
         node = ast.FunctionDef(
             name="f",
-            args=ast.arguments(posonlyargs=[], args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+            args=ast.arguments(posonlyargs=[], args=[], vararg=Nichts, kwonlyargs=[], kw_defaults=[], kwarg=Nichts, defaults=[]),
             body=[ast.Pass()],
             decorator_list=[],
-            returns=None,
+            returns=Nichts,
             type_params=[ast.TypeVar("T")],
         )
         ast.fix_missing_locations(node)
@@ -863,10 +863,10 @@ klasse ManualASTCreationTestCase(unittest.TestCase):
     def test_function_with_type_params_and_bound(self):
         node = ast.FunctionDef(
             name="f",
-            args=ast.arguments(posonlyargs=[], args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+            args=ast.arguments(posonlyargs=[], args=[], vararg=Nichts, kwonlyargs=[], kw_defaults=[], kwarg=Nichts, defaults=[]),
             body=[ast.Pass()],
             decorator_list=[],
-            returns=None,
+            returns=Nichts,
             type_params=[ast.TypeVar("T", bound=ast.Name("int", ctx=ast.Load()))],
         )
         ast.fix_missing_locations(node)
@@ -889,10 +889,10 @@ klasse ManualASTCreationTestCase(unittest.TestCase):
     def test_async_function(self):
         node = ast.AsyncFunctionDef(
             name="f",
-            args=ast.arguments(posonlyargs=[], args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+            args=ast.arguments(posonlyargs=[], args=[], vararg=Nichts, kwonlyargs=[], kw_defaults=[], kwarg=Nichts, defaults=[]),
             body=[ast.Pass()],
             decorator_list=[],
-            returns=None,
+            returns=Nichts,
         )
         ast.fix_missing_locations(node)
         self.assertEqual(ast.unparse(node), "async def f():\n    pass")
@@ -900,10 +900,10 @@ klasse ManualASTCreationTestCase(unittest.TestCase):
     def test_async_function_with_type_params(self):
         node = ast.AsyncFunctionDef(
             name="f",
-            args=ast.arguments(posonlyargs=[], args=[], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]),
+            args=ast.arguments(posonlyargs=[], args=[], vararg=Nichts, kwonlyargs=[], kw_defaults=[], kwarg=Nichts, defaults=[]),
             body=[ast.Pass()],
             decorator_list=[],
-            returns=None,
+            returns=Nichts,
             type_params=[ast.TypeVar("T")],
         )
         ast.fix_missing_locations(node)
@@ -934,12 +934,12 @@ klasse DirectoryTestCase(ASTTestCase):
                         "test_patma.py", "test_type_alias.py", "test_type_params.py",
                         "test_tokenize.py", "test_tstring.py"}
 
-    _files_to_test = None
+    _files_to_test = Nichts
 
     @classmethod
     def files_to_test(cls):
 
-        wenn cls._files_to_test is not None:
+        wenn cls._files_to_test is not Nichts:
             return cls._files_to_test
 
         items = [

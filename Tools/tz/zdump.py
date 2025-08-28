@@ -41,7 +41,7 @@ klasse TZInfo:
 
         return self
 
-    def dump(self, stream, start=None, end=None):
+    def dump(self, stream, start=Nichts, end=Nichts):
         fuer j, (trans, i) in enumerate(zip(self.transitions, self.type_indices)):
             utc = datetime.utcfromtimestamp(trans)
             tti = self.ttis[i]

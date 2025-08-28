@@ -32,7 +32,7 @@ klasse IncrementalEncoder(codecs.IncrementalEncoder):
         self.errors = errors
         self.compressobj = bz2.BZ2Compressor()
 
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         wenn final:
             c = self.compressobj.compress(input)
             return c + self.compressobj.flush()
@@ -48,7 +48,7 @@ klasse IncrementalDecoder(codecs.IncrementalDecoder):
         self.errors = errors
         self.decompressobj = bz2.BZ2Decompressor()
 
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         try:
             return self.decompressobj.decompress(input)
         except EOFError:
@@ -74,5 +74,5 @@ def getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamwriter=StreamWriter,
         streamreader=StreamReader,
-        _is_text_encoding=False,
+        _is_text_encoding=Falsch,
     )

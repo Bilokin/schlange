@@ -33,11 +33,11 @@ from queue import Queue
 
 klasse DummyProcess(threading.Thread):
 
-    def __init__(self, group=None, target=None, name=None, args=(), kwargs={}):
+    def __init__(self, group=Nichts, target=Nichts, name=Nichts, args=(), kwargs={}):
         threading.Thread.__init__(self, group, target, name, args, kwargs)
-        self._pid = None
+        self._pid = Nichts
         self._children = weakref.WeakKeyDictionary()
-        self._start_called = False
+        self._start_called = Falsch
         self._parent = current_process()
 
     def start(self):
@@ -45,9 +45,9 @@ klasse DummyProcess(threading.Thread):
             raise RuntimeError(
                 "Parent is {0!r} but current_process is {1!r}".format(
                     self._parent, current_process()))
-        self._start_called = True
+        self._start_called = Wahr
         wenn hasattr(self._parent, '_children'):
-            self._parent._children[self] = None
+            self._parent._children[self] = Nichts
         threading.Thread.start(self)
 
     @property
@@ -55,7 +55,7 @@ klasse DummyProcess(threading.Thread):
         wenn self._start_called and not self.is_alive():
             return 0
         sonst:
-            return None
+            return Nichts
 
 #
 #
@@ -69,7 +69,7 @@ def active_children():
     children = current_process()._children
     fuer p in list(children):
         wenn not p.is_alive():
-            children.pop(p, None)
+            children.pop(p, Nichts)
     return list(children)
 
 def freeze_support():
@@ -94,11 +94,11 @@ klasse Namespace(object):
 dict = dict
 list = list
 
-def Array(typecode, sequence, lock=True):
+def Array(typecode, sequence, lock=Wahr):
     return array.array(typecode, sequence)
 
 klasse Value(object):
-    def __init__(self, typecode, value, lock=True):
+    def __init__(self, typecode, value, lock=Wahr):
         self._typecode = typecode
         self._value = value
 
@@ -119,7 +119,7 @@ def Manager():
 def shutdown():
     pass
 
-def Pool(processes=None, initializer=None, initargs=()):
+def Pool(processes=Nichts, initializer=Nichts, initargs=()):
     from ..pool import ThreadPool
     return ThreadPool(processes, initializer, initargs)
 

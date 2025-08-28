@@ -18,7 +18,7 @@ klasse Spam:
 
 klasse SpamOkay:
     def okay(self):
-        return True
+        return Wahr
 
 
 klasse SpamFull:
@@ -29,11 +29,11 @@ klasse SpamFull:
 
     @staticmethod
     def staticmeth(cls):
-        return True
+        return Wahr
 
     @classmethod
     def classmeth(cls):
-        return True
+        return Wahr
 
     def __new__(cls, *args, **kwargs):
         return super().__new__(cls)
@@ -56,7 +56,7 @@ klasse SpamFull:
 
     @property
     def prop(self):
-        return True
+        return Wahr
 
 
 klasse SubSpamFull(SpamFull):
@@ -105,7 +105,7 @@ klasse MimimalError(Exception):
 
 
 klasse RichError(Exception):
-    def __init__(self, msg, value=None):
+    def __init__(self, msg, value=Nichts):
         super().__init__(msg, value)
         self.msg = msg
         self.value = value
@@ -114,7 +114,7 @@ klasse RichError(Exception):
         wenn not isinstance(other, RichError):
             return NotImplemented
         wenn self.msg != other.msg:
-            return False
+            return Falsch
         wenn self.value != other.value:
-            return False
-        return True
+            return Falsch
+        return Wahr

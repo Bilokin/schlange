@@ -4,22 +4,22 @@ from .preprocessor import get_preprocessor as _get_preprocessor
 
 
 def parse_file(filename, *,
-               match_kind=None,
-               get_file_preprocessor=None,
-               file_maxsizes=None,
+               match_kind=Nichts,
+               get_file_preprocessor=Nichts,
+               file_maxsizes=Nichts,
                ):
-    wenn get_file_preprocessor is None:
+    wenn get_file_preprocessor is Nichts:
         get_file_preprocessor = _get_preprocessor()
     yield from _parse_file(
             filename, match_kind, get_file_preprocessor, file_maxsizes)
 
 
 def parse_files(filenames, *,
-                match_kind=None,
-                get_file_preprocessor=None,
-                file_maxsizes=None,
+                match_kind=Nichts,
+                get_file_preprocessor=Nichts,
+                file_maxsizes=Nichts,
                 ):
-    wenn get_file_preprocessor is None:
+    wenn get_file_preprocessor is Nichts:
         get_file_preprocessor = _get_preprocessor()
     fuer filename in filenames:
         try:
@@ -39,13 +39,13 @@ def _parse_file(filename, match_kind, get_file_preprocessor, maxsizes):
     # Preprocess the file.
     preprocess = get_file_preprocessor(filename)
     preprocessed = preprocess()
-    wenn preprocessed is None:
+    wenn preprocessed is Nichts:
         return
 
     # Parse the lines.
     srclines = ((l.file, l.data) fuer l in preprocessed wenn l.kind == 'source')
     fuer item in _parse(srclines, **srckwargs):
-        wenn match_kind is not None and not match_kind(item.kind):
+        wenn match_kind is not Nichts and not match_kind(item.kind):
             continue
         wenn not item.filename:
             raise NotImplementedError(repr(item))
@@ -57,13 +57,13 @@ def _resolve_max_size(filename, maxsizes):
         wenn _match_glob(filename, pattern):
             break
     sonst:
-        return None
+        return Nichts
     wenn not maxsize:
-        return None, None
+        return Nichts, Nichts
     maxtext, maxlines = maxsize
-    wenn maxtext is not None:
+    wenn maxtext is not Nichts:
         maxtext = int(maxtext)
-    wenn maxlines is not None:
+    wenn maxlines is not Nichts:
         maxlines = int(maxlines)
     return maxtext, maxlines
 

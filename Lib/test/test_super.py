@@ -151,7 +151,7 @@ klasse TestSuper(unittest.TestCase):
     def test___class___new(self):
         # See issue #23722
         # Ensure zero-arg super() works as soon as type.__new__() is completed
-        test_class = None
+        test_class = Nichts
 
         klasse Meta(type):
             def __new__(cls, name, bases, namespace):
@@ -169,27 +169,27 @@ klasse TestSuper(unittest.TestCase):
 
     def test___class___delayed(self):
         # See issue #23722
-        test_namespace = None
+        test_namespace = Nichts
 
         klasse Meta(type):
             def __new__(cls, name, bases, namespace):
                 nonlocal test_namespace
                 test_namespace = namespace
-                return None
+                return Nichts
 
         klasse A(metaclass=Meta):
             @staticmethod
             def f():
                 return __class__
 
-        self.assertIs(A, None)
+        self.assertIs(A, Nichts)
 
         B = type("B", (), test_namespace)
         self.assertIs(B.f(), B)
 
     def test___class___mro(self):
         # See issue #23722
-        test_class = None
+        test_class = Nichts
 
         klasse Meta(type):
             def mro(self):
@@ -214,7 +214,7 @@ klasse TestSuper(unittest.TestCase):
 
         # __classcell__ is injected into the klasse namespace by the compiler
         # when at least one method needs it, and should be omitted otherwise
-        namespace_snapshot = None
+        namespace_snapshot = Nichts
         klasse WithoutClassRef(metaclass=Meta):
             pass
         self.assertNotIn("__classcell__", namespace_snapshot)
@@ -222,7 +222,7 @@ klasse TestSuper(unittest.TestCase):
         # With zero-arg super() or an explicit __class__ reference,
         # __classcell__ is the exact cell reference to be populated by
         # type.__new__
-        namespace_snapshot = None
+        namespace_snapshot = Nichts
         klasse WithClassRef(metaclass=Meta):
             def f(self):
                 return __class__
@@ -241,7 +241,7 @@ klasse TestSuper(unittest.TestCase):
         # We test that case here by forcibly deleting __classcell__
         klasse Meta(type):
             def __new__(cls, name, bases, namespace):
-                namespace.pop('__classcell__', None)
+                namespace.pop('__classcell__', Nichts)
                 return super().__new__(cls, name, bases, namespace)
 
         # The default case should continue to work without any errors
@@ -266,7 +266,7 @@ klasse TestSuper(unittest.TestCase):
                 namespace['__classcell__'] = cell
                 return super().__new__(cls, name, bases, namespace)
 
-        fuer bad_cell in (None, 0, "", object()):
+        fuer bad_cell in (Nichts, 0, "", object()):
             with self.subTest(bad_cell=bad_cell):
                 with self.assertRaises(TypeError):
                     klasse A(metaclass=Meta, cell=bad_cell):
@@ -302,7 +302,7 @@ klasse TestSuper(unittest.TestCase):
             del x
             super()
         with self.assertRaisesRegex(RuntimeError, r"arg\[0\] deleted"):
-            f(None)
+            f(Nichts)
 
         klasse X:
             def f(x):
@@ -492,8 +492,8 @@ klasse TestSuper(unittest.TestCase):
         klasse A:
             @staticmethod
             def some(cls, *args, **kwargs):
-                self.assertFalse(args)
-                self.assertFalse(kwargs)
+                self.assertFalsch(args)
+                self.assertFalsch(kwargs)
 
         klasse B(A):
             def some(cls, *args, **kwargs):

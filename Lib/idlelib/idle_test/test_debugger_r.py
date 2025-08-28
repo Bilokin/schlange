@@ -27,8 +27,8 @@ klasse IdbAdapterTest(unittest.TestCase):
                 return self.length
 
         debugger_r.dicttable[0] = {'BinData': BinData()}
-        idb = debugger_r.IdbAdapter(None)
-        self.assertTrue(idb.dict_item(0, 'BinData'))
+        idb = debugger_r.IdbAdapter(Nichts)
+        self.assertWahr(idb.dict_item(0, 'BinData'))
         debugger_r.dicttable.clear()
 
 

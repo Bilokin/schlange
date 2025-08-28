@@ -6,7 +6,7 @@ can be found here.  Some functions meant fuer external use:
 genops(pickle)
    Generate all the opcodes in a pickle, as (opcode, arg, position) triples.
 
-dis(pickle, out=None, memo=None, indentlevel=4)
+dis(pickle, out=Nichts, memo=Nichts, indentlevel=4)
    Print a symbolic disassembly of a pickle.
 '''
 
@@ -255,7 +255,7 @@ def read_int4(f):
     >>> read_int4(io.BytesIO(b'\xff\x00\x00\x00'))
     255
     >>> read_int4(io.BytesIO(b'\x00\x00\x00\x80')) == -(2**31)
-    True
+    Wahr
     """
 
     data = f.read(4)
@@ -276,7 +276,7 @@ def read_uint4(f):
     >>> read_uint4(io.BytesIO(b'\xff\x00\x00\x00'))
     255
     >>> read_uint4(io.BytesIO(b'\x00\x00\x00\x80')) == 2**31
-    True
+    Wahr
     """
 
     data = f.read(4)
@@ -297,7 +297,7 @@ def read_uint8(f):
     >>> read_uint8(io.BytesIO(b'\xff\x00\x00\x00\x00\x00\x00\x00'))
     255
     >>> read_uint8(io.BytesIO(b'\xff' * 8)) == 2**64-1
-    True
+    Wahr
     """
 
     data = f.read(8)
@@ -312,7 +312,7 @@ uint8 = ArgumentDescriptor(
             doc="Eight-byte unsigned integer, little-endian.")
 
 
-def read_stringnl(f, decode=True, stripquotes=True, *, encoding='latin-1'):
+def read_stringnl(f, decode=Wahr, stripquotes=Wahr, *, encoding='latin-1'):
     r"""
     >>> import io
     >>> read_stringnl(io.BytesIO(b"'abcd'\nefg\n"))
@@ -323,7 +323,7 @@ def read_stringnl(f, decode=True, stripquotes=True, *, encoding='latin-1'):
     ...
     ValueError: no string quotes around b''
 
-    >>> read_stringnl(io.BytesIO(b"\n"), stripquotes=False)
+    >>> read_stringnl(io.BytesIO(b"\n"), stripquotes=Falsch)
     ''
 
     >>> read_stringnl(io.BytesIO(b"''\n"))
@@ -370,7 +370,7 @@ stringnl = ArgumentDescriptor(
                    """)
 
 def read_stringnl_noescape(f):
-    return read_stringnl(f, stripquotes=False, encoding='utf-8')
+    return read_stringnl(f, stripquotes=Falsch, encoding='utf-8')
 
 stringnl_noescape = ArgumentDescriptor(
                         name='stringnl_noescape',
@@ -604,7 +604,7 @@ def read_unicodestringnl(f):
     r"""
     >>> import io
     >>> read_unicodestringnl(io.BytesIO(b"abc\\uabcd\njunk")) == 'abc\uabcd'
-    True
+    Wahr
     """
 
     data = f.readline()
@@ -636,7 +636,7 @@ def read_unicodestring1(f):
     >>> n = bytes([len(enc)])  # little-endian 1-byte length
     >>> t = read_unicodestring1(io.BytesIO(n + enc + b'junk'))
     >>> s == t
-    True
+    Wahr
 
     >>> read_unicodestring1(io.BytesIO(n + enc[:-1]))
     Traceback (most recent call last):
@@ -675,7 +675,7 @@ def read_unicodestring4(f):
     >>> n = bytes([len(enc), 0, 0, 0])  # little-endian 4-byte length
     >>> t = read_unicodestring4(io.BytesIO(n + enc + b'junk'))
     >>> s == t
-    True
+    Wahr
 
     >>> read_unicodestring4(io.BytesIO(n + enc[:-1]))
     Traceback (most recent call last):
@@ -716,7 +716,7 @@ def read_unicodestring8(f):
     >>> n = bytes([len(enc)]) + b'\0' * 7  # little-endian 8-byte length
     >>> t = read_unicodestring8(io.BytesIO(n + enc + b'junk'))
     >>> s == t
-    True
+    Wahr
 
     >>> read_unicodestring8(io.BytesIO(n + enc[:-1]))
     Traceback (most recent call last):
@@ -759,13 +759,13 @@ def read_decimalnl_short(f):
     ValueError: invalid literal fuer int() with base 10: b'1234L'
     """
 
-    s = read_stringnl(f, decode=False, stripquotes=False)
+    s = read_stringnl(f, decode=Falsch, stripquotes=Falsch)
 
-    # There's a hack fuer True and False here.
+    # There's a hack fuer Wahr and Falsch here.
     wenn s == b"00":
-        return False
+        return Falsch
     sowenn s == b"01":
-        return True
+        return Wahr
 
     return int(s)
 
@@ -780,7 +780,7 @@ def read_decimalnl_long(f):
     123456789012345678901234
     """
 
-    s = read_stringnl(f, decode=False, stripquotes=False)
+    s = read_stringnl(f, decode=Falsch, stripquotes=Falsch)
     wenn s[-1:] == b'L':
         s = s[:-1]
     return int(s)
@@ -816,7 +816,7 @@ def read_floatnl(f):
     >>> read_floatnl(io.BytesIO(b"-1.25\n6"))
     -1.25
     """
-    s = read_stringnl(f, decode=False, stripquotes=False)
+    s = read_stringnl(f, decode=Falsch, stripquotes=Falsch)
     return float(s)
 
 floatnl = ArgumentDescriptor(
@@ -1016,9 +1016,9 @@ pyunicode = StackObject(
     doc="A Python (Unicode) string object.")
 
 pynone = StackObject(
-    name="None",
-    obtype=type(None),
-    doc="The Python None object.")
+    name="Nichts",
+    obtype=type(Nichts),
+    doc="The Python Nichts object.")
 
 pytuple = StackObject(
     name="tuple",
@@ -1105,7 +1105,7 @@ klasse OpcodeInfo(object):
         # arg.reader(s) can be used to read and decode the argument from
         # the bytestream s, and arg.doc documents the format of the raw
         # argument bytes.  If the opcode doesn't have an argument embedded
-        # in the bytestream, arg should be None.
+        # in the bytestream, arg should be Nichts.
         'arg',
 
         # what the stack looks like before this opcode runs; a list
@@ -1130,7 +1130,7 @@ klasse OpcodeInfo(object):
         assert len(code) == 1
         self.code = code
 
-        assert arg is None or isinstance(arg, ArgumentDescriptor)
+        assert arg is Nichts or isinstance(arg, ArgumentDescriptor)
         self.arg = arg
 
         assert isinstance(stack_before, list)
@@ -1171,9 +1171,9 @@ opcodes = [
       int whenever possible.
 
       Another difference is due to that, when bool was introduced as a
-      distinct type in 2.3, builtin names True and False were also added to
+      distinct type in 2.3, builtin names Wahr and Falsch were also added to
       2.2.2, mapping to ints 1 and 0.  For compatibility in both directions,
-      True gets pickled as INT + "I01\\n", and False as INT + "I00\\n".
+      Wahr gets pickled as INT + "I01\\n", and Falsch as INT + "I00\\n".
       Leading zeroes are never produced fuer a genuine integer.  The 2.3
       (and later) unpicklers special-case these and return bool instead;
       earlier unpicklers ignore the leading "0" and return the int.
@@ -1370,7 +1370,7 @@ opcodes = [
 
     I(name='NEXT_BUFFER',
       code='\x97',
-      arg=None,
+      arg=Nichts,
       stack_before=[],
       stack_after=[pybuffer],
       proto=5,
@@ -1378,40 +1378,40 @@ opcodes = [
 
     I(name='READONLY_BUFFER',
       code='\x98',
-      arg=None,
+      arg=Nichts,
       stack_before=[pybuffer],
       stack_after=[pybuffer],
       proto=5,
       doc="Make an out-of-band buffer object read-only."),
 
-    # Ways to spell None.
+    # Ways to spell Nichts.
 
     I(name='NONE',
       code='N',
-      arg=None,
+      arg=Nichts,
       stack_before=[],
       stack_after=[pynone],
       proto=0,
-      doc="Push None on the stack."),
+      doc="Push Nichts on the stack."),
 
     # Ways to spell bools, starting with proto 2.  See INT fuer how this was
     # done before proto 2.
 
     I(name='NEWTRUE',
       code='\x88',
-      arg=None,
+      arg=Nichts,
       stack_before=[],
       stack_after=[pybool],
       proto=2,
-      doc="Push True onto the stack."),
+      doc="Push Wahr onto the stack."),
 
     I(name='NEWFALSE',
       code='\x89',
-      arg=None,
+      arg=Nichts,
       stack_before=[],
       stack_after=[pybool],
       proto=2,
-      doc="Push False onto the stack."),
+      doc="Push Falsch onto the stack."),
 
     # Ways to spell Unicode strings.
 
@@ -1509,7 +1509,7 @@ opcodes = [
 
     I(name='EMPTY_LIST',
       code=']',
-      arg=None,
+      arg=Nichts,
       stack_before=[],
       stack_after=[pylist],
       proto=1,
@@ -1517,7 +1517,7 @@ opcodes = [
 
     I(name='APPEND',
       code='a',
-      arg=None,
+      arg=Nichts,
       stack_before=[pylist, anyobject],
       stack_after=[pylist],
       proto=0,
@@ -1531,7 +1531,7 @@ opcodes = [
 
     I(name='APPENDS',
       code='e',
-      arg=None,
+      arg=Nichts,
       stack_before=[pylist, markobject, stackslice],
       stack_after=[pylist],
       proto=1,
@@ -1545,7 +1545,7 @@ opcodes = [
 
     I(name='LIST',
       code='l',
-      arg=None,
+      arg=Nichts,
       stack_before=[markobject, stackslice],
       stack_after=[pylist],
       proto=0,
@@ -1563,7 +1563,7 @@ opcodes = [
 
     I(name='EMPTY_TUPLE',
       code=')',
-      arg=None,
+      arg=Nichts,
       stack_before=[],
       stack_after=[pytuple],
       proto=1,
@@ -1571,7 +1571,7 @@ opcodes = [
 
     I(name='TUPLE',
       code='t',
-      arg=None,
+      arg=Nichts,
       stack_before=[markobject, stackslice],
       stack_after=[pytuple],
       proto=0,
@@ -1587,7 +1587,7 @@ opcodes = [
 
     I(name='TUPLE1',
       code='\x85',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject],
       stack_after=[pytuple],
       proto=2,
@@ -1602,7 +1602,7 @@ opcodes = [
 
     I(name='TUPLE2',
       code='\x86',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject, anyobject],
       stack_after=[pytuple],
       proto=2,
@@ -1617,7 +1617,7 @@ opcodes = [
 
     I(name='TUPLE3',
       code='\x87',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject, anyobject, anyobject],
       stack_after=[pytuple],
       proto=2,
@@ -1634,7 +1634,7 @@ opcodes = [
 
     I(name='EMPTY_DICT',
       code='}',
-      arg=None,
+      arg=Nichts,
       stack_before=[],
       stack_after=[pydict],
       proto=1,
@@ -1642,7 +1642,7 @@ opcodes = [
 
     I(name='DICT',
       code='d',
-      arg=None,
+      arg=Nichts,
       stack_before=[markobject, stackslice],
       stack_after=[pydict],
       proto=0,
@@ -1659,7 +1659,7 @@ opcodes = [
 
     I(name='SETITEM',
       code='s',
-      arg=None,
+      arg=Nichts,
       stack_before=[pydict, anyobject, anyobject],
       stack_after=[pydict],
       proto=0,
@@ -1673,7 +1673,7 @@ opcodes = [
 
     I(name='SETITEMS',
       code='u',
-      arg=None,
+      arg=Nichts,
       stack_before=[pydict, markobject, stackslice],
       stack_after=[pydict],
       proto=1,
@@ -1696,7 +1696,7 @@ opcodes = [
 
     I(name='EMPTY_SET',
       code='\x8f',
-      arg=None,
+      arg=Nichts,
       stack_before=[],
       stack_after=[pyset],
       proto=4,
@@ -1704,7 +1704,7 @@ opcodes = [
 
     I(name='ADDITEMS',
       code='\x90',
-      arg=None,
+      arg=Nichts,
       stack_before=[pyset, markobject, stackslice],
       stack_after=[pyset],
       proto=4,
@@ -1726,7 +1726,7 @@ opcodes = [
 
     I(name='FROZENSET',
       code='\x91',
-      arg=None,
+      arg=Nichts,
       stack_before=[markobject, stackslice],
       stack_after=[pyfrozenset],
       proto=4,
@@ -1744,7 +1744,7 @@ opcodes = [
 
     I(name='POP',
       code='0',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject],
       stack_after=[],
       proto=0,
@@ -1752,7 +1752,7 @@ opcodes = [
 
     I(name='DUP',
       code='2',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject],
       stack_after=[anyobject, anyobject],
       proto=0,
@@ -1760,7 +1760,7 @@ opcodes = [
 
     I(name='MARK',
       code='(',
-      arg=None,
+      arg=Nichts,
       stack_before=[],
       stack_after=[markobject],
       proto=0,
@@ -1773,7 +1773,7 @@ opcodes = [
 
     I(name='POP_MARK',
       code='1',
-      arg=None,
+      arg=Nichts,
       stack_before=[markobject, stackslice],
       stack_after=[],
       proto=1,
@@ -1863,7 +1863,7 @@ opcodes = [
 
     I(name='MEMOIZE',
       code='\x94',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject],
       stack_after=[anyobject],
       proto=4,
@@ -1940,7 +1940,7 @@ opcodes = [
 
     I(name='STACK_GLOBAL',
       code='\x93',
-      arg=None,
+      arg=Nichts,
       stack_before=[pyunicode, pyunicode],
       stack_after=[anyobject],
       proto=4,
@@ -1954,7 +1954,7 @@ opcodes = [
 
     I(name='REDUCE',
       code='R',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject, anyobject],
       stack_after=[anyobject],
       proto=0,
@@ -1983,7 +1983,7 @@ opcodes = [
 
     I(name='BUILD',
       code='b',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject, anyobject],
       stack_after=[anyobject],
       proto=0,
@@ -2058,7 +2058,7 @@ opcodes = [
 
     I(name='OBJ',
       code='o',
-      arg=None,
+      arg=Nichts,
       stack_before=[markobject, anyobject, stackslice],
       stack_after=[anyobject],
       proto=1,
@@ -2090,7 +2090,7 @@ opcodes = [
 
     I(name='NEWOBJ',
       code='\x81',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject, anyobject],
       stack_after=[anyobject],
       proto=2,
@@ -2105,7 +2105,7 @@ opcodes = [
 
     I(name='NEWOBJ_EX',
       code='\x92',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject, anyobject, anyobject],
       stack_after=[anyobject],
       proto=4,
@@ -2134,7 +2134,7 @@ opcodes = [
 
     I(name='STOP',
       code='.',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject],
       stack_after=[],
       proto=0,
@@ -2180,7 +2180,7 @@ opcodes = [
 
     I(name='BINPERSID',
       code='Q',
-      arg=None,
+      arg=Nichts,
       stack_before=[anyobject],
       stack_after=[anyobject],
       proto=1,
@@ -2221,7 +2221,7 @@ fuer d in opcodes:
     code2op[d.code] = d
 del d
 
-def assure_pickle_consistency(verbose=False):
+def assure_pickle_consistency(verbose=Falsch):
 
     copy = code2op.copy()
     fuer name in pickle.__all__:
@@ -2265,28 +2265,28 @@ del assure_pickle_consistency
 ##############################################################################
 # A pickle opcode generator.
 
-def _genops(data, yield_end_pos=False):
+def _genops(data, yield_end_pos=Falsch):
     wenn isinstance(data, bytes_types):
         data = io.BytesIO(data)
 
     wenn hasattr(data, "tell"):
         getpos = data.tell
     sonst:
-        getpos = lambda: None
+        getpos = lambda: Nichts
 
-    while True:
+    while Wahr:
         pos = getpos()
         code = data.read(1)
         opcode = code2op.get(code.decode("latin-1"))
-        wenn opcode is None:
+        wenn opcode is Nichts:
             wenn code == b"":
                 raise ValueError("pickle exhausted before seeing STOP")
             sonst:
                 raise ValueError("at position %s, opcode %r unknown" % (
-                                 "<unknown>" wenn pos is None sonst pos,
+                                 "<unknown>" wenn pos is Nichts sonst pos,
                                  code))
-        wenn opcode.arg is None:
-            arg = None
+        wenn opcode.arg is Nichts:
+            arg = Nichts
         sonst:
             arg = opcode.arg.reader(data)
         wenn yield_end_pos:
@@ -2312,13 +2312,13 @@ def genops(pickle):
 
     If the opcode has an argument embedded in the pickle, arg is its decoded
     value, as a Python object.  If the opcode doesn't have an argument, arg
-    is None.
+    is Nichts.
 
     If the pickle has a tell() method, pos was the value of pickle.tell()
     before reading the current opcode.  If the pickle is a bytes object,
     it's wrapped in a BytesIO object, and the latter's tell() result is
     used.  Else (the pickle doesn't have a tell(), and it's not obvious how
-    to query its current position) pos is None.
+    to query its current position) pos is Nichts.
     """
     return _genops(pickle)
 
@@ -2334,7 +2334,7 @@ def optimize(p):
     opcodes = []            # (op, idx) or (pos, end_pos)
     proto = 0
     protoheader = b''
-    fuer opcode, arg, pos, end_pos in _genops(p, yield_end_pos=True):
+    fuer opcode, arg, pos, end_pos in _genops(p, yield_end_pos=Wahr):
         wenn 'PUT' in opcode.name:
             oldids.add(arg)
             opcodes.append((put, arg))
@@ -2347,7 +2347,7 @@ def optimize(p):
         sowenn 'GET' in opcode.name:
             wenn opcode.proto > proto:
                 proto = opcode.proto
-            newids[arg] = None
+            newids[arg] = Nichts
             opcodes.append((get, arg))
         sowenn opcode.name == 'PROTO':
             wenn arg > proto:
@@ -2369,7 +2369,7 @@ def optimize(p):
         pickler.framer.start_framing()
     idx = 0
     fuer op, arg in opcodes:
-        frameless = False
+        frameless = Falsch
         wenn op is put:
             wenn arg not in newids:
                 continue
@@ -2392,7 +2392,7 @@ def optimize(p):
 ##############################################################################
 # A symbolic pickle disassembler.
 
-def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
+def dis(pickle, out=Nichts, memo=Nichts, indentlevel=4, annotate=0):
     """Produce a symbolic disassembly of a pickle.
 
     'pickle' is a file-like object, or string, containing a (at least one)
@@ -2436,15 +2436,15 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     # (which in turn is needed to indent MARK blocks correctly).
 
     stack = []          # crude emulation of unpickler stack
-    wenn memo is None:
+    wenn memo is Nichts:
         memo = {}       # crude emulation of unpickler memo
     maxproto = -1       # max protocol number seen
     markstack = []      # bytecode positions of MARK opcodes
     indentchunk = ' ' * indentlevel
-    errormsg = None
+    errormsg = Nichts
     annocol = annotate  # column hint fuer annotations
     fuer opcode, arg, pos in genops(pickle):
-        wenn pos is not None:
+        wenn pos is not Nichts:
             print("%5d:" % pos, end=' ', file=out)
 
         line = "%-4s %s%s" % (repr(opcode.code)[1:-1],
@@ -2457,7 +2457,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
         numtopop = len(before)
 
         # See whether a MARK should be popped.
-        markmsg = None
+        markmsg = Nichts
         wenn markobject in before or (opcode.name == "POP" and
                                     stack and
                                     stack[-1] is markobject):
@@ -2467,7 +2467,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
                     assert before[-1] is stackslice
             wenn markstack:
                 markpos = markstack.pop()
-                wenn markpos is None:
+                wenn markpos is Nichts:
                     markmsg = "(MARK at unknown opcode offset)"
                 sonst:
                     markmsg = "(MARK at %d)" % markpos
@@ -2490,7 +2490,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
                 memo_idx = len(memo)
                 markmsg = "(as %d)" % memo_idx
             sonst:
-                assert arg is not None
+                assert arg is not Nichts
                 memo_idx = arg
             wenn not stack:
                 errormsg = "stack is empty -- can't store into memo"
@@ -2505,10 +2505,10 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
             sonst:
                 errormsg = "memo key %r has never been stored into" % arg
 
-        wenn arg is not None or markmsg:
+        wenn arg is not Nichts or markmsg:
             # make a mild effort to align arguments
             line += ' ' * (10 - len(opcode.name))
-            wenn arg is not None:
+            wenn arg is not Nichts:
                 wenn opcode.name in ("STRING", "BINSTRING", "SHORT_BINSTRING"):
                     line += ' ' + ascii(arg)
                 sonst:
@@ -2698,13 +2698,13 @@ Try "the canonical" recursive-object test.
 >>> T = L,
 >>> L.append(T)
 >>> L[0] is T
-True
+Wahr
 >>> T[0] is L
-True
+Wahr
 >>> L[0][0] is L
-True
+Wahr
 >>> T[0][0] is T
-True
+Wahr
 >>> dis(pickle.dumps(L, 0))
     0: (    MARK
     1: l        LIST       (MARK at 0)
@@ -2843,7 +2843,7 @@ wenn __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(
         description='disassemble one or more pickle files',
-        color=True,
+        color=Wahr,
     )
     parser.add_argument(
         'pickle_file',
@@ -2866,8 +2866,8 @@ wenn __name__ == "__main__":
         ' each disassembly')
     args = parser.parse_args()
     annotate = 30 wenn args.annotate sonst 0
-    memo = {} wenn args.memo sonst None
-    wenn args.output is None:
+    memo = {} wenn args.memo sonst Nichts
+    wenn args.output is Nichts:
         output = sys.stdout
     sonst:
         output = open(args.output, 'w')

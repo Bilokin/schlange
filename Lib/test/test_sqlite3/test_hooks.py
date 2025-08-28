@@ -34,7 +34,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_create_collation_not_string(self):
         with self.assertRaises(TypeError):
-            self.con.create_collation(None, lambda x, y: (x > y) - (x < y))
+            self.con.create_collation(Nichts, lambda x, y: (x > y) - (x < y))
 
     def test_create_collation_not_callable(self):
         with self.assertRaises(TypeError) as cm:
@@ -47,7 +47,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_create_collation_bad_upper(self):
         klasse BadUpperStr(str):
             def upper(self):
-                return None
+                return Nichts
         mycoll = lambda x, y: -((x > y) - (x < y))
         self.con.create_collation(BadUpperStr("mycoll"), mycoll)
         result = self.con.execute("""
@@ -79,7 +79,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(result, [('c',), ('b',), ('a',)],
                          msg='the expected order was not returned')
 
-        self.con.create_collation("mycoll", None)
+        self.con.create_collation("mycoll", Nichts)
         with self.assertRaises(sqlite.OperationalError) as cm:
             result = self.con.execute(sql).fetchall()
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
@@ -123,7 +123,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         """
         con = self.con
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
-        con.create_collation("mycoll", None)
+        con.create_collation("mycoll", Nichts)
         with self.assertRaises(sqlite.OperationalError) as cm:
             con.execute("select 'a' as x union select 'b' as x order by x collate mycoll")
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
@@ -137,13 +137,13 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         """
         progress_calls = []
         def progress():
-            progress_calls.append(None)
+            progress_calls.append(Nichts)
             return 0
         self.con.set_progress_handler(progress, 1)
         self.con.execute("""
             create table foo(a, b)
             """)
-        self.assertTrue(progress_calls)
+        self.assertWahr(progress_calls)
 
     def test_opcode_count(self):
         """
@@ -152,7 +152,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         con = self.con
         progress_calls = []
         def progress():
-            progress_calls.append(None)
+            progress_calls.append(Nichts)
             return 0
         con.set_progress_handler(progress, 1)
         curs = con.cursor()
@@ -183,7 +183,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_clear_handler(self):
         """
-        Test that setting the progress handler to None clears the previously set handler.
+        Test that setting the progress handler to Nichts clears the previously set handler.
         """
         con = self.con
         action = 0
@@ -192,7 +192,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
             action = 1
             return 0
         con.set_progress_handler(progress, 1)
-        con.set_progress_handler(None, 1)
+        con.set_progress_handler(Nichts, 1)
         con.execute("select 1 union select 2 union select 3").fetchall()
         self.assertEqual(action, 0, "progress handler was not cleared")
 
@@ -222,7 +222,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_progress_handler_keyword_args(self):
         with self.assertRaisesRegex(TypeError,
                 'takes at least 1 positional argument'):
-            self.con.set_progress_handler(progress_handler=lambda: None, n=1)
+            self.con.set_progress_handler(progress_handler=lambda: Nichts, n=1)
 
 
 klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
@@ -235,7 +235,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
             yield
         finally:
             self.assertEqual(traced, expected)
-            cx.set_trace_callback(None)
+            cx.set_trace_callback(Nichts)
 
     def test_trace_callback_used(self):
         """
@@ -246,21 +246,21 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
             traced_statements.append(statement)
         self.con.set_trace_callback(trace)
         self.con.execute("create table foo(a, b)")
-        self.assertTrue(traced_statements)
-        self.assertTrue(any("create table foo" in stmt fuer stmt in traced_statements))
+        self.assertWahr(traced_statements)
+        self.assertWahr(any("create table foo" in stmt fuer stmt in traced_statements))
 
     def test_clear_trace_callback(self):
         """
-        Test that setting the trace callback to None clears the previously set callback.
+        Test that setting the trace callback to Nichts clears the previously set callback.
         """
         con = self.con
         traced_statements = []
         def trace(statement):
             traced_statements.append(statement)
         con.set_trace_callback(trace)
-        con.set_trace_callback(None)
+        con.set_trace_callback(Nichts)
         con.execute("create table foo(a, b)")
-        self.assertFalse(traced_statements, "trace callback was not cleared")
+        self.assertFalsch(traced_statements, "trace callback was not cleared")
 
     def test_unicode_content(self):
         """
@@ -275,7 +275,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         con.execute("create table foo(x)")
         con.execute("insert into foo(x) values ('%s')" % unicode_value)
         con.commit()
-        self.assertTrue(any(unicode_value in stmt fuer stmt in traced_statements),
+        self.assertWahr(any(unicode_value in stmt fuer stmt in traced_statements),
                         "Unicode data %s garbled in trace callback: %s"
                         % (ascii(unicode_value), ', '.join(map(ascii, traced_statements))))
 
@@ -288,7 +288,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         queries = ["create table foo(x)",
                    "insert into foo(x) values(1)"]
         self.addCleanup(unlink, TESTFN)
-        con1 = sqlite.connect(TESTFN, isolation_level=None)
+        con1 = sqlite.connect(TESTFN, isolation_level=Nichts)
         con2 = sqlite.connect(TESTFN)
         try:
             con1.set_trace_callback(trace)
@@ -348,7 +348,7 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_trace_keyword_args(self):
         with self.assertRaisesRegex(TypeError,
                 'takes exactly 1 positional argument'):
-            self.con.set_trace_callback(trace_callback=lambda: None)
+            self.con.set_trace_callback(trace_callback=lambda: Nichts)
 
 
 wenn __name__ == "__main__":

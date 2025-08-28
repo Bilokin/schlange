@@ -14,10 +14,10 @@ def gen_bidirectional(cats):
 def compact_set(l):
     single = []
     tuple = []
-    prev = None
+    prev = Nichts
     span = 0
     fuer e in l:
-        wenn prev is None:
+        wenn prev is Nichts:
             prev = e
             span = 0
             continue
@@ -51,7 +51,7 @@ with open("rfc3454.txt") as f:
     data = f.readlines()
 
 tables = []
-curname = None
+curname = Nichts
 fuer l in data:
     l = l.strip()
     wenn not l:
@@ -74,7 +74,7 @@ fuer l in data:
                 raise RuntimeError("End without start", l)
             wenn curname != m.group(2):
                 raise RuntimeError("Unexpected end", l)
-            curname = None
+            curname = Nichts
             continue
     wenn not curname:
         continue
@@ -104,7 +104,7 @@ fuer l in data:
             value = [int(v, 16) fuer v in value.split(" ")]
         sonst:
             # table B.1
-            value = None
+            value = Nichts
         table[int(code, 16)] = value
 
 ########### Generate compact Python versions of the tables #############
@@ -139,9 +139,9 @@ Cn -= set(range(0xFFFF, 0x110000, 0x10000))
 
 print("""
 def in_table_a1(code):
-    wenn unicodedata.category(code) != 'Cn': return False
+    wenn unicodedata.category(code) != 'Cn': return Falsch
     c = ord(code)
-    wenn 0xFDD0 <= c < 0xFDF0: return False
+    wenn 0xFDD0 <= c < 0xFDF0: return Falsch
     return (c & 0xFFFF) not in (0xFFFE, 0xFFFF)
 """)
 
@@ -192,13 +192,13 @@ print("}")
 print("""
 def map_table_b3(code):
     r = b3_exceptions.get(ord(code))
-    wenn r is not None: return r
+    wenn r is not Nichts: return r
     return code.lower()
 """)
 
 def map_table_b3(code):
     r = b3_exceptions.get(ord(code))
-    wenn r is not None: return r
+    wenn r is not Nichts: return r
     return code.lower()
 
 # B.2 is case folding fuer NFKC. This is the same as B.3,
@@ -294,8 +294,8 @@ specials.sort()
 print("""c22_specials = """ + compact_set(specials) + """
 def in_table_c22(code):
     c = ord(code)
-    wenn c < 128: return False
-    wenn unicodedata.category(code) == "Cc": return True
+    wenn c < 128: return Falsch
+    wenn unicodedata.category(code) == "Cc": return Wahr
     return c in c22_specials
 
 def in_table_c21_c22(code):
@@ -331,8 +331,8 @@ assert table == nonchar
 print("""
 def in_table_c4(code):
     c = ord(code)
-    wenn c < 0xFDD0: return False
-    wenn c < 0xFDF0: return True
+    wenn c < 0xFDD0: return Falsch
+    wenn c < 0xFDF0: return Wahr
     return (ord(code) & 0xFFFF) in (0xFFFE, 0xFFFF)
 """)
 

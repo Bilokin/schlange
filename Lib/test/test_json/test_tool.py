@@ -92,11 +92,11 @@ klasse TestMain(unittest.TestCase):
     @force_not_colorized
     def test_stdin_stdout(self):
         args = sys.executable, '-m', self.module
-        process = subprocess.run(args, input=self.data, capture_output=True, text=True, check=True)
+        process = subprocess.run(args, input=self.data, capture_output=Wahr, text=Wahr, check=Wahr)
         self.assertEqual(process.stdout, self.expect)
         self.assertEqual(process.stderr, '')
 
-    def _create_infile(self, data=None):
+    def _create_infile(self, data=Nichts):
         infile = os_helper.TESTFN
         with open(infile, "w", encoding="utf-8") as fp:
             self.addCleanup(os.remove, infile)
@@ -152,7 +152,7 @@ klasse TestMain(unittest.TestCase):
     @force_not_colorized
     def test_jsonlines(self):
         args = sys.executable, '-m', self.module, '--json-lines'
-        process = subprocess.run(args, input=self.jsonlines_raw, capture_output=True, text=True, check=True)
+        process = subprocess.run(args, input=self.jsonlines_raw, capture_output=Wahr, text=Wahr, check=Wahr)
         self.assertEqual(process.stdout, self.jsonlines_expect)
         self.assertEqual(process.stderr, '')
 
@@ -182,7 +182,7 @@ klasse TestMain(unittest.TestCase):
         ]
         ''')
         args = sys.executable, '-m', self.module, '--indent', '2'
-        process = subprocess.run(args, input=input_, capture_output=True, text=True, check=True)
+        process = subprocess.run(args, input=input_, capture_output=Wahr, text=Wahr, check=Wahr)
         self.assertEqual(process.stdout, expect)
         self.assertEqual(process.stderr, '')
 
@@ -191,7 +191,7 @@ klasse TestMain(unittest.TestCase):
         input_ = '[1,\n2]'
         expect = '[1, 2]\n'
         args = sys.executable, '-m', self.module, '--no-indent'
-        process = subprocess.run(args, input=input_, capture_output=True, text=True, check=True)
+        process = subprocess.run(args, input=input_, capture_output=Wahr, text=Wahr, check=Wahr)
         self.assertEqual(process.stdout, expect)
         self.assertEqual(process.stderr, '')
 
@@ -200,7 +200,7 @@ klasse TestMain(unittest.TestCase):
         input_ = '[1, 2]'
         expect = '[\n\t1,\n\t2\n]\n'
         args = sys.executable, '-m', self.module, '--tab'
-        process = subprocess.run(args, input=input_, capture_output=True, text=True, check=True)
+        process = subprocess.run(args, input=input_, capture_output=Wahr, text=Wahr, check=Wahr)
         self.assertEqual(process.stdout, expect)
         self.assertEqual(process.stderr, '')
 
@@ -209,7 +209,7 @@ klasse TestMain(unittest.TestCase):
         input_ = '[ 1 ,\n 2]'
         expect = '[1,2]\n'
         args = sys.executable, '-m', self.module, '--compact'
-        process = subprocess.run(args, input=input_, capture_output=True, text=True, check=True)
+        process = subprocess.run(args, input=input_, capture_output=Wahr, text=Wahr, check=Wahr)
         self.assertEqual(process.stdout, expect)
         self.assertEqual(process.stderr, '')
 

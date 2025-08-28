@@ -8,17 +8,17 @@ import unittest
 
 klasse OptimizedPickleTests(AbstractPickleTests, unittest.TestCase):
 
-    def dumps(self, arg, proto=None, **kwargs):
+    def dumps(self, arg, proto=Nichts, **kwargs):
         return pickletools.optimize(pickle.dumps(arg, proto, **kwargs))
 
     def loads(self, buf, **kwds):
         return pickle.loads(buf, **kwds)
 
     # Test relies on precise output of dumps()
-    test_pickle_to_2x = None
+    test_pickle_to_2x = Nichts
 
     # Test relies on writing by chunks into a file object.
-    test_framed_write_sizes_with_delayed_writer = None
+    test_framed_write_sizes_with_delayed_writer = Nichts
 
     def test_optimize_long_binget(self):
         data = [str(i) fuer i in range(257)]
@@ -86,12 +86,12 @@ klasse GenopsTests(unittest.TestCase):
     def test_genops(self):
         it = pickletools.genops(b'(I123\nK\x12J\x12\x34\x56\x78t.')
         self.assertEqual([(item[0].name,) +  item[1:] fuer item in it], [
-            ('MARK', None, 0),
+            ('MARK', Nichts, 0),
             ('INT', 123, 1),
             ('BININT1', 0x12, 6),
             ('BININT', 0x78563412, 8),
-            ('TUPLE', None, 13),
-            ('STOP', None, 14),
+            ('TUPLE', Nichts, 13),
+            ('STOP', Nichts, 14),
         ])
 
     def test_from_file(self):
@@ -99,12 +99,12 @@ klasse GenopsTests(unittest.TestCase):
         self.assertEqual(f.read(6), b'prefix')
         it = pickletools.genops(f)
         self.assertEqual([(item[0].name,) +  item[1:] fuer item in it], [
-            ('MARK', None, 6),
+            ('MARK', Nichts, 6),
             ('INT', 123, 7),
             ('BININT1', 0x12, 12),
             ('BININT', 0x78563412, 14),
-            ('TUPLE', None, 19),
-            ('STOP', None, 20),
+            ('TUPLE', Nichts, 19),
+            ('STOP', Nichts, 20),
         ])
         self.assertEqual(f.read(), b'suffix')
 
@@ -112,12 +112,12 @@ klasse GenopsTests(unittest.TestCase):
         f = SimpleReader(b'(I123\nK\x12J\x12\x34\x56\x78t.')
         it = pickletools.genops(f)
         self.assertEqual([(item[0].name,) +  item[1:] fuer item in it], [
-            ('MARK', None, None),
-            ('INT', 123, None),
-            ('BININT1', 0x12, None),
-            ('BININT', 0x78563412, None),
-            ('TUPLE', None, None),
-            ('STOP', None, None),
+            ('MARK', Nichts, Nichts),
+            ('INT', 123, Nichts),
+            ('BININT1', 0x12, Nichts),
+            ('BININT', 0x78563412, Nichts),
+            ('TUPLE', Nichts, Nichts),
+            ('STOP', Nichts, Nichts),
         ])
 
     def test_no_stop(self):
@@ -157,7 +157,7 @@ klasse GenopsTests(unittest.TestCase):
 
 
 klasse DisTests(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
 
     def check_dis(self, data, expected, **kwargs):
         out = io.StringIO()
@@ -330,14 +330,14 @@ highest protocol among opcodes = 1
     def test_annotate(self):
         self.check_dis(b'(Nt.', '''\
     0: (    MARK Push markobject onto the stack.
-    1: N        NONE Push None on the stack.
+    1: N        NONE Push Nichts on the stack.
     2: t        TUPLE      (MARK at 0) Build a tuple out of the topmost stack slice, after markobject.
     3: .    STOP                       Stop the unpickling machine.
 highest protocol among opcodes = 0
 ''', annotate=1)
         self.check_dis(b'(Nt.', '''\
     0: (    MARK            Push markobject onto the stack.
-    1: N        NONE        Push None on the stack.
+    1: N        NONE        Push Nichts on the stack.
     2: t        TUPLE      (MARK at 0) Build a tuple out of the topmost stack slice, after markobject.
     3: .    STOP                       Stop the unpickling machine.
 highest protocol among opcodes = 0
@@ -447,8 +447,8 @@ highest protocol among opcodes = 0
         self.check_dis(b"(NI00\nI01\n\x89\x88t.", '''\
     0: (    MARK
     1: N        NONE
-    2: I        INT        False
-    6: I        INT        True
+    2: I        INT        Falsch
+    6: I        INT        Wahr
    10: \\x89     NEWFALSE
    11: \\x88     NEWTRUE
    12: t        TUPLE      (MARK at 0)

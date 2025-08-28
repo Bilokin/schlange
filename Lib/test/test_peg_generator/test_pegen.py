@@ -20,7 +20,7 @@ with test_tools.imports_under_tool("peg_generator"):
 
 
 klasse TestPegen(unittest.TestCase):
-    def test_parse_grammar(self) -> None:
+    def test_parse_grammar(self) -> Nichts:
         grammar_source = """
         start: sum NEWLINE
         sum: t1=term '+' t2=term { action } | term
@@ -38,11 +38,11 @@ klasse TestPegen(unittest.TestCase):
         self.assertEqual(str(rules["start"]), "start: sum NEWLINE")
         self.assertEqual(str(rules["sum"]), "sum: term '+' term | term")
         expected_repr = (
-            "Rule('term', None, Rhs([Alt([NamedItem(None, NameLeaf('NUMBER'))])]))"
+            "Rule('term', Nichts, Rhs([Alt([NamedItem(Nichts, NameLeaf('NUMBER'))])]))"
         )
         self.assertEqual(repr(rules["term"]), expected_repr)
 
-    def test_repeated_rules(self) -> None:
+    def test_repeated_rules(self) -> Nichts:
         grammar_source = """
         start: the_rule NEWLINE
         the_rule: 'b' NEWLINE
@@ -51,7 +51,7 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaisesRegex(GrammarError, "Repeated rule 'the_rule'"):
             parse_string(grammar_source, GrammarParser)
 
-    def test_long_rule_str(self) -> None:
+    def test_long_rule_str(self) -> Nichts:
         grammar_source = """
         start: zero | one | one zero | one one | one zero zero | one zero one | one one zero | one one one
         """
@@ -69,7 +69,7 @@ klasse TestPegen(unittest.TestCase):
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         self.assertEqual(str(grammar.rules["start"]), textwrap.dedent(expected).strip())
 
-    def test_typed_rules(self) -> None:
+    def test_typed_rules(self) -> Nichts:
         grammar = """
         start[int]: sum NEWLINE
         sum[int]: t1=term '+' t2=term { action } | term
@@ -81,10 +81,10 @@ klasse TestPegen(unittest.TestCase):
         self.assertEqual(str(rules["sum"]), "sum: term '+' term | term")
         self.assertEqual(
             repr(rules["term"]),
-            "Rule('term', 'int', Rhs([Alt([NamedItem(None, NameLeaf('NUMBER'))])]))",
+            "Rule('term', 'int', Rhs([Alt([NamedItem(Nichts, NameLeaf('NUMBER'))])]))",
         )
 
-    def test_gather(self) -> None:
+    def test_gather(self) -> Nichts:
         grammar = """
         start: ','.thing+ NEWLINE
         thing: NUMBER
@@ -92,7 +92,7 @@ klasse TestPegen(unittest.TestCase):
         rules = parse_string(grammar, GrammarParser).rules
         self.assertEqual(str(rules["start"]), "start: ','.thing+ NEWLINE")
         self.assertStartsWith(repr(rules["start"]),
-            "Rule('start', None, Rhs([Alt([NamedItem(None, Gather(StringLeaf(\"','\"), NameLeaf('thing'"
+            "Rule('start', Nichts, Rhs([Alt([NamedItem(Nichts, Gather(StringLeaf(\"','\"), NameLeaf('thing'"
         )
         self.assertEqual(str(rules["thing"]), "thing: NUMBER")
         parser_class = make_parser(grammar)
@@ -115,7 +115,7 @@ klasse TestPegen(unittest.TestCase):
             ],
         )
 
-    def test_expr_grammar(self) -> None:
+    def test_expr_grammar(self) -> Nichts:
         grammar = """
         start: sum NEWLINE
         sum: term '+' term | term
@@ -131,7 +131,7 @@ klasse TestPegen(unittest.TestCase):
             ],
         )
 
-    def test_optional_operator(self) -> None:
+    def test_optional_operator(self) -> Nichts:
         grammar = """
         start: sum NEWLINE
         sum: term ('+' term)?
@@ -166,13 +166,13 @@ klasse TestPegen(unittest.TestCase):
             [
                 [
                     TokenInfo(NUMBER, string="1", start=(1, 0), end=(1, 1), line="1\n"),
-                    None,
+                    Nichts,
                 ],
                 TokenInfo(NEWLINE, string="\n", start=(1, 1), end=(1, 2), line="1\n"),
             ],
         )
 
-    def test_optional_literal(self) -> None:
+    def test_optional_literal(self) -> Nichts:
         grammar = """
         start: sum NEWLINE
         sum: term '+' ?
@@ -198,13 +198,13 @@ klasse TestPegen(unittest.TestCase):
             [
                 [
                     TokenInfo(NUMBER, string="1", start=(1, 0), end=(1, 1), line="1\n"),
-                    None,
+                    Nichts,
                 ],
                 TokenInfo(NEWLINE, string="\n", start=(1, 1), end=(1, 2), line="1\n"),
             ],
         )
 
-    def test_alt_optional_operator(self) -> None:
+    def test_alt_optional_operator(self) -> Nichts:
         grammar = """
         start: sum NEWLINE
         sum: term ['+' term]
@@ -239,13 +239,13 @@ klasse TestPegen(unittest.TestCase):
             [
                 [
                     TokenInfo(NUMBER, string="1", start=(1, 0), end=(1, 1), line="1\n"),
-                    None,
+                    Nichts,
                 ],
                 TokenInfo(NEWLINE, string="\n", start=(1, 1), end=(1, 2), line="1\n"),
             ],
         )
 
-    def test_repeat_0_simple(self) -> None:
+    def test_repeat_0_simple(self) -> Nichts:
         grammar = """
         start: thing thing* NEWLINE
         thing: NUMBER
@@ -279,7 +279,7 @@ klasse TestPegen(unittest.TestCase):
             ],
         )
 
-    def test_repeat_0_complex(self) -> None:
+    def test_repeat_0_complex(self) -> Nichts:
         grammar = """
         start: term ('+' term)* NEWLINE
         term: NUMBER
@@ -324,7 +324,7 @@ klasse TestPegen(unittest.TestCase):
             ],
         )
 
-    def test_repeat_1_simple(self) -> None:
+    def test_repeat_1_simple(self) -> Nichts:
         grammar = """
         start: thing thing+ NEWLINE
         thing: NUMBER
@@ -351,7 +351,7 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaises(SyntaxError):
             parse_string("1\n", parser_class)
 
-    def test_repeat_1_complex(self) -> None:
+    def test_repeat_1_complex(self) -> Nichts:
         grammar = """
         start: term ('+' term)+ NEWLINE
         term: NUMBER
@@ -398,7 +398,7 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaises(SyntaxError):
             parse_string("1\n", parser_class)
 
-    def test_repeat_with_sep_simple(self) -> None:
+    def test_repeat_with_sep_simple(self) -> Nichts:
         grammar = """
         start: ','.thing+ NEWLINE
         thing: NUMBER
@@ -425,7 +425,7 @@ klasse TestPegen(unittest.TestCase):
             ],
         )
 
-    def test_left_recursive(self) -> None:
+    def test_left_recursive(self) -> Nichts:
         grammar_source = """
         start: expr NEWLINE
         expr: ('-' term | expr '+' term | term)
@@ -437,12 +437,12 @@ klasse TestPegen(unittest.TestCase):
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         parser_class = generate_parser(grammar)
         rules = grammar.rules
-        self.assertFalse(rules["start"].left_recursive)
-        self.assertTrue(rules["expr"].left_recursive)
-        self.assertFalse(rules["term"].left_recursive)
-        self.assertFalse(rules["foo"].left_recursive)
-        self.assertFalse(rules["bar"].left_recursive)
-        self.assertFalse(rules["baz"].left_recursive)
+        self.assertFalsch(rules["start"].left_recursive)
+        self.assertWahr(rules["expr"].left_recursive)
+        self.assertFalsch(rules["term"].left_recursive)
+        self.assertFalsch(rules["foo"].left_recursive)
+        self.assertFalsch(rules["bar"].left_recursive)
+        self.assertFalsch(rules["baz"].left_recursive)
         node = parse_string("1 + 2 + 3\n", parser_class)
         self.assertEqual(
             node,
@@ -480,7 +480,7 @@ klasse TestPegen(unittest.TestCase):
             ],
         )
 
-    def test_python_expr(self) -> None:
+    def test_python_expr(self) -> Nichts:
         grammar = """
         start: expr NEWLINE? $ { ast.Expression(expr) }
         expr: ( expr '+' term { ast.BinOp(expr, ast.Add(), term, lineno=expr.lineno, col_offset=expr.col_offset, end_lineno=term.end_lineno, end_col_offset=term.end_col_offset) }
@@ -504,7 +504,7 @@ klasse TestPegen(unittest.TestCase):
         val = eval(code)
         self.assertEqual(val, 3.0)
 
-    def test_f_string_in_action(self) -> None:
+    def test_f_string_in_action(self) -> Nichts:
         grammar = """
         start: n=NAME NEWLINE? $ { f"name -> {n.string}" }
         """
@@ -512,7 +512,7 @@ klasse TestPegen(unittest.TestCase):
         node = parse_string("a", parser_class)
         self.assertEqual(node.strip(), "name ->  a")
 
-    def test_nullable(self) -> None:
+    def test_nullable(self) -> Nichts:
         grammar_source = """
         start: sign NUMBER
         sign: ['-' | '+']
@@ -520,10 +520,10 @@ klasse TestPegen(unittest.TestCase):
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         rules = grammar.rules
         nullables = compute_nullables(rules)
-        self.assertNotIn(rules["start"], nullables)  # Not None!
+        self.assertNotIn(rules["start"], nullables)  # Not Nichts!
         self.assertIn(rules["sign"], nullables)
 
-    def test_advanced_left_recursive(self) -> None:
+    def test_advanced_left_recursive(self) -> Nichts:
         grammar_source = """
         start: NUMBER | sign start
         sign: ['-']
@@ -532,12 +532,12 @@ klasse TestPegen(unittest.TestCase):
         rules = grammar.rules
         nullables = compute_nullables(rules)
         compute_left_recursives(rules)
-        self.assertNotIn(rules["start"], nullables)  # Not None!
+        self.assertNotIn(rules["start"], nullables)  # Not Nichts!
         self.assertIn(rules["sign"], nullables)
-        self.assertTrue(rules["start"].left_recursive)
-        self.assertFalse(rules["sign"].left_recursive)
+        self.assertWahr(rules["start"].left_recursive)
+        self.assertFalsch(rules["sign"].left_recursive)
 
-    def test_mutually_left_recursive(self) -> None:
+    def test_mutually_left_recursive(self) -> Nichts:
         grammar_source = """
         start: foo 'E'
         foo: bar 'A' | 'B'
@@ -547,9 +547,9 @@ klasse TestPegen(unittest.TestCase):
         out = io.StringIO()
         genr = PythonParserGenerator(grammar, out)
         rules = grammar.rules
-        self.assertFalse(rules["start"].left_recursive)
-        self.assertTrue(rules["foo"].left_recursive)
-        self.assertTrue(rules["bar"].left_recursive)
+        self.assertFalsch(rules["start"].left_recursive)
+        self.assertWahr(rules["foo"].left_recursive)
+        self.assertWahr(rules["bar"].left_recursive)
         genr.generate("<string>")
         ns: Dict[str, Any] = {}
         exec(out.getvalue(), ns)
@@ -629,7 +629,7 @@ klasse TestPegen(unittest.TestCase):
             ],
         )
 
-    def test_nasty_mutually_left_recursive(self) -> None:
+    def test_nasty_mutually_left_recursive(self) -> Nichts:
         # This grammar does not recognize 'x - + =', much to my chagrin.
         # But that's the way PEG works.
         # [Breathlessly]
@@ -654,7 +654,7 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaises(SyntaxError):
             parse_string("x - + =", parser_class)
 
-    def test_lookahead(self) -> None:
+    def test_lookahead(self) -> Nichts:
         grammar = """
         start: (expr_stmt | assign_stmt) &'.'
         expr_stmt: !(target '=') expr
@@ -665,7 +665,7 @@ klasse TestPegen(unittest.TestCase):
         """
         parser_class = make_parser(grammar)
         node = parse_string("foo = 12 + 12 .", parser_class)
-        self.maxDiff = None
+        self.maxDiff = Nichts
         self.assertEqual(
             node,
             [
@@ -705,22 +705,22 @@ klasse TestPegen(unittest.TestCase):
             ],
         )
 
-    def test_named_lookahead_error(self) -> None:
+    def test_named_lookahead_error(self) -> Nichts:
         grammar = """
         start: foo=!'x' NAME
         """
         with self.assertRaises(SyntaxError):
             make_parser(grammar)
 
-    def test_start_leader(self) -> None:
+    def test_start_leader(self) -> Nichts:
         grammar = """
         start: attr | NAME
         attr: start '.' NAME
         """
-        # Would assert False without a special case in compute_left_recursives().
+        # Would assert Falsch without a special case in compute_left_recursives().
         make_parser(grammar)
 
-    def test_opt_sequence(self) -> None:
+    def test_opt_sequence(self) -> Nichts:
         grammar = """
         start: [NAME*]
         """
@@ -728,7 +728,7 @@ klasse TestPegen(unittest.TestCase):
         # of a line in the generated source. See bpo-41044
         make_parser(grammar)
 
-    def test_left_recursion_too_complex(self) -> None:
+    def test_left_recursion_too_complex(self) -> Nichts:
         grammar = """
         start: foo
         foo: bar '+' | baz '+' | '+'
@@ -737,9 +737,9 @@ klasse TestPegen(unittest.TestCase):
         """
         with self.assertRaises(ValueError) as errinfo:
             make_parser(grammar)
-            self.assertTrue("no leader" in str(errinfo.exception.value))
+            self.assertWahr("no leader" in str(errinfo.exception.value))
 
-    def test_cut(self) -> None:
+    def test_cut(self) -> Nichts:
         grammar = """
         start: '(' ~ expr ')'
         expr: NUMBER
@@ -755,7 +755,7 @@ klasse TestPegen(unittest.TestCase):
             ],
         )
 
-    def test_dangling_reference(self) -> None:
+    def test_dangling_reference(self) -> Nichts:
         grammar = """
         start: foo ENDMARKER
         foo: bar NAME
@@ -763,7 +763,7 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaises(GrammarError):
             parser_class = make_parser(grammar)
 
-    def test_bad_token_reference(self) -> None:
+    def test_bad_token_reference(self) -> Nichts:
         grammar = """
         start: foo
         foo: NAMEE
@@ -771,14 +771,14 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaises(GrammarError):
             parser_class = make_parser(grammar)
 
-    def test_missing_start(self) -> None:
+    def test_missing_start(self) -> Nichts:
         grammar = """
         foo: NAME
         """
         with self.assertRaises(GrammarError):
             parser_class = make_parser(grammar)
 
-    def test_invalid_rule_name(self) -> None:
+    def test_invalid_rule_name(self) -> Nichts:
         grammar = """
         start: _a b
         _a: 'a'
@@ -787,7 +787,7 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaisesRegex(GrammarError, "cannot start with underscore: '_a'"):
             parser_class = make_parser(grammar)
 
-    def test_invalid_variable_name(self) -> None:
+    def test_invalid_variable_name(self) -> Nichts:
         grammar = """
         start: a b
         a: _x='a'
@@ -796,7 +796,7 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaisesRegex(GrammarError, "cannot start with underscore: '_x'"):
             parser_class = make_parser(grammar)
 
-    def test_invalid_variable_name_in_temporal_rule(self) -> None:
+    def test_invalid_variable_name_in_temporal_rule(self) -> Nichts:
         grammar = """
         start: a b
         a: (_x='a' | 'b') | 'c'
@@ -805,7 +805,7 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaisesRegex(GrammarError, "cannot start with underscore: '_x'"):
             parser_class = make_parser(grammar)
 
-    def test_soft_keyword(self) -> None:
+    def test_soft_keyword(self) -> Nichts:
         grammar = """
         start:
             | "number" n=NUMBER { eval(n.string) }
@@ -824,29 +824,29 @@ klasse TestPegen(unittest.TestCase):
         with self.assertRaises(SyntaxError):
             parse_string("test 1", parser_class)
 
-    def test_forced(self) -> None:
+    def test_forced(self) -> Nichts:
         grammar = """
         start: NAME &&':' | NAME
         """
         parser_class = make_parser(grammar)
-        self.assertTrue(parse_string("number :", parser_class))
+        self.assertWahr(parse_string("number :", parser_class))
         with self.assertRaises(SyntaxError) as e:
             parse_string("a", parser_class)
 
         self.assertIn("expected ':'", str(e.exception))
 
-    def test_forced_with_group(self) -> None:
+    def test_forced_with_group(self) -> Nichts:
         grammar = """
         start: NAME &&(':' | ';') | NAME
         """
         parser_class = make_parser(grammar)
-        self.assertTrue(parse_string("number :", parser_class))
-        self.assertTrue(parse_string("number ;", parser_class))
+        self.assertWahr(parse_string("number :", parser_class))
+        self.assertWahr(parse_string("number ;", parser_class))
         with self.assertRaises(SyntaxError) as e:
             parse_string("a", parser_class)
         self.assertIn("expected (':' | ';')", e.exception.args[0])
 
-    def test_unreachable_explicit(self) -> None:
+    def test_unreachable_explicit(self) -> Nichts:
         source = """
         start: NAME { UNREACHABLE }
         """
@@ -858,10 +858,10 @@ klasse TestPegen(unittest.TestCase):
         genr.generate("<string>")
         self.assertIn("This is a test", out.getvalue())
 
-    def test_unreachable_implicit1(self) -> None:
+    def test_unreachable_implicit1(self) -> Nichts:
         source = """
         start: NAME | invalid_input
-        invalid_input: NUMBER { None }
+        invalid_input: NUMBER { Nichts }
         """
         grammar = parse_string(source, GrammarParser)
         out = io.StringIO()
@@ -871,10 +871,10 @@ klasse TestPegen(unittest.TestCase):
         genr.generate("<string>")
         self.assertIn("This is a test", out.getvalue())
 
-    def test_unreachable_implicit2(self) -> None:
+    def test_unreachable_implicit2(self) -> Nichts:
         source = """
         start: NAME | '(' invalid_input ')'
-        invalid_input: NUMBER { None }
+        invalid_input: NUMBER { Nichts }
         """
         grammar = parse_string(source, GrammarParser)
         out = io.StringIO()
@@ -884,9 +884,9 @@ klasse TestPegen(unittest.TestCase):
         genr.generate("<string>")
         self.assertIn("This is a test", out.getvalue())
 
-    def test_unreachable_implicit3(self) -> None:
+    def test_unreachable_implicit3(self) -> Nichts:
         source = """
-        start: NAME | invalid_input { None }
+        start: NAME | invalid_input { Nichts }
         invalid_input: NUMBER
         """
         grammar = parse_string(source, GrammarParser)
@@ -897,7 +897,7 @@ klasse TestPegen(unittest.TestCase):
         genr.generate("<string>")
         self.assertNotIn("This is a test", out.getvalue())
 
-    def test_locations_in_alt_action_and_group(self) -> None:
+    def test_locations_in_alt_action_and_group(self) -> Nichts:
         grammar = """
         start: t=term NEWLINE? $ { ast.Expression(t) }
         term:
@@ -912,28 +912,28 @@ klasse TestPegen(unittest.TestCase):
         """
         parser_class = make_parser(grammar)
         source = "2*3\n"
-        o = ast.dump(parse_string(source, parser_class).body, include_attributes=True)
-        p = ast.dump(ast.parse(source).body[0].value, include_attributes=True).replace(
-            " kind=None,", ""
+        o = ast.dump(parse_string(source, parser_class).body, include_attributes=Wahr)
+        p = ast.dump(ast.parse(source).body[0].value, include_attributes=Wahr).replace(
+            " kind=Nichts,", ""
         )
         diff = "\n".join(
             difflib.unified_diff(
                 o.split("\n"), p.split("\n"), "cpython", "python-pegen"
             )
         )
-        self.assertFalse(diff)
+        self.assertFalsch(diff)
 
 
 klasse TestGrammarVisitor:
     klasse Visitor(GrammarVisitor):
-        def __init__(self) -> None:
+        def __init__(self) -> Nichts:
             self.n_nodes = 0
 
-        def visit(self, node: Any, *args: Any, **kwargs: Any) -> None:
+        def visit(self, node: Any, *args: Any, **kwargs: Any) -> Nichts:
             self.n_nodes += 1
             super().visit(node, *args, **kwargs)
 
-    def test_parse_trivial_grammar(self) -> None:
+    def test_parse_trivial_grammar(self) -> Nichts:
         grammar = """
         start: 'a'
         """
@@ -944,7 +944,7 @@ klasse TestGrammarVisitor:
 
         self.assertEqual(visitor.n_nodes, 6)
 
-    def test_parse_or_grammar(self) -> None:
+    def test_parse_or_grammar(self) -> Nichts:
         grammar = """
         start: rule
         rule: 'a' | 'b'
@@ -961,7 +961,7 @@ klasse TestGrammarVisitor:
 
         self.assertEqual(visitor.n_nodes, 14)
 
-    def test_parse_repeat1_grammar(self) -> None:
+    def test_parse_repeat1_grammar(self) -> Nichts:
         grammar = """
         start: 'a'+
         """
@@ -973,7 +973,7 @@ klasse TestGrammarVisitor:
         # Grammar/Rule/Rhs/Alt/NamedItem/Repeat1/StringLeaf -> 6
         self.assertEqual(visitor.n_nodes, 7)
 
-    def test_parse_repeat0_grammar(self) -> None:
+    def test_parse_repeat0_grammar(self) -> Nichts:
         grammar = """
         start: 'a'*
         """
@@ -986,7 +986,7 @@ klasse TestGrammarVisitor:
 
         self.assertEqual(visitor.n_nodes, 7)
 
-    def test_parse_optional_grammar(self) -> None:
+    def test_parse_optional_grammar(self) -> Nichts:
         grammar = """
         start: 'a' ['b']
         """
@@ -1002,7 +1002,7 @@ klasse TestGrammarVisitor:
 
 
 klasse TestGrammarVisualizer(unittest.TestCase):
-    def test_simple_rule(self) -> None:
+    def test_simple_rule(self) -> Nichts:
         grammar = """
         start: 'a' 'b'
         """
@@ -1027,7 +1027,7 @@ klasse TestGrammarVisualizer(unittest.TestCase):
 
         self.assertEqual(output, expected_output)
 
-    def test_multiple_rules(self) -> None:
+    def test_multiple_rules(self) -> Nichts:
         grammar = """
         start: a b
         a: 'a'
@@ -1066,7 +1066,7 @@ klasse TestGrammarVisualizer(unittest.TestCase):
 
         self.assertEqual(output, expected_output)
 
-    def test_deep_nested_rule(self) -> None:
+    def test_deep_nested_rule(self) -> Nichts:
         grammar = """
         start: 'a' ['b'['c'['d']]]
         """

@@ -82,12 +82,12 @@ impl_definition block
     def __init__(
         self,
         language: CLanguage,
-        printer: BlockPrinter | None = None,
+        printer: BlockPrinter | Nichts = Nichts,
         *,
         filename: str,
         limited_capi: bool,
-        verify: bool = True,
-    ) -> None:
+        verify: bool = Wahr,
+    ) -> Nichts:
         # maps strings to Parser objects.
         # (instantiated from the "parsers" global.)
         self.parsers: dict[str, Parser] = {}
@@ -132,7 +132,7 @@ impl_definition block
         self.destination_buffers_stack: DestBufferList = []
 
         self.presets: dict[str, dict[Any, Any]] = {}
-        preset = None
+        preset = Nichts
         fuer line in self.presets_text.strip().split('\n'):
             line = line.strip()
             wenn not line:
@@ -161,7 +161,7 @@ impl_definition block
         name: str,
         type: str,
         *args: str
-    ) -> None:
+    ) -> Nichts:
         wenn name in self.destinations:
             fail(f"Destination already exists: {name!r}")
         self.destinations[name] = Destination(name, type, self, args)
@@ -242,7 +242,7 @@ impl_definition block
 
     def _module_and_class(
         self, fields: Sequence[str]
-    ) -> tuple[Module | Clinic, Class | None]:
+    ) -> tuple[Module | Clinic, Class | Nichts]:
         """
         fields should be an iterable of field names.
         returns a tuple of (module, class).
@@ -252,7 +252,7 @@ impl_definition block
         """
         parent: Clinic | Module | Class = self
         module: Clinic | Module = self
-        cls: Class | None = None
+        cls: Class | Nichts = Nichts
 
         fuer idx, field in enumerate(fields):
             wenn not isinstance(parent, Class):

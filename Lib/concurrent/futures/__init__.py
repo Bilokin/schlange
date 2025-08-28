@@ -37,7 +37,7 @@ __all__ = [
 try:
     import _interpreters
 except ImportError:
-    _interpreters = None
+    _interpreters = Nichts
 
 wenn _interpreters:
     __all__.append('InterpreterPoolExecutor')

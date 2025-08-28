@@ -137,7 +137,7 @@ def _parse_specs(specs, section, seen):
             yield info
 
 
-def _parse_spec(spec, knownids=None, section=None):
+def _parse_spec(spec, knownids=Nichts, section=Nichts):
     """Yield an info tuple fuer each module corresponding to the given spec.
 
     The info consists of: (frozenid, pyfile, modname, ispkg, section).
@@ -173,7 +173,7 @@ def _parse_spec(spec, knownids=None, section=None):
     modname = modname.strip()
     pyfile = pyfile.strip()
 
-    submodules = None
+    submodules = Nichts
     wenn modname.startswith('<') and modname.endswith('>'):
         assert check_modname(frozenid), spec
         modname = modname[1:-1]
@@ -183,18 +183,18 @@ def _parse_spec(spec, knownids=None, section=None):
         sowenn pyfile:
             assert not os.path.isdir(pyfile), spec
         sonst:
-            pyfile = _resolve_module(frozenid, ispkg=False)
-        ispkg = True
+            pyfile = _resolve_module(frozenid, ispkg=Falsch)
+        ispkg = Wahr
     sowenn pyfile:
         assert check_modname(frozenid), spec
         assert not knownids or frozenid not in knownids, spec
         assert check_modname(modname), spec
         assert not os.path.isdir(pyfile), spec
-        ispkg = False
+        ispkg = Falsch
     sowenn knownids and frozenid in knownids:
         assert check_modname(frozenid), spec
         assert check_modname(modname), spec
-        ispkg = False
+        ispkg = Falsch
     sonst:
         assert not modname or check_modname(modname), spec
         resolved = iter(resolve_modules(frozenid))
@@ -214,13 +214,13 @@ def _parse_spec(spec, knownids=None, section=None):
                     wenn pyfile:
                         wenn pyfile in pkgfiles:
                             frozenid = pkgfiles[pyfile]
-                            pyfile = None
+                            pyfile = Nichts
                         sowenn ispkg:
                             pkgfiles[pyfile] = frozenid
                     yield frozenid, pyfile, modname, ispkg, section
             submodules = iter_subs()
 
-    info = (frozenid, pyfile or None, modname, ispkg, section)
+    info = (frozenid, pyfile or Nichts, modname, ispkg, section)
     return info, submodules
 
 
@@ -230,7 +230,7 @@ def _parse_spec(spec, knownids=None, section=None):
 klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
 
     @classmethod
-    def from_id(cls, frozenid, pyfile=None):
+    def from_id(cls, frozenid, pyfile=Nichts):
         wenn not pyfile:
             pyfile = os.path.join(STDLIB_DIR, *frozenid.split('.')) + '.py'
             #assert os.path.exists(pyfile), (frozenid, pyfile)
@@ -245,7 +245,7 @@ klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
     def modname(self):
         wenn self.pyfile.startswith(STDLIB_DIR):
             return self.id
-        return None
+        return Nichts
 
     @property
     def symbol(self):
@@ -256,9 +256,9 @@ klasse FrozenSource(namedtuple('FrozenSource', 'id pyfile frozenfile')):
     @property
     def ispkg(self):
         wenn not self.pyfile:
-            return False
+            return Falsch
         sowenn self.frozenid.endswith('.__init__'):
-            return False
+            return Falsch
         sonst:
             return os.path.basename(self.pyfile) == '__init__.py'
 
@@ -305,7 +305,7 @@ klasse FrozenModule(namedtuple('FrozenModule', 'name ispkg section source')):
     def isalias(self):
         orig = self.source.modname
         wenn not orig:
-            return True
+            return Wahr
         return self.name != orig
 
     def summarize(self):
@@ -342,11 +342,11 @@ def _get_checksum(filename):
     return m.hexdigest()
 
 
-def resolve_modules(modname, pyfile=None):
+def resolve_modules(modname, pyfile=Nichts):
     wenn modname.startswith('<') and modname.endswith('>'):
         wenn pyfile:
             assert os.path.isdir(pyfile) or os.path.basename(pyfile) == '__init__.py', pyfile
-        ispkg = True
+        ispkg = Wahr
         modname = modname[1:-1]
         rawname = modname
         # For now, we only expect match patterns at the end of the name.
@@ -359,11 +359,11 @@ def resolve_modules(modname, pyfile=None):
                 modname = _modname
             # Otherwise it's a plain name so we leave it alone.
         sonst:
-            match = None
+            match = Nichts
     sonst:
-        ispkg = False
+        ispkg = Falsch
         rawname = modname
-        match = None
+        match = Nichts
 
     wenn not check_modname(modname):
         raise ValueError(f'not a valid module name ({rawname})')
@@ -383,7 +383,7 @@ def check_modname(modname):
     return all(n.isidentifier() fuer n in modname.split('.'))
 
 
-def iter_submodules(pkgname, pkgdir=None, match='*'):
+def iter_submodules(pkgname, pkgdir=Nichts, match='*'):
     wenn not pkgdir:
         pkgdir = os.path.join(STDLIB_DIR, *pkgname.split('.'))
     wenn not match:
@@ -397,31 +397,31 @@ def iter_submodules(pkgname, pkgdir=None, match='*'):
                 continue
             modname = f'{pkgname}.{entry.name}'
             wenn modname.endswith('.py'):
-                yield modname[:-3], entry.path, False
+                yield modname[:-3], entry.path, Falsch
             sowenn entry.is_dir():
                 pyfile = os.path.join(entry.path, '__init__.py')
                 # We ignore namespace packages.
                 wenn os.path.exists(pyfile):
-                    yield modname, pyfile, True
+                    yield modname, pyfile, Wahr
                     wenn recursive:
                         yield from _iter_submodules(modname, entry.path)
 
     return _iter_submodules(pkgname, pkgdir)
 
 
-def _resolve_modname_matcher(match, rootdir=None):
+def _resolve_modname_matcher(match, rootdir=Nichts):
     wenn isinstance(match, str):
         wenn match.startswith('**.'):
-            recursive = True
+            recursive = Wahr
             pat = match[3:]
             assert match
         sonst:
-            recursive = False
+            recursive = Falsch
             pat = match
 
         wenn pat == '*':
             def match_modname(modname):
-                return True, recursive
+                return Wahr, recursive
         sonst:
             raise NotImplementedError(match)
     sowenn callable(match):
@@ -431,7 +431,7 @@ def _resolve_modname_matcher(match, rootdir=None):
     return match_modname
 
 
-def _resolve_module(modname, pathentry=STDLIB_DIR, ispkg=False):
+def _resolve_module(modname, pathentry=STDLIB_DIR, ispkg=Falsch):
     assert pathentry, pathentry
     pathentry = os.path.normpath(pathentry)
     assert os.path.isabs(pathentry)
@@ -486,7 +486,7 @@ def regen_frozen(modules):
     testlines = []
     aliaslines = []
     indent = '    '
-    lastsection = None
+    lastsection = Nichts
     fuer mod in modules:
         wenn mod.isbootstrap:
             lines = bootstraplines
@@ -495,7 +495,7 @@ def regen_frozen(modules):
         sonst:
             lines = stdliblines
             wenn mod.section != lastsection:
-                wenn lastsection is not None:
+                wenn lastsection is not Nichts:
                     lines.append('')
                 lines.append(f'/* {mod.section} */')
             lastsection = mod.section
@@ -627,15 +627,15 @@ def regen_pcbuild(modules):
         pyfile = relpath_for_windows_display(src.pyfile, ROOT_DIR)
         header = relpath_for_windows_display(src.frozenfile, ROOT_DIR)
         intfile = ntpath.splitext(ntpath.basename(header))[0] + '.g.h'
-        projlines.append(f'    <None Include="..\\{pyfile}">')
+        projlines.append(f'    <Nichts Include="..\\{pyfile}">')
         projlines.append(f'      <ModName>{src.frozenid}</ModName>')
         projlines.append(f'      <IntFile>$(IntDir){intfile}</IntFile>')
         projlines.append(f'      <OutFile>$(GeneratedFrozenModulesDir){header}</OutFile>')
-        projlines.append(f'    </None>')
+        projlines.append(f'    </Nichts>')
 
-        filterlines.append(f'    <None Include="..\\{pyfile}">')
+        filterlines.append(f'    <Nichts Include="..\\{pyfile}">')
         filterlines.append('      <Filter>Python Files</Filter>')
-        filterlines.append('    </None>')
+        filterlines.append('    </Nichts>')
 
     print(f'# Updating {os.path.relpath(PCBUILD_PROJECT)}')
     with updating_file_with_tmpfile(PCBUILD_PROJECT) as (infile, outfile):

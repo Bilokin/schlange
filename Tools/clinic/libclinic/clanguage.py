@@ -62,11 +62,11 @@ klasse CLanguage(Language):
         }}}}
     """
 
-    def __init__(self, filename: str) -> None:
+    def __init__(self, filename: str) -> Nichts:
         super().__init__(filename)
         self.cpp = libclinic.cpp.Monitor(filename)
 
-    def parse_line(self, line: str) -> None:
+    def parse_line(self, line: str) -> Nichts:
         self.cpp.writeline(line)
 
     def render(
@@ -74,7 +74,7 @@ klasse CLanguage(Language):
         clinic: Clinic,
         signatures: Iterable[Module | Class | Function]
     ) -> str:
-        function = None
+        function = Nichts
         fuer o in signatures:
             wenn isinstance(o, Function):
                 wenn function:
@@ -86,14 +86,14 @@ klasse CLanguage(Language):
         self,
         func: Function,
         parameters: list[Parameter],
-    ) -> str | None:
-        minversion: VersionTuple | None = None
+    ) -> str | Nichts:
+        minversion: VersionTuple | Nichts = Nichts
         fuer p in parameters:
             fuer version in p.deprecated_positional, p.deprecated_keyword:
                 wenn version and (not minversion or minversion > version):
                     minversion = version
         wenn not minversion:
-            return None
+            return Nichts
 
         # Format the preprocessor warning and error messages.
         assert isinstance(self.cpp.filename, str)
@@ -160,7 +160,7 @@ klasse CLanguage(Language):
         self,
         func: Function,
         params: dict[int, Parameter],
-        argname_fmt: str | None = None,
+        argname_fmt: str | Nichts = Nichts,
         *,
         fastcall: bool,
         codegen: CodeGen,
@@ -257,7 +257,7 @@ klasse CLanguage(Language):
         f: Function,
         template_dict: TemplateDict,
         limited_capi: bool,
-    ) -> None:
+    ) -> Nichts:
         # positional only, grouped, optional arguments!
         # can be optional on the left or right.
         # here's an example:
@@ -265,7 +265,7 @@ klasse CLanguage(Language):
         # [ [ [ A1 A2 ] B1 B2 B3 ] C1 C2 ] D1 D2 D3 [ E1 E2 E3 [ F1 F2 F3 ] ]
         #
         # Here group D are required, and all other groups are optional.
-        # (Group D's "group" is actually None.)
+        # (Group D's "group" is actually Nichts.)
         # We can figure out which sets of arguments we have based on
         # how many arguments are in the tuple.
         #
@@ -281,7 +281,7 @@ klasse CLanguage(Language):
         wenn isinstance(parameters[0].converter, self_converter):
             del parameters[0]
 
-        group: list[Parameter] | None = None
+        group: list[Parameter] | Nichts = Nichts
         left = []
         right = []
         required: list[Parameter] = []
@@ -298,7 +298,7 @@ klasse CLanguage(Language):
                     group = required
                 sonst:
                     right.append(group)
-            assert group is not None
+            assert group is not Nichts
             group.append(p)
 
         count_min = sys.maxsize
@@ -360,9 +360,9 @@ klasse CLanguage(Language):
     def render_function(
         self,
         clinic: Clinic,
-        f: Function | None
+        f: Function | Nichts
     ) -> str:
-        wenn f is None:
+        wenn f is Nichts:
             return ""
 
         codegen = clinic.codegen
@@ -395,7 +395,7 @@ klasse CLanguage(Language):
         last_group = 0
         first_optional = len(selfless)
         positional = selfless and selfless[-1].is_positional_only()
-        has_option_groups = False
+        has_option_groups = Falsch
 
         # offset i by -1 because first_optional needs to ignore self
         fuer i, p in enumerate(parameters, -1):
@@ -413,7 +413,7 @@ klasse CLanguage(Language):
                     data.impl_arguments.append(group_name)
                     data.declarations.append("int " + group_name + " = 0;")
                     data.impl_parameters.append("int " + group_name)
-                    has_option_groups = True
+                    has_option_groups = Wahr
 
             c.render(p, data)
 

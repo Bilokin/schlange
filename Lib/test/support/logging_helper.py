@@ -11,7 +11,7 @@ klasse TestHandler(logging.handlers.BufferingHandler):
         self.matcher = matcher
 
     def shouldFlush(self):
-        return False
+        return Falsch
 
     def emit(self, record):
         self.format(record)
@@ -21,9 +21,9 @@ klasse TestHandler(logging.handlers.BufferingHandler):
         """
         Look fuer a saved dict whose keys/values match the supplied arguments.
         """
-        result = False
+        result = Falsch
         fuer d in self.buffer:
             wenn self.matcher.matches(d, **kwargs):
-                result = True
+                result = Wahr
                 break
         return result

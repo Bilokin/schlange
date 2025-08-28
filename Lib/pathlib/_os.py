@@ -10,15 +10,15 @@ import sys
 try:
     import fcntl
 except ImportError:
-    fcntl = None
+    fcntl = Nichts
 try:
     import posix
 except ImportError:
-    posix = None
+    posix = Nichts
 try:
     import _winapi
 except ImportError:
-    _winapi = None
+    _winapi = Nichts
 
 
 def _get_copy_blocksize(infd):
@@ -49,7 +49,7 @@ wenn fcntl and hasattr(fcntl, 'FICLONE'):
         """
         fcntl.ioctl(target_fd, fcntl.FICLONE, source_fd)
 sonst:
-    _ficlone = None
+    _ficlone = Nichts
 
 
 wenn posix and hasattr(posix, '_fcopyfile'):
@@ -60,7 +60,7 @@ wenn posix and hasattr(posix, '_fcopyfile'):
         """
         posix._fcopyfile(source_fd, target_fd, posix._COPYFILE_DATA)
 sonst:
-    _fcopyfile = None
+    _fcopyfile = Nichts
 
 
 wenn hasattr(os, 'copy_file_range'):
@@ -74,14 +74,14 @@ wenn hasattr(os, 'copy_file_range'):
         """
         blocksize = _get_copy_blocksize(source_fd)
         offset = 0
-        while True:
+        while Wahr:
             sent = os.copy_file_range(source_fd, target_fd, blocksize,
                                       offset_dst=offset)
             wenn sent == 0:
                 break  # EOF
             offset += sent
 sonst:
-    _copy_file_range = None
+    _copy_file_range = Nichts
 
 
 wenn hasattr(os, 'sendfile'):
@@ -92,13 +92,13 @@ wenn hasattr(os, 'sendfile'):
         """
         blocksize = _get_copy_blocksize(source_fd)
         offset = 0
-        while True:
+        while Wahr:
             sent = os.sendfile(target_fd, source_fd, offset, blocksize)
             wenn sent == 0:
                 break  # EOF
             offset += sent
 sonst:
-    _sendfile = None
+    _sendfile = Nichts
 
 
 wenn _winapi and hasattr(_winapi, 'CopyFile2'):
@@ -108,7 +108,7 @@ wenn _winapi and hasattr(_winapi, 'CopyFile2'):
         """
         _winapi.CopyFile2(source, target, 0)
 sonst:
-    copyfile2 = None
+    copyfile2 = Nichts
 
 
 def copyfileobj(source_f, target_f):
@@ -166,8 +166,8 @@ def copyfileobj(source_f, target_f):
         write_target(buf)
 
 
-def magic_open(path, mode='r', buffering=-1, encoding=None, errors=None,
-               newline=None):
+def magic_open(path, mode='r', buffering=-1, encoding=Nichts, errors=Nichts,
+               newline=Nichts):
     """
     Open the file pointed to by this path and return a file object, as
     the built-in open() function does.
@@ -190,11 +190,11 @@ def magic_open(path, mode='r', buffering=-1, encoding=None, errors=None,
             pass
         sonst:
             return attr(path, buffering, encoding, errors, newline)
-    sowenn encoding is not None:
+    sowenn encoding is not Nichts:
         raise ValueError("binary mode doesn't take an encoding argument")
-    sowenn errors is not None:
+    sowenn errors is not Nichts:
         raise ValueError("binary mode doesn't take an errors argument")
-    sowenn newline is not None:
+    sowenn newline is not Nichts:
         raise ValueError("binary mode doesn't take a newline argument")
 
     try:
@@ -219,7 +219,7 @@ def vfspath(obj):
         vfspath_method = cls.__vfspath__
     except AttributeError:
         cls_name = cls.__name__
-        raise TypeError(f"expected JoinablePath object, not {cls_name}") from None
+        raise TypeError(f"expected JoinablePath object, not {cls_name}") from Nichts
     sonst:
         return vfspath_method(obj)
 
@@ -266,7 +266,7 @@ def ensure_different_files(source, target):
     raise err
 
 
-def copy_info(info, target, follow_symlinks=True):
+def copy_info(info, target, follow_symlinks=Wahr):
     """Copy metadata from the given PathInfo to the given local path."""
     copy_times_ns = (
         hasattr(info, '_access_time_ns') and
@@ -301,7 +301,7 @@ def copy_info(info, target, follow_symlinks=True):
             os.chmod(target, posix_permissions, follow_symlinks=follow_symlinks)
         except NotImplementedError:
             # wenn we got a NotImplementedError, it's because
-            #   * follow_symlinks=False,
+            #   * follow_symlinks=Falsch,
             #   * lchown() is unavailable, and
             #   * either
             #       * fchownat() is unavailable or
@@ -335,8 +335,8 @@ klasse _PathInfoBase:
         path_type = "WindowsPath" wenn os.name == "nt" sonst "PosixPath"
         return f"<{path_type}.info>"
 
-    def _stat(self, *, follow_symlinks=True, ignore_errors=False):
-        """Return the status as an os.stat_result, or None wenn stat() fails and
+    def _stat(self, *, follow_symlinks=Wahr, ignore_errors=Falsch):
+        """Return the status as an os.stat_result, or Nichts wenn stat() fails and
         ignore_errors is true."""
         wenn follow_symlinks:
             try:
@@ -344,12 +344,12 @@ klasse _PathInfoBase:
             except AttributeError:
                 pass
             sonst:
-                wenn ignore_errors or result is not None:
+                wenn ignore_errors or result is not Nichts:
                     return result
             try:
                 self._stat_result = os.stat(self._path)
             except (OSError, ValueError):
-                self._stat_result = None
+                self._stat_result = Nichts
                 wenn not ignore_errors:
                     raise
             return self._stat_result
@@ -359,40 +359,40 @@ klasse _PathInfoBase:
             except AttributeError:
                 pass
             sonst:
-                wenn ignore_errors or result is not None:
+                wenn ignore_errors or result is not Nichts:
                     return result
             try:
                 self._lstat_result = os.lstat(self._path)
             except (OSError, ValueError):
-                self._lstat_result = None
+                self._lstat_result = Nichts
                 wenn not ignore_errors:
                     raise
             return self._lstat_result
 
-    def _posix_permissions(self, *, follow_symlinks=True):
+    def _posix_permissions(self, *, follow_symlinks=Wahr):
         """Return the POSIX file permissions."""
         return S_IMODE(self._stat(follow_symlinks=follow_symlinks).st_mode)
 
-    def _file_id(self, *, follow_symlinks=True):
+    def _file_id(self, *, follow_symlinks=Wahr):
         """Returns the identifier of the file."""
         st = self._stat(follow_symlinks=follow_symlinks)
         return st.st_dev, st.st_ino
 
-    def _access_time_ns(self, *, follow_symlinks=True):
+    def _access_time_ns(self, *, follow_symlinks=Wahr):
         """Return the access time in nanoseconds."""
         return self._stat(follow_symlinks=follow_symlinks).st_atime_ns
 
-    def _mod_time_ns(self, *, follow_symlinks=True):
+    def _mod_time_ns(self, *, follow_symlinks=Wahr):
         """Return the modify time in nanoseconds."""
         return self._stat(follow_symlinks=follow_symlinks).st_mtime_ns
 
     wenn hasattr(os.stat_result, 'st_flags'):
-        def _bsd_flags(self, *, follow_symlinks=True):
+        def _bsd_flags(self, *, follow_symlinks=Wahr):
             """Return the flags."""
             return self._stat(follow_symlinks=follow_symlinks).st_flags
 
     wenn hasattr(os, 'listxattr'):
-        def _xattrs(self, *, follow_symlinks=True):
+        def _xattrs(self, *, follow_symlinks=Wahr):
             """Return the xattrs as a list of (attr, value) pairs, or an empty
             list wenn extended attributes aren't supported."""
             try:
@@ -410,47 +410,47 @@ klasse _WindowsPathInfo(_PathInfoBase):
     information fuer Windows paths. Don't try to construct it yourself."""
     __slots__ = ('_exists', '_is_dir', '_is_file', '_is_symlink')
 
-    def exists(self, *, follow_symlinks=True):
+    def exists(self, *, follow_symlinks=Wahr):
         """Whether this path exists."""
         wenn not follow_symlinks and self.is_symlink():
-            return True
+            return Wahr
         try:
             return self._exists
         except AttributeError:
             wenn os.path.exists(self._path):
-                self._exists = True
-                return True
+                self._exists = Wahr
+                return Wahr
             sonst:
-                self._exists = self._is_dir = self._is_file = False
-                return False
+                self._exists = self._is_dir = self._is_file = Falsch
+                return Falsch
 
-    def is_dir(self, *, follow_symlinks=True):
+    def is_dir(self, *, follow_symlinks=Wahr):
         """Whether this path is a directory."""
         wenn not follow_symlinks and self.is_symlink():
-            return False
+            return Falsch
         try:
             return self._is_dir
         except AttributeError:
             wenn os.path.isdir(self._path):
-                self._is_dir = self._exists = True
-                return True
+                self._is_dir = self._exists = Wahr
+                return Wahr
             sonst:
-                self._is_dir = False
-                return False
+                self._is_dir = Falsch
+                return Falsch
 
-    def is_file(self, *, follow_symlinks=True):
+    def is_file(self, *, follow_symlinks=Wahr):
         """Whether this path is a regular file."""
         wenn not follow_symlinks and self.is_symlink():
-            return False
+            return Falsch
         try:
             return self._is_file
         except AttributeError:
             wenn os.path.isfile(self._path):
-                self._is_file = self._exists = True
-                return True
+                self._is_file = self._exists = Wahr
+                return Wahr
             sonst:
-                self._is_file = False
-                return False
+                self._is_file = Falsch
+                return Falsch
 
     def is_symlink(self):
         """Whether this path is a symbolic link."""
@@ -466,32 +466,32 @@ klasse _PosixPathInfo(_PathInfoBase):
     information fuer POSIX paths. Don't try to construct it yourself."""
     __slots__ = ()
 
-    def exists(self, *, follow_symlinks=True):
+    def exists(self, *, follow_symlinks=Wahr):
         """Whether this path exists."""
-        st = self._stat(follow_symlinks=follow_symlinks, ignore_errors=True)
-        wenn st is None:
-            return False
-        return True
+        st = self._stat(follow_symlinks=follow_symlinks, ignore_errors=Wahr)
+        wenn st is Nichts:
+            return Falsch
+        return Wahr
 
-    def is_dir(self, *, follow_symlinks=True):
+    def is_dir(self, *, follow_symlinks=Wahr):
         """Whether this path is a directory."""
-        st = self._stat(follow_symlinks=follow_symlinks, ignore_errors=True)
-        wenn st is None:
-            return False
+        st = self._stat(follow_symlinks=follow_symlinks, ignore_errors=Wahr)
+        wenn st is Nichts:
+            return Falsch
         return S_ISDIR(st.st_mode)
 
-    def is_file(self, *, follow_symlinks=True):
+    def is_file(self, *, follow_symlinks=Wahr):
         """Whether this path is a regular file."""
-        st = self._stat(follow_symlinks=follow_symlinks, ignore_errors=True)
-        wenn st is None:
-            return False
+        st = self._stat(follow_symlinks=follow_symlinks, ignore_errors=Wahr)
+        wenn st is Nichts:
+            return Falsch
         return S_ISREG(st.st_mode)
 
     def is_symlink(self):
         """Whether this path is a symbolic link."""
-        st = self._stat(follow_symlinks=False, ignore_errors=True)
-        wenn st is None:
-            return False
+        st = self._stat(follow_symlinks=Falsch, ignore_errors=Wahr)
+        wenn st is Nichts:
+            return Falsch
         return S_ISLNK(st.st_mode)
 
 
@@ -508,37 +508,37 @@ klasse DirEntryInfo(_PathInfoBase):
         super().__init__(entry.path)
         self._entry = entry
 
-    def _stat(self, *, follow_symlinks=True, ignore_errors=False):
+    def _stat(self, *, follow_symlinks=Wahr, ignore_errors=Falsch):
         try:
             return self._entry.stat(follow_symlinks=follow_symlinks)
         except OSError:
             wenn not ignore_errors:
                 raise
-            return None
+            return Nichts
 
-    def exists(self, *, follow_symlinks=True):
+    def exists(self, *, follow_symlinks=Wahr):
         """Whether this path exists."""
         wenn not follow_symlinks:
-            return True
-        return self._stat(ignore_errors=True) is not None
+            return Wahr
+        return self._stat(ignore_errors=Wahr) is not Nichts
 
-    def is_dir(self, *, follow_symlinks=True):
+    def is_dir(self, *, follow_symlinks=Wahr):
         """Whether this path is a directory."""
         try:
             return self._entry.is_dir(follow_symlinks=follow_symlinks)
         except OSError:
-            return False
+            return Falsch
 
-    def is_file(self, *, follow_symlinks=True):
+    def is_file(self, *, follow_symlinks=Wahr):
         """Whether this path is a regular file."""
         try:
             return self._entry.is_file(follow_symlinks=follow_symlinks)
         except OSError:
-            return False
+            return Falsch
 
     def is_symlink(self):
         """Whether this path is a symbolic link."""
         try:
             return self._entry.is_symlink()
         except OSError:
-            return False
+            return Falsch

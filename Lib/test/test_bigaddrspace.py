@@ -27,7 +27,7 @@ klasse BytesTest(unittest.TestCase):
             x = b"x" * (MAX_Py_ssize_t - 128)
             self.assertRaises(OverflowError, operator.add, x, b"x" * 128)
         finally:
-            x = None
+            x = Nichts
 
     @bigaddrspacetest
     def test_optimized_concat(self):
@@ -42,7 +42,7 @@ klasse BytesTest(unittest.TestCase):
                 # this statement used a fast path in ceval.c
                 x +=  b"x" * 128
         finally:
-            x = None
+            x = Nichts
 
     @bigaddrspacetest
     def test_repeat(self):
@@ -50,7 +50,7 @@ klasse BytesTest(unittest.TestCase):
             x = b"x" * (MAX_Py_ssize_t - 128)
             self.assertRaises(OverflowError, operator.mul, x, 128)
         finally:
-            x = None
+            x = Nichts
 
 
 klasse StrTest(unittest.TestCase):
@@ -66,7 +66,7 @@ klasse StrTest(unittest.TestCase):
             # going to cause a size overflow is executed
             self.assertRaises(MemoryError, operator.add, x, x)
         finally:
-            x = None
+            x = Nichts
 
     @bigaddrspacetest
     def test_optimized_concat(self):
@@ -81,7 +81,7 @@ klasse StrTest(unittest.TestCase):
                 # this statement uses a fast path in ceval.c
                 x +=  x
         finally:
-            x = None
+            x = Nichts
 
     @bigaddrspacetest
     def test_repeat(self):
@@ -89,7 +89,7 @@ klasse StrTest(unittest.TestCase):
             x = "x" * int(MAX_Py_ssize_t // (1.1 * self.unicodesize))
             self.assertRaises(MemoryError, operator.mul, x, 2)
         finally:
-            x = None
+            x = Nichts
 
 
 wenn __name__ == '__main__':

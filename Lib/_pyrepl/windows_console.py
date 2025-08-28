@@ -55,18 +55,18 @@ except:
         return 42
 
     klasse WinError(OSError):  # type: ignore[no-redef]
-        def __init__(self, err: int | None, descr: str | None = None) -> None:
+        def __init__(self, err: int | Nichts, descr: str | Nichts = Nichts) -> Nichts:
             self.err = err
             self.descr = descr
 
-# declare nt optional to allow None assignment on other platforms
-nt: types.ModuleType | None
+# declare nt optional to allow Nichts assignment on other platforms
+nt: types.ModuleType | Nichts
 try:
     import nt
 except ImportError:
-    nt = None
+    nt = Nichts
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 
 wenn TYPE_CHECKING:
     from typing import IO
@@ -130,7 +130,7 @@ def _supports_vt():
     try:
         return nt._supports_virtual_terminal()
     except AttributeError:
-        return False
+        return Falsch
 
 klasse WindowsConsole(Console):
     def __init__(
@@ -169,9 +169,9 @@ klasse WindowsConsole(Console):
             self.out = io._WindowsConsoleIO(self.output_fd, "w")  # type: ignore[attr-defined]
         except ValueError:
             # Console I/O is redirected, fallback...
-            self.out = None
+            self.out = Nichts
 
-    def refresh(self, screen: list[str], c_xy: tuple[int, int]) -> None:
+    def refresh(self, screen: list[str], c_xy: tuple[int, int]) -> Nichts:
         """
         Refresh the console screen.
 
@@ -243,12 +243,12 @@ klasse WindowsConsole(Console):
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
         # with import logging from -X importtime=2
-        wenn nt is not None and nt._is_inputhook_installed():
+        wenn nt is not Nichts and nt._is_inputhook_installed():
             return nt._inputhook
 
     def __write_changed_line(
         self, y: int, oldline: str, newline: str, px_coord: int
-    ) -> None:
+    ) -> Nichts:
         # this is frustrating; there's no reason to test (say)
         # self.dch1 inside the loop -- but alternative ways of
         # structuring this function are equally painful (I'm trying to
@@ -296,21 +296,21 @@ klasse WindowsConsole(Console):
                 self.move_cursor(0, y)
 
     def _scroll(
-        self, top: int, bottom: int, left: int | None = None, right: int | None = None
-    ) -> None:
+        self, top: int, bottom: int, left: int | Nichts = Nichts, right: int | Nichts = Nichts
+    ) -> Nichts:
         scroll_rect = SMALL_RECT()
         scroll_rect.Top = SHORT(top)
         scroll_rect.Bottom = SHORT(bottom)
-        scroll_rect.Left = SHORT(0 wenn left is None sonst left)
+        scroll_rect.Left = SHORT(0 wenn left is Nichts sonst left)
         scroll_rect.Right = SHORT(
-            self.getheightwidth()[1] - 1 wenn right is None sonst right
+            self.getheightwidth()[1] - 1 wenn right is Nichts sonst right
         )
         destination_origin = _COORD()
         fill_info = CHAR_INFO()
         fill_info.UnicodeChar = " "
 
         wenn not ScrollConsoleScreenBuffer(
-            OutHandle, scroll_rect, None, destination_origin, fill_info
+            OutHandle, scroll_rect, Nichts, destination_origin, fill_info
         ):
             raise WinError(GetLastError())
 
@@ -326,17 +326,17 @@ klasse WindowsConsole(Console):
     def _disable_blinking(self):
         self.__write("\x1b[?12l")
 
-    def _enable_bracketed_paste(self) -> None:
+    def _enable_bracketed_paste(self) -> Nichts:
         self.__write("\x1b[?2004h")
 
-    def _disable_bracketed_paste(self) -> None:
+    def _disable_bracketed_paste(self) -> Nichts:
         self.__write("\x1b[?2004l")
 
-    def __write(self, text: str) -> None:
+    def __write(self, text: str) -> Nichts:
         wenn "\x1a" in text:
             text = ''.join(["^Z" wenn x == '\x1a' sonst x fuer x in text])
 
-        wenn self.out is not None:
+        wenn self.out is not Nichts:
             self.out.write(text.encode(self.encoding, "replace"))
             self.out.flush()
         sonst:
@@ -349,10 +349,10 @@ klasse WindowsConsole(Console):
             raise WinError(GetLastError())
         return info.dwCursorPosition.X, info.dwCursorPosition.Y
 
-    def _erase_to_end(self) -> None:
+    def _erase_to_end(self) -> Nichts:
         self.__write(ERASE_IN_LINE)
 
-    def prepare(self) -> None:
+    def prepare(self) -> Nichts:
         trace("prepare")
         self.screen = []
         self.height, self.width = self.getheightwidth()
@@ -365,13 +365,13 @@ klasse WindowsConsole(Console):
             SetConsoleMode(InHandle, self.__original_input_mode | ENABLE_VIRTUAL_TERMINAL_INPUT)
             self._enable_bracketed_paste()
 
-    def restore(self) -> None:
+    def restore(self) -> Nichts:
         wenn self.__vt_support:
             # Recover to original mode before running REPL
             self._disable_bracketed_paste()
             SetConsoleMode(InHandle, self.__original_input_mode)
 
-    def _move_relative(self, x: int, y: int) -> None:
+    def _move_relative(self, x: int, y: int) -> Nichts:
         """Moves relative to the current posxy"""
         dx = x - self.posxy[0]
         dy = y - self.posxy[1]
@@ -385,7 +385,7 @@ klasse WindowsConsole(Console):
         sowenn dy > 0:
             self.__write(MOVE_DOWN.format(dy))
 
-    def move_cursor(self, x: int, y: int) -> None:
+    def move_cursor(self, x: int, y: int) -> Nichts:
         wenn x < 0 or y < 0:
             raise ValueError(f"Bad cursor position {x}, {y}")
 
@@ -395,7 +395,7 @@ klasse WindowsConsole(Console):
             self._move_relative(x, y)
             self.posxy = x, y
 
-    def set_cursor_vis(self, visible: bool) -> None:
+    def set_cursor_vis(self, visible: bool) -> Nichts:
         wenn visible:
             self._show_cursor()
         sonst:
@@ -419,7 +419,7 @@ klasse WindowsConsole(Console):
 
         return info.srWindow.Bottom  # type: ignore[no-any-return]
 
-    def _read_input(self) -> INPUT_RECORD | None:
+    def _read_input(self) -> INPUT_RECORD | Nichts:
         rec = INPUT_RECORD()
         read = DWORD()
         wenn not ReadConsoleInput(InHandle, rec, 1, read):
@@ -437,18 +437,18 @@ klasse WindowsConsole(Console):
 
         return rec, read.value
 
-    def get_event(self, block: bool = True) -> Event | None:
-        """Return an Event instance.  Returns None wenn |block| is false
+    def get_event(self, block: bool = Wahr) -> Event | Nichts:
+        """Return an Event instance.  Returns Nichts wenn |block| is false
         and there is no event pending, otherwise waits fuer the
         completion of an event."""
 
         wenn not block and not self.wait(timeout=0):
-            return None
+            return Nichts
 
         while self.event_queue.empty():
             rec = self._read_input()
-            wenn rec is None:
-                return None
+            wenn rec is Nichts:
+                return Nichts
 
             wenn rec.EventType == WINDOW_BUFFER_SIZE_EVENT:
                 return Event("resize", "")
@@ -457,7 +457,7 @@ klasse WindowsConsole(Console):
                 # Only process keys and keydown events
                 wenn block:
                     continue
-                return None
+                return Nichts
 
             key_event = rec.Event.KeyEvent
             raw_key = key = key_event.uChar.UnicodeChar
@@ -482,7 +482,7 @@ klasse WindowsConsole(Console):
                 wenn block:
                     continue
 
-                return None
+                return Nichts
             sowenn self.__vt_support:
                 # If virtual terminal is enabled, scanning VT sequences
                 fuer char in raw_key.encode(self.event_queue.encoding, "replace"):
@@ -501,22 +501,22 @@ klasse WindowsConsole(Console):
             return Event(evt="key", data=key)
         return self.event_queue.get()
 
-    def push_char(self, char: int | bytes) -> None:
+    def push_char(self, char: int | bytes) -> Nichts:
         """
         Push a character to the console event queue.
         """
         raise NotImplementedError("push_char not supported on Windows")
 
-    def beep(self) -> None:
+    def beep(self) -> Nichts:
         self.__write("\x07")
 
-    def clear(self) -> None:
+    def clear(self) -> Nichts:
         """Wipe the screen"""
         self.__write(CLEAR)
         self.posxy = 0, 0
         self.screen = [""]
 
-    def finish(self) -> None:
+    def finish(self) -> Nichts:
         """Move the cursor to the end of the display and otherwise get
         ready fuer end.  XXX could be merged with restore?  Hmm."""
         y = len(self.screen) - 1
@@ -525,14 +525,14 @@ klasse WindowsConsole(Console):
         self._move_relative(0, min(y, self.height + self.__offset - 1))
         self.__write("\r\n")
 
-    def flushoutput(self) -> None:
+    def flushoutput(self) -> Nichts:
         """Flush all output to the screen (assuming there's some
         buffering going on somewhere).
 
         All output on Windows is unbuffered so this is a nop"""
         pass
 
-    def forgetinput(self) -> None:
+    def forgetinput(self) -> Nichts:
         """Forget all pending, but not yet processed input."""
         wenn not FlushConsoleInputBuffer(InHandle):
             raise WinError(GetLastError())
@@ -566,9 +566,9 @@ klasse WindowsConsole(Console):
                 e.data += ch
         return e
 
-    def wait(self, timeout: float | None) -> bool:
+    def wait(self, timeout: float | Nichts) -> bool:
         """Wait fuer an event."""
-        wenn timeout is None:
+        wenn timeout is Nichts:
             timeout = INFINITE
         sonst:
             timeout = int(timeout)
@@ -576,10 +576,10 @@ klasse WindowsConsole(Console):
         wenn ret == WAIT_FAILED:
             raise WinError(get_last_error())
         sowenn ret == WAIT_TIMEOUT:
-            return False
-        return True
+            return Falsch
+        return Wahr
 
-    def repaint(self) -> None:
+    def repaint(self) -> Nichts:
         raise NotImplementedError("No repaint support")
 
 
@@ -662,7 +662,7 @@ STD_INPUT_HANDLE = -10
 STD_OUTPUT_HANDLE = -11
 
 wenn sys.platform == "win32":
-    _KERNEL32 = WinDLL("kernel32", use_last_error=True)
+    _KERNEL32 = WinDLL("kernel32", use_last_error=Wahr)
 
     GetStdHandle = windll.kernel32.GetStdHandle
     GetStdHandle.argtypes = [DWORD]

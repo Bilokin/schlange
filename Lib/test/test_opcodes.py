@@ -44,7 +44,7 @@ klasse OpcodeTest(unittest.TestCase):
     def test_do_not_recreate_annotations(self):
         # Don't rely on the existence of the '__annotations__' global.
         with support.swap_item(globals(), '__annotations__', {}):
-            globals().pop('__annotations__', None)
+            globals().pop('__annotations__', Nichts)
             klasse C:
                 try:
                     del __annotations__
@@ -98,8 +98,8 @@ klasse OpcodeTest(unittest.TestCase):
 
     def test_compare_function_objects(self):
 
-        f = eval('lambda: None')
-        g = eval('lambda: None')
+        f = eval('lambda: Nichts')
+        g = eval('lambda: Nichts')
         self.assertNotEqual(f, g)
 
         f = eval('lambda a: a')
@@ -114,20 +114,20 @@ klasse OpcodeTest(unittest.TestCase):
         g = eval('lambda: 1')
         self.assertNotEqual(f, g)
 
-        f = eval('lambda: None')
-        g = eval('lambda a: None')
+        f = eval('lambda: Nichts')
+        g = eval('lambda a: Nichts')
         self.assertNotEqual(f, g)
 
-        f = eval('lambda a: None')
-        g = eval('lambda b: None')
+        f = eval('lambda a: Nichts')
+        g = eval('lambda b: Nichts')
         self.assertNotEqual(f, g)
 
-        f = eval('lambda a: None')
-        g = eval('lambda a=None: None')
+        f = eval('lambda a: Nichts')
+        g = eval('lambda a=Nichts: Nichts')
         self.assertNotEqual(f, g)
 
-        f = eval('lambda a=0: None')
-        g = eval('lambda a=1: None')
+        f = eval('lambda a=0: Nichts')
+        g = eval('lambda a=1: Nichts')
         self.assertNotEqual(f, g)
 
     def test_modulo_of_string_subclasses(self):

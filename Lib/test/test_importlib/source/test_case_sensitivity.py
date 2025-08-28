@@ -44,28 +44,28 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
     def test_sensitive(self):
         with os_helper.EnvironmentVarGuard() as env:
             env.unset('PYTHONCASEOK')
-            self.caseok_env_changed(should_exist=False)
+            self.caseok_env_changed(should_exist=Falsch)
             sensitive, insensitive = self.sensitivity_test()
-            self.assertIsNotNone(sensitive)
+            self.assertIsNotNichts(sensitive)
             self.assertIn(self.name, sensitive.get_filename(self.name))
-            self.assertIsNone(insensitive)
+            self.assertIsNichts(insensitive)
 
     @unittest.skipIf(sys.flags.ignore_environment, 'ignore_environment flag was set')
     def test_insensitive(self):
         with os_helper.EnvironmentVarGuard() as env:
             env.set('PYTHONCASEOK', '1')
-            self.caseok_env_changed(should_exist=True)
+            self.caseok_env_changed(should_exist=Wahr)
             sensitive, insensitive = self.sensitivity_test()
-            self.assertIsNotNone(sensitive)
+            self.assertIsNotNichts(sensitive)
             self.assertIn(self.name, sensitive.get_filename(self.name))
-            self.assertIsNotNone(insensitive)
+            self.assertIsNotNichts(insensitive)
             self.assertIn(self.name, insensitive.get_filename(self.name))
 
 
 klasse CaseSensitivityTestPEP451(CaseSensitivityTest):
     def find(self, finder):
         found = finder.find_spec(self.name)
-        return found.loader wenn found is not None sonst found
+        return found.loader wenn found is not Nichts sonst found
 
 
 (Frozen_CaseSensitivityTestPEP451,

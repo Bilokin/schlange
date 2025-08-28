@@ -24,13 +24,13 @@ klasse InterProcessSignalTests(unittest.TestCase):
         raise SIGUSR1Exception
 
     def wait_signal(self, child, signame):
-        wenn child is not None:
+        wenn child is not Nichts:
             # This wait should be interrupted by exc_class
             # (if set)
             child.wait()
 
         start_time = time.monotonic()
-        fuer _ in support.busy_retry(support.SHORT_TIMEOUT, error=False):
+        fuer _ in support.busy_retry(support.SHORT_TIMEOUT, error=Falsch):
             wenn self.got_signals[signame]:
                 return
             signal.pause()
@@ -64,7 +64,7 @@ klasse InterProcessSignalTests(unittest.TestCase):
         # the next test which raises an exception. Otherwise, the exception
         # may be raised when Popen.__del__() is executed and so be logged
         # as "Exception ignored in: <function Popen.__del__ at ...>".
-        child = None
+        child = Nichts
         gc.collect()
 
         with self.assertRaises(SIGUSR1Exception):
@@ -80,7 +80,7 @@ klasse InterProcessSignalTests(unittest.TestCase):
         try:
             with self.assertRaises(KeyboardInterrupt):
                 signal.alarm(1)
-                self.wait_signal(None, 'SIGALRM')
+                self.wait_signal(Nichts, 'SIGALRM')
             self.assertEqual(self.got_signals, {'SIGHUP': 1, 'SIGUSR1': 1,
                                                 'SIGALRM': 0})
         finally:

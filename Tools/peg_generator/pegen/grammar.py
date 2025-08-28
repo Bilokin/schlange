@@ -62,17 +62,17 @@ klasse Grammar:
 
 
 # Global flag whether we want actions in __str__() -- default off.
-SIMPLE_STR = True
+SIMPLE_STR = Wahr
 
 
 klasse Rule:
-    def __init__(self, name: str, type: Optional[str], rhs: Rhs, memo: Optional[object] = None):
+    def __init__(self, name: str, type: Optional[str], rhs: Rhs, memo: Optional[object] = Nichts):
         self.name = name
         self.type = type
         self.rhs = rhs
         self.memo = bool(memo)
-        self.left_recursive = False
-        self.leader = False
+        self.left_recursive = Falsch
+        self.leader = Falsch
 
     def is_loop(self) -> bool:
         return self.name.startswith("_loop")
@@ -81,7 +81,7 @@ klasse Rule:
         return self.name.startswith("_gather")
 
     def __str__(self) -> str:
-        wenn SIMPLE_STR or self.type is None:
+        wenn SIMPLE_STR or self.type is Nichts:
             res = f"{self.name}: {self.rhs}"
         sonst:
             res = f"{self.name}[{self.type}]: {self.rhs}"
@@ -143,7 +143,7 @@ klasse StringLeaf(Leaf):
 klasse Rhs:
     def __init__(self, alts: List[Alt]):
         self.alts = alts
-        self.memo: Optional[Tuple[Optional[str], str]] = None
+        self.memo: Optional[Tuple[Optional[str], str]] = Nichts
 
     def __str__(self) -> str:
         return " | ".join(str(alt) fuer alt in self.alts)
@@ -157,15 +157,15 @@ klasse Rhs:
     @property
     def can_be_inlined(self) -> bool:
         wenn len(self.alts) != 1 or len(self.alts[0].items) != 1:
-            return False
+            return Falsch
         # If the alternative has an action we cannot inline
-        wenn getattr(self.alts[0], "action", None) is not None:
-            return False
-        return True
+        wenn getattr(self.alts[0], "action", Nichts) is not Nichts:
+            return Falsch
+        return Wahr
 
 
 klasse Alt:
-    def __init__(self, items: List[NamedItem], *, icut: int = -1, action: Optional[str] = None):
+    def __init__(self, items: List[NamedItem], *, icut: int = -1, action: Optional[str] = Nichts):
         self.items = items
         self.icut = icut
         self.action = action
@@ -190,7 +190,7 @@ klasse Alt:
 
 
 klasse NamedItem:
-    def __init__(self, name: Optional[str], item: Item, type: Optional[str] = None):
+    def __init__(self, name: Optional[str], item: Item, type: Optional[str] = Nichts):
         self.name = name
         self.item = item
         self.type = type
@@ -271,7 +271,7 @@ klasse Repeat:
 
     def __init__(self, node: Plain):
         self.node = node
-        self.memo: Optional[Tuple[Optional[str], str]] = None
+        self.memo: Optional[Tuple[Optional[str], str]] = Nichts
 
     def __iter__(self) -> Iterator[Plain]:
         yield self.node
@@ -330,7 +330,7 @@ klasse Group:
 
 
 klasse Cut:
-    def __init__(self) -> None:
+    def __init__(self) -> Nichts:
         pass
 
     def __repr__(self) -> str:
@@ -345,7 +345,7 @@ klasse Cut:
     def __eq__(self, other: object) -> bool:
         wenn not isinstance(other, Cut):
             return NotImplemented
-        return True
+        return Wahr
 
     def initial_names(self) -> AbstractSet[str]:
         return set()

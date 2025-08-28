@@ -7,20 +7,20 @@ from ._regexes import (
 )
 
 
-def log_match(group, m, depth_before=None, depth_after=None):
+def log_match(group, m, depth_before=Nichts, depth_after=Nichts):
     from . import _logger
 
-    wenn m is not None:
+    wenn m is not Nichts:
         text = m.group(0)
         wenn text.startswith(('(', ')')) or text.endswith(('(', ')')):
             _logger.debug(f'matched <{group}> ({text!r})')
         sonst:
             _logger.debug(f'matched <{group}> ({text})')
 
-    sowenn depth_before is not None or depth_after is not None:
-        wenn depth_before is None:
+    sowenn depth_before is not Nichts or depth_after is not Nichts:
+        wenn depth_before is Nichts:
             depth_before = '???'
-        sowenn depth_after is None:
+        sowenn depth_after is Nichts:
             depth_after = '???'
         _logger.log(1, f'depth: %s -> %s', depth_before, depth_after)
 
@@ -31,14 +31,14 @@ def log_match(group, m, depth_before=None, depth_after=None):
 #############################
 # regex utils
 
-def set_capture_group(pattern, group, *, strict=True):
+def set_capture_group(pattern, group, *, strict=Wahr):
     old = f'(?:  # <{group}>'
     wenn strict and f'(?:  # <{group}>' not in pattern:
         raise ValueError(f'{old!r} not found in pattern')
     return pattern.replace(old, f'(  # <{group}>', 1)
 
 
-def set_capture_groups(pattern, groups, *, strict=True):
+def set_capture_groups(pattern, groups, *, strict=Wahr):
     fuer group in groups:
         pattern = set_capture_group(pattern, group, strict=strict)
     return pattern

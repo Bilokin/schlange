@@ -27,7 +27,7 @@ import sys
 try:
     import zlib
 except ImportError:
-    zlib = None
+    zlib = Nichts
 
 from test import support
 
@@ -93,7 +93,7 @@ klasse SqliteTypeTests(unittest.TestCase):
                 self.cur.execute("insert into test(i) values (?)", (value,))
         self.cur.execute("select i from test")
         row = self.cur.fetchone()
-        self.assertIsNone(row)
+        self.assertIsNichts(row)
 
     def test_string_with_surrogates(self):
         fuer value in 0xd8ff, 0xdcff:
@@ -101,10 +101,10 @@ klasse SqliteTypeTests(unittest.TestCase):
                 self.cur.execute("insert into test(s) values (?)", (chr(value),))
         self.cur.execute("select s from test")
         row = self.cur.fetchone()
-        self.assertIsNone(row)
+        self.assertIsNichts(row)
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
-    @support.bigmemtest(size=2**31, memuse=4, dry_run=False)
+    @support.bigmemtest(size=2**31, memuse=4, dry_run=Falsch)
     def test_too_large_string(self, maxsize):
         with self.assertRaises(sqlite.DataError):
             self.cur.execute("insert into test(s) values (?)", ('x'*(2**31-1),))
@@ -112,10 +112,10 @@ klasse SqliteTypeTests(unittest.TestCase):
             self.cur.execute("insert into test(s) values (?)", ('x'*(2**31),))
         self.cur.execute("select 1 from test")
         row = self.cur.fetchone()
-        self.assertIsNone(row)
+        self.assertIsNichts(row)
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
-    @support.bigmemtest(size=2**31, memuse=3, dry_run=False)
+    @support.bigmemtest(size=2**31, memuse=3, dry_run=Falsch)
     def test_too_large_blob(self, maxsize):
         with self.assertRaises(sqlite.DataError):
             self.cur.execute("insert into test(s) values (?)", (b'x'*(2**31-1),))
@@ -123,7 +123,7 @@ klasse SqliteTypeTests(unittest.TestCase):
             self.cur.execute("insert into test(s) values (?)", (b'x'*(2**31),))
         self.cur.execute("select 1 from test")
         row = self.cur.fetchone()
-        self.assertIsNone(row)
+        self.assertIsNichts(row)
 
 
 klasse DeclTypesTests(unittest.TestCase):
@@ -144,7 +144,7 @@ klasse DeclTypesTests(unittest.TestCase):
             wenn protocol is sqlite.PrepareProtocol:
                 return self.val
             sonst:
-                return None
+                return Nichts
 
         def __str__(self):
             return "<%s>" % self.val
@@ -227,16 +227,16 @@ klasse DeclTypesTests(unittest.TestCase):
 
     def test_bool(self):
         # custom
-        self.cur.execute("insert into test(b) values (?)", (False,))
+        self.cur.execute("insert into test(b) values (?)", (Falsch,))
         self.cur.execute("select b from test")
         row = self.cur.fetchone()
-        self.assertIs(row[0], False)
+        self.assertIs(row[0], Falsch)
 
         self.cur.execute("delete from test")
-        self.cur.execute("insert into test(b) values (?)", (True,))
+        self.cur.execute("insert into test(b) values (?)", (Wahr,))
         self.cur.execute("select b from test")
         row = self.cur.fetchone()
-        self.assertIs(row[0], True)
+        self.assertIs(row[0], Wahr)
 
     def test_unicode(self):
         # default
@@ -303,9 +303,9 @@ klasse DeclTypesTests(unittest.TestCase):
     def test_convert_zero_sized_blob(self):
         self.con.execute("insert into test(cbin) values (?)", (b"",))
         cur = self.con.execute("select cbin from test")
-        # Zero-sized blobs with converters returns None.  This differs from
+        # Zero-sized blobs with converters returns Nichts.  This differs from
         # blobs without a converter, where b"" is returned.
-        self.assertIsNone(cur.fetchone()[0])
+        self.assertIsNichts(cur.fetchone()[0])
 
 
 klasse ColNamesTests(unittest.TestCase):
@@ -338,10 +338,10 @@ klasse ColNamesTests(unittest.TestCase):
         self.assertEqual(val, "xxx")
 
     def test_none(self):
-        self.cur.execute("insert into test(x) values (?)", (None,))
+        self.cur.execute("insert into test(x) values (?)", (Nichts,))
         self.cur.execute("select x from test")
         val = self.cur.fetchone()[0]
-        self.assertEqual(val, None)
+        self.assertEqual(val, Nichts)
 
     def test_col_name(self):
         self.cur.execute("insert into test(x) values (?)", ("xxx",))
@@ -368,7 +368,7 @@ klasse ColNamesTests(unittest.TestCase):
 
     def test_cursor_description_insert(self):
         self.cur.execute("insert into test values (1)")
-        self.assertIsNone(self.cur.description)
+        self.assertIsNichts(self.cur.description)
 
 
 klasse CommonTableExpressionTests(unittest.TestCase):
@@ -384,23 +384,23 @@ klasse CommonTableExpressionTests(unittest.TestCase):
 
     def test_cursor_description_cte_simple(self):
         self.cur.execute("with one as (select 1) select * from one")
-        self.assertIsNotNone(self.cur.description)
+        self.assertIsNotNichts(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "1")
 
     def test_cursor_description_cte_multiple_columns(self):
         self.cur.execute("insert into test values(1)")
         self.cur.execute("insert into test values(2)")
         self.cur.execute("with testCTE as (select * from test) select * from testCTE")
-        self.assertIsNotNone(self.cur.description)
+        self.assertIsNotNichts(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
 
     def test_cursor_description_cte(self):
         self.cur.execute("insert into test values (1)")
         self.cur.execute("with bar as (select * from test) select * from test where x = 1")
-        self.assertIsNotNone(self.cur.description)
+        self.assertIsNotNichts(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
         self.cur.execute("with bar as (select * from test) select * from test where x = 2")
-        self.assertIsNotNone(self.cur.description)
+        self.assertIsNotNichts(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
 
 
@@ -434,19 +434,19 @@ klasse ObjectAdaptationTests(unittest.TestCase):
 
     def test_missing_protocol(self):
         with self.assertRaises(sqlite.ProgrammingError):
-            sqlite.adapt(1, None)
+            sqlite.adapt(1, Nichts)
 
     def test_defect_proto(self):
         klasse DefectProto():
             def __adapt__(self):
-                return None
+                return Nichts
         with self.assertRaises(sqlite.ProgrammingError):
             sqlite.adapt(1., DefectProto)
 
     def test_defect_self_adapt(self):
         klasse DefectSelfAdapt(float):
             def __conform__(self, _):
-                return None
+                return Nichts
         with self.assertRaises(sqlite.ProgrammingError):
             sqlite.adapt(DefectSelfAdapt(1.))
 
@@ -462,7 +462,7 @@ klasse ObjectAdaptationTests(unittest.TestCase):
 
     def test_adapt_alt(self):
         alt = "other"
-        self.assertEqual(alt, sqlite.adapt(1., None, alt))
+        self.assertEqual(alt, sqlite.adapt(1., Nichts, alt))
 
 
 @unittest.skipUnless(zlib, "requires zlib")

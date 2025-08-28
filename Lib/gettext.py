@@ -66,11 +66,11 @@ _default_localedir = os.path.join(sys.base_prefix, 'share', 'locale')
 # https://www.gnu.org/software/gettext/manual/gettext.html#Plural-forms
 # http://git.savannah.gnu.org/cgit/gettext.git/tree/gettext-runtime/intl/plural.y
 
-_token_pattern = None
+_token_pattern = Nichts
 
 def _tokenize(plural):
     global _token_pattern
-    wenn _token_pattern is None:
+    wenn _token_pattern is Nichts:
         import re
         _token_pattern = re.compile(r"""
                 (?P<WHITESPACES>[ \t]+)                    | # spaces and horizontal tabs
@@ -133,7 +133,7 @@ def _parse(tokens, priority=-1):
         try:
             value = int(nexttok, 10)
         except ValueError:
-            raise _error(nexttok) from None
+            raise _error(nexttok) from Nichts
         result = '%s%d' % (result, value)
     nexttok = next(tokens)
 
@@ -170,7 +170,7 @@ def _as_int(n):
         round(n)
     except TypeError:
         raise TypeError('Plural value must be an integer, got %s' %
-                        (n.__class__.__name__,)) from None
+                        (n.__class__.__name__,)) from Nichts
     return _as_int2(n)
 
 def _as_int2(n):
@@ -182,7 +182,7 @@ def _as_int2(n):
     import warnings
     frame = sys._getframe(1)
     stacklevel = 2
-    while frame.f_back is not None and frame.f_globals.get('__name__') == __name__:
+    while frame.f_back is not Nichts and frame.f_globals.get('__name__') == __name__:
         stacklevel += 1
         frame = frame.f_back
     warnings.warn('Plural value must be an integer, got %s' %
@@ -216,7 +216,7 @@ def c2py(plural):
                 depth -= 1
 
         ns = {'_as_int': _as_int, '__name__': __name__}
-        exec('''if True:
+        exec('''if Wahr:
             def func(n):
                 wenn not isinstance(n, int):
                     n = _as_int(n)
@@ -271,11 +271,11 @@ def _expand_lang(loc):
 
 
 klasse NullTranslations:
-    def __init__(self, fp=None):
+    def __init__(self, fp=Nichts):
         self._info = {}
-        self._charset = None
-        self._fallback = None
-        wenn fp is not None:
+        self._charset = Nichts
+        self._fallback = Nichts
+        wenn fp is not Nichts:
             self._parse(fp)
 
     def _parse(self, fp):
@@ -321,10 +321,10 @@ klasse NullTranslations:
     def charset(self):
         return self._charset
 
-    def install(self, names=None):
+    def install(self, names=Nichts):
         import builtins
         builtins.__dict__['_'] = self.gettext
-        wenn names is not None:
+        wenn names is not Nichts:
             allowed = {'gettext', 'ngettext', 'npgettext', 'pgettext'}
             fuer name in allowed & set(names):
                 builtins.__dict__[name] = getattr(self, name)
@@ -389,7 +389,7 @@ klasse GNUTranslations(NullTranslations):
             # See wenn we're looking at GNU .mo conventions fuer metadata
             wenn mlen == 0:
                 # Catalog description
-                lastk = None
+                lastk = Nichts
                 fuer b_item in tmsg.split(b'\n'):
                     item = b_item.decode().strip()
                     wenn not item:
@@ -397,7 +397,7 @@ klasse GNUTranslations(NullTranslations):
                     # Skip over comment lines:
                     wenn item.startswith('#-#-#-#-#') and item.endswith('#-#-#-#-#'):
                         continue
-                    k = v = None
+                    k = v = Nichts
                     wenn ':' in item:
                         k, v = item.split(':', 1)
                         k = k.strip().lower()
@@ -485,11 +485,11 @@ klasse GNUTranslations(NullTranslations):
 
 
 # Locate a .mo file using the gettext strategy
-def find(domain, localedir=None, languages=None, all=False):
+def find(domain, localedir=Nichts, languages=Nichts, all=Falsch):
     # Get some reasonable defaults fuer arguments that were not supplied
-    wenn localedir is None:
+    wenn localedir is Nichts:
         localedir = _default_localedir
-    wenn languages is None:
+    wenn languages is Nichts:
         languages = []
         fuer envar in ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
             val = os.environ.get(envar)
@@ -508,7 +508,7 @@ def find(domain, localedir=None, languages=None, all=False):
     wenn all:
         result = []
     sonst:
-        result = None
+        result = Nichts
     fuer lang in nelangs:
         wenn lang == 'C':
             break
@@ -525,11 +525,11 @@ def find(domain, localedir=None, languages=None, all=False):
 _translations = {}
 
 
-def translation(domain, localedir=None, languages=None,
-                class_=None, fallback=False):
-    wenn class_ is None:
+def translation(domain, localedir=Nichts, languages=Nichts,
+                class_=Nichts, fallback=Falsch):
+    wenn class_ is Nichts:
         class_ = GNUTranslations
-    mofiles = find(domain, localedir, languages, all=True)
+    mofiles = find(domain, localedir, languages, all=Wahr)
     wenn not mofiles:
         wenn fallback:
             return NullTranslations()
@@ -538,11 +538,11 @@ def translation(domain, localedir=None, languages=None,
                                 'No translation file found fuer domain', domain)
     # Avoid opening, reading, and parsing the .mo file after it's been done
     # once.
-    result = None
+    result = Nichts
     fuer mofile in mofiles:
         key = (class_, os.path.abspath(mofile))
         t = _translations.get(key)
-        wenn t is None:
+        wenn t is Nichts:
             with open(mofile, 'rb') as fp:
                 t = _translations.setdefault(key, class_(fp))
         # Copy the translation object to allow setting fallbacks and
@@ -552,15 +552,15 @@ def translation(domain, localedir=None, languages=None,
         # are not used.
         import copy
         t = copy.copy(t)
-        wenn result is None:
+        wenn result is Nichts:
             result = t
         sonst:
             result.add_fallback(t)
     return result
 
 
-def install(domain, localedir=None, *, names=None):
-    t = translation(domain, localedir, fallback=True)
+def install(domain, localedir=Nichts, *, names=Nichts):
+    t = translation(domain, localedir, fallback=Wahr)
     t.install(names)
 
 
@@ -570,23 +570,23 @@ _localedirs = {}
 _current_domain = 'messages'
 
 
-def textdomain(domain=None):
+def textdomain(domain=Nichts):
     global _current_domain
-    wenn domain is not None:
+    wenn domain is not Nichts:
         _current_domain = domain
     return _current_domain
 
 
-def bindtextdomain(domain, localedir=None):
+def bindtextdomain(domain, localedir=Nichts):
     global _localedirs
-    wenn localedir is not None:
+    wenn localedir is not Nichts:
         _localedirs[domain] = localedir
     return _localedirs.get(domain, _default_localedir)
 
 
 def dgettext(domain, message):
     try:
-        t = translation(domain, _localedirs.get(domain, None))
+        t = translation(domain, _localedirs.get(domain, Nichts))
     except OSError:
         return message
     return t.gettext(message)
@@ -594,7 +594,7 @@ def dgettext(domain, message):
 
 def dngettext(domain, msgid1, msgid2, n):
     try:
-        t = translation(domain, _localedirs.get(domain, None))
+        t = translation(domain, _localedirs.get(domain, Nichts))
     except OSError:
         n = _as_int2(n)
         wenn n == 1:
@@ -606,7 +606,7 @@ def dngettext(domain, msgid1, msgid2, n):
 
 def dpgettext(domain, context, message):
     try:
-        t = translation(domain, _localedirs.get(domain, None))
+        t = translation(domain, _localedirs.get(domain, Nichts))
     except OSError:
         return message
     return t.pgettext(context, message)
@@ -614,7 +614,7 @@ def dpgettext(domain, context, message):
 
 def dnpgettext(domain, context, msgid1, msgid2, n):
     try:
-        t = translation(domain, _localedirs.get(domain, None))
+        t = translation(domain, _localedirs.get(domain, Nichts))
     except OSError:
         n = _as_int2(n)
         wenn n == 1:

@@ -6,12 +6,12 @@ except ImportError:
     # we can tell about the system, but we don't want to prevent the module
     # from working.
     print("ctypes isn't available; iOS system calls will not be available", file=sys.stderr)
-    objc = None
+    objc = Nichts
 sonst:
     # ctypes is available. Load the ObjC library, and wrap the objc_getClass,
     # sel_registerName methods
     lib = util.find_library("objc")
-    wenn lib is None:
+    wenn lib is Nichts:
         # Failed to load the objc library
         raise ImportError("ObjC runtime library couldn't be loaded")
 
@@ -28,7 +28,7 @@ def get_platform_ios():
 
     # We can't use ctypes; abort
     wenn not objc:
-        return None
+        return Nichts
 
     # Most of the methods return ObjC objects
     objc.objc_msgSend.restype = c_void_p

@@ -27,18 +27,18 @@ klasse PatternError(Exception):
 
         msg: The unformatted error message
         pattern: The regular expression pattern
-        pos: The index in the pattern where compilation failed (may be None)
-        lineno: The line corresponding to pos (may be None)
-        colno: The column corresponding to pos (may be None)
+        pos: The index in the pattern where compilation failed (may be Nichts)
+        lineno: The line corresponding to pos (may be Nichts)
+        colno: The column corresponding to pos (may be Nichts)
     """
 
     __module__ = 're'
 
-    def __init__(self, msg, pattern=None, pos=None):
+    def __init__(self, msg, pattern=Nichts, pos=Nichts):
         self.msg = msg
         self.pattern = pattern
         self.pos = pos
-        wenn pattern is not None and pos is not None:
+        wenn pattern is not Nichts and pos is not Nichts:
             msg = '%s at position %d' % (msg, pos)
             wenn isinstance(pattern, str):
                 newline = '\n'
@@ -49,7 +49,7 @@ klasse PatternError(Exception):
             wenn newline in pattern:
                 msg = '%s (line %d, column %d)' % (msg, self.lineno, self.colno)
         sonst:
-            self.lineno = self.colno = None
+            self.lineno = self.colno = Nichts
         super().__init__(msg)
 
 
@@ -65,7 +65,7 @@ klasse _NamedIntConstant(int):
     def __repr__(self):
         return self.name
 
-    __reduce__ = None
+    __reduce__ = Nichts
 
 MAXREPEAT = _NamedIntConstant(MAXREPEAT, 'MAXREPEAT')
 

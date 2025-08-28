@@ -17,7 +17,7 @@ from test.support.os_helper import temp_dir
 wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
-wenn support.check_sanitizer(address=True, memory=True, ub=True, function=True):
+wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
     # gh-109580: Skip the test because it does crash randomly wenn Python is
     # built with ASAN.
     raise unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
@@ -26,7 +26,7 @@ wenn support.check_sanitizer(address=True, memory=True, ub=True, function=True):
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
     wenn not perf_trampoline:
-        return False
+        return Falsch
     return int(perf_trampoline) == 1
 
 
@@ -39,7 +39,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
         super().setUp()
         self.perf_files = set(pathlib.Path("/tmp/").glob("perf-*.map"))
 
-    def tearDown(self) -> None:
+    def tearDown(self) -> Nichts:
         super().tearDown()
         files_to_delete = (
             set(pathlib.Path("/tmp/").glob("perf-*.map")) - self.perf_files
@@ -66,7 +66,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
             env = {**os.environ, "PYTHON_JIT": "0"}
             with subprocess.Popen(
                 [sys.executable, "-Xperf", script],
-                text=True,
+                text=Wahr,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 env=env,
@@ -77,7 +77,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
         self.assertEqual(stdout, "")
 
         perf_file = pathlib.Path(f"/tmp/perf-{process.pid}.map")
-        self.assertTrue(perf_file.exists())
+        self.assertWahr(perf_file.exists())
         perf_file_contents = perf_file.read_text()
         perf_lines = perf_file_contents.splitlines()
         expected_symbols = [
@@ -87,14 +87,14 @@ klasse TestPerfTrampoline(unittest.TestCase):
         ]
         fuer expected_symbol in expected_symbols:
             perf_line = next(
-                (line fuer line in perf_lines wenn expected_symbol in line), None
+                (line fuer line in perf_lines wenn expected_symbol in line), Nichts
             )
-            self.assertIsNotNone(
+            self.assertIsNotNichts(
                 perf_line, f"Could not find {expected_symbol} in perf file"
             )
             perf_addr = perf_line.split(" ")[0]
             self.assertNotStartsWith(perf_addr, "0x")
-            self.assertTrue(
+            self.assertWahr(
                 set(perf_addr).issubset(string.hexdigits),
                 "Address should contain only hex characters",
             )
@@ -135,7 +135,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
             env = {**os.environ, "PYTHON_JIT": "0"}
             with subprocess.Popen(
                 [sys.executable, "-Xperf", script],
-                text=True,
+                text=Wahr,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 env=env,
@@ -147,8 +147,8 @@ klasse TestPerfTrampoline(unittest.TestCase):
         child_pid = int(stdout.strip())
         perf_file = pathlib.Path(f"/tmp/perf-{process.pid}.map")
         perf_child_file = pathlib.Path(f"/tmp/perf-{child_pid}.map")
-        self.assertTrue(perf_file.exists())
-        self.assertTrue(perf_child_file.exists())
+        self.assertWahr(perf_file.exists())
+        self.assertWahr(perf_child_file.exists())
 
         perf_file_contents = perf_file.read_text()
         self.assertIn(f"py::foo:{script}", perf_file_contents)
@@ -162,7 +162,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
     @unittest.skipIf(support.check_bolt_optimized(), "fails on BOLT instrumented binaries")
     def test_sys_api(self):
-        fuer define_eval_hook in (False, True):
+        fuer define_eval_hook in (Falsch, Wahr):
             code = """if 1:
                     import sys
                     def foo():
@@ -194,7 +194,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
                 env = {**os.environ, "PYTHON_JIT": "0"}
                 with subprocess.Popen(
                     [sys.executable, script],
-                    text=True,
+                    text=Wahr,
                     stderr=subprocess.PIPE,
                     stdout=subprocess.PIPE,
                     env=env,
@@ -205,7 +205,7 @@ klasse TestPerfTrampoline(unittest.TestCase):
             self.assertEqual(stdout, "")
 
             perf_file = pathlib.Path(f"/tmp/perf-{process.pid}.map")
-            self.assertTrue(perf_file.exists())
+            self.assertWahr(perf_file.exists())
             perf_file_contents = perf_file.read_text()
             self.assertNotIn(f"py::foo:{script}", perf_file_contents)
             self.assertIn(f"py::spam:{script}", perf_file_contents)
@@ -232,9 +232,9 @@ klasse TestPerfTrampoline(unittest.TestCase):
         code = """if 1:
                 import sys
                 sys.activate_stack_trampoline("perf")
-                assert sys.is_stack_trampoline_active() is True
+                assert sys.is_stack_trampoline_active() is Wahr
                 sys.deactivate_stack_trampoline()
-                assert sys.is_stack_trampoline_active() is False
+                assert sys.is_stack_trampoline_active() is Falsch
                 """
         assert_python_ok("-c", code, PYTHON_JIT="0")
 
@@ -242,21 +242,21 @@ klasse TestPerfTrampoline(unittest.TestCase):
 def is_unwinding_reliable_with_frame_pointers():
     cflags = sysconfig.get_config_var("PY_CORE_CFLAGS")
     wenn not cflags:
-        return False
+        return Falsch
     return "no-omit-frame-pointer" in cflags
 
 
 def perf_command_works():
     try:
         cmd = ["perf", "--help"]
-        stdout = subprocess.check_output(cmd, text=True)
+        stdout = subprocess.check_output(cmd, text=Wahr)
     except (subprocess.SubprocessError, OSError):
-        return False
+        return Falsch
 
     # perf version does not return a version number on Fedora. Use presence
     # of "perf.data" in help as indicator that it's perf from Linux tools.
     wenn "perf.data" not in stdout:
-        return False
+        return Falsch
 
     # Check that we can run a simple perf run
     with temp_dir() as script_dir:
@@ -278,18 +278,18 @@ def perf_command_works():
             )
             env = {**os.environ, "PYTHON_JIT": "0"}
             stdout = subprocess.check_output(
-                cmd, cwd=script_dir, text=True, stderr=subprocess.STDOUT, env=env
+                cmd, cwd=script_dir, text=Wahr, stderr=subprocess.STDOUT, env=env
             )
         except (subprocess.SubprocessError, OSError):
-            return False
+            return Falsch
 
         wenn "hello" not in stdout:
-            return False
+            return Falsch
 
-    return True
+    return Wahr
 
 
-def run_perf(cwd, *args, use_jit=False, **env_vars):
+def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
     env = os.environ.copy()
     wenn env_vars:
         env.update(env_vars)
@@ -325,7 +325,7 @@ def run_perf(cwd, *args, use_jit=False, **env_vars):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         env=env,
-        text=True,
+        text=Wahr,
     )
     wenn proc.returncode:
         print(proc.stderr, file=sys.stderr)
@@ -335,7 +335,7 @@ def run_perf(cwd, *args, use_jit=False, **env_vars):
         jit_output_file = cwd + "/jit_output.dump"
         command = ("perf", "inject", "-j", "-i", output_file, "-o", jit_output_file)
         proc = subprocess.run(
-            command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, env=env, text=True
+            command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, env=env, text=Wahr
         )
         wenn proc.returncode:
             print(proc.stderr, file=sys.stderr)
@@ -349,8 +349,8 @@ def run_perf(cwd, *args, use_jit=False, **env_vars):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         env=env,
-        check=True,
-        text=True,
+        check=Wahr,
+        text=Wahr,
     )
     return proc.stdout, proc.stderr
 
@@ -401,7 +401,7 @@ klasse TestPerfProfilerMixin:
                 """
             script = make_script(script_dir, "perftest", code)
             stdout, stderr = self.run_perf(
-                script_dir, script, activate_trampoline=False
+                script_dir, script, activate_trampoline=Falsch
             )
             self.assertEqual(stderr, "")
 
@@ -416,7 +416,7 @@ klasse TestPerfProfilerMixin:
     "Unwinding is unreliable with frame pointers",
 )
 klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
-    def run_perf(self, script_dir, script, activate_trampoline=True):
+    def run_perf(self, script_dir, script, activate_trampoline=Wahr):
         wenn activate_trampoline:
             return run_perf(script_dir, sys.executable, "-Xperf", script)
         return run_perf(script_dir, sys.executable, script)
@@ -425,7 +425,7 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
         super().setUp()
         self.perf_files = set(pathlib.Path("/tmp/").glob("perf-*.map"))
 
-    def tearDown(self) -> None:
+    def tearDown(self) -> Nichts:
         super().tearDown()
         files_to_delete = (
             set(pathlib.Path("/tmp/").glob("perf-*.map")) - self.perf_files
@@ -476,7 +476,7 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
             env = {**os.environ, "PYTHON_JIT": "0"}
             with subprocess.Popen(
                 [sys.executable, "-Xperf", script],
-                universal_newlines=True,
+                universal_newlines=Wahr,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 env=env,
@@ -488,8 +488,8 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
         child_pid = int(stdout.strip())
         perf_file = pathlib.Path(f"/tmp/perf-{process.pid}.map")
         perf_child_file = pathlib.Path(f"/tmp/perf-{child_pid}.map")
-        self.assertTrue(perf_file.exists())
-        self.assertTrue(perf_child_file.exists())
+        self.assertWahr(perf_file.exists())
+        self.assertWahr(perf_child_file.exists())
 
         perf_file_contents = perf_file.read_text()
         self.assertIn(f"py::foo:{script}", perf_file_contents)
@@ -517,9 +517,9 @@ def _is_perf_version_at_least(major, minor):
     # PermissionError is raised wenn perf does not exist on the Windows Subsystem
     # fuer Linux, see #134987
     try:
-        output = subprocess.check_output(["perf", "--version"], text=True)
+        output = subprocess.check_output(["perf", "--version"], text=Wahr)
     except (subprocess.CalledProcessError, FileNotFoundError, PermissionError):
-        return False
+        return Falsch
     version = output.split()[2]
     version = version.split("-")[0]
     version = version.split(".")
@@ -532,19 +532,19 @@ def _is_perf_version_at_least(major, minor):
     _is_perf_version_at_least(6, 6), "perf command may not work due to a perf bug"
 )
 klasse TestPerfProfilerWithDwarf(unittest.TestCase, TestPerfProfilerMixin):
-    def run_perf(self, script_dir, script, activate_trampoline=True):
+    def run_perf(self, script_dir, script, activate_trampoline=Wahr):
         wenn activate_trampoline:
             return run_perf(
-                script_dir, sys.executable, "-Xperf_jit", script, use_jit=True
+                script_dir, sys.executable, "-Xperf_jit", script, use_jit=Wahr
             )
-        return run_perf(script_dir, sys.executable, script, use_jit=True)
+        return run_perf(script_dir, sys.executable, script, use_jit=Wahr)
 
     def setUp(self):
         super().setUp()
         self.perf_files = set(pathlib.Path("/tmp/").glob("jit*.dump"))
         self.perf_files |= set(pathlib.Path("/tmp/").glob("jitted-*.so"))
 
-    def tearDown(self) -> None:
+    def tearDown(self) -> Nichts:
         super().tearDown()
         files_to_delete = set(pathlib.Path("/tmp/").glob("jit*.dump"))
         files_to_delete |= set(pathlib.Path("/tmp/").glob("jitted-*.so"))

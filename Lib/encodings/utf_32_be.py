@@ -8,10 +8,10 @@ import codecs
 encode = codecs.utf_32_be_encode
 
 def decode(input, errors='strict'):
-    return codecs.utf_32_be_decode(input, errors, True)
+    return codecs.utf_32_be_decode(input, errors, Wahr)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return codecs.utf_32_be_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):

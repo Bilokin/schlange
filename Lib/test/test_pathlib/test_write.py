@@ -109,16 +109,16 @@ klasse WriteTestBase:
 
     def test_mkdir(self):
         p = self.root / 'newdirA'
-        self.assertFalse(self.ground.isdir(p))
+        self.assertFalsch(self.ground.isdir(p))
         p.mkdir()
-        self.assertTrue(self.ground.isdir(p))
+        self.assertWahr(self.ground.isdir(p))
 
     def test_symlink_to(self):
         wenn not self.ground.can_symlink:
             self.skipTest('needs symlinks')
         link = self.root.joinpath('linkA')
         link.symlink_to('fileA')
-        self.assertTrue(self.ground.islink(link))
+        self.assertWahr(self.ground.islink(link))
         self.assertEqual(self.ground.readlink(link), 'fileA')
 
 

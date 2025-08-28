@@ -4,7 +4,7 @@ from test import support
 from test.support import import_helper
 
 
-wenn support.check_sanitizer(address=True, memory=True):
+wenn support.check_sanitizer(address=Wahr, memory=Wahr):
     raise unittest.SkipTest("Tests involving libX11 can SEGFAULT on ASAN/MSAN builds")
 
 # Skip this test wenn _tkinter wasn't built.
@@ -20,7 +20,7 @@ from tkinter import ttk
 
 
 def setUpModule():
-    root = None
+    root = Nichts
     try:
         root = tkinter.Tk()
         button = ttk.Button(root)
@@ -30,7 +30,7 @@ def setUpModule():
         # assuming ttk is not available
         raise unittest.SkipTest("ttk not available: %s" % msg)
     finally:
-        wenn root is not None:
+        wenn root is not Nichts:
             root.destroy()
         del root
 

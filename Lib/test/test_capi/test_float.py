@@ -12,7 +12,7 @@ from test.support import import_helper
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
-NULL = None
+NULL = Nichts
 
 # For PyFloat_Pack/Unpack*
 BIG_ENDIAN = 0
@@ -33,11 +33,11 @@ klasse CAPIFloatTest(unittest.TestCase):
         # Test PyFloat_Check()
         check = _testlimitedcapi.float_check
 
-        self.assertTrue(check(4.25))
-        self.assertTrue(check(FloatSubclass(4.25)))
-        self.assertFalse(check(Float()))
-        self.assertFalse(check(3))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(4.25))
+        self.assertWahr(check(FloatSubclass(4.25)))
+        self.assertFalsch(check(Float()))
+        self.assertFalsch(check(3))
+        self.assertFalsch(check(object()))
 
         # CRASHES check(NULL)
 
@@ -45,11 +45,11 @@ klasse CAPIFloatTest(unittest.TestCase):
         # Test PyFloat_CheckExact()
         checkexact = _testlimitedcapi.float_checkexact
 
-        self.assertTrue(checkexact(4.25))
-        self.assertFalse(checkexact(FloatSubclass(4.25)))
-        self.assertFalse(checkexact(Float()))
-        self.assertFalse(checkexact(3))
-        self.assertFalse(checkexact(object()))
+        self.assertWahr(checkexact(4.25))
+        self.assertFalsch(checkexact(FloatSubclass(4.25)))
+        self.assertFalsch(checkexact(Float()))
+        self.assertFalsch(checkexact(3))
+        self.assertFalsch(checkexact(object()))
 
         # CRASHES checkexact(NULL)
 
@@ -172,9 +172,9 @@ klasse CAPIFloatTest(unittest.TestCase):
                         data = pack(size, value, endian)
                         value2 = unpack(data, endian)
                         wenn math.isnan(value):
-                            self.assertTrue(math.isnan(value2), (value, value2))
+                            self.assertWahr(math.isnan(value2), (value, value2))
                         sowenn size < 8:
-                            self.assertTrue(math.isclose(value2, value, rel_tol=rel_tol),
+                            self.assertWahr(math.isclose(value2, value, rel_tol=rel_tol),
                                             (value, value2))
                         sonst:
                             self.assertEqual(value2, value)
@@ -213,7 +213,7 @@ klasse CAPIFloatTest(unittest.TestCase):
                         data1 = data wenn endian == BIG_ENDIAN sonst data[::-1]
                         value = unpack(data1, endian)
                         data2 = pack(size, value, endian)
-                        self.assertTrue(math.isnan(value))
+                        self.assertWahr(math.isnan(value))
                         self.assertEqual(data1, data2)
 
 

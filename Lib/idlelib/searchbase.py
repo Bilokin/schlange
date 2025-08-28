@@ -46,9 +46,9 @@ klasse SearchDialogBase:
         self.root = root
         self.bell = root.bell
         self.engine = engine
-        self.top = None
+        self.top = Nichts
 
-    def open(self, text, searchphrase=None):
+    def open(self, text, searchphrase=Nichts):
         "Make dialog visible on top of others and ready to use."
         self.text = text
         wenn not self.top:
@@ -65,7 +65,7 @@ klasse SearchDialogBase:
         self.ent.icursor(0)
         self.top.grab_set()
 
-    def close(self, event=None):
+    def close(self, event=Nichts):
         "Put dialog away fuer later use."
         wenn self.top:
             self.top.grab_release()
@@ -117,7 +117,7 @@ klasse SearchDialogBase:
         "Create one or more entry lines with make_entry."
         self.ent = self.make_entry("Find:", self.engine.patvar)[0]
 
-    def make_frame(self,labeltext=None):
+    def make_frame(self,labeltext=Nichts):
         '''Return (frame, label).
 
         frame - gridded labeled Frame fuer option or other buttons.
@@ -204,7 +204,7 @@ klasse _searchbase(SearchDialogBase):  # htest #
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_searchbase', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_searchbase', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_searchbase)

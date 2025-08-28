@@ -71,7 +71,7 @@ klasse async_chat(asyncore.dispatcher):
     use_encoding = 0
     encoding = 'latin-1'
 
-    def __init__(self, sock=None, map=None):
+    def __init__(self, sock=Nichts, map=Nichts):
         # fuer string terminator matching
         self.ac_in_buffer = b''
 
@@ -102,7 +102,7 @@ klasse async_chat(asyncore.dispatcher):
     def set_terminator(self, term):
         """Set the input delimiter.
 
-        Can be a fixed string of any length, an integer, or None.
+        Can be a fixed string of any length, an integer, or Nichts.
         """
         wenn isinstance(term, str) and self.use_encoding:
             term = bytes(term, self.encoding)
@@ -226,15 +226,15 @@ klasse async_chat(asyncore.dispatcher):
 
     def close_when_done(self):
         "automatically close this channel once the outgoing queue is empty"
-        self.producer_fifo.append(None)
+        self.producer_fifo.append(Nichts)
 
     def initiate_send(self):
         while self.producer_fifo and self.connected:
             first = self.producer_fifo[0]
-            # handle empty string/buffer or None entry
+            # handle empty string/buffer or Nichts entry
             wenn not first:
                 del self.producer_fifo[0]
-                wenn first is None:
+                wenn first is Nichts:
                     self.handle_close()
                     return
 

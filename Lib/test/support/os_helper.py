@@ -31,9 +31,9 @@ wenn support.is_apple:
     TESTFN_UNICODE = unicodedata.normalize('NFD', TESTFN_UNICODE)
 
 # TESTFN_UNENCODABLE is a filename (str type) that should *not* be able to be
-# encoded by the filesystem encoding (in strict mode). It can be None wenn we
+# encoded by the filesystem encoding (in strict mode). It can be Nichts wenn we
 # cannot generate such filename.
-TESTFN_UNENCODABLE = None
+TESTFN_UNENCODABLE = Nichts
 wenn os.name == 'nt':
     # skip win32s (0) or Windows 9x/ME (1)
     wenn sys.getwindowsversion().platform >= 2:
@@ -48,7 +48,7 @@ wenn os.name == 'nt':
             print('WARNING: The filename %r CAN be encoded by the filesystem '
                   'encoding (%s). Unicode filename tests may not be effective'
                   % (TESTFN_UNENCODABLE, sys.getfilesystemencoding()))
-            TESTFN_UNENCODABLE = None
+            TESTFN_UNENCODABLE = Nichts
 # Apple and Emscripten deny unencodable filenames (invalid utf-8)
 sowenn not support.is_apple and sys.platform not in {"emscripten", "wasi"}:
     try:
@@ -115,12 +115,12 @@ fuer character in (
 SAVEDCWD = os.getcwd()
 
 # TESTFN_UNDECODABLE is a filename (bytes type) that should *not* be able to be
-# decoded from the filesystem encoding (in strict mode). It can be None wenn we
+# decoded from the filesystem encoding (in strict mode). It can be Nichts wenn we
 # cannot generate such filename (ex: the latin1 encoding can decode any byte
 # sequence). On UNIX, TESTFN_UNDECODABLE can be decoded by os.fsdecode() thanks
 # to the surrogateescape error handler (PEP 383), but not from the filesystem
 # encoding in strict mode.
-TESTFN_UNDECODABLE = None
+TESTFN_UNDECODABLE = Nichts
 fuer name in (
     # b'\xff' is not decodable by os.fsdecode() with code page 932. Windows
     # accepts it to create a file or a directory, or don't accept to enter to
@@ -152,7 +152,7 @@ fuer name in (
 wenn FS_NONASCII:
     TESTFN_NONASCII = TESTFN_ASCII + FS_NONASCII
 sonst:
-    TESTFN_NONASCII = None
+    TESTFN_NONASCII = Nichts
 TESTFN = TESTFN_NONASCII or TESTFN_ASCII
 
 
@@ -169,12 +169,12 @@ def make_bad_fd():
         unlink(TESTFN)
 
 
-_can_symlink = None
+_can_symlink = Nichts
 
 
 def can_symlink():
     global _can_symlink
-    wenn _can_symlink is not None:
+    wenn _can_symlink is not Nichts:
         return _can_symlink
     # WASI / wasmtime prevents symlinks with absolute paths, see man
     # openat2(2) RESOLVE_BENEATH. Almost all symlink tests use absolute
@@ -183,9 +183,9 @@ def can_symlink():
     symlink_path = src + "can_symlink"
     try:
         os.symlink(src, symlink_path)
-        can = True
+        can = Wahr
     except (OSError, NotImplementedError, AttributeError):
-        can = False
+        can = Falsch
     sonst:
         os.remove(symlink_path)
     _can_symlink = can
@@ -199,11 +199,11 @@ def skip_unless_symlink(test):
     return test wenn ok sonst unittest.skip(msg)(test)
 
 
-_can_hardlink = None
+_can_hardlink = Nichts
 
 def can_hardlink():
     global _can_hardlink
-    wenn _can_hardlink is None:
+    wenn _can_hardlink is Nichts:
         # Android blocks hard links using SELinux
         # (https://stackoverflow.com/q/32365690).
         _can_hardlink = hasattr(os, "link") and not support.is_android
@@ -216,16 +216,16 @@ def skip_unless_hardlink(test):
     return test wenn ok sonst unittest.skip(msg)(test)
 
 
-_can_xattr = None
+_can_xattr = Nichts
 
 
 def can_xattr():
     import tempfile
     global _can_xattr
-    wenn _can_xattr is not None:
+    wenn _can_xattr is not Nichts:
         return _can_xattr
     wenn not hasattr(os, "setxattr"):
-        can = False
+        can = Falsch
     sonst:
         import platform
         tmp_dir = tempfile.mkdtemp()
@@ -241,9 +241,9 @@ def can_xattr():
                     # Kernels < 2.6.39 don't respect setxattr flags.
                     kernel_version = platform.release()
                     m = re.match(r"2.6.(\d{1,2})", kernel_version)
-                    can = m is None or int(m.group(1)) >= 39
+                    can = m is Nichts or int(m.group(1)) >= 39
                 except OSError:
-                    can = False
+                    can = Falsch
         finally:
             unlink(TESTFN)
             unlink(tmp_name)
@@ -259,14 +259,14 @@ def skip_unless_xattr(test):
     return test wenn ok sonst unittest.skip(msg)(test)
 
 
-_can_chmod = None
+_can_chmod = Nichts
 
 def can_chmod():
     global _can_chmod
-    wenn _can_chmod is not None:
+    wenn _can_chmod is not Nichts:
         return _can_chmod
     wenn not hasattr(os, "chmod"):
-        _can_chmod = False
+        _can_chmod = Falsch
         return _can_chmod
     try:
         with open(TESTFN, "wb") as f:
@@ -276,7 +276,7 @@ def can_chmod():
                 os.chmod(TESTFN, 0o777)
                 mode2 = os.stat(TESTFN).st_mode
             except OSError as e:
-                can = False
+                can = Falsch
             sonst:
                 can = stat.S_IMODE(mode1) != stat.S_IMODE(mode2)
     finally:
@@ -296,14 +296,14 @@ def skip_unless_working_chmod(test):
 
 
 @contextlib.contextmanager
-def save_mode(path, *, quiet=False):
+def save_mode(path, *, quiet=Falsch):
     """Context manager that restores the mode (permissions) of *path* on exit.
 
     Arguments:
 
       path: Path of the file to restore the mode of.
 
-      quiet: wenn False (the default), the context manager raises an exception
+      quiet: wenn Falsch (the default), the context manager raises an exception
         on error.  Otherwise, it issues only a warning and keeps the current
         working directory the same.
 
@@ -326,14 +326,14 @@ def save_mode(path, *, quiet=False):
 # DAC (discretionary access control). Typically user root is able to
 # bypass file read, write, and execute permission checks. The capability
 # is independent of the effective user. See capabilities(7).
-_can_dac_override = None
+_can_dac_override = Nichts
 
 def can_dac_override():
     global _can_dac_override
 
     wenn not can_chmod():
-        _can_dac_override = False
-    wenn _can_dac_override is not None:
+        _can_dac_override = Falsch
+    wenn _can_dac_override is not Nichts:
         return _can_dac_override
 
     try:
@@ -343,9 +343,9 @@ def can_dac_override():
                 with open(TESTFN, "wb"):
                     pass
             except OSError:
-                _can_dac_override = False
+                _can_dac_override = Falsch
             sonst:
-                _can_dac_override = True
+                _can_dac_override = Wahr
     finally:
         try:
             os.chmod(TESTFN, 0o700)
@@ -376,7 +376,7 @@ def unlink(filename):
 
 
 wenn sys.platform.startswith("win"):
-    def _waitfor(func, pathname, waitall=False):
+    def _waitfor(func, pathname, waitall=Falsch):
         # Perform the operation
         func(pathname)
         # Now setup the wait loop
@@ -409,7 +409,7 @@ wenn sys.platform.startswith("win"):
         logging.getLogger(__name__).warning(
             'tests may fail, delete still pending fuer %s',
             pathname,
-            stack_info=True,
+            stack_info=Wahr,
             stacklevel=4,
         )
 
@@ -433,11 +433,11 @@ wenn sys.platform.startswith("win"):
                           file=sys.__stderr__)
                     mode = 0
                 wenn stat.S_ISDIR(mode):
-                    _waitfor(_rmtree_inner, fullname, waitall=True)
+                    _waitfor(_rmtree_inner, fullname, waitall=Wahr)
                     _force_run(fullname, os.rmdir, fullname)
                 sonst:
                     _force_run(fullname, os.unlink, fullname)
-        _waitfor(_rmtree_inner, path, waitall=True)
+        _waitfor(_rmtree_inner, path, waitall=Wahr)
         _waitfor(lambda p: _force_run(p, os.rmdir, p), path)
 
     def _longpath(path):
@@ -500,29 +500,29 @@ def rmtree(path):
 
 
 @contextlib.contextmanager
-def temp_dir(path=None, quiet=False):
+def temp_dir(path=Nichts, quiet=Falsch):
     """Return a context manager that creates a temporary directory.
 
     Arguments:
 
-      path: the directory to create temporarily.  If omitted or None,
+      path: the directory to create temporarily.  If omitted or Nichts,
         defaults to creating a temporary directory using tempfile.mkdtemp.
 
-      quiet: wenn False (the default), the context manager raises an exception
+      quiet: wenn Falsch (the default), the context manager raises an exception
         on error.  Otherwise, wenn the path is specified and cannot be
         created, only a warning is issued.
 
     """
     import tempfile
-    dir_created = False
-    wenn path is None:
+    dir_created = Falsch
+    wenn path is Nichts:
         path = tempfile.mkdtemp()
-        dir_created = True
+        dir_created = Wahr
         path = os.path.realpath(path)
     sonst:
         try:
             os.mkdir(path)
-            dir_created = True
+            dir_created = Wahr
         except OSError as exc:
             wenn not quiet:
                 raise
@@ -531,7 +531,7 @@ def temp_dir(path=None, quiet=False):
                 path,
                 exc,
                 exc_info=exc,
-                stack_info=True,
+                stack_info=Wahr,
                 stacklevel=3,
             )
     wenn dir_created:
@@ -546,14 +546,14 @@ def temp_dir(path=None, quiet=False):
 
 
 @contextlib.contextmanager
-def change_cwd(path, quiet=False):
+def change_cwd(path, quiet=Falsch):
     """Return a context manager that changes the current working directory.
 
     Arguments:
 
       path: the directory to use as the temporary current working directory.
 
-      quiet: wenn False (the default), the context manager raises an exception
+      quiet: wenn Falsch (the default), the context manager raises an exception
         on error.  Otherwise, it issues only a warning and keeps the current
         working directory the same.
 
@@ -570,7 +570,7 @@ def change_cwd(path, quiet=False):
             path,
             exc,
             exc_info=exc,
-            stack_info=True,
+            stack_info=Wahr,
             stacklevel=3,
         )
     try:
@@ -580,17 +580,17 @@ def change_cwd(path, quiet=False):
 
 
 @contextlib.contextmanager
-def temp_cwd(name='tempcwd', quiet=False):
+def temp_cwd(name='tempcwd', quiet=Falsch):
     """
     Context manager that temporarily creates and changes the CWD.
 
     The function temporarily changes the current working directory
     after creating a temporary directory in the current directory with
-    name *name*.  If *name* is None, the temporary directory is
+    name *name*.  If *name* is Nichts, the temporary directory is
     created using tempfile.mkdtemp.
 
-    If *quiet* is False (default) and it is not possible to
-    create or change the CWD, an error is raised.  If *quiet* is True,
+    If *quiet* is Falsch (default) and it is not possible to
+    create or change the CWD, an error is raised.  If *quiet* is Wahr,
     only a warning is raised and the original CWD is used.
 
     """
@@ -631,7 +631,7 @@ def fs_is_case_insensitive(directory):
         try:
             return os.path.samefile(base_path, case_path)
         except FileNotFoundError:
-            return False
+            return Falsch
 
 
 klasse FakePath:
@@ -660,9 +660,9 @@ def fd_count():
     sowenn support.is_apple:
         fd_path = "/dev/fd"
     sonst:
-        fd_path = None
+        fd_path = Nichts
 
-    wenn fd_path is not None:
+    wenn fd_path is not Nichts:
         try:
             names = os.listdir(fd_path)
             # Subtract one because listdir() internally opens a file
@@ -678,7 +678,7 @@ def fd_count():
         except OSError:
             pass
 
-    old_modes = None
+    old_modes = Nichts
     wenn sys.platform == 'win32':
         # bpo-25306, bpo-31009: Call CrtSetReportMode() to not kill the process
         # on invalid file descriptor wenn Python is compiled in debug mode
@@ -710,7 +710,7 @@ def fd_count():
                 os.close(fd2)
                 count += 1
     finally:
-        wenn old_modes is not None:
+        wenn old_modes is not Nichts:
             fuer report_type in (msvcrt.CRT_WARN,
                                 msvcrt.CRT_ERROR,
                                 msvcrt.CRT_ASSERT):
@@ -787,7 +787,7 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
 
     def __exit__(self, *ignore_exc):
         fuer (k, v) in self._changed.items():
-            wenn v is None:
+            wenn v is Nichts:
                 wenn k in self._environ:
                     del self._environ[k]
             sonst:
@@ -798,7 +798,7 @@ klasse EnvironmentVarGuard(collections.abc.MutableMapping):
 try:
     wenn support.MS_WINDOWS:
         import ctypes
-        kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel32 = ctypes.WinDLL('kernel32', use_last_error=Wahr)
 
         ERROR_FILE_NOT_FOUND = 2
         DDD_REMOVE_DEFINITION = 2
@@ -815,7 +815,7 @@ sonst:
         """Temporarily yield a substitute drive fuer a given path."""
         fuer c in reversed(string.ascii_uppercase):
             drive = f'{c}:'
-            wenn (not kernel32.QueryDosDeviceW(drive, None, 0) and
+            wenn (not kernel32.QueryDosDeviceW(drive, Nichts, 0) and
                     ctypes.get_last_error() == ERROR_FILE_NOT_FOUND):
                 break
         sonst:

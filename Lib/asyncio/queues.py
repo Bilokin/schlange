@@ -53,7 +53,7 @@ klasse Queue(mixins._LoopBoundMixin):
         self._finished = locks.Event()
         self._finished.set()
         self._init(maxsize)
-        self._is_shutdown = False
+        self._is_shutdown = Falsch
 
     # These three are overridable in subclasses.
 
@@ -73,7 +73,7 @@ klasse Queue(mixins._LoopBoundMixin):
         while waiters:
             waiter = waiters.popleft()
             wenn not waiter.done():
-                waiter.set_result(None)
+                waiter.set_result(Nichts)
                 break
 
     def __repr__(self):
@@ -86,7 +86,7 @@ klasse Queue(mixins._LoopBoundMixin):
 
     def _format(self):
         result = f'maxsize={self._maxsize!r}'
-        wenn getattr(self, '_queue', None):
+        wenn getattr(self, '_queue', Nichts):
             result += f' _queue={list(self._queue)!r}'
         wenn self._getters:
             result += f' _getters[{len(self._getters)}]'
@@ -108,17 +108,17 @@ klasse Queue(mixins._LoopBoundMixin):
         return self._maxsize
 
     def empty(self):
-        """Return True wenn the queue is empty, False otherwise."""
+        """Return Wahr wenn the queue is empty, Falsch otherwise."""
         return not self._queue
 
     def full(self):
-        """Return True wenn there are maxsize items in the queue.
+        """Return Wahr wenn there are maxsize items in the queue.
 
         Note: wenn the Queue was initialized with maxsize=0 (the default),
-        then full() is never True.
+        then full() is never Wahr.
         """
         wenn self._maxsize <= 0:
-            return False
+            return Falsch
         sonst:
             return self.qsize() >= self._maxsize
 
@@ -247,11 +247,11 @@ klasse Queue(mixins._LoopBoundMixin):
         wenn self._unfinished_tasks > 0:
             await self._finished.wait()
 
-    def shutdown(self, immediate=False):
+    def shutdown(self, immediate=Falsch):
         """Shut-down the queue, making queue gets and puts raise QueueShutDown.
 
         By default, gets will only raise once the queue is empty. Set
-        'immediate' to True to make gets raise immediately instead.
+        'immediate' to Wahr to make gets raise immediately instead.
 
         All blocked callers of put() and get() will be unblocked.
 
@@ -259,7 +259,7 @@ klasse Queue(mixins._LoopBoundMixin):
         is reduced by the number of drained tasks.  If unfinished tasks
         is reduced to zero, callers of Queue.join are unblocked.
         """
-        self._is_shutdown = True
+        self._is_shutdown = Wahr
         wenn immediate:
             while not self.empty():
                 self._get()
@@ -271,11 +271,11 @@ klasse Queue(mixins._LoopBoundMixin):
         while self._getters:
             getter = self._getters.popleft()
             wenn not getter.done():
-                getter.set_result(None)
+                getter.set_result(Nichts)
         while self._putters:
             putter = self._putters.popleft()
             wenn not putter.done():
-                putter.set_result(None)
+                putter.set_result(Nichts)
 
 
 klasse PriorityQueue(Queue):

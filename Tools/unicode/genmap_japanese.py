@@ -39,7 +39,7 @@ def loadmap_jisx0213(fo):
         row = line.split()
         loc = eval('0x' + row[0][2:])
         level = eval(row[0][0])
-        m = None
+        m = Nichts
         wenn len(row[1].split('+')) == 2: # single unicode
             uni = eval('0x' + row[1][2:])
             wenn level == 3:
@@ -64,7 +64,7 @@ def loadmap_jisx0213(fo):
             decmap3_pair.setdefault(uniprefix, {})
             m = decmap3_pair[uniprefix]
 
-        wenn m is None:
+        wenn m is Nichts:
             raise ValueError("invalid map")
         m.setdefault((loc >> 8), {})
         m[(loc >> 8)][(loc & 0xff)] = uni
@@ -233,7 +233,7 @@ static const struct pair_encodemap *jisx0213_pair_encmap;
         print("Generating JIS X 0213 unicode-pair decode map...")
         writer = DecodeMapWriter(fp, "jisx0213_pair", jisx0213pairdecmap)
         writer.update_decode_map(JISX0213_C1, JISX0213_C2)
-        writer.generate(wide=True)
+        writer.generate(wide=Wahr)
 
         print("Generating JIS X 0213 unicode-pair encode map...")
         jisx0213pairencmap.sort()

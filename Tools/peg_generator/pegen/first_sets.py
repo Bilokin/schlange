@@ -33,7 +33,7 @@ argparser.add_argument("grammar_file", help="The grammar file")
 
 
 klasse FirstSetCalculator(GrammarVisitor):
-    def __init__(self, rules: Dict[str, Rule]) -> None:
+    def __init__(self, rules: Dict[str, Rule]) -> Nichts:
         self.rules = rules
         self.nullables = compute_nullables(rules)
         self.first_sets: Dict[str, Set[str]] = dict()
@@ -132,7 +132,7 @@ klasse FirstSetCalculator(GrammarVisitor):
         return self.first_sets[item.name]
 
 
-def main() -> None:
+def main() -> Nichts:
     args = argparser.parse_args()
 
     try:

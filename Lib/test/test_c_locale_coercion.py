@@ -21,7 +21,7 @@ EXPECTED_C_LOCALE_STREAM_ENCODING = "ascii"
 EXPECTED_C_LOCALE_FS_ENCODING = "ascii"
 
 # Set our expectation fuer the default locale used when none is specified
-EXPECT_COERCION_IN_DEFAULT_LOCALE = True
+EXPECT_COERCION_IN_DEFAULT_LOCALE = Wahr
 
 TARGET_LOCALES = ["C.UTF-8", "C.utf8", "UTF-8"]
 
@@ -47,7 +47,7 @@ sowenn sys.platform == "cygwin":
     # Cygwin defaults to using C.UTF-8
     # TODO: Work out a robust dynamic test fuer this that doesn't rely on
     #       CPython's own locale handling machinery
-    EXPECT_COERCION_IN_DEFAULT_LOCALE = False
+    EXPECT_COERCION_IN_DEFAULT_LOCALE = Falsch
 sowenn sys.platform == "vxworks":
     # VxWorks defaults to using UTF-8 fuer all system interfaces
     EXPECTED_C_LOCALE_STREAM_ENCODING = "utf-8"
@@ -114,7 +114,7 @@ klasse EncodingDetails(_EncodingDetails):
     def get_expected_details(cls, coercion_expected, fs_encoding, stream_encoding, stream_errors, env_vars):
         """Returns expected child process details fuer a given encoding"""
         _stream = stream_encoding + ":{}"
-        wenn stream_errors is None:
+        wenn stream_errors is Nichts:
             # stdin and stdout should use surrogateescape either because the
             # coercion triggered, or because the C locale was detected
             stream_errors = "surrogateescape"
@@ -172,16 +172,16 @@ CLI_COERCION_WARNING_FMT = (
 )
 
 
-AVAILABLE_TARGETS = None
-CLI_COERCION_TARGET = None
-CLI_COERCION_WARNING = None
+AVAILABLE_TARGETS = Nichts
+CLI_COERCION_TARGET = Nichts
+CLI_COERCION_WARNING = Nichts
 
 def setUpModule():
     global AVAILABLE_TARGETS
     global CLI_COERCION_TARGET
     global CLI_COERCION_WARNING
 
-    wenn AVAILABLE_TARGETS is not None:
+    wenn AVAILABLE_TARGETS is not Nichts:
         # initialization already done
         return
     AVAILABLE_TARGETS = []
@@ -233,7 +233,7 @@ klasse _LocaleHandlingTestCase(unittest.TestCase):
             env_vars
         )
         self.assertEqual(encoding_details, expected_details)
-        wenn expected_warnings is None:
+        wenn expected_warnings is Nichts:
             expected_warnings = []
         self.assertEqual(stderr_lines, expected_warnings)
 
@@ -252,7 +252,7 @@ klasse LocaleConfigurationTests(_LocaleHandlingTestCase):
 
         # Explicitly setting a target locale should give the same behaviour as
         # is seen when implicitly coercing to that target locale
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         expected_fs_encoding = "utf-8"
         expected_stream_encoding = "utf-8"
@@ -279,14 +279,14 @@ klasse LocaleConfigurationTests(_LocaleHandlingTestCase):
                     self._check_child_encoding_details(var_dict,
                                                        expected_fs_encoding,
                                                        expected_stream_encoding,
-                                                       expected_stream_errors=None,
-                                                       expected_warnings=None,
-                                                       coercion_expected=False)
+                                                       expected_stream_errors=Nichts,
+                                                       expected_warnings=Nichts,
+                                                       coercion_expected=Falsch)
 
     def test_with_ioencoding(self):
         # Explicitly setting a target locale should give the same behaviour as
         # is seen when implicitly coercing to that target locale
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         expected_fs_encoding = "utf-8"
         expected_stream_encoding = "utf-8"
@@ -314,8 +314,8 @@ klasse LocaleConfigurationTests(_LocaleHandlingTestCase):
                                                        expected_fs_encoding,
                                                        expected_stream_encoding,
                                                        expected_stream_errors="strict",
-                                                       expected_warnings=None,
-                                                       coercion_expected=False)
+                                                       expected_warnings=Nichts,
+                                                       coercion_expected=Falsch)
 
 @support.cpython_only
 @unittest.skipUnless(sysconfig.get_config_var("PY_COERCE_C_LOCALE"),
@@ -326,8 +326,8 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
     def _check_c_locale_coercion(self,
                                  fs_encoding, stream_encoding,
                                  coerce_c_locale,
-                                 expected_warnings=None,
-                                 coercion_expected=True,
+                                 expected_warnings=Nichts,
+                                 coercion_expected=Wahr,
                                  **extra_vars):
         """Check the C locale handling fuer various configurations
 
@@ -335,18 +335,18 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
             fs_encoding: expected sys.getfilesystemencoding() result
             stream_encoding: expected encoding fuer standard streams
             coerce_c_locale: setting to use fuer PYTHONCOERCECLOCALE
-              None: don't set the variable at all
+              Nichts: don't set the variable at all
               str: the value set in the child's environment
             expected_warnings: expected warning lines on stderr
             extra_vars: additional environment variables to set in subprocess
         """
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         wenn not AVAILABLE_TARGETS:
             # Locale coercion is disabled when there aren't any target locales
             fs_encoding = EXPECTED_C_LOCALE_FS_ENCODING
             stream_encoding = EXPECTED_C_LOCALE_STREAM_ENCODING
-            coercion_expected = False
+            coercion_expected = Falsch
             wenn expected_warnings:
                 expected_warnings = [LEGACY_LOCALE_WARNING]
 
@@ -358,29 +358,29 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
             "PYTHONIOENCODING": "",
         }
         base_var_dict.update(extra_vars)
-        wenn coerce_c_locale is not None:
+        wenn coerce_c_locale is not Nichts:
             base_var_dict["PYTHONCOERCECLOCALE"] = coerce_c_locale
 
         # Check behaviour fuer the default locale
-        with self.subTest(default_locale=True,
+        with self.subTest(default_locale=Wahr,
                           PYTHONCOERCECLOCALE=coerce_c_locale):
             wenn EXPECT_COERCION_IN_DEFAULT_LOCALE:
                 _expected_warnings = expected_warnings
                 _coercion_expected = coercion_expected
             sonst:
-                _expected_warnings = None
-                _coercion_expected = False
+                _expected_warnings = Nichts
+                _coercion_expected = Falsch
             # On Android CLI_COERCION_WARNING is not printed when all the
             # locale environment variables are undefined or empty. When
             # this code path is run with environ['LC_ALL'] == 'C', then
             # LEGACY_LOCALE_WARNING is printed.
             wenn (support.is_android and
                     _expected_warnings == [CLI_COERCION_WARNING]):
-                _expected_warnings = None
+                _expected_warnings = Nichts
             self._check_child_encoding_details(base_var_dict,
                                                fs_encoding,
                                                stream_encoding,
-                                               None,
+                                               Nichts,
                                                _expected_warnings,
                                                _coercion_expected)
 
@@ -397,13 +397,13 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
                     self._check_child_encoding_details(var_dict,
                                                        fs_encoding,
                                                        stream_encoding,
-                                                       None,
+                                                       Nichts,
                                                        expected_warnings,
                                                        coercion_expected)
 
     def test_PYTHONCOERCECLOCALE_not_set(self):
         # This should coerce to the first available target locale by default
-        self._check_c_locale_coercion("utf-8", "utf-8", coerce_c_locale=None)
+        self._check_c_locale_coercion("utf-8", "utf-8", coerce_c_locale=Nichts)
 
     def test_PYTHONCOERCECLOCALE_not_zero(self):
         # *Any* string other than "0" is considered "set" fuer our purposes
@@ -423,32 +423,32 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
         self._check_c_locale_coercion(EXPECTED_C_LOCALE_FS_ENCODING,
                                       EXPECTED_C_LOCALE_STREAM_ENCODING,
                                       coerce_c_locale="0",
-                                      coercion_expected=False)
+                                      coercion_expected=Falsch)
         # Setting LC_ALL=C shouldn't make any difference to the behaviour
         self._check_c_locale_coercion(EXPECTED_C_LOCALE_FS_ENCODING,
                                       EXPECTED_C_LOCALE_STREAM_ENCODING,
                                       coerce_c_locale="0",
                                       LC_ALL="C",
-                                      coercion_expected=False)
+                                      coercion_expected=Falsch)
 
     def test_LC_ALL_set_to_C(self):
         # Setting LC_ALL should render the locale coercion ineffective
         self._check_c_locale_coercion(EXPECTED_C_LOCALE_FS_ENCODING,
                                       EXPECTED_C_LOCALE_STREAM_ENCODING,
-                                      coerce_c_locale=None,
+                                      coerce_c_locale=Nichts,
                                       LC_ALL="C",
-                                      coercion_expected=False)
+                                      coercion_expected=Falsch)
         # And result in a warning about a lack of locale compatibility
         self._check_c_locale_coercion(EXPECTED_C_LOCALE_FS_ENCODING,
                                       EXPECTED_C_LOCALE_STREAM_ENCODING,
                                       coerce_c_locale="warn",
                                       LC_ALL="C",
                                       expected_warnings=[LEGACY_LOCALE_WARNING],
-                                      coercion_expected=False)
+                                      coercion_expected=Falsch)
 
     def test_PYTHONCOERCECLOCALE_set_to_one(self):
         # skip the test wenn the LC_CTYPE locale is C or coerced
-        old_loc = locale.setlocale(locale.LC_CTYPE, None)
+        old_loc = locale.setlocale(locale.LC_CTYPE, Nichts)
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, old_loc)
         try:
             loc = locale.setlocale(locale.LC_CTYPE, "")
@@ -461,12 +461,12 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
 
         # bpo-35336: PYTHONCOERCECLOCALE=1 must not coerce the LC_CTYPE locale
         # wenn it's not equal to "C"
-        code = 'import locale; print(locale.setlocale(locale.LC_CTYPE, None))'
+        code = 'import locale; print(locale.setlocale(locale.LC_CTYPE, Nichts))'
         env = dict(os.environ, PYTHONCOERCECLOCALE='1')
         cmd = subprocess.run([sys.executable, '-c', code],
                              stdout=subprocess.PIPE,
                              env=env,
-                             text=True)
+                             text=Wahr)
         self.assertEqual(cmd.stdout.rstrip(), loc)
 
 

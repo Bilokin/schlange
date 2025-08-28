@@ -9,7 +9,7 @@ from test.test_asyncio.utils import await_without_task
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
 
@@ -17,7 +17,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(TimeoutError):
             async with asyncio.timeout(0.01) as cm:
                 await asyncio.sleep(10)
-        self.assertTrue(cm.expired())
+        self.assertWahr(cm.expired())
 
     async def test_timeout_at_basic(self):
         loop = asyncio.get_running_loop()
@@ -26,12 +26,12 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
             deadline = loop.time() + 0.01
             async with asyncio.timeout_at(deadline) as cm:
                 await asyncio.sleep(10)
-        self.assertTrue(cm.expired())
+        self.assertWahr(cm.expired())
         self.assertEqual(deadline, cm.when())
 
     async def test_nested_timeouts(self):
         loop = asyncio.get_running_loop()
-        cancelled = False
+        cancelled = Falsch
         with self.assertRaises(TimeoutError):
             deadline = loop.time() + 0.01
             async with asyncio.timeout_at(deadline) as cm1:
@@ -40,22 +40,22 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
                     async with asyncio.timeout_at(deadline) as cm2:
                         await asyncio.sleep(10)
                 except asyncio.CancelledError:
-                    cancelled = True
+                    cancelled = Wahr
                     raise
-        self.assertTrue(cancelled)
-        self.assertTrue(cm1.expired())
-        self.assertTrue(cm2.expired())
+        self.assertWahr(cancelled)
+        self.assertWahr(cm1.expired())
+        self.assertWahr(cm2.expired())
 
     async def test_waiter_cancelled(self):
-        cancelled = False
+        cancelled = Falsch
         with self.assertRaises(TimeoutError):
             async with asyncio.timeout(0.01):
                 try:
                     await asyncio.sleep(10)
                 except asyncio.CancelledError:
-                    cancelled = True
+                    cancelled = Wahr
                     raise
-        self.assertTrue(cancelled)
+        self.assertWahr(cancelled)
 
     async def test_timeout_not_called(self):
         loop = asyncio.get_running_loop()
@@ -63,22 +63,22 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
             await asyncio.sleep(0.01)
         t1 = loop.time()
 
-        self.assertFalse(cm.expired())
+        self.assertFalsch(cm.expired())
         self.assertGreater(cm.when(), t1)
 
     async def test_timeout_disabled(self):
-        async with asyncio.timeout(None) as cm:
+        async with asyncio.timeout(Nichts) as cm:
             await asyncio.sleep(0.01)
 
-        self.assertFalse(cm.expired())
-        self.assertIsNone(cm.when())
+        self.assertFalsch(cm.expired())
+        self.assertIsNichts(cm.when())
 
     async def test_timeout_at_disabled(self):
-        async with asyncio.timeout_at(None) as cm:
+        async with asyncio.timeout_at(Nichts) as cm:
             await asyncio.sleep(0.01)
 
-        self.assertFalse(cm.expired())
-        self.assertIsNone(cm.when())
+        self.assertFalsch(cm.expired())
+        self.assertIsNichts(cm.when())
 
     async def test_timeout_zero(self):
         loop = asyncio.get_running_loop()
@@ -87,8 +87,8 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
             async with asyncio.timeout(0) as cm:
                 await asyncio.sleep(10)
         t1 = loop.time()
-        self.assertTrue(cm.expired())
-        self.assertTrue(t0 <= cm.when() <= t1)
+        self.assertWahr(cm.expired())
+        self.assertWahr(t0 <= cm.when() <= t1)
 
     async def test_timeout_zero_sleep_zero(self):
         loop = asyncio.get_running_loop()
@@ -97,8 +97,8 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
             async with asyncio.timeout(0) as cm:
                 await asyncio.sleep(0)
         t1 = loop.time()
-        self.assertTrue(cm.expired())
-        self.assertTrue(t0 <= cm.when() <= t1)
+        self.assertWahr(cm.expired())
+        self.assertWahr(t0 <= cm.when() <= t1)
 
     async def test_timeout_in_the_past_sleep_zero(self):
         loop = asyncio.get_running_loop()
@@ -107,14 +107,14 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
             async with asyncio.timeout(-11) as cm:
                 await asyncio.sleep(0)
         t1 = loop.time()
-        self.assertTrue(cm.expired())
-        self.assertTrue(t0 >= cm.when() <= t1)
+        self.assertWahr(cm.expired())
+        self.assertWahr(t0 >= cm.when() <= t1)
 
     async def test_foreign_exception_passed(self):
         with self.assertRaises(KeyError):
             async with asyncio.timeout(0.01) as cm:
                 raise KeyError
-        self.assertFalse(cm.expired())
+        self.assertFalsch(cm.expired())
 
     async def test_timeout_exception_context(self):
         with self.assertRaises(TimeoutError) as cm:
@@ -129,7 +129,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         e2 = e.__cause__
         self.assertIsInstance(e2, asyncio.CancelledError)
         self.assertIs(e.__context__, e2)
-        self.assertIsNone(e2.__cause__)
+        self.assertIsNichts(e2.__cause__)
         self.assertIsInstance(e2.__context__, ZeroDivisionError)
 
     async def test_foreign_exception_on_timeout(self):
@@ -144,7 +144,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         e = cm.exception
         # Expect ZeroDivisionError raised during handling of TimeoutError
         # caused by CancelledError.
-        self.assertIsNone(e.__cause__)
+        self.assertIsNichts(e.__cause__)
         e2 = e.__context__
         self.assertIsInstance(e2, TimeoutError)
         e3 = e2.__cause__
@@ -167,15 +167,15 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         e = cm.exception
         # Expect ZeroDivisionError raised during handling of KeyError
         # raised during handling of TimeoutError caused by CancelledError.
-        self.assertIsNone(e.__cause__)
+        self.assertIsNichts(e.__cause__)
         e2 = e.__context__
         self.assertIsInstance(e2, KeyError)
-        self.assertIsNone(e2.__cause__)
+        self.assertIsNichts(e2.__cause__)
         e3 = e2.__context__
         self.assertIsInstance(e3, TimeoutError)
         e4 = e3.__cause__
         self.assertIsInstance(e4, asyncio.CancelledError)
-        self.assertIsNone(e4.__cause__)
+        self.assertIsNichts(e4.__cause__)
         self.assertIsInstance(e4.__context__, ValueError)
         self.assertIs(e3.__context__, e4)
 
@@ -184,18 +184,18 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
             async with asyncio.timeout(10) as cm:
                 asyncio.current_task().cancel()
                 await asyncio.sleep(10)
-        self.assertFalse(cm.expired())
+        self.assertFalsch(cm.expired())
 
     async def test_outer_task_is_not_cancelled(self):
-        async def outer() -> None:
+        async def outer() -> Nichts:
             with self.assertRaises(TimeoutError):
                 async with asyncio.timeout(0.001):
                     await asyncio.sleep(10)
 
         task = asyncio.create_task(outer())
         await task
-        self.assertFalse(task.cancelled())
-        self.assertTrue(task.done())
+        self.assertFalsch(task.cancelled())
+        self.assertWahr(task.done())
 
     async def test_nested_timeouts_concurrent(self):
         with self.assertRaises(TimeoutError):
@@ -223,7 +223,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
                 # TimeoutError was caught by (2)
                 await asyncio.sleep(10) # This sleep should be interrupted by (1)
         t1 = loop.time()
-        self.assertTrue(t0 <= t1 <= t0 + 1)
+        self.assertWahr(t0 <= t1 <= t0 + 1)
 
     async def test_reschedule(self):
         loop = asyncio.get_running_loop()
@@ -242,14 +242,14 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(cm.when(), deadline1)
         cm.reschedule(deadline2)
         self.assertEqual(cm.when(), deadline2)
-        cm.reschedule(None)
-        self.assertIsNone(cm.when())
+        cm.reschedule(Nichts)
+        self.assertIsNichts(cm.when())
 
         task.cancel()
 
         with self.assertRaises(asyncio.CancelledError):
             await task
-        self.assertFalse(cm.expired())
+        self.assertFalsch(cm.expired())
 
     async def test_repr_active(self):
         async with asyncio.timeout(10) as cm:
@@ -268,8 +268,8 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(repr(cm), "<Timeout [finished]>")
 
     async def test_repr_disabled(self):
-        async with asyncio.timeout(None) as cm:
-            self.assertEqual(repr(cm), r"<Timeout [active] when=None>")
+        async with asyncio.timeout(Nichts) as cm:
+            self.assertEqual(repr(cm), r"<Timeout [active] when=Nichts>")
 
     async def test_nested_timeout_in_finally(self):
         with self.assertRaises(TimeoutError) as cm1:
@@ -284,8 +284,8 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         # Expect TimeoutError caused by CancelledError.
         e12 = e1.__cause__
         self.assertIsInstance(e12, asyncio.CancelledError)
-        self.assertIsNone(e12.__cause__)
-        self.assertIsNone(e12.__context__)
+        self.assertIsNichts(e12.__cause__)
+        self.assertIsNichts(e12.__context__)
         self.assertIs(e1.__context__, e12)
         e2 = cm2.exception
         # Expect TimeoutError caused by CancelledError raised during
@@ -293,7 +293,7 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         # the above chain).
         e22 = e2.__cause__
         self.assertIsInstance(e22, asyncio.CancelledError)
-        self.assertIsNone(e22.__cause__)
+        self.assertIsNichts(e22.__cause__)
         self.assertIs(e22.__context__, e12)
         self.assertIs(e2.__context__, e22)
 
@@ -383,12 +383,12 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         eg = cm.exception
         # Expect ExceptionGroup raised during handling of TimeoutError caused
         # by CancelledError raised during handling of ValueError.
-        self.assertIsNone(eg.__cause__)
+        self.assertIsNichts(eg.__cause__)
         e_1 = eg.__context__
         self.assertIsInstance(e_1, TimeoutError)
         e_2 = e_1.__cause__
         self.assertIsInstance(e_2, asyncio.CancelledError)
-        self.assertIsNone(e_2.__cause__)
+        self.assertIsNichts(e_2.__cause__)
         self.assertIsInstance(e_2.__context__, ValueError)
         self.assertIs(e_1.__context__, e_2)
 
@@ -397,13 +397,13 @@ klasse TimeoutTests(unittest.IsolatedAsyncioTestCase):
         # Expect ZeroDivisionError raised during handling of TimeoutError
         # caused by CancelledError (it is a different CancelledError).
         self.assertIsInstance(e1, ZeroDivisionError)
-        self.assertIsNone(e1.__cause__)
+        self.assertIsNichts(e1.__cause__)
         e2 = e1.__context__
         self.assertIsInstance(e2, TimeoutError)
         e3 = e2.__cause__
         self.assertIsInstance(e3, asyncio.CancelledError)
-        self.assertIsNone(e3.__context__)
-        self.assertIsNone(e3.__cause__)
+        self.assertIsNichts(e3.__context__)
+        self.assertIsNichts(e3.__cause__)
         self.assertIs(e2.__context__, e3)
 
 

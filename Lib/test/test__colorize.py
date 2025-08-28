@@ -16,7 +16,7 @@ def clear_env():
 
 def supports_virtual_terminal():
     wenn sys.platform == "win32":
-        return unittest.mock.patch("nt._supports_virtual_terminal", return_value=True)
+        return unittest.mock.patch("nt._supports_virtual_terminal", return_value=Wahr)
     sonst:
         return contextlib.nullcontext()
 
@@ -36,36 +36,36 @@ klasse TestColorizeFunction(unittest.TestCase):
               supports_virtual_terminal()):
             stdout_mock.fileno.return_value = 1
 
-            fuer fallback in False, True:
+            fuer fallback in Falsch, Wahr:
                 check({}, fallback, fallback)
-                check({'TERM': 'dumb'}, fallback, False)
+                check({'TERM': 'dumb'}, fallback, Falsch)
                 check({'TERM': 'xterm'}, fallback, fallback)
                 check({'TERM': ''}, fallback, fallback)
-                check({'FORCE_COLOR': '1'}, fallback, True)
-                check({'FORCE_COLOR': '0'}, fallback, True)
+                check({'FORCE_COLOR': '1'}, fallback, Wahr)
+                check({'FORCE_COLOR': '0'}, fallback, Wahr)
                 check({'FORCE_COLOR': ''}, fallback, fallback)
-                check({'NO_COLOR': '1'}, fallback, False)
-                check({'NO_COLOR': '0'}, fallback, False)
+                check({'NO_COLOR': '1'}, fallback, Falsch)
+                check({'NO_COLOR': '0'}, fallback, Falsch)
                 check({'NO_COLOR': ''}, fallback, fallback)
 
-            check({'TERM': 'dumb', 'FORCE_COLOR': '1'}, False, True)
-            check({'FORCE_COLOR': '1', 'NO_COLOR': '1'}, True, False)
+            check({'TERM': 'dumb', 'FORCE_COLOR': '1'}, Falsch, Wahr)
+            check({'FORCE_COLOR': '1', 'NO_COLOR': '1'}, Wahr, Falsch)
 
-            fuer ignore_environment in False, True:
+            fuer ignore_environment in Falsch, Wahr:
                 # Simulate running with or without `-E`.
                 flags = unittest.mock.MagicMock(ignore_environment=ignore_environment)
                 with unittest.mock.patch("sys.flags", flags):
-                    check({'PYTHON_COLORS': '1'}, True, True)
-                    check({'PYTHON_COLORS': '1'}, False, not ignore_environment)
-                    check({'PYTHON_COLORS': '0'}, True, ignore_environment)
-                    check({'PYTHON_COLORS': '0'}, False, False)
-                    fuer fallback in False, True:
+                    check({'PYTHON_COLORS': '1'}, Wahr, Wahr)
+                    check({'PYTHON_COLORS': '1'}, Falsch, not ignore_environment)
+                    check({'PYTHON_COLORS': '0'}, Wahr, ignore_environment)
+                    check({'PYTHON_COLORS': '0'}, Falsch, Falsch)
+                    fuer fallback in Falsch, Wahr:
                         check({'PYTHON_COLORS': 'x'}, fallback, fallback)
                         check({'PYTHON_COLORS': ''}, fallback, fallback)
 
-                    check({'TERM': 'dumb', 'PYTHON_COLORS': '1'}, False, not ignore_environment)
-                    check({'NO_COLOR': '1', 'PYTHON_COLORS': '1'}, False, not ignore_environment)
-                    check({'FORCE_COLOR': '1', 'PYTHON_COLORS': '0'}, True, ignore_environment)
+                    check({'TERM': 'dumb', 'PYTHON_COLORS': '1'}, Falsch, not ignore_environment)
+                    check({'NO_COLOR': '1', 'PYTHON_COLORS': '1'}, Falsch, not ignore_environment)
+                    check({'FORCE_COLOR': '1', 'PYTHON_COLORS': '0'}, Wahr, ignore_environment)
 
     @unittest.skipUnless(sys.platform == "win32", "requires Windows")
     def test_colorized_detection_checks_on_windows(self):
@@ -74,16 +74,16 @@ klasse TestColorizeFunction(unittest.TestCase):
               unittest.mock.patch("sys.stdout") as stdout_mock,
               supports_virtual_terminal() as vt_mock):
             stdout_mock.fileno.return_value = 1
-            isatty_mock.return_value = True
-            stdout_mock.isatty.return_value = True
+            isatty_mock.return_value = Wahr
+            stdout_mock.isatty.return_value = Wahr
 
-            vt_mock.return_value = True
-            self.assertEqual(_colorize.can_colorize(), True)
-            vt_mock.return_value = False
-            self.assertEqual(_colorize.can_colorize(), False)
+            vt_mock.return_value = Wahr
+            self.assertEqual(_colorize.can_colorize(), Wahr)
+            vt_mock.return_value = Falsch
+            self.assertEqual(_colorize.can_colorize(), Falsch)
             import nt
             del nt._supports_virtual_terminal
-            self.assertEqual(_colorize.can_colorize(), False)
+            self.assertEqual(_colorize.can_colorize(), Falsch)
 
     def test_colorized_detection_checks_for_std_streams(self):
         with (clear_env(),
@@ -95,13 +95,13 @@ klasse TestColorizeFunction(unittest.TestCase):
             stderr_mock.fileno.side_effect = ZeroDivisionError
             stderr_mock.isatty.side_effect = ZeroDivisionError
 
-            isatty_mock.return_value = True
-            stdout_mock.isatty.return_value = True
-            self.assertEqual(_colorize.can_colorize(), True)
+            isatty_mock.return_value = Wahr
+            stdout_mock.isatty.return_value = Wahr
+            self.assertEqual(_colorize.can_colorize(), Wahr)
 
-            isatty_mock.return_value = False
-            stdout_mock.isatty.return_value = False
-            self.assertEqual(_colorize.can_colorize(), False)
+            isatty_mock.return_value = Falsch
+            stdout_mock.isatty.return_value = Falsch
+            self.assertEqual(_colorize.can_colorize(), Falsch)
 
     def test_colorized_detection_checks_for_file(self):
         with clear_env(), supports_virtual_terminal():
@@ -109,25 +109,25 @@ klasse TestColorizeFunction(unittest.TestCase):
             with unittest.mock.patch("os.isatty") as isatty_mock:
                 file = unittest.mock.MagicMock()
                 file.fileno.return_value = 1
-                isatty_mock.return_value = True
-                self.assertEqual(_colorize.can_colorize(file=file), True)
-                isatty_mock.return_value = False
-                self.assertEqual(_colorize.can_colorize(file=file), False)
+                isatty_mock.return_value = Wahr
+                self.assertEqual(_colorize.can_colorize(file=file), Wahr)
+                isatty_mock.return_value = Falsch
+                self.assertEqual(_colorize.can_colorize(file=file), Falsch)
 
             # No file.fileno.
             with unittest.mock.patch("os.isatty", side_effect=ZeroDivisionError):
                 file = unittest.mock.MagicMock(spec=['isatty'])
-                file.isatty.return_value = True
-                self.assertEqual(_colorize.can_colorize(file=file), False)
+                file.isatty.return_value = Wahr
+                self.assertEqual(_colorize.can_colorize(file=file), Falsch)
 
             # file.fileno() raises io.UnsupportedOperation.
             with unittest.mock.patch("os.isatty", side_effect=ZeroDivisionError):
                 file = unittest.mock.MagicMock()
                 file.fileno.side_effect = io.UnsupportedOperation
-                file.isatty.return_value = True
-                self.assertEqual(_colorize.can_colorize(file=file), True)
-                file.isatty.return_value = False
-                self.assertEqual(_colorize.can_colorize(file=file), False)
+                file.isatty.return_value = Wahr
+                self.assertEqual(_colorize.can_colorize(file=file), Wahr)
+                file.isatty.return_value = Falsch
+                self.assertEqual(_colorize.can_colorize(file=file), Falsch)
 
 
 wenn __name__ == "__main__":

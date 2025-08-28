@@ -169,9 +169,9 @@ klasse PlaySoundTest(unittest.TestCase):
         )
         time.sleep(0.5)
         safe_PlaySound('SystemQuestion', winsound.SND_ALIAS | winsound.SND_NOSTOP)
-        # Issue 8367: PlaySound(None, winsound.SND_PURGE)
+        # Issue 8367: PlaySound(Nichts, winsound.SND_PURGE)
         # does not raise on systems without a sound card.
-        winsound.PlaySound(None, winsound.SND_PURGE)
+        winsound.PlaySound(Nichts, winsound.SND_PURGE)
 
     def test_sound_sentry(self):
         safe_PlaySound("SystemExit", winsound.SND_ALIAS | winsound.SND_SENTRY)

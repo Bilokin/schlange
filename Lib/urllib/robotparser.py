@@ -29,9 +29,9 @@ klasse RobotFileParser:
     def __init__(self, url=''):
         self.entries = []
         self.sitemaps = []
-        self.default_entry = None
-        self.disallow_all = False
-        self.allow_all = False
+        self.default_entry = Nichts
+        self.disallow_all = Falsch
+        self.allow_all = Falsch
         self.set_url(url)
         self.last_checked = 0
 
@@ -63,9 +63,9 @@ klasse RobotFileParser:
             f = urllib.request.urlopen(self.url)
         except urllib.error.HTTPError as err:
             wenn err.code in (401, 403):
-                self.disallow_all = True
+                self.disallow_all = Wahr
             sowenn err.code >= 400 and err.code < 500:
-                self.allow_all = True
+                self.allow_all = Wahr
             err.close()
         sonst:
             raw = f.read()
@@ -74,7 +74,7 @@ klasse RobotFileParser:
     def _add_entry(self, entry):
         wenn "*" in entry.useragents:
             # the default entry is considered last
-            wenn self.default_entry is None:
+            wenn self.default_entry is Nichts:
                 # the first default entry wins
                 self.default_entry = entry
         sonst:
@@ -122,11 +122,11 @@ klasse RobotFileParser:
                     state = 1
                 sowenn line[0] == "disallow":
                     wenn state != 0:
-                        entry.rulelines.append(RuleLine(line[1], False))
+                        entry.rulelines.append(RuleLine(line[1], Falsch))
                         state = 2
                 sowenn line[0] == "allow":
                     wenn state != 0:
-                        entry.rulelines.append(RuleLine(line[1], True))
+                        entry.rulelines.append(RuleLine(line[1], Wahr))
                         state = 2
                 sowenn line[0] == "crawl-delay":
                     wenn state != 0:
@@ -156,15 +156,15 @@ klasse RobotFileParser:
     def can_fetch(self, useragent, url):
         """using the parsed robots.txt decide wenn useragent can fetch url"""
         wenn self.disallow_all:
-            return False
+            return Falsch
         wenn self.allow_all:
-            return True
+            return Wahr
         # Until the robots.txt file has been read or found not
         # to exist, we must assume that no url is allowable.
         # This prevents false positives when a user erroneously
         # calls can_fetch() before calling read().
         wenn not self.last_checked:
-            return False
+            return Falsch
         # search fuer given user agent matches
         # the first match counts
         parsed_url = urllib.parse.urlparse(urllib.parse.unquote(url))
@@ -180,47 +180,47 @@ klasse RobotFileParser:
         wenn self.default_entry:
             return self.default_entry.allowance(url)
         # agent not found ==> access granted
-        return True
+        return Wahr
 
     def crawl_delay(self, useragent):
         wenn not self.mtime():
-            return None
+            return Nichts
         fuer entry in self.entries:
             wenn entry.applies_to(useragent):
                 return entry.delay
         wenn self.default_entry:
             return self.default_entry.delay
-        return None
+        return Nichts
 
     def request_rate(self, useragent):
         wenn not self.mtime():
-            return None
+            return Nichts
         fuer entry in self.entries:
             wenn entry.applies_to(useragent):
                 return entry.req_rate
         wenn self.default_entry:
             return self.default_entry.req_rate
-        return None
+        return Nichts
 
     def site_maps(self):
         wenn not self.sitemaps:
-            return None
+            return Nichts
         return self.sitemaps
 
     def __str__(self):
         entries = self.entries
-        wenn self.default_entry is not None:
+        wenn self.default_entry is not Nichts:
             entries = entries + [self.default_entry]
         return '\n\n'.join(map(str, entries))
 
 
 klasse RuleLine:
-    """A rule line is a single "Allow:" (allowance==True) or "Disallow:"
-       (allowance==False) followed by a path."""
+    """A rule line is a single "Allow:" (allowance==Wahr) or "Disallow:"
+       (allowance==Falsch) followed by a path."""
     def __init__(self, path, allowance):
         wenn path == '' and not allowance:
             # an empty value means allow all
-            allowance = True
+            allowance = Wahr
         path = urllib.parse.urlunparse(urllib.parse.urlparse(path))
         self.path = urllib.parse.quote(path)
         self.allowance = allowance
@@ -237,16 +237,16 @@ klasse Entry:
     def __init__(self):
         self.useragents = []
         self.rulelines = []
-        self.delay = None
-        self.req_rate = None
+        self.delay = Nichts
+        self.req_rate = Nichts
 
     def __str__(self):
         ret = []
         fuer agent in self.useragents:
             ret.append(f"User-agent: {agent}")
-        wenn self.delay is not None:
+        wenn self.delay is not Nichts:
             ret.append(f"Crawl-delay: {self.delay}")
-        wenn self.req_rate is not None:
+        wenn self.req_rate is not Nichts:
             rate = self.req_rate
             ret.append(f"Request-rate: {rate.requests}/{rate.seconds}")
         ret.extend(map(str, self.rulelines))
@@ -259,11 +259,11 @@ klasse Entry:
         fuer agent in self.useragents:
             wenn agent == '*':
                 # we have the catch-all agent
-                return True
+                return Wahr
             agent = agent.lower()
             wenn agent in useragent:
-                return True
-        return False
+                return Wahr
+        return Falsch
 
     def allowance(self, filename):
         """Preconditions:
@@ -272,4 +272,4 @@ klasse Entry:
         fuer line in self.rulelines:
             wenn line.applies_to(filename):
                 return line.allowance
-        return True
+        return Wahr

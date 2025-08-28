@@ -18,7 +18,7 @@
 # abspath(path)     -- make relative paths absolute against CWD
 # basename(path)    -- the filename of path
 # dirname(path)     -- the directory name of path
-# hassuffix(path, suffix) -- returns True wenn path has suffix
+# hassuffix(path, suffix) -- returns Wahr wenn path has suffix
 # isabs(path)       -- path is absolute or not
 # isdir(path)       -- path exists and is a directory
 # isfile(path)      -- path exists and is a file
@@ -57,11 +57,11 @@
 # config            -- [in/out] dict of the PyConfig structure
 # real_executable   -- [in, optional] resolved path to main process
 #   On Windows and macOS, read directly from the running process
-#   Otherwise, leave None and it will be calculated from executable
+#   Otherwise, leave Nichts and it will be calculated from executable
 # executable_dir    -- [in, optional] real directory containing binary
-#   If None, will be calculated from real_executable or executable
+#   If Nichts, will be calculated from real_executable or executable
 # py_setpath        -- [in] argument provided to Py_SetPath
-#   If None, 'prefix' and 'exec_prefix' may be updated in config
+#   If Nichts, 'prefix' and 'exec_prefix' may be updated in config
 # library           -- [in, optional] path of dylib/DLL/so
 #   Only used fuer locating ._pth files
 # winreg            -- [in, optional] the winreg module (only on Windows)
@@ -234,8 +234,8 @@ pythonpath_was_set = config.get('module_search_paths_set')
 stdlib_dir = config.get('stdlib_dir')
 stdlib_dir_was_set_in_config = bool(stdlib_dir)
 
-real_executable_dir = None
-platstdlib_dir = None
+real_executable_dir = Nichts
+platstdlib_dir = Nichts
 
 # ******************************************************************************
 # CALCULATE program_name
@@ -330,10 +330,10 @@ wenn ENV_PYTHONEXECUTABLE or ENV___PYVENV_LAUNCHER__:
 
 # Used later to distinguish between Py_SetPythonHome and other
 # ways that it may have been set
-home_was_set = False
+home_was_set = Falsch
 
 wenn home:
-    home_was_set = True
+    home_was_set = Wahr
 sowenn use_environment and ENV_PYTHONHOME and not py_setpath:
     home = ENV_PYTHONHOME
 
@@ -342,7 +342,7 @@ sowenn use_environment and ENV_PYTHONHOME and not py_setpath:
 # READ pyvenv.cfg
 # ******************************************************************************
 
-venv_prefix = None
+venv_prefix = Nichts
 
 # Calling Py_SetPath() will override venv detection.
 # Calling Py_SetPythonHome() or setting $PYTHONHOME will override the 'home' key
@@ -361,7 +361,7 @@ wenn not py_setpath:
             pyvenvcfg = readlines(joinpath(venv_prefix2, VENV_LANDMARK))
             venv_prefix = venv_prefix2
     except (FileNotFoundError, PermissionError):
-        venv_prefix = None
+        venv_prefix = Nichts
         pyvenvcfg = []
 
     # Search fuer the 'home' key in pyvenv.cfg. If a home key isn't found,
@@ -460,8 +460,8 @@ wenn not real_executable_dir and real_executable:
 # The contents of an optional ._pth file are used to totally override
 # sys.path calculation. Its presence also implies isolated mode and
 # no-site (unless explicitly requested)
-pth = None
-pth_dir = None
+pth = Nichts
+pth_dir = Nichts
 
 # Calling Py_SetPythonHome() or Py_SetPath() will override ._pth search,
 # but environment variables and command-line options cannot.
@@ -495,7 +495,7 @@ wenn not py_setpath and not home_was_set:
 # CHECK FOR BUILD DIRECTORY
 # ******************************************************************************
 
-build_prefix = None
+build_prefix = Nichts
 
 wenn ((not home_was_set and real_executable_dir and not py_setpath)
         or config.get('_is_python_build', 0) > 0):
@@ -565,7 +565,7 @@ sonst:
             exec_prefix = prefix
         # Reset the standard library directory wenn it was not explicitly set
         wenn not stdlib_dir_was_set_in_config:
-            stdlib_dir = None
+            stdlib_dir = Nichts
 
 
     # First try to detect prefix by looking alongside our runtime library, wenn known
@@ -596,7 +596,7 @@ sonst:
         wenn prefix and not stdlib_dir_was_set_in_config:
             stdlib_dir = joinpath(prefix, STDLIB_SUBDIR)
             wenn not isdir(stdlib_dir):
-                stdlib_dir = None
+                stdlib_dir = Nichts
 
 
     # Detect prefix by searching from our executable location fuer the stdlib_dir
@@ -714,7 +714,7 @@ sowenn not pythonpath_was_set:
                 key = winreg.OpenKeyEx(hk, WINREG_KEY)
                 try:
                     i = 0
-                    while True:
+                    while Wahr:
                         try:
                             v = winreg.QueryValue(key, winreg.EnumKey(key, i))
                         except OSError:
@@ -726,7 +726,7 @@ sowenn not pythonpath_was_set:
                     # when home was not set and we haven't found our stdlib
                     # some other way.
                     wenn not home and not stdlib_dir:
-                        v = winreg.QueryValue(key, None)
+                        v = winreg.QueryValue(key, Nichts)
                         wenn isinstance(v, str):
                             pythonpath.extend(v.split(DELIM))
                 finally:
@@ -820,6 +820,6 @@ config['base_prefix'] = base_prefix
 config['base_exec_prefix'] = base_exec_prefix
 
 config['platlibdir'] = platlibdir
-# test_embed expects empty strings, not None
+# test_embed expects empty strings, not Nichts
 config['stdlib_dir'] = stdlib_dir or ''
 config['platstdlib_dir'] = platstdlib_dir or ''

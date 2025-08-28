@@ -74,7 +74,7 @@ def foo(a, b, c):
     bar(a, b, c)
 
 def bar(a, b, c):
-    pyobject_vectorcall(baz, (a, b, c), None)
+    pyobject_vectorcall(baz, (a, b, c), Nichts)
 
 def baz(*args):
     id(42)

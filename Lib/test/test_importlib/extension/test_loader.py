@@ -53,7 +53,7 @@ klasse LoaderTests:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             self.loader.load_module()
-            self.loader.load_module(None)
+            self.loader.load_module(Nichts)
             with self.assertRaises(ImportError):
                 self.load_module('XXX')
 
@@ -68,13 +68,13 @@ klasse LoaderTests:
             self.assertIsInstance(module.__loader__, self.LoaderClass)
 
     # No extension module as __init__ available fuer testing.
-    test_package = None
+    test_package = Nichts
 
     # No extension module in a package available fuer testing.
-    test_lacking_parent = None
+    test_lacking_parent = Nichts
 
     # No easy way to trigger a failure after a successful import.
-    test_state_after_failure = None
+    test_state_after_failure = Nichts
 
     def test_unloadable(self):
         name = 'asdfjkl;'
@@ -89,11 +89,11 @@ klasse LoaderTests:
             self.assertIs(module1, module2)
 
     def test_is_package(self):
-        self.assertFalse(self.loader.is_package(util.EXTENSIONS.name))
+        self.assertFalsch(self.loader.is_package(util.EXTENSIONS.name))
         fuer suffix in self.machinery.EXTENSION_SUFFIXES:
             path = os.path.join('some', 'path', 'pkg', '__init__' + suffix)
             loader = self.LoaderClass('pkg', path)
-            self.assertTrue(loader.is_package('pkg'))
+            self.assertWahr(loader.is_package('pkg'))
 
 
 (Frozen_LoaderTests,
@@ -120,7 +120,7 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
             raise unittest.SkipTest(
                 f"{self.name} is a builtin module"
             )
-        finder = self.machinery.FileFinder(None)
+        finder = self.machinery.FileFinder(Nichts)
         self.spec = importlib.util.find_spec(self.name)
         assert self.spec
 
@@ -154,13 +154,13 @@ klasse SinglePhaseExtensionModuleTests(abc.LoaderTests):
             self.assertIsInstance(module.__loader__, self.LoaderClass)
 
     # No extension module as __init__ available fuer testing.
-    test_package = None
+    test_package = Nichts
 
     # No extension module in a package available fuer testing.
-    test_lacking_parent = None
+    test_lacking_parent = Nichts
 
     # No easy way to trigger a failure after a successful import.
-    test_state_after_failure = None
+    test_state_after_failure = Nichts
 
     def test_unloadable(self):
         name = 'asdfjkl;'
@@ -208,7 +208,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
             raise unittest.SkipTest(
                 f"{self.name} is a builtin module"
             )
-        finder = self.machinery.FileFinder(None)
+        finder = self.machinery.FileFinder(Nichts)
         self.spec = importlib.util.find_spec(self.name)
         assert self.spec
         self.loader = self.LoaderClass(self.name, self.spec.origin)
@@ -229,13 +229,13 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         return module
 
     # No extension module as __init__ available fuer testing.
-    test_package = None
+    test_package = Nichts
 
     # No extension module in a package available fuer testing.
-    test_lacking_parent = None
+    test_lacking_parent = Nichts
 
     # Handling failure on reload is the up to the module.
-    test_state_after_failure = None
+    test_state_after_failure = Nichts
 
     def test_module(self):
         # Test loading an extension module.
@@ -257,7 +257,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
             self.assertIsInstance(module, types.ModuleType)
             ex = module.Example()
             self.assertEqual(ex.demo('abcd'), 'abcd')
-            self.assertEqual(ex.demo(), None)
+            self.assertEqual(ex.demo(), Nichts)
             with self.assertRaises(AttributeError):
                 ex.abc
             ex.abc = 0
@@ -283,7 +283,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
         with util.uncache(self.name):
             module = self.load_module()
             with self.subTest('PyState_FindModule'):
-                self.assertEqual(module.call_state_registration_func(0), None)
+                self.assertEqual(module.call_state_registration_func(0), Nichts)
             with self.subTest('PyState_AddModule'):
                 with self.assertRaises(SystemError):
                     module.call_state_registration_func(1)
@@ -355,7 +355,7 @@ klasse MultiPhaseExtensionModuleTests(abc.LoaderTests):
                 # If there is an unreported exception, it should be chained
                 # with the `SystemError`.
                 wenn "unreported_exception" in name_base:
-                    self.assertIsNotNone(cm.exception.__cause__)
+                    self.assertIsNotNichts(cm.exception.__cause__)
 
     def test_nonascii(self):
         # Test that modules with non-ASCII names can be loaded.

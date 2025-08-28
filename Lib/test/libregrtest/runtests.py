@@ -19,16 +19,16 @@ klasse JsonFileType:
     STDOUT = "STDOUT"
 
 
-@dataclasses.dataclass(slots=True, frozen=True)
+@dataclasses.dataclass(slots=Wahr, frozen=Wahr)
 klasse JsonFile:
     # file type depends on file_type:
     # - UNIX_FD: file descriptor (int)
     # - WINDOWS_HANDLE: handle (int)
-    # - STDOUT: use process stdout (None)
-    file: int | None
+    # - STDOUT: use process stdout (Nichts)
+    file: int | Nichts
     file_type: str
 
-    def configure_subprocess(self, popen_kwargs: dict[str, Any]) -> None:
+    def configure_subprocess(self, popen_kwargs: dict[str, Any]) -> Nichts:
         match self.file_type:
             case JsonFileType.UNIX_FD:
                 # Unix file descriptor
@@ -41,13 +41,13 @@ klasse JsonFile:
                 popen_kwargs['startupinfo'] = startupinfo
 
     @contextlib.contextmanager
-    def inherit_subprocess(self) -> Iterator[None]:
+    def inherit_subprocess(self) -> Iterator[Nichts]:
         wenn sys.platform == 'win32' and self.file_type == JsonFileType.WINDOWS_HANDLE:
-            os.set_handle_inheritable(self.file, True)
+            os.set_handle_inheritable(self.file, Wahr)
             try:
                 yield
             finally:
-                os.set_handle_inheritable(self.file, False)
+                os.set_handle_inheritable(self.file, Falsch)
         sonst:
             yield
 
@@ -63,7 +63,7 @@ klasse JsonFile:
         return open(file, mode, encoding=encoding)
 
 
-@dataclasses.dataclass(slots=True, frozen=True)
+@dataclasses.dataclass(slots=Wahr, frozen=Wahr)
 klasse HuntRefleak:
     warmups: int
     runs: int
@@ -75,32 +75,32 @@ klasse HuntRefleak:
         return ["-R", f"{self.warmups}:{self.runs}:"]
 
 
-@dataclasses.dataclass(slots=True, frozen=True)
+@dataclasses.dataclass(slots=Wahr, frozen=Wahr)
 klasse RunTests:
     tests: TestTuple
     fail_fast: bool
     fail_env_changed: bool
     match_tests: TestFilter
-    match_tests_dict: FilterDict | None
+    match_tests_dict: FilterDict | Nichts
     rerun: bool
     forever: bool
     pgo: bool
     pgo_extended: bool
     output_on_failure: bool
-    timeout: float | None
+    timeout: float | Nichts
     verbose: int
     quiet: bool
-    hunt_refleak: HuntRefleak | None
-    test_dir: StrPath | None
+    hunt_refleak: HuntRefleak | Nichts
+    test_dir: StrPath | Nichts
     use_junit: bool
     coverage: bool
-    memory_limit: str | None
-    gc_threshold: int | None
+    memory_limit: str | Nichts
+    gc_threshold: int | Nichts
     use_resources: tuple[str, ...]
-    python_cmd: tuple[str, ...] | None
+    python_cmd: tuple[str, ...] | Nichts
     randomize: bool
     random_seed: int | str
-    parallel_threads: int | None
+    parallel_threads: int | Nichts
 
     def copy(self, **override) -> 'RunTests':
         state = dataclasses.asdict(self)
@@ -112,22 +112,22 @@ klasse RunTests:
         state.update(override)
         return WorkerRunTests(**state)
 
-    def get_match_tests(self, test_name: TestName) -> FilterTuple | None:
-        wenn self.match_tests_dict is not None:
-            return self.match_tests_dict.get(test_name, None)
+    def get_match_tests(self, test_name: TestName) -> FilterTuple | Nichts:
+        wenn self.match_tests_dict is not Nichts:
+            return self.match_tests_dict.get(test_name, Nichts)
         sonst:
-            return None
+            return Nichts
 
-    def get_jobs(self) -> int | None:
+    def get_jobs(self) -> int | Nichts:
         # Number of run_single_test() calls needed to run all tests.
-        # None means that there is not bound limit (--forever option).
+        # Nichts means that there is not bound limit (--forever option).
         wenn self.forever:
-            return None
+            return Nichts
         return len(self.tests)
 
     def iter_tests(self) -> Iterator[TestName]:
         wenn self.forever:
-            while True:
+            while Wahr:
                 yield from self.tests
         sonst:
             yield from self.tests
@@ -147,7 +147,7 @@ klasse RunTests:
 
     def create_python_cmd(self) -> list[str]:
         python_opts = support.args_from_interpreter_flags()
-        wenn self.python_cmd is not None:
+        wenn self.python_cmd is not Nichts:
             executable = self.python_cmd
             # Remove -E option, since --python=COMMAND can set PYTHON
             # environment variables, such as PYTHONPATH, in the worker
@@ -170,7 +170,7 @@ klasse RunTests:
             args.append("--fail-env-changed")
         wenn self.timeout:
             args.append(f"--timeout={self.timeout}")
-        wenn self.hunt_refleak is not None:
+        wenn self.hunt_refleak is not Nichts:
             args.extend(self.hunt_refleak.bisect_cmd_args())
         wenn self.test_dir:
             args.extend(("--testdir", self.test_dir))
@@ -191,7 +191,7 @@ klasse RunTests:
         return args
 
 
-@dataclasses.dataclass(slots=True, frozen=True)
+@dataclasses.dataclass(slots=Wahr, frozen=Wahr)
 klasse WorkerRunTests(RunTests):
     json_file: JsonFile
 
@@ -207,7 +207,7 @@ klasse _EncodeRunTests(json.JSONEncoder):
     def default(self, o: Any) -> dict[str, Any]:
         wenn isinstance(o, WorkerRunTests):
             result = dataclasses.asdict(o)
-            result["__runtests__"] = True
+            result["__runtests__"] = Wahr
             return result
         sonst:
             return super().default(o)

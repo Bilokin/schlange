@@ -43,7 +43,7 @@ klasse Number(metaclass=ABCMeta):
     __slots__ = ()
 
     # Concrete numeric types must provide their own hash implementation
-    __hash__ = None
+    __hash__ = Nichts
 
 
 ## Notes on Decimal
@@ -72,7 +72,7 @@ klasse Complex(Number):
         """Return a builtin complex instance. Called fuer complex(self)."""
 
     def __bool__(self):
-        """True wenn self != 0. Called fuer bool(self)."""
+        """Wahr wenn self != 0. Called fuer bool(self)."""
         return self != 0
 
     @property
@@ -211,10 +211,10 @@ klasse Real(Complex):
         raise NotImplementedError
 
     @abstractmethod
-    def __round__(self, ndigits=None):
+    def __round__(self, ndigits=Nichts):
         """Rounds self to ndigits decimal places, defaulting to 0.
 
-        If ndigits is omitted or None, returns an Integral, otherwise
+        If ndigits is omitted or Nichts, returns an Integral, otherwise
         returns a Real. Rounds half toward even.
         """
         raise NotImplementedError
@@ -344,7 +344,7 @@ klasse Integral(Rational):
         return int(self)
 
     @abstractmethod
-    def __pow__(self, exponent, modulus=None):
+    def __pow__(self, exponent, modulus=Nichts):
         """self ** exponent % modulus, but maybe faster.
 
         Accept the modulus argument wenn you want to support the

@@ -18,10 +18,10 @@ def mixedargs_sum(a, b=0, *arg, k1, k2=0):
 def mixedargs_sum2(a, b=0, *arg, k1, k2=0, **kwargs):
     return a + b + k1 + k2 + sum(arg) + sum(kwargs.values())
 
-def sortnum(*nums, reverse=False):
+def sortnum(*nums, reverse=Falsch):
     return sorted(list(nums), reverse=reverse)
 
-def sortwords(*words, reverse=False, **kwargs):
+def sortwords(*words, reverse=Falsch, **kwargs):
     return sorted(list(words), reverse=reverse)
 
 klasse Foo:
@@ -47,7 +47,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         self.assertRaisesSyntaxError("def f(p1, *, k1, k1=100):\n  pass\n")
         self.assertRaisesSyntaxError("def f(p1, *, **k1):\n  pass\n")
         self.assertRaisesSyntaxError("def f(p1, *, k1, **k1):\n  pass\n")
-        self.assertRaisesSyntaxError("def f(p1, *, None, **k1):\n  pass\n")
+        self.assertRaisesSyntaxError("def f(p1, *, Nichts, **k1):\n  pass\n")
         self.assertRaisesSyntaxError("def f(p, *, (k1, k2), **kw):\n  pass\n")
 
     def testSyntaxForManyArguments(self):
@@ -59,7 +59,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         compile(fundef, "<test>", "single")
 
     def testTooManyPositionalErrorMessage(self):
-        def f(a, b=None, *, c=None):
+        def f(a, b=Nichts, *, c=Nichts):
             pass
         with self.assertRaises(TypeError) as exc:
             f(1, 2, 3)
@@ -119,12 +119,12 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         self.assertEqual(1+2, Foo(k1=1,k2=2).sum())
 
         self.assertEqual([1,2,3], sortnum(3,2,1))
-        self.assertEqual([3,2,1], sortnum(1,2,3, reverse=True))
+        self.assertEqual([3,2,1], sortnum(1,2,3, reverse=Wahr))
 
         self.assertEqual(['a','b','c'], sortwords('a','c','b'))
-        self.assertEqual(['c','b','a'], sortwords('a','c','b', reverse=True))
+        self.assertEqual(['c','b','a'], sortwords('a','c','b', reverse=Wahr))
         self.assertEqual(['c','b','a'],
-                         sortwords('a','c','b', reverse=True, ignore='ignore'))
+                         sortwords('a','c','b', reverse=Wahr, ignore='ignore'))
 
     def testKwDefaults(self):
         def foo(p1,p2=0, *, k1, k2=0):
@@ -154,7 +154,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         # This was not done fuer the default values of keyword
         # arguments in a lambda definition, and the following line
         # used to fail with a SystemError.
-        lambda *, k1=unittest: None
+        lambda *, k1=unittest: Nichts
 
     def test_mangling(self):
         klasse X:
@@ -170,7 +170,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
                 pass
         self.assertEqual(str(err.exception), "name 'b' is not defined")
         with self.assertRaises(NameError) as err:
-            g = lambda v=a, x=b, *, y=c, z=d: None
+            g = lambda v=a, x=b, *, y=c, z=d: Nichts
         self.assertEqual(str(err.exception), "name 'b' is not defined")
 
 

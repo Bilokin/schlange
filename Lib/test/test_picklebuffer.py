@@ -45,12 +45,12 @@ klasse PickleBufferTest(unittest.TestCase):
         pb = PickleBuffer(b"foo")
         self.assertEqual(b"foo", bytes(pb))
         with memoryview(pb) as m:
-            self.assertTrue(m.readonly)
+            self.assertWahr(m.readonly)
 
         pb = PickleBuffer(bytearray(b"foo"))
         self.assertEqual(b"foo", bytes(pb))
         with memoryview(pb) as m:
-            self.assertFalse(m.readonly)
+            self.assertFalsch(m.readonly)
             m[0] = 48
         self.assertEqual(b"0oo", bytes(pb))
 
@@ -71,26 +71,26 @@ klasse PickleBufferTest(unittest.TestCase):
         wpb = weakref.ref(pb)
         del b, pb
         gc.collect()
-        self.assertIsNone(wpb())
+        self.assertIsNichts(wpb())
 
     def test_ndarray_2d(self):
         # C-contiguous
         ndarray = import_helper.import_module("_testbuffer").ndarray
         arr = ndarray(list(range(12)), shape=(4, 3), format='<i')
-        self.assertTrue(arr.c_contiguous)
-        self.assertFalse(arr.f_contiguous)
+        self.assertWahr(arr.c_contiguous)
+        self.assertFalsch(arr.f_contiguous)
         pb = PickleBuffer(arr)
         self.check_memoryview(pb, arr)
         # Non-contiguous
         arr = arr[::2]
-        self.assertFalse(arr.c_contiguous)
-        self.assertFalse(arr.f_contiguous)
+        self.assertFalsch(arr.c_contiguous)
+        self.assertFalsch(arr.f_contiguous)
         pb = PickleBuffer(arr)
         self.check_memoryview(pb, arr)
         # F-contiguous
         arr = ndarray(list(range(12)), shape=(3, 4), strides=(4, 12), format='<i')
-        self.assertTrue(arr.f_contiguous)
-        self.assertFalse(arr.c_contiguous)
+        self.assertWahr(arr.f_contiguous)
+        self.assertFalsch(arr.c_contiguous)
         pb = PickleBuffer(arr)
         self.check_memoryview(pb, arr)
 

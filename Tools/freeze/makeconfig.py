@@ -12,7 +12,7 @@ def makeconfig(infp, outfp, modules, with_ifdef=0):
     fuer line in infp:
         outfp.write(line)
         wenn m1 and m1.search(line):
-            m1 = None
+            m1 = Nichts
             fuer mod in modules:
                 wenn mod in never:
                     continue
@@ -22,7 +22,7 @@ def makeconfig(infp, outfp, modules, with_ifdef=0):
                 wenn with_ifdef:
                     outfp.write("#endif\n")
         sowenn m2 and m2.search(line):
-            m2 = None
+            m2 = Nichts
             fuer mod in modules:
                 wenn mod in never:
                     continue

@@ -77,7 +77,7 @@ klasse PickleTest:
             try:
                 next(it)
             except StopIteration:
-                self.assertFalse(seq[1:])
+                self.assertFalsch(seq[1:])
                 continue
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
@@ -155,9 +155,9 @@ klasse EnumerateTestCase(unittest.TestCase, PickleTest):
         it = self.enum([[]])
         gc.collect()
         # That GC collection probably untracked the recycled internal result
-        # tuple, which is initialized to (None, None). Make sure it's re-tracked
+        # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
         # when it's mutated and returned from __next__:
-        self.assertTrue(gc.is_tracked(next(it)))
+        self.assertWahr(gc.is_tracked(next(it)))
 
 klasse MyEnum(enumerate):
     pass
@@ -202,10 +202,10 @@ klasse TestReversed(unittest.TestCase, PickleTest):
             list(r)
             self.assertEqual(operator.length_hint(r), 0)
         klasse SeqWithWeirdLen:
-            called = False
+            called = Falsch
             def __len__(self):
                 wenn not self.called:
-                    self.called = True
+                    self.called = Wahr
                     return 10
                 raise ZeroDivisionError
             def __getitem__(self, index):
@@ -260,7 +260,7 @@ klasse TestReversed(unittest.TestCase, PickleTest):
         klasse Blocked(object):
             def __getitem__(self, i): return 1
             def __len__(self): return 2
-            __reversed__ = None
+            __reversed__ = Nichts
         b = Blocked()
         self.assertRaises(TypeError, reversed, b)
 

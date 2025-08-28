@@ -98,10 +98,10 @@ klasse TestNumbersDefaultMethods(unittest.TestCase):
                     return self.imag == 0 and self.real == other.real
 
         # test __bool__
-        self.assertTrue(bool(MyComplex(1, 1)))
-        self.assertTrue(bool(MyComplex(0, 1)))
-        self.assertTrue(bool(MyComplex(1, 0)))
-        self.assertFalse(bool(MyComplex(0, 0)))
+        self.assertWahr(bool(MyComplex(1, 1)))
+        self.assertWahr(bool(MyComplex(0, 1)))
+        self.assertWahr(bool(MyComplex(1, 0)))
+        self.assertFalsch(bool(MyComplex(0, 0)))
 
         # test __sub__
         self.assertEqual(MyComplex(2, 3) - complex(1, 2), MyComplex(1, 1))

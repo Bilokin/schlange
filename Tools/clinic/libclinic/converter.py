@@ -29,7 +29,7 @@ type_checks = {
 
 def add_c_converter(
         f: CConverterClassT,
-        name: str | None = None
+        name: str | Nichts = Nichts
 ) -> CConverterClassT:
     wenn not name:
         name = f.__name__
@@ -53,7 +53,7 @@ def add_default_legacy_c_converter(cls: CConverterClassT) -> CConverterClassT:
 klasse CConverterAutoRegister(type):
     def __init__(
         cls, name: str, bases: tuple[type[object], ...], classdict: dict[str, Any]
-    ) -> None:
+    ) -> Nichts:
         converter_cls = cast(type["CConverter"], cls)
         add_c_converter(converter_cls)
         add_default_legacy_c_converter(converter_cls)
@@ -74,7 +74,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # The C type to use fuer this variable.
     # 'type' should be a Python string specifying the type, e.g. "int".
     # If this is a pointer type, the type string should end with ' *'.
-    type: str | None = None
+    type: str | Nichts = Nichts
 
     # The Python default value fuer this parameter, as a Python value.
     # Or the magic value "unspecified" wenn there is no default.
@@ -83,17 +83,17 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # at runtime).
     default: object = unspecified
 
-    # If not None, default must be isinstance() of this type.
+    # If not Nichts, default must be isinstance() of this type.
     # (You can also specify a tuple of types.)
-    default_type: bltns.type[object] | tuple[bltns.type[object], ...] | None = None
+    default_type: bltns.type[object] | tuple[bltns.type[object], ...] | Nichts = Nichts
 
     # "default" converted into a C value, as a string.
-    # Or None wenn there is no default.
-    c_default: str | None = None
+    # Or Nichts wenn there is no default.
+    c_default: str | Nichts = Nichts
 
     # "default" converted into a Python value, as a string.
-    # Or None wenn there is no default.
-    py_default: str | None = None
+    # Or Nichts wenn there is no default.
+    py_default: str | Nichts = Nichts
 
     # The default value used to initialize the C variable when
     # there is no default, but not specifying a default may
@@ -108,19 +108,19 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     c_ignored_default: str = 'NULL'
 
     # If true, wrap with Py_UNUSED.
-    unused = False
+    unused = Falsch
 
     # The C converter *function* to be used, wenn any.
-    # (If this is not None, format_unit must be 'O&'.)
-    converter: str | None = None
+    # (If this is not Nichts, format_unit must be 'O&'.)
+    converter: str | Nichts = Nichts
 
     # Should Argument Clinic add a '&' before the name of
     # the variable when passing it into the _impl function?
-    impl_by_reference = False
+    impl_by_reference = Falsch
 
     # Should Argument Clinic add a '&' before the name of
     # the variable when passing it into PyArg_ParseTuple (AndKeywords)?
-    parse_by_reference = True
+    parse_by_reference = Wahr
 
     #############################################################
     #############################################################
@@ -136,22 +136,22 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
     # What encoding do we want fuer this variable?  Only used
     # by format units starting with 'e'.
-    encoding: str | None = None
+    encoding: str | Nichts = Nichts
 
     # Should this object be required to be a subclass of a specific type?
-    # If not None, should be a string representing a pointer to a
+    # If not Nichts, should be a string representing a pointer to a
     # PyTypeObject (e.g. "&PyUnicode_Type").
     # Only used by the 'O!' format unit (and the "object" converter).
-    subclass_of: str | None = None
+    subclass_of: str | Nichts = Nichts
 
     # See also the 'length_name' property.
     # Only used by format units ending with '#'.
-    length = False
+    length = Falsch
 
     # Should we show this parameter in the generated
-    # __text_signature__? This is *almost* always True.
-    # (It's only False fuer __new__, __init__, and METH_STATIC functions.)
-    show_in_signature = True
+    # __text_signature__? This is *almost* always Wahr.
+    # (It's only Falsch fuer __new__, __init__, and METH_STATIC functions.)
+    show_in_signature = Wahr
 
     # Overrides the name used in a text signature.
     # The name used fuer a "self" parameter must be one of
@@ -159,9 +159,9 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # This lets the self_converter overrule the user-settable
     # name, *just* fuer the text signature.
     # Only set by self_converter.
-    signature_name: str | None = None
+    signature_name: str | Nichts = Nichts
 
-    broken_limited_capi: bool = False
+    broken_limited_capi: bool = Falsch
 
     # keep in sync with self_converter.__init__!
     def __init__(self,
@@ -171,12 +171,12 @@ klasse CConverter(metaclass=CConverterAutoRegister):
              function: Function,
              default: object = unspecified,
              *,  # Keyword only args:
-             c_default: str | None = None,
-             py_default: str | None = None,
+             c_default: str | Nichts = Nichts,
+             py_default: str | Nichts = Nichts,
              annotation: str | Literal[Sentinels.unspecified] = unspecified,
-             unused: bool = False,
+             unused: bool = Falsch,
              **kwargs: Any
-    ) -> None:
+    ) -> Nichts:
         self.name = libclinic.ensure_legal_c_identifier(name)
         self.py_name = py_name
         self.unused = unused
@@ -230,13 +230,13 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     sonst:  # pragma: no cover
         pass
 
-    def converter_init(self) -> None:
+    def converter_init(self) -> Nichts:
         pass
 
     def is_optional(self) -> bool:
         return (self.default is not unspecified)
 
-    def _render_self(self, parameter: Parameter, data: CRenderData) -> None:
+    def _render_self(self, parameter: Parameter, data: CRenderData) -> Nichts:
         self.parameter = parameter
         name = self.parser_name
 
@@ -255,12 +255,12 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             self,
             parameter: Parameter,
             data: CRenderData
-    ) -> None:
+    ) -> Nichts:
         self.parameter = parameter
         name = self.name
 
         # declarations
-        d = self.declaration(in_parser=True)
+        d = self.declaration(in_parser=Wahr)
         data.declarations.append(d)
 
         # initializers
@@ -300,7 +300,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         wenn cleanup:
             data.cleanup.append('/* Cleanup fuer ' + name + ' */\n' + cleanup.rstrip() + "\n")
 
-    def render(self, parameter: Parameter, data: CRenderData) -> None:
+    def render(self, parameter: Parameter, data: CRenderData) -> Nichts:
         """
         parameter is a clinic.Parameter instance.
         data is a CRenderData instance.
@@ -311,13 +311,13 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     @functools.cached_property
     def length_name(self) -> str:
         """Computes the name of the associated "length" variable."""
-        assert self.length is not None
+        assert self.length is not Nichts
         return self.name + "_length"
 
     # Why is this one broken out separately?
     # For "positional-only" function parsing,
     # which generates a bunch of PyArg_ParseTuple calls.
-    def parse_argument(self, args: list[str]) -> None:
+    def parse_argument(self, args: list[str]) -> Nichts:
         assert not (self.converter and self.encoding)
         wenn self.format_unit == 'O&':
             assert self.converter
@@ -340,9 +340,9 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
     def simple_declaration(
             self,
-            by_reference: bool = False,
+            by_reference: bool = Falsch,
             *,
-            in_parser: bool = False
+            in_parser: bool = Falsch
     ) -> str:
         """
         Computes the basic declaration of the variable.
@@ -364,11 +364,11 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         prototype.append(name)
         return "".join(prototype)
 
-    def declaration(self, *, in_parser: bool = False) -> str:
+    def declaration(self, *, in_parser: bool = Falsch) -> str:
         """
         The C statement to declare this variable.
         """
-        declaration = [self.simple_declaration(in_parser=True)]
+        declaration = [self.simple_declaration(in_parser=Wahr)]
         default = self.c_default
         wenn not default and self.parameter.group:
             default = self.c_ignored_default
@@ -413,7 +413,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         """
         return ""
 
-    def pre_render(self) -> None:
+    def pre_render(self) -> Nichts:
         """
         A second initialization function, like converter_init,
         called just before rendering.
@@ -421,7 +421,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
         """
         pass
 
-    def bad_argument(self, displayname: str, expected: str, *, limited_capi: bool, expected_literal: bool = True) -> str:
+    def bad_argument(self, displayname: str, expected: str, *, limited_capi: bool, expected_literal: bool = Wahr) -> str:
         assert '"' not in expected
         wenn limited_capi:
             wenn expected_literal:
@@ -440,8 +440,8 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
     def format_code(self, fmt: str, *,
                     argname: str,
-                    bad_argument: str | None = None,
-                    bad_argument2: str | None = None,
+                    bad_argument: str | Nichts = Nichts,
+                    bad_argument2: str | Nichts = Nichts,
                     **kwargs: Any) -> str:
         wenn '{bad_argument}' in fmt:
             wenn not bad_argument:
@@ -453,11 +453,11 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             fmt = fmt.replace('{bad_argument2}', bad_argument2)
         return fmt.format(argname=argname, paramname=self.parser_name, **kwargs)
 
-    def use_converter(self) -> None:
+    def use_converter(self) -> Nichts:
         """Method called when self.converter is used to parse an argument."""
         pass
 
-    def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | None:
+    def parse_arg(self, argname: str, displayname: str, *, limited_capi: bool) -> str | Nichts:
         wenn self.format_unit == 'O&':
             self.use_converter()
             return self.format_code("""
@@ -490,7 +490,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                 """,
                 argname=argname,
                 bad_argument=self.bad_argument(displayname, '({subclass_of})->tp_name',
-                                               expected_literal=False, limited_capi=limited_capi),
+                                               expected_literal=Falsch, limited_capi=limited_capi),
                 subclass_of=self.subclass_of, cast=cast)
         wenn self.format_unit == 'O':
             cast = '(%s)' % self.type wenn self.type != 'PyObject *' sonst ''
@@ -498,9 +498,9 @@ klasse CConverter(metaclass=CConverterAutoRegister):
                 {paramname} = {cast}{argname};
                 """,
                 argname=argname, cast=cast)
-        return None
+        return Nichts
 
-    def set_template_dict(self, template_dict: TemplateDict) -> None:
+    def set_template_dict(self, template_dict: TemplateDict) -> Nichts:
         pass
 
     @property
@@ -511,7 +511,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             return self.name
 
     def add_include(self, name: str, reason: str,
-                    *, condition: str | None = None) -> None:
+                    *, condition: str | Nichts = Nichts) -> Nichts:
         include = Include(name, reason, condition)
         self._includes.append(include)
 

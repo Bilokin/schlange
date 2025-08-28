@@ -179,12 +179,12 @@ Unit tests fuer the `Example` class.
 Example is a simple container klasse that holds:
   - `source`: A source string.
   - `want`: An expected output string.
-  - `exc_msg`: An expected exception message string (or None wenn no
+  - `exc_msg`: An expected exception message string (or Nichts wenn no
     exception is expected).
   - `lineno`: A line number (within the docstring).
   - `indent`: The example's indentation in the input string.
-  - `options`: An option dictionary, mapping option flags to True or
-    False.
+  - `options`: An option dictionary, mapping option flags to Wahr or
+    Falsch.
 
 These attributes are set by the constructor.  `source` and `want` are
 required; the other attributes all have default values:
@@ -192,7 +192,7 @@ required; the other attributes all have default values:
     >>> example = doctest.Example('print(1)', '1\n')
     >>> (example.source, example.want, example.exc_msg,
     ...  example.lineno, example.indent, example.options)
-    ('print(1)\n', '1\n', None, 0, 0, {})
+    ('print(1)\n', '1\n', Nichts, 0, 0, {})
 
 The first three attributes (`source`, `want`, and `exc_msg`) may be
 specified positionally; the remaining arguments should be specified as
@@ -201,10 +201,10 @@ keyword arguments:
     >>> exc_msg = 'IndexError: pop from an empty list'
     >>> example = doctest.Example('[].pop()', '', exc_msg,
     ...                           lineno=5, indent=4,
-    ...                           options={doctest.ELLIPSIS: True})
+    ...                           options={doctest.ELLIPSIS: Wahr})
     >>> (example.source, example.want, example.exc_msg,
     ...  example.lineno, example.indent, example.options)
-    ('[].pop()\n', '', 'IndexError: pop from an empty list\n', 5, 4, {8: True})
+    ('[].pop()\n', '', 'IndexError: pop from an empty list\n', 5, 4, {8: Wahr})
 
 The constructor normalizes the `source` string to end in a newline:
 
@@ -247,7 +247,7 @@ unless it's the empty string:
     ('print\n', '')
 
 The constructor normalizes the `exc_msg` string to end in a newline,
-unless it's `None`:
+unless it's `Nichts`:
 
     Message spans one line
     >>> exc_msg = 'IndexError: pop from an empty list'
@@ -271,7 +271,7 @@ unless it's `None`:
     >>> e.exc_msg
     'ValueError: 1\n  2\n'
 
-    Empty (but non-None) exception message (which should never appear
+    Empty (but non-Nichts) exception message (which should never appear
     in real examples)
     >>> exc_msg = ''
     >>> e = doctest.Example('raise X()', '', exc_msg)
@@ -283,15 +283,15 @@ Compare `Example`:
     >>> same_example = doctest.Example('print 1', '1\n')
     >>> other_example = doctest.Example('print 42', '42\n')
     >>> example == same_example
-    True
+    Wahr
     >>> example != same_example
-    False
+    Falsch
     >>> hash(example) == hash(same_example)
-    True
+    Wahr
     >>> example == other_example
-    False
+    Falsch
     >>> example != other_example
-    True
+    Wahr
 """
 
 def test_DocTest(): r"""
@@ -392,11 +392,11 @@ Compare `DocTest`:
     >>> same_test = parser.get_doctest(docstring, globs, 'some_test',
     ...                                'some_test', 20)
     >>> test == same_test
-    True
+    Wahr
     >>> test != same_test
-    False
+    Falsch
     >>> hash(test) == hash(same_test)
-    True
+    Wahr
     >>> docstring = '''
     ...     >>> print 42
     ...     42
@@ -404,26 +404,26 @@ Compare `DocTest`:
     >>> other_test = parser.get_doctest(docstring, globs, 'other_test',
     ...                                 'other_file', 10)
     >>> test == other_test
-    False
+    Falsch
     >>> test != other_test
-    True
+    Wahr
     >>> test < other_test
-    False
+    Falsch
     >>> other_test < test
-    True
+    Wahr
 
-Test comparison with lineno None on one side
+Test comparison with lineno Nichts on one side
 
     >>> no_lineno = parser.get_doctest(docstring, globs, 'some_test',
-    ...                               'some_test', None)
-    >>> test.lineno is None
-    False
-    >>> no_lineno.lineno is None
-    True
+    ...                               'some_test', Nichts)
+    >>> test.lineno is Nichts
+    Falsch
+    >>> no_lineno.lineno is Nichts
+    Wahr
     >>> test < no_lineno
-    False
+    Falsch
     >>> no_lineno < test
-    True
+    Wahr
 
 Compare `DocTestCase`:
 
@@ -432,15 +432,15 @@ Compare `DocTestCase`:
     >>> same_test_case = DocTestCase(same_test)
     >>> other_test_case = DocTestCase(other_test)
     >>> test_case == same_test_case
-    True
+    Wahr
     >>> test_case != same_test_case
-    False
+    Falsch
     >>> hash(test_case) == hash(same_test_case)
-    True
+    Wahr
     >>> test == other_test_case
-    False
+    Falsch
     >>> test != other_test_case
-    True
+    Wahr
 
 """
 
@@ -497,7 +497,7 @@ docstrings:
 
     >>> def no_docstring(v):
     ...     pass
-    >>> excl_empty_finder = doctest.DocTestFinder(exclude_empty=True)
+    >>> excl_empty_finder = doctest.DocTestFinder(exclude_empty=Wahr)
     >>> excl_empty_finder.find(no_docstring)
     []
 
@@ -626,7 +626,7 @@ will only be generated fuer it once:
     TwoNames.__dict__ first, so we have to allow fuer either.
 
     >>> tests[1].name.split('.')[-1] in ['f', 'g']
-    True
+    Wahr
 
 Empty Tests
 ~~~~~~~~~~~
@@ -647,12 +647,12 @@ By default, an object with no doctests doesn't create any tests:
      1  SampleClass.get
      3  SampleClass.setter
 
-By default, that excluded objects with no doctests.  exclude_empty=False
+By default, that excluded objects with no doctests.  exclude_empty=Falsch
 tells it to include (empty) tests fuer objects with no doctests.  This feature
 is really to support backward compatibility in what doctest.master.summarize()
 displays.
 
-    >>> tests = doctest.DocTestFinder(exclude_empty=False).find(SampleClass)
+    >>> tests = doctest.DocTestFinder(exclude_empty=Falsch).find(SampleClass)
     >>> fuer t in tests:
     ...     print('%2s  %s' % (len(t.examples), t.name))
      3  SampleClass
@@ -669,39 +669,39 @@ displays.
      1  SampleClass.get
      3  SampleClass.setter
 
-When used with `exclude_empty=False` we are also interested in line numbers
+When used with `exclude_empty=Falsch` we are also interested in line numbers
 of doctests that are empty.
 It used to be broken fuer quite some time until `bpo-28249`.
 
     >>> from test.test_doctest import doctest_lineno
-    >>> tests = doctest.DocTestFinder(exclude_empty=False).find(doctest_lineno)
+    >>> tests = doctest.DocTestFinder(exclude_empty=Falsch).find(doctest_lineno)
     >>> fuer t in tests:
     ...     print('%5s  %s' % (t.lineno, t.name))
-     None  test.test_doctest.doctest_lineno
-     None  test.test_doctest.doctest_lineno.ClassWithACachedProperty
+     Nichts  test.test_doctest.doctest_lineno
+     Nichts  test.test_doctest.doctest_lineno.ClassWithACachedProperty
       102  test.test_doctest.doctest_lineno.ClassWithACachedProperty.cached
        22  test.test_doctest.doctest_lineno.ClassWithDocstring
        30  test.test_doctest.doctest_lineno.ClassWithDoctest
-     None  test.test_doctest.doctest_lineno.ClassWithoutDocstring
-     None  test.test_doctest.doctest_lineno.MethodWrapper
+     Nichts  test.test_doctest.doctest_lineno.ClassWithoutDocstring
+     Nichts  test.test_doctest.doctest_lineno.MethodWrapper
        53  test.test_doctest.doctest_lineno.MethodWrapper.classmethod_with_doctest
        39  test.test_doctest.doctest_lineno.MethodWrapper.method_with_docstring
        45  test.test_doctest.doctest_lineno.MethodWrapper.method_with_doctest
-     None  test.test_doctest.doctest_lineno.MethodWrapper.method_without_docstring
+     Nichts  test.test_doctest.doctest_lineno.MethodWrapper.method_without_docstring
        61  test.test_doctest.doctest_lineno.MethodWrapper.property_with_doctest
        86  test.test_doctest.doctest_lineno.cached_func_with_doctest
-     None  test.test_doctest.doctest_lineno.cached_func_without_docstring
+     Nichts  test.test_doctest.doctest_lineno.cached_func_without_docstring
         4  test.test_doctest.doctest_lineno.func_with_docstring
        77  test.test_doctest.doctest_lineno.func_with_docstring_wrapped
        12  test.test_doctest.doctest_lineno.func_with_doctest
-     None  test.test_doctest.doctest_lineno.func_without_docstring
+     Nichts  test.test_doctest.doctest_lineno.func_without_docstring
 
 Turning off Recursion
 ~~~~~~~~~~~~~~~~~~~~~
 DocTestFinder can be told not to look fuer tests in contained objects
 using the `recurse` flag:
 
-    >>> tests = doctest.DocTestFinder(recurse=False).find(SampleClass)
+    >>> tests = doctest.DocTestFinder(recurse=Falsch).find(SampleClass)
     >>> fuer t in tests:
     ...     print('%2s  %s' % (len(t.examples), t.name))
      3  SampleClass
@@ -743,7 +743,7 @@ plain ol' Python and is guaranteed to be available.
     >>> import builtins
     >>> tests = doctest.DocTestFinder().find(builtins)
     >>> 750 < len(tests) < 800 # approximate number of objects with docstrings
-    True
+    Wahr
     >>> real_tests = [t fuer t in tests wenn len(t.examples) > 0]
     >>> len(real_tests) # objects that actually have doctests
     14
@@ -791,7 +791,7 @@ klasse TestDocTest(unittest.TestCase):
         test = doctest.DocTestFinder().find(myfunc)[0]
         with support.captured_stdout():
             with support.captured_stderr():
-                results = doctest.DocTestRunner(verbose=False).run(test)
+                results = doctest.DocTestRunner(verbose=Falsch).run(test)
 
         # test TestResults
         self.assertIsInstance(results, doctest.TestResults)
@@ -827,8 +827,8 @@ klasse TestDocTestFinder(unittest.TestCase):
                 import_helper.forget(pkg_name)
                 sys.path.pop()
 
-            include_empty_finder = doctest.DocTestFinder(exclude_empty=False)
-            exclude_empty_finder = doctest.DocTestFinder(exclude_empty=True)
+            include_empty_finder = doctest.DocTestFinder(exclude_empty=Falsch)
+            exclude_empty_finder = doctest.DocTestFinder(exclude_empty=Wahr)
 
             self.assertEqual(len(include_empty_finder.find(mod)), 1)
             self.assertEqual(len(exclude_empty_finder.find(mod)), 0)
@@ -897,7 +897,7 @@ statistics.  Here's a simple DocTest case we can use:
 
     >>> import _colorize
     >>> save_colorize = _colorize.COLORIZE
-    >>> _colorize.COLORIZE = False
+    >>> _colorize.COLORIZE = Falsch
 
     >>> def f(x):
     ...     '''
@@ -914,7 +914,7 @@ given DocTest case in a given namespace (globs).  It returns a tuple
 `(f,t)`, where `f` is the number of failed tests and `t` is the number
 of tried tests.
 
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=3)
 
 If any example produces incorrect output, then the test runner reports
@@ -929,7 +929,7 @@ the failure and proceeds to the next example:
     ...     6
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=True).run(test)
+    >>> doctest.DocTestRunner(verbose=Wahr).run(test)
     ... # doctest: +ELLIPSIS
     Trying:
         x = 12
@@ -970,7 +970,7 @@ output:
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
 
-    >>> doctest.DocTestRunner(verbose=True).run(test)
+    >>> doctest.DocTestRunner(verbose=Wahr).run(test)
     Trying:
         x = 12
     Expecting nothing
@@ -1032,7 +1032,7 @@ replaced with any other string:
 
     >>> import _colorize
     >>> save_colorize = _colorize.COLORIZE
-    >>> _colorize.COLORIZE = False
+    >>> _colorize.COLORIZE = Falsch
 
     >>> def f(x):
     ...     '''
@@ -1042,7 +1042,7 @@ replaced with any other string:
     ...     ZeroDivisionError: division by zero
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=2)
 
 An example may not generate output before it raises an exception; if
@@ -1059,7 +1059,7 @@ unexpected exception:
     ...     ZeroDivisionError: division by zero
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 4, in f
@@ -1081,7 +1081,7 @@ Exception messages may contain newlines:
     ...     message
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=1)
 
 If an exception is expected, but an exception with the wrong type or
@@ -1094,7 +1094,7 @@ message is raised, then it is reported as a failure:
     ...     ValueError: wrong message
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 3, in f
@@ -1119,7 +1119,7 @@ detail:
     ...     ValueError: wrong message
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=1)
 
 IGNORE_EXCEPTION_DETAIL also ignores difference in exception formatting
@@ -1134,7 +1134,7 @@ the exception is not in the output, but this will fail under Python 3:
     ...     HTTPException: message
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 4, in f
@@ -1161,7 +1161,7 @@ Python 2.
     ...     http.client.HTTPException: message
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=2)
 
 However, with IGNORE_EXCEPTION_DETAIL, the module name of the exception
@@ -1175,7 +1175,7 @@ However, with IGNORE_EXCEPTION_DETAIL, the module name of the exception
     ...     HTTPException: message
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=2)
 
 The module path will be completely ignored, so two different module paths will
@@ -1190,7 +1190,7 @@ be used when exceptions have changed module.
     ...     foo.bar.HTTPException: message
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=2)
 
 But IGNORE_EXCEPTION_DETAIL does not allow a mismatch in the exception type:
@@ -1202,7 +1202,7 @@ But IGNORE_EXCEPTION_DETAIL does not allow a mismatch in the exception type:
     ...     TypeError: wrong type
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 3, in f
@@ -1228,7 +1228,7 @@ IGNORE_EXCEPTION_DETAIL to normalize the modules between Python 2 and 3:
     ...     foo.bar.HTTPException
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=2)
 
 Note that a trailing colon doesn't matter either:
@@ -1241,7 +1241,7 @@ Note that a trailing colon doesn't matter either:
     ...     foo.bar.HTTPException:
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=2)
 
 If an exception is raised but not expected, then it is reported as an
@@ -1253,7 +1253,7 @@ unexpected exception:
     ...     0
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 3, in f
@@ -1281,7 +1281,7 @@ Test that changing sys.displayhook doesn't matter fuer doctest.
     ...     3
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> r = doctest.DocTestRunner(verbose=False).run(test)
+    >>> r = doctest.DocTestRunner(verbose=Falsch).run(test)
     >>> post_displayhook = sys.displayhook
 
     We need to restore sys.displayhook now, so that we'll be able to test
@@ -1294,7 +1294,7 @@ Test that changing sys.displayhook doesn't matter fuer doctest.
     >>> r
     TestResults(failed=0, attempted=1)
     >>> post_displayhook is my_displayhook
-    True
+    Wahr
 """
     def optionflags(): r"""
 Tests of `DocTestRunner`'s option flag handling.
@@ -1304,34 +1304,34 @@ runner.  These are defined as module constants in doctest, and passed
 to the DocTestRunner constructor (multiple constants should be ORed
 together).
 
-The DONT_ACCEPT_TRUE_FOR_1 flag disables matches between True/False
+The DONT_ACCEPT_TRUE_FOR_1 flag disables matches between Wahr/Falsch
 and 1/0:
 
     >>> import _colorize
     >>> save_colorize = _colorize.COLORIZE
-    >>> _colorize.COLORIZE = False
+    >>> _colorize.COLORIZE = Falsch
 
     >>> def f(x):
-    ...     '>>> True\n1\n'
+    ...     '>>> Wahr\n1\n'
 
     >>> # Without the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=1)
 
     >>> # With the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.DONT_ACCEPT_TRUE_FOR_1
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 2, in f
     Failed example:
-        True
+        Wahr
     Expected:
         1
     Got:
-        True
+        Wahr
     TestResults(failed=1, attempted=1)
 
 The DONT_ACCEPT_BLANKLINE flag disables the match between blank lines
@@ -1342,13 +1342,13 @@ and the '<BLANKLINE>' marker:
 
     >>> # Without the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=1)
 
     >>> # With the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.DONT_ACCEPT_BLANKLINE
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 2, in f
@@ -1372,7 +1372,7 @@ treated as equal:
 
     >>> # Without the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 3, in f
@@ -1388,7 +1388,7 @@ treated as equal:
     >>> # With the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.NORMALIZE_WHITESPACE
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     TestResults(failed=0, attempted=1)
 
     An example from the docs:
@@ -1404,7 +1404,7 @@ output to match any substring in the actual output:
 
     >>> # Without the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 2, in f
@@ -1419,7 +1419,7 @@ output to match any substring in the actual output:
     >>> # With the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.ELLIPSIS
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     TestResults(failed=0, attempted=1)
 
     ... also matches nothing:
@@ -1483,7 +1483,7 @@ and actual outputs to be displayed using a unified diff:
 
     >>> # Without the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 3, in f
@@ -1510,7 +1510,7 @@ and actual outputs to be displayed using a unified diff:
     >>> # With the flag:
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.REPORT_UDIFF
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 3, in f
@@ -1535,7 +1535,7 @@ and actual outputs to be displayed using a context diff:
     >>> # Reuse f() from the REPORT_UDIFF example, above.
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.REPORT_CDIFF
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 3, in f
@@ -1573,7 +1573,7 @@ marking, as well as interline differences.
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.REPORT_NDIFF
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 3, in f
@@ -1604,7 +1604,7 @@ failing example:
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.REPORT_ONLY_FIRST_FAILURE
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 5, in f
@@ -1618,7 +1618,7 @@ failing example:
 
 However, output from `report_start` is not suppressed:
 
-    >>> doctest.DocTestRunner(verbose=True, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Wahr, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     Trying:
         print(1) # first success
@@ -1643,7 +1643,7 @@ The FAIL_FAST flag causes the runner to exit after the first failing example,
 so subsequent examples are not even attempted:
 
     >>> flags = doctest.FAIL_FAST
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 5, in f
@@ -1659,7 +1659,7 @@ Specifying both FAIL_FAST and REPORT_ONLY_FIRST_FAILURE is equivalent to
 FAIL_FAST only:
 
     >>> flags = doctest.FAIL_FAST | doctest.REPORT_ONLY_FIRST_FAILURE
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 5, in f
@@ -1689,7 +1689,7 @@ exceptions count as failures:
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.REPORT_ONLY_FIRST_FAILURE
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 5, in f
@@ -1700,7 +1700,7 @@ exceptions count as failures:
         ValueError: 2
     TestResults(failed=3, attempted=5)
     >>> flags = doctest.FAIL_FAST
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 5, in f
@@ -1716,17 +1716,17 @@ we reach into doctest's internals a bit.
 
     >>> unlikely = "UNLIKELY_OPTION_NAME"
     >>> unlikely in doctest.OPTIONFLAGS_BY_NAME
-    False
+    Falsch
     >>> new_flag_value = doctest.register_optionflag(unlikely)
     >>> unlikely in doctest.OPTIONFLAGS_BY_NAME
-    True
+    Wahr
 
 Before 2.4.4/2.5, registering a name more than once erroneously created
 more than one flag value.  Here we verify that's fixed:
 
     >>> redundant_flag_value = doctest.register_optionflag(unlikely)
     >>> redundant_flag_value == new_flag_value
-    True
+    Wahr
 
 Clean up.
     >>> del doctest.OPTIONFLAGS_BY_NAME[unlikely]
@@ -1743,7 +1743,7 @@ example with a comment of the form ``# doctest: +OPTION``:
 
     >>> import _colorize
     >>> save_colorize = _colorize.COLORIZE
-    >>> _colorize.COLORIZE = False
+    >>> _colorize.COLORIZE = Falsch
 
     >>> def f(x): r'''
     ...     >>> print(list(range(10)))      # should fail: no ellipsis
@@ -1753,7 +1753,7 @@ example with a comment of the form ``# doctest: +OPTION``:
     ...     [0, 1, ..., 9]
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 2, in f
@@ -1777,7 +1777,7 @@ comment of the form ``# doctest: -OPTION``:
     ...     [0, 1, ..., 9]
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False,
+    >>> doctest.DocTestRunner(verbose=Falsch,
     ...                       optionflags=doctest.ELLIPSIS).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
@@ -1804,7 +1804,7 @@ do not change the options fuer surrounding examples:
     ...     [0, 1, ..., 9]
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 2, in f
@@ -1835,7 +1835,7 @@ may be separated by whitespace, commas, or both:
     ...     [0, 1,  ...,   9]
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 2, in f
@@ -1855,7 +1855,7 @@ may be separated by whitespace, commas, or both:
     ...     [0, 1,  ...,   9]
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 2, in f
@@ -1875,7 +1875,7 @@ may be separated by whitespace, commas, or both:
     ...     [0, 1,  ...,   9]
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 2, in f
@@ -1896,7 +1896,7 @@ long as a continuation prompt is used:
     ...     [0, 1, ..., 9]
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=1)
 
 For examples with multi-line source, the option directive may appear
@@ -1912,7 +1912,7 @@ at the end of any line:
     ...      0 1 2 ... 9
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=2)
 
 If more than one line of an example with multi-line source has an
@@ -1925,7 +1925,7 @@ option directive, then they are combined:
     ...         0  1    2...9
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     TestResults(failed=0, attempted=1)
 
 It is an error to have a comment of the form ``# doctest:`` that is
@@ -2020,7 +2020,7 @@ Run the debugger on the docstring, and then restore sys.stdin.
     (Pdb) next
     12
     --Return--
-    > <string>(1)<module>()->None
+    > <string>(1)<module>()->Nichts
     (Pdb) print(x)
     12
     (Pdb) continue
@@ -2040,7 +2040,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
 
           >>> import _colorize
           >>> save_colorize = _colorize.COLORIZE
-          >>> _colorize.COLORIZE = False
+          >>> _colorize.COLORIZE = Falsch
 
           >>> doc = '''
           ... >>> x = 42
@@ -2051,7 +2051,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
           ... '''
           >>> parser = doctest.DocTestParser()
           >>> test = parser.get_doctest(doc, {}, "foo-bar@baz", "foo-bar@baz.py", 0)
-          >>> runner = doctest.DocTestRunner(verbose=False)
+          >>> runner = doctest.DocTestRunner(verbose=Falsch)
 
         To demonstrate this, we'll create a fake standard input that
         captures our debugger input:
@@ -2136,7 +2136,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
           -> import pdb; pdb.set_trace()
           (Pdb) step
           --Return--
-          > <doctest foo-bar@baz[1]>(3)g()->None
+          > <doctest foo-bar@baz[1]>(3)g()->Nichts
           -> import pdb; pdb.set_trace()
           (Pdb) list
             1     def g(x):
@@ -2145,7 +2145,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
           [EOF]
           (Pdb) next
           --Return--
-          > <doctest foo-bar@baz[0]>(2)f()->None
+          > <doctest foo-bar@baz[0]>(2)f()->Nichts
           -> g(x*2)
           (Pdb) list
             1     def f(x):
@@ -2153,7 +2153,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
           [EOF]
           (Pdb) next
           --Return--
-          > <doctest foo-bar@baz[2]>(1)<module>()->None
+          > <doctest foo-bar@baz[2]>(1)<module>()->Nichts
           -> f(3)
           (Pdb) list
             1  -> f(3)
@@ -2195,7 +2195,7 @@ wenn not hasattr(sys, 'gettrace') or not sys.gettrace():
         ... >>> calls_set_trace()
         ... '''
         >>> parser = doctest.DocTestParser()
-        >>> runner = doctest.DocTestRunner(verbose=False)
+        >>> runner = doctest.DocTestRunner(verbose=Falsch)
         >>> test = parser.get_doctest(doc, globals(), "foo-bar@baz", "foo-bar@baz.py", 0)
         >>> from test.support.pty_helper import FakeInput
         >>> real_stdin = sys.stdin
@@ -2375,7 +2375,7 @@ def test_DocTestSuite():
 
          >>> def setUp(t):
          ...     from test.test_doctest import test_doctest
-         ...     test_doctest.sillySetup = True
+         ...     test_doctest.sillySetup = Wahr
 
          >>> def tearDown(t):
          ...     from test.test_doctest import test_doctest
@@ -2434,7 +2434,7 @@ def test_DocTestSuite_errors():
          <BLANKLINE>
          >>> print(result.failures[1][1]) # doctest: +ELLIPSIS
          Traceback (most recent call last):
-           File "...sample_doctest_errors.py", line None, in test.test_doctest.sample_doctest_errors.__test__.bad
+           File "...sample_doctest_errors.py", line Nichts, in test.test_doctest.sample_doctest_errors.__test__.bad
          AssertionError: Failed example:
              2 + 2
          Expected:
@@ -2464,7 +2464,7 @@ def test_DocTestSuite_errors():
          <BLANKLINE>
          >>> print(result.errors[1][1]) # doctest: +ELLIPSIS
          Traceback (most recent call last):
-           File "...sample_doctest_errors.py", line None, in test.test_doctest.sample_doctest_errors.__test__.bad
+           File "...sample_doctest_errors.py", line Nichts, in test.test_doctest.sample_doctest_errors.__test__.bad
            File "<doctest test.test_doctest.sample_doctest_errors.__test__.bad[1]>", line 1, in <module>
              1/0
              ~^~
@@ -2557,7 +2557,7 @@ def test_DocFileSuite():
          ...                              package=types.ModuleType('__main__'))
          >>> sys.argv = save_argv
 
-       By setting `module_relative=False`, os-specific paths may be
+       By setting `module_relative=Falsch`, os-specific paths may be
        used (including absolute paths and paths relative to the
        working directory):
 
@@ -2568,13 +2568,13 @@ def test_DocFileSuite():
          >>> # Use it to find the absolute path of test_doctest.txt.
          >>> test_file = os.path.join(test_pkg_path, 'test_doctest.txt')
 
-         >>> suite = doctest.DocFileSuite(test_file, module_relative=False)
+         >>> suite = doctest.DocFileSuite(test_file, module_relative=Falsch)
          >>> suite.run(unittest.TestResult())
          <unittest.result.TestResult run=1 errors=1 failures=0>
 
-       It is an error to specify `package` when `module_relative=False`:
+       It is an error to specify `package` when `module_relative=Falsch`:
 
-         >>> suite = doctest.DocFileSuite(test_file, module_relative=False,
+         >>> suite = doctest.DocFileSuite(test_file, module_relative=Falsch,
          ...                              package='test')
          Traceback (most recent call last):
          ValueError: Package may only be specified fuer module-relative paths.
@@ -2622,7 +2622,7 @@ def test_DocFileSuite():
 
          >>> def setUp(t):
          ...     from test.test_doctest import test_doctest
-         ...     test_doctest.sillySetup = True
+         ...     test_doctest.sillySetup = Wahr
 
          >>> def tearDown(t):
          ...     from test.test_doctest import test_doctest
@@ -2764,7 +2764,7 @@ def test_look_in_unwrapped():
 
     >>> import doctest
     >>> doctest.run_docstring_examples(
-    ...     wrapped, {}, name=wrapped.__name__, verbose=True)
+    ...     wrapped, {}, name=wrapped.__name__, verbose=Wahr)
     Finding tests in wrapped
     Trying:
         'one other test'
@@ -2773,7 +2773,7 @@ def test_look_in_unwrapped():
     ok
     """
 
-@doctest_skip_if(support.check_impl_detail(cpython=False))
+@doctest_skip_if(support.check_impl_detail(cpython=Falsch))
 def test_wrapped_c_func():
     """
     # https://github.com/python/cpython/issues/117692
@@ -2781,10 +2781,10 @@ def test_wrapped_c_func():
     >>> from test.test_doctest.decorator_mod import decorator
 
     >>> c_func_wrapped = decorator(binascii.b2a_hex)
-    >>> tests = doctest.DocTestFinder(exclude_empty=False).find(c_func_wrapped)
+    >>> tests = doctest.DocTestFinder(exclude_empty=Falsch).find(c_func_wrapped)
     >>> fuer test in tests:
     ...    print(test.lineno, test.name)
-    None b2a_hex
+    Nichts b2a_hex
     """
 
 def test_unittest_reportflags():
@@ -2880,7 +2880,7 @@ We don't want color or `-v` in sys.argv fuer these tests.
 
     >>> import _colorize
     >>> save_colorize = _colorize.COLORIZE
-    >>> _colorize.COLORIZE = False
+    >>> _colorize.COLORIZE = Falsch
 
     >>> save_argv = sys.argv
     >>> wenn '-v' in sys.argv:
@@ -2900,7 +2900,7 @@ We don't want color or `-v` in sys.argv fuer these tests.
        1 of   2 in test_doctest.txt
     ***Test Failed*** 1 failure.
     TestResults(failed=1, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
 (Note: we'll be clearing doctest.master after each call to
 `doctest.testfile`, to suppress warnings about multiple tests with the
@@ -2911,7 +2911,7 @@ Globals may be specified with the `globs` and `extraglobs` parameters:
     >>> globs = {'favorite_color': 'blue'}
     >>> doctest.testfile('test_doctest.txt', globs=globs)
     TestResults(failed=0, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
     >>> extraglobs = {'favorite_color': 'red'}
     >>> doctest.testfile('test_doctest.txt', globs=globs,
@@ -2929,7 +2929,7 @@ Globals may be specified with the `globs` and `extraglobs` parameters:
        1 of   2 in test_doctest.txt
     ***Test Failed*** 1 failure.
     TestResults(failed=1, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
 The file may be made relative to a given module or package, using the
 optional `module_relative` parameter:
@@ -2937,11 +2937,11 @@ optional `module_relative` parameter:
     >>> doctest.testfile('test_doctest.txt', globs=globs,
     ...                  module_relative='test')
     TestResults(failed=0, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
 Verbosity can be increased with the optional `verbose` parameter:
 
-    >>> doctest.testfile('test_doctest.txt', globs=globs, verbose=True)
+    >>> doctest.testfile('test_doctest.txt', globs=globs, verbose=Wahr)
     Trying:
         favorite_color
     Expecting:
@@ -2963,7 +2963,7 @@ Verbosity can be increased with the optional `verbose` parameter:
     2 passed.
     Test passed.
     TestResults(failed=0, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
 The name of the test may be specified with the optional `name`
 parameter:
@@ -2974,12 +2974,12 @@ parameter:
     File "...", line 6, in newname
     ...
     TestResults(failed=1, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
 The summary report may be suppressed with the optional `report`
 parameter:
 
-    >>> doctest.testfile('test_doctest.txt', report=False)
+    >>> doctest.testfile('test_doctest.txt', report=Falsch)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File "...", line 6, in test_doctest.txt
@@ -2989,17 +2989,17 @@ parameter:
         ...
         NameError: name 'favorite_color' is not defined
     TestResults(failed=1, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
 The optional keyword argument `raise_on_error` can be used to raise an
 exception on the first error (which may be useful fuer postmortem
 debugging):
 
-    >>> doctest.testfile('test_doctest.txt', raise_on_error=True)
+    >>> doctest.testfile('test_doctest.txt', raise_on_error=Wahr)
     ... # doctest: +ELLIPSIS
     Traceback (most recent call last):
     doctest.UnexpectedException: ...
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
 If the tests contain non-ASCII characters, the tests might fail, since
 it's unknown which encoding is used. The encoding can be specified
@@ -3021,15 +3021,15 @@ using the optional keyword argument `encoding`:
        2 of   2 in test_doctest4.txt
     ***Test Failed*** 2 failures.
     TestResults(failed=2, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
     >>> doctest.testfile('test_doctest4.txt', encoding='utf-8')
     TestResults(failed=0, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
 
 Test the verbose output:
 
-    >>> doctest.testfile('test_doctest4.txt', encoding='utf-8', verbose=True)
+    >>> doctest.testfile('test_doctest4.txt', encoding='utf-8', verbose=Wahr)
     Trying:
         'föö'
     Expecting:
@@ -3046,7 +3046,7 @@ Test the verbose output:
     2 passed.
     Test passed.
     TestResults(failed=0, attempted=2)
-    >>> doctest.master = None  # Reset master.
+    >>> doctest.master = Nichts  # Reset master.
     >>> sys.argv = save_argv
     >>> _colorize.COLORIZE = save_colorize
 """
@@ -3054,7 +3054,7 @@ Test the verbose output:
 def test_testfile_errors(): r"""
 Tests fuer error reporting in the testfile() function.
 
-    >>> doctest.testfile('test_doctest_errors.txt', verbose=False) # doctest: +ELLIPSIS
+    >>> doctest.testfile('test_doctest_errors.txt', verbose=Falsch) # doctest: +ELLIPSIS
     **********************************************************************
     File "...test_doctest_errors.txt", line 4, in test_doctest_errors.txt
     Failed example:
@@ -3104,7 +3104,7 @@ Tests fuer error reporting in the testfile() function.
 
 klasse TestImporter(importlib.abc.MetaPathFinder):
 
-    def find_spec(self, fullname, path, target=None):
+    def find_spec(self, fullname, path, target=Nichts):
         return importlib.util.spec_from_file_location(fullname, path, loader=self)
 
     def get_data(self, path):
@@ -3115,7 +3115,7 @@ klasse TestImporter(importlib.abc.MetaPathFinder):
         raise ImportError
 
     def create_module(self, spec):
-        return None
+        return Nichts
 
 klasse TestHook:
 
@@ -3162,7 +3162,7 @@ Windows line endings first:
     >>> with open(fn, 'wb') as f:
     ...    f.write(b'Test:\r\n\r\n  >>> x = 1 + 1\r\n\r\nDone.\r\n')
     35
-    >>> doctest.testfile(fn, module_relative=False, verbose=False)
+    >>> doctest.testfile(fn, module_relative=Falsch, verbose=Falsch)
     TestResults(failed=0, attempted=1)
     >>> os.remove(fn)
 
@@ -3172,7 +3172,7 @@ And now *nix line endings:
     >>> with open(fn, 'wb') as f:
     ...     f.write(b'Test:\n\n  >>> x = 1 + 1\n\nDone.\n')
     30
-    >>> doctest.testfile(fn, module_relative=False, verbose=False)
+    >>> doctest.testfile(fn, module_relative=Falsch, verbose=Falsch)
     TestResults(failed=0, attempted=1)
     >>> os.remove(fn)
 
@@ -3182,7 +3182,7 @@ And finally old Mac line endings:
     >>> with open(fn, 'wb') as f:
     ...     f.write(b'Test:\r\r  >>> x = 1 + 1\r\rDone.\r')
     30
-    >>> doctest.testfile(fn, module_relative=False, verbose=False)
+    >>> doctest.testfile(fn, module_relative=Falsch, verbose=Falsch)
     TestResults(failed=0, attempted=1)
     >>> os.remove(fn)
 
@@ -3215,7 +3215,7 @@ whitespace wenn doctest does not correctly do the newline conversion.
     ...     )
     95
     >>> with test_hook(dn):
-    ...     doctest.testfile("doctest_testfile.txt", package="doctest_testpkg", verbose=False)
+    ...     doctest.testfile("doctest_testfile.txt", package="doctest_testpkg", verbose=Falsch)
     TestResults(failed=0, attempted=3)
     >>> shutil.rmtree(dn)
 
@@ -3228,7 +3228,7 @@ fail with a UnicodeDecodeError because doctest tried to read the "source" lines
 out of the binary module.
 
     >>> import unicodedata
-    >>> doctest.testmod(unicodedata, verbose=False)
+    >>> doctest.testmod(unicodedata, verbose=Falsch)
     TestResults(failed=0, attempted=0)
 """
 
@@ -3236,7 +3236,7 @@ def test_testmod_errors(): r"""
 Tests fuer error reporting in the testmod() function.
 
     >>> import test.test_doctest.sample_doctest_errors as mod
-    >>> doctest.testmod(mod, verbose=False) # doctest: +ELLIPSIS
+    >>> doctest.testmod(mod, verbose=Falsch) # doctest: +ELLIPSIS
     **********************************************************************
     File "...sample_doctest_errors.py", line 5, in test.test_doctest.sample_doctest_errors
     Failed example:
@@ -3338,10 +3338,10 @@ Tests fuer error reporting in the testmod() function.
 
 try:
     os.fsencode("foo-bär@baz.py")
-    supports_unicode = True
+    supports_unicode = Wahr
 except UnicodeEncodeError:
     # Skip the test: the filesystem encoding is unable to encode the filename
-    supports_unicode = False
+    supports_unicode = Falsch
 
 wenn supports_unicode:
     def test_unicode(): """
@@ -3349,7 +3349,7 @@ Check doctest with a non-ascii filename:
 
     >>> import _colorize
     >>> save_colorize = _colorize.COLORIZE
-    >>> _colorize.COLORIZE = False
+    >>> _colorize.COLORIZE = Falsch
 
     >>> doc = '''
     ... >>> raise Exception('clé')
@@ -3359,7 +3359,7 @@ Check doctest with a non-ascii filename:
     >>> test = parser.get_doctest(doc, {}, "foo-bär@baz", "foo-bär@baz.py", 0)
     >>> test
     <DocTest foo-bär@baz from foo-bär@baz.py:0 (1 example)>
-    >>> runner = doctest.DocTestRunner(verbose=False)
+    >>> runner = doctest.DocTestRunner(verbose=Falsch)
     >>> runner.run(test) # doctest: +ELLIPSIS
     **********************************************************************
     File "foo-bär@baz.py", line 2, in foo-bär@baz
@@ -3631,7 +3631,7 @@ def test_no_trailing_whitespace_stripping():
 
     >>> test = doctest.DocTestFinder().find(f)[0]
     >>> flags = doctest.REPORT_NDIFF
-    >>> doctest.DocTestRunner(verbose=False, optionflags=flags).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch, optionflags=flags).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File ..., line 3, in f
@@ -3669,7 +3669,7 @@ def test_exception_with_note(note):
     """
     >>> import _colorize
     >>> save_colorize = _colorize.COLORIZE
-    >>> _colorize.COLORIZE = False
+    >>> _colorize.COLORIZE = Falsch
 
     >>> test_exception_with_note('Note')
     Traceback (most recent call last):
@@ -3704,7 +3704,7 @@ def test_exception_with_note(note):
     ...     wrong note
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File "...", line 5, in f
@@ -3743,7 +3743,7 @@ def test_exception_with_multiple_notes():
     raise exc
 
 
-def test_syntax_error_with_note(cls, multiline=False):
+def test_syntax_error_with_note(cls, multiline=Falsch):
     """
     >>> test_syntax_error_with_note(SyntaxError)
     Traceback (most recent call last):
@@ -3770,14 +3770,14 @@ def test_syntax_error_with_note(cls, multiline=False):
     IndentationError: error
     Note
 
-    >>> test_syntax_error_with_note(TabError, multiline=True)
+    >>> test_syntax_error_with_note(TabError, multiline=Wahr)
     Traceback (most recent call last):
       ...
     TabError: error
     Note
     Line
     """
-    exc = cls("error", ("x.py", 23, None, "bad syntax"))
+    exc = cls("error", ("x.py", 23, Nichts, "bad syntax"))
     exc.add_note('Note\nLine' wenn multiline sonst 'Note')
     raise exc
 
@@ -3804,11 +3804,11 @@ def test_syntax_error_with_incorrect_expected_note():
     """
     >>> import _colorize
     >>> save_colorize = _colorize.COLORIZE
-    >>> _colorize.COLORIZE = False
+    >>> _colorize.COLORIZE = Falsch
 
     >>> def f(x):
     ...     r'''
-    ...     >>> exc = SyntaxError("error", ("x.py", 23, None, "bad syntax"))
+    ...     >>> exc = SyntaxError("error", ("x.py", 23, Nichts, "bad syntax"))
     ...     >>> exc.add_note('note1')
     ...     >>> exc.add_note('note2')
     ...     >>> raise exc
@@ -3817,7 +3817,7 @@ def test_syntax_error_with_incorrect_expected_note():
     ...     wrong note
     ...     '''
     >>> test = doctest.DocTestFinder().find(f)[0]
-    >>> doctest.DocTestRunner(verbose=False).run(test)
+    >>> doctest.DocTestRunner(verbose=Falsch).run(test)
     ... # doctest: +ELLIPSIS
     **********************************************************************
     File "...", line 6, in f

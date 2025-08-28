@@ -25,14 +25,14 @@ klasse Runner:
     allows to run async functions inside it,
     and properly finalizes the loop at the context manager exit.
 
-    If debug is True, the event loop will be run in debug mode.
+    If debug is Wahr, the event loop will be run in debug mode.
     If loop_factory is passed, it is used fuer new event loop creation.
 
-    asyncio.run(main(), debug=True)
+    asyncio.run(main(), debug=Wahr)
 
     is a shortcut for
 
-    with asyncio.Runner(debug=True) as runner:
+    with asyncio.Runner(debug=Wahr) as runner:
         runner.run(main())
 
     The run() method can be called multiple times within the runner's context.
@@ -46,14 +46,14 @@ klasse Runner:
 
     # Note: the klasse is final, it is not intended fuer inheritance.
 
-    def __init__(self, *, debug=None, loop_factory=None):
+    def __init__(self, *, debug=Nichts, loop_factory=Nichts):
         self._state = _State.CREATED
         self._debug = debug
         self._loop_factory = loop_factory
-        self._loop = None
-        self._context = None
+        self._loop = Nichts
+        self._context = Nichts
         self._interrupt_count = 0
-        self._set_event_loop = False
+        self._set_event_loop = Falsch
 
     def __enter__(self):
         self._lazy_init()
@@ -74,9 +74,9 @@ klasse Runner:
                 loop.shutdown_default_executor(constants.THREAD_JOIN_TIMEOUT))
         finally:
             wenn self._set_event_loop:
-                events.set_event_loop(None)
+                events.set_event_loop(Nichts)
             loop.close()
-            self._loop = None
+            self._loop = Nichts
             self._state = _State.CLOSED
 
     def get_loop(self):
@@ -84,9 +84,9 @@ klasse Runner:
         self._lazy_init()
         return self._loop
 
-    def run(self, coro, *, context=None):
+    def run(self, coro, *, context=Nichts):
         """Run code in the embedded event loop."""
-        wenn events._get_running_loop() is not None:
+        wenn events._get_running_loop() is not Nichts:
             # fail fast with short traceback
             raise RuntimeError(
                 "Runner.run() cannot be called from a running event loop")
@@ -103,7 +103,7 @@ klasse Runner:
                 raise TypeError('An asyncio.Future, a coroutine or an '
                                 'awaitable is required')
 
-        wenn context is None:
+        wenn context is Nichts:
             context = self._context
 
         task = self._loop.create_task(coro, context=context)
@@ -118,21 +118,21 @@ klasse Runner:
                 # `signal.signal` may throw wenn `threading.main_thread` does
                 # not support signals (e.g. embedded interpreter with signals
                 # not registered - see gh-91880)
-                sigint_handler = None
+                sigint_handler = Nichts
         sonst:
-            sigint_handler = None
+            sigint_handler = Nichts
 
         self._interrupt_count = 0
         try:
             return self._loop.run_until_complete(task)
         except exceptions.CancelledError:
             wenn self._interrupt_count > 0:
-                uncancel = getattr(task, "uncancel", None)
-                wenn uncancel is not None and uncancel() == 0:
+                uncancel = getattr(task, "uncancel", Nichts)
+                wenn uncancel is not Nichts and uncancel() == 0:
                     raise KeyboardInterrupt()
             raise  # CancelledError
         finally:
-            wenn (sigint_handler is not None
+            wenn (sigint_handler is not Nichts
                 and signal.getsignal(signal.SIGINT) is sigint_handler
             ):
                 signal.signal(signal.SIGINT, signal.default_int_handler)
@@ -142,16 +142,16 @@ klasse Runner:
             raise RuntimeError("Runner is closed")
         wenn self._state is _State.INITIALIZED:
             return
-        wenn self._loop_factory is None:
+        wenn self._loop_factory is Nichts:
             self._loop = events.new_event_loop()
             wenn not self._set_event_loop:
                 # Call set_event_loop only once to avoid calling
                 # attach_loop multiple times on child watchers
                 events.set_event_loop(self._loop)
-                self._set_event_loop = True
+                self._set_event_loop = Wahr
         sonst:
             self._loop = self._loop_factory()
-        wenn self._debug is not None:
+        wenn self._debug is not Nichts:
             self._loop.set_debug(self._debug)
         self._context = contextvars.copy_context()
         self._state = _State.INITIALIZED
@@ -161,12 +161,12 @@ klasse Runner:
         wenn self._interrupt_count == 1 and not main_task.done():
             main_task.cancel()
             # wakeup loop wenn it is blocked by select() with long timeout
-            self._loop.call_soon_threadsafe(lambda: None)
+            self._loop.call_soon_threadsafe(lambda: Nichts)
             return
         raise KeyboardInterrupt()
 
 
-def run(main, *, debug=None, loop_factory=None):
+def run(main, *, debug=Nichts, loop_factory=Nichts):
     """Execute the coroutine and return the result.
 
     This function runs the passed coroutine, taking care of
@@ -176,7 +176,7 @@ def run(main, *, debug=None, loop_factory=None):
     This function cannot be called when another asyncio event loop is
     running in the same thread.
 
-    If debug is True, the event loop will be run in debug mode.
+    If debug is Wahr, the event loop will be run in debug mode.
     If loop_factory is passed, it is used fuer new event loop creation.
 
     This function always creates a new event loop and closes it at the end.
@@ -195,7 +195,7 @@ def run(main, *, debug=None, loop_factory=None):
 
         asyncio.run(main())
     """
-    wenn events._get_running_loop() is not None:
+    wenn events._get_running_loop() is not Nichts:
         # fail fast with short traceback
         raise RuntimeError(
             "asyncio.run() cannot be called from a running event loop")
@@ -212,12 +212,12 @@ def _cancel_all_tasks(loop):
     fuer task in to_cancel:
         task.cancel()
 
-    loop.run_until_complete(tasks.gather(*to_cancel, return_exceptions=True))
+    loop.run_until_complete(tasks.gather(*to_cancel, return_exceptions=Wahr))
 
     fuer task in to_cancel:
         wenn task.cancelled():
             continue
-        wenn task.exception() is not None:
+        wenn task.exception() is not Nichts:
             loop.call_exception_handler({
                 'message': 'unhandled exception during asyncio.run() shutdown',
                 'exception': task.exception(),

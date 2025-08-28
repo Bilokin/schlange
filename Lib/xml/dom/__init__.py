@@ -134,7 +134,7 @@ klasse UserDataHandler:
 XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace"
 XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/"
 XHTML_NAMESPACE = "http://www.w3.org/1999/xhtml"
-EMPTY_NAMESPACE = None
-EMPTY_PREFIX = None
+EMPTY_NAMESPACE = Nichts
+EMPTY_PREFIX = Nichts
 
 from .domreg import getDOMImplementation, registerDOMImplementation  # noqa: F401

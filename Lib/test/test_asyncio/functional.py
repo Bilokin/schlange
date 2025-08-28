@@ -24,7 +24,7 @@ klasse FunctionalTestCaseMixin:
 
     def setUp(self):
         self.loop = self.new_loop()
-        asyncio.set_event_loop(None)
+        asyncio.set_event_loop(Nichts)
 
         self.loop.set_exception_handler(self.loop_exception_handler)
         self.__unhandled_exceptions = []
@@ -39,17 +39,17 @@ klasse FunctionalTestCaseMixin:
                 self.fail('unexpected calls to loop.call_exception_handler()')
 
         finally:
-            asyncio.set_event_loop(None)
-            self.loop = None
+            asyncio.set_event_loop(Nichts)
+            self.loop = Nichts
 
     def tcp_server(self, server_prog, *,
                    family=socket.AF_INET,
-                   addr=None,
+                   addr=Nichts,
                    timeout=support.LOOPBACK_TIMEOUT,
                    backlog=1,
                    max_clients=10):
 
-        wenn addr is None:
+        wenn addr is Nichts:
             wenn hasattr(socket, 'AF_UNIX') and family == socket.AF_UNIX:
                 with tempfile.NamedTemporaryFile() as tmp:
                     addr = tmp.name
@@ -57,7 +57,7 @@ klasse FunctionalTestCaseMixin:
                 addr = ('127.0.0.1', 0)
 
         sock = socket.create_server(addr, family=family, backlog=backlog)
-        wenn timeout is None:
+        wenn timeout is Nichts:
             raise RuntimeError('timeout is required')
         wenn timeout <= 0:
             raise RuntimeError('only blocking sockets are supported')
@@ -72,7 +72,7 @@ klasse FunctionalTestCaseMixin:
 
         sock = socket.socket(family, socket.SOCK_STREAM)
 
-        wenn timeout is None:
+        wenn timeout is Nichts:
             raise RuntimeError('timeout is required')
         wenn timeout <= 0:
             raise RuntimeError('only blocking sockets are supported')
@@ -130,13 +130,13 @@ klasse TestSocketWrapper:
         return buf
 
     def start_tls(self, ssl_context, *,
-                  server_side=False,
-                  server_hostname=None):
+                  server_side=Falsch,
+                  server_hostname=Nichts):
 
         ssl_sock = ssl_context.wrap_socket(
             self.__sock, server_side=server_side,
             server_hostname=server_hostname,
-            do_handshake_on_connect=False)
+            do_handshake_on_connect=Falsch)
 
         try:
             ssl_sock.do_handshake()
@@ -158,7 +158,7 @@ klasse TestSocketWrapper:
 klasse SocketThread(threading.Thread):
 
     def stop(self):
-        self._active = False
+        self._active = Falsch
         self.join()
 
     def __enter__(self):
@@ -172,12 +172,12 @@ klasse SocketThread(threading.Thread):
 klasse TestThreadedClient(SocketThread):
 
     def __init__(self, test, sock, prog, timeout):
-        threading.Thread.__init__(self, None, None, 'test-client')
-        self.daemon = True
+        threading.Thread.__init__(self, Nichts, Nichts, 'test-client')
+        self.daemon = Wahr
 
         self._timeout = timeout
         self._sock = sock
-        self._active = True
+        self._active = Wahr
         self._prog = prog
         self._test = test
 
@@ -191,20 +191,20 @@ klasse TestThreadedClient(SocketThread):
 klasse TestThreadedServer(SocketThread):
 
     def __init__(self, test, sock, prog, timeout, max_clients):
-        threading.Thread.__init__(self, None, None, 'test-server')
-        self.daemon = True
+        threading.Thread.__init__(self, Nichts, Nichts, 'test-server')
+        self.daemon = Wahr
 
         self._clients = 0
         self._finished_clients = 0
         self._max_clients = max_clients
         self._timeout = timeout
         self._sock = sock
-        self._active = True
+        self._active = Wahr
 
         self._prog = prog
 
         self._s1, self._s2 = socket.socketpair()
-        self._s1.setblocking(False)
+        self._s1.setblocking(Falsch)
 
         self._test = test
 
@@ -223,7 +223,7 @@ klasse TestThreadedServer(SocketThread):
 
 
     def run(self):
-        self._sock.setblocking(False)
+        self._sock.setblocking(Falsch)
         self._run()
 
     def _run(self):
@@ -254,7 +254,7 @@ klasse TestThreadedServer(SocketThread):
                         with conn:
                             self._handle_client(conn)
                     except Exception as ex:
-                        self._active = False
+                        self._active = Falsch
                         try:
                             raise
                         finally:

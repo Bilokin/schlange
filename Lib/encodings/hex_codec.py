@@ -25,12 +25,12 @@ klasse Codec(codecs.Codec):
         return hex_decode(input, errors)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         assert self.errors == 'strict'
         return binascii.b2a_hex(input)
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         assert self.errors == 'strict'
         return binascii.a2b_hex(input)
 
@@ -51,5 +51,5 @@ def getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamwriter=StreamWriter,
         streamreader=StreamReader,
-        _is_text_encoding=False,
+        _is_text_encoding=Falsch,
     )

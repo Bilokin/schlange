@@ -6,13 +6,13 @@ import unittest
 
 klasse TestGetProfile(unittest.TestCase):
     def setUp(self):
-        sys.setprofile(None)
+        sys.setprofile(Nichts)
 
     def tearDown(self):
-        sys.setprofile(None)
+        sys.setprofile(Nichts)
 
     def test_empty(self):
-        self.assertIsNone(sys.getprofile())
+        self.assertIsNichts(sys.getprofile())
 
     def test_setget(self):
         def fn(*args):
@@ -32,9 +32,9 @@ klasse HookWatcher:
             or event == "exception"):
             self.add_event(event, frame, arg)
 
-    def add_event(self, event, frame=None, arg=None):
+    def add_event(self, event, frame=Nichts, arg=Nichts):
         """Add an event to the log."""
-        wenn frame is None:
+        wenn frame is Nichts:
             frame = sys._getframe(1)
 
         try:
@@ -48,7 +48,7 @@ klasse HookWatcher:
     def get_events(self):
         """Remove calls to add_event()."""
         disallowed = [ident(self.add_event.__func__), ident(ident)]
-        self.frames = None
+        self.frames = Nichts
 
         return [item fuer item in self.events wenn item[2] not in disallowed]
 
@@ -89,7 +89,7 @@ klasse ProfileSimulator(HookWatcher):
 
 
 klasse TestCaseBase(unittest.TestCase):
-    def check_events(self, callable, expected, check_args=False):
+    def check_events(self, callable, expected, check_args=Falsch):
         events = capture_events(callable, self.new_watcher())
         wenn check_args:
             wenn events != expected:
@@ -269,11 +269,11 @@ klasse ProfileHookTestCase(TestCaseBase):
 
         f_ident = ident(f)
         g_ident = ident(g)
-        self.check_events(g, [(1, 'call', g_ident, None),
-                              (2, 'call', f_ident, None),
+        self.check_events(g, [(1, 'call', g_ident, Nichts),
+                              (2, 'call', f_ident, Nichts),
                               (2, 'return', f_ident, 0),
-                              (1, 'return', g_ident, None),
-                              ], check_args=True)
+                              (1, 'return', g_ident, Nichts),
+                              ], check_args=Wahr)
 
     def test_stop_iteration(self):
         def f():
@@ -413,8 +413,8 @@ def protect(f, p):
 protect_ident = ident(protect)
 
 
-def capture_events(callable, p=None):
-    wenn p is None:
+def capture_events(callable, p=Nichts):
+    wenn p is Nichts:
         p = HookWatcher()
     # Disable the garbage collector. This prevents __del__s from showing up in
     # traces.
@@ -423,7 +423,7 @@ def capture_events(callable, p=None):
     try:
         sys.setprofile(p.callback)
         protect(callable, p)
-        sys.setprofile(None)
+        sys.setprofile(Nichts)
     finally:
         wenn old_gc:
             gc.enable()
@@ -439,7 +439,7 @@ klasse TestEdgeCases(unittest.TestCase):
 
     def setUp(self):
         self.addCleanup(sys.setprofile, sys.getprofile())
-        sys.setprofile(None)
+        sys.setprofile(Nichts)
 
     def test_reentrancy(self):
         def foo(*args):
@@ -471,12 +471,12 @@ klasse TestEdgeCases(unittest.TestCase):
         def f():
             ...
 
-        sys._getframe().f_trace_opcodes = True
+        sys._getframe().f_trace_opcodes = Wahr
         prev_trace = sys.gettrace()
-        sys.settrace(lambda *args: None)
+        sys.settrace(lambda *args: Nichts)
         f()
         sys.settrace(prev_trace)
-        sys.setprofile(lambda *args: None)
+        sys.setprofile(lambda *args: Nichts)
         f()
 
     def test_method_with_c_function(self):
@@ -489,7 +489,7 @@ klasse TestEdgeCases(unittest.TestCase):
         events = []
         sys.setprofile(lambda frame, event, args: events.append(event))
         A().f()
-        sys.setprofile(None)
+        sys.setprofile(Nichts)
         # The last c_call is the call to sys.setprofile
         self.assertEqual(events, ['c_call', 'c_return', 'c_call'])
 
@@ -499,7 +499,7 @@ klasse TestEdgeCases(unittest.TestCase):
         sys.setprofile(lambda frame, event, args: events.append(event))
         # Not important, we only want to trigger INSTRUMENTED_CALL_KW
         B().f(1, key=lambda x: 0)
-        sys.setprofile(None)
+        sys.setprofile(Nichts)
         # The last c_call is the call to sys.setprofile
         self.assertEqual(
             events,
@@ -518,7 +518,7 @@ klasse TestEdgeCases(unittest.TestCase):
         args = (1,)
         m = B().f
         m(*args, key=lambda x: 0)
-        sys.setprofile(None)
+        sys.setprofile(Nichts)
         # The last c_call is the call to sys.setprofile
         # INSTRUMENTED_CALL_FUNCTION_EX has different behavior than the other
         # instrumented call bytecodes, it does not unpack the callable before

@@ -29,7 +29,7 @@ klasse KeymapTranslatorTests(unittest.TestCase):
         evt = Event("key", "b")
         translator.push(evt)
         result = translator.get()
-        self.assertEqual(result, (None, ["b"]))
+        self.assertEqual(result, (Nichts, ["b"]))
 
     def test_push_invalid_key_with_stack(self):
         keymap = [("ab", "command_ab")]
@@ -39,7 +39,7 @@ klasse KeymapTranslatorTests(unittest.TestCase):
         translator.push(evt1)
         translator.push(evt2)
         result = translator.get()
-        self.assertEqual(result, (None, ["a", "c"]))
+        self.assertEqual(result, (Nichts, ["a", "c"]))
 
     def test_push_character_key(self):
         keymap = [("a", "command_a")]
@@ -81,7 +81,7 @@ klasse KeymapTranslatorTests(unittest.TestCase):
         translator.push(evt2)
         translator.push(evt3)
         result = translator.get()
-        self.assertEqual(result, (None, ["a", "c"]))
+        self.assertEqual(result, (Nichts, ["a", "c"]))
 
     def test_push_invalid_key_with_unicode_category(self):
         keymap = [("a", "command_a")]
@@ -89,14 +89,14 @@ klasse KeymapTranslatorTests(unittest.TestCase):
         evt = Event("key", "\u0003")  # Control character
         translator.push(evt)
         result = translator.get()
-        self.assertEqual(result, (None, ["\u0003"]))
+        self.assertEqual(result, (Nichts, ["\u0003"]))
 
     def test_empty(self):
         keymap = [("a", "command_a")]
         translator = KeymapTranslator(keymap)
-        self.assertTrue(translator.empty())
+        self.assertWahr(translator.empty())
         evt = Event("key", "a")
         translator.push(evt)
-        self.assertFalse(translator.empty())
+        self.assertFalsch(translator.empty())
         translator.get()
-        self.assertTrue(translator.empty())
+        self.assertWahr(translator.empty())

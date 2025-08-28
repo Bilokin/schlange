@@ -29,7 +29,7 @@ klasse Dummy_grep:
     #default_command = GrepDialog.default_command
     grep_it = grep.GrepDialog.grep_it
     # Other stuff needed
-    recvar = Var(False)
+    recvar = Var(Falsch)
     engine = searchengine
     def close(self):  # gui method
         pass
@@ -50,7 +50,7 @@ klasse FindfilesTest(unittest.TestCase):
 
     def test_invaliddir(self):
         with captured_stdout() as s:
-            filelist = list(grep.findfiles('invaliddir', '*.*', False))
+            filelist = list(grep.findfiles('invaliddir', '*.*', Falsch))
         self.assertEqual(filelist, [])
         self.assertIn('invalid', s.getvalue())
 
@@ -60,7 +60,7 @@ klasse FindfilesTest(unittest.TestCase):
         save_cwd = os.getcwd()
         os.chdir(self.path)
         filename = 'test_grep.py'
-        filelist = list(ff(os.curdir, filename, False))
+        filelist = list(ff(os.curdir, filename, Falsch))
         self.assertIn(os.path.join(os.curdir, filename), filelist)
         os.chdir(save_cwd)
 
@@ -69,20 +69,20 @@ klasse FindfilesTest(unittest.TestCase):
         readme = os.path.join(self.path, 'README.txt')
 
         # Check fuer Python files in path where this file lives.
-        filelist = list(ff(self.path, '*.py', False))
+        filelist = list(ff(self.path, '*.py', Falsch))
         # This directory has many Python files.
         self.assertGreater(len(filelist), 10)
         self.assertIn(self.realpath, filelist)
         self.assertNotIn(readme, filelist)
 
         # Look fuer .txt files in path where this file lives.
-        filelist = list(ff(self.path, '*.txt', False))
+        filelist = list(ff(self.path, '*.txt', Falsch))
         self.assertNotEqual(len(filelist), 0)
         self.assertNotIn(self.realpath, filelist)
         self.assertIn(readme, filelist)
 
         # Look fuer non-matching pattern.
-        filelist = list(ff(self.path, 'grep.*', False))
+        filelist = list(ff(self.path, 'grep.*', Falsch))
         self.assertEqual(len(filelist), 0)
         self.assertNotIn(self.realpath, filelist)
 
@@ -93,7 +93,7 @@ klasse FindfilesTest(unittest.TestCase):
         pat = '*.py'
 
         # Get Python files only in parent directory.
-        filelist = list(ff(parent, pat, False))
+        filelist = list(ff(parent, pat, Falsch))
         parent_size = len(filelist)
         # Lots of Python files in idlelib.
         self.assertGreater(parent_size, 20)
@@ -102,7 +102,7 @@ klasse FindfilesTest(unittest.TestCase):
         self.assertNotIn(self.realpath, filelist)
 
         # Include subdirectories.
-        filelist = list(ff(parent, pat, True))
+        filelist = list(ff(parent, pat, Wahr))
         # More files found now.
         self.assertGreater(len(filelist), parent_size)
         self.assertIn(grepfile, filelist)
@@ -111,7 +111,7 @@ klasse FindfilesTest(unittest.TestCase):
 
         # Check another level up the tree.
         parent = os.path.dirname(parent)
-        filelist = list(ff(parent, '*.py', True))
+        filelist = list(ff(parent, '*.py', Wahr))
         self.assertIn(self.realpath, filelist)
 
 

@@ -62,14 +62,14 @@ klasse ExecutionFailed(InterpreterError):
 
 def create():
     """Return a new (idle) Python interpreter."""
-    id = _interpreters.create(reqrefs=True)
-    return Interpreter(id, _ownsref=True)
+    id = _interpreters.create(reqrefs=Wahr)
+    return Interpreter(id, _ownsref=Wahr)
 
 
 def list_all():
     """Return all existing interpreters."""
     return [Interpreter(id, _whence=whence)
-            fuer id, whence in _interpreters.list_all(require_ready=True)]
+            fuer id, whence in _interpreters.list_all(require_ready=Wahr)]
 
 
 def get_current():
@@ -109,18 +109,18 @@ klasse Interpreter:
        _interpreters.WHENCE_STDLIB: '_interpreters module',
     }
 
-    def __new__(cls, id, /, _whence=None, _ownsref=None):
+    def __new__(cls, id, /, _whence=Nichts, _ownsref=Nichts):
         # There is only one instance fuer any given ID.
         wenn not isinstance(id, int):
             raise TypeError(f'id must be an int, got {id!r}')
         id = int(id)
-        wenn _whence is None:
+        wenn _whence is Nichts:
             wenn _ownsref:
                 _whence = _interpreters.WHENCE_STDLIB
             sonst:
                 _whence = _interpreters.whence(id)
         assert _whence in cls._WHENCE_TO_STR, repr(_whence)
-        wenn _ownsref is None:
+        wenn _ownsref is Nichts:
             _ownsref = (_whence == _interpreters.WHENCE_STDLIB)
         try:
             self = _known[id]
@@ -152,7 +152,7 @@ klasse Interpreter:
     def _decref(self):
         wenn not self._ownsref:
             return
-        self._ownsref = False
+        self._ownsref = Falsch
         try:
             _interpreters.decref(self._id)
         except InterpreterNotFoundError:
@@ -179,15 +179,15 @@ klasse Interpreter:
         Attempting to destroy the current interpreter results
         in an InterpreterError.
         """
-        return _interpreters.destroy(self._id, restrict=True)
+        return _interpreters.destroy(self._id, restrict=Wahr)
 
-    def prepare_main(self, ns=None, /, **kwargs):
+    def prepare_main(self, ns=Nichts, /, **kwargs):
         """Bind the given values into the interpreter's __main__.
 
         The values must be shareable.
         """
-        ns = dict(ns, **kwargs) wenn ns is not None sonst kwargs
-        _interpreters.set___main___attrs(self._id, ns, restrict=True)
+        ns = dict(ns, **kwargs) wenn ns is not Nichts sonst kwargs
+        _interpreters.set___main___attrs(self._id, ns, restrict=Wahr)
 
     def exec(self, code, /):
         """Run the given source code in the interpreter.
@@ -207,13 +207,13 @@ klasse Interpreter:
         that time, the previous interpreter is allowed to run
         in other threads.
         """
-        excinfo = _interpreters.exec(self._id, code, restrict=True)
-        wenn excinfo is not None:
+        excinfo = _interpreters.exec(self._id, code, restrict=Wahr)
+        wenn excinfo is not Nichts:
             raise ExecutionFailed(excinfo)
 
     def _call(self, callable, args, kwargs):
-        res, excinfo = _interpreters.call(self._id, callable, args, kwargs, restrict=True)
-        wenn excinfo is not None:
+        res, excinfo = _interpreters.call(self._id, callable, args, kwargs, restrict=Wahr)
+        wenn excinfo is not Nichts:
             raise ExecutionFailed(excinfo)
         return res
 

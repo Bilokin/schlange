@@ -17,11 +17,11 @@ klasse TestHook:
     after the test completes.
     """
 
-    def __init__(self, raise_on_events=None, exc_type=RuntimeError):
+    def __init__(self, raise_on_events=Nichts, exc_type=RuntimeError):
         self.raise_on_events = raise_on_events or ()
         self.exc_type = exc_type
         self.seen = []
-        self.closed = False
+        self.closed = Falsch
 
     def __enter__(self, *a):
         sys.addaudithook(self)
@@ -31,7 +31,7 @@ klasse TestHook:
         self.close()
 
     def close(self):
-        self.closed = True
+        self.closed = Wahr
 
     @property
     def seen_events(self):
@@ -72,7 +72,7 @@ def assertSequenceEqual(x, y):
 def assertRaises(ex_type):
     try:
         yield
-        assert False, f"expected {ex_type}"
+        assert Falsch, f"expected {ex_type}"
     except BaseException as ex:
         wenn isinstance(ex, AssertionError):
             raise
@@ -193,18 +193,18 @@ def test_open(testfn):
 
         load_dh_params = ssl.create_default_context().load_dh_params
     except ImportError:
-        load_dh_params = None
+        load_dh_params = Nichts
 
     try:
         import readline
     except ImportError:
-        readline = None
+        readline = Nichts
 
     def rl(name):
         wenn readline:
-            return getattr(readline, name, None)
+            return getattr(readline, name, Nichts)
         sonst:
-            return None
+            return Nichts
 
     # Try a range of "open" functions.
     # All of them should fail
@@ -213,16 +213,16 @@ def test_open(testfn):
             (open, testfn, "r"),
             (open, sys.executable, "rb"),
             (open, 3, "wb"),
-            (open, testfn, "w", -1, None, None, None, False, lambda *a: 1),
+            (open, testfn, "w", -1, Nichts, Nichts, Nichts, Falsch, lambda *a: 1),
             (load_dh_params, testfn),
             (rl("read_history_file"), testfn),
-            (rl("read_history_file"), None),
+            (rl("read_history_file"), Nichts),
             (rl("write_history_file"), testfn),
-            (rl("write_history_file"), None),
+            (rl("write_history_file"), Nichts),
             (rl("append_history_file"), 0, testfn),
-            (rl("append_history_file"), 0, None),
+            (rl("append_history_file"), 0, Nichts),
             (rl("read_init_file"), testfn),
-            (rl("read_init_file"), None),
+            (rl("read_init_file"), Nichts),
         ]:
             wenn not fn:
                 continue
@@ -232,7 +232,7 @@ def test_open(testfn):
                 except NotImplementedError:
                     wenn fn == load_dh_params:
                         # Not callable in some builds
-                        load_dh_params = None
+                        load_dh_params = Nichts
                         raise RuntimeError
                     sonst:
                         raise
@@ -247,17 +247,17 @@ def test_open(testfn):
                 (sys.executable, "r"),
                 (3, "w"),
                 (testfn, "w"),
-                (testfn, "rb") wenn load_dh_params sonst None,
-                (testfn, "r") wenn readline sonst None,
-                ("~/.history", "r") wenn readline sonst None,
-                (testfn, "w") wenn readline sonst None,
-                ("~/.history", "w") wenn readline sonst None,
-                (testfn, "a") wenn rl("append_history_file") sonst None,
-                ("~/.history", "a") wenn rl("append_history_file") sonst None,
-                (testfn, "r") wenn readline sonst None,
-                ("<readline_init_file>", "r") wenn readline sonst None,
+                (testfn, "rb") wenn load_dh_params sonst Nichts,
+                (testfn, "r") wenn readline sonst Nichts,
+                ("~/.history", "r") wenn readline sonst Nichts,
+                (testfn, "w") wenn readline sonst Nichts,
+                ("~/.history", "w") wenn readline sonst Nichts,
+                (testfn, "a") wenn rl("append_history_file") sonst Nichts,
+                ("~/.history", "a") wenn rl("append_history_file") sonst Nichts,
+                (testfn, "r") wenn readline sonst Nichts,
+                ("<readline_init_file>", "r") wenn readline sonst Nichts,
             ]
-            wenn i is not None
+            wenn i is not Nichts
         ],
         actual_mode,
     )
@@ -278,11 +278,11 @@ def test_cantrace():
             eval("1")
 
             # No traced call
-            hook.__cantrace__ = False
+            hook.__cantrace__ = Falsch
             eval("2")
 
             # One traced call
-            hook.__cantrace__ = True
+            hook.__cantrace__ = Wahr
             eval("3")
 
             # Two traced calls (writing to private member, eval)
@@ -333,7 +333,7 @@ def test_posixsubprocess():
     args = [b"yyy", b"zzz"]
     with TestHook() as hook:
         multiprocessing.util.spawnv_passfds(exe, args, ())
-        assert ("_posixsubprocess.fork_exec", ([exe], args, None)) in hook.seen
+        assert ("_posixsubprocess.fork_exec", ([exe], args, Nichts)) in hook.seen
 
 
 def test_excepthook():
@@ -467,7 +467,7 @@ def test_sqlite3():
     # Configured without --enable-loadable-sqlite-extensions
     try:
         wenn hasattr(sqlite3.Connection, "enable_load_extension"):
-            cx1.enable_load_extension(False)
+            cx1.enable_load_extension(Falsch)
             try:
                 cx1.load_extension("test")
             except sqlite3.OperationalError:
@@ -539,7 +539,7 @@ def test_threading_abort():
     sys.addaudithook(hook)
 
     try:
-        _thread.start_new_thread(lambda: None, ())
+        _thread.start_new_thread(lambda: Nichts, ())
     except ThreadNewAbortError:
         # Other exceptions are raised and the test will fail
         pass
@@ -577,7 +577,7 @@ def test_syslog():
     syslog.syslog('test2')
     # open with default ident
     syslog.openlog(logoption=syslog.LOG_NDELAY, facility=syslog.LOG_LOCAL0)
-    sys.argv = None
+    sys.argv = Nichts
     syslog.openlog()
     syslog.closelog()
 
@@ -585,7 +585,7 @@ def test_syslog():
 def test_not_in_gc():
     import gc
 
-    hook = lambda *a: None
+    hook = lambda *a: Nichts
     sys.addaudithook(hook)
 
     fuer o in gc.get_objects():
@@ -619,7 +619,7 @@ def test_sys_monitoring_register_callback():
             print(event, args)
 
     sys.addaudithook(hook)
-    sys.monitoring.register_callback(1, 1, None)
+    sys.monitoring.register_callback(1, 1, Nichts)
 
 
 def test_winapi_createnamedpipe(pipe_name):
@@ -635,7 +635,7 @@ def test_winapi_createnamedpipe(pipe_name):
 
 def test_assert_unicode():
     import sys
-    sys.addaudithook(lambda *args: None)
+    sys.addaudithook(lambda *args: Nichts)
     try:
         sys.audit(9)
     except TypeError:
@@ -664,7 +664,7 @@ def test_sys_remote_exec():
                 remote_event_script_path = args[0]
 
     sys.addaudithook(hook)
-    with tempfile.NamedTemporaryFile(mode='w+', delete=True) as tmp_file:
+    with tempfile.NamedTemporaryFile(mode='w+', delete=Wahr) as tmp_file:
         tmp_file.write("a = 1+1\n")
         tmp_file.flush()
         sys.remote_exec(pid, tmp_file.name)

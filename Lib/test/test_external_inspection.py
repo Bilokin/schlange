@@ -19,7 +19,7 @@ from test.support.socket_helper import find_unused_port
 
 import subprocess
 
-PROCESS_VM_READV_SUPPORTED = False
+PROCESS_VM_READV_SUPPORTED = Falsch
 
 try:
     from _remote_debugging import PROCESS_VM_READV_SUPPORTED
@@ -48,22 +48,22 @@ skip_if_not_supported = unittest.skipIf(
 
 
 def get_stack_trace(pid):
-    unwinder = RemoteUnwinder(pid, all_threads=True, debug=True)
+    unwinder = RemoteUnwinder(pid, all_threads=Wahr, debug=Wahr)
     return unwinder.get_stack_trace()
 
 
 def get_async_stack_trace(pid):
-    unwinder = RemoteUnwinder(pid, debug=True)
+    unwinder = RemoteUnwinder(pid, debug=Wahr)
     return unwinder.get_async_stack_trace()
 
 
 def get_all_awaited_by(pid):
-    unwinder = RemoteUnwinder(pid, debug=True)
+    unwinder = RemoteUnwinder(pid, debug=Wahr)
     return unwinder.get_all_awaited_by()
 
 
 klasse TestGetStackTrace(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
 
     @skip_if_not_supported
     @unittest.skipIf(
@@ -96,7 +96,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             sock.sendall(b"ready:main\\n"); t.join()  # same line number
             """
         )
-        stack_trace = None
+        stack_trace = Nichts
         with os_helper.temp_dir() as work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
@@ -109,7 +109,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.listen(1)
 
             script_name = _make_test_script(script_dir, "script", script)
-            client_socket = None
+            client_socket = Nichts
             try:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
@@ -126,7 +126,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not None:
+                wenn client_socket is not Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -200,7 +200,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             asyncio.run(main(), loop_factory={{TASK_FACTORY}})
             """
         )
-        stack_trace = None
+        stack_trace = Nichts
         fuer task_factory_variant in "asyncio.new_event_loop", "new_eager_loop":
             with (
                 self.subTest(task_factory_variant=task_factory_variant),
@@ -222,7 +222,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "script",
                     script.format(TASK_FACTORY=task_factory_variant),
                 )
-                client_socket = None
+                client_socket = Nichts
                 try:
                     p = subprocess.Popen([sys.executable, script_name])
                     client_socket, _ = server_socket.accept()
@@ -235,7 +235,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                         "Insufficient permissions to read the stack trace"
                     )
                 finally:
-                    wenn client_socket is not None:
+                    wenn client_socket is not Nichts:
                         client_socket.close()
                     p.kill()
                     p.terminate()
@@ -432,7 +432,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             asyncio.run(main())
             """
         )
-        stack_trace = None
+        stack_trace = Nichts
         with os_helper.temp_dir() as work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
@@ -443,7 +443,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.settimeout(SHORT_TIMEOUT)
             server_socket.listen(1)
             script_name = _make_test_script(script_dir, "script", script)
-            client_socket = None
+            client_socket = Nichts
             try:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
@@ -456,7 +456,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not None:
+                wenn client_socket is not Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -521,7 +521,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             asyncio.run(main())
             """
         )
-        stack_trace = None
+        stack_trace = Nichts
         with os_helper.temp_dir() as work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
@@ -532,7 +532,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.settimeout(SHORT_TIMEOUT)
             server_socket.listen(1)
             script_name = _make_test_script(script_dir, "script", script)
-            client_socket = None
+            client_socket = Nichts
             try:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
@@ -545,7 +545,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not None:
+                wenn client_socket is not Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -651,13 +651,13 @@ klasse TestGetStackTrace(unittest.TestCase):
             async def main():
                 await asyncio.staggered.staggered_race(
                     [c1, c2],
-                    delay=None,
+                    delay=Nichts,
                 )
 
             asyncio.run(main())
             """
         )
-        stack_trace = None
+        stack_trace = Nichts
         with os_helper.temp_dir() as work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
@@ -668,7 +668,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.settimeout(SHORT_TIMEOUT)
             server_socket.listen(1)
             script_name = _make_test_script(script_dir, "script", script)
-            client_socket = None
+            client_socket = Nichts
             try:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
@@ -681,7 +681,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not None:
+                wenn client_socket is not Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -850,7 +850,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             asyncio.run(main())
             """
         )
-        stack_trace = None
+        stack_trace = Nichts
         with os_helper.temp_dir() as work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
@@ -861,7 +861,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.settimeout(SHORT_TIMEOUT)
             server_socket.listen(1)
             script_name = _make_test_script(script_dir, "script", script)
-            client_socket = None
+            client_socket = Nichts
             try:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
@@ -1070,7 +1070,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not None:
+                wenn client_socket is not Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()
@@ -1085,12 +1085,12 @@ klasse TestGetStackTrace(unittest.TestCase):
         stack_trace = get_stack_trace(os.getpid())
         # Is possible that there are more threads, so we check that the
         # expected stack traces are in the result (looking at you Windows!)
-        this_tread_stack = None
+        this_tread_stack = Nichts
         fuer thread_id, stack in stack_trace:
             wenn thread_id == threading.get_native_id():
                 this_tread_stack = stack
                 break
-        self.assertIsNotNone(this_tread_stack)
+        self.assertIsNotNichts(this_tread_stack)
         self.assertEqual(
             stack[:2],
             [
@@ -1182,7 +1182,7 @@ klasse TestGetStackTrace(unittest.TestCase):
             server_socket.listen(1)
 
             script_name = _make_test_script(script_dir, "script", script)
-            client_socket = None
+            client_socket = Nichts
             try:
                 p = subprocess.Popen([sys.executable, script_name])
                 client_socket, _ = server_socket.accept()
@@ -1198,11 +1198,11 @@ klasse TestGetStackTrace(unittest.TestCase):
                     response += client_socket.recv(1024)
 
                 # Get stack trace with all threads
-                unwinder_all = RemoteUnwinder(p.pid, all_threads=True)
+                unwinder_all = RemoteUnwinder(p.pid, all_threads=Wahr)
                 fuer _ in range(10):
                     # Wait fuer the main thread to start its busy work
                     all_traces = unwinder_all.get_stack_trace()
-                    found = False
+                    found = Falsch
                     fuer thread_id, stack in all_traces:
                         wenn not stack:
                             continue
@@ -1211,7 +1211,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                             current_frame.funcname == "main_work"
                             and current_frame.lineno > 15
                         ):
-                            found = True
+                            found = Wahr
 
                     wenn found:
                         break
@@ -1223,7 +1223,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     )
 
                 # Get stack trace with only GIL holder
-                unwinder_gil = RemoteUnwinder(p.pid, only_active_thread=True)
+                unwinder_gil = RemoteUnwinder(p.pid, only_active_thread=Wahr)
                 gil_traces = unwinder_gil.get_stack_trace()
 
             except PermissionError:
@@ -1231,7 +1231,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             finally:
-                wenn client_socket is not None:
+                wenn client_socket is not Nichts:
                     client_socket.close()
                 p.kill()
                 p.terminate()

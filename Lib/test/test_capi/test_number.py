@@ -11,12 +11,12 @@ from _testcapi import PY_SSIZE_T_MAX, PY_SSIZE_T_MIN
 try:
     from _testbuffer import ndarray
 except ImportError:
-    ndarray = None
+    ndarray = Nichts
 
-NULL = None
+NULL = Nichts
 
 klasse BadDescr:
-    def __get__(self, obj, objtype=None):
+    def __get__(self, obj, objtype=Nichts):
         raise RuntimeError
 
 klasse WithDunder:
@@ -29,14 +29,14 @@ klasse WithDunder:
     def with_val(cls, val):
         obj = super().__new__(cls)
         obj.val = val
-        obj.exc = None
+        obj.exc = Nichts
         setattr(cls, cls.methname, cls._meth)
         return obj
 
     @classmethod
     def with_exc(cls, exc):
         obj = super().__new__(cls)
-        obj.val = None
+        obj.val = Nichts
         obj.exc = exc
         setattr(cls, cls.methname, cls._meth)
         return obj
@@ -74,17 +74,17 @@ klasse CAPITest(unittest.TestCase):
         # Test PyNumber_Check()
         check = _testcapi.number_check
 
-        self.assertTrue(check(1))
-        self.assertTrue(check(IndexLike.with_val(1)))
-        self.assertTrue(check(IntLike.with_val(99)))
-        self.assertTrue(check(0.5))
-        self.assertTrue(check(FloatLike.with_val(4.25)))
-        self.assertTrue(check(1+2j))
+        self.assertWahr(check(1))
+        self.assertWahr(check(IndexLike.with_val(1)))
+        self.assertWahr(check(IntLike.with_val(99)))
+        self.assertWahr(check(0.5))
+        self.assertWahr(check(FloatLike.with_val(4.25)))
+        self.assertWahr(check(1+2j))
 
-        self.assertFalse(check([]))
-        self.assertFalse(check("abc"))
-        self.assertFalse(check(object()))
-        self.assertFalse(check(NULL))
+        self.assertFalsch(check([]))
+        self.assertFalsch(check("abc"))
+        self.assertFalsch(check(object()))
+        self.assertFalsch(check(NULL))
 
     def test_unary_ops(self):
         methmap = {'__neg__': _testcapi.number_negative,   # PyNumber_Negative()
@@ -115,7 +115,7 @@ klasse CAPITest(unittest.TestCase):
                    '__mul__': _testcapi.number_multiply,  # PyNumber_Multiply()
                    '__matmul__': _testcapi.number_matrixmultiply,  # PyNumber_MatrixMultiply()
                    '__floordiv__': _testcapi.number_floordivide,  # PyNumber_FloorDivide()
-                   '__truediv__': _testcapi.number_truedivide,  # PyNumber_TrueDivide()
+                   '__truediv__': _testcapi.number_truedivide,  # PyNumber_WahrDivide()
                    '__mod__': _testcapi.number_remainder,  # PyNumber_Remainder()
                    '__divmod__': _testcapi.number_divmod,  # PyNumber_Divmod()
                    '__lshift__': _testcapi.number_lshift,  # PyNumber_Lshift()
@@ -129,7 +129,7 @@ klasse CAPITest(unittest.TestCase):
                    '__imul__': _testcapi.number_inplacemultiply,  # PyNumber_InPlaceMultiply()
                    '__imatmul__': _testcapi.number_inplacematrixmultiply,  # PyNumber_InPlaceMatrixMultiply()
                    '__ifloordiv__': _testcapi.number_inplacefloordivide,  # PyNumber_InPlaceFloorDivide()
-                   '__itruediv__': _testcapi.number_inplacetruedivide,  # PyNumber_InPlaceTrueDivide()
+                   '__itruediv__': _testcapi.number_inplacetruedivide,  # PyNumber_InPlaceWahrDivide()
                    '__imod__': _testcapi.number_inplaceremainder,  # PyNumber_InPlaceRemainder()
                    '__ilshift__': _testcapi.number_inplacelshift,  # PyNumber_InPlaceLshift()
                    '__irshift__': _testcapi.number_inplacershift,  # PyNumber_InPlaceRshift()
@@ -160,7 +160,7 @@ klasse CAPITest(unittest.TestCase):
             # CRASHES func(NULL, object())
             # CRASHES func(object(), NULL)
 
-    @unittest.skipIf(ndarray is None, "needs _testbuffer")
+    @unittest.skipIf(ndarray is Nichts, "needs _testbuffer")
     def test_misc_add(self):
         # PyNumber_Add(), PyNumber_InPlaceAdd()
         add = _testcapi.number_add
@@ -176,7 +176,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(a, r)
         self.assertRaises(TypeError, inplaceadd, ndarray([1], (1,)), 2)
 
-    @unittest.skipIf(ndarray is None, "needs _testbuffer")
+    @unittest.skipIf(ndarray is Nichts, "needs _testbuffer")
     def test_misc_multiply(self):
         # PyNumber_Multiply(), PyNumber_InPlaceMultiply()
         multiply = _testcapi.number_multiply
@@ -265,9 +265,9 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(TypeError, long, IntLike.with_val(1.0))
         with warnings.catch_warnings():
             warnings.simplefilter("error", DeprecationWarning)
-            self.assertRaises(DeprecationWarning, long, IntLike.with_val(True))
+            self.assertRaises(DeprecationWarning, long, IntLike.with_val(Wahr))
         with self.assertWarns(DeprecationWarning):
-            self.assertEqual(long(IntLike.with_val(True)), 1)
+            self.assertEqual(long(IntLike.with_val(Wahr)), 1)
         self.assertRaises(RuntimeError, long, IntLike.with_exc(RuntimeError))
 
         self.assertRaises(TypeError, long, 1j)
@@ -309,9 +309,9 @@ klasse CAPITest(unittest.TestCase):
 
         with warnings.catch_warnings():
             warnings.simplefilter("error", DeprecationWarning)
-            self.assertRaises(DeprecationWarning, index, IndexLike.with_val(True))
+            self.assertRaises(DeprecationWarning, index, IndexLike.with_val(Wahr))
         with self.assertWarns(DeprecationWarning):
-            self.assertEqual(index(IndexLike.with_val(True)), 1)
+            self.assertEqual(index(IndexLike.with_val(Wahr)), 1)
         self.assertRaises(TypeError, index, IndexLike.with_val(1.0))
         self.assertRaises(RuntimeError, index, IndexLike.with_exc(RuntimeError))
 

@@ -165,15 +165,15 @@ def has_key(ch):
 
     # Figure out the correct capability name fuer the keycode.
     capability_name = _capability_names.get(ch)
-    wenn capability_name is None:
-        return False
+    wenn capability_name is Nichts:
+        return Falsch
 
     #Check the current terminal description fuer that capability;
     #if present, return true, sonst return false.
     wenn _curses.tigetstr( capability_name ):
-        return True
+        return Wahr
     sonst:
-        return False
+        return Falsch
 
 wenn __name__ == '__main__':
     # Compare the output of this implementation and the ncurses has_key,

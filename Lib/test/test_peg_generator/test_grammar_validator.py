@@ -10,7 +10,7 @@ with test_tools.imports_under_tool("peg_generator"):
 
 
 klasse TestPegen(unittest.TestCase):
-    def test_rule_with_no_collision(self) -> None:
+    def test_rule_with_no_collision(self) -> Nichts:
         grammar_source = """
         start: bad_rule
         sum:
@@ -22,7 +22,7 @@ klasse TestPegen(unittest.TestCase):
         fuer rule_name, rule in grammar.rules.items():
             validator.validate_rule(rule_name, rule)
 
-    def test_rule_with_simple_collision(self) -> None:
+    def test_rule_with_simple_collision(self) -> Nichts:
         grammar_source = """
         start: bad_rule
         sum:
@@ -35,7 +35,7 @@ klasse TestPegen(unittest.TestCase):
             fuer rule_name, rule in grammar.rules.items():
                 validator.validate_rule(rule_name, rule)
 
-    def test_rule_with_collision_after_some_other_rules(self) -> None:
+    def test_rule_with_collision_after_some_other_rules(self) -> Nichts:
         grammar_source = """
         start: bad_rule
         sum:
@@ -50,7 +50,7 @@ klasse TestPegen(unittest.TestCase):
             fuer rule_name, rule in grammar.rules.items():
                 validator.validate_rule(rule_name, rule)
 
-    def test_raising_valid_rule(self) -> None:
+    def test_raising_valid_rule(self) -> Nichts:
         grammar_source = """
         start: NAME { RAISE_SYNTAX_ERROR("this is not allowed") }
         """

@@ -125,7 +125,7 @@ Exported functions:
   dumps          Convert an argument tuple or a Fault instance to an XML-RPC
                  request (or response, wenn the methodresponse option is used).
   loads          Convert an XML-RPC packet to unmarshalled data plus a method
-                 name (None wenn not present).
+                 name (Nichts wenn not present).
 """
 
 import base64
@@ -141,7 +141,7 @@ from io import BytesIO
 try:
     import gzip
 except ImportError:
-    gzip = None #python can be built without zlib/gzip support
+    gzip = Nichts #python can be built without zlib/gzip support
 
 # --------------------------------------------------------------------
 # Internal stuff
@@ -249,9 +249,9 @@ boolean = Boolean = bool
 
 
 def _iso8601_format(value):
-    wenn value.tzinfo is not None:
+    wenn value.tzinfo is not Nichts:
         # XML-RPC only uses the naive portion of the datetime
-        value = value.replace(tzinfo=None)
+        value = value.replace(tzinfo=Nichts)
     # XML-RPC doesn't use '-' separator in the date part
     return value.isoformat(timespec='seconds').replace('-', '')
 
@@ -367,8 +367,8 @@ def _datetime_type(data):
 klasse Binary:
     """Wrapper fuer binary data."""
 
-    def __init__(self, data=None):
-        wenn data is None:
+    def __init__(self, data=Nichts):
+        wenn data is Nichts:
             data = b""
         sonst:
             wenn not isinstance(data, (bytes, bytearray)):
@@ -413,16 +413,16 @@ WRAPPERS = (DateTime, Binary)
 klasse ExpatParser:
     # fast expat parser fuer Python 2.0 and later.
     def __init__(self, target):
-        self._parser = parser = expat.ParserCreate(None, None)
+        self._parser = parser = expat.ParserCreate(Nichts, Nichts)
         self._target = target
         parser.StartElementHandler = target.start
         parser.EndElementHandler = target.end
         parser.CharacterDataHandler = target.data
-        encoding = None
-        target.xml(encoding, None)
+        encoding = Nichts
+        target.xml(encoding, Nichts)
 
     def feed(self, data):
-        self._parser.Parse(data, False)
+        self._parser.Parse(data, Falsch)
 
     def close(self):
         try:
@@ -431,7 +431,7 @@ klasse ExpatParser:
             pass
         sonst:
             del self._target, self._parser # get rid of circular references
-            parser.Parse(b"", True) # end of data
+            parser.Parse(b"", Wahr) # end of data
 
 # --------------------------------------------------------------------
 # XML-RPC marshalling and unmarshalling code
@@ -440,7 +440,7 @@ klasse ExpatParser:
 # XML-RPC marshaller.
 #
 # @param encoding Default encoding fuer 8-bit strings.  The default
-#     value is None (interpreted as UTF-8).
+#     value is Nichts (interpreted as UTF-8).
 # @see dumps
 
 klasse Marshaller:
@@ -456,9 +456,9 @@ klasse Marshaller:
     # by the way, wenn you don't understand what's going on in here,
     # that's perfectly ok.
 
-    def __init__(self, encoding=None, allow_none=False):
+    def __init__(self, encoding=Nichts, allow_none=Falsch):
         self.memo = {}
-        self.data = None
+        self.data = Nichts
         self.encoding = encoding
         self.allow_none = allow_none
 
@@ -511,9 +511,9 @@ klasse Marshaller:
 
     def dump_nil (self, value, write):
         wenn not self.allow_none:
-            raise TypeError("cannot marshal None unless allow_none is enabled")
+            raise TypeError("cannot marshal Nichts unless allow_none is enabled")
         write("<value><nil/></value>")
-    dispatch[type(None)] = dump_nil
+    dispatch[type(Nichts)] = dump_nil
 
     def dump_bool(self, value, write):
         write("<value><boolean>")
@@ -556,7 +556,7 @@ klasse Marshaller:
         i = id(value)
         wenn i in self.memo:
             raise TypeError("cannot marshal recursive sequences")
-        self.memo[i] = None
+        self.memo[i] = Nichts
         dump = self.__dump
         write("<value><array><data>\n")
         fuer v in value:
@@ -570,7 +570,7 @@ klasse Marshaller:
         i = id(value)
         wenn i in self.memo:
             raise TypeError("cannot marshal recursive dictionaries")
-        self.memo[i] = None
+        self.memo[i] = Nichts
         dump = self.__dump
         write("<value><struct>\n")
         fuer k, v in value.items():
@@ -622,13 +622,13 @@ klasse Unmarshaller:
     # and again, wenn you don't understand what's going on in here,
     # that's perfectly ok.
 
-    def __init__(self, use_datetime=False, use_builtin_types=False):
-        self._type = None
+    def __init__(self, use_datetime=Falsch, use_builtin_types=Falsch):
+        self._type = Nichts
         self._stack = []
         self._marks = []
         self._data = []
-        self._value = False
-        self._methodname = None
+        self._value = Falsch
+        self._methodname = Nichts
         self._encoding = "utf-8"
         self.append = self._stack.append
         self._use_datetime = use_builtin_types or use_datetime
@@ -636,7 +636,7 @@ klasse Unmarshaller:
 
     def close(self):
         # return response tuple and target method
-        wenn self._type is None or self._marks:
+        wenn self._type is Nichts or self._marks:
             raise ResponseError()
         wenn self._type == "fault":
             raise Fault(**self._stack[0])
@@ -701,15 +701,15 @@ klasse Unmarshaller:
     dispatch = {}
 
     def end_nil (self, data):
-        self.append(None)
+        self.append(Nichts)
         self._value = 0
     dispatch["nil"] = end_nil
 
     def end_boolean(self, data):
         wenn data == "0":
-            self.append(False)
+            self.append(Falsch)
         sowenn data == "1":
-            self.append(True)
+            self.append(Wahr)
         sonst:
             raise TypeError("bad boolean value")
         self._value = 0
@@ -868,7 +868,7 @@ klasse MultiCall:
 # --------------------------------------------------------------------
 # convenience functions
 
-FastMarshaller = FastParser = FastUnmarshaller = None
+FastMarshaller = FastParser = FastUnmarshaller = Nichts
 
 ##
 # Create a parser object, and connect it to an unmarshalling instance.
@@ -876,7 +876,7 @@ FastMarshaller = FastParser = FastUnmarshaller = None
 #
 # return A (parser, unmarshaller) tuple.
 
-def getparser(use_datetime=False, use_builtin_types=False):
+def getparser(use_datetime=Falsch, use_builtin_types=Falsch):
     """getparser() -> parser, unmarshaller
 
     Create an instance of the fastest available parser, and attach it
@@ -892,7 +892,7 @@ def getparser(use_datetime=False, use_builtin_types=False):
         sonst:
             mkdatetime = _datetime
             mkbytes = _binary
-        target = FastUnmarshaller(True, False, mkbytes, mkdatetime, Fault)
+        target = FastUnmarshaller(Wahr, Falsch, mkbytes, mkdatetime, Fault)
         parser = FastParser(target)
     sonst:
         target = Unmarshaller(use_datetime=use_datetime, use_builtin_types=use_builtin_types)
@@ -915,8 +915,8 @@ def getparser(use_datetime=False, use_builtin_types=False):
 # @keyparam encoding The packet encoding.
 # @return A string containing marshalled data.
 
-def dumps(params, methodname=None, methodresponse=None, encoding=None,
-          allow_none=False):
+def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
+          allow_none=Falsch):
     """data [,options] -> marshalled data
 
     Convert an argument tuple or a Fault instance to an XML-RPC
@@ -987,14 +987,14 @@ def dumps(params, methodname=None, methodresponse=None, encoding=None,
 #
 # @param data An XML-RPC packet, given as an 8-bit string.
 # @return A tuple containing the unpacked data, and the method name
-#     (None wenn not present).
+#     (Nichts wenn not present).
 # @see Fault
 
-def loads(data, use_datetime=False, use_builtin_types=False):
+def loads(data, use_datetime=Falsch, use_builtin_types=Falsch):
     """data -> unmarshalled data, method name
 
     Convert an XML-RPC packet to unmarshalled data plus a method
-    name (None wenn not present).
+    name (Nichts wenn not present).
 
     If the XML-RPC packet represents a fault condition, this function
     raises a Fault exception.
@@ -1108,18 +1108,18 @@ klasse Transport:
     user_agent = "Python-xmlrpc/%s" % __version__
 
     #if true, we'll request gzip encoding
-    accept_gzip_encoding = True
+    accept_gzip_encoding = Wahr
 
     # wenn positive, encode request using gzip wenn it exceeds this threshold
     # note that many servers will get confused, so only use it wenn you know
     # that they can decode such a request
-    encode_threshold = None #None = don't encode
+    encode_threshold = Nichts #Nichts = don't encode
 
-    def __init__(self, use_datetime=False, use_builtin_types=False,
+    def __init__(self, use_datetime=Falsch, use_builtin_types=Falsch,
                  *, headers=()):
         self._use_datetime = use_datetime
         self._use_builtin_types = use_builtin_types
-        self._connection = (None, None)
+        self._connection = (Nichts, Nichts)
         self._headers = list(headers)
         self._extra_headers = []
 
@@ -1133,7 +1133,7 @@ klasse Transport:
     # @param verbose Debugging flag.
     # @return Parsed response.
 
-    def request(self, host, handler, request_body, verbose=False):
+    def request(self, host, handler, request_body, verbose=Falsch):
         #retry request once wenn cached connection has gone cold
         fuer i in (0, 1):
             try:
@@ -1146,7 +1146,7 @@ klasse Transport:
                                         errno.EPIPE):
                     raise
 
-    def single_request(self, host, handler, request_body, verbose=False):
+    def single_request(self, host, handler, request_body, verbose=Falsch):
         # issue XML-RPC request
         try:
             http_conn = self.send_request(host, handler, request_body, verbose)
@@ -1192,7 +1192,7 @@ klasse Transport:
     #
     # @param host Host descriptor (URL or (URL, x509 info) tuple).
     # @return A 3-tuple containing (actual host, extra headers,
-    #     x509 info).  The header and x509 fields may be None.
+    #     x509 info).  The header and x509 fields may be Nichts.
 
     def get_host_info(self, host):
 
@@ -1237,7 +1237,7 @@ klasse Transport:
     def close(self):
         host, connection = self._connection
         wenn connection:
-            self._connection = (None, None)
+            self._connection = (Nichts, Nichts)
             connection.close()
 
     ##
@@ -1255,7 +1255,7 @@ klasse Transport:
         wenn debug:
             connection.set_debuglevel(1)
         wenn self.accept_gzip_encoding and gzip:
-            connection.putrequest("POST", handler, skip_accept_encoding=True)
+            connection.putrequest("POST", handler, skip_accept_encoding=Wahr)
             headers.append(("Accept-Encoding", "gzip"))
         sonst:
             connection.putrequest("POST", handler)
@@ -1285,7 +1285,7 @@ klasse Transport:
 
     def send_content(self, connection, request_body):
         #optionally encode the request
-        wenn (self.encode_threshold is not None and
+        wenn (self.encode_threshold is not Nichts and
             self.encode_threshold < len(request_body) and
             gzip):
             connection.putheader("Content-Encoding", "gzip")
@@ -1330,8 +1330,8 @@ klasse Transport:
 klasse SafeTransport(Transport):
     """Handles an HTTPS transaction to an XML-RPC server."""
 
-    def __init__(self, use_datetime=False, use_builtin_types=False,
-                 *, headers=(), context=None):
+    def __init__(self, use_datetime=Falsch, use_builtin_types=Falsch,
+                 *, headers=(), context=Nichts):
         super().__init__(use_datetime=use_datetime,
                          use_builtin_types=use_builtin_types,
                          headers=headers)
@@ -1350,7 +1350,7 @@ klasse SafeTransport(Transport):
         # host may be a string, or a (host, x509-dict) tuple
         chost, self._extra_headers, x509 = self.get_host_info(host)
         self._connection = host, http.client.HTTPSConnection(chost,
-            None, context=self.context, **(x509 or {}))
+            Nichts, context=self.context, **(x509 or {}))
         return self._connection[1]
 
 ##
@@ -1392,9 +1392,9 @@ klasse ServerProxy:
     the given encoding.
     """
 
-    def __init__(self, uri, transport=None, encoding=None, verbose=False,
-                 allow_none=False, use_datetime=False, use_builtin_types=False,
-                 *, headers=(), context=None):
+    def __init__(self, uri, transport=Nichts, encoding=Nichts, verbose=Falsch,
+                 allow_none=Falsch, use_datetime=Falsch, use_builtin_types=Falsch,
+                 *, headers=(), context=Nichts):
         # establish a "logical" server connection
 
         # get the url
@@ -1406,7 +1406,7 @@ klasse ServerProxy:
         wenn not self.__handler:
             self.__handler = "/RPC2"
 
-        wenn transport is None:
+        wenn transport is Nichts:
             wenn p.scheme == "https":
                 handler = SafeTransport
                 extra_kwargs = {"context": context}

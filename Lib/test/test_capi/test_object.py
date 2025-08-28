@@ -31,9 +31,9 @@ klasse Constant(enum.IntEnum):
 
 klasse GetConstantTest(unittest.TestCase):
     def check_get_constant(self, get_constant):
-        self.assertIs(get_constant(Constant.Py_CONSTANT_NONE), None)
-        self.assertIs(get_constant(Constant.Py_CONSTANT_FALSE), False)
-        self.assertIs(get_constant(Constant.Py_CONSTANT_TRUE), True)
+        self.assertIs(get_constant(Constant.Py_CONSTANT_NONE), Nichts)
+        self.assertIs(get_constant(Constant.Py_CONSTANT_FALSE), Falsch)
+        self.assertIs(get_constant(Constant.Py_CONSTANT_TRUE), Wahr)
         self.assertIs(get_constant(Constant.Py_CONSTANT_ELLIPSIS), Ellipsis)
         self.assertIs(get_constant(Constant.Py_CONSTANT_NOT_IMPLEMENTED), NotImplemented)
 
@@ -75,12 +75,12 @@ klasse PrintTest(unittest.TestCase):
         self.addCleanup(os_helper.unlink, output_filename)
 
         # Test repr printing
-        _testcapi.call_pyobject_print(obj, output_filename, False)
+        _testcapi.call_pyobject_print(obj, output_filename, Falsch)
         with open(output_filename, 'r') as output_file:
             self.assertEqual(output_file.read(), repr(obj))
 
         # Test str printing
-        _testcapi.call_pyobject_print(obj, output_filename, True)
+        _testcapi.call_pyobject_print(obj, output_filename, Wahr)
         with open(output_filename, 'r') as output_file:
             self.assertEqual(output_file.read(), str(obj))
 
@@ -123,11 +123,11 @@ klasse ClearWeakRefsNoCallbacksTest(unittest.TestCase):
         messages = []
         ref = weakref.ref(obj, lambda: messages.append("don't add this"))
         self.assertIs(ref(), obj)
-        self.assertFalse(messages)
+        self.assertFalsch(messages)
         _testcapi.pyobject_clear_weakrefs_no_callbacks(obj)
-        self.assertIsNone(ref())
+        self.assertIsNichts(ref())
         gc.collect()
-        self.assertFalse(messages)
+        self.assertFalsch(messages)
 
     def test_ClearWeakRefsNoCallbacks_no_weakref_support(self):
         """Don't fail on objects that don't support weakrefs"""
@@ -152,7 +152,7 @@ klasse EnableDeferredRefcountingTest(unittest.TestCase):
         # Make sure reference counting works on foo now
         self.assertEqual(foo, [])
         wenn support.Py_GIL_DISABLED:
-            self.assertTrue(_testinternalcapi.has_deferred_refcount(foo))
+            self.assertWahr(_testinternalcapi.has_deferred_refcount(foo))
 
         # Make sure that PyUnstable_Object_EnableDeferredRefcount is thread safe
         def silly_func(obj):
@@ -171,17 +171,17 @@ klasse EnableDeferredRefcountingTest(unittest.TestCase):
                 silly_list.append(i)
 
         wenn support.Py_GIL_DISABLED:
-            self.assertTrue(_testinternalcapi.has_deferred_refcount(silly_list))
+            self.assertWahr(_testinternalcapi.has_deferred_refcount(silly_list))
 
 
 klasse IsUniquelyReferencedTest(unittest.TestCase):
     """Test PyUnstable_Object_IsUniquelyReferenced"""
     def test_is_uniquely_referenced(self):
-        self.assertTrue(_testcapi.is_uniquely_referenced(object()))
-        self.assertTrue(_testcapi.is_uniquely_referenced([]))
+        self.assertWahr(_testcapi.is_uniquely_referenced(object()))
+        self.assertWahr(_testcapi.is_uniquely_referenced([]))
         # Immortals
-        self.assertFalse(_testcapi.is_uniquely_referenced(()))
-        self.assertFalse(_testcapi.is_uniquely_referenced(42))
+        self.assertFalsch(_testcapi.is_uniquely_referenced(()))
+        self.assertFalsch(_testcapi.is_uniquely_referenced(42))
         # CRASHES is_uniquely_referenced(NULL)
 
 klasse CAPITest(unittest.TestCase):
@@ -210,7 +210,7 @@ klasse CAPITest(unittest.TestCase):
     @unittest.skipUnless(hasattr(_testcapi, 'decref_freed_object'),
                          'need _testcapi.decref_freed_object()')
     @support.skip_if_sanitizer("use after free on purpose",
-                               address=True, memory=True, ub=True)
+                               address=Wahr, memory=Wahr, ub=Wahr)
     def test_decref_freed_object(self):
         code = """
             import _testcapi
@@ -236,14 +236,14 @@ klasse CAPITest(unittest.TestCase):
             _testinternalcapi.incref_decref_delayed(obj)
 
     def test_is_unique_temporary(self):
-        self.assertTrue(_testcapi.pyobject_is_unique_temporary(object()))
+        self.assertWahr(_testcapi.pyobject_is_unique_temporary(object()))
         obj = object()
-        self.assertFalse(_testcapi.pyobject_is_unique_temporary(obj))
+        self.assertFalsch(_testcapi.pyobject_is_unique_temporary(obj))
 
         def func(x):
             # This relies on the LOAD_FAST_BORROW optimization (gh-130704)
             self.assertEqual(sys.getrefcount(x), 1)
-            self.assertFalse(_testcapi.pyobject_is_unique_temporary(x))
+            self.assertFalsch(_testcapi.pyobject_is_unique_temporary(x))
 
         func(object())
 

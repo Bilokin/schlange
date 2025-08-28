@@ -4,7 +4,7 @@ Parse enough of a Python file to recognize imports and klasse and
 function definitions, and to find out the superclasses of a class.
 
 The interface consists of a single function:
-    readmodule_ex(module, path=None)
+    readmodule_ex(module, path=Nichts)
 where module is the name of a Python module, and path is an optional
 list of directories where the module is to be searched.  If present,
 path is prepended to the system search path sys.path.  The return value
@@ -60,7 +60,7 @@ klasse _Object:
         self.end_lineno = end_lineno
         self.parent = parent
         self.children = {}
-        wenn parent is not None:
+        wenn parent is not Nichts:
             parent.children[name] = self
 
 
@@ -68,7 +68,7 @@ klasse _Object:
 klasse Function(_Object):
     "Information about a Python function, including methods."
     def __init__(self, module, name, file, lineno,
-                 parent=None, is_async=False, *, end_lineno=None):
+                 parent=Nichts, is_async=Falsch, *, end_lineno=Nichts):
         super().__init__(module, name, file, lineno, end_lineno, parent)
         self.is_async = is_async
         wenn isinstance(parent, Class):
@@ -78,7 +78,7 @@ klasse Function(_Object):
 klasse Class(_Object):
     "Information about a Python class."
     def __init__(self, module, name, super_, file, lineno,
-                 parent=None, *, end_lineno=None):
+                 parent=Nichts, *, end_lineno=Nichts):
         super().__init__(module, name, file, lineno, end_lineno, parent)
         self.super = super_ or []
         self.methods = {}
@@ -86,18 +86,18 @@ klasse Class(_Object):
 
 # These 2 functions are used in these tests
 # Lib/test/test_pyclbr, Lib/idlelib/idle_test/test_browser.py
-def _nest_function(ob, func_name, lineno, end_lineno, is_async=False):
+def _nest_function(ob, func_name, lineno, end_lineno, is_async=Falsch):
     "Return a Function after nesting within ob."
     return Function(ob.module, func_name, ob.file, lineno,
                     parent=ob, is_async=is_async, end_lineno=end_lineno)
 
-def _nest_class(ob, class_name, lineno, end_lineno, super=None):
+def _nest_class(ob, class_name, lineno, end_lineno, super=Nichts):
     "Return a Class after nesting within ob."
     return Class(ob.module, class_name, super, ob.file, lineno,
                  parent=ob, end_lineno=end_lineno)
 
 
-def readmodule(module, path=None):
+def readmodule(module, path=Nichts):
     """Return Class objects fuer the top-level classes in module.
 
     This is the original interface, before Functions were added.
@@ -109,7 +109,7 @@ def readmodule(module, path=None):
             res[key] = value
     return res
 
-def readmodule_ex(module, path=None):
+def readmodule_ex(module, path=Nichts):
     """Return a dictionary with all functions and classes in module.
 
     Search fuer module in PATH + sys.path.
@@ -119,7 +119,7 @@ def readmodule_ex(module, path=None):
     return _readmodule(module, path or [])
 
 
-def _readmodule(module, path, inpackage=None):
+def _readmodule(module, path, inpackage=Nichts):
     """Do the hard work fuer readmodule[_ex].
 
     If inpackage is given, it must be the dotted name of the package in
@@ -128,7 +128,7 @@ def _readmodule(module, path, inpackage=None):
     module, and path is combined with sys.path.
     """
     # Compute the full module name (prepending inpackage wenn set).
-    wenn inpackage is not None:
+    wenn inpackage is not Nichts:
         fullmodule = "%s.%s" % (inpackage, module)
     sonst:
         fullmodule = module
@@ -141,7 +141,7 @@ def _readmodule(module, path, inpackage=None):
     tree = {}
 
     # Check wenn it is a built-in module; we don't do much fuer these.
-    wenn module in sys.builtin_module_names and inpackage is None:
+    wenn module in sys.builtin_module_names and inpackage is Nichts:
         _modules[module] = tree
         return tree
 
@@ -151,24 +151,24 @@ def _readmodule(module, path, inpackage=None):
         package = module[:i]
         submodule = module[i+1:]
         parent = _readmodule(package, path, inpackage)
-        wenn inpackage is not None:
+        wenn inpackage is not Nichts:
             package = "%s.%s" % (inpackage, package)
         wenn not '__path__' in parent:
             raise ImportError('No package named {}'.format(package))
         return _readmodule(submodule, parent['__path__'], package)
 
     # Search the path fuer the module.
-    f = None
-    wenn inpackage is not None:
+    f = Nichts
+    wenn inpackage is not Nichts:
         search_path = path
     sonst:
         search_path = path + sys.path
     spec = importlib.util._find_spec_from_path(fullmodule, search_path)
-    wenn spec is None:
+    wenn spec is Nichts:
         raise ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
     _modules[fullmodule] = tree
     # Is module a package?
-    wenn spec.submodule_search_locations is not None:
+    wenn spec.submodule_search_locations is not Nichts:
         tree['__path__'] = spec.submodule_search_locations
     try:
         source = spec.loader.get_source(fullmodule)
@@ -176,7 +176,7 @@ def _readmodule(module, path, inpackage=None):
         # If module is not Python source, we cannot do anything.
         return tree
     sonst:
-        wenn source is None:
+        wenn source is Nichts:
             return tree
 
     fname = spec.loader.get_filename(fullmodule)
@@ -208,27 +208,27 @@ klasse _ModuleBrowser(ast.NodeVisitor):
             sonst:
                 bases.append(name)
 
-        parent = self.stack[-1] wenn self.stack sonst None
+        parent = self.stack[-1] wenn self.stack sonst Nichts
         class_ = Class(self.module, node.name, bases, self.file, node.lineno,
                        parent=parent, end_lineno=node.end_lineno)
-        wenn parent is None:
+        wenn parent is Nichts:
             self.tree[node.name] = class_
         self.stack.append(class_)
         self.generic_visit(node)
         self.stack.pop()
 
-    def visit_FunctionDef(self, node, *, is_async=False):
-        parent = self.stack[-1] wenn self.stack sonst None
+    def visit_FunctionDef(self, node, *, is_async=Falsch):
+        parent = self.stack[-1] wenn self.stack sonst Nichts
         function = Function(self.module, node.name, self.file, node.lineno,
                             parent, is_async, end_lineno=node.end_lineno)
-        wenn parent is None:
+        wenn parent is Nichts:
             self.tree[node.name] = function
         self.stack.append(function)
         self.generic_visit(node)
         self.stack.pop()
 
     def visit_AsyncFunctionDef(self, node):
-        self.visit_FunctionDef(node, is_async=True)
+        self.visit_FunctionDef(node, is_async=Wahr)
 
     def visit_Import(self, node):
         wenn node.col_offset != 0:
@@ -288,7 +288,7 @@ def _main():
         path = []
     tree = readmodule_ex(mod, path)
     lineno_key = lambda a: getattr(a, 'lineno', 0)
-    objs = sorted(tree.values(), key=lineno_key, reverse=True)
+    objs = sorted(tree.values(), key=lineno_key, reverse=Wahr)
     indent_level = 2
     while objs:
         obj = objs.pop()
@@ -300,7 +300,7 @@ def _main():
 
         wenn isinstance(obj, _Object):
             new_objs = sorted(obj.children.values(),
-                              key=lineno_key, reverse=True)
+                              key=lineno_key, reverse=Wahr)
             fuer ob in new_objs:
                 ob.indent = obj.indent + indent_level
             objs.extend(new_objs)

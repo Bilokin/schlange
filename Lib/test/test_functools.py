@@ -78,7 +78,7 @@ klasse TestPartial:
 
     def test_basic_examples(self):
         p = self.partial(capture, 1, 2, a=10, b=20)
-        self.assertTrue(callable(p))
+        self.assertWahr(callable(p))
         self.assertEqual(p(3, 4, b=30, c=40),
                          ((1, 2, 3, 4), dict(a=10, b=30, c=40)))
         p = self.partial(map, lambda x: x*10)
@@ -150,23 +150,23 @@ klasse TestPartial:
             p = self.partial(capture, *args)
             expected = args + ('x',)
             got, empty = p('x')
-            self.assertTrue(expected == got and empty == {})
+            self.assertWahr(expected == got and empty == {})
 
     def test_keyword(self):
         # make sure keyword arguments are captured correctly
-        fuer a in ['a', 0, None, 3.5]:
+        fuer a in ['a', 0, Nichts, 3.5]:
             p = self.partial(capture, a=a)
-            expected = {'a':a,'x':None}
-            empty, got = p(x=None)
-            self.assertTrue(expected == got and empty == ())
+            expected = {'a':a,'x':Nichts}
+            empty, got = p(x=Nichts)
+            self.assertWahr(expected == got and empty == ())
 
     def test_no_side_effects(self):
         # make sure there are no side effects that affect subsequent calls
         p = self.partial(capture, 0, a=1)
         args1, kw1 = p(1, b=2)
-        self.assertTrue(args1 == (0,1) and kw1 == {'a':1,'b':2})
+        self.assertWahr(args1 == (0,1) and kw1 == {'a':1,'b':2})
         args2, kw2 = p()
-        self.assertTrue(args2 == (0,) and kw2 == {'a':1})
+        self.assertWahr(args2 == (0,) and kw2 == {'a':1})
 
     def test_error_propagation(self):
         def f(x, y):
@@ -180,7 +180,7 @@ klasse TestPartial:
         f = self.partial(int, base=16)
         p = proxy(f)
         self.assertEqual(f.func, p.func)
-        f = None
+        f = Nichts
         support.gc_collect()  # For PyPy or other GCs.
         self.assertRaises(ReferenceError, getattr, p, 'func')
 
@@ -194,8 +194,8 @@ klasse TestPartial:
     def test_nested_optimization(self):
         partial = self.partial
         inner = partial(signature, 'asdf')
-        nested = partial(inner, bar=True)
-        flat = partial(signature, 'asdf', bar=True)
+        nested = partial(inner, bar=Wahr)
+        flat = partial(signature, 'asdf', bar=Wahr)
         self.assertEqual(signature(nested), signature(flat))
 
     def test_nested_optimization_bug(self):
@@ -336,14 +336,14 @@ klasse TestPartial:
 
     def test_pickle(self):
         with replaced_module('functools', self.module):
-            f = self.partial(signature, ['asdf'], bar=[True])
+            f = self.partial(signature, ['asdf'], bar=[Wahr])
             f.attr = []
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 f_copy = pickle.loads(pickle.dumps(f, proto))
                 self.assertEqual(signature(f_copy), signature(f))
 
     def test_copy(self):
-        f = self.partial(signature, ['asdf'], bar=[True])
+        f = self.partial(signature, ['asdf'], bar=[Wahr])
         f.attr = []
         f_copy = copy.copy(f)
         self.assertEqual(signature(f_copy), signature(f))
@@ -352,7 +352,7 @@ klasse TestPartial:
         self.assertIs(f_copy.keywords, f.keywords)
 
     def test_deepcopy(self):
-        f = self.partial(signature, ['asdf'], bar=[True])
+        f = self.partial(signature, ['asdf'], bar=[Wahr])
         f.attr = []
         f_copy = copy.deepcopy(f)
         self.assertEqual(signature(f_copy), signature(f))
@@ -370,18 +370,18 @@ klasse TestPartial:
                          (capture, (1,), dict(a=10), dict(attr=[])))
         self.assertEqual(f(2, b=20), ((1, 2), {'a': 10, 'b': 20}))
 
-        f.__setstate__((capture, (1,), dict(a=10), None))
+        f.__setstate__((capture, (1,), dict(a=10), Nichts))
 
         self.assertEqual(signature(f), (capture, (1,), dict(a=10), {}))
         self.assertEqual(f(2, b=20), ((1, 2), {'a': 10, 'b': 20}))
 
-        f.__setstate__((capture, (1,), None, None))
+        f.__setstate__((capture, (1,), Nichts, Nichts))
         #self.assertEqual(signature(f), (capture, (1,), {}, {}))
         self.assertEqual(f(2, b=20), ((1, 2), {'b': 20}))
         self.assertEqual(f(2), ((1, 2), {}))
         self.assertEqual(f(), ((1,), {}))
 
-        f.__setstate__((capture, (), {}, None))
+        f.__setstate__((capture, (), {}, Nichts))
         self.assertEqual(signature(f), (capture, (), {}, {}))
         self.assertEqual(f(2, b=20), ((2,), {'b': 20}))
         self.assertEqual(f(2), ((2,), {}))
@@ -407,16 +407,16 @@ klasse TestPartial:
     def test_setstate_errors(self):
         f = self.partial(signature)
         self.assertRaises(TypeError, f.__setstate__, (capture, (), {}))
-        self.assertRaises(TypeError, f.__setstate__, (capture, (), {}, {}, None))
-        self.assertRaises(TypeError, f.__setstate__, [capture, (), {}, None])
-        self.assertRaises(TypeError, f.__setstate__, (None, (), {}, None))
-        self.assertRaises(TypeError, f.__setstate__, (capture, None, {}, None))
-        self.assertRaises(TypeError, f.__setstate__, (capture, [], {}, None))
-        self.assertRaises(TypeError, f.__setstate__, (capture, (), [], None))
+        self.assertRaises(TypeError, f.__setstate__, (capture, (), {}, {}, Nichts))
+        self.assertRaises(TypeError, f.__setstate__, [capture, (), {}, Nichts])
+        self.assertRaises(TypeError, f.__setstate__, (Nichts, (), {}, Nichts))
+        self.assertRaises(TypeError, f.__setstate__, (capture, Nichts, {}, Nichts))
+        self.assertRaises(TypeError, f.__setstate__, (capture, [], {}, Nichts))
+        self.assertRaises(TypeError, f.__setstate__, (capture, (), [], Nichts))
 
     def test_setstate_subclasses(self):
         f = self.partial(signature)
-        f.__setstate__((capture, MyTuple((1,)), MyDict(a=10), None))
+        f.__setstate__((capture, MyTuple((1,)), MyDict(a=10), Nichts))
         s = signature(f)
         self.assertEqual(s, (capture, (1,), dict(a=10), {}))
         self.assertIs(type(s[1]), tuple)
@@ -426,7 +426,7 @@ klasse TestPartial:
         self.assertIs(type(r[0]), tuple)
         self.assertIs(type(r[1]), dict)
 
-        f.__setstate__((capture, BadTuple((1,)), {}, None))
+        f.__setstate__((capture, BadTuple((1,)), {}, Nichts))
         s = signature(f)
         self.assertEqual(s, (capture, (1,), {}, {}))
         self.assertIs(type(s[1]), tuple)
@@ -434,7 +434,7 @@ klasse TestPartial:
         self.assertEqual(r, ((1, 2), {}))
         self.assertIs(type(r[0]), tuple)
 
-    @support.skip_if_sanitizer("thread sanitizer crashes in __tsan::FuncEntry", thread=True)
+    @support.skip_if_sanitizer("thread sanitizer crashes in __tsan::FuncEntry", thread=Wahr)
     @support.skip_emscripten_stack_overflow()
     def test_recursive_pickle(self):
         with replaced_module('functools', self.module):
@@ -589,7 +589,7 @@ klasse TestPartialCSubclass(TestPartialC):
         partial = CPartialSubclass
 
     # partial subclasses are not optimized fuer nested calls
-    test_nested_optimization = None
+    test_nested_optimization = Nichts
 
 klasse TestPartialPySubclass(TestPartialPy):
     partial = PyPartialSubclass
@@ -702,7 +702,7 @@ klasse TestPartialMethod(unittest.TestCase):
     def test_invalid_args(self):
         with self.assertRaises(TypeError):
             klasse B(object):
-                method = functools.partialmethod(None, 1)
+                method = functools.partialmethod(Nichts, 1)
         with self.assertRaises(TypeError):
             klasse B:
                 method = functools.partialmethod()
@@ -731,11 +731,11 @@ klasse TestPartialMethod(unittest.TestCase):
 
             add5 = functools.partialmethod(add, 5)
 
-        self.assertTrue(Abstract.add.__isabstractmethod__)
-        self.assertTrue(Abstract.add5.__isabstractmethod__)
+        self.assertWahr(Abstract.add.__isabstractmethod__)
+        self.assertWahr(Abstract.add5.__isabstractmethod__)
 
         fuer func in [self.A.static, self.A.cls, self.A.over_partial, self.A.nested, self.A.both]:
-            self.assertFalse(getattr(func, '__isabstractmethod__', False))
+            self.assertFalsch(getattr(func, '__isabstractmethod__', Falsch))
 
     def test_positional_only(self):
         def f(a, b, /):
@@ -820,7 +820,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
         self.check_wrapper(wrapper, f, (), ())
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.__doc__, None)
+        self.assertEqual(wrapper.__doc__, Nichts)
         self.assertEqual(wrapper.__annotations__, {})
         self.assertNotHasAttr(wrapper, 'attr')
 
@@ -838,7 +838,7 @@ klasse TestUpdateWrapper(unittest.TestCase):
         self.check_wrapper(wrapper, f, assign, update)
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.__doc__, None)
+        self.assertEqual(wrapper.__doc__, Nichts)
         self.assertEqual(wrapper.attr, 'This is a different test')
         self.assertEqual(wrapper.dict_attr, f.dict_attr)
 
@@ -940,7 +940,7 @@ klasse TestWraps(TestUpdateWrapper):
         self.check_wrapper(wrapper, f, (), ())
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.__doc__, None)
+        self.assertEqual(wrapper.__doc__, Nichts)
         self.assertNotHasAttr(wrapper, 'attr')
 
     def test_selective_update(self):
@@ -960,7 +960,7 @@ klasse TestWraps(TestUpdateWrapper):
         self.check_wrapper(wrapper, f, assign, update)
         self.assertEqual(wrapper.__name__, 'wrapper')
         self.assertNotEqual(wrapper.__qualname__, f.__qualname__)
-        self.assertEqual(wrapper.__doc__, None)
+        self.assertEqual(wrapper.__doc__, Nichts)
         self.assertEqual(wrapper.attr, 'This is a different test')
         self.assertEqual(wrapper.dict_attr, f.dict_attr)
 
@@ -1013,7 +1013,7 @@ klasse TestReduce:
                 raise RuntimeError
         self.assertRaises(RuntimeError, self.reduce, add, TestFailingIter())
 
-        self.assertEqual(self.reduce(add, [], None), None)
+        self.assertEqual(self.reduce(add, [], Nichts), Nichts)
         self.assertEqual(self.reduce(add, [], 42), 42)
 
         klasse BadSeq:
@@ -1114,12 +1114,12 @@ klasse TestCmpToKey:
         with self.assertRaises(TypeError):
             key = self.cmp_to_key()             # too few args
         with self.assertRaises(TypeError):
-            key = self.cmp_to_key(cmp1, None)   # too many args
+            key = self.cmp_to_key(cmp1, Nichts)   # too many args
         key = self.cmp_to_key(cmp1)
         with self.assertRaises(TypeError):
             key()                                    # too few args
         with self.assertRaises(TypeError):
-            key(None, None)                          # too many args
+            key(Nichts, Nichts)                          # too many args
 
     def test_bad_cmp(self):
         def cmp1(x, y):
@@ -1186,7 +1186,7 @@ klasse TestCmpToKeyC(TestCmpToKey, unittest.TestCase):
     def test_disallow_instantiation(self):
         # Ensure that the type disallows instantiation (bpo-43916)
         support.check_disallow_instantiation(
-            self, type(c_functools.cmp_to_key(None))
+            self, type(c_functools.cmp_to_key(Nichts))
         )
 
 
@@ -1205,13 +1205,13 @@ klasse TestTotalOrdering(unittest.TestCase):
                 return self.value < other.value
             def __eq__(self, other):
                 return self.value == other.value
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
-        self.assertFalse(A(1) > A(2))
+        self.assertWahr(A(1) < A(2))
+        self.assertWahr(A(2) > A(1))
+        self.assertWahr(A(1) <= A(2))
+        self.assertWahr(A(2) >= A(1))
+        self.assertWahr(A(2) <= A(2))
+        self.assertWahr(A(2) >= A(2))
+        self.assertFalsch(A(1) > A(2))
 
     def test_total_ordering_le(self):
         @functools.total_ordering
@@ -1222,13 +1222,13 @@ klasse TestTotalOrdering(unittest.TestCase):
                 return self.value <= other.value
             def __eq__(self, other):
                 return self.value == other.value
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
-        self.assertFalse(A(1) >= A(2))
+        self.assertWahr(A(1) < A(2))
+        self.assertWahr(A(2) > A(1))
+        self.assertWahr(A(1) <= A(2))
+        self.assertWahr(A(2) >= A(1))
+        self.assertWahr(A(2) <= A(2))
+        self.assertWahr(A(2) >= A(2))
+        self.assertFalsch(A(1) >= A(2))
 
     def test_total_ordering_gt(self):
         @functools.total_ordering
@@ -1239,13 +1239,13 @@ klasse TestTotalOrdering(unittest.TestCase):
                 return self.value > other.value
             def __eq__(self, other):
                 return self.value == other.value
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
-        self.assertFalse(A(2) < A(1))
+        self.assertWahr(A(1) < A(2))
+        self.assertWahr(A(2) > A(1))
+        self.assertWahr(A(1) <= A(2))
+        self.assertWahr(A(2) >= A(1))
+        self.assertWahr(A(2) <= A(2))
+        self.assertWahr(A(2) >= A(2))
+        self.assertFalsch(A(2) < A(1))
 
     def test_total_ordering_ge(self):
         @functools.total_ordering
@@ -1256,25 +1256,25 @@ klasse TestTotalOrdering(unittest.TestCase):
                 return self.value >= other.value
             def __eq__(self, other):
                 return self.value == other.value
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
-        self.assertFalse(A(2) <= A(1))
+        self.assertWahr(A(1) < A(2))
+        self.assertWahr(A(2) > A(1))
+        self.assertWahr(A(1) <= A(2))
+        self.assertWahr(A(2) >= A(1))
+        self.assertWahr(A(2) <= A(2))
+        self.assertWahr(A(2) >= A(2))
+        self.assertFalsch(A(2) <= A(1))
 
     def test_total_ordering_no_overwrite(self):
         # new methods should not overwrite existing
         @functools.total_ordering
         klasse A(int):
             pass
-        self.assertTrue(A(1) < A(2))
-        self.assertTrue(A(2) > A(1))
-        self.assertTrue(A(1) <= A(2))
-        self.assertTrue(A(2) >= A(1))
-        self.assertTrue(A(2) <= A(2))
-        self.assertTrue(A(2) >= A(2))
+        self.assertWahr(A(1) < A(2))
+        self.assertWahr(A(2) > A(1))
+        self.assertWahr(A(1) <= A(2))
+        self.assertWahr(A(2) >= A(1))
+        self.assertWahr(A(2) <= A(2))
+        self.assertWahr(A(2) >= A(2))
 
     def test_no_operations_defined(self):
         with self.assertRaises(ValueError):
@@ -1291,7 +1291,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsLessThan):
                     return self.value == other.value
-                return False
+                return Falsch
             def __lt__(self, other):
                 wenn isinstance(other, ImplementsLessThan):
                     return self.value < other.value
@@ -1304,7 +1304,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsLessThanEqualTo):
                     return self.value == other.value
-                return False
+                return Falsch
             def __le__(self, other):
                 wenn isinstance(other, ImplementsLessThanEqualTo):
                     return self.value <= other.value
@@ -1317,7 +1317,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsGreaterThan):
                     return self.value == other.value
-                return False
+                return Falsch
             def __gt__(self, other):
                 wenn isinstance(other, ImplementsGreaterThan):
                     return self.value > other.value
@@ -1330,7 +1330,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsGreaterThanEqualTo):
                     return self.value == other.value
-                return False
+                return Falsch
             def __ge__(self, other):
                 wenn isinstance(other, ImplementsGreaterThanEqualTo):
                     return self.value >= other.value
@@ -1359,7 +1359,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsLessThan):
                     return self.value == other.value
-                return False
+                return Falsch
             def __lt__(self, other):
                 wenn isinstance(other, ImplementsLessThan):
                     return self.value < other.value
@@ -1372,7 +1372,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsGreaterThan):
                     return self.value == other.value
-                return False
+                return Falsch
             def __gt__(self, other):
                 wenn isinstance(other, ImplementsGreaterThan):
                     return self.value > other.value
@@ -1385,7 +1385,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsLessThanEqualTo):
                     return self.value == other.value
-                return False
+                return Falsch
             def __le__(self, other):
                 wenn isinstance(other, ImplementsLessThanEqualTo):
                     return self.value <= other.value
@@ -1398,7 +1398,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __eq__(self, other):
                 wenn isinstance(other, ImplementsGreaterThanEqualTo):
                     return self.value == other.value
-                return False
+                return Falsch
             def __ge__(self, other):
                 wenn isinstance(other, ImplementsGreaterThanEqualTo):
                     return self.value >= other.value
@@ -1411,7 +1411,7 @@ klasse TestTotalOrdering(unittest.TestCase):
             def __eq__(self, other):
                 wenn isinstance(other, ComparatorNotImplemented):
                     return self.value == other.value
-                return False
+                return Falsch
             def __lt__(self, other):
                 return NotImplemented
 
@@ -1488,8 +1488,8 @@ klasse TestTotalOrdering(unittest.TestCase):
         klasse A(metaclass=SortableMeta):
             pass
 
-        self.assertTrue(A < B)
-        self.assertFalse(A > B)
+        self.assertWahr(A < B)
+        self.assertFalsch(A > B)
 
 
 @functools.total_ordering
@@ -1515,10 +1515,10 @@ klasse TestCache:
         self.assertEqual([fib(n) fuer n in range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610])
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=28, misses=16, maxsize=None, currsize=16))
+            self.module._CacheInfo(hits=28, misses=16, maxsize=Nichts, currsize=16))
         fib.cache_clear()
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=0, misses=0, maxsize=None, currsize=0))
+            self.module._CacheInfo(hits=0, misses=0, maxsize=Nichts, currsize=0))
 
 
 klasse TestCachePy(TestCache, unittest.TestCase):
@@ -1550,7 +1550,7 @@ klasse TestLRU:
             expected = orig(x, y)
             self.assertEqual(actual, expected)
         hits, misses, maxsize, currsize = f.cache_info()
-        self.assertTrue(hits > misses)
+        self.assertWahr(hits > misses)
         self.assertEqual(hits + misses, 1000)
         self.assertEqual(currsize, 20)
 
@@ -1641,14 +1641,14 @@ klasse TestLRU:
         # This cause the cache to have orphan links not referenced
         # by the cache dictionary.
 
-        once = True                 # Modified by f(x) below
+        once = Wahr                 # Modified by f(x) below
 
         @self.module.lru_cache(maxsize=10)
         def f(x):
             nonlocal once
             rv = f'.{x}.'
             wenn x == 20 and once:
-                once = False
+                once = Falsch
                 rv = f(x)
             return rv
 
@@ -1736,7 +1736,7 @@ klasse TestLRU:
         # lru_cache was leaking when one of the arguments
         # wasn't cacheable.
 
-        @self.module.lru_cache(maxsize=None)
+        @self.module.lru_cache(maxsize=Nichts)
         def infinite_cache(o):
             pass
 
@@ -1751,7 +1751,7 @@ klasse TestLRU:
             limited_cache([])
 
     def test_lru_with_maxsize_none(self):
-        @self.module.lru_cache(maxsize=None)
+        @self.module.lru_cache(maxsize=Nichts)
         def fib(n):
             wenn n < 2:
                 return n
@@ -1759,10 +1759,10 @@ klasse TestLRU:
         self.assertEqual([fib(n) fuer n in range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610])
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=28, misses=16, maxsize=None, currsize=16))
+            self.module._CacheInfo(hits=28, misses=16, maxsize=Nichts, currsize=16))
         fib.cache_clear()
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=0, misses=0, maxsize=None, currsize=0))
+            self.module._CacheInfo(hits=0, misses=0, maxsize=Nichts, currsize=0))
 
     def test_lru_with_maxsize_negative(self):
         @self.module.lru_cache(maxsize=-10)
@@ -1777,21 +1777,21 @@ klasse TestLRU:
         # Verify that user_function exceptions get passed through without
         # creating a hard-to-read chained exception.
         # http://bugs.python.org/issue13177
-        fuer maxsize in (None, 128):
+        fuer maxsize in (Nichts, 128):
             @self.module.lru_cache(maxsize)
             def func(i):
                 return 'abc'[i]
             self.assertEqual(func(0), 'a')
             with self.assertRaises(IndexError) as cm:
                 func(15)
-            self.assertIsNone(cm.exception.__context__)
+            self.assertIsNichts(cm.exception.__context__)
             # Verify that the previous exception did not result in a cached entry
             with self.assertRaises(IndexError):
                 func(15)
 
     def test_lru_with_types(self):
-        fuer maxsize in (None, 128):
-            @self.module.lru_cache(maxsize=maxsize, typed=True)
+        fuer maxsize in (Nichts, 128):
+            @self.module.lru_cache(maxsize=maxsize, typed=Wahr)
             def square(x):
                 return x * x
             self.assertEqual(square(3), 9)
@@ -1806,30 +1806,30 @@ klasse TestLRU:
             self.assertEqual(square.cache_info().misses, 4)
 
     def test_lru_cache_typed_is_not_recursive(self):
-        cached = self.module.lru_cache(typed=True)(repr)
+        cached = self.module.lru_cache(typed=Wahr)(repr)
 
         self.assertEqual(cached(1), '1')
-        self.assertEqual(cached(True), 'True')
+        self.assertEqual(cached(Wahr), 'Wahr')
         self.assertEqual(cached(1.0), '1.0')
         self.assertEqual(cached(0), '0')
-        self.assertEqual(cached(False), 'False')
+        self.assertEqual(cached(Falsch), 'Falsch')
         self.assertEqual(cached(0.0), '0.0')
 
         self.assertEqual(cached((1,)), '(1,)')
-        self.assertEqual(cached((True,)), '(1,)')
+        self.assertEqual(cached((Wahr,)), '(1,)')
         self.assertEqual(cached((1.0,)), '(1,)')
         self.assertEqual(cached((0,)), '(0,)')
-        self.assertEqual(cached((False,)), '(0,)')
+        self.assertEqual(cached((Falsch,)), '(0,)')
         self.assertEqual(cached((0.0,)), '(0,)')
 
         klasse T(tuple):
             pass
 
         self.assertEqual(cached(T((1,))), '(1,)')
-        self.assertEqual(cached(T((True,))), '(1,)')
+        self.assertEqual(cached(T((Wahr,))), '(1,)')
         self.assertEqual(cached(T((1.0,))), '(1,)')
         self.assertEqual(cached(T((0,))), '(0,)')
-        self.assertEqual(cached(T((False,))), '(0,)')
+        self.assertEqual(cached(T((Falsch,))), '(0,)')
         self.assertEqual(cached(T((0.0,))), '(0,)')
 
     def test_lru_with_keyword_args(self):
@@ -1849,7 +1849,7 @@ klasse TestLRU:
             self.module._CacheInfo(hits=0, misses=0, maxsize=128, currsize=0))
 
     def test_lru_with_keyword_args_maxsize_none(self):
-        @self.module.lru_cache(maxsize=None)
+        @self.module.lru_cache(maxsize=Nichts)
         def fib(n):
             wenn n < 2:
                 return n
@@ -1857,10 +1857,10 @@ klasse TestLRU:
         self.assertEqual([fib(n=number) fuer number in range(16)],
             [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610])
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=28, misses=16, maxsize=None, currsize=16))
+            self.module._CacheInfo(hits=28, misses=16, maxsize=Nichts, currsize=16))
         fib.cache_clear()
         self.assertEqual(fib.cache_info(),
-            self.module._CacheInfo(hits=0, misses=0, maxsize=None, currsize=0))
+            self.module._CacheInfo(hits=0, misses=0, maxsize=Nichts, currsize=0))
 
     def test_kwargs_order(self):
         # PEP 468: Preserving Keyword Argument Order
@@ -2061,12 +2061,12 @@ klasse TestLRU:
         @self.module.lru_cache(maxsize=2)
         def f():
             return 1
-        self.assertEqual(f.cache_parameters(), {'maxsize': 2, "typed": False})
+        self.assertEqual(f.cache_parameters(), {'maxsize': 2, "typed": Falsch})
 
-        @self.module.lru_cache(maxsize=1000, typed=True)
+        @self.module.lru_cache(maxsize=1000, typed=Wahr)
         def f():
             return 1
-        self.assertEqual(f.cache_parameters(), {'maxsize': 1000, "typed": True})
+        self.assertEqual(f.cache_parameters(), {'maxsize': 1000, "typed": Wahr})
 
     def test_lru_cache_weakrefable(self):
         @self.module.lru_cache
@@ -2088,20 +2088,20 @@ klasse TestLRU:
                 weakref.ref(A.test_staticmethod)]
 
         fuer ref in refs:
-            self.assertIsNotNone(ref())
+            self.assertIsNotNichts(ref())
 
         del A
         del test_function
         gc.collect()
 
         fuer ref in refs:
-            self.assertIsNone(ref())
+            self.assertIsNichts(ref())
 
     def test_common_signatures(self):
-        def orig(a, /, b, c=True): ...
+        def orig(a, /, b, c=Wahr): ...
         lru = self.module.lru_cache(1)(orig)
 
-        self.assertEqual(str(Signature.from_callable(lru)), '(a, /, b, c=True)')
+        self.assertEqual(str(Signature.from_callable(lru)), '(a, /, b, c=Wahr)')
         self.assertEqual(str(Signature.from_callable(lru.cache_info)), '()')
         self.assertEqual(str(Signature.from_callable(lru.cache_clear)), '()')
 
@@ -2135,7 +2135,7 @@ klasse TestLRU:
 
     @support.skip_on_s390x
     @unittest.skipIf(support.is_wasi, "WASI has limited C stack")
-    @support.skip_if_sanitizer("requires deep stack", ub=True, thread=True)
+    @support.skip_if_sanitizer("requires deep stack", ub=Wahr, thread=Wahr)
     @support.skip_emscripten_stack_overflow()
     def test_lru_recursion(self):
 
@@ -2271,7 +2271,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         self.assertEqual(g(rnd), ("Number got rounded",))
 
     def test_compose_mro(self):
-        # None of the examples in this test depend on haystack ordering.
+        # Nichts of the examples in this test depend on haystack ordering.
         c = collections.abc
         mro = functools._compose_mro
         bases = [c.Sequence, c.MutableMapping, c.Mapping, c.Set]
@@ -2328,7 +2328,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         c = collections.abc
         d = {"a": "b"}
         l = [1, 2, 3]
-        s = {object(), None}
+        s = {object(), Nichts}
         f = frozenset(s)
         t = (1, 2, 3)
         @functools.singledispatch
@@ -2699,7 +2699,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         @i.register
         def _(arg: "collections.abc.Sequence"):
             return "sequence"
-        self.assertEqual(i(None), "base")
+        self.assertEqual(i(Nichts), "base")
         self.assertEqual(i({"a": 1}), "mapping")
         self.assertEqual(i([1, 2, 3]), "sequence")
         self.assertEqual(i((1, 2, 3)), "sequence")
@@ -2758,8 +2758,8 @@ klasse TestSingleDispatch(unittest.TestCase):
                 return isinstance(arg, str)
         a = A()
 
-        self.assertTrue(A.t(0))
-        self.assertTrue(A.t(''))
+        self.assertWahr(A.t(0))
+        self.assertWahr(A.t(''))
         self.assertEqual(A.t(0.0), 0.0)
 
     def test_slotted_class(self):
@@ -2810,11 +2810,11 @@ klasse TestSingleDispatch(unittest.TestCase):
                 return isinstance(arg, str)
         a = A()
 
-        self.assertTrue(A.t(0))
-        self.assertTrue(A.t(''))
+        self.assertWahr(A.t(0))
+        self.assertWahr(A.t(''))
         self.assertEqual(A.t(0.0), 0.0)
-        self.assertTrue(a.t(0))
-        self.assertTrue(a.t(''))
+        self.assertWahr(a.t(0))
+        self.assertWahr(a.t(''))
         self.assertEqual(a.t(0.0), 0.0)
 
     def test_assignment_behavior(self):
@@ -2883,8 +2883,8 @@ klasse TestSingleDispatch(unittest.TestCase):
             def add(self, x, y):
                 pass
 
-        self.assertTrue(Abstract.add.__isabstractmethod__)
-        self.assertTrue(Abstract.__dict__['add'].__isabstractmethod__)
+        self.assertWahr(Abstract.add.__isabstractmethod__)
+        self.assertWahr(Abstract.__dict__['add'].__isabstractmethod__)
 
         with self.assertRaises(TypeError):
             Abstract()
@@ -2922,8 +2922,8 @@ klasse TestSingleDispatch(unittest.TestCase):
                 return isinstance(arg, str)
         a = A()
 
-        self.assertTrue(A.t(0))
-        self.assertTrue(A.t(''))
+        self.assertWahr(A.t(0))
+        self.assertWahr(A.t(''))
         self.assertEqual(A.t(0.0), 0.0)
 
     def test_classmethod_type_ann_register(self):
@@ -2981,7 +2981,7 @@ klasse TestSingleDispatch(unittest.TestCase):
                 self.assertEqual(meth.__doc__,
                                  ('My function docstring'
                                   wenn support.HAVE_PY_DOCSTRINGS
-                                  sonst None))
+                                  sonst Nichts))
                 self.assertEqual(meth.__annotations__['arg'], int)
 
         self.assertEqual(A.func.__name__, 'func')
@@ -3136,7 +3136,7 @@ klasse TestSingleDispatch(unittest.TestCase):
                 self.assertEqual(meth.__doc__,
                                  ('My function docstring'
                                   wenn support.HAVE_PY_DOCSTRINGS
-                                  sonst None))
+                                  sonst Nichts))
                 self.assertEqual(meth.__annotations__['arg'], int)
 
         self.assertEqual(
@@ -3266,30 +3266,30 @@ klasse TestSingleDispatch(unittest.TestCase):
         self.assertEqual(f(b""), "typing.Union")
         self.assertEqual(f(1), "types.UnionType")
 
-    def test_union_None(self):
+    def test_union_Nichts(self):
         @functools.singledispatch
         def typing_union(arg):
             return "default"
 
         @typing_union.register
-        def _(arg: typing.Union[str, None]):
+        def _(arg: typing.Union[str, Nichts]):
             return "typing.Union"
 
         self.assertEqual(typing_union(1), "default")
         self.assertEqual(typing_union(""), "typing.Union")
-        self.assertEqual(typing_union(None), "typing.Union")
+        self.assertEqual(typing_union(Nichts), "typing.Union")
 
         @functools.singledispatch
         def types_union(arg):
             return "default"
 
         @types_union.register
-        def _(arg: int | None):
+        def _(arg: int | Nichts):
             return "types.UnionType"
 
         self.assertEqual(types_union(""), "default")
         self.assertEqual(types_union(1), "types.UnionType")
-        self.assertEqual(types_union(None), "types.UnionType")
+        self.assertEqual(types_union(Nichts), "types.UnionType")
 
     def test_register_genericalias(self):
         @functools.singledispatch
@@ -3353,11 +3353,11 @@ klasse TestSingleDispatch(unittest.TestCase):
 
     def test_forward_reference(self):
         @functools.singledispatch
-        def f(arg, arg2=None):
+        def f(arg, arg2=Nichts):
             return "default"
 
         @f.register
-        def _(arg: str, arg2: undefined = None):
+        def _(arg: str, arg2: undefined = Nichts):
             return "forward reference"
 
         self.assertEqual(f(1), "default")
@@ -3377,7 +3377,7 @@ klasse TestSingleDispatch(unittest.TestCase):
         # gh-127750: Reference to self was cached
         klasse A:
             def __eq__(self, other):
-                return True
+                return Wahr
             def __hash__(self):
                 return 1
             @functools.singledispatchmethod
@@ -3413,22 +3413,22 @@ klasse TestSingleDispatch(unittest.TestCase):
 
         a = A()
         r = a.t(1)
-        self.assertIsNotNone(r())
+        self.assertIsNotNichts(r())
         del a  # delete a after a.t
-        wenn not support.check_impl_detail(cpython=True):
+        wenn not support.check_impl_detail(cpython=Wahr):
             support.gc_collect()
-        self.assertIsNone(r())
+        self.assertIsNichts(r())
 
         a = A()
         t = a.t
         del a # delete a before a.t
         support.gc_collect()
         r = t(1)
-        self.assertIsNotNone(r())
+        self.assertIsNotNichts(r())
         del t
-        wenn not support.check_impl_detail(cpython=True):
+        wenn not support.check_impl_detail(cpython=Wahr):
             support.gc_collect()
-        self.assertIsNone(r())
+        self.assertIsNichts(r())
 
     def test_signatures(self):
         @functools.singledispatch
@@ -3544,7 +3544,7 @@ klasse TestCachedProperty(unittest.TestCase):
         klasse MyMeta(type):
             @py_functools.cached_property
             def prop(self):
-                return True
+                return Wahr
 
         klasse MyClass(metaclass=MyMeta):
             pass
@@ -3594,7 +3594,7 @@ klasse TestCachedProperty(unittest.TestCase):
         self.assertEqual(a.cp, 1)
 
     def test_set_name_not_called(self):
-        cp = py_functools.cached_property(lambda s: None)
+        cp = py_functools.cached_property(lambda s: Nichts)
         klasse Foo:
             pass
 
@@ -3613,7 +3613,7 @@ klasse TestCachedProperty(unittest.TestCase):
         self.assertEqual(CachedCostItem.cost.__doc__,
                          ("The cost of the item."
                           wenn support.HAVE_PY_DOCSTRINGS
-                          sonst None))
+                          sonst Nichts))
 
     def test_module(self):
         self.assertEqual(CachedCostItem.cost.__module__, CachedCostItem.__module__)

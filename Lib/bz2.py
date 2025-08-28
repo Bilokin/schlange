@@ -52,9 +52,9 @@ klasse BZ2File(_streams.BaseStream):
         If mode is 'r', the input file may be the concatenation of
         multiple compressed streams.
         """
-        self._fp = None
-        self._closefp = False
-        self._mode = None
+        self._fp = Nichts
+        self._closefp = Falsch
+        self._mode = Nichts
 
         wenn not (1 <= compresslevel <= 9):
             raise ValueError("compresslevel must be between 1 and 9")
@@ -79,7 +79,7 @@ klasse BZ2File(_streams.BaseStream):
 
         wenn isinstance(filename, (str, bytes, os.PathLike)):
             self._fp = _builtin_open(filename, mode)
-            self._closefp = True
+            self._closefp = Wahr
             self._mode = mode_code
         sowenn hasattr(filename, "read") or hasattr(filename, "write"):
             self._fp = filename
@@ -107,20 +107,20 @@ klasse BZ2File(_streams.BaseStream):
                 self._buffer.close()
             sowenn self._mode == _MODE_WRITE:
                 self._fp.write(self._compressor.flush())
-                self._compressor = None
+                self._compressor = Nichts
         finally:
             try:
                 wenn self._closefp:
                     self._fp.close()
             finally:
-                self._fp = None
-                self._closefp = False
-                self._buffer = None
+                self._fp = Nichts
+                self._closefp = Falsch
+                self._buffer = Nichts
 
     @property
     def closed(self):
-        """True wenn this file is closed."""
-        return self._fp is None
+        """Wahr wenn this file is closed."""
+        return self._fp is Nichts
 
     @property
     def name(self):
@@ -277,7 +277,7 @@ klasse BZ2File(_streams.BaseStream):
 
 
 def open(filename, mode="rb", compresslevel=9,
-         encoding=None, errors=None, newline=None):
+         encoding=Nichts, errors=Nichts, newline=Nichts):
     """Open a bzip2-compressed file in binary or text mode.
 
     The filename argument can be an actual filename (a str, bytes, or
@@ -301,11 +301,11 @@ def open(filename, mode="rb", compresslevel=9,
         wenn "b" in mode:
             raise ValueError("Invalid mode: %r" % (mode,))
     sonst:
-        wenn encoding is not None:
+        wenn encoding is not Nichts:
             raise ValueError("Argument 'encoding' not supported in binary mode")
-        wenn errors is not None:
+        wenn errors is not Nichts:
             raise ValueError("Argument 'errors' not supported in binary mode")
-        wenn newline is not None:
+        wenn newline is not Nichts:
             raise ValueError("Argument 'newline' not supported in binary mode")
 
     bz_mode = mode.replace("t", "")

@@ -21,7 +21,7 @@ klasse CFunctionFullTests(CFunctionTests):
             cmds_after_breakpoint=['bt', 'py-bt-full'],
             # bpo-45207: Ignore 'Function "meth_varargs" not
             # defined.' message in stderr.
-            ignore_stderr=True,
+            ignore_stderr=Wahr,
         )
 
         # bpo-46600: If the compiler inlines _null_to_none() in

@@ -36,7 +36,7 @@ issoftkeyword = frozenset(softkwlist).__contains__
 '''.lstrip()
 
 
-def main() -> None:
+def main() -> Nichts:
     parser = argparse.ArgumentParser(
         description="Generate the Lib/keywords.py file from the grammar."
     )
@@ -55,7 +55,7 @@ def main() -> None:
     grammar, _, _ = build_parser(args.grammar)
     with open(args.tokens_file) as tok_file:
         all_tokens, exact_tok, non_exact_tok = generate_token_definitions(tok_file)
-    gen = CParserGenerator(grammar, all_tokens, exact_tok, non_exact_tok, file=None)
+    gen = CParserGenerator(grammar, all_tokens, exact_tok, non_exact_tok, file=Nichts)
     gen.collect_rules()
 
     with open(args.keyword_file, 'w') as thefile:

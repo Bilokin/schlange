@@ -13,12 +13,12 @@ MOCK_ANY = mock.ANY
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse EagerTaskFactoryLoopTests:
 
-    Task = None
+    Task = Nichts
 
     def run_coro(self, coro):
         """
@@ -30,7 +30,7 @@ klasse EagerTaskFactoryLoopTests:
         """
 
         async def coro_runner():
-            self.assertTrue(asyncio.get_event_loop().is_running())
+            self.assertWahr(asyncio.get_event_loop().is_running())
             return await coro
 
         return self.loop.run_until_complete(coro)
@@ -43,7 +43,7 @@ klasse EagerTaskFactoryLoopTests:
         self.set_event_loop(self.loop)
 
     def test_eager_task_factory_set(self):
-        self.assertIsNotNone(self.eager_task_factory)
+        self.assertIsNotNichts(self.eager_task_factory)
         self.assertIs(self.loop.get_task_factory(), self.eager_task_factory)
 
         async def noop(): pass
@@ -64,7 +64,7 @@ klasse EagerTaskFactoryLoopTests:
             fut = self.loop.create_future()
             t = self.loop.create_task(set_result(fut, 'my message'))
             # assert the eager step completed the task
-            self.assertTrue(t.done())
+            self.assertWahr(t.done())
             return await fut
 
         self.assertEqual(self.run_coro(run()), 'my message')
@@ -77,7 +77,7 @@ klasse EagerTaskFactoryLoopTests:
         async def run():
             t = self.loop.create_task(coro())
             # assert the eager step completed the task
-            self.assertTrue(t.done())
+            self.assertWahr(t.done())
             return await t
 
         self.assertEqual(self.run_coro(run()), 'hello')
@@ -90,9 +90,9 @@ klasse EagerTaskFactoryLoopTests:
 
         async def run():
             t = self.loop.create_task(coro())
-            self.assertFalse(t.done())
+            self.assertFalsch(t.done())
             result = await t
-            self.assertTrue(t.done())
+            self.assertWahr(t.done())
             return result
 
         self.assertEqual(self.run_coro(run()), 'finished after blocking')
@@ -107,7 +107,7 @@ klasse EagerTaskFactoryLoopTests:
             t.cancel()
             result = await t
             # finished task can't be cancelled
-            self.assertFalse(t.cancelled())
+            self.assertFalsch(t.cancelled())
             return result
 
         self.assertEqual(self.run_coro(run()), 'finished without blocking')
@@ -130,7 +130,7 @@ klasse EagerTaskFactoryLoopTests:
         self.assertEqual('cancellation message', cm.exception.args[0])
 
     def test_current_task(self):
-        captured_current_task = None
+        captured_current_task = Nichts
 
         async def coro():
             nonlocal captured_current_task
@@ -145,10 +145,10 @@ klasse EagerTaskFactoryLoopTests:
             await t
 
         self.run_coro(run())
-        captured_current_task = None
+        captured_current_task = Nichts
 
     def test_all_tasks_with_eager_completion(self):
-        captured_all_tasks = None
+        captured_all_tasks = Nichts
 
         async def coro():
             nonlocal captured_all_tasks
@@ -162,13 +162,13 @@ klasse EagerTaskFactoryLoopTests:
         self.run_coro(run())
 
     def test_all_tasks_with_blocking(self):
-        captured_eager_all_tasks = None
+        captured_eager_all_tasks = Nichts
 
         async def coro(fut1, fut2):
             nonlocal captured_eager_all_tasks
             captured_eager_all_tasks = asyncio.all_tasks()
             await fut1
-            fut2.set_result(None)
+            fut2.set_result(Nichts)
 
         async def run():
             fut1 = self.loop.create_future()
@@ -176,7 +176,7 @@ klasse EagerTaskFactoryLoopTests:
             t = self.loop.create_task(coro(fut1, fut2))
             self.assertIn(t, captured_eager_all_tasks)
             self.assertIn(t, asyncio.all_tasks())
-            fut1.set_result(None)
+            fut1.set_result(Nichts)
             await fut2
             self.assertNotIn(t, asyncio.all_tasks())
 
@@ -185,8 +185,8 @@ klasse EagerTaskFactoryLoopTests:
     def test_context_vars(self):
         cv = contextvars.ContextVar('cv', default=0)
 
-        coro_first_step_ran = False
-        coro_second_step_ran = False
+        coro_first_step_ran = Falsch
+        coro_second_step_ran = Falsch
 
         async def coro():
             nonlocal coro_first_step_ran
@@ -194,21 +194,21 @@ klasse EagerTaskFactoryLoopTests:
             self.assertEqual(cv.get(), 1)
             cv.set(2)
             self.assertEqual(cv.get(), 2)
-            coro_first_step_ran = True
+            coro_first_step_ran = Wahr
             await asyncio.sleep(0.1)
             self.assertEqual(cv.get(), 2)
             cv.set(3)
             self.assertEqual(cv.get(), 3)
-            coro_second_step_ran = True
+            coro_second_step_ran = Wahr
 
         async def run():
             cv.set(1)
             t = self.loop.create_task(coro())
-            self.assertTrue(coro_first_step_ran)
-            self.assertFalse(coro_second_step_ran)
+            self.assertWahr(coro_first_step_ran)
+            self.assertFalsch(coro_second_step_ran)
             self.assertEqual(cv.get(), 1)
             await t
-            self.assertTrue(coro_second_step_ran)
+            self.assertWahr(coro_second_step_ran)
             self.assertEqual(cv.get(), 1)
 
         self.run_coro(run())
@@ -235,7 +235,7 @@ klasse EagerTaskFactoryLoopTests:
             )
             self.assertEqual(winner, 'sleep1')
             self.assertEqual(index, 1)
-            self.assertIsNone(excs[index])
+            self.assertIsNichts(excs[index])
             self.assertIsInstance(excs[0], asyncio.CancelledError)
             self.assertIsInstance(excs[2], ValueError)
 
@@ -253,18 +253,18 @@ klasse EagerTaskFactoryLoopTests:
                     lambda: asyncio.sleep(1, result="sleep1"),
                     lambda: asyncio.sleep(0, result="sleep0"),
                 ],
-                delay=None
+                delay=Nichts
             )
             self.assertEqual(winner, 'sleep1')
             self.assertEqual(index, 1)
-            self.assertIsNone(excs[index])
+            self.assertIsNichts(excs[index])
             self.assertIsInstance(excs[0], ValueError)
             self.assertEqual(len(excs), 2)
 
         self.run_coro(run())
 
     def test_eager_start_false(self):
-        name = None
+        name = Nichts
 
         async def asyncfn():
             nonlocal name
@@ -272,10 +272,10 @@ klasse EagerTaskFactoryLoopTests:
 
         async def main():
             t = asyncio.get_running_loop().create_task(
-                asyncfn(), eager_start=False, name="example"
+                asyncfn(), eager_start=Falsch, name="example"
             )
-            self.assertFalse(t.done())
-            self.assertIsNone(name)
+            self.assertFalsch(t.done())
+            self.assertIsNichts(name)
             await t
             self.assertEqual(name, "example")
 
@@ -302,7 +302,7 @@ klasse PyEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCas
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
 klasse CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase):
-    Task = getattr(tasks, '_CTask', None)
+    Task = getattr(tasks, '_CTask', Nichts)
 
     def setUp(self):
         self._current_task = asyncio.current_task
@@ -330,11 +330,11 @@ klasse CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase
 
         l = DummyLoop()
         _swap_current_task(l, DummyTask())
-        t = _swap_current_task(l, None)
+        t = _swap_current_task(l, Nichts)
         """
 
         _, out, err = assert_python_ok("-c", code)
-        self.assertFalse(err)
+        self.assertFalsch(err)
 
     def test_issue122332(self):
        async def coro():
@@ -343,12 +343,12 @@ klasse CEagerTaskFactoryLoopTests(EagerTaskFactoryLoopTests, test_utils.TestCase
        async def run():
            task = self.loop.create_task(coro())
            await task
-           self.assertIsNone(task.get_coro())
+           self.assertIsNichts(task.get_coro())
 
        self.run_coro(run())
 
     def test_name(self):
-        name = None
+        name = Nichts
         async def coro():
             nonlocal name
             name = asyncio.current_task().get_name()
@@ -365,7 +365,7 @@ klasse AsyncTaskCounter:
         self.suspense_count = 0
         self.task_count = 0
 
-        def CountingTask(*args, eager_start=False, **kwargs):
+        def CountingTask(*args, eager_start=Falsch, **kwargs):
             wenn not eager_start:
                 self.task_count += 1
             kwargs["eager_start"] = eager_start
@@ -410,9 +410,9 @@ async def recursive_gather(width, depth):
 
 klasse BaseTaskCountingTests:
 
-    Task = None
-    eager = None
-    expected_task_count = None
+    Task = Nichts
+    eager = Nichts
+    expected_task_count = Nichts
 
     def setUp(self):
         super().setUp()
@@ -435,12 +435,12 @@ klasse BaseTaskCountingTests:
 
 
 klasse BaseNonEagerTaskFactoryTests(BaseTaskCountingTests):
-    eager = False
+    eager = Falsch
     expected_task_count = 781  # 1 + 5 + 5^2 + 5^3 + 5^4
 
 
 klasse BaseEagerTaskFactoryTests(BaseTaskCountingTests):
-    eager = True
+    eager = Wahr
     expected_task_count = 0
 
 
@@ -497,7 +497,7 @@ klasse EagerPyTaskTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
 klasse NonEagerCTaskTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
-    Task = getattr(tasks, '_CTask', None)
+    Task = getattr(tasks, '_CTask', Nichts)
 
     def setUp(self):
         self._current_task = asyncio.current_task
@@ -512,7 +512,7 @@ klasse NonEagerCTaskTests(BaseNonEagerTaskFactoryTests, test_utils.TestCase):
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
 klasse EagerCTaskTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
-    Task = getattr(tasks, '_CTask', None)
+    Task = getattr(tasks, '_CTask', Nichts)
 
     def setUp(self):
         self._current_task = asyncio.current_task
@@ -526,7 +526,7 @@ klasse EagerCTaskTests(BaseEagerTaskFactoryTests, test_utils.TestCase):
 
 klasse DefaultTaskFactoryEagerStart(test_utils.TestCase):
     def test_eager_start_true_with_default_factory(self):
-        name = None
+        name = Nichts
 
         async def asyncfn():
             nonlocal name
@@ -534,9 +534,9 @@ klasse DefaultTaskFactoryEagerStart(test_utils.TestCase):
 
         async def main():
             t = asyncio.get_running_loop().create_task(
-                asyncfn(), eager_start=True, name="example"
+                asyncfn(), eager_start=Wahr, name="example"
             )
-            self.assertTrue(t.done())
+            self.assertWahr(t.done())
             self.assertEqual(name, "example")
             await t
 

@@ -97,7 +97,7 @@ SG_MAGICCONST = 1.0 + _log(4.5)
 BPF = 53        # Number of bits in a float
 RECIP_BPF = 2 ** -BPF
 _ONE = 1
-_sha512 = None
+_sha512 = Nichts
 
 
 klasse Random(_random.Random):
@@ -116,22 +116,22 @@ klasse Random(_random.Random):
 
     VERSION = 3     # used by getstate/setstate
 
-    def __init__(self, x=None):
+    def __init__(self, x=Nichts):
         """Initialize an instance.
 
         Optional argument x controls seeding, as fuer Random.seed().
         """
 
         self.seed(x)
-        self.gauss_next = None
+        self.gauss_next = Nichts
 
-    def seed(self, a=None, version=2):
+    def seed(self, a=Nichts, version=2):
         """Initialize internal state from a seed.
 
-        The only supported seed types are None, int, float,
+        The only supported seed types are Nichts, int, float,
         str, bytes, and bytearray.
 
-        None or no argument seeds from current time or from an operating
+        Nichts or no argument seeds from current time or from an operating
         system specific randomness source wenn available.
 
         If *a* is an int, all bits are used.
@@ -153,7 +153,7 @@ klasse Random(_random.Random):
 
         sowenn version == 2 and isinstance(a, (str, bytes, bytearray)):
             global _sha512
-            wenn _sha512 is None:
+            wenn _sha512 is Nichts:
                 try:
                     # hashlib is pretty heavy to load, try lean internal
                     # module first
@@ -166,12 +166,12 @@ klasse Random(_random.Random):
                 a = a.encode()
             a = int.from_bytes(a + _sha512(a).digest())
 
-        sowenn not isinstance(a, (type(None), int, float, str, bytes, bytearray)):
+        sowenn not isinstance(a, (type(Nichts), int, float, str, bytes, bytearray)):
             raise TypeError('The only supported seed types are:\n'
-                            'None, int, float, str, bytes, and bytearray.')
+                            'Nichts, int, float, str, bytes, and bytearray.')
 
         super().seed(a)
-        self.gauss_next = None
+        self.gauss_next = Nichts
 
     def getstate(self):
         """Return internal state; can be passed to setstate() later."""
@@ -291,7 +291,7 @@ klasse Random(_random.Random):
 
     ## -------------------- integer methods  -------------------
 
-    def randrange(self, start, stop=None, step=_ONE):
+    def randrange(self, start, stop=Nichts, step=_ONE):
         """Choose a random item from range(stop) or range(start, stop[, step]).
 
         Roughly equivalent to ``choice(range(start, stop, step))`` but
@@ -302,11 +302,11 @@ klasse Random(_random.Random):
         # This code is a bit messy to make it fast fuer the
         # common case while still doing adequate error checking.
         istart = _index(start)
-        wenn stop is None:
+        wenn stop is Nichts:
             # We don't check fuer "step != 1" because it hasn't been
             # type checked and converted to an integer yet.
             wenn step is not _ONE:
-                raise TypeError("Missing a non-None stop argument")
+                raise TypeError("Missing a non-Nichts stop argument")
             wenn istart > 0:
                 return self._randbelow(istart)
             raise ValueError("empty range fuer randrange()")
@@ -354,7 +354,7 @@ klasse Random(_random.Random):
         return seq[self._randbelow(len(seq))]
 
     def shuffle(self, x):
-        """Shuffle list x in place, and return None."""
+        """Shuffle list x in place, and return Nichts."""
 
         randbelow = self._randbelow
         fuer i in reversed(range(1, len(x))):
@@ -362,7 +362,7 @@ klasse Random(_random.Random):
             j = randbelow(i + 1)
             x[i], x[j] = x[j], x[i]
 
-    def sample(self, population, k, *, counts=None):
+    def sample(self, population, k, *, counts=Nichts):
         """Chooses k unique random elements from a population sequence.
 
         Returns a new list containing elements from the population while
@@ -419,7 +419,7 @@ klasse Random(_random.Random):
             raise TypeError("Population must be a sequence.  "
                             "For dicts or sets, use sorted(d).")
         n = len(population)
-        wenn counts is not None:
+        wenn counts is not Nichts:
             cum_counts = list(_accumulate(counts))
             wenn len(cum_counts) != n:
                 raise ValueError('The number of counts does not match the population')
@@ -434,7 +434,7 @@ klasse Random(_random.Random):
         randbelow = self._randbelow
         wenn not 0 <= k <= n:
             raise ValueError("Sample larger than population or is negative")
-        result = [None] * k
+        result = [Nichts] * k
         setsize = 21        # size of a small set minus size of an empty list
         wenn k > 5:
             setsize += 4 ** _ceil(_log(k * 3, 4))  # table size fuer big sets
@@ -457,7 +457,7 @@ klasse Random(_random.Random):
                 result[i] = population[j]
         return result
 
-    def choices(self, population, weights=None, *, cum_weights=None, k=1):
+    def choices(self, population, weights=Nichts, *, cum_weights=Nichts, k=1):
         """Return a k sized list of population elements chosen with replacement.
 
         If the relative weights or cumulative weights are not specified,
@@ -466,11 +466,11 @@ klasse Random(_random.Random):
         """
         random = self.random
         n = len(population)
-        wenn cum_weights is None:
-            wenn weights is None:
+        wenn cum_weights is Nichts:
+            wenn weights is Nichts:
                 floor = _floor
                 n += 0.0    # convert to float fuer a small speed improvement
-                return [population[floor(random() * n)] fuer i in _repeat(None, k)]
+                return [population[floor(random() * n)] fuer i in _repeat(Nichts, k)]
             try:
                 cum_weights = list(_accumulate(weights))
             except TypeError:
@@ -479,8 +479,8 @@ klasse Random(_random.Random):
                 k = weights
                 raise TypeError(
                     f'The number of choices must be a keyword argument: {k=}'
-                ) from None
-        sowenn weights is not None:
+                ) from Nichts
+        sowenn weights is not Nichts:
             raise TypeError('Cannot specify both weights and cumulative weights')
         wenn len(cum_weights) != n:
             raise ValueError('The number of weights does not match the population')
@@ -492,7 +492,7 @@ klasse Random(_random.Random):
         bisect = _bisect
         hi = n - 1
         return [population[bisect(cum_weights, random() * total, 0, hi)]
-                fuer i in _repeat(None, k)]
+                fuer i in _repeat(Nichts, k)]
 
 
     ## -------------------- real-valued distributions  -------------------
@@ -508,7 +508,7 @@ klasse Random(_random.Random):
         """
         return a + (b - a) * self.random()
 
-    def triangular(self, low=0.0, high=1.0, mode=None):
+    def triangular(self, low=0.0, high=1.0, mode=Nichts):
         """Triangular distribution.
 
         Continuous distribution bounded by given lower and upper limits,
@@ -524,7 +524,7 @@ klasse Random(_random.Random):
         """
         u = self.random()
         try:
-            c = 0.5 wenn mode is None sonst (mode - low) / (high - low)
+            c = 0.5 wenn mode is Nichts sonst (mode - low) / (high - low)
         except ZeroDivisionError:
             return low
         wenn u > c:
@@ -545,7 +545,7 @@ klasse Random(_random.Random):
         # Math Software, 3, (1977), pp257-260.
 
         random = self.random
-        while True:
+        while Wahr:
             u1 = random()
             u2 = 1.0 - random()
             z = NV_MAGICCONST * (u1 - 0.5) / u2
@@ -583,8 +583,8 @@ klasse Random(_random.Random):
 
         random = self.random
         z = self.gauss_next
-        self.gauss_next = None
-        wenn z is None:
+        self.gauss_next = Nichts
+        wenn z is Nichts:
             x2pi = random() * TWOPI
             g2rad = _sqrt(-2.0 * _log(1.0 - random()))
             z = _cos(x2pi) * g2rad
@@ -645,7 +645,7 @@ klasse Random(_random.Random):
         s = 0.5 / kappa
         r = s + _sqrt(1.0 + s * s)
 
-        while True:
+        while Wahr:
             u1 = random()
             z = _cos(_pi * u1)
 
@@ -698,7 +698,7 @@ klasse Random(_random.Random):
             bbb = alpha - LOG4
             ccc = alpha + ainv
 
-            while True:
+            while Wahr:
                 u1 = random()
                 wenn not 1e-7 < u1 < 0.9999999:
                     continue
@@ -717,7 +717,7 @@ klasse Random(_random.Random):
         sonst:
             # alpha is between 0 and 1 (exclusive)
             # Uses ALGORITHM GS of Statistical Computing - Kennedy & Gentle
-            while True:
+            while Wahr:
                 u = random()
                 b = (_e + alpha) / _e
                 p = b * u
@@ -835,7 +835,7 @@ klasse Random(_random.Random):
             c = _log2(1.0 - p)
             wenn not c:
                 return x
-            while True:
+            while Wahr:
                 y += _floor(_log2(random()) / c) + 1
                 wenn y > n:
                     return x
@@ -845,14 +845,14 @@ klasse Random(_random.Random):
         # https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.47.8407&rep=rep1&type=pdf
         assert n*p >= 10.0 and p <= 0.5
 
-        setup_complete = False
+        setup_complete = Falsch
         spq = _sqrt(n * p * (1.0 - p))  # Standard deviation of the distribution
         b = 1.15 + 2.53 * spq
         a = -0.0873 + 0.0248 * b + 0.01 * p
         c = n * p + 0.5
         vr = 0.92 - 4.2 / b
 
-        while True:
+        while Wahr:
 
             u = random()
             u -= 0.5
@@ -872,7 +872,7 @@ klasse Random(_random.Random):
                 lpq = _log(p / (1.0 - p))
                 m = _floor((n + 1) * p)         # Mode of the distribution
                 h = _lgamma(m + 1) + _lgamma(n - m + 1)
-                setup_complete = True           # Only needs to be done once
+                setup_complete = Wahr           # Only needs to be done once
 
             # Acceptance-rejection test.
             # Note, the original paper erroneously omits the call to log(v)
@@ -915,7 +915,7 @@ klasse SystemRandom(Random):
 
     def seed(self, *args, **kwds):
         "Stub method.  Not used fuer a system random number generator."
-        return None
+        return Nichts
 
     def _notimplemented(self, *args, **kwds):
         "Method should not be called fuer a system random number generator."
@@ -965,7 +965,7 @@ def _test_generator(n, func, args):
     from time import perf_counter
 
     t0 = perf_counter()
-    data = [func(*args) fuer i in _repeat(None, n)]
+    data = [func(*args) fuer i in _repeat(Nichts, n)]
     t1 = perf_counter()
 
     xbar = mean(data)
@@ -1009,10 +1009,10 @@ wenn hasattr(_os, "fork"):
 # -------------- command-line interface ----------------
 
 
-def _parse_args(arg_list: list[str] | None):
+def _parse_args(arg_list: list[str] | Nichts):
     import argparse
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawTextHelpFormatter, color=True)
+        formatter_class=argparse.RawTextHelpFormatter, color=Wahr)
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
         "-c", "--choice", nargs="+",
@@ -1036,17 +1036,17 @@ wenn no options given, output depends on the input
     return args, parser.format_help()
 
 
-def main(arg_list: list[str] | None = None) -> int | str:
+def main(arg_list: list[str] | Nichts = Nichts) -> int | str:
     args, help_text = _parse_args(arg_list)
 
     # Explicit arguments
     wenn args.choice:
         return choice(args.choice)
 
-    wenn args.integer is not None:
+    wenn args.integer is not Nichts:
         return randint(1, args.integer)
 
-    wenn args.float is not None:
+    wenn args.float is not Nichts:
         return uniform(0, args.float)
 
     wenn args.test:

@@ -132,9 +132,9 @@ klasse Queue:
     def __reduce__(self):
         return (type(self), (self._id,))
 
-    def _set_unbound(self, op, items=None):
+    def _set_unbound(self, op, items=Nichts):
         assert not hasattr(self, '_unbound')
-        wenn items is None:
+        wenn items is Nichts:
             items = _resolve_unbound(op)
         unbound = (op, items)
         self._unbound = unbound
@@ -170,8 +170,8 @@ klasse Queue:
     def qsize(self):
         return _queues.get_count(self._id)
 
-    def put(self, obj, timeout=None, *,
-            unbounditems=None,
+    def put(self, obj, timeout=Nichts, *,
+            unbounditems=Nichts,
             _delay=10 / 1000,  # 10 milliseconds
             ):
         """Add the object to the queue.
@@ -191,7 +191,7 @@ klasse Queue:
         object wenn the current interpreter (calling put()) is later
         destroyed.
 
-        If "unbounditems" is None (the default) then it uses the
+        If "unbounditems" is Nichts (the default) then it uses the
         queue's default, set with create_queue(),
         which is usually UNBOUND.
 
@@ -209,33 +209,33 @@ klasse Queue:
         If "unbounditems" is UNBOUND then it is returned by get() in place
         of the unbound item.
         """
-        wenn unbounditems is None:
+        wenn unbounditems is Nichts:
             unboundop = -1
         sonst:
             unboundop, = _serialize_unbound(unbounditems)
-        wenn timeout is not None:
+        wenn timeout is not Nichts:
             timeout = int(timeout)
             wenn timeout < 0:
                 raise ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
-        while True:
+        while Wahr:
             try:
                 _queues.put(self._id, obj, unboundop)
             except QueueFull as exc:
-                wenn timeout is not None and time.time() >= end:
+                wenn timeout is not Nichts and time.time() >= end:
                     raise  # re-raise
                 time.sleep(_delay)
             sonst:
                 break
 
-    def put_nowait(self, obj, *, unbounditems=None):
-        wenn unbounditems is None:
+    def put_nowait(self, obj, *, unbounditems=Nichts):
+        wenn unbounditems is Nichts:
             unboundop = -1
         sonst:
             unboundop, = _serialize_unbound(unbounditems)
         _queues.put(self._id, obj, unboundop)
 
-    def get(self, timeout=None, *,
+    def get(self, timeout=Nichts, *,
             _delay=10 / 1000,  # 10 milliseconds
             ):
         """Return the next object from the queue.
@@ -246,22 +246,22 @@ klasse Queue:
         then the "next object" is determined by the value of the
         "unbounditems" argument to put().
         """
-        wenn timeout is not None:
+        wenn timeout is not Nichts:
             timeout = int(timeout)
             wenn timeout < 0:
                 raise ValueError(f'timeout value must be non-negative')
             end = time.time() + timeout
-        while True:
+        while Wahr:
             try:
                 obj, unboundop = _queues.get(self._id)
             except QueueEmpty as exc:
-                wenn timeout is not None and time.time() >= end:
+                wenn timeout is not Nichts and time.time() >= end:
                     raise  # re-raise
                 time.sleep(_delay)
             sonst:
                 break
-        wenn unboundop is not None:
-            assert obj is None, repr(obj)
+        wenn unboundop is not Nichts:
+            assert obj is Nichts, repr(obj)
             return _resolve_unbound(unboundop)
         return obj
 
@@ -275,8 +275,8 @@ klasse Queue:
             obj, unboundop = _queues.get(self._id)
         except QueueEmpty as exc:
             raise  # re-raise
-        wenn unboundop is not None:
-            assert obj is None, repr(obj)
+        wenn unboundop is not Nichts:
+            assert obj is Nichts, repr(obj)
             return _resolve_unbound(unboundop)
         return obj
 

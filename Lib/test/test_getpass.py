@@ -8,11 +8,11 @@ from test import support
 try:
     import termios
 except ImportError:
-    termios = None
+    termios = Nichts
 try:
     import pwd
 except ImportError:
-    pwd = None
+    pwd = Nichts
 
 @mock.patch('os.environ')
 klasse GetpassGetuserTest(unittest.TestCase):
@@ -23,7 +23,7 @@ klasse GetpassGetuserTest(unittest.TestCase):
         self.assertEqual(expected_name, getpass.getuser())
 
     def test_username_priorities_of_env_values(self, environ):
-        environ.get.return_value = None
+        environ.get.return_value = Nichts
         try:
             getpass.getuser()
         except OSError:  # in case there's no pwd module
@@ -37,7 +37,7 @@ klasse GetpassGetuserTest(unittest.TestCase):
 
     def test_username_falls_back_to_pwd(self, environ):
         expected_name = 'some_name'
-        environ.get.return_value = None
+        environ.get.return_value = Nichts
         wenn pwd:
             with mock.patch('os.getuid') as uid, \
                     mock.patch('pwd.getpwuid') as getpw:
@@ -101,10 +101,10 @@ klasse UnixGetpassTest(unittest.TestCase):
         with mock.patch('os.open') as open, \
                 mock.patch('io.FileIO') as fileio, \
                 mock.patch('io.TextIOWrapper') as textio:
-            # By setting open's return value to None the implementation will
+            # By setting open's return value to Nichts the implementation will
             # skip code we don't care about in this test.  We can mock this out
             # fully wenn an alternate implementation works differently.
-            open.return_value = None
+            open.return_value = Nichts
             getpass.unix_getpass()
             open.assert_called_once_with('/dev/tty',
                                          os.O_RDWR | os.O_NOCTTY)

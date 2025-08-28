@@ -118,7 +118,7 @@ klasse IncrementalParser(XMLReader):
 
         self.prepareParser(source)
         file = source.getCharacterStream()
-        wenn file is None:
+        wenn file is Nichts:
             file = source.getByteStream()
         while buffer := file.read(self._bufsize):
             self.feed(buffer)
@@ -176,11 +176,11 @@ klasse Locator:
 
     def getPublicId(self):
         "Return the public identifier fuer the current event."
-        return None
+        return Nichts
 
     def getSystemId(self):
         "Return the system identifier fuer the current event."
-        return None
+        return Nichts
 
 # ===== INPUTSOURCE =====
 
@@ -200,12 +200,12 @@ klasse InputSource:
     allowed to modify InputSource objects passed to it from the
     application, although it may make copies and modify those."""
 
-    def __init__(self, system_id = None):
+    def __init__(self, system_id = Nichts):
         self.__system_id = system_id
-        self.__public_id = None
-        self.__encoding  = None
-        self.__bytefile  = None
-        self.__charfile  = None
+        self.__public_id = Nichts
+        self.__encoding  = Nichts
+        self.__bytefile  = Nichts
+        self.__charfile  = Nichts
 
     def setPublicId(self, public_id):
         "Sets the public identifier of this InputSource."
@@ -254,7 +254,7 @@ klasse InputSource:
         """Get the byte stream fuer this input source.
 
         The getEncoding method will return the character encoding for
-        this byte stream, or None wenn unknown."""
+        this byte stream, or Nichts wenn unknown."""
         return self.__bytefile
 
     def setCharacterStream(self, charfile):
@@ -321,7 +321,7 @@ klasse AttributesImpl:
     def __contains__(self, name):
         return name in self._attrs
 
-    def get(self, name, alternative=None):
+    def get(self, name, alternative=Nichts):
         return self._attrs.get(name, alternative)
 
     def copy(self):

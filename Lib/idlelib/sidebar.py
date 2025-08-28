@@ -15,7 +15,7 @@ from idlelib import macosx
 def get_lineno(text, index):
     """Return the line number of an index in a Tk text widget."""
     text_index = text.index(index)
-    return int(float(text_index)) wenn text_index sonst None
+    return int(float(text_index)) wenn text_index sonst Nichts
 
 
 def get_end_linenumber(text):
@@ -27,7 +27,7 @@ def get_displaylines(text, index):
     """Display height, in lines, of a logical line in a Tk text widget."""
     return text.count(f"{index} linestart",
                       f"{index} lineend",
-                      "displaylines", return_ints=True)
+                      "displaylines", return_ints=Wahr)
 
 def get_widget_padding(widget):
     """Get the total padding of a Tk widget, including its border."""
@@ -71,7 +71,7 @@ klasse BaseSideBar:
         self.parent = editwin.text_frame
         self.text = editwin.text
 
-        self.is_shown = False
+        self.is_shown = Falsch
 
         self.main_widget = self.init_widgets()
 
@@ -99,12 +99,12 @@ klasse BaseSideBar:
     def show_sidebar(self):
         wenn not self.is_shown:
             self.grid()
-            self.is_shown = True
+            self.is_shown = Wahr
 
     def hide_sidebar(self):
         wenn self.is_shown:
             self.main_widget.grid_forget()
-            self.is_shown = False
+            self.is_shown = Falsch
 
     def yscroll_event(self, *args, **kwargs):
         """Hook fuer vertical scrolling fuer sub-classes to override."""
@@ -173,19 +173,19 @@ klasse BaseSideBar:
 
         # start_line is set upon <Button-1> to allow selecting a range of rows
         # by dragging.  It is cleared upon <ButtonRelease-1>.
-        start_line = None
+        start_line = Nichts
 
         # last_y is initially set upon <B1-Leave> and is continuously updated
         # upon <B1-Motion>, until <B1-Enter> or the mouse button is released.
         # It is used in text_auto_scroll(), which is called repeatedly and
         # does have a mouse event available.
-        last_y = None
+        last_y = Nichts
 
         # auto_scrolling_after_id is set whenever text_auto_scroll is
         # scheduled via .after().  It is used to stop the auto-scrolling
         # upon <B1-Enter>, as well as to avoid scheduling the function several
         # times in parallel.
-        auto_scrolling_after_id = None
+        auto_scrolling_after_id = Nichts
 
         def drag_update_selection_and_insert_mark(y_coord):
             """Helper function fuer drag and selection event handlers."""
@@ -207,17 +207,17 @@ klasse BaseSideBar:
 
         def b1_mouseup_handler(event):
             # On mouse up, we're no longer dragging.  Set the shared persistent
-            # variables to None to represent this.
+            # variables to Nichts to represent this.
             nonlocal start_line
             nonlocal last_y
-            start_line = None
-            last_y = None
+            start_line = Nichts
+            last_y = Nichts
             self.text.event_generate('<ButtonRelease-1>', x=0, y=event.y)
         self.main_widget.bind('<ButtonRelease-1>', b1_mouseup_handler)
 
         def b1_drag_handler(event):
             nonlocal last_y
-            wenn last_y is None:  # i.e. wenn not currently dragging
+            wenn last_y is Nichts:  # i.e. wenn not currently dragging
                 return
             last_y = event.y
             drag_update_selection_and_insert_mark(event.y)
@@ -228,9 +228,9 @@ klasse BaseSideBar:
             # See: https://github.com/tcltk/tk/blob/064ff9941b4b80b85916a8afe86a6c21fd388b54/library/text.tcl#L670
             nonlocal auto_scrolling_after_id
             y = last_y
-            wenn y is None:
+            wenn y is Nichts:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
-                auto_scrolling_after_id = None
+                auto_scrolling_after_id = Nichts
                 return
             sowenn y < 0:
                 self.text.yview_scroll(-1 + y, 'pixels')
@@ -246,7 +246,7 @@ klasse BaseSideBar:
             # Schedule the initial call to text_auto_scroll(), wenn not already
             # scheduled.
             nonlocal auto_scrolling_after_id
-            wenn auto_scrolling_after_id is None:
+            wenn auto_scrolling_after_id is Nichts:
                 nonlocal last_y
                 last_y = event.y
                 auto_scrolling_after_id = \
@@ -256,9 +256,9 @@ klasse BaseSideBar:
         def b1_enter_handler(event):
             # Cancel the scheduling of text_auto_scroll(), wenn it exists.
             nonlocal auto_scrolling_after_id
-            wenn auto_scrolling_after_id is not None:
+            wenn auto_scrolling_after_id is not Nichts:
                 self.main_widget.after_cancel(auto_scrolling_after_id)
-                auto_scrolling_after_id = None
+                auto_scrolling_after_id = Nichts
         self.main_widget.bind('<B1-Enter>', b1_enter_handler)
 
 
@@ -271,11 +271,11 @@ klasse EndLineDelegator(Delegator):
         Delegator.__init__(self)
         self.changed_callback = changed_callback
 
-    def insert(self, index, chars, tags=None):
+    def insert(self, index, chars, tags=Nichts):
         self.delegate.insert(index, chars, tags)
         self.changed_callback(get_end_linenumber(self.delegate))
 
-    def delete(self, index1, index2=None):
+    def delete(self, index1, index2=Nichts):
         self.delegate.delete(index1, index2)
         self.changed_callback(get_end_linenumber(self.delegate))
 
@@ -302,7 +302,7 @@ klasse LineNumbers(BaseSideBar):
         self._sidebar_width_type = type(self.sidebar_text['width'])
         with temp_enable_text_widget(self.sidebar_text):
             self.sidebar_text.insert('insert', '1', 'linenumber')
-        self.sidebar_text.config(takefocus=False, exportselection=False)
+        self.sidebar_text.config(takefocus=Falsch, exportselection=Falsch)
         self.sidebar_text.tag_config('linenumber', justify=tk.RIGHT)
 
         end = get_end_linenumber(self.text)
@@ -370,7 +370,7 @@ klasse WrappedLineHeightChangeDelegator(Delegator):
         Delegator.__init__(self)
         self.callback = callback
 
-    def insert(self, index, chars, tags=None):
+    def insert(self, index, chars, tags=Nichts):
         is_single_line = '\n' not in chars
         wenn is_single_line:
             before_displaylines = get_displaylines(self, index)
@@ -384,8 +384,8 @@ klasse WrappedLineHeightChangeDelegator(Delegator):
 
         self.callback()
 
-    def delete(self, index1, index2=None):
-        wenn index2 is None:
+    def delete(self, index1, index2=Nichts):
+        wenn index2 is Nichts:
             index2 = index1 + "+1c"
         is_single_line = get_lineno(self, index1) == get_lineno(self, index2)
         wenn is_single_line:
@@ -404,7 +404,7 @@ klasse WrappedLineHeightChangeDelegator(Delegator):
 klasse ShellSidebar(BaseSideBar):
     """Sidebar fuer the PyShell window, fuer prompts etc."""
     def __init__(self, editwin):
-        self.canvas = None
+        self.canvas = Nichts
         self.line_prompts = {}
 
         super().__init__(editwin)
@@ -419,12 +419,12 @@ klasse ShellSidebar(BaseSideBar):
                 d = d.delegate
         self.editwin.per.insertfilterafter(change_delegator, after=d)
 
-        self.is_shown = True
+        self.is_shown = Wahr
 
     def init_widgets(self):
         self.canvas = tk.Canvas(self.parent, width=30,
                                 borderwidth=0, highlightthickness=0,
-                                takefocus=False)
+                                takefocus=Falsch)
         self.update_sidebar()
         self.grid()
         return self.canvas
@@ -470,13 +470,13 @@ klasse ShellSidebar(BaseSideBar):
         index = text.index("@0,0")
         wenn index.split('.', 1)[1] != '0':
             index = text.index(f'{index}+1line linestart')
-        while (lineinfo := text.dlineinfo(index)) is not None:
+        while (lineinfo := text.dlineinfo(index)) is not Nichts:
             y = lineinfo[1]
             prev_newline_tagnames = text_tagnames(f"{index} linestart -1c")
             prompt = (
                 '>>>' wenn "console" in prev_newline_tagnames sonst
                 '...' wenn "stdin" in prev_newline_tagnames sonst
-                None
+                Nichts
             )
             wenn prompt:
                 canvas.create_text(2, y, anchor=tk.NW, text=prompt,
@@ -518,7 +518,7 @@ def _sidebar_number_scrolling(parent):  # htest #
 
     top = tk.Toplevel(parent)
     text_frame = tk.Frame(top)
-    text_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    text_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=Wahr)
     text_frame.rowconfigure(1, weight=1)
     text_frame.columnconfigure(1, weight=1)
 
@@ -537,7 +537,7 @@ def _sidebar_number_scrolling(parent):  # htest #
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_sidebar', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_sidebar', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_sidebar_number_scrolling)

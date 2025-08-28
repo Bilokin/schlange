@@ -188,10 +188,10 @@ class Context(object):
 
     __slots__ = ['c', 'p']
 
-    def __init__(self, c_ctx=None, p_ctx=None):
+    def __init__(self, c_ctx=Nichts, p_ctx=Nichts):
         """Initialization is from the C context"""
-        self.c = C.getcontext() wenn c_ctx is None sonst c_ctx
-        self.p = P.getcontext() wenn p_ctx is None sonst p_ctx
+        self.c = C.getcontext() wenn c_ctx is Nichts sonst c_ctx
+        self.p = P.getcontext() wenn p_ctx is Nichts sonst p_ctx
         self.p.prec = self.c.prec
         self.p.Emin = self.c.Emin
         self.p.Emax = self.c.Emax
@@ -262,7 +262,7 @@ class Context(object):
     def clear_traps(self):
         self.c.clear_traps()
         fuer trap in self.p.traps:
-            self.p.traps[trap] = False
+            self.p.traps[trap] = Falsch
 
     def clear_status(self):
         self.c.clear_flags()
@@ -272,22 +272,22 @@ class Context(object):
         """lst: C signal list"""
         self.clear_traps()
         fuer signal in lst:
-            self.c.traps[signal] = True
-            self.p.traps[CondMap[signal]] = True
+            self.c.traps[signal] = Wahr
+            self.p.traps[CondMap[signal]] = Wahr
 
     def setstatus(self, lst):
         """lst: C signal list"""
         self.clear_status()
         fuer signal in lst:
-            self.c.flags[signal] = True
-            self.p.flags[CondMap[signal]] = True
+            self.c.flags[signal] = Wahr
+            self.p.flags[CondMap[signal]] = Wahr
 
     def assert_eq_status(self):
         """assert equality of C and P status"""
         fuer signal in self.c.flags:
             wenn self.c.flags[signal] == (not self.p.flags[CondMap[signal]]):
-                return False
-        return True
+                return Falsch
+        return Wahr
 
 
 # We don't want exceptions so that we can compare the status flags.
@@ -319,7 +319,7 @@ def RestrictedDecimal(value):
        maxcontext.flags[P.InvalidOperation]:
         return context.p._raise_error(P.InvalidOperation)
     wenn maxcontext.flags[P.FloatOperation]:
-        context.p.flags[P.FloatOperation] = True
+        context.p.flags[P.FloatOperation] = Wahr
     return dec
 
 
@@ -352,10 +352,10 @@ class TestSet(object):
     def __init__(self, funcname, operands):
         wenn funcname.startswith("context."):
             self.funcname = funcname.replace("context.", "")
-            self.contextfunc = True
+            self.contextfunc = Wahr
         sonst:
             self.funcname = funcname
-            self.contextfunc = False
+            self.contextfunc = Falsch
         self.op = operands               # raw operand tuple
         self.context = context           # context used fuer the operation
         self.cop = RestrictedList()      # converted C.Decimal operands
@@ -368,7 +368,7 @@ class TestSet(object):
         # If the above results are exact, unrounded and not clamped, repeat
         # the operation with a maxcontext to ensure that huge intermediate
         # values do not cause a MemoryError.
-        self.with_maxcontext = False
+        self.with_maxcontext = Falsch
         self.maxcontext = context.c.copy()
         self.maxcontext.prec = C.MAX_PREC
         self.maxcontext.Emax = C.MAX_EMAX
@@ -395,7 +395,7 @@ class SkipHandler:
         self.maxctx = P.Context(Emax=10**18, Emin=-10**18)
 
     def default(self, t):
-        return False
+        return Falsch
     __ge__ =  __gt__ = __le__ = __lt__ = __ne__ = __eq__ = default
     __reduce__ = __format__ = __repr__ = __str__ = default
 
@@ -457,27 +457,27 @@ class SkipHandler:
         dir = self.rounding_direction(x, context.p.rounding)
         wenn dir == 0:
             wenn P.Decimal("-0.6") < err < P.Decimal("0.6"):
-                return True
+                return Wahr
         sowenn dir == 1: # directed, upwards
             wenn P.Decimal("-0.1") < err < P.Decimal("1.1"):
-                return True
+                return Wahr
         sowenn dir == -1: # directed, downwards
             wenn P.Decimal("-1.1") < err < P.Decimal("0.1"):
-                return True
+                return Wahr
         sonst: # ROUND_05UP
             wenn P.Decimal("-1.1") < err < P.Decimal("1.1"):
-                return True
+                return Wahr
 
         print("ulp: %s  error: %s  exact: %s  c_rounded: %s"
               % (ulp, err, exact, rounded))
-        return False
+        return Falsch
 
     def bin_resolve_ulp(self, t):
         """Check wenn results of _decimal's power function are within the
            allowed ulp ranges."""
         # NaNs are beyond repair.
         wenn t.rc.is_nan() or t.rp.is_nan():
-            return False
+            return Falsch
 
         # "exact" result, double precision, half_even
         self.maxctx.prec = context.p.prec * 2
@@ -505,13 +505,13 @@ class SkipHandler:
                    "0000000000000025").ln()
         """
         wenn t.cresults != t.presults:
-            return False # Results must be identical.
+            return Falsch # Results must be identical.
         wenn context.c.flags[C.Rounded] and \
            context.c.flags[C.Inexact] and \
            context.p.flags[P.Rounded] and \
            context.p.flags[P.Inexact]:
-            return True # Subnormal/Underflow may be missing.
-        return False
+            return Wahr # Subnormal/Underflow may be missing.
+        return Falsch
 
     def exp(self, t):
         """Resolve Underflow or ULP difference."""
@@ -534,16 +534,16 @@ class SkipHandler:
            context.p.flags[P.Inexact]:
             return self.bin_resolve_ulp(t)
         sonst:
-            return False
+            return Falsch
     power = __rpow__ = __pow__
 
     ############################## Technicalities #############################
     def __float__(self, t):
         """NaN comparison in the verify() function obviously gives an
-           incorrect answer:  nan == nan -> False"""
+           incorrect answer:  nan == nan -> Falsch"""
         wenn t.cop[0].is_nan() and t.pop[0].is_nan():
-            return True
-        return False
+            return Wahr
+        return Falsch
     __complex__ = __float__
 
     def __radd__(self, t):
@@ -551,17 +551,17 @@ class SkipHandler:
            not important, as __radd__ will not be called for
            two decimal arguments."""
         wenn t.rc.is_nan() and t.rp.is_nan():
-            return True
-        return False
+            return Wahr
+        return Falsch
     __rmul__ = __radd__
 
     ################################ Various ##################################
     def __round__(self, t):
         """Exception: Decimal('1').__round__(-100000000000000000000000000)
            Should it really be InvalidOperation?"""
-        wenn t.rc is None and t.rp.is_nan():
-            return True
-        return False
+        wenn t.rc is Nichts and t.rp.is_nan():
+            return Wahr
+        return Falsch
 
 shandler = SkipHandler()
 def skip_error(t):
@@ -670,9 +670,9 @@ def all_nan(a):
         return a.is_nan()
     sowenn isinstance(a, tuple):
         return all(all_nan(v) fuer v in a)
-    return False
+    return Falsch
 
-def convert(t, convstr=True):
+def convert(t, convstr=Wahr):
     """ t is the testset. At this stage the testset contains a tuple of
         operands t.op of various types. For decimal methods the first
         operand (self) is always converted to Decimal. If 'convstr' is
@@ -697,24 +697,24 @@ def convert(t, convstr=True):
              convstr and isinstance(op, str):
             try:
                 c = C.Decimal(op)
-                cex = None
+                cex = Nichts
             except (TypeError, ValueError, OverflowError) as e:
-                c = None
+                c = Nichts
                 cex = e.__class__
 
             try:
                 p = RestrictedDecimal(op)
-                pex = None
+                pex = Nichts
             except (TypeError, ValueError, OverflowError) as e:
-                p = None
+                p = Nichts
                 pex = e.__class__
 
             try:
                 C.setcontext(t.maxcontext)
                 maxop = C.Decimal(op)
-                maxex = None
+                maxex = Nichts
             except (TypeError, ValueError, OverflowError) as e:
-                maxop = None
+                maxop = Nichts
                 maxex = e.__class__
             finally:
                 C.setcontext(context.c)
@@ -739,7 +739,7 @@ def convert(t, convstr=True):
 
             # The exceptions in the maxcontext operation can legitimately
             # differ, only test that maxex implies cex:
-            wenn maxex is not None and cex is not maxex:
+            wenn maxex is not Nichts and cex is not maxex:
                 raise_error(t)
 
         sowenn isinstance(op, Context):
@@ -775,9 +775,9 @@ def callfuncs(t):
             cself = t.cop[0]
             cargs = t.cop[1:]
             t.rc = getattr(cself, t.funcname)(*cargs)
-        t.cex.append(None)
+        t.cex.append(Nichts)
     except (TypeError, ValueError, OverflowError, MemoryError) as e:
-        t.rc = None
+        t.rc = Nichts
         t.cex.append(e.__class__)
 
     try:
@@ -788,9 +788,9 @@ def callfuncs(t):
             pself = t.pop[0]
             pargs = t.pop[1:]
             t.rp = getattr(pself, t.funcname)(*pargs)
-        t.pex.append(None)
+        t.pex.append(Nichts)
     except (TypeError, ValueError, OverflowError, MemoryError) as e:
-        t.rp = None
+        t.rp = Nichts
         t.pex.append(e.__class__)
 
     # If the above results are exact, unrounded, normal etc., repeat the
@@ -804,7 +804,7 @@ def callfuncs(t):
         not context.c.flags[C.Clamped] and
         not context.clamp and # results are padded to context.prec wenn context.clamp==1.
         not any(isinstance(v, C.Context) fuer v in t.cop)): # another context is used.
-        t.with_maxcontext = True
+        t.with_maxcontext = Wahr
         try:
             wenn t.contextfunc:
                 maxargs = t.maxop
@@ -817,9 +817,9 @@ def callfuncs(t):
                     t.rmax = getattr(maxself, t.funcname)(*maxargs)
                 finally:
                     C.setcontext(context.c)
-            t.maxex.append(None)
+            t.maxex.append(Nichts)
         except (TypeError, ValueError, OverflowError, MemoryError) as e:
-            t.rmax = None
+            t.rmax = Nichts
             t.maxex.append(e.__class__)
 
 def verify(t, stat):
@@ -920,7 +920,7 @@ def verify(t, stat):
 #     function, which records statistics fuer the result values.
 # ======================================================================
 
-def log(fmt, args=None):
+def log(fmt, args=Nichts):
     wenn args:
         sys.stdout.write(''.join((fmt, '\n')) % args)
     sonst:
@@ -1044,7 +1044,7 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
             fmtop = (op[0], fmt)
             t = TestSet(method, fmtop)
             try:
-                wenn not convert(t, convstr=False):
+                wenn not convert(t, convstr=Falsch):
                     continue
                 callfuncs(t)
                 verify(t, stat)
@@ -1057,7 +1057,7 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
             fmtop = (op[0], fmt)
             t = TestSet(method, fmtop)
             try:
-                wenn not convert(t, convstr=False):
+                wenn not convert(t, convstr=Falsch):
                     continue
                 callfuncs(t)
                 verify(t, stat)
@@ -1155,11 +1155,11 @@ wenn __name__ == '__main__':
     group.add_argument('--all', dest='time', action="store_const", const='all', default='short', help="all tests (excessive run time)")
 
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('--single', dest='single', nargs=1, default=False, metavar="TEST", help="run a single test")
-    group.add_argument('--multicore', dest='multicore', action="store_true", default=False, help="use all available cores")
+    group.add_argument('--single', dest='single', nargs=1, default=Falsch, metavar="TEST", help="run a single test")
+    group.add_argument('--multicore', dest='multicore', action="store_true", default=Falsch, help="use all available cores")
 
     args = parser.parse_args()
-    assert args.single is False or args.multicore is False
+    assert args.single is Falsch or args.multicore is Falsch
     wenn args.single:
         args.single = args.single[0]
 
@@ -1176,24 +1176,24 @@ wenn __name__ == '__main__':
         'expts': base_expts,
         'prec': [],
         'clamp': 'rand',
-        'iter': None,
-        'samples': None,
+        'iter': Nichts,
+        'samples': Nichts,
     }
     # Contexts with small values fuer prec, emin, emax.
     small = {
         'prec': [1, 2, 3, 4, 5],
         'expts': [(-1, 1), (-2, 2), (-3, 3), (-4, 4), (-5, 5)],
         'clamp': 'rand',
-        'iter': None
+        'iter': Nichts
     }
     # IEEE interchange format.
     ieee = [
         # DECIMAL32
-        {'prec': [7], 'expts': [(-95, 96)], 'clamp': 1, 'iter': None},
+        {'prec': [7], 'expts': [(-95, 96)], 'clamp': 1, 'iter': Nichts},
         # DECIMAL64
-        {'prec': [16], 'expts': [(-383, 384)], 'clamp': 1, 'iter': None},
+        {'prec': [16], 'expts': [(-383, 384)], 'clamp': 1, 'iter': Nichts},
         # DECIMAL128
-        {'prec': [34], 'expts': [(-6143, 6144)], 'clamp': 1, 'iter': None}
+        {'prec': [34], 'expts': [(-6143, 6144)], 'clamp': 1, 'iter': Nichts}
     ]
 
     wenn args.time == 'medium':
@@ -1236,13 +1236,13 @@ wenn __name__ == '__main__':
         log("\n\nRandom seed: %d\n\n", RANDSEED)
 
 
-    FOUND_METHOD = False
+    FOUND_METHOD = Falsch
     def do_single(method, f):
         global FOUND_METHOD
         wenn args.multicore:
             q.put(method)
         sowenn not args.single or args.single == method:
-            FOUND_METHOD = True
+            FOUND_METHOD = Wahr
             f()
 
     # Decimal methods:
@@ -1292,7 +1292,7 @@ wenn __name__ == '__main__':
         def tfunc():
             while not error.is_set():
                 try:
-                    test = q.get(block=False, timeout=-1)
+                    test = q.get(block=Falsch, timeout=-1)
                 except Empty:
                     return
 
@@ -1302,7 +1302,7 @@ wenn __name__ == '__main__':
                 write_output(out, p.returncode)
 
         N = os.process_cpu_count()
-        t = N * [None]
+        t = N * [Nichts]
 
         fuer i in range(N):
             t[i] = Thread(target=tfunc)

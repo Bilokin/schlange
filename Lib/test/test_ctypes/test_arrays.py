@@ -26,8 +26,8 @@ klasse ArrayTestCase(unittest.TestCase):
     def test_type_flags(self):
         fuer cls in Array, PyCArrayType:
             with self.subTest(cls=cls):
-                self.assertTrue(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertWahr(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalsch(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Abstract classes (whose metaclass __init__ was not called) can't be
@@ -263,7 +263,7 @@ klasse ArrayTestCase(unittest.TestCase):
             c_char * sys.maxsize * 2
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
-    @bigmemtest(size=_2G, memuse=1, dry_run=False)
+    @bigmemtest(size=_2G, memuse=1, dry_run=Falsch)
     def test_large_array(self, size):
         c_char * size
 

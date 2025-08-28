@@ -68,12 +68,12 @@ klasse WrapTestCase(BaseTestCase):
     def test_empty_string(self):
         # Check that wrapping the empty string returns an empty list.
         self.check_wrap("", 6, [])
-        self.check_wrap("", 6, [], drop_whitespace=False)
+        self.check_wrap("", 6, [], drop_whitespace=Falsch)
 
     def test_empty_string_with_initial_indent(self):
         # Check that the empty string is not indented.
         self.check_wrap("", 6, [], initial_indent="++")
-        self.check_wrap("", 6, [], initial_indent="++", drop_whitespace=False)
+        self.check_wrap("", 6, [], initial_indent="++", drop_whitespace=Falsch)
 
     def test_whitespace(self):
         # Whitespace munging and end-of-sentence detection
@@ -92,7 +92,7 @@ What a mess!
                   "wrapped.  Some lines are  tabbed too.  What a",
                   "mess!"]
 
-        wrapper = TextWrapper(45, fix_sentence_endings=True)
+        wrapper = TextWrapper(45, fix_sentence_endings=Wahr)
         result = wrapper.wrap(text)
         self.check(result, expect)
 
@@ -108,9 +108,9 @@ What a mess!
         self.check_wrap(text, 80, expect, tabsize=4)
 
     def test_fix_sentence_endings(self):
-        wrapper = TextWrapper(60, fix_sentence_endings=True)
+        wrapper = TextWrapper(60, fix_sentence_endings=Wahr)
 
-        # SF #847346: ensure that fix_sentence_endings=True does the
+        # SF #847346: ensure that fix_sentence_endings=Wahr does the
         # right thing even on input short enough that it doesn't need to
         # be wrapped.
         text = "A short line. Note the single space."
@@ -187,7 +187,7 @@ What a mess!
         # The test tests current behavior but is not testing parts of the API.
         expect = ("this-|is-|a-|useful-|feature-|for-|"
                   "reformatting-|posts-|from-|tim-|peters'ly").split('|')
-        self.check_wrap(text, 1, expect, break_long_words=False)
+        self.check_wrap(text, 1, expect, break_long_words=Falsch)
         self.check_split(text, expect)
 
         self.check_split('e-mail', ['e-mail'])
@@ -205,7 +205,7 @@ What a mess!
                                    'released on 1994-02-15.'])
         self.check_wrap(text, 40, ['Python 1.0.0 was released on 1994-01-26.',
                                    'Python 1.0.1 was released on 1994-02-15.'])
-        self.check_wrap(text, 1, text.split(), break_long_words=False)
+        self.check_wrap(text, 1, text.split(), break_long_words=Falsch)
 
         text = "I do all my shopping at 7-11."
         self.check_wrap(text, 25, ["I do all my shopping at",
@@ -213,7 +213,7 @@ What a mess!
         self.check_wrap(text, 27, ["I do all my shopping at",
                                    "7-11."])
         self.check_wrap(text, 29, ["I do all my shopping at 7-11."])
-        self.check_wrap(text, 1, text.split(), break_long_words=False)
+        self.check_wrap(text, 1, text.split(), break_long_words=Falsch)
 
     def test_em_dash(self):
         # Test text with em-dashes
@@ -356,22 +356,22 @@ What a mess!
                           " ", "wubba"])
 
     def test_drop_whitespace_false(self):
-        # Check that drop_whitespace=False preserves whitespace.
+        # Check that drop_whitespace=Falsch preserves whitespace.
         # SF patch #1581073
         text = " This is a    sentence with     much whitespace."
         self.check_wrap(text, 10,
                         [" This is a", "    ", "sentence ",
                          "with     ", "much white", "space."],
-                        drop_whitespace=False)
+                        drop_whitespace=Falsch)
 
     def test_drop_whitespace_false_whitespace_only(self):
-        # Check that drop_whitespace=False preserves a whitespace-only string.
-        self.check_wrap("   ", 6, ["   "], drop_whitespace=False)
+        # Check that drop_whitespace=Falsch preserves a whitespace-only string.
+        self.check_wrap("   ", 6, ["   "], drop_whitespace=Falsch)
 
     def test_drop_whitespace_false_whitespace_only_with_indent(self):
         # Check that a whitespace-only string gets indented (when
-        # drop_whitespace is False).
-        self.check_wrap("   ", 6, ["     "], drop_whitespace=False,
+        # drop_whitespace is Falsch).
+        self.check_wrap("   ", 6, ["     "], drop_whitespace=Falsch,
                         initial_indent="  ")
 
     def test_drop_whitespace_whitespace_only(self):
@@ -393,9 +393,9 @@ What a mess!
         # Check that drop_whitespace skips the whole line wenn a non-leading
         # line consists only of whitespace.
         text = "abcd    efgh"
-        # Include the result fuer drop_whitespace=False fuer comparison.
+        # Include the result fuer drop_whitespace=Falsch fuer comparison.
         self.check_wrap(text, 6, ["abcd", "    ", "efgh"],
-                        drop_whitespace=False)
+                        drop_whitespace=Falsch)
         self.check_wrap(text, 6, ["abcd", "efgh"])
 
     def test_drop_whitespace_whitespace_only_with_indent(self):
@@ -426,9 +426,9 @@ What a mess!
         # Ensure that the break_on_hyphens attributes work
         text = "yaba daba-doo"
         self.check_wrap(text, 10, ["yaba daba-", "doo"],
-                        break_on_hyphens=True)
+                        break_on_hyphens=Wahr)
         self.check_wrap(text, 10, ["yaba", "daba-doo"],
-                        break_on_hyphens=False)
+                        break_on_hyphens=Falsch)
 
     def test_bad_width(self):
         # Ensure that width <= 0 is caught.
@@ -451,13 +451,13 @@ What a mess!
                         ['This is a sentence',
                          'with non-',
                          'breaking\N{NO-BREAK SPACE}space.'],
-                        break_on_hyphens=True)
+                        break_on_hyphens=Wahr)
 
         self.check_wrap(text, 20,
                         ['This is a sentence',
                          'with',
                          'non-breaking\N{NO-BREAK SPACE}space.'],
-                        break_on_hyphens=False)
+                        break_on_hyphens=Falsch)
 
     def test_narrow_non_breaking_space(self):
         text = ('This is a sentence with non-breaking'
@@ -467,13 +467,13 @@ What a mess!
                         ['This is a sentence',
                          'with non-',
                          'breaking\N{NARROW NO-BREAK SPACE}space.'],
-                        break_on_hyphens=True)
+                        break_on_hyphens=Wahr)
 
         self.check_wrap(text, 20,
                         ['This is a sentence',
                          'with',
                          'non-breaking\N{NARROW NO-BREAK SPACE}space.'],
-                        break_on_hyphens=False)
+                        break_on_hyphens=Falsch)
 
 
 klasse MaxLinesTestCase(BaseTestCase):
@@ -666,11 +666,11 @@ We used enyzme 2-succinyl-6-hydroxy-2,4-cyclohexadiene-1-carboxylate synthase.
     def test_break_long_words_not_on_hyphen(self):
         expected = ['We used enyzme 2-succinyl-6-hydroxy-2,4-cyclohexad',
                     'iene-1-carboxylate synthase.']
-        self.check_wrap(self.text1, 50, expected, break_on_hyphens=False)
+        self.check_wrap(self.text1, 50, expected, break_on_hyphens=Falsch)
 
         expected = ['We used', 'enyzme 2-s', 'uccinyl-6-', 'hydroxy-2,',
                     '4-cyclohex', 'adiene-1-c', 'arboxylate', 'synthase.']
-        self.check_wrap(self.text1, 10, expected, break_on_hyphens=False)
+        self.check_wrap(self.text1, 10, expected, break_on_hyphens=Falsch)
 
         expected = ['1234567890',  '-123456789', '0--this_is', '_a_very_lo',
                     'ng_option_', 'indeed-', 'good-bye"']
@@ -681,12 +681,12 @@ We used enyzme 2-succinyl-6-hydroxy-2,4-cyclohexadiene-1-carboxylate synthase.
                     '2-succinyl-6-hydroxy-2,4-cyclohexadiene-1-carboxylate',
                     'synthase.']
 
-        self.check_wrap(self.text1, 50, expected, break_long_words=False)
+        self.check_wrap(self.text1, 50, expected, break_long_words=Falsch)
 
         expected = ['We used', 'enyzme',
                     '2-succinyl-6-hydroxy-2,4-cyclohexadiene-1-carboxylate',
                     'synthase.']
-        self.check_wrap(self.text1, 10, expected, break_long_words=False)
+        self.check_wrap(self.text1, 10, expected, break_long_words=Falsch)
 
         expected = ['1234567890',  '-123456789', '0--this_is', '_a_very_lo',
                     'ng_option_', 'indeed-', 'good-bye"']
@@ -698,15 +698,15 @@ We used enyzme 2-succinyl-6-hydroxy-2,4-cyclohexadiene-1-carboxylate synthase.
                     '2-succinyl-6-hydroxy-2,4-cyclohexadiene-1-carboxylate',
                     'synthase.']
         self.check_wrap(self.text1, 50, expected,
-                        break_long_words=False,
-                        break_on_hyphens=False)
+                        break_long_words=Falsch,
+                        break_on_hyphens=Falsch)
 
         expected = ['We used', 'enyzme',
                     '2-succinyl-6-hydroxy-2,4-cyclohexadiene-1-carboxylate',
                     'synthase.']
         self.check_wrap(self.text1, 10, expected,
-                        break_long_words=False,
-                        break_on_hyphens=False)
+                        break_long_words=Falsch,
+                        break_on_hyphens=Falsch)
 
         expected = ['1234567890',  '-123456789', '0--this_is', '_a_very_lo',
                     'ng_option_', 'indeed-', 'good-bye"']
@@ -969,20 +969,20 @@ klasse IndentTestCase(unittest.TestCase):
 
     def test_indent_nomargin_explicit_default(self):
         # The same as test_indent_nomargin, but explicitly requesting
-        # the default behaviour by passing None as the predicate
+        # the default behaviour by passing Nichts as the predicate
         fuer text in self.CASES:
-            self.assertEqual(indent(text, '', None), text)
+            self.assertEqual(indent(text, '', Nichts), text)
 
     def test_indent_nomargin_all_lines(self):
         # The same as test_indent_nomargin, but using the optional
         # predicate argument
-        predicate = lambda line: True
+        predicate = lambda line: Wahr
         fuer text in self.CASES:
             self.assertEqual(indent(text, '', predicate), text)
 
     def test_indent_no_lines(self):
         # Explicitly skip indenting any lines
-        predicate = lambda line: False
+        predicate = lambda line: Falsch
         fuer text in self.CASES:
             self.assertEqual(indent(text, '    ', predicate), text)
 
@@ -1035,7 +1035,7 @@ klasse IndentTestCase(unittest.TestCase):
           "\n  Hi.\r\n  This is a test.\n\r\n  Testing.\r\n\n",
         )
         fuer text, expect in zip(self.CASES, expected):
-            self.assertEqual(indent(text, prefix, None), expect)
+            self.assertEqual(indent(text, prefix, Nichts), expect)
 
     def test_indent_all_lines(self):
         # Add 'prefix' to all lines, including whitespace-only ones.
@@ -1052,7 +1052,7 @@ klasse IndentTestCase(unittest.TestCase):
           # Pathological case
           "  \n  Hi.\r\n  This is a test.\n  \r\n  Testing.\r\n  \n",
         )
-        predicate = lambda line: True
+        predicate = lambda line: Wahr
         fuer text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix, predicate), expect)
 

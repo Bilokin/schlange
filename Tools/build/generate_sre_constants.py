@@ -8,12 +8,12 @@ def update_file(file, content):
     try:
         with open(file) as fobj:
             wenn fobj.read() == content:
-                return False
+                return Falsch
     except (OSError, ValueError):
         pass
     with open(file, 'w') as fobj:
         fobj.write(content)
-    return True
+    return Wahr
 
 sre_constants_header = f"""\
 /*

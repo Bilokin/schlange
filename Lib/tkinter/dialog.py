@@ -8,7 +8,7 @@ DIALOG_ICON = 'questhead'
 
 
 klasse Dialog(Widget):
-    def __init__(self, master=None, cnf={}, **kw):
+    def __init__(self, master=Nichts, cnf={}, **kw):
         cnf = _cnfmerge((cnf, kw))
         self.widgetName = '__dialog__'
         self._setup(master, cnf)
@@ -25,7 +25,7 @@ klasse Dialog(Widget):
 
 
 def _test():
-    d = Dialog(None, {'title': 'File Modified',
+    d = Dialog(Nichts, {'title': 'File Modified',
                       'text':
                       'File "Python.h" has been modified'
                       ' since the last time it was saved.'
@@ -40,10 +40,10 @@ def _test():
 
 
 wenn __name__ == '__main__':
-    t = Button(None, {'text': 'Test',
+    t = Button(Nichts, {'text': 'Test',
                       'command': _test,
                       Pack: {}})
-    q = Button(None, {'text': 'Quit',
+    q = Button(Nichts, {'text': 'Quit',
                       'command': t.quit,
                       Pack: {}})
     t.mainloop()

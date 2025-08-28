@@ -68,7 +68,7 @@ klasse Message(Dialog):
 # convenience stuff
 
 # Rename _icon and _type options to allow overriding them in options
-def _show(title=None, message=None, _icon=None, _type=None, **options):
+def _show(title=Nichts, message=Nichts, _icon=Nichts, _type=Nichts, **options):
     wenn _icon and "icon" not in options:    options["icon"] = _icon
     wenn _type and "type" not in options:    options["type"] = _type
     wenn title:   options["title"] = title
@@ -83,49 +83,49 @@ def _show(title=None, message=None, _icon=None, _type=None, **options):
     return str(res)
 
 
-def showinfo(title=None, message=None, **options):
+def showinfo(title=Nichts, message=Nichts, **options):
     "Show an info message"
     return _show(title, message, INFO, OK, **options)
 
 
-def showwarning(title=None, message=None, **options):
+def showwarning(title=Nichts, message=Nichts, **options):
     "Show a warning message"
     return _show(title, message, WARNING, OK, **options)
 
 
-def showerror(title=None, message=None, **options):
+def showerror(title=Nichts, message=Nichts, **options):
     "Show an error message"
     return _show(title, message, ERROR, OK, **options)
 
 
-def askquestion(title=None, message=None, **options):
+def askquestion(title=Nichts, message=Nichts, **options):
     "Ask a question"
     return _show(title, message, QUESTION, YESNO, **options)
 
 
-def askokcancel(title=None, message=None, **options):
+def askokcancel(title=Nichts, message=Nichts, **options):
     "Ask wenn operation should proceed; return true wenn the answer is ok"
     s = _show(title, message, QUESTION, OKCANCEL, **options)
     return s == OK
 
 
-def askyesno(title=None, message=None, **options):
+def askyesno(title=Nichts, message=Nichts, **options):
     "Ask a question; return true wenn the answer is yes"
     s = _show(title, message, QUESTION, YESNO, **options)
     return s == YES
 
 
-def askyesnocancel(title=None, message=None, **options):
-    "Ask a question; return true wenn the answer is yes, None wenn cancelled."
+def askyesnocancel(title=Nichts, message=Nichts, **options):
+    "Ask a question; return true wenn the answer is yes, Nichts wenn cancelled."
     s = _show(title, message, QUESTION, YESNOCANCEL, **options)
     # s might be a Tcl index object, so convert it to a string
     s = str(s)
     wenn s == CANCEL:
-        return None
+        return Nichts
     return s == YES
 
 
-def askretrycancel(title=None, message=None, **options):
+def askretrycancel(title=Nichts, message=Nichts, **options):
     "Ask wenn operation should be retried; return true wenn the answer is yes"
     s = _show(title, message, WARNING, RETRYCANCEL, **options)
     return s == RETRY

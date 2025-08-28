@@ -21,9 +21,9 @@ testcfg = {
 }
 
 source = textwrap.dedent("""\
-    wenn True: int ('1') # keyword, builtin, string, comment
-    sowenn False: print(0)  # 'string' in comment
-    sonst: float(None)  # wenn in comment
+    wenn Wahr: int ('1') # keyword, builtin, string, comment
+    sowenn Falsch: print(0)  # 'string' in comment
+    sonst: float(Nichts)  # wenn in comment
     wenn iF + If + IF: 'keyword matching must respect case'
     if'': x or''  # valid keyword-string no-space combinations
     async def f(): await g()
@@ -70,7 +70,7 @@ klasse FunctionTest(unittest.TestCase):
 
     def test_make_pat(self):
         # Tested in more detail by testing prog.
-        self.assertTrue(colorizer.make_pat())
+        self.assertWahr(colorizer.make_pat())
 
     def test_prog(self):
         prog = colorizer.prog
@@ -90,7 +90,7 @@ klasse FunctionTest(unittest.TestCase):
     def test_idprog(self):
         idprog = colorizer.idprog
         m = idprog.match('nospace')
-        self.assertIsNone(m)
+        self.assertIsNichts(m)
         m = idprog.match(' space')
         self.assertEqual(m.group(0), ' space')
 
@@ -157,10 +157,10 @@ klasse ColorDelegatorInstantiationTest(unittest.TestCase):
         # init_state() is called during the instantiation of
         # ColorDelegator in setUp().
         color = self.color
-        self.assertIsNone(color.after_id)
-        self.assertTrue(color.allow_colorizing)
-        self.assertFalse(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
+        self.assertIsNichts(color.after_id)
+        self.assertWahr(color.allow_colorizing)
+        self.assertFalsch(color.colorizing)
+        self.assertFalsch(color.stop_colorizing)
 
 
 klasse ColorDelegatorTest(unittest.TestCase):
@@ -260,73 +260,73 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # Colorizing already scheduled.
         save_id = color.after_id
         eq(self.root.tk.call('after', 'info', save_id)[1], 'timer')
-        self.assertFalse(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
-        self.assertTrue(color.allow_colorizing)
+        self.assertFalsch(color.colorizing)
+        self.assertFalsch(color.stop_colorizing)
+        self.assertWahr(color.allow_colorizing)
 
         # Coloring scheduled and colorizing in progress.
-        color.colorizing = True
+        color.colorizing = Wahr
         color.notify_range('1.0', 'end')
-        self.assertFalse(color.stop_colorizing)
+        self.assertFalsch(color.stop_colorizing)
         eq(color.after_id, save_id)
 
         # No colorizing scheduled and colorizing in progress.
         text.after_cancel(save_id)
-        color.after_id = None
+        color.after_id = Nichts
         color.notify_range('1.0', '1.0+3c')
-        self.assertTrue(color.stop_colorizing)
-        self.assertIsNotNone(color.after_id)
+        self.assertWahr(color.stop_colorizing)
+        self.assertIsNotNichts(color.after_id)
         eq(self.root.tk.call('after', 'info', color.after_id)[1], 'timer')
         # New event scheduled.
         self.assertNotEqual(color.after_id, save_id)
 
         # No colorizing scheduled and colorizing off.
         text.after_cancel(color.after_id)
-        color.after_id = None
-        color.allow_colorizing = False
+        color.after_id = Nichts
+        color.allow_colorizing = Falsch
         color.notify_range('1.4', '1.4+10c')
         # Nothing scheduled when colorizing is off.
-        self.assertIsNone(color.after_id)
+        self.assertIsNichts(color.after_id)
 
     def test_toggle_colorize_event(self):
         color = self.color
         eq = self.assertEqual
 
         # Starts with colorizing allowed and scheduled.
-        self.assertFalse(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
-        self.assertTrue(color.allow_colorizing)
+        self.assertFalsch(color.colorizing)
+        self.assertFalsch(color.stop_colorizing)
+        self.assertWahr(color.allow_colorizing)
         eq(self.root.tk.call('after', 'info', color.after_id)[1], 'timer')
 
         # Toggle colorizing off.
         color.toggle_colorize_event()
-        self.assertIsNone(color.after_id)
-        self.assertFalse(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
-        self.assertFalse(color.allow_colorizing)
+        self.assertIsNichts(color.after_id)
+        self.assertFalsch(color.colorizing)
+        self.assertFalsch(color.stop_colorizing)
+        self.assertFalsch(color.allow_colorizing)
 
         # Toggle on while colorizing in progress (doesn't add timer).
-        color.colorizing = True
+        color.colorizing = Wahr
         color.toggle_colorize_event()
-        self.assertIsNone(color.after_id)
-        self.assertTrue(color.colorizing)
-        self.assertFalse(color.stop_colorizing)
-        self.assertTrue(color.allow_colorizing)
+        self.assertIsNichts(color.after_id)
+        self.assertWahr(color.colorizing)
+        self.assertFalsch(color.stop_colorizing)
+        self.assertWahr(color.allow_colorizing)
 
         # Toggle off while colorizing in progress.
         color.toggle_colorize_event()
-        self.assertIsNone(color.after_id)
-        self.assertTrue(color.colorizing)
-        self.assertTrue(color.stop_colorizing)
-        self.assertFalse(color.allow_colorizing)
+        self.assertIsNichts(color.after_id)
+        self.assertWahr(color.colorizing)
+        self.assertWahr(color.stop_colorizing)
+        self.assertFalsch(color.allow_colorizing)
 
         # Toggle on while colorizing not in progress.
-        color.colorizing = False
+        color.colorizing = Falsch
         color.toggle_colorize_event()
         eq(self.root.tk.call('after', 'info', color.after_id)[1], 'timer')
-        self.assertFalse(color.colorizing)
-        self.assertTrue(color.stop_colorizing)
-        self.assertTrue(color.allow_colorizing)
+        self.assertFalsch(color.colorizing)
+        self.assertWahr(color.stop_colorizing)
+        self.assertWahr(color.allow_colorizing)
 
     @mock.patch.object(colorizer.ColorDelegator, 'recolorize_main')
     def test_recolorize(self, mock_recmain):
@@ -338,27 +338,27 @@ klasse ColorDelegatorTest(unittest.TestCase):
 
         # No delegate.
         save_delegate = color.delegate
-        color.delegate = None
+        color.delegate = Nichts
         color.recolorize()
         mock_recmain.assert_not_called()
         color.delegate = save_delegate
 
         # Toggle off colorizing.
-        color.allow_colorizing = False
+        color.allow_colorizing = Falsch
         color.recolorize()
         mock_recmain.assert_not_called()
-        color.allow_colorizing = True
+        color.allow_colorizing = Wahr
 
         # Colorizing in progress.
-        color.colorizing = True
+        color.colorizing = Wahr
         color.recolorize()
         mock_recmain.assert_not_called()
-        color.colorizing = False
+        color.colorizing = Falsch
 
         # Colorizing is done, but not completed, so rescheduled.
         color.recolorize()
-        self.assertFalse(color.stop_colorizing)
-        self.assertFalse(color.colorizing)
+        self.assertFalsch(color.stop_colorizing)
+        self.assertFalsch(color.colorizing)
         mock_recmain.assert_called()
         eq(mock_recmain.call_count, 1)
         # Rescheduled when TODO tag still exists.
@@ -367,11 +367,11 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # No changes to text, so no scheduling added.
         text.tag_remove('TODO', '1.0', 'end')
         color.recolorize()
-        self.assertFalse(color.stop_colorizing)
-        self.assertFalse(color.colorizing)
+        self.assertFalsch(color.stop_colorizing)
+        self.assertFalsch(color.colorizing)
         mock_recmain.assert_called()
         eq(mock_recmain.call_count, 2)
-        self.assertIsNone(color.after_id)
+        self.assertIsNichts(color.after_id)
 
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
     def test_recolorize_main(self, mock_notify):

@@ -18,7 +18,7 @@ klasse TkLoadTest(unittest.TestCase):
         tcl.destroy()
 
     def testLoadTkFailure(self):
-        old_display = None
+        old_display = Nichts
         wenn sys.platform.startswith(('win', 'darwin', 'cygwin')):
             # no failure possible on windows?
 

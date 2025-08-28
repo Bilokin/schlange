@@ -23,7 +23,7 @@ from wsgiref.simple_server import WSGIRequestHandler, WSGIServer
 try:
     import ssl
 except ImportError:  # pragma: no cover
-    ssl = None
+    ssl = Nichts
 
 from asyncio import base_events
 from asyncio import events
@@ -61,24 +61,24 @@ with open(data_file('certdata', 'keycert3.pem.reference')) as file:
 def simple_server_sslcontext():
     server_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     server_context.load_cert_chain(ONLYCERT, ONLYKEY)
-    server_context.check_hostname = False
+    server_context.check_hostname = Falsch
     server_context.verify_mode = ssl.CERT_NONE
     return server_context
 
 
-def simple_client_sslcontext(*, disable_verify=True):
+def simple_client_sslcontext(*, disable_verify=Wahr):
     client_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-    client_context.check_hostname = False
+    client_context.check_hostname = Falsch
     wenn disable_verify:
         client_context.verify_mode = ssl.CERT_NONE
     return client_context
 
 
 def dummy_ssl_context():
-    wenn ssl is None:
-        return None
+    wenn ssl is Nichts:
+        return Nichts
     sonst:
-        return simple_client_sslcontext(disable_verify=True)
+        return simple_client_sslcontext(disable_verify=Wahr)
 
 
 def run_briefly(loop):
@@ -88,7 +88,7 @@ def run_briefly(loop):
     t = loop.create_task(gen)
     # Don't log a warning wenn the task is not done after run_until_complete().
     # It occurs wenn the loop is stopped or wenn a task raises a BaseException.
-    t._log_destroy_pending = False
+    t._log_destroy_pending = Falsch
     try:
         loop.run_until_complete(t)
     finally:
@@ -97,7 +97,7 @@ def run_briefly(loop):
 
 def run_until(loop, pred, timeout=support.SHORT_TIMEOUT):
     delay = 0.001
-    fuer _ in support.busy_retry(timeout, error=False):
+    fuer _ in support.busy_retry(timeout, error=Falsch):
         wenn pred():
             break
         loop.run_until_complete(tasks.sleep(delay))
@@ -149,7 +149,7 @@ klasse SSLWSGIServerMixin:
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         context.load_cert_chain(ONLYCERT, ONLYKEY)
 
-        ssock = context.wrap_socket(request, server_side=True)
+        ssock = context.wrap_socket(request, server_side=Wahr)
         try:
             self.RequestHandlerClass(ssock, client_address, self)
             ssock.close()
@@ -162,7 +162,7 @@ klasse SSLWSGIServer(SSLWSGIServerMixin, SilentWSGIServer):
     pass
 
 
-def _run_test_server(*, address, use_ssl=False, server_cls, server_ssl_cls):
+def _run_test_server(*, address, use_ssl=Falsch, server_cls, server_ssl_cls):
 
     def loop(environ):
         size = int(environ['CONTENT_LENGTH'])
@@ -254,7 +254,7 @@ wenn hasattr(socket, 'AF_UNIX'):
 
 
     @contextlib.contextmanager
-    def run_test_unix_server(*, use_ssl=False):
+    def run_test_unix_server(*, use_ssl=Falsch):
         with unix_socket_path() as path:
             yield from _run_test_server(address=path, use_ssl=use_ssl,
                                         server_cls=SilentUnixWSGIServer,
@@ -262,14 +262,14 @@ wenn hasattr(socket, 'AF_UNIX'):
 
 
 @contextlib.contextmanager
-def run_test_server(*, host='127.0.0.1', port=0, use_ssl=False):
+def run_test_server(*, host='127.0.0.1', port=0, use_ssl=Falsch):
     yield from _run_test_server(address=(host, port), use_ssl=use_ssl,
                                 server_cls=SilentWSGIServer,
                                 server_ssl_cls=SSLWSGIServer)
 
 
 def echo_datagrams(sock):
-    while True:
+    while Wahr:
         data, addr = sock.recvfrom(4096)
         wenn data == b'STOP':
             sock.close()
@@ -304,7 +304,7 @@ def make_test_protocol(base):
         wenn name.startswith('__') and name.endswith('__'):
             # skip magic names
             continue
-        dct[name] = MockCallback(return_value=None)
+        dct[name] = MockCallback(return_value=Nichts)
     return type('TestProtocol', (base,) + base.__bases__, dct)()
 
 
@@ -313,7 +313,7 @@ klasse TestSelector(selectors.BaseSelector):
     def __init__(self):
         self.keys = {}
 
-    def register(self, fileobj, events, data=None):
+    def register(self, fileobj, events, data=Nichts):
         key = selectors.SelectorKey(fileobj, 0, events, data)
         self.keys[fileobj] = key
         return key
@@ -347,15 +347,15 @@ klasse TestLoop(base_events.BaseEventLoop):
     Value passed to yield is time advance to move loop's time forward.
     """
 
-    def __init__(self, gen=None):
+    def __init__(self, gen=Nichts):
         super().__init__()
 
-        wenn gen is None:
+        wenn gen is Nichts:
             def gen():
                 yield
-            self._check_on_close = False
+            self._check_on_close = Falsch
         sonst:
-            self._check_on_close = True
+            self._check_on_close = Wahr
 
         self._gen = gen()
         next(self._gen)
@@ -389,15 +389,15 @@ klasse TestLoop(base_events.BaseEventLoop):
                 raise AssertionError("Time generator is not finished")
 
     def _add_reader(self, fd, callback, *args):
-        self.readers[fd] = events.Handle(callback, args, self, None)
+        self.readers[fd] = events.Handle(callback, args, self, Nichts)
 
     def _remove_reader(self, fd):
         self.remove_reader_count[fd] += 1
         wenn fd in self.readers:
             del self.readers[fd]
-            return True
+            return Wahr
         sonst:
-            return False
+            return Falsch
 
     def assert_reader(self, fd, callback, *args):
         wenn fd not in self.readers:
@@ -415,15 +415,15 @@ klasse TestLoop(base_events.BaseEventLoop):
             raise AssertionError(f'fd {fd} is registered')
 
     def _add_writer(self, fd, callback, *args):
-        self.writers[fd] = events.Handle(callback, args, self, None)
+        self.writers[fd] = events.Handle(callback, args, self, Nichts)
 
     def _remove_writer(self, fd):
         self.remove_writer_count[fd] += 1
         wenn fd in self.writers:
             del self.writers[fd]
-            return True
+            return Wahr
         sonst:
-            return False
+            return Falsch
 
     def assert_writer(self, fd, callback, *args):
         wenn fd not in self.writers:
@@ -441,7 +441,7 @@ klasse TestLoop(base_events.BaseEventLoop):
             except (AttributeError, TypeError, ValueError):
                 # This code matches selectors._fileobj_to_fd function.
                 raise ValueError("Invalid file object: "
-                                 "{!r}".format(fd)) from None
+                                 "{!r}".format(fd)) from Nichts
         try:
             transport = self._transports[fd]
         except KeyError:
@@ -482,7 +482,7 @@ klasse TestLoop(base_events.BaseEventLoop):
             self.advance_time(advance)
         self._timers = []
 
-    def call_at(self, when, callback, *args, context=None):
+    def call_at(self, when, callback, *args, context=Nichts):
         self._timers.append(when)
         return super().call_at(when, callback, *args, context=context)
 
@@ -520,7 +520,7 @@ klasse MockInstanceOf:
 
 def get_function_source(func):
     source = format_helpers._get_function_source(func)
-    wenn source is None:
+    wenn source is Nichts:
         raise ValueError("unable to get the source of %r" % (func,))
     return source
 
@@ -528,22 +528,22 @@ def get_function_source(func):
 klasse TestCase(unittest.TestCase):
     @staticmethod
     def close_loop(loop):
-        wenn loop._default_executor is not None:
+        wenn loop._default_executor is not Nichts:
             wenn not loop.is_closed():
                 loop.run_until_complete(loop.shutdown_default_executor())
             sonst:
-                loop._default_executor.shutdown(wait=True)
+                loop._default_executor.shutdown(wait=Wahr)
         loop.close()
 
-    def set_event_loop(self, loop, *, cleanup=True):
-        wenn loop is None:
-            raise AssertionError('loop is None')
+    def set_event_loop(self, loop, *, cleanup=Wahr):
+        wenn loop is Nichts:
+            raise AssertionError('loop is Nichts')
         # ensure that the event loop is passed explicitly in asyncio
-        events.set_event_loop(None)
+        events.set_event_loop(Nichts)
         wenn cleanup:
             self.addCleanup(self.close_loop, loop)
 
-    def new_test_loop(self, gen=None):
+    def new_test_loop(self, gen=Nichts):
         loop = TestLoop(gen)
         self.set_event_loop(loop)
         return loop
@@ -552,11 +552,11 @@ klasse TestCase(unittest.TestCase):
         self._thread_cleanup = threading_helper.threading_setup()
 
     def tearDown(self):
-        events.set_event_loop(None)
+        events.set_event_loop(Nichts)
 
         # Detect CPython bug #23353: ensure that yield/yield-from is not used
         # in an except block of a generator
-        self.assertIsNone(sys.exception())
+        self.assertIsNichts(sys.exception())
 
         self.doCleanups()
         threading_helper.threading_cleanup(*self._thread_cleanup)
@@ -589,7 +589,7 @@ def mock_nonblocking_socket(proto=socket.IPPROTO_TCP, type=socket.SOCK_STREAM,
 
 
 async def await_without_task(coro):
-    exc = None
+    exc = Nichts
     def func():
         try:
             fuer _ in coro.__await__():
@@ -599,7 +599,7 @@ async def await_without_task(coro):
             exc = err
     asyncio.get_running_loop().call_soon(func)
     await asyncio.sleep(0)
-    wenn exc is not None:
+    wenn exc is not Nichts:
         raise exc
 
 

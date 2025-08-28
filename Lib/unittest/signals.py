@@ -3,12 +3,12 @@ import weakref
 
 from functools import wraps
 
-__unittest = True
+__unittest = Wahr
 
 
 klasse _InterruptHandler(object):
     def __init__(self, default_handler):
-        self.called = False
+        self.called = Falsch
         self.original_handler = default_handler
         wenn isinstance(default_handler, int):
             wenn default_handler == signal.SIG_DFL:
@@ -34,7 +34,7 @@ klasse _InterruptHandler(object):
 
         wenn self.called:
             self.default_handler(signum, frame)
-        self.called = True
+        self.called = Wahr
         fuer result in _results.keys():
             result.stop()
 
@@ -43,19 +43,19 @@ def registerResult(result):
     _results[result] = 1
 
 def removeResult(result):
-    return bool(_results.pop(result, None))
+    return bool(_results.pop(result, Nichts))
 
-_interrupt_handler = None
+_interrupt_handler = Nichts
 def installHandler():
     global _interrupt_handler
-    wenn _interrupt_handler is None:
+    wenn _interrupt_handler is Nichts:
         default_handler = signal.getsignal(signal.SIGINT)
         _interrupt_handler = _InterruptHandler(default_handler)
         signal.signal(signal.SIGINT, _interrupt_handler)
 
 
-def removeHandler(method=None):
-    wenn method is not None:
+def removeHandler(method=Nichts):
+    wenn method is not Nichts:
         @wraps(method)
         def inner(*args, **kwargs):
             initial = signal.getsignal(signal.SIGINT)
@@ -67,5 +67,5 @@ def removeHandler(method=None):
         return inner
 
     global _interrupt_handler
-    wenn _interrupt_handler is not None:
+    wenn _interrupt_handler is not Nichts:
         signal.signal(signal.SIGINT, _interrupt_handler.original_handler)

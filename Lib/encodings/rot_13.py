@@ -18,11 +18,11 @@ klasse Codec(codecs.Codec):
         return (str.translate(input, rot13_map), len(input))
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return str.translate(input, rot13_map)
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         return str.translate(input, rot13_map)
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
@@ -42,7 +42,7 @@ def getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamwriter=StreamWriter,
         streamreader=StreamReader,
-        _is_text_encoding=False,
+        _is_text_encoding=Falsch,
     )
 
 ### Map

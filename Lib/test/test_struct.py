@@ -71,7 +71,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         l = 65536
         f = 3.1415
         d = 3.1415
-        t = True
+        t = Wahr
 
         fuer prefix in ('', '@', '<', '>', '=', '!'):
             fuer format in ('xcbhilfd?', 'xcBHILfd?'):
@@ -132,7 +132,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                         b'\000\000\000\000\000\000\000\300', 0),
             ('?', 0, b'\0', b'\0', 0),
             ('?', 3, b'\1', b'\1', 1),
-            ('?', True, b'\1', b'\1', 0),
+            ('?', Wahr, b'\1', b'\1', 0),
             ('?', [], b'\0', b'\0', 1),
             ('?', (1,), b'\1', b'\1', 1),
         ]
@@ -145,7 +145,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertEqual(struct.calcsize(xfmt), len(res))
                 rev = struct.unpack(xfmt, res)[0]
                 wenn rev != arg:
-                    self.assertTrue(asy)
+                    self.assertWahr(asy)
 
     def test_calcsize(self):
         expected_size = {
@@ -197,11 +197,11 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.bytesize = struct.calcsize(format)
                 self.bitsize = self.bytesize * 8
                 wenn self.code in tuple('bhilqn'):
-                    self.signed = True
+                    self.signed = Wahr
                     self.min_value = -(2**(self.bitsize-1))
                     self.max_value = 2**(self.bitsize-1) - 1
                 sowenn self.code in tuple('BHILQN'):
-                    self.signed = False
+                    self.signed = Falsch
                     self.min_value = 0
                     self.max_value = 2**self.bitsize - 1
                 sonst:
@@ -324,7 +324,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                                   "with '__index__' method")
 
                 # Check fuer bogus values from '__index__'.
-                fuer obj in (Indexable(b'a'), Indexable('b'), Indexable(None),
+                fuer obj in (Indexable(b'a'), Indexable('b'), Indexable(Nichts),
                             Indexable({'a': 1}), Indexable([1, 2, 3])):
                     self.assertRaises((TypeError, struct.error),
                                       struct.pack, self.format,
@@ -459,7 +459,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Test bogus offset (issue 3694)
         sb = small_buf
         self.assertRaises((TypeError, struct.error), struct.pack_into, b'', sb,
-                          None)
+                          Nichts)
 
     def test_pack_into_fn(self):
         test_string = b'Reykjavik rocks, eow!'
@@ -501,27 +501,27 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             true = [1], 'test', 5, -1, 0xffffffff+1, 0xffffffff/2
 
             falseFormat = prefix + '?' * len(false)
-            packedFalse = struct.pack(falseFormat, *false)
-            unpackedFalse = struct.unpack(falseFormat, packedFalse)
+            packedFalsch = struct.pack(falseFormat, *false)
+            unpackedFalsch = struct.unpack(falseFormat, packedFalsch)
 
             trueFormat = prefix + '?' * len(true)
-            packedTrue = struct.pack(trueFormat, *true)
-            unpackedTrue = struct.unpack(trueFormat, packedTrue)
+            packedWahr = struct.pack(trueFormat, *true)
+            unpackedWahr = struct.unpack(trueFormat, packedWahr)
 
-            self.assertEqual(len(true), len(unpackedTrue))
-            self.assertEqual(len(false), len(unpackedFalse))
+            self.assertEqual(len(true), len(unpackedWahr))
+            self.assertEqual(len(false), len(unpackedFalsch))
 
-            fuer t in unpackedFalse:
-                self.assertFalse(t)
-            fuer t in unpackedTrue:
-                self.assertTrue(t)
+            fuer t in unpackedFalsch:
+                self.assertFalsch(t)
+            fuer t in unpackedWahr:
+                self.assertWahr(t)
 
             packed = struct.pack(prefix+'?', 1)
 
             self.assertEqual(len(packed), struct.calcsize(prefix+'?'))
 
             wenn len(packed) != 1:
-                self.assertFalse(prefix, msg='encoded bool is not one byte: %r'
+                self.assertFalsch(prefix, msg='encoded bool is not one byte: %r'
                                              %packed)
 
             try:
@@ -533,10 +533,10 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                           "ExplodingBool())" % (prefix + '?'))
 
         fuer c in [b'\x01', b'\x7f', b'\xff', b'\x0f', b'\xf0']:
-            self.assertTrue(struct.unpack('>?', c)[0])
-            self.assertTrue(struct.unpack('<?', c)[0])
-            self.assertTrue(struct.unpack('=?', c)[0])
-            self.assertTrue(struct.unpack('@?', c)[0])
+            self.assertWahr(struct.unpack('>?', c)[0])
+            self.assertWahr(struct.unpack('<?', c)[0])
+            self.assertWahr(struct.unpack('=?', c)[0])
+            self.assertWahr(struct.unpack('@?', c)[0])
 
     def test_count_overflow(self):
         hugecount = '{}b'.format(sys.maxsize+1)
@@ -703,7 +703,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         # Then the module should have been garbage collected.
         gc.collect()
-        self.assertIsNone(
+        self.assertIsNichts(
             module_ref(), "_struct module was not garbage collected")
 
     @support.cpython_only
@@ -749,15 +749,15 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         fuer prefix in '@=<>':
             fuer int_type in 'BHILQ':
-                test_error_msg(prefix, int_type, True)
+                test_error_msg(prefix, int_type, Wahr)
             fuer int_type in 'bhilq':
-                test_error_msg(prefix, int_type, False)
+                test_error_msg(prefix, int_type, Falsch)
 
         int_type = 'N'
-        test_error_msg('@', int_type, True)
+        test_error_msg('@', int_type, Wahr)
 
         int_type = 'n'
-        test_error_msg('@', int_type, False)
+        test_error_msg('@', int_type, Falsch)
 
     @support.cpython_only
     def test_issue98248_error_propagation(self):
@@ -912,8 +912,8 @@ klasse UnpackIteratorTest(unittest.TestCase):
         ]
 
         fuer formatcode, bits in format_bits__nan_list:
-            self.assertTrue(math.isnan(struct.unpack('<e', bits)[0]))
-            self.assertTrue(math.isnan(struct.unpack('>e', bits[::-1])[0]))
+            self.assertWahr(math.isnan(struct.unpack('<e', bits)[0]))
+            self.assertWahr(math.isnan(struct.unpack('>e', bits[::-1])[0]))
 
         # Check that packing produces a bit pattern representing a quiet NaN:
         # all exponent bits and the msb of the fraction should all be 1.

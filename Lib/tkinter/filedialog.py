@@ -38,7 +38,7 @@ klasse FileDialog:
 
         d = FileDialog(master)
         fname = d.go(dir_or_file, pattern, default, key)
-        wenn fname is None: ...canceled...
+        wenn fname is Nichts: ...canceled...
         sonst: ...open file...
 
     All arguments to go() are optional.
@@ -55,10 +55,10 @@ klasse FileDialog:
 
     title = "File Selection Dialog"
 
-    def __init__(self, master, title=None):
-        wenn title is None: title = self.title
+    def __init__(self, master, title=Nichts):
+        wenn title is Nichts: title = self.title
         self.master = master
-        self.directory = None
+        self.directory = Nichts
 
         self.top = Toplevel(master)
         self.top.title(title)
@@ -119,7 +119,7 @@ klasse FileDialog:
         self.top.bind('<Alt-w>', self.cancel_command)
         self.top.bind('<Alt-W>', self.cancel_command)
 
-    def go(self, dir_or_file=os.curdir, pattern="*", default="", key=None):
+    def go(self, dir_or_file=os.curdir, pattern="*", default="", key=Nichts):
         wenn key and key in dialogstates:
             self.directory, pattern = dialogstates[key]
         sonst:
@@ -134,7 +134,7 @@ klasse FileDialog:
         self.selection.focus_set()
         self.top.wait_visibility() # window needs to be visible fuer the grab
         self.top.grab_set()
-        self.how = None
+        self.how = Nichts
         self.master.mainloop()          # Exited by self.quit(how)
         wenn key:
             directory, pattern = self.get_filter()
@@ -144,7 +144,7 @@ klasse FileDialog:
         self.top.destroy()
         return self.how
 
-    def quit(self, how=None):
+    def quit(self, how=Nichts):
         self.how = how
         self.master.quit()              # Exit mainloop()
 
@@ -170,7 +170,7 @@ klasse FileDialog:
     def ok_command(self):
         self.quit(self.get_selection())
 
-    def filter_command(self, event=None):
+    def filter_command(self, event=Nichts):
         dir, pat = self.get_filter()
         try:
             names = os.listdir(dir)
@@ -210,7 +210,7 @@ klasse FileDialog:
         file = os.path.expanduser(file)
         return file
 
-    def cancel_command(self, event=None):
+    def cancel_command(self, event=Nichts):
         self.quit()
 
     def set_filter(self, dir, pat):
@@ -218,7 +218,7 @@ klasse FileDialog:
             try:
                 pwd = os.getcwd()
             except OSError:
-                pwd = None
+                pwd = Nichts
             wenn pwd:
                 dir = os.path.join(pwd, dir)
                 dir = os.path.normpath(dir)
@@ -408,7 +408,7 @@ def askopenfile(mode = "r", **options):
     filename = Open(**options).show()
     wenn filename:
         return open(filename, mode)
-    return None
+    return Nichts
 
 
 def askopenfiles(mode = "r", **options):
@@ -434,7 +434,7 @@ def asksaveasfile(mode = "w", **options):
     filename = SaveAs(**options).show()
     wenn filename:
         return open(filename, mode)
-    return None
+    return Nichts
 
 
 def askdirectory (**options):

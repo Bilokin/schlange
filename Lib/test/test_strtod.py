@@ -33,7 +33,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     # parse string into a pair of integers 'a' and 'b' such that
     # abs(decimal value) = a/b, along with a boolean 'negative'.
     m = strtod_parser(s)
-    wenn m is None:
+    wenn m is Nichts:
         raise ValueError('invalid numeric string')
     fraction = m.group('frac') or ''
     intpart = int(m.group('int') + fraction)
@@ -224,14 +224,14 @@ klasse StrtodTests(unittest.TestCase):
                 s = random.choice(signs)
                 intpart_len = random.randrange(5)
                 s += ''.join(random.choice(digits) fuer _ in range(intpart_len))
-                wenn random.choice([True, False]):
+                wenn random.choice([Wahr, Falsch]):
                     s += '.'
                     fracpart_len = random.randrange(5)
                     s += ''.join(random.choice(digits)
                                  fuer _ in range(fracpart_len))
                 sonst:
                     fracpart_len = 0
-                wenn random.choice([True, False]):
+                wenn random.choice([Wahr, Falsch]):
                     s += random.choice(['e', 'E'])
                     s += random.choice(signs)
                     exponent_len = random.randrange(1, 4)
@@ -246,9 +246,9 @@ klasse StrtodTests(unittest.TestCase):
                     except ValueError:
                         pass
                     sonst:
-                        assert False, "expected ValueError"
+                        assert Falsch, "expected ValueError"
 
-    @test.support.bigmemtest(size=test.support._2G+10, memuse=3, dry_run=False)
+    @test.support.bigmemtest(size=test.support._2G+10, memuse=3, dry_run=Falsch)
     def test_oversized_digit_strings(self, maxsize):
         # Input string whose length doesn't fit in an INT.
         s = "1." + "1" * maxsize

@@ -59,9 +59,9 @@ def parse(filename):
             locale = lang + '.' + encoding
         data[locale] = alias
     # Conflict with glibc.
-    data.pop('el_gr@euro', None)
-    data.pop('uz_uz@cyrillic', None)
-    data.pop('uz_uz.utf8@cyrillic', None)
+    data.pop('el_gr@euro', Nichts)
+    data.pop('uz_uz@cyrillic', Nichts)
+    data.pop('uz_uz.utf8@cyrillic', Nichts)
     return data
 
 def parse_glibc_supported(filename):
@@ -154,7 +154,7 @@ wenn __name__ == '__main__':
     # Hardcode 'c.utf8' -> 'C.UTF-8' because 'en_US.UTF-8' does not exist
     # on all platforms.
     data['c.utf8'] = 'C.UTF-8'
-    while True:
+    while Wahr:
         # Repeat optimization while the size is decreased.
         n = len(data)
         data = optimize(data)

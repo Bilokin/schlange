@@ -45,15 +45,15 @@ escapesre = re.compile(r'[\\"]')
 
 
 def _has_surrogates(s):
-    """Return True wenn s may contain surrogate-escaped binary data."""
+    """Return Wahr wenn s may contain surrogate-escaped binary data."""
     # This check is based on the fact that unless there are surrogates, utf8
     # (Python's default encoding) can encode any string.  This is the fastest
     # way to check fuer surrogates, see bpo-11454 (moved to gh-55663) fuer timings.
     try:
         s.encode()
-        return False
+        return Falsch
     except UnicodeEncodeError:
-        return True
+        return Wahr
 
 # How to deal with a string containing bytes before handing it to the
 # application through the 'normal' interface.
@@ -106,13 +106,13 @@ def formataddr(pair, charset='utf-8'):
 
 def _iter_escaped_chars(addr):
     pos = 0
-    escape = False
+    escape = Falsch
     fuer pos, ch in enumerate(addr):
         wenn escape:
             yield (pos, '\\' + ch)
-            escape = False
+            escape = Falsch
         sowenn ch == '\\':
-            escape = True
+            escape = Wahr
         sonst:
             yield (pos, ch)
     wenn escape:
@@ -126,17 +126,17 @@ def _strip_quoted_realnames(addr):
         return addr
 
     start = 0
-    open_pos = None
+    open_pos = Nichts
     result = []
     fuer pos, ch in _iter_escaped_chars(addr):
         wenn ch == '"':
-            wenn open_pos is None:
+            wenn open_pos is Nichts:
                 open_pos = pos
             sonst:
                 wenn start != open_pos:
                     result.append(addr[start:open_pos])
                 start = pos + 1
-                open_pos = None
+                open_pos = Nichts
 
     wenn start < len(addr):
         result.append(addr[start:])
@@ -144,9 +144,9 @@ def _strip_quoted_realnames(addr):
     return ''.join(result)
 
 
-supports_strict_parsing = True
+supports_strict_parsing = Wahr
 
-def getaddresses(fieldvalues, *, strict=True):
+def getaddresses(fieldvalues, *, strict=Wahr):
     """Return a list of (REALNAME, EMAIL) or ('','') fuer each fieldvalue.
 
     When parsing fails fuer a fieldvalue, a 2-tuple of ('', '') is returned in
@@ -201,7 +201,7 @@ def _check_parenthesis(addr):
         sowenn ch == ')':
             opens -= 1
             wenn opens < 0:
-                return False
+                return Falsch
     return (opens == 0)
 
 
@@ -236,7 +236,7 @@ def _format_timetuple_and_zone(timetuple, zone):
         timetuple[0], timetuple[3], timetuple[4], timetuple[5],
         zone)
 
-def formatdate(timeval=None, localtime=False, usegmt=False):
+def formatdate(timeval=Nichts, localtime=Falsch, usegmt=Falsch):
     """Returns a date string as specified by RFC 2822, e.g.:
 
     Fri, 09 Nov 2001 01:08:47 -0000
@@ -244,47 +244,47 @@ def formatdate(timeval=None, localtime=False, usegmt=False):
     Optional timeval wenn given is a floating-point time value as accepted by
     gmtime() and localtime(), otherwise the current time is used.
 
-    Optional localtime is a flag that when True, interprets timeval, and
+    Optional localtime is a flag that when Wahr, interprets timeval, and
     returns a date relative to the local timezone instead of UTC, properly
     taking daylight savings time into account.
 
     Optional argument usegmt means that the timezone is written out as
     an ascii string, not numeric one (so "GMT" instead of "+0000"). This
-    is needed fuer HTTP, and is only used when localtime==False.
+    is needed fuer HTTP, and is only used when localtime==Falsch.
     """
     # Note: we cannot use strftime() because that honors the locale and RFC
     # 2822 requires that day and month names be the English abbreviations.
-    wenn timeval is None:
+    wenn timeval is Nichts:
         timeval = time.time()
     dt = datetime.datetime.fromtimestamp(timeval, datetime.timezone.utc)
 
     wenn localtime:
         dt = dt.astimezone()
-        usegmt = False
+        usegmt = Falsch
     sowenn not usegmt:
-        dt = dt.replace(tzinfo=None)
+        dt = dt.replace(tzinfo=Nichts)
     return format_datetime(dt, usegmt)
 
-def format_datetime(dt, usegmt=False):
+def format_datetime(dt, usegmt=Falsch):
     """Turn a datetime into a date string as specified in RFC 2822.
 
-    If usegmt is True, dt must be an aware datetime with an offset of zero.  In
+    If usegmt is Wahr, dt must be an aware datetime with an offset of zero.  In
     this case 'GMT' will be rendered instead of the normal +0000 required by
     RFC2822.  This is to support HTTP headers involving date stamps.
     """
     now = dt.timetuple()
     wenn usegmt:
-        wenn dt.tzinfo is None or dt.tzinfo != datetime.timezone.utc:
+        wenn dt.tzinfo is Nichts or dt.tzinfo != datetime.timezone.utc:
             raise ValueError("usegmt option requires a UTC datetime")
         zone = 'GMT'
-    sowenn dt.tzinfo is None:
+    sowenn dt.tzinfo is Nichts:
         zone = '-0000'
     sonst:
         zone = dt.strftime("%z")
     return _format_timetuple_and_zone(now, zone)
 
 
-def make_msgid(idstring=None, domain=None):
+def make_msgid(idstring=Nichts, domain=Nichts):
     """Returns a string suitable fuer RFC 2822 compliant Message-ID, e.g:
 
     <142480216486.20800.16526388040877946887@nightshade.la.mastaler.com>
@@ -302,11 +302,11 @@ def make_msgid(idstring=None, domain=None):
     timeval = int(time.time()*100)
     pid = os.getpid()
     randint = random.getrandbits(64)
-    wenn idstring is None:
+    wenn idstring is Nichts:
         idstring = ''
     sonst:
         idstring = '.' + idstring
-    wenn domain is None:
+    wenn domain is Nichts:
         domain = socket.getfqdn()
     msgid = '<%d.%d.%d%s@%s>' % (timeval, pid, randint, idstring, domain)
     return msgid
@@ -314,23 +314,23 @@ def make_msgid(idstring=None, domain=None):
 
 def parsedate_to_datetime(data):
     parsed_date_tz = _parsedate_tz(data)
-    wenn parsed_date_tz is None:
+    wenn parsed_date_tz is Nichts:
         raise ValueError('Invalid date value or format "%s"' % str(data))
     *dtuple, tz = parsed_date_tz
-    wenn tz is None:
+    wenn tz is Nichts:
         return datetime.datetime(*dtuple[:6])
     return datetime.datetime(*dtuple[:6],
             tzinfo=datetime.timezone(datetime.timedelta(seconds=tz)))
 
 
-def parseaddr(addr, *, strict=True):
+def parseaddr(addr, *, strict=Wahr):
     """
     Parse addr into its constituent realname and email address parts.
 
     Return a tuple of realname and email address, unless the parse fails, in
     which case return a 2-tuple of ('', '').
 
-    If strict is True, use a strict parser which rejects malformed inputs.
+    If strict is Wahr, use a strict parser which rejects malformed inputs.
     """
     wenn not strict:
         addrs = _AddressList(addr).addresslist
@@ -370,11 +370,11 @@ def decode_rfc2231(s):
     """Decode string according to RFC 2231"""
     parts = s.split(TICK, 2)
     wenn len(parts) <= 2:
-        return None, None, s
+        return Nichts, Nichts, s
     return parts
 
 
-def encode_rfc2231(s, charset=None, language=None):
+def encode_rfc2231(s, charset=Nichts, language=Nichts):
     """Encode string according to RFC 2231.
 
     If neither charset nor language is given, then s is returned as-is.  If
@@ -382,9 +382,9 @@ def encode_rfc2231(s, charset=None, language=None):
     string fuer language.
     """
     s = urllib.parse.quote(s, safe='', encoding=charset or 'ascii')
-    wenn charset is None and language is None:
+    wenn charset is Nichts and language is Nichts:
         return s
-    wenn language is None:
+    wenn language is Nichts:
         language = ''
     return "%s'%s'%s" % (charset, language, s)
 
@@ -408,7 +408,7 @@ def decode_params(params):
         mo = rfc2231_continuation.match(name)
         wenn mo:
             name, num = mo.group('name', 'num')
-            wenn num is not None:
+            wenn num is not Nichts:
                 num = int(num)
             rfc2231_params.setdefault(name, []).append((num, value, encoded))
         sonst:
@@ -416,12 +416,12 @@ def decode_params(params):
     wenn rfc2231_params:
         fuer name, continuations in rfc2231_params.items():
             value = []
-            extended = False
-            # Sort by number, treating None as 0 wenn there is no 0,
+            extended = Falsch
+            # Sort by number, treating Nichts as 0 wenn there is no 0,
             # and ignore it wenn there is already a 0.
             has_zero = any(x[0] == 0 fuer x in continuations)
             wenn has_zero:
-                continuations = [x fuer x in continuations wenn x[0] is not None]
+                continuations = [x fuer x in continuations wenn x[0] is not Nichts]
             sonst:
                 continuations = [(x[0] or 0, x[1], x[2]) fuer x in continuations]
             continuations.sort(key=lambda x: x[0])
@@ -436,7 +436,7 @@ def decode_params(params):
                     # represent the percent-encoded octet values.
                     # collapse_rfc2231_value treats this as an octet sequence.
                     s = urllib.parse.unquote(s, encoding="latin-1")
-                    extended = True
+                    extended = Wahr
                 value.append(s)
             value = quote(EMPTYSTRING.join(value))
             wenn extended:
@@ -454,8 +454,8 @@ def collapse_rfc2231_value(value, errors='replace',
     # object.  We do not want bytes() normal utf-8 decoder, we want a straight
     # interpretation of the string as character bytes.
     charset, language, text = value
-    wenn charset is None:
-        # Issue 17369: wenn charset/lang is None, decode_rfc2231 couldn't parse
+    wenn charset is Nichts:
+        # Issue 17369: wenn charset/lang is Nichts, decode_rfc2231 couldn't parse
         # the value, so use the fallback_charset.
         charset = fallback_charset
     rawbytes = bytes(text, 'raw-unicode-escape')
@@ -472,15 +472,15 @@ def collapse_rfc2231_value(value, errors='replace',
 # better than not having it.
 #
 
-def localtime(dt=None):
+def localtime(dt=Nichts):
     """Return local time as an aware datetime object.
 
     If called without arguments, return current time.  Otherwise *dt*
     argument should be a datetime instance, and it is converted to the
     local time zone according to the system time zone database.  If *dt* is
-    naive (that is, dt.tzinfo is None), it is assumed to be in local time.
+    naive (that is, dt.tzinfo is Nichts), it is assumed to be in local time.
 
     """
-    wenn dt is None:
+    wenn dt is Nichts:
         dt = datetime.datetime.now()
     return dt.astimezone()

@@ -58,7 +58,7 @@ klasse PyParseTest(unittest.TestCase):
         p = self.parser
         setcode = p.set_code
         start = p.find_good_parse_start
-        def char_in_string_false(index): return False
+        def char_in_string_false(index): return Falsch
 
         # First line starts with 'def' and ends with ':', then 0 is the pos.
         setcode('def spam():\n')
@@ -75,7 +75,7 @@ klasse PyParseTest(unittest.TestCase):
         setcode('"""This is a module docstring"""\n'
                 'class C:\n'
                 '    def __init__(self, a,\n'
-                '                 b=True):\n'
+                '                 b=Wahr):\n'
                 '        pass\n'
                 )
         pos0, pos = 33, 42  # Start of 'class...', '    def' lines.
@@ -84,11 +84,11 @@ klasse PyParseTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             start()
         with self.assertRaises(TypeError):
-            start(False)
+            start(Falsch)
 
         # Make text look like a string.  This returns pos as the start
-        # position, but it's set to None.
-        self.assertIsNone(start(is_char_in_string=lambda index: True))
+        # position, but it's set to Nichts.
+        self.assertIsNichts(start(is_char_in_string=lambda index: Wahr))
 
         # Make all text look like it's not in a string.  This means that it
         # found a good start position.
@@ -100,15 +100,15 @@ klasse PyParseTest(unittest.TestCase):
         # If the beginning of the def line is in a string, then it
         # looks fuer a previous index.
         eq(start(is_char_in_string=lambda index: index >= pos), pos0)
-        # If everything before the 'def' is in a string, then returns None.
+        # If everything before the 'def' is in a string, then returns Nichts.
         # The non-continuation def line returns 44 (see below).
-        eq(start(is_char_in_string=lambda index: index < pos), None)
+        eq(start(is_char_in_string=lambda index: index < pos), Nichts)
 
         # Code without extra line break in def line - mostly returns the same
         # values.
         setcode('"""This is a module docstring"""\n'
                 'class C:\n'
-                '    def __init__(self, a, b=True):\n'
+                '    def __init__(self, a, b=Wahr):\n'
                 '        pass\n'
                 )  # Does not affect class, def positions.
         eq(start(char_in_string_false), pos)
@@ -123,7 +123,7 @@ klasse PyParseTest(unittest.TestCase):
                 '"""This is a module docstring"""\n'
                 'class C:\n'
                 '    def __init__(self, a,\n'
-                '                 b=True):\n'
+                '                 b=Wahr):\n'
                 '        pass\n'
                 )
         pos = 42
@@ -190,7 +190,7 @@ klasse PyParseTest(unittest.TestCase):
                 eq(p.continuation, test.continuation)
 
         # Called again, just returns without reprocessing.
-        self.assertIsNone(study())
+        self.assertIsNichts(study())
 
     def test_get_continuation_type(self):
         eq = self.assertEqual
@@ -222,20 +222,20 @@ klasse PyParseTest(unittest.TestCase):
         TestInfo = namedtuple('TestInfo', ['string', 'start', 'end', 'lastch',
                                            'openbracket', 'bracketing'])
         tests = (
-            TestInfo('', 0, 0, '', None, ((0, 0),)),
+            TestInfo('', 0, 0, '', Nichts, ((0, 0),)),
             TestInfo("'''This is a multiline continuation docstring.\n\n",
-                     0, 48, "'", None, ((0, 0), (0, 1), (48, 0))),
+                     0, 48, "'", Nichts, ((0, 0), (0, 1), (48, 0))),
             TestInfo(' # Comment\\\n',
-                     0, 12, '', None, ((0, 0), (1, 1), (12, 0))),
+                     0, 12, '', Nichts, ((0, 0), (1, 1), (12, 0))),
             # A comment without a space is a special case
             TestInfo(' #Comment\\\n',
-                     0, 0, '', None, ((0, 0),)),
+                     0, 0, '', Nichts, ((0, 0),)),
             # Backslash continuation.
             TestInfo('a = (1 + 2) - 5 *\\\n',
-                     0, 19, '*', None, ((0, 0), (4, 1), (11, 0))),
+                     0, 19, '*', Nichts, ((0, 0), (4, 1), (11, 0))),
             # Bracket continuation with close.
             TestInfo('\n   def function1(self, a,\n                 b):\n',
-                     1, 48, ':', None, ((1, 0), (17, 1), (46, 0))),
+                     1, 48, ':', Nichts, ((1, 0), (17, 1), (46, 0))),
             # Bracket continuation with unneeded backslash.
             TestInfo('\n   def function1(self, a,\\\n',
                      1, 28, ',', 17, ((1, 0), (17, 1))),
@@ -250,14 +250,14 @@ klasse PyParseTest(unittest.TestCase):
                      0, 55, ',', 6, ((0, 0), (6, 1), (7, 2), (19, 1),
                                      (23, 2), (38, 1), (42, 2), (53, 1))),
             TestInfo('())\n',
-                     0, 4, ')', None, ((0, 0), (0, 1), (2, 0), (3, 0))),
+                     0, 4, ')', Nichts, ((0, 0), (0, 1), (2, 0), (3, 0))),
             TestInfo(')(\n', 0, 3, '(', 1, ((0, 0), (1, 0), (1, 1))),
             # Wrong closers still decrement stack level.
             TestInfo('{)(]\n',
-                     0, 5, ']', None, ((0, 0), (0, 1), (2, 0), (2, 1), (4, 0))),
+                     0, 5, ']', Nichts, ((0, 0), (0, 1), (2, 0), (2, 1), (4, 0))),
             # Character after backslash.
-            TestInfo(':\\a\n', 0, 4, '\\a', None, ((0, 0),)),
-            TestInfo('\n', 0, 0, '', None, ((0, 0),)),
+            TestInfo(':\\a\n', 0, 4, '\\a', Nichts, ((0, 0),)),
+            TestInfo('\n', 0, 0, '', Nichts, ((0, 0),)),
             )
 
         fuer test in tests:
@@ -272,7 +272,7 @@ klasse PyParseTest(unittest.TestCase):
                 eq(p.stmt_bracketing, test.bracketing)
 
         # Called again, just returns without reprocessing.
-        self.assertIsNone(study())
+        self.assertIsNichts(study())
 
     def test_get_num_lines_in_stmt(self):
         eq = self.assertEqual
@@ -395,8 +395,8 @@ klasse PyParseTest(unittest.TestCase):
                 eq(baseindent(), test.indent)
 
     def test_is_block_opener(self):
-        yes = self.assertTrue
-        no = self.assertFalse
+        yes = self.assertWahr
+        no = self.assertFalsch
         p = self.parser
         setcode = p.set_code
         opener = p.is_block_opener
@@ -423,8 +423,8 @@ klasse PyParseTest(unittest.TestCase):
                 test.assert_(opener())
 
     def test_is_block_closer(self):
-        yes = self.assertTrue
-        no = self.assertFalse
+        yes = self.assertWahr
+        no = self.assertFalsch
         p = self.parser
         setcode = p.set_code
         closer = p.is_block_closer

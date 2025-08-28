@@ -78,8 +78,8 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     # TestSuite should allow any iterable to provide tests
     def test_init__tests_from_any_iterable(self):
         def tests():
-            yield unittest.FunctionTestCase(lambda: None)
-            yield unittest.FunctionTestCase(lambda: None)
+            yield unittest.FunctionTestCase(lambda: Nichts)
+            yield unittest.FunctionTestCase(lambda: Nichts)
 
         suite_1 = unittest.TestSuite(tests())
         self.assertEqual(suite_1.countTestCases(), 2)
@@ -107,9 +107,9 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     # in the tests iterable?
     def test_init__TestSuite_instances_in_tests(self):
         def tests():
-            ftc = unittest.FunctionTestCase(lambda: None)
+            ftc = unittest.FunctionTestCase(lambda: Nichts)
             yield unittest.TestSuite([ftc])
-            yield unittest.FunctionTestCase(lambda: None)
+            yield unittest.FunctionTestCase(lambda: Nichts)
 
         suite = unittest.TestSuite(tests())
         self.assertEqual(suite.countTestCases(), 2)
@@ -122,8 +122,8 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     # Container types should support the iter protocol
     def test_iter(self):
-        test1 = unittest.FunctionTestCase(lambda: None)
-        test2 = unittest.FunctionTestCase(lambda: None)
+        test1 = unittest.FunctionTestCase(lambda: Nichts)
+        test2 = unittest.FunctionTestCase(lambda: Nichts)
         suite = unittest.TestSuite((test1, test2))
 
         self.assertEqual(list(suite), [test1, test2])
@@ -157,8 +157,8 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     # ...this method is also implemented by the TestSuite class, which can
     # return larger [greater than 1] values"
     def test_countTestCases_simple(self):
-        test1 = unittest.FunctionTestCase(lambda: None)
-        test2 = unittest.FunctionTestCase(lambda: None)
+        test1 = unittest.FunctionTestCase(lambda: Nichts)
+        test2 = unittest.FunctionTestCase(lambda: Nichts)
         suite = unittest.TestSuite((test1, test2))
 
         self.assertEqual(suite.countTestCases(), 2)
@@ -176,8 +176,8 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
             def test1(self): pass
             def test2(self): pass
 
-        test2 = unittest.FunctionTestCase(lambda: None)
-        test3 = unittest.FunctionTestCase(lambda: None)
+        test2 = unittest.FunctionTestCase(lambda: Nichts)
+        test3 = unittest.FunctionTestCase(lambda: Nichts)
         child = unittest.TestSuite((Test1('test2'), test2))
         parent = unittest.TestSuite((test3, child, Test1('test1')))
 
@@ -341,14 +341,14 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         suite._tests = [1, 2, 3]
         suite._removeTestAtIndex(1)
 
-        self.assertEqual([1, None, 3], suite._tests)
+        self.assertEqual([1, Nichts, 3], suite._tests)
 
     def test_remove_test_at_index_not_indexable(self):
         wenn not unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         suite = unittest.TestSuite()
-        suite._tests = None
+        suite._tests = Nichts
 
         # wenn _removeAtIndex raises fuer noniterables this next line will break
         suite._removeTestAtIndex(2)
@@ -372,8 +372,8 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         # fuer the benefit of non-reference counting implementations
         gc.collect()
 
-        self.assertEqual(suite._tests, [None])
-        self.assertIsNone(wref())
+        self.assertEqual(suite._tests, [Nichts])
+        self.assertIsNichts(wref())
 
     def test_garbage_collect_test_after_run_BaseTestSuite(self):
         self.assert_garbage_collect_test_after_run(unittest.BaseTestSuite)
@@ -383,27 +383,27 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     def test_basetestsuite(self):
         klasse Test(unittest.TestCase):
-            wasSetUp = False
-            wasTornDown = False
+            wasSetUp = Falsch
+            wasTornDown = Falsch
             @classmethod
             def setUpClass(cls):
-                cls.wasSetUp = True
+                cls.wasSetUp = Wahr
             @classmethod
             def tearDownClass(cls):
-                cls.wasTornDown = True
+                cls.wasTornDown = Wahr
             def testPass(self):
                 pass
             def testFail(self):
                 fail
         klasse Module(object):
-            wasSetUp = False
-            wasTornDown = False
+            wasSetUp = Falsch
+            wasTornDown = Falsch
             @staticmethod
             def setUpModule():
-                Module.wasSetUp = True
+                Module.wasSetUp = Wahr
             @staticmethod
             def tearDownModule():
-                Module.wasTornDown = True
+                Module.wasTornDown = Wahr
 
         Test.__module__ = 'Module'
         sys.modules['Module'] = Module
@@ -415,10 +415,10 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
         result = unittest.TestResult()
         suite.run(result)
-        self.assertFalse(Module.wasSetUp)
-        self.assertFalse(Module.wasTornDown)
-        self.assertFalse(Test.wasSetUp)
-        self.assertFalse(Test.wasTornDown)
+        self.assertFalsch(Module.wasSetUp)
+        self.assertFalsch(Module.wasTornDown)
+        self.assertFalsch(Test.wasSetUp)
+        self.assertFalsch(Test.wasTornDown)
         self.assertEqual(len(result.errors), 1)
         self.assertEqual(len(result.failures), 0)
         self.assertEqual(result.testsRun, 2)
@@ -427,9 +427,9 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
 
     def test_overriding_call(self):
         klasse MySuite(unittest.TestSuite):
-            called = False
+            called = Falsch
             def __call__(self, *args, **kw):
-                self.called = True
+                self.called = Wahr
                 unittest.TestSuite.__call__(self, *args, **kw)
 
         suite = MySuite()
@@ -437,10 +437,10 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         wrapper = unittest.TestSuite()
         wrapper.addTest(suite)
         wrapper(result)
-        self.assertTrue(suite.called)
+        self.assertWahr(suite.called)
 
         # reusing results should be permitted even wenn abominable
-        self.assertFalse(result._testRunEntered)
+        self.assertFalsch(result._testRunEntered)
 
 
 wenn __name__ == '__main__':

@@ -18,9 +18,9 @@ klasse Is_Get_Test(unittest.TestCase):
     leadingws_nocomment = '    This is not a comment'
 
     def test_is_all_white(self):
-        self.assertTrue(ft.is_all_white(''))
-        self.assertTrue(ft.is_all_white('\t\n\r\f\v'))
-        self.assertFalse(ft.is_all_white(self.test_comment))
+        self.assertWahr(ft.is_all_white(''))
+        self.assertWahr(ft.is_all_white('\t\n\r\f\v'))
+        self.assertFalsch(ft.is_all_white(self.test_comment))
 
     def test_get_indent(self):
         Equal = self.assertEqual
@@ -216,7 +216,7 @@ klasse FormatClassTest(unittest.TestCase):
         instance = ft.FormatParagraph('editor')
         self.assertEqual(instance.editwin, 'editor')
         instance.close()
-        self.assertEqual(instance.editwin, None)
+        self.assertEqual(instance.editwin, Nichts)
 
 
 # For testing format_paragraph_event, Initialize FormatParagraph with
@@ -383,8 +383,8 @@ klasse DummyEditwin:
         self.text = text
         self.indentwidth = 4
         self.tabwidth = 4
-        self.usetabs = False
-        self.context_use_ps1 = True
+        self.usetabs = Falsch
+        self.context_use_ps1 = Wahr
 
     _make_blanks = EditorWindow._make_blanks
     get_selection_indices = EditorWindow.get_selection_indices
@@ -430,7 +430,7 @@ klasse C1:
         sowenn a < b:
             return b
         sonst:
-            return None
+            return Nichts
 """
 
     def test_get_region(self):
@@ -543,11 +543,11 @@ klasse C1:
 
         text.tag_add('sel', '7.0', '10.0')
         # No tabwidth selected.
-        _asktabwidth.return_value = None
-        self.assertIsNone(tabify())
+        _asktabwidth.return_value = Nichts
+        self.assertIsNichts(tabify())
 
         _asktabwidth.return_value = 3
-        self.assertIsNotNone(tabify())
+        self.assertIsNotNichts(tabify())
         eq(text.get('7.0', '10.0'), ('\n\t def compare(self):\n\t\t  wenn a > b:\n'))
 
     @mock.patch.object(ft.FormatRegion, "_asktabwidth")
@@ -558,13 +558,13 @@ klasse C1:
 
         text.tag_add('sel', '7.0', '10.0')
         # No tabwidth selected.
-        _asktabwidth.return_value = None
-        self.assertIsNone(untabify())
+        _asktabwidth.return_value = Nichts
+        self.assertIsNichts(untabify())
 
         _asktabwidth.return_value = 2
         self.formatter.tabify_region_event()
         _asktabwidth.return_value = 3
-        self.assertIsNotNone(untabify())
+        self.assertIsNotNichts(untabify())
         eq(text.get('7.0', '10.0'), ('\n      def compare(self):\n            wenn a > b:\n'))
 
     @mock.patch.object(ft, "askinteger")
@@ -578,34 +578,34 @@ klasse IndentsTest(unittest.TestCase):
 
     @mock.patch.object(ft, "askyesno")
     def test_toggle_tabs(self, askyesno):
-        editor = DummyEditwin(None, None)  # usetabs == False.
+        editor = DummyEditwin(Nichts, Nichts)  # usetabs == Falsch.
         indents = ft.Indents(editor)
-        askyesno.return_value = True
+        askyesno.return_value = Wahr
 
-        indents.toggle_tabs_event(None)
-        self.assertEqual(editor.usetabs, True)
+        indents.toggle_tabs_event(Nichts)
+        self.assertEqual(editor.usetabs, Wahr)
         self.assertEqual(editor.indentwidth, 8)
 
-        indents.toggle_tabs_event(None)
-        self.assertEqual(editor.usetabs, False)
+        indents.toggle_tabs_event(Nichts)
+        self.assertEqual(editor.usetabs, Falsch)
         self.assertEqual(editor.indentwidth, 8)
 
     @mock.patch.object(ft, "askinteger")
     def test_change_indentwidth(self, askinteger):
-        editor = DummyEditwin(None, None)  # indentwidth == 4.
+        editor = DummyEditwin(Nichts, Nichts)  # indentwidth == 4.
         indents = ft.Indents(editor)
 
-        askinteger.return_value = None
-        indents.change_indentwidth_event(None)
+        askinteger.return_value = Nichts
+        indents.change_indentwidth_event(Nichts)
         self.assertEqual(editor.indentwidth, 4)
 
         askinteger.return_value = 3
-        indents.change_indentwidth_event(None)
+        indents.change_indentwidth_event(Nichts)
         self.assertEqual(editor.indentwidth, 3)
 
         askinteger.return_value = 5
-        editor.usetabs = True
-        indents.change_indentwidth_event(None)
+        editor.usetabs = Wahr
+        indents.change_indentwidth_event(Nichts)
         self.assertEqual(editor.indentwidth, 3)
 
 

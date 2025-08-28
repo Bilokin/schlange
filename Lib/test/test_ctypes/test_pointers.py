@@ -37,8 +37,8 @@ klasse PointersTestCase(unittest.TestCase):
     def test_type_flags(self):
         fuer cls in _Pointer, PyCPointerType:
             with self.subTest(cls=cls):
-                self.assertTrue(_Pointer.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(_Pointer.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertWahr(_Pointer.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalsch(_Pointer.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Cannot call the metaclass __init__ more than once
@@ -226,32 +226,32 @@ klasse PointersTestCase(unittest.TestCase):
         values = [bar.values[0], bar.values[1], bar.values[2]]
         self.assertEqual(values, [1, 2, 3])
 
-        bar.values = None
+        bar.values = Nichts
         with self.assertRaisesRegex(ValueError, "NULL pointer access"):
             bar.values[0]
 
     def test_pointers_bool(self):
-        # NULL pointers have a boolean False value, non-NULL pointers True.
-        self.assertEqual(bool(POINTER(c_int)()), False)
-        self.assertEqual(bool(pointer(c_int())), True)
+        # NULL pointers have a boolean Falsch value, non-NULL pointers Wahr.
+        self.assertEqual(bool(POINTER(c_int)()), Falsch)
+        self.assertEqual(bool(pointer(c_int())), Wahr)
 
-        self.assertEqual(bool(CFUNCTYPE(None)(0)), False)
-        self.assertEqual(bool(CFUNCTYPE(None)(42)), True)
+        self.assertEqual(bool(CFUNCTYPE(Nichts)(0)), Falsch)
+        self.assertEqual(bool(CFUNCTYPE(Nichts)(42)), Wahr)
 
-        # COM methods are boolean True:
+        # COM methods are boolean Wahr:
         wenn sys.platform == "win32":
-            mth = ctypes.WINFUNCTYPE(None)(42, "name", (), None)
-            self.assertEqual(bool(mth), True)
+            mth = ctypes.WINFUNCTYPE(Nichts)(42, "name", (), Nichts)
+            self.assertEqual(bool(mth), Wahr)
 
     def test_pointer_type_name(self):
         LargeNamedType = type('T' * 2 ** 25, (Structure,), {})
-        self.assertTrue(POINTER(LargeNamedType))
+        self.assertWahr(POINTER(LargeNamedType))
 
     def test_pointer_type_str_name(self):
         large_string = 'T' * 2 ** 25
         with self.assertWarns(DeprecationWarning):
             P = POINTER(large_string)
-        self.assertTrue(P)
+        self.assertWahr(P)
 
     def test_abstract(self):
         self.assertRaises(TypeError, _Pointer.set_type, 42)
@@ -395,8 +395,8 @@ klasse PointersTestCase(unittest.TestCase):
             ws_typ.add(typ)
             ws_ptr.add(ptr)
 
-        typ = None
-        ptr = None
+        typ = Nichts
+        ptr = Nichts
 
         gc.collect()
 
@@ -456,10 +456,10 @@ klasse PointerTypeCacheTestCase(unittest.TestCase):
 
     def test_get_not_registered(self):
         with self.assertWarns(DeprecationWarning):
-            self.assertIsNone(_pointer_type_cache.get(str))
+            self.assertIsNichts(_pointer_type_cache.get(str))
 
         with self.assertWarns(DeprecationWarning):
-            self.assertIsNone(_pointer_type_cache.get(str, None))
+            self.assertIsNichts(_pointer_type_cache.get(str, Nichts))
 
     def test_repeated_set_type(self):
         # Regression test fuer gh-133290

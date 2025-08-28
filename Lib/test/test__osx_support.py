@@ -16,7 +16,7 @@ import _osx_support
 klasse Test_OSXSupport(unittest.TestCase):
 
     def setUp(self):
-        self.maxDiff = None
+        self.maxDiff = Nichts
         self.prog_name = 'bogus_program_xxxx'
         self.temp_path_dir = os.path.abspath(os.getcwd())
         self.env = self.enterContext(os_helper.EnvironmentVarGuard())
@@ -40,7 +40,7 @@ klasse Test_OSXSupport(unittest.TestCase):
             self.env['PATH'] = self.env['PATH'] + ':'
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         os_helper.unlink(self.prog_name)
-        self.assertIsNone(_osx_support._find_executable(self.prog_name))
+        self.assertIsNichts(_osx_support._find_executable(self.prog_name))
         self.addCleanup(os_helper.unlink, self.prog_name)
         with open(self.prog_name, 'w') as f:
             f.write("#!/bin/sh\n/bin/echo OK\n")
@@ -62,7 +62,7 @@ klasse Test_OSXSupport(unittest.TestCase):
 
     def test__find_build_tool(self):
         out = _osx_support._find_build_tool('cc')
-        self.assertTrue(os.path.isfile(out),
+        self.assertWahr(os.path.isfile(out),
                             'cc not found - check xcode-select')
 
     def test__get_system_version(self):

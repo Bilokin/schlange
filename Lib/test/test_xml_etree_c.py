@@ -10,20 +10,20 @@ cET = import_fresh_module('xml.etree.ElementTree',
                           fresh=['_elementtree'])
 cET_alias = import_fresh_module('xml.etree.cElementTree',
                                 fresh=['_elementtree', 'xml.etree'],
-                                deprecated=True)
+                                deprecated=Wahr)
 
 
 @unittest.skipUnless(cET, 'requires _elementtree')
 klasse MiscTests(unittest.TestCase):
     # Issue #8651.
-    @support.bigmemtest(size=support._2G + 100, memuse=1, dry_run=False)
+    @support.bigmemtest(size=support._2G + 100, memuse=1, dry_run=Falsch)
     def test_length_overflow(self, size):
         data = b'x' * size
         parser = cET.XMLParser()
         try:
             self.assertRaises(OverflowError, parser.feed, data)
         finally:
-            data = None
+            data = Nichts
 
     def test_del_attribute(self):
         element = cET.Element('tag')
@@ -35,7 +35,7 @@ klasse MiscTests(unittest.TestCase):
 
         with self.assertRaises(AttributeError):
             del element.text
-        self.assertIsNone(element.text)
+        self.assertIsNichts(element.text)
         element.text = 'TEXT'
         with self.assertRaises(AttributeError):
             del element.text
@@ -43,7 +43,7 @@ klasse MiscTests(unittest.TestCase):
 
         with self.assertRaises(AttributeError):
             del element.tail
-        self.assertIsNone(element.tail)
+        self.assertIsNichts(element.tail)
         element.tail = 'TAIL'
         with self.assertRaises(AttributeError):
             del element.tail
@@ -131,9 +131,9 @@ klasse MiscTests(unittest.TestCase):
             def read(*args):
                 return ''
         self.assertRaises(ValueError, parser._parse_whole, MockFile())
-        self.assertRaises(ValueError, parser._setevents, None)
-        self.assertIsNone(parser.entity)
-        self.assertIsNone(parser.target)
+        self.assertRaises(ValueError, parser._setevents, Nichts)
+        self.assertIsNichts(parser.entity)
+        self.assertIsNichts(parser.target)
 
     def test_setstate_leaks(self):
         # Test reference leaks
@@ -181,7 +181,7 @@ klasse MiscTests(unittest.TestCase):
 
         e = cET.Element("elem", {1: 2})
         r = e.get(X())
-        self.assertIsNone(r)
+        self.assertIsNichts(r)
 
     @support.cpython_only
     def test_immutable_types(self):

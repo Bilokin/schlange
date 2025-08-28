@@ -121,7 +121,7 @@ def save_raw_data(data: RawData, json_output: TextIO):
     json.dump(data, json_output)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=Wahr)
 klasse Doc:
     text: str
     doc: str
@@ -144,22 +144,22 @@ klasse Count(int):
         return format(self, ",d")
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=Wahr)
 klasse Ratio:
     num: int
-    den: int | None = None
-    percentage: bool = True
+    den: int | Nichts = Nichts
+    percentage: bool = Wahr
 
     def __float__(self):
         wenn self.den == 0:
             return 0.0
-        sowenn self.den is None:
+        sowenn self.den is Nichts:
             return self.num
         sonst:
             return self.num / self.den
 
     def markdown(self) -> str:
-        wenn self.den is None:
+        wenn self.den is Nichts:
             return ""
         sowenn self.den == 0:
             wenn self.num != 0:
@@ -431,7 +431,7 @@ klasse Stats:
                 sowenn "decrefs" in key:
                     den = total_decrefs
                 sonst:
-                    den = None
+                    den = Nichts
                 label = key[6:].strip()
                 label = label[0].upper() + label[1:]
                 result[label] = (value, den)
@@ -450,7 +450,7 @@ klasse Stats:
             gc_stats[gen_n][name] = value
         return gc_stats
 
-    def get_optimization_stats(self) -> dict[str, tuple[int, int | None]]:
+    def get_optimization_stats(self) -> dict[str, tuple[int, int | Nichts]]:
         wenn "Optimization attempts" not in self._data:
             return {}
 
@@ -474,7 +474,7 @@ klasse Stats:
                 "The number of times a potential trace is identified.  Specifically, this "
                 "occurs in the JUMP BACKWARD instruction when the counter reaches a "
                 "threshold.",
-            ): (attempts, None),
+            ): (attempts, Nichts),
             Doc(
                 "Traces created", "The number of traces that were successfully created."
             ): (created, attempts),
@@ -517,7 +517,7 @@ klasse Stats:
             ): (executors_invalidated, created),
             Doc("Traces executed", "The number of traces that were executed"): (
                 executed,
-                None,
+                Nichts,
             ),
             Doc(
                 "Uops executed",
@@ -528,7 +528,7 @@ klasse Stats:
             ),
         }
 
-    def get_optimizer_stats(self) -> dict[str, tuple[int, int | None]]:
+    def get_optimizer_stats(self) -> dict[str, tuple[int, int | Nichts]]:
         attempts = self._data["Optimization optimizer attempts"]
         successes = self._data["Optimization optimizer successes"]
         no_memory = self._data["Optimization optimizer failure no memory"]
@@ -539,7 +539,7 @@ klasse Stats:
             Doc(
                 "Optimizer attempts",
                 "The number of times the trace optimizer (_Py_uop_analyze_and_optimize) was run.",
-            ): (attempts, None),
+            ): (attempts, Nichts),
             Doc(
                 "Optimizer successes",
                 "The number of traces that were successfully optimized.",
@@ -558,7 +558,7 @@ klasse Stats:
             ): (incorrect_keys, attempts),
         }
 
-    def get_jit_memory_stats(self) -> dict[Doc, tuple[int, int | None]]:
+    def get_jit_memory_stats(self) -> dict[Doc, tuple[int, int | Nichts]]:
         jit_total_memory_size = self._data["JIT total memory size"]
         jit_code_size = self._data["JIT code size"]
         jit_trampoline_size = self._data["JIT trampoline size"]
@@ -570,7 +570,7 @@ klasse Stats:
             Doc(
                 "Total memory size",
                 "The total size of the memory allocated fuer the JIT traces",
-            ): (jit_total_memory_size, None),
+            ): (jit_total_memory_size, Nichts),
             Doc(
                 "Code size",
                 "The size of the memory allocated fuer the code of the JIT traces",
@@ -597,7 +597,7 @@ klasse Stats:
         rows = []
         fuer k, v in self._data.items():
             match = re.match(f"{prefix}\\[([0-9]+)\\]", k)
-            wenn match is not None:
+            wenn match is not Nichts:
                 entry = int(match.groups()[0])
                 rows.append((entry, v))
         rows.sort()
@@ -691,15 +691,15 @@ klasse Table:
             fuer k in keys
         ]
         wenn self.join_mode in (JoinMode.CHANGE, JoinMode.CHANGE_ONE_COLUMN):
-            rows.sort(key=lambda row: abs(float(row[-1])), reverse=True)
+            rows.sort(key=lambda row: abs(float(row[-1])), reverse=Wahr)
 
         columns = self.join_columns(self.columns)
         return columns, rows
 
     def get_table(
-        self, base_stats: Stats, head_stats: Stats | None = None
+        self, base_stats: Stats, head_stats: Stats | Nichts = Nichts
     ) -> tuple[Columns, Rows]:
-        wenn head_stats is None:
+        wenn head_stats is Nichts:
             rows = self.calc_rows(base_stats)
             return self.columns, rows
         sonst:
@@ -718,9 +718,9 @@ klasse Section:
         self,
         title: str = "",
         summary: str = "",
-        part_iter=None,
+        part_iter=Nichts,
         *,
-        comparative: bool = True,
+        comparative: bool = Wahr,
         doc: str = "",
     ):
         self.title = title
@@ -729,11 +729,11 @@ klasse Section:
         sonst:
             self.summary = summary
         self.doc = textwrap.dedent(doc)
-        wenn part_iter is None:
+        wenn part_iter is Nichts:
             part_iter = []
         wenn isinstance(part_iter, list):
 
-            def iter_parts(base_stats: Stats, head_stats: Stats | None):
+            def iter_parts(base_stats: Stats, head_stats: Stats | Nichts):
                 yield from part_iter
 
             self.part_iter = iter_parts
@@ -750,13 +750,13 @@ def calc_execution_count_table(prefix: str) -> RowCalculator:
         cumulative = 0
         rows: Rows = []
         fuer opcode, (count, miss) in sorted(
-            counts.items(), key=itemgetter(1), reverse=True
+            counts.items(), key=itemgetter(1), reverse=Wahr
         ):
             cumulative += count
             wenn miss:
                 miss_val = Ratio(miss, count)
             sonst:
-                miss_val = None
+                miss_val = Nichts
             rows.append(
                 (
                     opcode,
@@ -790,7 +790,7 @@ def execution_count_section() -> Section:
     )
 
 
-def pair_count_section(prefix: str, title=None) -> Section:
+def pair_count_section(prefix: str, title=Nichts) -> Section:
     def calc_pair_count_table(stats: Stats) -> Rows:
         opcode_stats = stats.get_opcode_stats(prefix)
         pair_counts = opcode_stats.get_pair_counts()
@@ -799,7 +799,7 @@ def pair_count_section(prefix: str, title=None) -> Section:
         cumulative = 0
         rows: Rows = []
         fuer (opcode_i, opcode_j), count in itertools.islice(
-            sorted(pair_counts.items(), key=itemgetter(1), reverse=True), 100
+            sorted(pair_counts.items(), key=itemgetter(1), reverse=Wahr), 100
         ):
             cumulative += count
             rows.append(
@@ -821,7 +821,7 @@ def pair_count_section(prefix: str, title=None) -> Section:
                 calc_pair_count_table,
             )
         ],
-        comparative=False,
+        comparative=Falsch,
         doc="""
         Pairs of specialized operations that deoptimize and are then followed by
         the corresponding unspecialized instruction are not counted as pairs.
@@ -830,8 +830,8 @@ def pair_count_section(prefix: str, title=None) -> Section:
 
 
 def pre_succ_pairs_section() -> Section:
-    def iter_pre_succ_pairs_tables(base_stats: Stats, head_stats: Stats | None = None):
-        assert head_stats is None
+    def iter_pre_succ_pairs_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
+        assert head_stats is Nichts
 
         opcode_stats = base_stats.get_opcode_stats("opcode")
 
@@ -870,7 +870,7 @@ def pre_succ_pairs_section() -> Section:
         "Predecessor/Successor Pairs",
         "Top 5 predecessors and successors of each Tier 1 opcode.",
         iter_pre_succ_pairs_tables,
-        comparative=False,
+        comparative=Falsch,
         doc="""
         This does not include the unspecialized instructions that occur after a
         specialized instruction deoptimizes.
@@ -932,25 +932,25 @@ def specialization_section() -> Section:
                     wenn value
                 ],
                 key=itemgetter(1),
-                reverse=True,
+                reverse=Wahr,
             )
 
         return calc
 
-    def iter_specialization_tables(base_stats: Stats, head_stats: Stats | None = None):
+    def iter_specialization_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
         opcode_base_stats = base_stats.get_opcode_stats("opcode")
         names = opcode_base_stats.get_opcode_names()
-        wenn head_stats is not None:
+        wenn head_stats is not Nichts:
             opcode_head_stats = head_stats.get_opcode_stats("opcode")
             names &= opcode_head_stats.get_opcode_names()  # type: ignore
         sonst:
-            opcode_head_stats = None
+            opcode_head_stats = Nichts
 
         fuer opcode in sorted(names):
             wenn not opcode_base_stats.is_specializable(opcode):
                 continue
             wenn opcode_base_stats.get_specialization_total(opcode) == 0 and (
-                opcode_head_stats is None
+                opcode_head_stats is Nichts
                 or opcode_head_stats.get_specialization_total(opcode) == 0
             ):
                 continue
@@ -1040,7 +1040,7 @@ def specialization_effectiveness_section() -> Section:
         return [
             (name, Count(value), Ratio(value, total))
             fuer name, value in sorted(
-                deferred_counts.items(), key=itemgetter(1), reverse=True
+                deferred_counts.items(), key=itemgetter(1), reverse=Wahr
             )[:10]
         ]
 
@@ -1054,7 +1054,7 @@ def specialization_effectiveness_section() -> Section:
         return [
             (name, Count(value), Ratio(value, total))
             fuer name, value in sorted(
-                misses_counts.items(), key=itemgetter(1), reverse=True
+                misses_counts.items(), key=itemgetter(1), reverse=Wahr
             )[:10]
         ]
 
@@ -1221,7 +1221,7 @@ def optimization_section() -> Section:
             fuer label, (value, den) in jit_memory_stats.items()
         ]
 
-    def calc_histogram_table(key: str, den: str | None = None) -> RowCalculator:
+    def calc_histogram_table(key: str, den: str | Nichts = Nichts) -> RowCalculator:
         def calc(stats: Stats) -> Rows:
             histogram = stats.get_histogram(key)
 
@@ -1265,7 +1265,7 @@ def optimization_section() -> Section:
                 fuer opcode, count in unsupported_opcodes.get_opcode_counts().items()
             ],
             key=itemgetter(1),
-            reverse=True,
+            reverse=Wahr,
         )
 
     def calc_error_in_opcodes_table(stats: Stats) -> Rows:
@@ -1276,12 +1276,12 @@ def optimization_section() -> Section:
                 fuer opcode, count in error_in_opcodes.get_opcode_counts().items()
             ],
             key=itemgetter(1),
-            reverse=True,
+            reverse=Wahr,
         )
 
-    def iter_optimization_tables(base_stats: Stats, head_stats: Stats | None = None):
+    def iter_optimization_tables(base_stats: Stats, head_stats: Stats | Nichts = Nichts):
         wenn not base_stats.get_optimization_stats() or (
-            head_stats is not None and not head_stats.get_optimization_stats()
+            head_stats is not Nichts and not head_stats.get_optimization_stats()
         ):
             return
 
@@ -1414,15 +1414,15 @@ def output_markdown(
     out: TextIO,
     obj: Section | Table | list,
     base_stats: Stats,
-    head_stats: Stats | None = None,
+    head_stats: Stats | Nichts = Nichts,
     level: int = 2,
-) -> None:
+) -> Nichts:
     def to_markdown(x):
         wenn hasattr(x, "markdown"):
             return x.markdown()
         sowenn isinstance(x, str):
             return x
-        sowenn x is None:
+        sowenn x is Nichts:
             return ""
         sonst:
             raise TypeError(f"Can't convert {x} to markdown")
@@ -1438,7 +1438,7 @@ def output_markdown(
             wenn obj.doc:
                 print(obj.doc, file=out)
 
-            wenn head_stats is not None and obj.comparative is False:
+            wenn head_stats is not Nichts and obj.comparative is Falsch:
                 print("Not included in comparative output.\n")
             sonst:
                 fuer part in obj.part_iter(base_stats, head_stats):
@@ -1493,17 +1493,17 @@ def output_markdown(
             print("Stats gathered on:", date.today(), file=out)
 
 
-def output_stats(inputs: list[Path], json_output=str | None):
+def output_stats(inputs: list[Path], json_output=str | Nichts):
     match len(inputs):
         case 1:
             data = load_raw_data(Path(inputs[0]))
-            wenn json_output is not None:
+            wenn json_output is not Nichts:
                 with open(json_output, "w", encoding="utf-8") as f:
                     save_raw_data(data, f)  # type: ignore
             stats = Stats(data)
             output_markdown(sys.stdout, LAYOUT, stats)
         case 2:
-            wenn json_output is not None:
+            wenn json_output is not Nichts:
                 raise ValueError(
                     "Can not output to JSON when there are multiple inputs"
                 )

@@ -44,7 +44,7 @@ klasse LineNumbersTest(unittest.TestCase):
         cls.root.withdraw()
 
         cls.text_frame = tk.Frame(cls.root)
-        cls.text_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        cls.text_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=Wahr)
         cls.text_frame.rowconfigure(1, weight=1)
         cls.text_frame.columnconfigure(1, weight=1)
 
@@ -119,17 +119,17 @@ klasse LineNumbersTest(unittest.TestCase):
         self.assert_sidebar_n_lines(4)
 
     def test_toggle_linenumbering(self):
-        self.assertEqual(self.linenumber.is_shown, False)
+        self.assertEqual(self.linenumber.is_shown, Falsch)
         self.linenumber.show_sidebar()
-        self.assertEqual(self.linenumber.is_shown, True)
+        self.assertEqual(self.linenumber.is_shown, Wahr)
         self.linenumber.hide_sidebar()
-        self.assertEqual(self.linenumber.is_shown, False)
+        self.assertEqual(self.linenumber.is_shown, Falsch)
         self.linenumber.hide_sidebar()
-        self.assertEqual(self.linenumber.is_shown, False)
+        self.assertEqual(self.linenumber.is_shown, Falsch)
         self.linenumber.show_sidebar()
-        self.assertEqual(self.linenumber.is_shown, True)
+        self.assertEqual(self.linenumber.is_shown, Wahr)
         self.linenumber.show_sidebar()
-        self.assertEqual(self.linenumber.is_shown, True)
+        self.assertEqual(self.linenumber.is_shown, Wahr)
 
     def test_insert(self):
         self.text.insert('insert', 'foobar')
@@ -392,8 +392,8 @@ klasse LineNumbersTest(unittest.TestCase):
 
 
 klasse ShellSidebarTest(unittest.TestCase):
-    root: tk.Tk = None
-    shell: PyShell = None
+    root: tk.Tk = Nichts
+    shell: PyShell = Nichts
 
     @classmethod
     def setUpClass(cls):
@@ -414,14 +414,14 @@ klasse ShellSidebarTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        wenn cls.shell is not None:
-            cls.shell.executing = False
+        wenn cls.shell is not Nichts:
+            cls.shell.executing = Falsch
             cls.shell.close()
-            cls.shell = None
-        cls.flist = None
+            cls.shell = Nichts
+        cls.flist = Nichts
         cls.root.update_idletasks()
         cls.root.destroy()
-        cls.root = None
+        cls.root = Nichts
 
     @classmethod
     def init_shell(cls):
@@ -441,7 +441,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         # Apr. 2021), sys.stdout is changed between tests. However,
         # PyShell relies on overriding sys.stdout when run without a
         # sub-process (as done here; see setUpClass).
-        self._saved_stdout = None
+        self._saved_stdout = Nichts
         wenn sys.stdout != self.shell.stdout:
             self._saved_stdout = sys.stdout
             sys.stdout = self.shell.stdout
@@ -449,7 +449,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         self.reset_shell()
 
     def tearDown(self):
-        wenn self._saved_stdout is not None:
+        wenn self._saved_stdout is not Nichts:
             sys.stdout = self._saved_stdout
 
     def get_sidebar_lines(self):
@@ -460,7 +460,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             fuer text in texts
         }
         line_y_coords = self.get_shell_line_y_coords()
-        return [texts_by_y_coords.get(y, None) fuer y in line_y_coords]
+        return [texts_by_y_coords.get(y, Nichts) fuer y in line_y_coords]
 
     def assert_sidebar_lines_end_with(self, expected_lines):
         self.shell.shell_sidebar.update_sidebar()
@@ -475,7 +475,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         index = text.index("@0,0")
         wenn index.split('.', 1)[1] != '0':
             index = text.index(f"{index} +1line linestart")
-        while (lineinfo := text.dlineinfo(index)) is not None:
+        while (lineinfo := text.dlineinfo(index)) is not Nichts:
             y_coords.append(lineinfo[1])
             index = text.index(f"{index} +1line")
         return y_coords
@@ -504,7 +504,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         sidebar_lines = self.get_sidebar_lines()
         self.assertEqual(
             sidebar_lines,
-            [None] * (len(sidebar_lines) - 1) + ['>>>'],
+            [Nichts] * (len(sidebar_lines) - 1) + ['>>>'],
         )
         self.assert_sidebar_lines_synced()
 
@@ -518,13 +518,13 @@ klasse ShellSidebarTest(unittest.TestCase):
     def test_single_line_statement(self):
         self.do_input('1\n')
         yield
-        self.assert_sidebar_lines_end_with(['>>>', None, '>>>'])
+        self.assert_sidebar_lines_end_with(['>>>', Nichts, '>>>'])
 
     @run_in_tk_mainloop()
     def test_multi_line_statement(self):
         # Block statements are not indented because IDLE auto-indents.
         self.do_input(dedent('''\
-            wenn True:
+            wenn Wahr:
             print(1)
 
             '''))
@@ -534,7 +534,7 @@ klasse ShellSidebarTest(unittest.TestCase):
             '...',
             '...',
             '...',
-            None,
+            Nichts,
             '>>>',
         ])
 
@@ -542,7 +542,7 @@ klasse ShellSidebarTest(unittest.TestCase):
     def test_single_long_line_wraps(self):
         self.do_input('1' * 200 + '\n')
         yield
-        self.assert_sidebar_lines_end_with(['>>>', None, '>>>'])
+        self.assert_sidebar_lines_end_with(['>>>', Nichts, '>>>'])
         self.assert_sidebar_lines_synced()
 
     @run_in_tk_mainloop()
@@ -552,17 +552,17 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         self.do_input('print("a\\nb\\nc")\n')
         yield
-        self.assert_sidebar_lines_end_with(['>>>', None, None, None, '>>>'])
+        self.assert_sidebar_lines_end_with(['>>>', Nichts, Nichts, Nichts, '>>>'])
 
         text.mark_set('insert', f'insert -1line linestart')
         text.event_generate('<<squeeze-current-text>>')
         yield
-        self.assert_sidebar_lines_end_with(['>>>', None, '>>>'])
+        self.assert_sidebar_lines_end_with(['>>>', Nichts, '>>>'])
         self.assert_sidebar_lines_synced()
 
         shell.squeezer.expandingbuttons[0].expand()
         yield
-        self.assert_sidebar_lines_end_with(['>>>', None, None, None, '>>>'])
+        self.assert_sidebar_lines_end_with(['>>>', Nichts, Nichts, Nichts, '>>>'])
         self.assert_sidebar_lines_synced()
 
     @run_in_tk_mainloop()
@@ -572,7 +572,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         initial_sidebar_lines = self.get_sidebar_lines()
 
         self.do_input(dedent('''\
-            wenn True:
+            wenn Wahr:
             print(1)
             '''))
         yield
@@ -583,13 +583,13 @@ klasse ShellSidebarTest(unittest.TestCase):
         # Control-C
         text.event_generate('<<interrupt-execution>>')
         yield
-        self.assert_sidebar_lines_end_with(['>>>', '...', '...', None, '>>>'])
+        self.assert_sidebar_lines_end_with(['>>>', '...', '...', Nichts, '>>>'])
 
         # Recall previous via history
         text.event_generate('<<history-previous>>')
         text.event_generate('<<interrupt-execution>>')
         yield
-        self.assert_sidebar_lines_end_with(['>>>', '...', None, '>>>'])
+        self.assert_sidebar_lines_end_with(['>>>', '...', Nichts, '>>>'])
 
         # Recall previous via recall
         text.mark_set('insert', text.index('insert -2l'))
@@ -608,13 +608,13 @@ klasse ShellSidebarTest(unittest.TestCase):
         text.event_generate('<<newline-and-indent>>')
         yield
         self.assert_sidebar_lines_end_with(
-            ['>>>', '...', '...', '...', None, '>>>']
+            ['>>>', '...', '...', '...', Nichts, '>>>']
         )
 
     @run_in_tk_mainloop()
     def test_very_long_wrapped_line(self):
         with support.adjust_int_max_str_digits(11_111), \
-                swap_attr(self.shell, 'squeezer', None):
+                swap_attr(self.shell, 'squeezer', Nichts):
             self.do_input('x = ' + '1'*10_000 + '\n')
             yield
             self.assertEqual(self.get_sidebar_lines(), ['>>>'])
@@ -688,7 +688,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         self.assertGreater(get_lineno(text, '@0,0'), 1)
 
         last_lineno = get_end_linenumber(text)
-        self.assertIsNotNone(text.dlineinfo(text.index(f'{last_lineno}.0')))
+        self.assertIsNotNichts(text.dlineinfo(text.index(f'{last_lineno}.0')))
 
         # Delta fuer <MouseWheel>, whose meaning is platform-dependent.
         delta = 1 wenn sidebar.canvas._windowingsystem == 'aqua' sonst 120
@@ -699,7 +699,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         sonst:
             sidebar.canvas.event_generate('<MouseWheel>', x=0, y=0, delta=delta)
         yield
-        self.assertIsNone(text.dlineinfo(text.index(f'{last_lineno}.0')))
+        self.assertIsNichts(text.dlineinfo(text.index(f'{last_lineno}.0')))
 
         # Scroll back down.
         wenn sidebar.canvas._windowingsystem == 'x11':
@@ -707,7 +707,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         sonst:
             sidebar.canvas.event_generate('<MouseWheel>', x=0, y=0, delta=-delta)
         yield
-        self.assertIsNotNone(text.dlineinfo(text.index(f'{last_lineno}.0')))
+        self.assertIsNotNichts(text.dlineinfo(text.index(f'{last_lineno}.0')))
 
     @run_in_tk_mainloop()
     def test_copy(self):
@@ -717,7 +717,7 @@ klasse ShellSidebarTest(unittest.TestCase):
         first_line = get_end_linenumber(text)
 
         self.do_input(dedent('''\
-            wenn True:
+            wenn Wahr:
             print(1)
 
             '''))
@@ -725,7 +725,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         text.tag_add('sel', f'{first_line}.0', 'end-1c')
         selected_text = text.get('sel.first', 'sel.last')
-        self.assertStartsWith(selected_text, 'if True:\n')
+        self.assertStartsWith(selected_text, 'if Wahr:\n')
         self.assertIn('\n1\n', selected_text)
 
         text.event_generate('<<copy>>')
@@ -741,7 +741,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         first_line = get_end_linenumber(text)
         self.do_input(dedent('''\
-            wenn True:
+            wenn Wahr:
                 print(1)
 
             '''))
@@ -749,19 +749,19 @@ klasse ShellSidebarTest(unittest.TestCase):
 
         text.tag_add('sel', f'{first_line}.3', 'end-1c')
         selected_text = text.get('sel.first', 'sel.last')
-        self.assertStartsWith(selected_text, 'True:\n')
+        self.assertStartsWith(selected_text, 'Wahr:\n')
 
         selected_lines_text = text.get('sel.first linestart', 'sel.last')
         selected_lines = selected_lines_text.split('\n')
         selected_lines.pop()  # Final '' is a split artifact, not a line.
         # Expect a block of input and a single output line.
         expected_prompts = \
-            ['>>>'] + ['...'] * (len(selected_lines) - 2) + [None]
+            ['>>>'] + ['...'] * (len(selected_lines) - 2) + [Nichts]
         selected_text_with_prompts = '\n'.join(
-            line wenn prompt is None sonst prompt + ' ' + line
+            line wenn prompt is Nichts sonst prompt + ' ' + line
             fuer prompt, line in zip(expected_prompts,
                                     selected_lines,
-                                    strict=True)
+                                    strict=Wahr)
         ) + '\n'
 
         text.event_generate('<<copy-with-prompts>>')

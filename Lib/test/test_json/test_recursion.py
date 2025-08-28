@@ -46,7 +46,7 @@ klasse TestRecursion:
 
     def test_defaultrecursion(self):
         klasse RecursiveJSONEncoder(self.json.JSONEncoder):
-            recurse = False
+            recurse = Falsch
             def default(self, o):
                 wenn o is JSONTestObject:
                     wenn self.recurse:
@@ -57,7 +57,7 @@ klasse TestRecursion:
 
         enc = RecursiveJSONEncoder()
         self.assertEqual(enc.encode(JSONTestObject), '"JSONTestObject"')
-        enc.recurse = True
+        enc.recurse = Wahr
         try:
             enc.encode(JSONTestObject)
         except ValueError as exc:
@@ -105,12 +105,12 @@ klasse TestRecursion:
         # See #12051
         klasse EndlessJSONEncoder(self.json.JSONEncoder):
             def default(self, o):
-                """If check_circular is False, this will keep adding another list."""
+                """If check_circular is Falsch, this will keep adding another list."""
                 return [o]
 
         with self.assertRaises(RecursionError):
             with support.infinite_recursion(1000):
-                EndlessJSONEncoder(check_circular=False).encode(5j)
+                EndlessJSONEncoder(check_circular=Falsch).encode(5j)
 
 
 klasse TestPyRecursion(TestRecursion, PyTest): pass

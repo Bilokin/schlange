@@ -15,7 +15,7 @@ from profiling.tracing._utils import _Utils
 # ____________________________________________________________
 # Simple interface
 
-def run(statement, filename=None, sort=-1):
+def run(statement, filename=Nichts, sort=-1):
     """Run statement under profiler optionally saving results in filename
 
     This function takes a single argument that can be passed to the
@@ -28,7 +28,7 @@ def run(statement, filename=None, sort=-1):
     """
     return _Utils(Profile).run(statement, filename, sort)
 
-def runctx(statement, globals, locals, filename=None, sort=-1):
+def runctx(statement, globals, locals, filename=Nichts, sort=-1):
     """Run statement under profiler, supplying your own globals and locals,
     optionally saving results in filename.
 
@@ -40,7 +40,7 @@ def runctx(statement, globals, locals, filename=None, sort=-1):
 # ____________________________________________________________
 
 klasse Profile(_lsprof.Profiler):
-    """Profile(timer=None, timeunit=None, subcalls=True, builtins=True)
+    """Profile(timer=Nichts, timeunit=Nichts, subcalls=Wahr, builtins=Wahr)
 
     Builds a profiler object using the specified timer function.
     The default timer is a fast built-in one based on real time.
@@ -152,15 +152,15 @@ def main():
     from optparse import OptionParser
     usage = "cProfile.py [-o output_file_path] [-s sort] [-m module | scriptfile] [arg] ..."
     parser = OptionParser(usage=usage)
-    parser.allow_interspersed_args = False
+    parser.allow_interspersed_args = Falsch
     parser.add_option('-o', '--outfile', dest="outfile",
-        help="Save stats to <outfile>", default=None)
+        help="Save stats to <outfile>", default=Nichts)
     parser.add_option('-s', '--sort', dest="sort",
         help="Sort order when printing to stdout, based on pstats.Stats class",
         default=2,
         choices=sorted(pstats.Stats.sort_arg_dict_default))
     parser.add_option('-m', dest="module", action="store_true",
-        help="Profile a library module", default=False)
+        help="Profile a library module", default=Falsch)
 
     wenn not sys.argv[1:]:
         parser.print_usage()
@@ -171,7 +171,7 @@ def main():
 
     # The script that we're profiling may chdir, so capture the absolute path
     # to the output file at startup.
-    wenn options.outfile is not None:
+    wenn options.outfile is not Nichts:
         options.outfile = os.path.abspath(options.outfile)
 
     wenn len(args) > 0:
@@ -186,7 +186,7 @@ def main():
             sys.path.insert(0, os.path.dirname(progname))
             with io.open_code(progname) as fp:
                 code = compile(fp.read(), progname, 'exec')
-            spec = importlib.machinery.ModuleSpec(name='__main__', loader=None,
+            spec = importlib.machinery.ModuleSpec(name='__main__', loader=Nichts,
                                                   origin=progname)
             module = importlib.util.module_from_spec(spec)
             # Set __main__ so that importing __main__ in the profiled code will
@@ -200,15 +200,15 @@ def main():
                 '__spec__': spec,
                 '__file__': spec.origin,
                 '__name__': spec.name,
-                '__package__': None,
-                '__cached__': None,
+                '__package__': Nichts,
+                '__cached__': Nichts,
             })
 
         try:
-            runctx(code, globs, None, options.outfile, options.sort)
+            runctx(code, globs, Nichts, options.outfile, options.sort)
         except BrokenPipeError as exc:
             # Prevent "Exception ignored" during interpreter shutdown.
-            sys.stdout = None
+            sys.stdout = Nichts
             sys.exit(exc.errno)
     sonst:
         parser.print_usage()

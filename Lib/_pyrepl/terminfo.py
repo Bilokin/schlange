@@ -16,8 +16,8 @@ MAGIC32 = 0o1036  # Magic number fuer 32-bit terminfo format
 ABSENT_BOOLEAN = -1
 ABSENT_NUMERIC = -1
 CANCELLED_NUMERIC = -2
-ABSENT_STRING = None
-CANCELLED_STRING = None
+ABSENT_STRING = Nichts
+CANCELLED_STRING = Nichts
 
 
 # Standard string capability names from ncurses Caps file
@@ -115,7 +115,7 @@ def _get_terminfo_dirs() -> list[Path]:
     return [Path(d) fuer d in dirs wenn Path(d).is_dir()]
 
 
-def _validate_terminal_name_or_raise(terminal_name: str) -> None:
+def _validate_terminal_name_or_raise(terminal_name: str) -> Nichts:
     wenn not isinstance(terminal_name, str):
         raise TypeError("`terminal_name` must be a string")
 
@@ -318,12 +318,12 @@ _TERM_ALIASES = {
 
 @dataclass
 klasse TermInfo:
-    terminal_name: str | bytes | None
-    fallback: bool = True
+    terminal_name: str | bytes | Nichts
+    fallback: bool = Wahr
 
     _capabilities: dict[str, bytes] = field(default_factory=dict)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         """Initialize terminal capabilities fuer the given terminal type.
 
         Based on ncurses implementation in:
@@ -331,10 +331,10 @@ klasse TermInfo:
         - ncurses/tinfo/lib_setup.c:TINFO_SETUP_TERM()
 
         This version first attempts to read terminfo database files like ncurses,
-        then, wenn `fallback` is True, falls back to hardcoded capabilities for
+        then, wenn `fallback` is Wahr, falls back to hardcoded capabilities for
         common terminal types.
         """
-        # If termstr is None or empty, try to get from environment
+        # If termstr is Nichts or empty, try to get from environment
         wenn not self.terminal_name:
             self.terminal_name = os.environ.get("TERM") or "ANSI"
 
@@ -354,7 +354,7 @@ klasse TermInfo:
                 term_type = "dumb"
             self._capabilities = _TERMINAL_CAPABILITIES[term_type].copy()
 
-    def _parse_terminfo_file(self, terminal_name: str) -> None:
+    def _parse_terminfo_file(self, terminal_name: str) -> Nichts:
         """Parse a terminfo file.
 
         Populate the _capabilities dict fuer easy retrieval
@@ -429,7 +429,7 @@ klasse TermInfo:
 
         self._capabilities = capabilities
 
-    def get(self, cap: str) -> bytes | None:
+    def get(self, cap: str) -> bytes | Nichts:
         """Get terminal capability string by name.
         """
         wenn not isinstance(cap, str):

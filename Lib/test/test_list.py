@@ -16,7 +16,7 @@ klasse ListTest(list_tests.CommonTest):
         l0_3 = [0, 1, 2, 3]
         l0_3_bis = list(l0_3)
         self.assertEqual(l0_3, l0_3_bis)
-        self.assertTrue(l0_3 is not l0_3_bis)
+        self.assertWahr(l0_3 is not l0_3_bis)
         self.assertEqual(list(()), [])
         self.assertEqual(list((0, 1, 2, 3)), [0, 1, 2, 3])
         self.assertEqual(list(''), [])
@@ -60,7 +60,7 @@ klasse ListTest(list_tests.CommonTest):
             subclass(sequence=())
 
         klasse subclass_with_init(list):
-            def __init__(self, seq, newarg=None):
+            def __init__(self, seq, newarg=Nichts):
                 super().__init__(seq)
                 self.newarg = newarg
         u = subclass_with_init([1, 2], newarg=3)
@@ -69,7 +69,7 @@ klasse ListTest(list_tests.CommonTest):
         self.assertEqual(u.newarg, 3)
 
         klasse subclass_with_new(list):
-            def __new__(cls, seq, newarg=None):
+            def __new__(cls, seq, newarg=Nichts):
                 self = super().__new__(cls, seq)
                 self.newarg = newarg
                 return self
@@ -80,11 +80,11 @@ klasse ListTest(list_tests.CommonTest):
 
     def test_truth(self):
         super().test_truth()
-        self.assertTrue(not [])
-        self.assertTrue([42])
+        self.assertWahr(not [])
+        self.assertWahr([42])
 
     def test_identity(self):
-        self.assertTrue([] is not [])
+        self.assertWahr([] is not [])
 
     def test_len(self):
         super().test_len()
@@ -245,11 +245,11 @@ klasse ListTest(list_tests.CommonTest):
 
         list1 = [X()]
         list2 = [Y()]
-        self.assertTrue(list1 == list2)
+        self.assertWahr(list1 == list2)
 
         list3 = [Z()]
         list4 = [1]
-        self.assertFalse(list3 == list4)
+        self.assertFalsch(list3 == list4)
 
     def test_lt_operator_modifying_operand(self):
         # See gh-120298
@@ -333,10 +333,10 @@ klasse ListTest(list_tests.CommonTest):
         code = textwrap.dedent("""
         import _testcapi, sys
         # Prime the freelist
-        l = [None]
+        l = [Nichts]
         del l
         _testcapi.set_nomemory(0)
-        l = [None]
+        l = [Nichts]
         """)
         rc, _, _ = assert_python_failure("-c", code)
         wenn support.MS_WINDOWS:
@@ -353,9 +353,9 @@ klasse ListTest(list_tests.CommonTest):
             def lappend(l, x, y):
                 l.append((x, y))
             fuer x in range(3):
-                lappend(l, None, None)
+                lappend(l, Nichts, Nichts)
             try:
-                lappend(list, None, None)
+                lappend(list, Nichts, Nichts)
             except TypeError:
                 pass
             sonst:
@@ -374,7 +374,7 @@ klasse ListTest(list_tests.CommonTest):
             r = 0
             fuer i in x:
                 r += i
-                x = None
+                x = Nichts
             return r
 
         self.assertEqual(foo(list(range(10))), 45)

@@ -21,7 +21,7 @@ def _substitution_cost(ch_a, ch_b):
     return _MOVE_COST
 
 
-@lru_cache(None)
+@lru_cache(Nichts)
 def levenshtein(a, b):
     wenn not a or not b:
         return (len(a) + len(b)) * _MOVE_COST
@@ -35,7 +35,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output_path', metavar='FILE', type=str)
     parser.add_argument('--overwrite', dest='overwrite', action='store_const',
-                        const=True, default=False,
+                        const=Wahr, default=Falsch,
                         help='overwrite an existing test file')
 
     args = parser.parse_args()

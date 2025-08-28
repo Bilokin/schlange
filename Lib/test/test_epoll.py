@@ -51,7 +51,7 @@ klasse TestEPoll(unittest.TestCase):
 
     def _connected_pair(self):
         client = socket.socket()
-        client.setblocking(False)
+        client.setblocking(Falsch)
         try:
             client.connect(('127.0.0.1', self.serverSocket.getsockname()[1]))
         except OSError as e:
@@ -68,10 +68,10 @@ klasse TestEPoll(unittest.TestCase):
             ep = select.epoll(16)
         except OSError as e:
             raise AssertionError(str(e))
-        self.assertTrue(ep.fileno() > 0, ep.fileno())
-        self.assertTrue(not ep.closed)
+        self.assertWahr(ep.fileno() > 0, ep.fileno())
+        self.assertWahr(not ep.closed)
         ep.close()
-        self.assertTrue(ep.closed)
+        self.assertWahr(ep.closed)
         self.assertRaises(ValueError, ep.fileno)
 
         wenn hasattr(select, "EPOLL_CLOEXEC"):
@@ -82,7 +82,7 @@ klasse TestEPoll(unittest.TestCase):
     def test_badcreate(self):
         self.assertRaises(TypeError, select.epoll, 1, 2, 3)
         self.assertRaises(TypeError, select.epoll, 'foo')
-        self.assertRaises(TypeError, select.epoll, None)
+        self.assertRaises(TypeError, select.epoll, Nichts)
         self.assertRaises(TypeError, select.epoll, ())
         self.assertRaises(TypeError, select.epoll, ['foo'])
         self.assertRaises(TypeError, select.epoll, {})
@@ -97,8 +97,8 @@ klasse TestEPoll(unittest.TestCase):
     def test_context_manager(self):
         with select.epoll(16) as ep:
             self.assertGreater(ep.fileno(), 0)
-            self.assertFalse(ep.closed)
-        self.assertTrue(ep.closed)
+            self.assertFalsch(ep.closed)
+        self.assertWahr(ep.closed)
         self.assertRaises(ValueError, ep.fileno)
 
     def test_add(self):
@@ -124,7 +124,7 @@ klasse TestEPoll(unittest.TestCase):
             # TypeError: argument must be an int, or have a fileno() method.
             self.assertRaises(TypeError, ep.register, object(),
                               select.EPOLLIN | select.EPOLLOUT)
-            self.assertRaises(TypeError, ep.register, None,
+            self.assertRaises(TypeError, ep.register, Nichts,
                               select.EPOLLIN | select.EPOLLOUT)
             # ValueError: file descriptor cannot be a negative integer (-1)
             self.assertRaises(ValueError, ep.register, -1,
@@ -173,7 +173,7 @@ klasse TestEPoll(unittest.TestCase):
         now = time.monotonic()
         events = ep.poll(1, 4)
         then = time.monotonic()
-        self.assertFalse(then - now > 0.1, then - now)
+        self.assertFalsch(then - now > 0.1, then - now)
 
         expected = [(client.fileno(), select.EPOLLOUT),
                     (server.fileno(), select.EPOLLOUT)]
@@ -181,7 +181,7 @@ klasse TestEPoll(unittest.TestCase):
 
         # no event
         events = ep.poll(timeout=0.1, maxevents=4)
-        self.assertFalse(events)
+        self.assertFalsch(events)
 
         # send: EPOLLIN and EPOLLOUT
         client.sendall(b"Hello!")
@@ -194,7 +194,7 @@ klasse TestEPoll(unittest.TestCase):
             now = time.monotonic()
             events += ep.poll(1.0, 4)
             then = time.monotonic()
-            self.assertFalse(then - now > 0.01)
+            self.assertFalsch(then - now > 0.01)
             wenn len(events) >= 2:
                 break
 
@@ -208,7 +208,7 @@ klasse TestEPoll(unittest.TestCase):
         now = time.monotonic()
         events = ep.poll(1, 4)
         then = time.monotonic()
-        self.assertFalse(then - now > 0.01)
+        self.assertFalsch(then - now > 0.01)
 
         expected = [(server.fileno(), select.EPOLLOUT)]
         self.assertEqual(events, expected)
@@ -227,7 +227,7 @@ klasse TestEPoll(unittest.TestCase):
         now = time.monotonic()
         events = ep.poll(1, 4)
         then = time.monotonic()
-        self.assertFalse(then - now > 0.01)
+        self.assertFalsch(then - now > 0.01)
 
         server.close()
 
@@ -243,11 +243,11 @@ klasse TestEPoll(unittest.TestCase):
 
         # test fileno() method and closed attribute
         self.assertIsInstance(epoll.fileno(), int)
-        self.assertFalse(epoll.closed)
+        self.assertFalsch(epoll.closed)
 
         # test close()
         epoll.close()
-        self.assertTrue(epoll.closed)
+        self.assertWahr(epoll.closed)
         self.assertRaises(ValueError, epoll.fileno)
 
         # close() can be called more than once
@@ -262,7 +262,7 @@ klasse TestEPoll(unittest.TestCase):
     def test_fd_non_inheritable(self):
         epoll = select.epoll()
         self.addCleanup(epoll.close)
-        self.assertEqual(os.get_inheritable(epoll.fileno()), False)
+        self.assertEqual(os.get_inheritable(epoll.fileno()), Falsch)
 
 
 wenn __name__ == "__main__":

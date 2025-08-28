@@ -375,7 +375,7 @@ klasse OutputTestCase(unittest.TestCase):
             return not c.isspace() and not c.isdigit()
 
         lines = []
-        fuer line in s.splitlines(keepends=False):
+        fuer line in s.splitlines(keepends=Falsch):
             # Drop texts, as they are locale dependent
             wenn line and not filter(neitherspacenordigit, line):
                 lines.append(line)
@@ -418,7 +418,7 @@ klasse OutputTestCase(unittest.TestCase):
         self.check_htmlcalendar_encoding('utf-8', 'utf-8')
 
     def test_output_htmlcalendar_encoding_default(self):
-        self.check_htmlcalendar_encoding(None, 'utf-8')
+        self.check_htmlcalendar_encoding(Nichts, 'utf-8')
 
     def test_yeardatescalendar(self):
         def shrink(cal):
@@ -466,13 +466,13 @@ klasse OutputTestCase(unittest.TestCase):
 
     def test_formatmonthname_with_year(self):
         self.assertEqual(
-            calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=True),
+            calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=Wahr),
             '<tr><th colspan="7" class="month">January 2004</th></tr>'
         )
 
     def test_formatmonthname_without_year(self):
         self.assertEqual(
-            calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=False),
+            calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=Falsch),
             '<tr><th colspan="7" class="month">January</th></tr>'
         )
 
@@ -606,7 +606,7 @@ klasse CalendarTestCase(unittest.TestCase):
         self.assertEqual(len(local_weekday_abbr), 3)
         self.assertGreaterEqual(len(local_month), 10)
 
-        cal = calendar.LocaleTextCalendar(locale=None)
+        cal = calendar.LocaleTextCalendar(locale=Nichts)
         local_weekday = cal.formatweekday(1, 10)
         local_weekday_abbr = cal.formatweekday(1, 3)
         local_month = cal.formatmonthname(2010, 10, 10)
@@ -639,7 +639,7 @@ klasse CalendarTestCase(unittest.TestCase):
         self.assertIsInstance(local_weekday, str)
         self.assertIsInstance(local_month, str)
 
-        cal = calendar.LocaleHTMLCalendar(locale=None)
+        cal = calendar.LocaleHTMLCalendar(locale=Nichts)
         local_weekday = cal.formatweekday(1)
         local_month = cal.formatmonthname(2010, 10)
         self.assertIsInstance(local_weekday, str)
@@ -752,13 +752,13 @@ klasse CalendarTestCase(unittest.TestCase):
             # formatmonthname uses the same month names regardless of the width argument.
             cal = calendar.LocaleTextCalendar(locale='en_US')
             # For too short widths, a full name (with year) is used.
-            self.assertEqual(cal.formatmonthname(2022, 6, 2, withyear=False), "June")
-            self.assertEqual(cal.formatmonthname(2022, 6, 2, withyear=True), "June 2022")
-            self.assertEqual(cal.formatmonthname(2022, 6, 3, withyear=False), "June")
-            self.assertEqual(cal.formatmonthname(2022, 6, 3, withyear=True), "June 2022")
+            self.assertEqual(cal.formatmonthname(2022, 6, 2, withyear=Falsch), "June")
+            self.assertEqual(cal.formatmonthname(2022, 6, 2, withyear=Wahr), "June 2022")
+            self.assertEqual(cal.formatmonthname(2022, 6, 3, withyear=Falsch), "June")
+            self.assertEqual(cal.formatmonthname(2022, 6, 3, withyear=Wahr), "June 2022")
             # For long widths, a centered name is used.
-            self.assertEqual(cal.formatmonthname(2022, 6, 10, withyear=False), "   June   ")
-            self.assertEqual(cal.formatmonthname(2022, 6, 15, withyear=True), "   June 2022   ")
+            self.assertEqual(cal.formatmonthname(2022, 6, 10, withyear=Falsch), "   June   ")
+            self.assertEqual(cal.formatmonthname(2022, 6, 15, withyear=Wahr), "   June 2022   ")
         except locale.Error:
             raise unittest.SkipTest('cannot set the en_US locale')
 

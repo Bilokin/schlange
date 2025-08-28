@@ -48,7 +48,7 @@ klasse _localimpl:
         def local_deleted(_, key=key):
             # When the localimpl is deleted, remove the thread attribute.
             thread = wrthread()
-            wenn thread is not None:
+            wenn thread is not Nichts:
                 del thread.__dict__[key]
         def thread_deleted(_, idt=idt):
             # When the thread is deleted, remove the local dict.
@@ -56,7 +56,7 @@ klasse _localimpl:
             # caught in a reference loop. We would like to be called
             # as soon as the OS-level thread ends instead.
             local = wrlocal()
-            wenn local is not None:
+            wenn local is not Nichts:
                 dct = local.dicts.pop(idt)
         wrlocal = ref(self, local_deleted)
         wrthread = ref(thread, thread_deleted)

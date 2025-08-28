@@ -21,10 +21,10 @@ klasse TestGdbm(unittest.TestCase):
                 print(f"gdbm version: {version}")
 
     def setUp(self):
-        self.g = None
+        self.g = Nichts
 
     def tearDown(self):
-        wenn self.g is not None:
+        wenn self.g is not Nichts:
             self.g.close()
         unlink(filename)
 
@@ -52,7 +52,7 @@ klasse TestGdbm(unittest.TestCase):
             key = self.g.nextkey(key)
         # get() and setdefault() work as in the dict interface
         self.assertEqual(self.g.get(b'a'), b'b')
-        self.assertIsNone(self.g.get(b'xxx'))
+        self.assertIsNichts(self.g.get(b'xxx'))
         self.assertEqual(self.g.get(b'xxx', b'foo'), b'foo')
         with self.assertRaises(KeyError):
             self.g['xxx']
@@ -121,12 +121,12 @@ klasse TestGdbm(unittest.TestCase):
 
     def test_bool_empty(self):
         with gdbm.open(filename, 'c') as db:
-            self.assertFalse(bool(db))
+            self.assertFalsch(bool(db))
 
     def test_bool_not_empty(self):
         with gdbm.open(filename, 'c') as db:
             db['a'] = 'b'
-            self.assertTrue(bool(db))
+            self.assertWahr(bool(db))
 
     def test_bool_on_closed_db_raises(self):
         with gdbm.open(filename, 'c') as db:
@@ -138,7 +138,7 @@ klasse TestGdbm(unittest.TestCase):
             db[b'bytes key \xbd'] = b'bytes value \xbd'
         with gdbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), [b'bytes key \xbd'])
-            self.assertTrue(b'bytes key \xbd' in db)
+            self.assertWahr(b'bytes key \xbd' in db)
             self.assertEqual(db[b'bytes key \xbd'], b'bytes value \xbd')
 
     def test_unicode(self):
@@ -146,8 +146,8 @@ klasse TestGdbm(unittest.TestCase):
             db['Unicode key \U0001f40d'] = 'Unicode value \U0001f40d'
         with gdbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), ['Unicode key \U0001f40d'.encode()])
-            self.assertTrue('Unicode key \U0001f40d'.encode() in db)
-            self.assertTrue('Unicode key \U0001f40d' in db)
+            self.assertWahr('Unicode key \U0001f40d'.encode() in db)
+            self.assertWahr('Unicode key \U0001f40d' in db)
             self.assertEqual(db['Unicode key \U0001f40d'.encode()],
                              'Unicode value \U0001f40d'.encode())
             self.assertEqual(db['Unicode key \U0001f40d'],
@@ -171,10 +171,10 @@ klasse TestGdbm(unittest.TestCase):
         self.addCleanup(unlink, filename)
         with gdbm.open(filename, 'c') as db:
             db[b'key'] = b'value'
-        self.assertTrue(os.path.exists(filename))
+        self.assertWahr(os.path.exists(filename))
         with gdbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), [b'key'])
-            self.assertTrue(b'key' in db)
+            self.assertWahr(b'key' in db)
             self.assertEqual(db[b'key'], b'value')
 
     def test_nonexisting_file(self):

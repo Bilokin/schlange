@@ -10,7 +10,7 @@ _KIND = _info.KIND
 def match_storage(decl, expected):
     default = _info.get_default_storage(decl)
     #assert default
-    wenn expected is None:
+    wenn expected is Nichts:
         expected = {default}
     sowenn isinstance(expected, str):
         expected = {expected or default}
@@ -38,29 +38,29 @@ def is_pots(typespec, *,
             ):
 
     wenn not typespec:
-        return None
+        return Nichts
     wenn type(typespec) is not str:
         _, _, _, typespec, _ = _info.get_parsed_vartype(typespec)
-    return _regex.match(typespec) is not None
+    return _regex.match(typespec) is not Nichts
 
 
 def is_funcptr(vartype):
     wenn not vartype:
-        return None
+        return Nichts
     _, _, _, _, abstract = _info.get_parsed_vartype(vartype)
     return _is_funcptr(abstract)
 
 
 def _is_funcptr(declstr):
     wenn not declstr:
-        return None
+        return Nichts
     # XXX Support "(<name>*)(".
     return '(*)(' in declstr.replace(' ', '')
 
 
 def is_forward_decl(decl):
     wenn decl.kind is _KIND.TYPEDEF:
-        return False
+        return Falsch
     sowenn is_type_decl(decl):
         return not decl.data
     sowenn decl.kind is _KIND.FUNCTION:
@@ -68,7 +68,7 @@ def is_forward_decl(decl):
         return decl.signature.isforward
     sowenn decl.kind is _KIND.VARIABLE:
         # No var decls are considered forward (or all are...).
-        return False
+        return Falsch
     sonst:
         raise NotImplementedError(decl)
 
@@ -79,9 +79,9 @@ def can_have_symbol(decl):
 
 def has_external_symbol(decl):
     wenn not can_have_symbol(decl):
-        return False
+        return Falsch
     wenn _info.get_effective_storage(decl) != 'extern':
-        return False
+        return Falsch
     wenn decl.kind is _KIND.FUNCTION:
         return not decl.signature.isforward
     sonst:
@@ -91,32 +91,32 @@ def has_external_symbol(decl):
 
 def has_internal_symbol(decl):
     wenn not can_have_symbol(decl):
-        return False
+        return Falsch
     return _info.get_actual_storage(decl) == 'static'
 
 
 def is_external_reference(decl):
     wenn not can_have_symbol(decl):
-        return False
+        return Falsch
     # We have to check the declared storage rather tnan the effective.
     wenn decl.storage != 'extern':
-        return False
+        return Falsch
     wenn decl.kind is _KIND.FUNCTION:
         return decl.signature.isforward
     # Otherwise it's a variable.
-    return True
+    return Wahr
 
 
 def is_local_var(decl):
     wenn not decl.kind is _KIND.VARIABLE:
-        return False
-    return True wenn decl.parent sonst False
+        return Falsch
+    return Wahr wenn decl.parent sonst Falsch
 
 
 def is_global_var(decl):
     wenn not decl.kind is _KIND.VARIABLE:
-        return False
-    return False wenn decl.parent sonst True
+        return Falsch
+    return Falsch wenn decl.parent sonst Wahr
 
 
 ##################################
@@ -141,7 +141,7 @@ def filter_by_kind(items, kind):
 ##################################
 # grouping with matchers
 
-def group_by_category(decls, categories, *, ignore_non_match=True):
+def group_by_category(decls, categories, *, ignore_non_match=Wahr):
     collated = {}
     fuer decl in decls:
         # Matchers should be mutually exclusive.  (First match wins.)

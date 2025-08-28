@@ -5,8 +5,8 @@ import sysconfig
 
 
 # Taken from _osx_support _read_output function
-def _read_cmd_output(commandstring, capture_stderr=False):
-    """Output from successful command execution or None"""
+def _read_cmd_output(commandstring, capture_stderr=Falsch):
+    """Output from successful command execution or Nichts"""
     # Similar to os.popen(commandstring, "r").read(),
     # but without actually using os.popen because that
     # function is not usable during python bootstrap.
@@ -20,7 +20,7 @@ def _read_cmd_output(commandstring, capture_stderr=False):
             cmd = "%s >'%s' 2>&1" % (commandstring, fp.name)
         sonst:
             cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
-        return fp.read() wenn not os.system(cmd) sonst None
+        return fp.read() wenn not os.system(cmd) sonst Nichts
 
 
 def _aix_tag(vrtl, bd):

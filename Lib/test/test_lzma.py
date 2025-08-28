@@ -91,11 +91,11 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
     # Test LZMADecompressor on known-good input data.
 
     def _test_decompressor(self, lzd, data, check, unused_data=b""):
-        self.assertFalse(lzd.eof)
+        self.assertFalsch(lzd.eof)
         out = lzd.decompress(data)
         self.assertEqual(out, INPUT)
         self.assertEqual(lzd.check, check)
-        self.assertTrue(lzd.eof)
+        self.assertWahr(lzd.eof)
         self.assertEqual(lzd.unused_data, unused_data)
 
     def test_decompressor_auto(self):
@@ -133,19 +133,19 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         lzd = LZMADecompressor()
         out = []
         fuer i in range(0, len(COMPRESSED_XZ), 10):
-            self.assertFalse(lzd.eof)
+            self.assertFalsch(lzd.eof)
             out.append(lzd.decompress(COMPRESSED_XZ[i:i+10]))
         out = b"".join(out)
         self.assertEqual(out, INPUT)
         self.assertEqual(lzd.check, lzma.CHECK_CRC64)
-        self.assertTrue(lzd.eof)
+        self.assertWahr(lzd.eof)
         self.assertEqual(lzd.unused_data, b"")
 
     def test_decompressor_chunks_empty(self):
         lzd = LZMADecompressor()
         out = []
         fuer i in range(0, len(COMPRESSED_XZ), 10):
-            self.assertFalse(lzd.eof)
+            self.assertFalsch(lzd.eof)
             out.append(lzd.decompress(b''))
             out.append(lzd.decompress(b''))
             out.append(lzd.decompress(b''))
@@ -153,7 +153,7 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         out = b"".join(out)
         self.assertEqual(out, INPUT)
         self.assertEqual(lzd.check, lzma.CHECK_CRC64)
-        self.assertTrue(lzd.eof)
+        self.assertWahr(lzd.eof)
         self.assertEqual(lzd.unused_data, b"")
 
     def test_decompressor_chunks_maxsize(self):
@@ -165,12 +165,12 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
         len_ = len(COMPRESSED_XZ) // 2
         out.append(lzd.decompress(COMPRESSED_XZ[:len_],
                                   max_length=max_length))
-        self.assertFalse(lzd.needs_input)
+        self.assertFalsch(lzd.needs_input)
         self.assertEqual(len(out[-1]), max_length)
 
         # Retrieve more data without providing more input
         out.append(lzd.decompress(b'', max_length=max_length))
-        self.assertFalse(lzd.needs_input)
+        self.assertFalsch(lzd.needs_input)
         self.assertEqual(len(out[-1]), max_length)
 
         # Retrieve more data while providing more input
@@ -345,7 +345,7 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
             self.assertEqual(len(ddata), size)
             self.assertEqual(len(ddata.strip(b"x")), 0)
         finally:
-            ddata = None
+            ddata = Nichts
 
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=3)
@@ -359,7 +359,7 @@ klasse CompressorDecompressorTestCase(unittest.TestCase):
             ddata = lzd.decompress(cdata)
             self.assertEqual(ddata, input)
         finally:
-            input = cdata = ddata = None
+            input = cdata = ddata = Nichts
 
     # Pickling raises an exception; there's no way to serialize an lzma_stream.
 
@@ -696,10 +696,10 @@ klasse FileTestCase(unittest.TestCase):
             f = LZMAFile(src)
             f.close()
             # LZMAFile.close() should not close the underlying file object.
-            self.assertFalse(src.closed)
+            self.assertFalsch(src.closed)
             # Try closing an already-closed LZMAFile.
             f.close()
-            self.assertFalse(src.closed)
+            self.assertFalsch(src.closed)
 
         # Test with a real file on disk, opened directly by LZMAFile.
         with TempFile(TESTFN, COMPRESSED_XZ):
@@ -707,26 +707,26 @@ klasse FileTestCase(unittest.TestCase):
             fp = f._fp
             f.close()
             # Here, LZMAFile.close() *should* close the underlying file object.
-            self.assertTrue(fp.closed)
+            self.assertWahr(fp.closed)
             # Try closing an already-closed LZMAFile.
             f.close()
 
     def test_closed(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         try:
-            self.assertFalse(f.closed)
+            self.assertFalsch(f.closed)
             f.read()
-            self.assertFalse(f.closed)
+            self.assertFalsch(f.closed)
         finally:
             f.close()
-        self.assertTrue(f.closed)
+        self.assertWahr(f.closed)
 
         f = LZMAFile(BytesIO(), "w")
         try:
-            self.assertFalse(f.closed)
+            self.assertFalsch(f.closed)
         finally:
             f.close()
-        self.assertTrue(f.closed)
+        self.assertWahr(f.closed)
 
     def test_fileno(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
@@ -747,25 +747,25 @@ klasse FileTestCase(unittest.TestCase):
     def test_seekable(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         try:
-            self.assertTrue(f.seekable())
+            self.assertWahr(f.seekable())
             f.read()
-            self.assertTrue(f.seekable())
+            self.assertWahr(f.seekable())
         finally:
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
         f = LZMAFile(BytesIO(), "w")
         try:
-            self.assertFalse(f.seekable())
+            self.assertFalsch(f.seekable())
         finally:
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
         src = BytesIO(COMPRESSED_XZ)
-        src.seekable = lambda: False
+        src.seekable = lambda: Falsch
         f = LZMAFile(src)
         try:
-            self.assertFalse(f.seekable())
+            self.assertFalsch(f.seekable())
         finally:
             f.close()
         self.assertRaises(ValueError, f.seekable)
@@ -773,16 +773,16 @@ klasse FileTestCase(unittest.TestCase):
     def test_readable(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         try:
-            self.assertTrue(f.readable())
+            self.assertWahr(f.readable())
             f.read()
-            self.assertTrue(f.readable())
+            self.assertWahr(f.readable())
         finally:
             f.close()
         self.assertRaises(ValueError, f.readable)
 
         f = LZMAFile(BytesIO(), "w")
         try:
-            self.assertFalse(f.readable())
+            self.assertFalsch(f.readable())
         finally:
             f.close()
         self.assertRaises(ValueError, f.readable)
@@ -790,16 +790,16 @@ klasse FileTestCase(unittest.TestCase):
     def test_writable(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         try:
-            self.assertFalse(f.writable())
+            self.assertFalsch(f.writable())
             f.read()
-            self.assertFalse(f.writable())
+            self.assertFalsch(f.writable())
         finally:
             f.close()
         self.assertRaises(ValueError, f.writable)
 
         f = LZMAFile(BytesIO(), "w")
         try:
-            self.assertTrue(f.writable())
+            self.assertWahr(f.writable())
         finally:
             f.close()
         self.assertRaises(ValueError, f.writable)
@@ -887,11 +887,11 @@ klasse FileTestCase(unittest.TestCase):
                 self.assertEqual(f.name, TESTFN)
                 self.assertIsInstance(f.fileno(), int)
                 self.assertEqual(f.mode, 'rb')
-                self.assertIs(f.readable(), True)
-                self.assertIs(f.writable(), False)
-                self.assertIs(f.seekable(), True)
-                self.assertIs(f.closed, False)
-            self.assertIs(f.closed, True)
+                self.assertIs(f.readable(), Wahr)
+                self.assertIs(f.writable(), Falsch)
+                self.assertIs(f.seekable(), Wahr)
+                self.assertIs(f.closed, Falsch)
+            self.assertIs(f.closed, Wahr)
             with self.assertRaises(ValueError):
                 f.name
             self.assertRaises(ValueError, f.fileno)
@@ -917,11 +917,11 @@ klasse FileTestCase(unittest.TestCase):
                     self.assertEqual(f.name, raw.name)
                     self.assertEqual(f.fileno(), raw.fileno())
                     self.assertEqual(f.mode, 'rb')
-                    self.assertIs(f.readable(), True)
-                    self.assertIs(f.writable(), False)
-                    self.assertIs(f.seekable(), True)
-                    self.assertIs(f.closed, False)
-                self.assertIs(f.closed, True)
+                    self.assertIs(f.readable(), Wahr)
+                    self.assertIs(f.writable(), Falsch)
+                    self.assertIs(f.seekable(), Wahr)
+                    self.assertIs(f.closed, Falsch)
+                self.assertIs(f.closed, Wahr)
                 with self.assertRaises(ValueError):
                     f.name
                 self.assertRaises(ValueError, f.fileno)
@@ -940,11 +940,11 @@ klasse FileTestCase(unittest.TestCase):
                     self.assertEqual(f.name, raw.name)
                     self.assertEqual(f.fileno(), raw.fileno())
                     self.assertEqual(f.mode, 'rb')
-                    self.assertIs(f.readable(), True)
-                    self.assertIs(f.writable(), False)
-                    self.assertIs(f.seekable(), True)
-                    self.assertIs(f.closed, False)
-                self.assertIs(f.closed, True)
+                    self.assertIs(f.readable(), Wahr)
+                    self.assertIs(f.writable(), Falsch)
+                    self.assertIs(f.seekable(), Wahr)
+                    self.assertIs(f.closed, Falsch)
+                self.assertIs(f.closed, Wahr)
                 with self.assertRaises(ValueError):
                     f.name
                 self.assertRaises(ValueError, f.fileno)
@@ -1019,7 +1019,7 @@ klasse FileTestCase(unittest.TestCase):
         with LZMAFile(BytesIO(), "w") as f:
             self.assertRaises(ValueError, f.read1)
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
-            self.assertRaises(TypeError, f.read1, None)
+            self.assertRaises(TypeError, f.read1, Nichts)
 
     def test_peek(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
@@ -1134,11 +1134,11 @@ klasse FileTestCase(unittest.TestCase):
                 self.assertEqual(f.name, TESTFN)
                 self.assertIsInstance(f.fileno(), int)
                 self.assertEqual(f.mode, 'wb')
-                self.assertIs(f.readable(), False)
-                self.assertIs(f.writable(), True)
-                self.assertIs(f.seekable(), False)
-                self.assertIs(f.closed, False)
-            self.assertIs(f.closed, True)
+                self.assertIs(f.readable(), Falsch)
+                self.assertIs(f.writable(), Wahr)
+                self.assertIs(f.seekable(), Falsch)
+                self.assertIs(f.closed, Falsch)
+            self.assertIs(f.closed, Wahr)
             with self.assertRaises(ValueError):
                 f.name
             self.assertRaises(ValueError, f.fileno)
@@ -1173,11 +1173,11 @@ klasse FileTestCase(unittest.TestCase):
                     self.assertEqual(f.name, raw.name)
                     self.assertEqual(f.fileno(), raw.fileno())
                     self.assertEqual(f.mode, 'wb')
-                    self.assertIs(f.readable(), False)
-                    self.assertIs(f.writable(), True)
-                    self.assertIs(f.seekable(), False)
-                    self.assertIs(f.closed, False)
-                self.assertIs(f.closed, True)
+                    self.assertIs(f.readable(), Falsch)
+                    self.assertIs(f.writable(), Wahr)
+                    self.assertIs(f.seekable(), Falsch)
+                    self.assertIs(f.closed, Falsch)
+                self.assertIs(f.closed, Wahr)
                 with self.assertRaises(ValueError):
                     f.name
                 self.assertRaises(ValueError, f.fileno)
@@ -1201,11 +1201,11 @@ klasse FileTestCase(unittest.TestCase):
                     self.assertEqual(f.name, raw.name)
                     self.assertEqual(f.fileno(), raw.fileno())
                     self.assertEqual(f.mode, 'wb')
-                    self.assertIs(f.readable(), False)
-                    self.assertIs(f.writable(), True)
-                    self.assertIs(f.seekable(), False)
-                    self.assertIs(f.closed, False)
-                self.assertIs(f.closed, True)
+                    self.assertIs(f.readable(), Falsch)
+                    self.assertIs(f.writable(), Wahr)
+                    self.assertIs(f.seekable(), Falsch)
+                    self.assertIs(f.closed, Falsch)
+                self.assertIs(f.closed, Wahr)
                 with self.assertRaises(ValueError):
                     f.name
                 self.assertRaises(ValueError, f.fileno)
@@ -1247,7 +1247,7 @@ klasse FileTestCase(unittest.TestCase):
         with LZMAFile(BytesIO(COMPRESSED_XZ), "r") as f:
             self.assertRaises(ValueError, f.write, b"bar")
         with LZMAFile(BytesIO(), "w") as f:
-            self.assertRaises(TypeError, f.write, None)
+            self.assertRaises(TypeError, f.write, Nichts)
             self.assertRaises(TypeError, f.write, "text")
             self.assertRaises(TypeError, f.write, 789)
 
@@ -1320,13 +1320,13 @@ klasse FileTestCase(unittest.TestCase):
             self.assertRaises(ValueError, f.seek, 0, 3)
             # io.BufferedReader raises TypeError instead of ValueError
             self.assertRaises((TypeError, ValueError), f.seek, 9, ())
-            self.assertRaises(TypeError, f.seek, None)
+            self.assertRaises(TypeError, f.seek, Nichts)
             self.assertRaises(TypeError, f.seek, b"derp")
 
     def test_tell(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             pos = 0
-            while True:
+            while Wahr:
                 self.assertEqual(f.tell(), pos)
                 result = f.read(183)
                 wenn not result:
@@ -1353,7 +1353,7 @@ klasse FileTestCase(unittest.TestCase):
         d1 = LZMADecompressor()
         entire = d1.decompress(ISSUE_21872_DAT, max_length=-1)
         self.assertEqual(len(entire), 13160)
-        self.assertTrue(d1.eof)
+        self.assertWahr(d1.eof)
 
         # ---------------------
         # when max_length > 0
@@ -1364,14 +1364,14 @@ klasse FileTestCase(unittest.TestCase):
         # buffers are exhausted at the same time, and lzs's internal
         # state still have 11 bytes can be output.
         out1 = d2.decompress(ISSUE_21872_DAT, max_length=13149)
-        self.assertFalse(d2.needs_input) # ensure needs_input mechanism works
-        self.assertFalse(d2.eof)
+        self.assertFalsch(d2.needs_input) # ensure needs_input mechanism works
+        self.assertFalsch(d2.eof)
 
         # simulate needs_input mechanism
         # output internal state's 11 bytes
         out2 = d2.decompress(b'')
         self.assertEqual(len(out2), 11)
-        self.assertTrue(d2.eof)
+        self.assertWahr(d2.eof)
         self.assertEqual(out1 + out2, entire)
 
     def test_issue44439(self):
@@ -1497,7 +1497,7 @@ klasse OpenTestCase(unittest.TestCase):
         self.addCleanup(unlink, TESTFN)
         fuer mode in ("x", "xb", "xt"):
             unlink(TESTFN)
-            encoding = "ascii" wenn "t" in mode sonst None
+            encoding = "ascii" wenn "t" in mode sonst Nichts
             with lzma.open(TESTFN, mode, encoding=encoding):
                 pass
             with self.assertRaises(FileExistsError):
@@ -1510,14 +1510,14 @@ klasse MiscellaneousTestCase(unittest.TestCase):
     def test_is_check_supported(self):
         # CHECK_NONE and CHECK_CRC32 should always be supported,
         # regardless of the options liblzma was compiled with.
-        self.assertTrue(lzma.is_check_supported(lzma.CHECK_NONE))
-        self.assertTrue(lzma.is_check_supported(lzma.CHECK_CRC32))
+        self.assertWahr(lzma.is_check_supported(lzma.CHECK_NONE))
+        self.assertWahr(lzma.is_check_supported(lzma.CHECK_CRC32))
 
         # The .xz format spec cannot store check IDs above this value.
-        self.assertFalse(lzma.is_check_supported(lzma.CHECK_ID_MAX + 1))
+        self.assertFalsch(lzma.is_check_supported(lzma.CHECK_ID_MAX + 1))
 
         # This value should not be a valid check ID.
-        self.assertFalse(lzma.is_check_supported(lzma.CHECK_UNKNOWN))
+        self.assertFalsch(lzma.is_check_supported(lzma.CHECK_UNKNOWN))
 
     def test__encode_filter_properties(self):
         with self.assertRaises(TypeError):

@@ -1,7 +1,7 @@
 import os
 
 wenn __name__ == '__main__':
-    while True:
+    while Wahr:
         buf = os.read(0, 1024)
         wenn not buf:
             break

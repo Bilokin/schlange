@@ -18,14 +18,14 @@ klasse OpListTests(unittest.TestCase):
 
     def test_invalid_opcodes(self):
         invalid = [-100, -1, 512, 513, 1000]
-        self.check_bool_function_result(_opcode.is_valid, invalid, False)
-        self.check_bool_function_result(_opcode.has_arg, invalid, False)
-        self.check_bool_function_result(_opcode.has_const, invalid, False)
-        self.check_bool_function_result(_opcode.has_name, invalid, False)
-        self.check_bool_function_result(_opcode.has_jump, invalid, False)
-        self.check_bool_function_result(_opcode.has_free, invalid, False)
-        self.check_bool_function_result(_opcode.has_local, invalid, False)
-        self.check_bool_function_result(_opcode.has_exc, invalid, False)
+        self.check_bool_function_result(_opcode.is_valid, invalid, Falsch)
+        self.check_bool_function_result(_opcode.has_arg, invalid, Falsch)
+        self.check_bool_function_result(_opcode.has_const, invalid, Falsch)
+        self.check_bool_function_result(_opcode.has_name, invalid, Falsch)
+        self.check_bool_function_result(_opcode.has_jump, invalid, Falsch)
+        self.check_bool_function_result(_opcode.has_free, invalid, Falsch)
+        self.check_bool_function_result(_opcode.has_local, invalid, Falsch)
+        self.check_bool_function_result(_opcode.has_exc, invalid, Falsch)
 
     def test_is_valid(self):
         names = [
@@ -36,7 +36,7 @@ klasse OpListTests(unittest.TestCase):
             'INSTRUMENTED_RETURN_VALUE',
         ]
         opcodes = [dis.opmap[opname] fuer opname in names]
-        self.check_bool_function_result(_opcode.is_valid, opcodes, True)
+        self.check_bool_function_result(_opcode.is_valid, opcodes, Wahr)
 
     def test_opmaps(self):
         def check_roundtrip(name, map):
@@ -85,12 +85,12 @@ klasse StackEffectTests(unittest.TestCase):
     def test_stack_effect_jump(self):
         FOR_ITER = dis.opmap['FOR_ITER']
         self.assertEqual(stack_effect(FOR_ITER, 0), 1)
-        self.assertEqual(stack_effect(FOR_ITER, 0, jump=True), 1)
-        self.assertEqual(stack_effect(FOR_ITER, 0, jump=False), 1)
+        self.assertEqual(stack_effect(FOR_ITER, 0, jump=Wahr), 1)
+        self.assertEqual(stack_effect(FOR_ITER, 0, jump=Falsch), 1)
         JUMP_FORWARD = dis.opmap['JUMP_FORWARD']
         self.assertEqual(stack_effect(JUMP_FORWARD, 0), 0)
-        self.assertEqual(stack_effect(JUMP_FORWARD, 0, jump=True), 0)
-        self.assertEqual(stack_effect(JUMP_FORWARD, 0, jump=False), 0)
+        self.assertEqual(stack_effect(JUMP_FORWARD, 0, jump=Wahr), 0)
+        self.assertEqual(stack_effect(JUMP_FORWARD, 0, jump=Falsch), 0)
         # All defined opcodes
         has_arg = dis.hasarg
         has_exc = dis.hasexc
@@ -101,12 +101,12 @@ klasse StackEffectTests(unittest.TestCase):
             with self.subTest(opname=name):
                 wenn code not in has_arg:
                     common = stack_effect(code)
-                    jump = stack_effect(code, jump=True)
-                    nojump = stack_effect(code, jump=False)
+                    jump = stack_effect(code, jump=Wahr)
+                    nojump = stack_effect(code, jump=Falsch)
                 sonst:
                     common = stack_effect(code, 0)
-                    jump = stack_effect(code, 0, jump=True)
-                    nojump = stack_effect(code, 0, jump=False)
+                    jump = stack_effect(code, 0, jump=Wahr)
+                    nojump = stack_effect(code, 0, jump=Falsch)
                 wenn code in has_jump or code in has_exc:
                     self.assertEqual(common, max(jump, nojump))
                 sonst:
@@ -126,7 +126,7 @@ klasse SpecializationStatsTests(unittest.TestCase):
         self.assertIn('binary_op', specialized_opcodes)
 
         stats = _opcode.get_specialization_stats()
-        wenn stats is not None:
+        wenn stats is not Nichts:
             self.assertIsInstance(stats, dict)
             self.assertCountEqual(stats.keys(), specialized_opcodes)
             self.assertCountEqual(

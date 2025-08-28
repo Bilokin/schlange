@@ -41,7 +41,7 @@ klasse BaseContext(object):
     def cpu_count(self):
         '''Returns the number of CPUs in the system'''
         num = os.cpu_count()
-        wenn num is None:
+        wenn num is Nichts:
             raise NotImplementedError('cannot determine number of cpus')
         sonst:
             return num
@@ -57,7 +57,7 @@ klasse BaseContext(object):
         m.start()
         return m
 
-    def Pipe(self, duplex=True):
+    def Pipe(self, duplex=Wahr):
         '''Returns two connection object connected by a pipe'''
         from .connection import Pipe
         return Pipe(duplex)
@@ -72,7 +72,7 @@ klasse BaseContext(object):
         from .synchronize import RLock
         return RLock(ctx=self.get_context())
 
-    def Condition(self, lock=None):
+    def Condition(self, lock=Nichts):
         '''Returns a condition object'''
         from .synchronize import Condition
         return Condition(lock, ctx=self.get_context())
@@ -92,7 +92,7 @@ klasse BaseContext(object):
         from .synchronize import Event
         return Event(ctx=self.get_context())
 
-    def Barrier(self, parties, action=None, timeout=None):
+    def Barrier(self, parties, action=Nichts, timeout=Nichts):
         '''Returns a barrier object'''
         from .synchronize import Barrier
         return Barrier(parties, action, timeout, ctx=self.get_context())
@@ -112,8 +112,8 @@ klasse BaseContext(object):
         from .queues import SimpleQueue
         return SimpleQueue(ctx=self.get_context())
 
-    def Pool(self, processes=None, initializer=None, initargs=(),
-             maxtasksperchild=None):
+    def Pool(self, processes=Nichts, initializer=Nichts, initargs=(),
+             maxtasksperchild=Nichts):
         '''Returns a process pool object'''
         from .pool import Pool
         return Pool(processes, initializer, initargs, maxtasksperchild,
@@ -129,13 +129,13 @@ klasse BaseContext(object):
         from .sharedctypes import RawArray
         return RawArray(typecode_or_type, size_or_initializer)
 
-    def Value(self, typecode_or_type, *args, lock=True):
+    def Value(self, typecode_or_type, *args, lock=Wahr):
         '''Returns a synchronized shared object'''
         from .sharedctypes import Value
         return Value(typecode_or_type, *args, lock=lock,
                      ctx=self.get_context())
 
-    def Array(self, typecode_or_type, size_or_initializer, *, lock=True):
+    def Array(self, typecode_or_type, size_or_initializer, *, lock=Wahr):
         '''Returns a synchronized shared array'''
         from .sharedctypes import Array
         return Array(typecode_or_type, size_or_initializer, lock=lock,
@@ -145,7 +145,7 @@ klasse BaseContext(object):
         '''Check whether this is a fake forked process in a frozen executable.
         If so then run code specified by commandline and exit.
         '''
-        wenn self.get_start_method() == 'spawn' and getattr(sys, 'frozen', False):
+        wenn self.get_start_method() == 'spawn' and getattr(sys, 'frozen', Falsch):
             from .spawn import freeze_support
             freeze_support()
 
@@ -156,7 +156,7 @@ klasse BaseContext(object):
         from .util import get_logger
         return get_logger()
 
-    def log_to_stderr(self, level=None):
+    def log_to_stderr(self, level=Nichts):
         '''Turn on logging and add a handler which prints to stderr'''
         from .util import log_to_stderr
         return log_to_stderr(level)
@@ -184,20 +184,20 @@ klasse BaseContext(object):
         from .forkserver import set_forkserver_preload
         set_forkserver_preload(module_names)
 
-    def get_context(self, method=None):
-        wenn method is None:
+    def get_context(self, method=Nichts):
+        wenn method is Nichts:
             return self
         try:
             ctx = _concrete_contexts[method]
         except KeyError:
-            raise ValueError('cannot find context fuer %r' % method) from None
+            raise ValueError('cannot find context fuer %r' % method) from Nichts
         ctx._check_available()
         return ctx
 
-    def get_start_method(self, allow_none=False):
+    def get_start_method(self, allow_none=Falsch):
         return self._name
 
-    def set_start_method(self, method, force=False):
+    def set_start_method(self, method, force=Falsch):
         raise ValueError('cannot set start method of concrete context')
 
     @property
@@ -218,7 +218,7 @@ klasse BaseContext(object):
 #
 
 klasse Process(process.BaseProcess):
-    _start_method = None
+    _start_method = Nichts
     @staticmethod
     def _Popen(process_obj):
         return _default_context.get_context().Process._Popen(process_obj)
@@ -232,28 +232,28 @@ klasse DefaultContext(BaseContext):
 
     def __init__(self, context):
         self._default_context = context
-        self._actual_context = None
+        self._actual_context = Nichts
 
-    def get_context(self, method=None):
-        wenn method is None:
-            wenn self._actual_context is None:
+    def get_context(self, method=Nichts):
+        wenn method is Nichts:
+            wenn self._actual_context is Nichts:
                 self._actual_context = self._default_context
             return self._actual_context
         sonst:
             return super().get_context(method)
 
-    def set_start_method(self, method, force=False):
-        wenn self._actual_context is not None and not force:
+    def set_start_method(self, method, force=Falsch):
+        wenn self._actual_context is not Nichts and not force:
             raise RuntimeError('context has already been set')
-        wenn method is None and force:
-            self._actual_context = None
+        wenn method is Nichts and force:
+            self._actual_context = Nichts
             return
         self._actual_context = self.get_context(method)
 
-    def get_start_method(self, allow_none=False):
-        wenn self._actual_context is None:
+    def get_start_method(self, allow_none=Falsch):
+        wenn self._actual_context is Nichts:
             wenn allow_none:
-                return None
+                return Nichts
             self._actual_context = self._default_context
         return self._actual_context._name
 
@@ -364,13 +364,13 @@ def _force_start_method(method):
 _tls = threading.local()
 
 def get_spawning_popen():
-    return getattr(_tls, 'spawning_popen', None)
+    return getattr(_tls, 'spawning_popen', Nichts)
 
 def set_spawning_popen(popen):
     _tls.spawning_popen = popen
 
 def assert_spawning(obj):
-    wenn get_spawning_popen() is None:
+    wenn get_spawning_popen() is Nichts:
         raise RuntimeError(
             '%s objects should only be shared between processes'
             ' through inheritance' % type(obj).__name__

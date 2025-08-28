@@ -9,16 +9,16 @@ klasse ResourceTests:
 
     def test_is_file_exists(self):
         target = resources.files(self.data) / 'binary.file'
-        self.assertTrue(target.is_file())
+        self.assertWahr(target.is_file())
 
     def test_is_file_missing(self):
         target = resources.files(self.data) / 'not-a-file'
-        self.assertFalse(target.is_file())
+        self.assertFalsch(target.is_file())
 
     def test_is_dir(self):
         target = resources.files(self.data) / 'subdirectory'
-        self.assertFalse(target.is_file())
-        self.assertTrue(target.is_dir())
+        self.assertFalsch(target.is_file())
+        self.assertWahr(target.is_dir())
 
 
 klasse ResourceDiskTests(ResourceTests, util.DiskSetup, unittest.TestCase):
@@ -46,7 +46,7 @@ klasse ResourceLoaderTests(util.DiskSetup, unittest.TestCase):
             path=self.data.__file__,
             contents=['A', 'B', 'C', 'D/E', 'D/F'],
         )
-        self.assertTrue(resources.files(package).joinpath('B').is_file())
+        self.assertWahr(resources.files(package).joinpath('B').is_file())
 
     def test_is_dir(self):
         package = util.create_package(
@@ -54,7 +54,7 @@ klasse ResourceLoaderTests(util.DiskSetup, unittest.TestCase):
             path=self.data.__file__,
             contents=['A', 'B', 'C', 'D/E', 'D/F'],
         )
-        self.assertTrue(resources.files(package).joinpath('D').is_dir())
+        self.assertWahr(resources.files(package).joinpath('D').is_dir())
 
     def test_resource_missing(self):
         package = util.create_package(
@@ -62,7 +62,7 @@ klasse ResourceLoaderTests(util.DiskSetup, unittest.TestCase):
             path=self.data.__file__,
             contents=['A', 'B', 'C', 'D/E', 'D/F'],
         )
-        self.assertFalse(resources.files(package).joinpath('Z').is_file())
+        self.assertFalsch(resources.files(package).joinpath('Z').is_file())
 
 
 klasse ResourceCornerCaseTests(util.DiskSetup, unittest.TestCase):
@@ -82,16 +82,16 @@ klasse ResourceCornerCaseTests(util.DiskSetup, unittest.TestCase):
         module.__file__ = '/path/which/shall/not/be/named'
         module.__spec__.loader = module.__loader__
         module.__spec__.origin = module.__file__
-        self.assertFalse(resources.files(module).joinpath('A').is_file())
+        self.assertFalsch(resources.files(module).joinpath('A').is_file())
 
 
 klasse ResourceFromZipsTest01(util.ZipSetup, unittest.TestCase):
     def test_is_submodule_resource(self):
         submodule = import_module('data01.subdirectory')
-        self.assertTrue(resources.files(submodule).joinpath('binary.file').is_file())
+        self.assertWahr(resources.files(submodule).joinpath('binary.file').is_file())
 
     def test_read_submodule_resource_by_name(self):
-        self.assertTrue(
+        self.assertWahr(
             resources.files('data01.subdirectory').joinpath('binary.file').is_file()
         )
 
@@ -168,14 +168,14 @@ klasse DeletingZipsTest(util.ZipSetup, unittest.TestCase):
 
 klasse ResourceFromNamespaceTests:
     def test_is_submodule_resource(self):
-        self.assertTrue(
+        self.assertWahr(
             resources.files(import_module('namespacedata01'))
             .joinpath('binary.file')
             .is_file()
         )
 
     def test_read_submodule_resource_by_name(self):
-        self.assertTrue(
+        self.assertWahr(
             resources.files('namespacedata01').joinpath('binary.file').is_file()
         )
 

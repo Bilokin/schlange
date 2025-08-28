@@ -7,7 +7,7 @@ from typing import Iterator
 UNUSED = {"unused"}
 
 # Set this to true fuer voluminous output showing state of stack and locals
-PRINT_STACKS = False
+PRINT_STACKS = Falsch
 
 def maybe_parenthesize(sym: str) -> str:
     """Add parentheses around a string wenn it contains an operator
@@ -128,9 +128,9 @@ klasse PointerOffset:
             res = "-" + res[3:]
         return res
 
-    def as_int(self) -> int | None:
+    def as_int(self) -> int | Nichts:
         wenn self.positive or self.negative:
-            return None
+            return Nichts
         return self.numeric
 
     def __str__(self) -> str:
@@ -142,7 +142,7 @@ klasse PointerOffset:
 @dataclass
 klasse Local:
     item: StackItem
-    memory_offset: PointerOffset | None
+    memory_offset: PointerOffset | Nichts
     in_local: bool
 
     def __repr__(self) -> str:
@@ -155,31 +155,31 @@ klasse Local:
         return f"'{self.item.name}'{mtag}{dtag}{atag}"
 
     @staticmethod
-    def unused(defn: StackItem, offset: PointerOffset | None) -> "Local":
-        return Local(defn, offset, False)
+    def unused(defn: StackItem, offset: PointerOffset | Nichts) -> "Local":
+        return Local(defn, offset, Falsch)
 
     @staticmethod
     def undefined(defn: StackItem) -> "Local":
-        return Local(defn, None, False)
+        return Local(defn, Nichts, Falsch)
 
     @staticmethod
     def from_memory(defn: StackItem, offset: PointerOffset) -> "Local":
-        return Local(defn, offset, True)
+        return Local(defn, offset, Wahr)
 
     @staticmethod
     def register(name: str) -> "Local":
-        item = StackItem(name, "", False, True)
-        return Local(item, None, True)
+        item = StackItem(name, "", Falsch, Wahr)
+        return Local(item, Nichts, Wahr)
 
-    def kill(self) -> None:
-        self.in_local = False
-        self.memory_offset = None
+    def kill(self) -> Nichts:
+        self.in_local = Falsch
+        self.memory_offset = Nichts
 
     def in_memory(self) -> bool:
-        return self.memory_offset is not None or self.is_array()
+        return self.memory_offset is not Nichts or self.is_array()
 
     def is_dead(self) -> bool:
-        return not self.in_local and self.memory_offset is None
+        return not self.in_local and self.memory_offset is Nichts
 
     def copy(self) -> "Local":
         return Local(
@@ -216,13 +216,13 @@ def array_or_scalar(var: StackItem | Local) -> str:
     return "array" wenn var.is_array() sonst "scalar"
 
 klasse Stack:
-    def __init__(self) -> None:
+    def __init__(self) -> Nichts:
         self.base_offset = PointerOffset.zero()
         self.physical_sp = PointerOffset.zero()
         self.logical_sp = PointerOffset.zero()
         self.variables: list[Local] = []
 
-    def drop(self, var: StackItem, check_liveness: bool) -> None:
+    def drop(self, var: StackItem, check_liveness: bool) -> Nichts:
         self.logical_sp = self.logical_sp.pop(var)
         wenn self.variables:
             popped = self.variables.pop()
@@ -250,7 +250,7 @@ klasse Stack:
             sonst:
                 rename = ""
             wenn not popped.in_local:
-                wenn popped.memory_offset is None:
+                wenn popped.memory_offset is Nichts:
                     popped.memory_offset = self.logical_sp
                 assert popped.memory_offset == self.logical_sp, (popped, self.as_comment())
                 offset = popped.memory_offset - self.physical_sp
@@ -258,7 +258,7 @@ klasse Stack:
                     defn = f"{var.name} = &stack_pointer[{offset.to_c()}];\n"
                 sonst:
                     defn = f"{var.name} = stack_pointer[{offset.to_c()}];\n"
-                    popped.in_local = True
+                    popped.in_local = Wahr
             sonst:
                 defn = rename
             out.emit(defn)
@@ -272,13 +272,13 @@ klasse Stack:
         self._print(out)
         return Local.from_memory(var, self.base_offset)
 
-    def clear(self, out: CWriter) -> None:
+    def clear(self, out: CWriter) -> Nichts:
         "Flush to memory and clear variables stack"
         self.flush(out)
         self.variables = []
         self.base_offset = self.logical_sp
 
-    def push(self, var: Local) -> None:
+    def push(self, var: Local) -> Nichts:
         assert(var not in self.variables), var
         self.variables.append(var)
         self.logical_sp = self.logical_sp.push(var.item)
@@ -288,10 +288,10 @@ klasse Stack:
         out: CWriter,
         var: StackItem,
         stack_offset: PointerOffset,
-    ) -> None:
+    ) -> Nichts:
         out.emit(f"stack_pointer[{stack_offset.to_c()}] = {var.name};\n")
 
-    def _save_physical_sp(self, out: CWriter) -> None:
+    def _save_physical_sp(self, out: CWriter) -> Nichts:
         wenn self.physical_sp != self.logical_sp:
             diff = self.logical_sp - self.physical_sp
             out.start_line()
@@ -300,7 +300,7 @@ klasse Stack:
             self.physical_sp = self.logical_sp
             self._print(out)
 
-    def save_variables(self, out: CWriter) -> None:
+    def save_variables(self, out: CWriter) -> Nichts:
         out.start_line()
         var_offset = self.base_offset
         fuer var in self.variables:
@@ -316,7 +316,7 @@ klasse Stack:
                 self._print(out)
             var_offset = var_offset.push(var.item)
 
-    def flush(self, out: CWriter) -> None:
+    def flush(self, out: CWriter) -> Nichts:
         self._print(out)
         self.save_variables(out)
         self._save_physical_sp(out)
@@ -325,7 +325,7 @@ klasse Stack:
     def is_flushed(self) -> bool:
         fuer var in self.variables:
             wenn not var.in_memory():
-                return False
+                return Falsch
         return self.physical_sp == self.logical_sp
 
     def sp_offset(self) -> str:
@@ -337,7 +337,7 @@ klasse Stack:
             f"/* Variables=[{variables}]; base={self.base_offset.to_c()}; sp={self.physical_sp.to_c()}; logical_sp={self.logical_sp.to_c()} */"
         )
 
-    def _print(self, out: CWriter) -> None:
+    def _print(self, out: CWriter) -> Nichts:
         wenn PRINT_STACKS:
             out.emit(self.as_comment() + "\n")
 
@@ -359,7 +359,7 @@ klasse Stack:
             and self.variables == other.variables
         )
 
-    def align(self, other: "Stack", out: CWriter) -> None:
+    def align(self, other: "Stack", out: CWriter) -> Nichts:
         wenn self.logical_sp != other.logical_sp:
             raise StackError("Cannot align stacks: differing logical top")
         wenn self.physical_sp == other.physical_sp:
@@ -369,22 +369,22 @@ klasse Stack:
         out.emit(f"stack_pointer += {diff.to_c()};\n")
         self.physical_sp = other.physical_sp
 
-    def merge(self, other: "Stack", out: CWriter) -> None:
+    def merge(self, other: "Stack", out: CWriter) -> Nichts:
         wenn len(self.variables) != len(other.variables):
             raise StackError("Cannot merge stacks: differing variables")
         fuer self_var, other_var in zip(self.variables, other.variables):
             wenn self_var.name != other_var.name:
                 raise StackError(f"Mismatched variables on stack: {self_var.name} and {other_var.name}")
             self_var.in_local = self_var.in_local and other_var.in_local
-            wenn other_var.memory_offset is None:
-                self_var.memory_offset = None
+            wenn other_var.memory_offset is Nichts:
+                self_var.memory_offset = Nichts
         self.align(other, out)
         fuer self_var, other_var in zip(self.variables, other.variables):
-            wenn self_var.memory_offset is not None:
+            wenn self_var.memory_offset is not Nichts:
                 wenn self_var.memory_offset != other_var.memory_offset:
                     raise StackError(f"Mismatched stack depths fuer {self_var.name}: {self_var.memory_offset} and {other_var.memory_offset}")
-            sowenn other_var.memory_offset is None:
-                self_var.memory_offset = None
+            sowenn other_var.memory_offset is Nichts:
+                self_var.memory_offset = Nichts
 
 
 def stacks(inst: Instruction | PseudoInstruction) -> Iterator[StackEffect]:
@@ -397,7 +397,7 @@ def stacks(inst: Instruction | PseudoInstruction) -> Iterator[StackEffect]:
         yield inst.stack
 
 
-def apply_stack_effect(stack: Stack, effect: StackEffect) -> None:
+def apply_stack_effect(stack: Stack, effect: StackEffect) -> Nichts:
     locals: dict[str, Local] = {}
     null = CWriter.null()
     fuer var in reversed(effect.inputs):
@@ -408,7 +408,7 @@ def apply_stack_effect(stack: Stack, effect: StackEffect) -> None:
         wenn var.name in locals:
             local = locals[var.name]
         sonst:
-            local = Local.unused(var, None)
+            local = Local.unused(var, Nichts)
         stack.push(local)
 
 
@@ -444,11 +444,11 @@ klasse Storage:
             var.name != "unused" and
             (
                 var.in_local or
-                var.memory_offset is not None
+                var.memory_offset is not Nichts
             )
         )
 
-    def clear_inputs(self, reason:str) -> None:
+    def clear_inputs(self, reason:str) -> Nichts:
         while len(self.inputs) > self.peeks:
             tos = self.inputs.pop()
             wenn self.is_live(tos) and self.check_liveness:
@@ -457,7 +457,7 @@ klasse Storage:
                 )
             self.stack.drop(tos.item, self.check_liveness)
 
-    def clear_dead_inputs(self) -> None:
+    def clear_dead_inputs(self) -> Nichts:
         live = ""
         while len(self.inputs) > self.peeks:
             tos = self.inputs[-1]
@@ -472,7 +472,7 @@ klasse Storage:
                     f"Input '{var.name}' is not live, but '{live}' is"
                 )
 
-    def _push_defined_outputs(self) -> None:
+    def _push_defined_outputs(self) -> Nichts:
         defined_output = ""
         fuer output in self.outputs:
             wenn output.in_local and not output.memory_offset:
@@ -495,22 +495,22 @@ klasse Storage:
     def locals_cached(self) -> bool:
         fuer out in self.outputs:
             wenn out.in_local:
-                return True
-        return False
+                return Wahr
+        return Falsch
 
-    def flush(self, out: CWriter) -> None:
+    def flush(self, out: CWriter) -> Nichts:
         self.clear_dead_inputs()
         self._push_defined_outputs()
         self.stack.flush(out)
 
-    def save(self, out: CWriter) -> None:
+    def save(self, out: CWriter) -> Nichts:
         assert self.spilled >= 0
         wenn self.spilled == 0:
             out.start_line()
             out.emit_spill()
         self.spilled += 1
 
-    def save_inputs(self, out: CWriter) -> None:
+    def save_inputs(self, out: CWriter) -> Nichts:
         assert self.spilled >= 0
         wenn self.spilled == 0:
             self.clear_dead_inputs()
@@ -519,7 +519,7 @@ klasse Storage:
             out.emit_spill()
         self.spilled += 1
 
-    def reload(self, out: CWriter) -> None:
+    def reload(self, out: CWriter) -> Nichts:
         wenn self.spilled == 0:
             raise StackError("Cannot reload stack as it hasn't been saved")
         assert self.spilled > 0
@@ -529,7 +529,7 @@ klasse Storage:
             out.emit_reload()
 
     @staticmethod
-    def for_uop(stack: Stack, uop: Uop, out: CWriter, check_liveness: bool = True) -> "Storage":
+    def for_uop(stack: Stack, uop: Uop, out: CWriter, check_liveness: bool = Wahr) -> "Storage":
         inputs: list[Local] = []
         peeks: list[Local] = []
         fuer input in reversed(uop.stack.inputs):
@@ -565,7 +565,7 @@ klasse Storage:
         )
 
     @staticmethod
-    def check_names(locals: list[Local]) -> None:
+    def check_names(locals: list[Local]) -> Nichts:
         names: set[str] = set()
         fuer var in locals:
             wenn var.name == "unused":
@@ -574,7 +574,7 @@ klasse Storage:
                 raise StackError(f"Duplicate name {var.name}")
             names.add(var.name)
 
-    def sanity_check(self) -> None:
+    def sanity_check(self) -> Nichts:
         self.check_names(self.inputs)
         self.check_names(self.outputs)
         self.check_names(self.stack.variables)
@@ -582,10 +582,10 @@ klasse Storage:
     def is_flushed(self) -> bool:
         fuer var in self.outputs:
             wenn var.in_local and not var.memory_offset:
-                return False
+                return Falsch
         return self.stack.is_flushed()
 
-    def merge(self, other: "Storage", out: CWriter) -> None:
+    def merge(self, other: "Storage", out: CWriter) -> Nichts:
         self.sanity_check()
         wenn len(self.inputs) != len(other.inputs):
             self.clear_dead_inputs()
@@ -605,14 +605,14 @@ klasse Storage:
             var = self.outputs[0] wenn len(self.outputs) > len(other.outputs) sonst other.outputs[0]
             raise StackError(f"'{var.name}' is set on some paths, but not all")
         fuer var, other_var in zip(self.outputs, other.outputs):
-            wenn var.memory_offset is None:
-                other_var.memory_offset = None
-            sowenn other_var.memory_offset is None:
-                var.memory_offset = None
+            wenn var.memory_offset is Nichts:
+                other_var.memory_offset = Nichts
+            sowenn other_var.memory_offset is Nichts:
+                var.memory_offset = Nichts
         self.stack.merge(other.stack, out)
         self.sanity_check()
 
-    def push_outputs(self) -> None:
+    def push_outputs(self) -> Nichts:
         wenn self.spilled:
             raise StackError(f"Unbalanced stack spills")
         self.clear_inputs("at the end of the micro-op")
@@ -633,19 +633,19 @@ klasse Storage:
         outputs = ", ".join([var.compact_str() fuer var in self.outputs])
         return f"{stack_comment[:-2]}{next_line}inputs: {inputs} outputs: {outputs}*/"
 
-    def _print(self, out: CWriter) -> None:
+    def _print(self, out: CWriter) -> Nichts:
         wenn PRINT_STACKS:
             out.emit(self.as_comment() + "\n")
 
-    def close_inputs(self, out: CWriter) -> None:
+    def close_inputs(self, out: CWriter) -> Nichts:
 
-        tmp_defined = False
-        def close_named(close: str, name: str, overwrite: str) -> None:
+        tmp_defined = Falsch
+        def close_named(close: str, name: str, overwrite: str) -> Nichts:
             nonlocal tmp_defined
             wenn overwrite:
                 wenn not tmp_defined:
                     out.emit("_PyStackRef ")
-                    tmp_defined = True
+                    tmp_defined = Wahr
                 out.emit(f"tmp = {name};\n")
                 out.emit(f"{name} = {overwrite};\n")
                 self.stack.save_variables(out)
@@ -653,12 +653,12 @@ klasse Storage:
             sonst:
                 out.emit(f"{close}({name});\n")
 
-        def close_variable(var: Local, overwrite: str) -> None:
+        def close_variable(var: Local, overwrite: str) -> Nichts:
             nonlocal tmp_defined
             close = "PyStackRef_CLOSE"
             wenn "null" in var.name:
                 close = "PyStackRef_XCLOSE"
-            var.memory_offset = None
+            var.memory_offset = Nichts
             self.save(out)
             out.start_line()
             wenn var.size:
@@ -667,7 +667,7 @@ klasse Storage:
                 sonst:
                     wenn overwrite and not tmp_defined:
                         out.emit("_PyStackRef tmp;\n")
-                        tmp_defined = True
+                        tmp_defined = Wahr
                     out.emit(f"for (int _i = {var.size}; --_i >= 0;) {{\n")
                     close_named(close, f"{var.name}[_i]", overwrite)
                     out.emit("}\n")
@@ -679,20 +679,20 @@ klasse Storage:
         wenn not self.inputs:
             return
         lowest = self.inputs[0]
-        output: Local | None = None
+        output: Local | Nichts = Nichts
         fuer var in self.outputs:
             wenn var.is_array():
                 wenn len(self.inputs) > 1:
                     raise StackError("Cannot call DECREF_INPUTS with array output and more than one input")
                 output = var
             sowenn var.in_local:
-                wenn output is not None:
+                wenn output is not Nichts:
                     raise StackError("Cannot call DECREF_INPUTS with more than one live output")
                 output = var
-        wenn output is not None:
+        wenn output is not Nichts:
             wenn output.is_array():
                 assert len(self.inputs) == 1
-                self.stack.drop(self.inputs[0].item, False)
+                self.stack.drop(self.inputs[0].item, Falsch)
                 self.stack.push(output)
                 self.stack.flush(out)
                 close_variable(self.inputs[0], "")
@@ -702,28 +702,28 @@ klasse Storage:
             wenn var_size(lowest.item) != var_size(output.item):
                 raise StackError("Cannot call DECREF_INPUTS with live output not matching first input size")
             self.stack.flush(out)
-            lowest.in_local = True
+            lowest.in_local = Wahr
             close_variable(lowest, output.name)
-            assert lowest.memory_offset is not None
+            assert lowest.memory_offset is not Nichts
         fuer input in reversed(self.inputs[1:]):
             close_variable(input, "PyStackRef_NULL")
-        wenn output is None:
+        wenn output is Nichts:
             close_variable(self.inputs[0], "PyStackRef_NULL")
         fuer input in reversed(self.inputs[1:]):
             input.kill()
             self.stack.drop(input.item, self.check_liveness)
-        wenn output is None:
+        wenn output is Nichts:
             self.inputs[0].kill()
-        self.stack.drop(self.inputs[0].item, False)
-        output_in_place = self.outputs and output is self.outputs[0] and lowest.memory_offset is not None
+        self.stack.drop(self.inputs[0].item, Falsch)
+        output_in_place = self.outputs and output is self.outputs[0] and lowest.memory_offset is not Nichts
         wenn output_in_place:
             output.memory_offset = lowest.memory_offset  # type: ignore[union-attr]
         sonst:
             self.stack.flush(out)
-        wenn output is not None:
+        wenn output is not Nichts:
             self.stack.push(output)
         self.inputs = []
         wenn output_in_place:
             self.stack.flush(out)
-        wenn output is not None:
+        wenn output is not Nichts:
             output = self.stack.pop(output.item, out)

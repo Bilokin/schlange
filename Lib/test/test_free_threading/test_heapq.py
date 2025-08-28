@@ -60,7 +60,7 @@ klasse TestHeapq(unittest.TestCase):
                 local_list.append(item)
 
             # Each local list should be sorted
-            self.assertTrue(self.is_sorted_ascending(local_list))
+            self.assertWahr(self.is_sorted_ascending(local_list))
 
         run_concurrently(
             worker_func=heappop_func,
@@ -76,7 +76,7 @@ klasse TestHeapq(unittest.TestCase):
         def heappushpop_func(heap, pushpop_items):
             fuer item in pushpop_items:
                 popped_item = heapq.heappushpop(heap, item)
-                self.assertTrue(popped_item <= item)
+                self.assertWahr(popped_item <= item)
 
         run_concurrently(
             worker_func=heappushpop_func,
@@ -137,7 +137,7 @@ klasse TestHeapq(unittest.TestCase):
                 local_list.append(item)
 
             # Each local list should be sorted
-            self.assertTrue(self.is_sorted_descending(local_list))
+            self.assertWahr(self.is_sorted_descending(local_list))
 
         run_concurrently(
             worker_func=heappop_max_func,
@@ -153,7 +153,7 @@ klasse TestHeapq(unittest.TestCase):
         def heappushpop_max_func(max_heap, pushpop_items):
             fuer item in pushpop_items:
                 popped_item = heapq.heappushpop_max(max_heap, item)
-                self.assertTrue(popped_item >= item)
+                self.assertWahr(popped_item >= item)
 
         run_concurrently(
             worker_func=heappushpop_max_func,

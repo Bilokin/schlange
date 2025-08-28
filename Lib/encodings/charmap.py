@@ -22,24 +22,24 @@ klasse Codec(codecs.Codec):
     decode = codecs.charmap_decode
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def __init__(self, errors='strict', mapping=None):
+    def __init__(self, errors='strict', mapping=Nichts):
         codecs.IncrementalEncoder.__init__(self, errors)
         self.mapping = mapping
 
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return codecs.charmap_encode(input, self.errors, self.mapping)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def __init__(self, errors='strict', mapping=None):
+    def __init__(self, errors='strict', mapping=Nichts):
         codecs.IncrementalDecoder.__init__(self, errors)
         self.mapping = mapping
 
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         return codecs.charmap_decode(input, self.errors, self.mapping)[0]
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
 
-    def __init__(self,stream,errors='strict',mapping=None):
+    def __init__(self,stream,errors='strict',mapping=Nichts):
         codecs.StreamWriter.__init__(self,stream,errors)
         self.mapping = mapping
 
@@ -48,7 +48,7 @@ klasse StreamWriter(Codec,codecs.StreamWriter):
 
 klasse StreamReader(Codec,codecs.StreamReader):
 
-    def __init__(self,stream,errors='strict',mapping=None):
+    def __init__(self,stream,errors='strict',mapping=Nichts):
         codecs.StreamReader.__init__(self,stream,errors)
         self.mapping = mapping
 

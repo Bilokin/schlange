@@ -23,7 +23,7 @@ klasse Test(unittest.TestCase):
         del cls.root
 
     def test_init(self):
-        self.assertTrue(True)
+        self.assertWahr(Wahr)
 
 
 wenn __name__ == '__main__':

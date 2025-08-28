@@ -8,7 +8,7 @@ This exports:
   - os.pardir is a string representing the parent directory (always '..')
   - os.sep is the (or a most common) pathname separator ('/' or '\\')
   - os.extsep is the extension separator (always '.')
-  - os.altsep is the alternate pathname separator (None or '/')
+  - os.altsep is the alternate pathname separator (Nichts or '/')
   - os.pathsep is the component separator used in $PATH etc
   - os.linesep is the line separator in text files ('\n' or '\r\n')
   - os.defpath is the default search path fuer executables
@@ -208,13 +208,13 @@ SEEK_END = 2
 # Super directory utilities.
 # (Inspired by Eric Raymond; the doc strings are mostly his)
 
-def makedirs(name, mode=0o777, exist_ok=False):
-    """makedirs(name [, mode=0o777][, exist_ok=False])
+def makedirs(name, mode=0o777, exist_ok=Falsch):
+    """makedirs(name [, mode=0o777][, exist_ok=Falsch])
 
     Super-mkdir; create a leaf directory and all intermediate ones.  Works like
     mkdir, except that any intermediate path segment (not just the rightmost)
     will be created wenn it does not exist. If the target directory already
-    exists, raise an OSError wenn exist_ok is False. Otherwise no exception is
+    exists, raise an OSError wenn exist_ok is Falsch. Otherwise no exception is
     raised.  This is recursive.
 
     """
@@ -294,7 +294,7 @@ __all__.extend(["makedirs", "removedirs", "renames"])
 # regular files.
 _walk_symlinks_as_files = object()
 
-def walk(top, topdown=True, onerror=None, followlinks=False):
+def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
     """Directory tree generator.
 
     For each directory in the directory tree rooted at top (including top
@@ -378,13 +378,13 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
                 fuer entry in entries:
                     try:
                         wenn followlinks is _walk_symlinks_as_files:
-                            is_dir = entry.is_dir(follow_symlinks=False) and not entry.is_junction()
+                            is_dir = entry.is_dir(follow_symlinks=Falsch) and not entry.is_junction()
                         sonst:
                             is_dir = entry.is_dir()
                     except OSError:
                         # If is_dir() raises an OSError, consider the entry not to
                         # be a directory, same behaviour as os.path.isdir().
-                        is_dir = False
+                        is_dir = Falsch
 
                     wenn is_dir:
                         dirs.append(entry.name)
@@ -393,9 +393,9 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
 
                     wenn not topdown and is_dir:
                         # Bottom-up: traverse into sub-directory, but exclude
-                        # symlinks to directories wenn followlinks is False
+                        # symlinks to directories wenn followlinks is Falsch
                         wenn followlinks:
-                            walk_into = True
+                            walk_into = Wahr
                         sonst:
                             try:
                                 is_symlink = entry.is_symlink()
@@ -403,13 +403,13 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
                                 # If is_symlink() raises an OSError, consider the
                                 # entry not to be a symbolic link, same behaviour
                                 # as os.path.islink().
-                                is_symlink = False
+                                is_symlink = Falsch
                             walk_into = not is_symlink
 
                         wenn walk_into:
                             walk_dirs.append(entry.path)
         except OSError as error:
-            wenn onerror is not None:
+            wenn onerror is not Nichts:
                 onerror(error)
             continue
 
@@ -436,7 +436,7 @@ __all__.append("walk")
 
 wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
 
-    def fwalk(top=".", topdown=True, onerror=None, *, follow_symlinks=False, dir_fd=None):
+    def fwalk(top=".", topdown=Wahr, onerror=Nichts, *, follow_symlinks=Falsch, dir_fd=Nichts):
         """Directory tree generator.
 
         This behaves exactly like walk(), except that it yields a 4-tuple
@@ -447,9 +447,9 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
         and `dirfd` is a file descriptor referring to the directory `dirpath`.
 
         The advantage of fwalk() over walk() is that it's safe against symlink
-        races (when follow_symlinks is False).
+        races (when follow_symlinks is Falsch).
 
-        If dir_fd is not None, it should be a file descriptor open to a directory,
+        If dir_fd is not Nichts, it should be a file descriptor open to a directory,
           and top should be relative; top will then be relative to that directory.
           (dir_fd is always supported fuer fwalk.)
 
@@ -471,7 +471,7 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
         """
         sys.audit("os.fwalk", top, topdown, onerror, follow_symlinks, dir_fd)
         top = fspath(top)
-        stack = [(_fwalk_walk, (True, dir_fd, top, top, None))]
+        stack = [(_fwalk_walk, (Wahr, dir_fd, top, top, Nichts))]
         isbytes = isinstance(top, bytes)
         try:
             while stack:
@@ -506,15 +506,15 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
             wenn not follow_symlinks:
                 # Note: To guard against symlink races, we use the standard
                 # lstat()/open()/fstat() trick.
-                wenn entry is None:
-                    orig_st = stat(topname, follow_symlinks=False, dir_fd=dirfd)
+                wenn entry is Nichts:
+                    orig_st = stat(topname, follow_symlinks=Falsch, dir_fd=dirfd)
                 sonst:
-                    orig_st = entry.stat(follow_symlinks=False)
+                    orig_st = entry.stat(follow_symlinks=Falsch)
             topfd = open(topname, O_RDONLY | O_NONBLOCK, dir_fd=dirfd)
         except OSError as err:
             wenn isroot:
                 raise
-            wenn onerror is not None:
+            wenn onerror is not Nichts:
                 onerror(err)
             return
         stack.append((_fwalk_close, topfd))
@@ -527,7 +527,7 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
         scandir_it = scandir(topfd)
         dirs = []
         nondirs = []
-        entries = None wenn topdown or follow_symlinks sonst []
+        entries = Nichts wenn topdown or follow_symlinks sonst []
         fuer entry in scandir_it:
             name = entry.name
             wenn isbytes:
@@ -535,7 +535,7 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
             try:
                 wenn entry.is_dir():
                     dirs.append(name)
-                    wenn entries is not None:
+                    wenn entries is not Nichts:
                         entries.append(entry)
                 sonst:
                     nondirs.append(name)
@@ -553,13 +553,13 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
             stack.append((_fwalk_yield, (toppath, dirs, nondirs, topfd)))
 
         toppath = path.join(toppath, toppath[:0])  # Add trailing slash.
-        wenn entries is None:
+        wenn entries is Nichts:
             stack.extend(
-                (_fwalk_walk, (False, topfd, toppath + name, name, None))
+                (_fwalk_walk, (Falsch, topfd, toppath + name, name, Nichts))
                 fuer name in dirs[::-1])
         sonst:
             stack.extend(
-                (_fwalk_walk, (False, topfd, toppath + name, name, entry))
+                (_fwalk_walk, (Falsch, topfd, toppath + name, name, entry))
                 fuer name, entry in zip(dirs[::-1], entries[::-1]))
 
     __all__.append("fwalk")
@@ -614,8 +614,8 @@ def execvpe(file, args, env):
 
 __all__.extend(["execl","execle","execlp","execlpe","execvp","execvpe"])
 
-def _execvpe(file, args, env=None):
-    wenn env is not None:
+def _execvpe(file, args, env=Nichts):
+    wenn env is not Nichts:
         exec_func = execve
         argrest = (args, env)
     sonst:
@@ -626,7 +626,7 @@ def _execvpe(file, args, env=None):
     wenn path.dirname(file):
         exec_func(file, *argrest)
         return
-    saved_exc = None
+    saved_exc = Nichts
     path_list = get_exec_path(env)
     wenn name != 'nt':
         file = fsencode(file)
@@ -639,18 +639,18 @@ def _execvpe(file, args, env=None):
             last_exc = e
         except OSError as e:
             last_exc = e
-            wenn saved_exc is None:
+            wenn saved_exc is Nichts:
                 saved_exc = e
-    wenn saved_exc is not None:
+    wenn saved_exc is not Nichts:
         raise saved_exc
     raise last_exc
 
 
-def get_exec_path(env=None):
+def get_exec_path(env=Nichts):
     """Returns the sequence of directories that will be searched fuer the
     named executable (similar to a shell) when launching a process.
 
-    *env* must be an environment variable dict or None.  If *env* is None,
+    *env* must be an environment variable dict or Nichts.  If *env* is Nichts,
     os.environ will be used.
     """
     # Use a local import instead of a global import to limit the number of
@@ -658,7 +658,7 @@ def get_exec_path(env=None):
     # Python. It may also avoid a bootstrap issue.
     import warnings
 
-    wenn env is None:
+    wenn env is Nichts:
         env = environ
 
     # {b'PATH': ...}.get('PATH') and {'PATH': ...}.get(b'PATH') emit a
@@ -669,7 +669,7 @@ def get_exec_path(env=None):
         try:
             path_list = env.get('PATH')
         except TypeError:
-            path_list = None
+            path_list = Nichts
 
         wenn supports_bytes_environ:
             try:
@@ -677,15 +677,15 @@ def get_exec_path(env=None):
             except (KeyError, TypeError):
                 pass
             sonst:
-                wenn path_list is not None:
+                wenn path_list is not Nichts:
                     raise ValueError(
                         "env cannot contain 'PATH' and b'PATH' keys")
                 path_list = path_listb
 
-            wenn path_list is not None and isinstance(path_list, bytes):
+            wenn path_list is not Nichts and isinstance(path_list, bytes):
                 path_list = fsdecode(path_list)
 
-    wenn path_list is None:
+    wenn path_list is Nichts:
         path_list = defpath
     return path_list.split(pathsep)
 
@@ -706,7 +706,7 @@ klasse _Environ(MutableMapping):
             value = self._data[self.encodekey(key)]
         except KeyError:
             # raise KeyError with the original key value
-            raise KeyError(key) from None
+            raise KeyError(key) from Nichts
         return self.decodevalue(value)
 
     def __setitem__(self, key, value):
@@ -722,7 +722,7 @@ klasse _Environ(MutableMapping):
             del self._data[encodedkey]
         except KeyError:
             # raise KeyError with the original key value
-            raise KeyError(key) from None
+            raise KeyError(key) from Nichts
 
     def __iter__(self):
         # list() from dict object is an atomic operation
@@ -814,8 +814,8 @@ wenn _exists("_create_environ"):
         env_data.update(data)
 
 
-def getenv(key, default=None):
-    """Get an environment variable, return None wenn it doesn't exist.
+def getenv(key, default=Nichts):
+    """Get an environment variable, return Nichts wenn it doesn't exist.
     The optional second argument can specify an alternate default.
     key, default and the result are str."""
     return environ.get(key, default)
@@ -835,8 +835,8 @@ wenn supports_bytes_environ:
         _check_bytes, bytes)
     del _check_bytes
 
-    def getenvb(key, default=None):
-        """Get an environment variable, return None wenn it doesn't exist.
+    def getenvb(key, default=Nichts):
+        """Get an environment variable, return Nichts wenn it doesn't exist.
         The optional second argument can specify an alternate default.
         key, default and the result are bytes."""
         return environb.get(key, default)
@@ -898,7 +898,7 @@ wenn _exists("fork") and not _exists("spawnv") and _exists("execv"):
         wenn not pid:
             # Child
             try:
-                wenn env is None:
+                wenn env is Nichts:
                     func(file, args)
                 sonst:
                     func(file, args, env)
@@ -922,7 +922,7 @@ Execute file with arguments from args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, None, execv)
+        return _spawnvef(mode, file, args, Nichts, execv)
 
     def spawnve(mode, file, args, env):
         """spawnve(mode, file, args, env) -> integer
@@ -944,7 +944,7 @@ args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, None, execvp)
+        return _spawnvef(mode, file, args, Nichts, execvp)
 
     def spawnvpe(mode, file, args, env):
         """spawnvpe(mode, file, args, env) -> integer
@@ -1024,18 +1024,18 @@ wenn sys.platform != 'vxworks':
             raise TypeError("invalid cmd type (%s, expected string)" % type(cmd))
         wenn mode not in ("r", "w"):
             raise ValueError("invalid mode %r" % mode)
-        wenn buffering == 0 or buffering is None:
+        wenn buffering == 0 or buffering is Nichts:
             raise ValueError("popen() does not support unbuffered streams")
         import subprocess
         wenn mode == "r":
             proc = subprocess.Popen(cmd,
-                                    shell=True, text=True,
+                                    shell=Wahr, text=Wahr,
                                     stdout=subprocess.PIPE,
                                     bufsize=buffering)
             return _wrap_close(proc.stdout, proc)
         sonst:
             proc = subprocess.Popen(cmd,
-                                    shell=True, text=True,
+                                    shell=Wahr, text=Wahr,
                                     stdin=subprocess.PIPE,
                                     bufsize=buffering)
             return _wrap_close(proc.stdin, proc)
@@ -1049,7 +1049,7 @@ wenn sys.platform != 'vxworks':
             self._stream.close()
             returncode = self._proc.wait()
             wenn returncode == 0:
-                return None
+                return Nichts
             wenn name == 'nt':
                 return returncode
             sonst:
@@ -1066,7 +1066,7 @@ wenn sys.platform != 'vxworks':
     __all__.append("popen")
 
 # Supply os.fdopen()
-def fdopen(fd, mode="r", buffering=-1, encoding=None, *args, **kwargs):
+def fdopen(fd, mode="r", buffering=-1, encoding=Nichts, *args, **kwargs):
     wenn not isinstance(fd, int):
         raise TypeError("invalid fd type (%s, expected integer)" % type(fd))
     import io
@@ -1100,9 +1100,9 @@ def _fspath(path):
             raise TypeError("expected str, bytes or os.PathLike object, "
                             "not " + path_type.__name__)
     except TypeError:
-        wenn path_type.__fspath__ is None:
+        wenn path_type.__fspath__ is Nichts:
             raise TypeError("expected str, bytes or os.PathLike object, "
-                            "not " + path_type.__name__) from None
+                            "not " + path_type.__name__) from Nichts
         sonst:
             raise
     wenn isinstance(path_repr, (str, bytes)):
@@ -1147,7 +1147,7 @@ wenn name == 'nt':
             self._remove_dll_directory = remove_dll_directory
         def close(self):
             self._remove_dll_directory(self._cookie)
-            self.path = None
+            self.path = Nichts
         def __enter__(self):
             return self
         def __exit__(self, *args):
@@ -1182,7 +1182,7 @@ wenn _exists('sched_getaffinity') and sys._get_cpu_count_config() < 0:
         Get the number of CPUs of the current process.
 
         Return the number of logical CPUs usable by the calling thread of the
-        current process. Return None wenn indeterminable.
+        current process. Return Nichts wenn indeterminable.
         """
         return len(sched_getaffinity(0))
 sonst:

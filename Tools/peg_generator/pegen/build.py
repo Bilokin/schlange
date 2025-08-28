@@ -25,12 +25,12 @@ Incomplete = Any  # TODO: install `types-setuptools` and remove this alias
 def get_extra_flags(compiler_flags: str, compiler_py_flags_nodist: str) -> List[str]:
     flags = sysconfig.get_config_var(compiler_flags)
     py_flags_nodist = sysconfig.get_config_var(compiler_py_flags_nodist)
-    wenn flags is None or py_flags_nodist is None:
+    wenn flags is Nichts or py_flags_nodist is Nichts:
         return []
     return f"{flags} {py_flags_nodist}".split()
 
 
-def fixup_build_ext(cmd: Incomplete) -> None:
+def fixup_build_ext(cmd: Incomplete) -> Nichts:
     """Function needed to make build_ext tests pass.
 
     When Python was built with --enable-shared on Unix, -L. is not enough to
@@ -59,7 +59,7 @@ def fixup_build_ext(cmd: Incomplete) -> None:
         # library_dirs to the Extension() instance because that doesn't get
         # plumbed through to the final compiler command.
         runshared = sysconfig.get_config_var("RUNSHARED")
-        wenn runshared is None:
+        wenn runshared is Nichts:
             cmd.library_dirs = ["."]
         sonst:
             wenn sys.platform == "darwin":
@@ -71,11 +71,11 @@ def fixup_build_ext(cmd: Incomplete) -> None:
 
 def compile_c_extension(
     generated_source_path: str,
-    build_dir: Optional[str] = None,
-    verbose: bool = False,
-    keep_asserts: bool = True,
-    disable_optimization: bool = False,
-    library_dir: Optional[str] = None,
+    build_dir: Optional[str] = Nichts,
+    verbose: bool = Falsch,
+    keep_asserts: bool = Wahr,
+    disable_optimization: bool = Falsch,
+    library_dir: Optional[str] = Nichts,
 ) -> pathlib.Path:
     """Compile the generated source fuer a parser generator into an extension module.
 
@@ -240,7 +240,7 @@ def compile_c_extension(
 
 
 def build_parser(
-    grammar_file: str, verbose_tokenizer: bool = False, verbose_parser: bool = False
+    grammar_file: str, verbose_tokenizer: bool = Falsch, verbose_parser: bool = Falsch
 ) -> Tuple[Grammar, Parser, Tokenizer]:
     with open(grammar_file) as file:
         tokenizer = Tokenizer(tokenize.generate_tokens(file.readline), verbose=verbose_tokenizer)
@@ -287,10 +287,10 @@ def build_c_generator(
     grammar_file: str,
     tokens_file: str,
     output_file: str,
-    compile_extension: bool = False,
-    verbose_c_extension: bool = False,
-    keep_asserts_in_extension: bool = True,
-    skip_actions: bool = False,
+    compile_extension: bool = Falsch,
+    verbose_c_extension: bool = Falsch,
+    keep_asserts_in_extension: bool = Wahr,
+    skip_actions: bool = Falsch,
 ) -> ParserGenerator:
     with open(tokens_file, "r") as tok_file:
         all_tokens, exact_tok, non_exact_tok = generate_token_definitions(tok_file)
@@ -315,7 +315,7 @@ def build_python_generator(
     grammar: Grammar,
     grammar_file: str,
     output_file: str,
-    skip_actions: bool = False,
+    skip_actions: bool = Falsch,
 ) -> ParserGenerator:
     with open(output_file, "w") as file:
         gen: ParserGenerator = PythonParserGenerator(grammar, file)  # TODO: skip_actions
@@ -327,12 +327,12 @@ def build_c_parser_and_generator(
     grammar_file: str,
     tokens_file: str,
     output_file: str,
-    compile_extension: bool = False,
-    verbose_tokenizer: bool = False,
-    verbose_parser: bool = False,
-    verbose_c_extension: bool = False,
-    keep_asserts_in_extension: bool = True,
-    skip_actions: bool = False,
+    compile_extension: bool = Falsch,
+    verbose_tokenizer: bool = Falsch,
+    verbose_parser: bool = Falsch,
+    verbose_c_extension: bool = Falsch,
+    keep_asserts_in_extension: bool = Wahr,
+    skip_actions: bool = Falsch,
 ) -> Tuple[Grammar, Parser, Tokenizer, ParserGenerator]:
     """Generate rules, C parser, tokenizer, parser generator fuer a given grammar
 
@@ -341,15 +341,15 @@ def build_c_parser_and_generator(
         tokens_file (string): Path fuer the tokens file
         output_file (string): Path fuer the output file
         compile_extension (bool, optional): Whether to compile the C extension.
-          Defaults to False.
+          Defaults to Falsch.
         verbose_tokenizer (bool, optional): Whether to display additional output
-          when generating the tokenizer. Defaults to False.
+          when generating the tokenizer. Defaults to Falsch.
         verbose_parser (bool, optional): Whether to display additional output
-          when generating the parser. Defaults to False.
+          when generating the parser. Defaults to Falsch.
         verbose_c_extension (bool, optional): Whether to display additional
-          output when compiling the C extension . Defaults to False.
+          output when compiling the C extension . Defaults to Falsch.
         keep_asserts_in_extension (bool, optional): Whether to keep the assert statements
-          when compiling the extension module. Defaults to True.
+          when compiling the extension module. Defaults to Wahr.
         skip_actions (bool, optional): Whether to pretend no rule has any actions.
     """
     grammar, parser, tokenizer = build_parser(grammar_file, verbose_tokenizer, verbose_parser)
@@ -370,9 +370,9 @@ def build_c_parser_and_generator(
 def build_python_parser_and_generator(
     grammar_file: str,
     output_file: str,
-    verbose_tokenizer: bool = False,
-    verbose_parser: bool = False,
-    skip_actions: bool = False,
+    verbose_tokenizer: bool = Falsch,
+    verbose_parser: bool = Falsch,
+    skip_actions: bool = Falsch,
 ) -> Tuple[Grammar, Parser, Tokenizer, ParserGenerator]:
     """Generate rules, python parser, tokenizer, parser generator fuer a given grammar
 
@@ -380,9 +380,9 @@ def build_python_parser_and_generator(
         grammar_file (string): Path fuer the grammar file
         output_file (string): Path fuer the output file
         verbose_tokenizer (bool, optional): Whether to display additional output
-          when generating the tokenizer. Defaults to False.
+          when generating the tokenizer. Defaults to Falsch.
         verbose_parser (bool, optional): Whether to display additional output
-          when generating the parser. Defaults to False.
+          when generating the parser. Defaults to Falsch.
         skip_actions (bool, optional): Whether to pretend no rule has any actions.
     """
     grammar, parser, tokenizer = build_parser(grammar_file, verbose_tokenizer, verbose_parser)

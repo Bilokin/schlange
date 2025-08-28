@@ -27,10 +27,10 @@ import _pyio  # noqa: F401
 @unittest.skipUnless(os.name == 'posix', 'tests requires a posix system.')
 klasse TestFileIOSignalInterrupt:
     def setUp(self):
-        self._process = None
+        self._process = Nichts
 
     def tearDown(self):
-        wenn self._process and self._process.poll() is None:
+        wenn self._process and self._process.poll() is Nichts:
             try:
                 self._process.kill()
             except OSError:
@@ -46,7 +46,7 @@ klasse TestFileIOSignalInterrupt:
                 self.modname)
 
     def fail_with_process_info(self, why, stdout=b'', stderr=b'',
-                               communicate=True):
+                               communicate=Wahr):
         """A common way to cleanup and fail with useful debug output.
 
         Kills the process wenn it is still running, collects remaining output
@@ -56,10 +56,10 @@ klasse TestFileIOSignalInterrupt:
             why: Text to go after "Error from IO process" in the message.
             stdout, stderr: standard output and error from the process so
                 far to include in the error message.
-            communicate: bool, when True we call communicate() on the process
+            communicate: bool, when Wahr we call communicate() on the process
                 after killing it to gather additional output.
         """
-        wenn self._process.poll() is None:
+        wenn self._process.poll() is Nichts:
             time.sleep(0.1)  # give it time to finish printing the error.
             try:
                 self._process.terminate()  # Ensure it dies.
@@ -140,7 +140,7 @@ klasse TestFileIOSignalInterrupt:
         wenn self._process.returncode:
             self.fail_with_process_info(
                     'exited rc=%d' % self._process.returncode,
-                    stdout, stderr, communicate=False)
+                    stdout, stderr, communicate=Falsch)
         # PASS!
 
     # String format fuer the read_and_verify_code used by read methods.
@@ -216,7 +216,7 @@ klasse TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
     def _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a TextIOWrapper."""
         return ('import %s as io ;'
-                'infile = io.open(sys.stdin.fileno(), encoding="utf-8", newline=None) ;'
+                'infile = io.open(sys.stdin.fileno(), encoding="utf-8", newline=Nichts) ;'
                 'assert isinstance(infile, io.TextIOWrapper)' %
                 self.modname)
 

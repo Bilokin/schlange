@@ -257,7 +257,7 @@ klasse Heap(object):
 
     def _free_pending_blocks(self):
         # Free all the blocks in the pending list - called with the lock held.
-        while True:
+        while Wahr:
             try:
                 block = self._pending_free_blocks.pop()
             except IndexError:
@@ -279,7 +279,7 @@ klasse Heap(object):
             raise ValueError(
                 "My pid ({0:n}) is not last pid {1:n}".format(
                     os.getpid(),self._lastpid))
-        wenn not self._lock.acquire(False):
+        wenn not self._lock.acquire(Falsch):
             # can't acquire the lock right now, add the block to the list of
             # pending blocks to free
             self._pending_free_blocks.append(block)

@@ -23,9 +23,9 @@ DEFAULT_OUTPUT = ROOT / "Include/internal/pycore_uop_ids.h"
 
 def generate_uop_ids(
     filenames: list[str], analysis: Analysis, outfile: TextIO, distinct_namespace: bool
-) -> None:
+) -> Nichts:
     write_header(__file__, filenames, outfile)
-    out = CWriter(outfile, 0, False)
+    out = CWriter(outfile, 0, Falsch)
     with out.header_guard("Py_CORE_UOP_IDS_H"):
         next_id = 1 wenn distinct_namespace sonst 300
         # These two are first by convention

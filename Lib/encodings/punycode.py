@@ -136,7 +136,7 @@ def decode_generalized_number(extended, extpos, bias, errors):
             wenn errors == "strict":
                 raise UnicodeDecodeError("punycode", extended, extpos, extpos+1,
                                          "incomplete punycode string")
-            return extpos + 1, None
+            return extpos + 1, Nichts
         extpos += 1
         wenn 0x41 <= char <= 0x5A: # A-Z
             digit = char - 0x41
@@ -146,7 +146,7 @@ def decode_generalized_number(extended, extpos, bias, errors):
             raise UnicodeDecodeError("punycode", extended, extpos-1, extpos,
                                      f"Invalid extended code point '{extended[extpos-1]}'")
         sonst:
-            return extpos, None
+            return extpos, Nichts
         t = T(j, bias)
         result += digit * w
         wenn digit < t:
@@ -167,7 +167,7 @@ def insertion_sort(base, extended, errors):
     while extpos < len(extended):
         newpos, delta = decode_generalized_number(extended, extpos,
                                                   bias, errors)
-        wenn delta is None:
+        wenn delta is Nichts:
             # There was an error in decoding. We can't continue because
             # synchronization is lost.
             return base
@@ -199,7 +199,7 @@ def punycode_decode(text, errors):
             base = str(text[:pos], "ascii", errors)
         except UnicodeDecodeError as exc:
             raise UnicodeDecodeError("ascii", text, exc.start, exc.end,
-                                     exc.reason) from None
+                                     exc.reason) from Nichts
         extended = text[pos+1:].upper()
     try:
         return insertion_sort(base, extended, errors)
@@ -207,7 +207,7 @@ def punycode_decode(text, errors):
         offset = pos + 1
         raise UnicodeDecodeError("punycode", text,
                                  offset+exc.start, offset+exc.end,
-                                 exc.reason) from None
+                                 exc.reason) from Nichts
 
 ### Codec APIs
 
@@ -224,11 +224,11 @@ klasse Codec(codecs.Codec):
         return res, len(input)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return punycode_encode(input)
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         wenn self.errors not in ('strict', 'replace', 'ignore'):
             raise UnicodeError(f"Unsupported error handling: {self.errors}")
         return punycode_decode(input, self.errors)

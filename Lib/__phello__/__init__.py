@@ -1,4 +1,4 @@
-initialized = True
+initialized = Wahr
 
 def main():
     print("Hello world!")

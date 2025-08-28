@@ -11,7 +11,7 @@ c_stat = import_fresh_module('stat', fresh=['_stat'])
 py_stat = import_fresh_module('stat', blocked=['_stat'])
 
 klasse TestFilemode:
-    statmod = None
+    statmod = Nichts
 
     file_flags = {'SF_APPEND', 'SF_ARCHIVED', 'SF_IMMUTABLE', 'SF_NOUNLINK',
                   'SF_SNAPSHOT', 'SF_SETTABLE', 'SF_RESTRICTED', 'SF_FIRMLINK',
@@ -89,7 +89,7 @@ klasse TestFilemode:
                 pass
     tearDown = setUp
 
-    def get_mode(self, fname=TESTFN, lstat=True):
+    def get_mode(self, fname=TESTFN, lstat=Wahr):
         wenn lstat:
             st_mode = os.lstat(fname).st_mode
         sonst:
@@ -104,15 +104,15 @@ klasse TestFilemode:
         # test that just one function returns true
         testname = "S_IS" + name
         fuer funcname in self.format_funcs:
-            func = getattr(self.statmod, funcname, None)
-            wenn func is None:
+            func = getattr(self.statmod, funcname, Nichts)
+            wenn func is Nichts:
                 wenn funcname == testname:
                     raise ValueError(funcname)
                 continue
             wenn funcname == testname:
-                self.assertTrue(func(mode))
+                self.assertWahr(func(mode))
             sonst:
-                self.assertFalse(func(mode))
+                self.assertFalsch(func(mode))
 
     @os_helper.skip_unless_working_chmod
     def test_mode(self):
@@ -203,13 +203,13 @@ klasse TestFilemode:
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
     def test_devices(self):
         wenn os.path.exists(os.devnull):
-            st_mode, modestr = self.get_mode(os.devnull, lstat=False)
+            st_mode, modestr = self.get_mode(os.devnull, lstat=Falsch)
             self.assertEqual(modestr[0], 'c')
             self.assertS_IS("CHR", st_mode)
         # Linux block devices, BSD has no block devices anymore
         fuer blockdev in ("/dev/sda", "/dev/hda"):
             wenn os.path.exists(blockdev):
-                st_mode, modestr = self.get_mode(blockdev, lstat=False)
+                st_mode, modestr = self.get_mode(blockdev, lstat=Falsch)
                 self.assertEqual(modestr[0], 'b')
                 self.assertS_IS("BLK", st_mode)
                 break
@@ -237,20 +237,20 @@ klasse TestFilemode:
             self.assertIsInstance(modvalue, int)
         fuer key in self.format_funcs:
             func = getattr(self.statmod, key)
-            self.assertTrue(callable(func))
+            self.assertWahr(callable(func))
             self.assertEqual(func(0), 0)
 
     def test_flags_consistent(self):
-        self.assertFalse(self.statmod.UF_SETTABLE & self.statmod.SF_SETTABLE)
+        self.assertFalsch(self.statmod.UF_SETTABLE & self.statmod.SF_SETTABLE)
 
         fuer flag in self.file_flags:
             wenn flag.startswith("UF"):
-                self.assertTrue(getattr(self.statmod, flag) & self.statmod.UF_SETTABLE, f"{flag} not in UF_SETTABLE")
+                self.assertWahr(getattr(self.statmod, flag) & self.statmod.UF_SETTABLE, f"{flag} not in UF_SETTABLE")
             sowenn is_apple and self.statmod is c_stat and flag == 'SF_DATALESS':
-                self.assertTrue(self.statmod.SF_DATALESS & self.statmod.SF_SYNTHETIC, "SF_DATALESS not in SF_SYNTHETIC")
-                self.assertFalse(self.statmod.SF_DATALESS & self.statmod.SF_SETTABLE, "SF_DATALESS in SF_SETTABLE")
+                self.assertWahr(self.statmod.SF_DATALESS & self.statmod.SF_SYNTHETIC, "SF_DATALESS not in SF_SYNTHETIC")
+                self.assertFalsch(self.statmod.SF_DATALESS & self.statmod.SF_SETTABLE, "SF_DATALESS in SF_SETTABLE")
             sonst:
-                self.assertTrue(getattr(self.statmod, flag) & self.statmod.SF_SETTABLE, f"{flag} notin SF_SETTABLE")
+                self.assertWahr(getattr(self.statmod, flag) & self.statmod.SF_SETTABLE, f"{flag} notin SF_SETTABLE")
 
     @unittest.skipUnless(sys.platform == "win32",
                          "FILE_ATTRIBUTE_* constants are Win32 specific")
@@ -286,7 +286,7 @@ klasse TestFilemode:
         self.assertEqual(self.statmod.SF_FIRMLINK, 0x00800000)
         self.assertEqual(self.statmod.SF_DATALESS, 0x40000000)
 
-        self.assertFalse(isinstance(self.statmod.S_IFMT, int))
+        self.assertFalsch(isinstance(self.statmod.S_IFMT, int))
         self.assertEqual(self.statmod.S_IFIFO, 0o010000)
         self.assertEqual(self.statmod.S_IFCHR, 0o020000)
         self.assertEqual(self.statmod.S_IFDIR, 0o040000)
@@ -321,7 +321,7 @@ klasse TestFilemode:
 
 
 
-@unittest.skipIf(c_stat is None, 'need _stat extension')
+@unittest.skipIf(c_stat is Nichts, 'need _stat extension')
 klasse TestFilemodeCStat(TestFilemode, unittest.TestCase):
     statmod = c_stat
 

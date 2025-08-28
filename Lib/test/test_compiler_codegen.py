@@ -22,11 +22,11 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
         self.assertInstructionsMatch_recursive(insts, expected_insts)
 
     def test_if_expression(self):
-        snippet = "42 wenn True sonst 24"
+        snippet = "42 wenn Wahr sonst 24"
         false_lbl = self.Label()
         expected = [
             ('RESUME', 0, 0),
-            ('ANNOTATIONS_PLACEHOLDER', None),
+            ('ANNOTATIONS_PLACEHOLDER', Nichts),
             ('LOAD_CONST', 0, 1),
             ('TO_BOOL', 0, 1),
             ('POP_JUMP_IF_FALSE', false_lbl := self.Label(), 1),
@@ -35,9 +35,9 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
             false_lbl,
             ('LOAD_CONST', 2, 1),  # 24
             exit_lbl,
-            ('POP_TOP', None),
+            ('POP_TOP', Nichts),
             ('LOAD_CONST', 1),
-            ('RETURN_VALUE', None),
+            ('RETURN_VALUE', Nichts),
         ]
         self.codegen_test(snippet, expected)
 
@@ -46,24 +46,24 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
         false_lbl = self.Label()
         expected = [
             ('RESUME', 0, 0),
-            ('ANNOTATIONS_PLACEHOLDER', None),
+            ('ANNOTATIONS_PLACEHOLDER', Nichts),
             ('LOAD_NAME', 0, 1),
-            ('GET_ITER', None, 1),
+            ('GET_ITER', Nichts, 1),
             loop_lbl := self.Label(),
             ('FOR_ITER', exit_lbl := self.Label(), 1),
-            ('NOP', None, 1, 1),
+            ('NOP', Nichts, 1, 1),
             ('STORE_NAME', 1, 1),
             ('LOAD_NAME', 2, 2),
-            ('PUSH_NULL', None, 2),
+            ('PUSH_NULL', Nichts, 2),
             ('LOAD_NAME', 1, 2),
             ('CALL', 1, 2),
-            ('POP_TOP', None),
+            ('POP_TOP', Nichts),
             ('JUMP', loop_lbl),
             exit_lbl,
-            ('END_FOR', None),
-            ('POP_ITER', None),
+            ('END_FOR', Nichts),
+            ('POP_ITER', Nichts),
             ('LOAD_CONST', 0),
-            ('RETURN_VALUE', None),
+            ('RETURN_VALUE', Nichts),
         ]
         self.codegen_test(snippet, expected)
 
@@ -75,21 +75,21 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
         expected = [
             # Function definition
             ('RESUME', 0),
-            ('ANNOTATIONS_PLACEHOLDER', None),
+            ('ANNOTATIONS_PLACEHOLDER', Nichts),
             ('LOAD_CONST', 0),
-            ('MAKE_FUNCTION', None),
+            ('MAKE_FUNCTION', Nichts),
             ('STORE_NAME', 0),
             ('LOAD_CONST', 1),
-            ('RETURN_VALUE', None),
+            ('RETURN_VALUE', Nichts),
             [
                 # Function body
                 ('RESUME', 0),
                 ('LOAD_FAST', 0),
                 ('LOAD_CONST', 42),
                 ('BINARY_OP', 0),
-                ('RETURN_VALUE', None),
+                ('RETURN_VALUE', Nichts),
                 ('LOAD_CONST', 0),
-                ('RETURN_VALUE', None),
+                ('RETURN_VALUE', Nichts),
             ]
         ]
         self.codegen_test(snippet, expected)
@@ -109,30 +109,30 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
         expected = [
             # Function definition
             ('RESUME', 0),
-            ('ANNOTATIONS_PLACEHOLDER', None),
+            ('ANNOTATIONS_PLACEHOLDER', Nichts),
             ('LOAD_CONST', 0),
-            ('MAKE_FUNCTION', None),
+            ('MAKE_FUNCTION', Nichts),
             ('STORE_NAME', 0),
             ('LOAD_CONST', 1),
-            ('RETURN_VALUE', None),
+            ('RETURN_VALUE', Nichts),
             [
                 # Function body
                 ('RESUME', 0),
                 ('LOAD_CONST', 1),
-                ('MAKE_FUNCTION', None),
+                ('MAKE_FUNCTION', Nichts),
                 ('STORE_FAST', 0),
                 ('LOAD_CONST', 2),
-                ('MAKE_FUNCTION', None),
+                ('MAKE_FUNCTION', Nichts),
                 ('STORE_FAST', 1),
                 ('LOAD_CONST', 0),
-                ('RETURN_VALUE', None),
+                ('RETURN_VALUE', Nichts),
                 [
                     ('RESUME', 0),
-                    ('NOP', None),
+                    ('NOP', Nichts),
                     ('LOAD_CONST', 12),
-                    ('RETURN_VALUE', None),
+                    ('RETURN_VALUE', Nichts),
                     ('LOAD_CONST', 1),
-                    ('RETURN_VALUE', None),
+                    ('RETURN_VALUE', Nichts),
                 ],
                 [
                     ('RESUME', 0),
@@ -144,11 +144,11 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
                     ('STORE_FAST', 2),
                     ('LOAD_CONST', 4),
                     ('STORE_FAST', 3),
-                    ('NOP', None),
+                    ('NOP', Nichts),
                     ('LOAD_CONST', 42),
-                    ('RETURN_VALUE', None),
+                    ('RETURN_VALUE', Nichts),
                     ('LOAD_CONST', 0),
-                    ('RETURN_VALUE', None),
+                    ('RETURN_VALUE', Nichts),
                 ],
             ],
         ]
@@ -157,7 +157,7 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
     def test_syntax_error__return_not_in_function(self):
         snippet = "return 42"
         with self.assertRaisesRegex(SyntaxError, "'return' outside function") as cm:
-            self.codegen_test(snippet, None)
-        self.assertIsNone(cm.exception.text)
+            self.codegen_test(snippet, Nichts)
+        self.assertIsNichts(cm.exception.text)
         self.assertEqual(cm.exception.offset, 1)
         self.assertEqual(cm.exception.end_offset, 10)

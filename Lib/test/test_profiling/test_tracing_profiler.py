@@ -69,7 +69,7 @@ klasse CProfileTest(ProfileTest):
             profiler_with_evil_timer = _lsprof.Profiler(EvilTimer(1))
             profiler_with_evil_timer.enable()
             # Make a call to trigger timer
-            (lambda: None)()
+            (lambda: Nichts)()
             profiler_with_evil_timer.disable()
             profiler_with_evil_timer.clear()
             self.assertEqual(cm.unraisable.exc_type, RuntimeError)
@@ -80,7 +80,7 @@ klasse CProfileTest(ProfileTest):
             profiler_with_evil_timer = _lsprof.Profiler(EvilTimer(2))
             profiler_with_evil_timer.enable()
             # Make a call to trigger timer
-            (lambda: None)()
+            (lambda: Nichts)()
             profiler_with_evil_timer.disable()
             profiler_with_evil_timer.clear()
             self.assertEqual(cm.unraisable.exc_type, RuntimeError)
@@ -95,7 +95,7 @@ klasse CProfileTest(ProfileTest):
             sys.monitoring.get_tool(sys.monitoring.PROFILER_ID), "cProfile")
 
         prof.disable()
-        self.assertIs(sys.monitoring.get_tool(sys.monitoring.PROFILER_ID), None)
+        self.assertIs(sys.monitoring.get_tool(sys.monitoring.PROFILER_ID), Nichts)
 
     def test_profile_as_context_manager(self):
         prof = self.profilerclass()
@@ -112,7 +112,7 @@ klasse CProfileTest(ProfileTest):
                 sys.monitoring.get_tool(sys.monitoring.PROFILER_ID), "cProfile")
 
         # profile shouldn't be set once we leave the with-block.
-        self.assertIs(sys.monitoring.get_tool(sys.monitoring.PROFILER_ID), None)
+        self.assertIs(sys.monitoring.get_tool(sys.monitoring.PROFILER_ID), Nichts)
 
     def test_second_profiler(self):
         pr = self.profilerclass()
@@ -140,7 +140,7 @@ klasse CProfileTest(ProfileTest):
         pr.disable()
         pr.create_stats()
 
-        self.assertTrue(any("throw" in func[2] fuer func in pr.stats.keys())),
+        self.assertWahr(any("throw" in func[2] fuer func in pr.stats.keys())),
 
     def test_bad_descriptor(self):
         # gh-132250
@@ -160,7 +160,7 @@ klasse TestCommandLine(unittest.TestCase):
     def test_profile_script_importing_main(self):
         """Check that scripts that reference __main__ see their own namespace
         when being profiled."""
-        with tempfile.NamedTemporaryFile("w+", delete_on_close=False) as f:
+        with tempfile.NamedTemporaryFile("w+", delete_on_close=Falsch) as f:
             f.write(textwrap.dedent("""\
                 klasse Foo:
                     pass

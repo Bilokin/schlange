@@ -42,7 +42,7 @@ def ReplacePackage(oldname, newname):
     replacePackageMap[oldname] = newname
 
 
-def _find_module(name, path=None):
+def _find_module(name, path=Nichts):
     """An importlib reimplementation of imp.find_module (for our purposes)."""
 
     # It's necessary to clear the caches fuer our Finder first, in case any
@@ -53,21 +53,21 @@ def _find_module(name, path=None):
 
     spec = importlib.machinery.PathFinder.find_spec(name, path)
 
-    wenn spec is None:
+    wenn spec is Nichts:
         raise ImportError("No module named {name!r}".format(name=name), name=name)
 
     # Some special cases:
 
     wenn spec.loader is importlib.machinery.BuiltinImporter:
-        return None, None, ("", "", _C_BUILTIN)
+        return Nichts, Nichts, ("", "", _C_BUILTIN)
 
     wenn spec.loader is importlib.machinery.FrozenImporter:
-        return None, None, ("", "", _PY_FROZEN)
+        return Nichts, Nichts, ("", "", _PY_FROZEN)
 
     file_path = spec.origin
 
     wenn spec.loader.is_package(name):
-        return None, os.path.dirname(file_path), ("", "", _PKG_DIRECTORY)
+        return Nichts, os.path.dirname(file_path), ("", "", _PKG_DIRECTORY)
 
     wenn isinstance(spec.loader, importlib.machinery.SourceFileLoader):
         kind = _PY_SOURCE
@@ -84,7 +84,7 @@ def _find_module(name, path=None):
         kind = _PY_COMPILED
 
     sonst:  # Should never happen.
-        return None, None, ("", "", _SEARCH_ERROR)
+        return Nichts, Nichts, ("", "", _SEARCH_ERROR)
 
     file = io.open_code(file_path)
     suffix = os.path.splitext(file_path)[-1]
@@ -94,11 +94,11 @@ def _find_module(name, path=None):
 
 klasse Module:
 
-    def __init__(self, name, file=None, path=None):
+    def __init__(self, name, file=Nichts, path=Nichts):
         self.__name__ = name
         self.__file__ = file
         self.__path__ = path
-        self.__code__ = None
+        self.__code__ = Nichts
         # The set of global names that are assigned to in the module.
         # This includes those names imported through starimports of
         # Python modules.
@@ -109,25 +109,25 @@ klasse Module:
 
     def __repr__(self):
         s = "Module(%r" % (self.__name__,)
-        wenn self.__file__ is not None:
+        wenn self.__file__ is not Nichts:
             s = s + ", %r" % (self.__file__,)
-        wenn self.__path__ is not None:
+        wenn self.__path__ is not Nichts:
             s = s + ", %r" % (self.__path__,)
         s = s + ")"
         return s
 
 klasse ModuleFinder:
 
-    def __init__(self, path=None, debug=0, excludes=None, replace_paths=None):
-        wenn path is None:
+    def __init__(self, path=Nichts, debug=0, excludes=Nichts, replace_paths=Nichts):
+        wenn path is Nichts:
             path = sys.path
         self.path = path
         self.modules = {}
         self.badmodules = {}
         self.debug = debug
         self.indent = 0
-        self.excludes = excludes wenn excludes is not None sonst []
-        self.replace_paths = replace_paths wenn replace_paths is not None sonst []
+        self.excludes = excludes wenn excludes is not Nichts sonst []
+        self.replace_paths = replace_paths wenn replace_paths is not Nichts sonst []
         self.processed_paths = []   # Used in debugging only
 
     def msg(self, level, str, *args):
@@ -164,7 +164,7 @@ klasse ModuleFinder:
             stuff = (ext, "rb", _PY_SOURCE)
             self.load_module(name, fp, pathname, stuff)
 
-    def import_hook(self, name, caller=None, fromlist=None, level=-1):
+    def import_hook(self, name, caller=Nichts, fromlist=Nichts, level=-1):
         self.msg(3, "import_hook", name, caller, fromlist, level)
         parent = self.determine_parent(caller, level=level)
         q, tail = self.find_head_package(parent, name)
@@ -173,13 +173,13 @@ klasse ModuleFinder:
             return q
         wenn m.__path__:
             self.ensure_fromlist(m, fromlist)
-        return None
+        return Nichts
 
     def determine_parent(self, caller, level=-1):
         self.msgin(4, "determine_parent", caller, level)
         wenn not caller or level == 0:
-            self.msgout(4, "determine_parent -> None")
-            return None
+            self.msgout(4, "determine_parent -> Nichts")
+            return Nichts
         pname = caller.__name__
         wenn level >= 1: # relative import
             wenn caller.__path__:
@@ -207,8 +207,8 @@ klasse ModuleFinder:
             assert parent.__name__ == pname
             self.msgout(4, "determine_parent ->", parent)
             return parent
-        self.msgout(4, "determine_parent -> None")
-        return None
+        self.msgout(4, "determine_parent -> Nichts")
+        return Nichts
 
     def find_head_package(self, parent, name):
         self.msgin(4, "find_head_package", parent, name)
@@ -229,7 +229,7 @@ klasse ModuleFinder:
             return q, tail
         wenn parent:
             qname = head
-            parent = None
+            parent = Nichts
             q = self.import_module(head, qname, parent)
             wenn q:
                 self.msgout(4, "find_head_package ->", (q, tail))
@@ -284,7 +284,7 @@ klasse ModuleFinder:
                 self.msg(2, "can't list directory", dir)
                 continue
             fuer name in names:
-                mod = None
+                mod = Nichts
                 fuer suff in suffixes:
                     n = len(suff)
                     wenn name[-n:] == suff:
@@ -304,17 +304,17 @@ klasse ModuleFinder:
             self.msgout(3, "import_module ->", m)
             return m
         wenn fqname in self.badmodules:
-            self.msgout(3, "import_module -> None")
-            return None
-        wenn parent and parent.__path__ is None:
-            self.msgout(3, "import_module -> None")
-            return None
+            self.msgout(3, "import_module -> Nichts")
+            return Nichts
+        wenn parent and parent.__path__ is Nichts:
+            self.msgout(3, "import_module -> Nichts")
+            return Nichts
         try:
             fp, pathname, stuff = self.find_module(partname,
                                                    parent and parent.__path__, parent)
         except ImportError:
-            self.msgout(3, "import_module ->", None)
-            return None
+            self.msgout(3, "import_module ->", Nichts)
+            return Nichts
 
         try:
             m = self.load_module(fqname, fp, pathname, stuff)
@@ -344,7 +344,7 @@ klasse ModuleFinder:
                 raise
             co = marshal.loads(memoryview(data)[16:])
         sonst:
-            co = None
+            co = Nichts
         m = self.add_module(fqname)
         m.__file__ = pathname
         wenn co:
@@ -409,7 +409,7 @@ klasse ModuleFinder:
             sowenn what == "absolute_import":
                 fromlist, name = args
                 have_star = 0
-                wenn fromlist is not None:
+                wenn fromlist is not Nichts:
                     wenn "*" in fromlist:
                         have_star = 1
                     fromlist = [f fuer f in fromlist wenn f != "*"]
@@ -418,18 +418,18 @@ klasse ModuleFinder:
                     # We've encountered an "import *". If it is a Python module,
                     # the code has already been parsed and we can suck out the
                     # global names.
-                    mm = None
+                    mm = Nichts
                     wenn m.__path__:
                         # At this point we don't know whether 'name' is a
                         # submodule of 'm' or a global module. Let's just try
                         # the full name first.
                         mm = self.modules.get(m.__name__ + "." + name)
-                    wenn mm is None:
+                    wenn mm is Nichts:
                         mm = self.modules.get(name)
-                    wenn mm is not None:
+                    wenn mm is not Nichts:
                         m.globalnames.update(mm.globalnames)
                         m.starimports.update(mm.starimports)
-                        wenn mm.__code__ is None:
+                        wenn mm.__code__ is Nichts:
                             m.starimports[name] = 1
                     sonst:
                         m.starimports[name] = 1
@@ -439,7 +439,7 @@ klasse ModuleFinder:
                     self._safe_import_hook(name, m, fromlist, level=level)
                 sonst:
                     parent = self.determine_parent(m, level=level)
-                    self._safe_import_hook(parent.__name__, None, fromlist, level=0)
+                    self._safe_import_hook(parent.__name__, Nichts, fromlist, level=0)
             sonst:
                 # We don't expect anything sonst from the generator.
                 raise RuntimeError(what)
@@ -475,9 +475,9 @@ klasse ModuleFinder:
         self.modules[fqname] = m = Module(fqname)
         return m
 
-    def find_module(self, name, path, parent=None):
-        wenn parent is not None:
-            # assert path is not None
+    def find_module(self, name, path, parent=Nichts):
+        wenn parent is not Nichts:
+            # assert path is not Nichts
             fullname = parent.__name__+'.'+name
         sonst:
             fullname = name
@@ -485,9 +485,9 @@ klasse ModuleFinder:
             self.msgout(3, "find_module -> Excluded", fullname)
             raise ImportError(name)
 
-        wenn path is None:
+        wenn path is Nichts:
             wenn name in sys.builtin_module_names:
-                return (None, None, ("", "", _C_BUILTIN))
+                return (Nichts, Nichts, ("", "", _C_BUILTIN))
 
             path = self.path
 
@@ -556,7 +556,7 @@ klasse ModuleFinder:
             subname = name[i+1:]
             pkgname = name[:i]
             pkg = self.modules.get(pkgname)
-            wenn pkg is not None:
+            wenn pkg is not Nichts:
                 wenn pkgname in self.badmodules[name]:
                     # The package tried to import this module itself and
                     # failed. It's definitely missing.
@@ -654,7 +654,7 @@ def test():
             continue
         wenn domods:
             wenn arg[-2:] == '.*':
-                mf.import_hook(arg[:-2], None, ["*"])
+                mf.import_hook(arg[:-2], Nichts, ["*"])
             sonst:
                 mf.import_hook(arg)
         sonst:

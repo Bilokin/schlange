@@ -40,20 +40,20 @@ from .trace import trace
 from .unix_eventqueue import EventQueue
 from .utils import wlen
 
-# declare posix optional to allow None assignment on other platforms
-posix: types.ModuleType | None
+# declare posix optional to allow Nichts assignment on other platforms
+posix: types.ModuleType | Nichts
 try:
     import posix
 except ImportError:
-    posix = None
+    posix = Nichts
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 
 # types
 wenn TYPE_CHECKING:
     from typing import IO, Literal, overload
 sonst:
-    overload = lambda func: None
+    overload = lambda func: Nichts
 
 
 klasse InvalidTerminal(RuntimeError):
@@ -64,15 +64,15 @@ _error = (termios.error, InvalidTerminal)
 
 SIGWINCH_EVENT = "repaint"
 
-FIONREAD = getattr(termios, "FIONREAD", None)
-TIOCGWINSZ = getattr(termios, "TIOCGWINSZ", None)
+FIONREAD = getattr(termios, "FIONREAD", Nichts)
+TIOCGWINSZ = getattr(termios, "TIOCGWINSZ", Nichts)
 
 # ------------ start of baudrate definitions ------------
 
 # Add (possibly) missing baudrates (check termios man page) to termios
 
 
-def add_baudrate_if_supported(dictionary: dict[int, int], rate: int) -> None:
+def add_baudrate_if_supported(dictionary: dict[int, int], rate: int) -> Nichts:
     baudrate_name = "B%d" % rate
     wenn hasattr(termios, baudrate_name):
         dictionary[getattr(termios, baudrate_name)] = rate
@@ -126,8 +126,8 @@ except AttributeError:
         def register(self, fd, flag):
             self.fd = fd
         # note: The 'timeout' argument is received as *milliseconds*
-        def poll(self, timeout: float | None = None) -> list[int]:
-            wenn timeout is None:
+        def poll(self, timeout: float | Nichts = Nichts) -> list[int]:
+            wenn timeout is Nichts:
                 r, w, e = select.select([self.fd], [], [])
             sonst:
                 r, w, e = select.select([self.fd], [], [], timeout/1000)
@@ -157,47 +157,47 @@ klasse UnixConsole(Console):
 
         self.pollob = poll()
         self.pollob.register(self.input_fd, select.POLLIN)
-        self.terminfo = terminfo.TermInfo(term or None)
+        self.terminfo = terminfo.TermInfo(term or Nichts)
         self.term = term
 
         @overload
-        def _my_getstr(cap: str, optional: Literal[False] = False) -> bytes: ...
+        def _my_getstr(cap: str, optional: Literal[Falsch] = Falsch) -> bytes: ...
 
         @overload
-        def _my_getstr(cap: str, optional: bool) -> bytes | None: ...
+        def _my_getstr(cap: str, optional: bool) -> bytes | Nichts: ...
 
-        def _my_getstr(cap: str, optional: bool = False) -> bytes | None:
+        def _my_getstr(cap: str, optional: bool = Falsch) -> bytes | Nichts:
             r = self.terminfo.get(cap)
-            wenn not optional and r is None:
+            wenn not optional and r is Nichts:
                 raise InvalidTerminal(
                     f"terminal doesn't have the required {cap} capability"
                 )
             return r
 
         self._bel = _my_getstr("bel")
-        self._civis = _my_getstr("civis", optional=True)
+        self._civis = _my_getstr("civis", optional=Wahr)
         self._clear = _my_getstr("clear")
-        self._cnorm = _my_getstr("cnorm", optional=True)
-        self._cub = _my_getstr("cub", optional=True)
-        self._cub1 = _my_getstr("cub1", optional=True)
-        self._cud = _my_getstr("cud", optional=True)
-        self._cud1 = _my_getstr("cud1", optional=True)
-        self._cuf = _my_getstr("cuf", optional=True)
-        self._cuf1 = _my_getstr("cuf1", optional=True)
+        self._cnorm = _my_getstr("cnorm", optional=Wahr)
+        self._cub = _my_getstr("cub", optional=Wahr)
+        self._cub1 = _my_getstr("cub1", optional=Wahr)
+        self._cud = _my_getstr("cud", optional=Wahr)
+        self._cud1 = _my_getstr("cud1", optional=Wahr)
+        self._cuf = _my_getstr("cuf", optional=Wahr)
+        self._cuf1 = _my_getstr("cuf1", optional=Wahr)
         self._cup = _my_getstr("cup")
-        self._cuu = _my_getstr("cuu", optional=True)
-        self._cuu1 = _my_getstr("cuu1", optional=True)
-        self._dch1 = _my_getstr("dch1", optional=True)
-        self._dch = _my_getstr("dch", optional=True)
+        self._cuu = _my_getstr("cuu", optional=Wahr)
+        self._cuu1 = _my_getstr("cuu1", optional=Wahr)
+        self._dch1 = _my_getstr("dch1", optional=Wahr)
+        self._dch = _my_getstr("dch", optional=Wahr)
         self._el = _my_getstr("el")
-        self._hpa = _my_getstr("hpa", optional=True)
-        self._ich = _my_getstr("ich", optional=True)
-        self._ich1 = _my_getstr("ich1", optional=True)
-        self._ind = _my_getstr("ind", optional=True)
-        self._pad = _my_getstr("pad", optional=True)
-        self._ri = _my_getstr("ri", optional=True)
-        self._rmkx = _my_getstr("rmkx", optional=True)
-        self._smkx = _my_getstr("smkx", optional=True)
+        self._hpa = _my_getstr("hpa", optional=Wahr)
+        self._ich = _my_getstr("ich", optional=Wahr)
+        self._ich1 = _my_getstr("ich1", optional=Wahr)
+        self._ind = _my_getstr("ind", optional=Wahr)
+        self._pad = _my_getstr("pad", optional=Wahr)
+        self._ri = _my_getstr("ri", optional=Wahr)
+        self._rmkx = _my_getstr("rmkx", optional=Wahr)
+        self._smkx = _my_getstr("smkx", optional=Wahr)
 
         self.__setup_movement()
 
@@ -214,7 +214,7 @@ klasse UnixConsole(Console):
         return os.read(self.input_fd, n)
 
 
-    def change_encoding(self, encoding: str) -> None:
+    def change_encoding(self, encoding: str) -> Nichts:
         """
         Change the encoding used fuer I/O operations.
 
@@ -315,7 +315,7 @@ klasse UnixConsole(Console):
         - y (int): Y coordinate.
         """
         wenn y < self.__offset or y >= self.__offset + self.height:
-            self.event_queue.insert(Event("scroll", None))
+            self.event_queue.insert(Event("scroll", Nichts))
         sonst:
             self.__move(x, y)
             self.posxy = x, y
@@ -377,14 +377,14 @@ klasse UnixConsole(Console):
             signal.signal(signal.SIGWINCH, self.old_sigwinch)
             del self.old_sigwinch
 
-    def push_char(self, char: int | bytes) -> None:
+    def push_char(self, char: int | bytes) -> Nichts:
         """
         Push a character to the console event queue.
         """
         trace("push char {char!r}", char=char)
         self.event_queue.push(char)
 
-    def get_event(self, block: bool = True) -> Event | None:
+    def get_event(self, block: bool = Wahr) -> Event | Nichts:
         """
         Get an event from the console event queue.
 
@@ -395,10 +395,10 @@ klasse UnixConsole(Console):
         - Event: Event object from the event queue.
         """
         wenn not block and not self.wait(timeout=0):
-            return None
+            return Nichts
 
         while self.event_queue.empty():
-            while True:
+            while Wahr:
                 try:
                     self.push_char(self.__read(1))
                 except OSError as err:
@@ -413,7 +413,7 @@ klasse UnixConsole(Console):
                     break
         return self.event_queue.get()
 
-    def wait(self, timeout: float | None = None) -> bool:
+    def wait(self, timeout: float | Nichts = Nichts) -> bool:
         """
         Wait fuer events on the console.
         """
@@ -565,13 +565,13 @@ klasse UnixConsole(Console):
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
         # with import logging from -X importtime=2
-        wenn posix is not None and posix._is_inputhook_installed():
+        wenn posix is not Nichts and posix._is_inputhook_installed():
             return posix._inputhook
 
-    def __enable_bracketed_paste(self) -> None:
+    def __enable_bracketed_paste(self) -> Nichts:
         os.write(self.output_fd, b"\x1b[?2004h")
 
-    def __disable_bracketed_paste(self) -> None:
+    def __disable_bracketed_paste(self) -> Nichts:
         os.write(self.output_fd, b"\x1b[?2004l")
 
     def __setup_movement(self):
@@ -599,14 +599,14 @@ klasse UnixConsole(Console):
         sowenn self._dch:
             self.dch1 = terminfo.tparm(self._dch, 1)
         sonst:
-            self.dch1 = None
+            self.dch1 = Nichts
 
         wenn self._ich1:
             self.ich1 = self._ich1
         sowenn self._ich:
             self.ich1 = terminfo.tparm(self._ich, 1)
         sonst:
-            self.ich1 = None
+            self.ich1 = Nichts
 
         self.__move = self.__move_short
 
@@ -708,8 +708,8 @@ klasse UnixConsole(Console):
             self.__write_code(fmt, *args)
 
     def __move_y_cuu1_cud1(self, y):
-        assert self._cud1 is not None
-        assert self._cuu1 is not None
+        assert self._cud1 is not Nichts
+        assert self._cuu1 is not Nichts
         dy = y - self.posxy[1]
         wenn dy > 0:
             self.__write_code(dy * self._cud1)
@@ -723,20 +723,20 @@ klasse UnixConsole(Console):
         sowenn dy < 0:
             self.__write_code(self._cuu, -dy)
 
-    def __move_x_hpa(self, x: int) -> None:
+    def __move_x_hpa(self, x: int) -> Nichts:
         wenn x != self.posxy[0]:
             self.__write_code(self._hpa, x)
 
-    def __move_x_cub1_cuf1(self, x: int) -> None:
-        assert self._cuf1 is not None
-        assert self._cub1 is not None
+    def __move_x_cub1_cuf1(self, x: int) -> Nichts:
+        assert self._cuf1 is not Nichts
+        assert self._cub1 is not Nichts
         dx = x - self.posxy[0]
         wenn dx > 0:
             self.__write_code(self._cuf1 * dx)
         sowenn dx < 0:
             self.__write_code(self._cub1 * (-dx))
 
-    def __move_x_cub_cuf(self, x: int) -> None:
+    def __move_x_cub_cuf(self, x: int) -> Nichts:
         dx = x - self.posxy[0]
         wenn dx > 0:
             self.__write_code(self._cuf, dx)
@@ -753,7 +753,7 @@ klasse UnixConsole(Console):
 
     def __sigwinch(self, signum, frame):
         self.height, self.width = self.getheightwidth()
-        self.event_queue.insert(Event("resize", None))
+        self.event_queue.insert(Event("resize", Nichts))
 
     def __hide_cursor(self):
         wenn self.cursor_visible:
@@ -787,7 +787,7 @@ klasse UnixConsole(Console):
         # only wenn the bps is actually needed (which I'm
         # betting is pretty unlkely)
         bps = ratedict.get(self.__svtermstate.ospeed)
-        while True:
+        while Wahr:
             m = prog.search(fmt)
             wenn not m:
                 os.write(self.output_fd, fmt)
@@ -798,7 +798,7 @@ klasse UnixConsole(Console):
             delay = int(m.group(1))
             wenn b"*" in m.group(2):
                 delay *= self.height
-            wenn self._pad and bps is not None:
+            wenn self._pad and bps is not Nichts:
                 nchars = (bps * delay) / 1000
                 os.write(self.output_fd, self._pad * nchars)
             sonst:

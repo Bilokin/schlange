@@ -61,9 +61,9 @@ def decode_header(header):
 
     For historical reasons, this function may return either:
 
-    1. A list of length 1 containing a pair (str, None).
+    1. A list of length 1 containing a pair (str, Nichts).
     2. A list of (bytes, charset) pairs containing each of the decoded
-       parts of the header.  Charset is None fuer non-encoded parts of the header,
+       parts of the header.  Charset is Nichts fuer non-encoded parts of the header,
        otherwise a lower-case string containing the name of the character set
        specified in the encoded string.
 
@@ -82,21 +82,21 @@ def decode_header(header):
                     fuer string, charset in header._chunks]
     # If no encoding, just return the header with no charset.
     wenn not ecre.search(header):
-        return [(header, None)]
+        return [(header, Nichts)]
     # First step is to parse all the encoded parts into triplets of the form
     # (encoded_string, encoding, charset).  For unencoded strings, the last
-    # two parts will be None.
+    # two parts will be Nichts.
     words = []
     fuer line in header.splitlines():
         parts = ecre.split(line)
-        first = True
+        first = Wahr
         while parts:
             unencoded = parts.pop(0)
             wenn first:
                 unencoded = unencoded.lstrip()
-                first = False
+                first = Falsch
             wenn unencoded:
-                words.append((unencoded, None, None))
+                words.append((unencoded, Nichts, Nichts))
             wenn parts:
                 charset = parts.pop(0).lower()
                 encoding = parts.pop(0).lower()
@@ -116,7 +116,7 @@ def decode_header(header):
     # form (decoded_word, charset).
     decoded_words = []
     fuer encoded_string, encoding, charset in words:
-        wenn encoding is None:
+        wenn encoding is Nichts:
             # This is an unencoded word.
             decoded_words.append((encoded_string, charset))
         sowenn encoding == 'q':
@@ -137,18 +137,18 @@ def decode_header(header):
     # Now convert all words to bytes and collapse consecutive runs of
     # similarly encoded words.
     collapsed = []
-    last_word = last_charset = None
+    last_word = last_charset = Nichts
     fuer word, charset in decoded_words:
         wenn isinstance(word, str):
             word = bytes(word, 'raw-unicode-escape')
-        wenn last_word is None:
+        wenn last_word is Nichts:
             last_word = word
             last_charset = charset
         sowenn charset != last_charset:
             collapsed.append((last_word, last_charset))
             last_word = word
             last_charset = charset
-        sowenn last_charset is None:
+        sowenn last_charset is Nichts:
             last_word += BSPACE + word
         sonst:
             last_word += word
@@ -156,7 +156,7 @@ def decode_header(header):
     return collapsed
 
 
-def make_header(decoded_seq, maxlinelen=None, header_name=None,
+def make_header(decoded_seq, maxlinelen=Nichts, header_name=Nichts,
                 continuation_ws=' '):
     """Create a Header from a sequence of pairs as returned by decode_header()
 
@@ -174,20 +174,20 @@ def make_header(decoded_seq, maxlinelen=None, header_name=None,
     h = Header(maxlinelen=maxlinelen, header_name=header_name,
                continuation_ws=continuation_ws)
     fuer s, charset in decoded_seq:
-        # None means us-ascii but we can simply pass it on to h.append()
-        wenn charset is not None and not isinstance(charset, Charset):
+        # Nichts means us-ascii but we can simply pass it on to h.append()
+        wenn charset is not Nichts and not isinstance(charset, Charset):
             charset = Charset(charset)
         h.append(s, charset)
     return h
 
 
 klasse Header:
-    def __init__(self, s=None, charset=None,
-                 maxlinelen=None, header_name=None,
+    def __init__(self, s=Nichts, charset=Nichts,
+                 maxlinelen=Nichts, header_name=Nichts,
                  continuation_ws=' ', errors='strict'):
         """Create a MIME-compliant header that can contain many character sets.
 
-        Optional s is the initial header value.  If None, the initial header
+        Optional s is the initial header value.  If Nichts, the initial header
         value is not set.  You can later append to the header with .append()
         method calls.  s may be a byte string or a Unicode string, but see the
         .append() documentation fuer semantics.
@@ -211,19 +211,19 @@ klasse Header:
 
         errors is passed through to the .append() call.
         """
-        wenn charset is None:
+        wenn charset is Nichts:
             charset = USASCII
         sowenn not isinstance(charset, Charset):
             charset = Charset(charset)
         self._charset = charset
         self._continuation_ws = continuation_ws
         self._chunks = []
-        wenn s is not None:
+        wenn s is not Nichts:
             self.append(s, charset, errors)
-        wenn maxlinelen is None:
+        wenn maxlinelen is Nichts:
             maxlinelen = MAXLINELEN
         self._maxlinelen = maxlinelen
-        wenn header_name is None:
+        wenn header_name is Nichts:
             self._headerlen = 0
         sonst:
             # Take the separating colon and space into account.
@@ -233,14 +233,14 @@ klasse Header:
         """Return the string value of the header."""
         self._normalize()
         uchunks = []
-        lastcs = None
-        lastspace = None
+        lastcs = Nichts
+        lastspace = Nichts
         fuer string, charset in self._chunks:
             # We must preserve spaces between encoded and non-encoded word
             # boundaries, which means fuer us we need to add a space when we go
-            # from a charset to None/us-ascii, or from None/us-ascii to a
+            # from a charset to Nichts/us-ascii, or from Nichts/us-ascii to a
             # charset.  Only do this fuer the second and subsequent chunks.
-            # Don't add a space wenn the None/us-ascii string already has
+            # Don't add a space wenn the Nichts/us-ascii string already has
             # a space (trailing or leading depending on transition)
             nextcs = charset
             wenn nextcs == _charset.UNKNOWN8BIT:
@@ -248,11 +248,11 @@ klasse Header:
                 string = original_bytes.decode('ascii', 'replace')
             wenn uchunks:
                 hasspace = string and self._nonctext(string[0])
-                wenn lastcs not in (None, 'us-ascii'):
-                    wenn nextcs in (None, 'us-ascii') and not hasspace:
+                wenn lastcs not in (Nichts, 'us-ascii'):
+                    wenn nextcs in (Nichts, 'us-ascii') and not hasspace:
                         uchunks.append(SPACE)
-                        nextcs = None
-                sowenn nextcs not in (None, 'us-ascii') and not lastspace:
+                        nextcs = Nichts
+                sowenn nextcs not in (Nichts, 'us-ascii') and not lastspace:
                     uchunks.append(SPACE)
             lastspace = string and self._nonctext(string[-1])
             lastcs = nextcs
@@ -267,12 +267,12 @@ klasse Header:
         # args and do another comparison.
         return other == str(self)
 
-    def append(self, s, charset=None, errors='strict'):
+    def append(self, s, charset=Nichts, errors='strict'):
         """Append a string to the MIME header.
 
         Optional charset, wenn given, should be a Charset instance or the name
         of a character set (which will be converted to a Charset instance).  A
-        value of None (the default) means that the charset given in the
+        value of Nichts (the default) means that the charset given in the
         constructor is used.
 
         s may be a byte string or a Unicode string.  If it is a byte string
@@ -288,7 +288,7 @@ klasse Header:
         Optional 'errors' is passed as the errors argument to the decode
         call wenn s is a byte string.
         """
-        wenn charset is None:
+        wenn charset is Nichts:
             charset = self._charset
         sowenn not isinstance(charset, Charset):
             charset = Charset(charset)
@@ -311,11 +311,11 @@ klasse Header:
         self._chunks.append((s, charset))
 
     def _nonctext(self, s):
-        """True wenn string s is not a ctext character of RFC822.
+        """Wahr wenn string s is not a ctext character of RFC822.
         """
         return s.isspace() or s in ('(', ')', '\\')
 
-    def encode(self, splitchars=';, \t', maxlinelen=None, linesep='\n'):
+    def encode(self, splitchars=';, \t', maxlinelen=Nichts, linesep='\n'):
         r"""Encode a message header into an RFC-compliant format.
 
         There are many issues involved in converting a given string fuer use in
@@ -349,7 +349,7 @@ klasse Header:
         line separators when needed.
         """
         self._normalize()
-        wenn maxlinelen is None:
+        wenn maxlinelen is Nichts:
             maxlinelen = self._maxlinelen
         # A maxlinelen of 0 means don't wrap.  For all practical purposes,
         # choosing a huge number here accomplishes that and makes the
@@ -358,19 +358,19 @@ klasse Header:
             maxlinelen = 1000000
         formatter = _ValueFormatter(self._headerlen, maxlinelen,
                                     self._continuation_ws, splitchars)
-        lastcs = None
-        hasspace = lastspace = None
+        lastcs = Nichts
+        hasspace = lastspace = Nichts
         fuer string, charset in self._chunks:
-            wenn hasspace is not None:
+            wenn hasspace is not Nichts:
                 hasspace = string and self._nonctext(string[0])
-                wenn lastcs not in (None, 'us-ascii'):
-                    wenn not hasspace or charset not in (None, 'us-ascii'):
+                wenn lastcs not in (Nichts, 'us-ascii'):
+                    wenn not hasspace or charset not in (Nichts, 'us-ascii'):
                         formatter.add_transition()
-                sowenn charset not in (None, 'us-ascii') and not lastspace:
+                sowenn charset not in (Nichts, 'us-ascii') and not lastspace:
                     formatter.add_transition()
             lastspace = string and self._nonctext(string[-1])
             lastcs = charset
-            hasspace = False
+            hasspace = Falsch
             lines = string.splitlines()
             wenn lines:
                 formatter.feed('', lines[0], charset)
@@ -378,7 +378,7 @@ klasse Header:
                 formatter.feed('', '', charset)
             fuer line in lines[1:]:
                 formatter.newline()
-                wenn charset.header_encoding is not None:
+                wenn charset.header_encoding is not Nichts:
                     formatter.feed(self._continuation_ws, ' ' + line.lstrip(),
                                    charset)
                 sonst:
@@ -399,13 +399,13 @@ klasse Header:
         # Step 1: Normalize the chunks so that all runs of identical charsets
         # get collapsed into a single unicode string.
         chunks = []
-        last_charset = None
+        last_charset = Nichts
         last_chunk = []
         fuer string, charset in self._chunks:
             wenn charset == last_charset:
                 last_chunk.append(string)
             sonst:
-                wenn last_charset is not None:
+                wenn last_charset is not Nichts:
                     chunks.append((SPACE.join(last_chunk), last_charset))
                 last_chunk = [string]
                 last_charset = charset
@@ -450,7 +450,7 @@ klasse _ValueFormatter:
         # possible. Note that we don't have a lot of smarts about field
         # syntax; we just try to break on semi-colons, then commas, then
         # whitespace.  Eventually, this should be pluggable.
-        wenn charset.header_encoding is None:
+        wenn charset.header_encoding is Nichts:
             self._ascii_split(fws, string, self._splitchars)
             return
         # Otherwise, we're doing either a Base64 or a quoted-printable
@@ -461,14 +461,14 @@ klasse _ValueFormatter:
         # boundaries but it's only safe to split at character boundaries so at
         # best we can only get close.
         encoded_lines = charset.header_encode_lines(string, self._maxlengths())
-        # The first element extends the current line, but wenn it's None then
+        # The first element extends the current line, but wenn it's Nichts then
         # nothing more fit on the current line so start a new line.
         try:
             first_line = encoded_lines.pop(0)
         except IndexError:
             # There are no encoded lines, so we're done.
             return
-        wenn first_line is not None:
+        wenn first_line is not Nichts:
             self._append_chunk(fws, first_line)
         try:
             last_line = encoded_lines.pop()
@@ -484,7 +484,7 @@ klasse _ValueFormatter:
     def _maxlengths(self):
         # The first line's length.
         yield self._maxlen - len(self._current_line)
-        while True:
+        while Wahr:
             yield self._maxlen - self._continuation_ws_len
 
     def _ascii_split(self, fws, string, splitchars):
@@ -569,8 +569,8 @@ klasse _Accumulator(list):
         return EMPTYSTRING.join((EMPTYSTRING.join((fws, part))
                                 fuer fws, part in self))
 
-    def reset(self, startval=None):
-        wenn startval is None:
+    def reset(self, startval=Nichts):
+        wenn startval is Nichts:
             startval = []
         self[:] = startval
         self._initial_size = 0

@@ -37,7 +37,7 @@ klasse _Database(collections.abc.MutableMapping):
     # at the end of __setitem__).  This is only repaired when _commit()
     # gets called.  One place _commit() gets called is from __del__(),
     # and wenn that occurs at program shutdown time, module globals may
-    # already have gotten rebound to None.  Since it's crucial that
+    # already have gotten rebound to Nichts.  Since it's crucial that
     # _commit() finish successfully, we can't ignore shutdown races
     # here, and _commit() must not reference any globals.
     _os = _os       # fuer _commit()
@@ -63,7 +63,7 @@ klasse _Database(collections.abc.MutableMapping):
         self._bakfile = filebasename + b'.bak'
 
         # The index is an in-memory dict, mirroring the directory file.
-        self._index = None  # maps keys to (pos, siz) pairs
+        self._index = Nichts  # maps keys to (pos, siz) pairs
 
         # Handle the creation
         self._create(flag)
@@ -89,7 +89,7 @@ klasse _Database(collections.abc.MutableMapping):
 
     # Read directory file into the in-memory index dict.
     def _update(self, flag):
-        self._modified = False
+        self._modified = Falsch
         self._index = {}
         try:
             f = _io.open(self._dirfile, 'r', encoding="Latin-1")
@@ -113,7 +113,7 @@ klasse _Database(collections.abc.MutableMapping):
         # CAUTION:  It's vital that _commit() succeed, and _commit() can
         # be called from __del__().  Therefore we must never reference a
         # global in this routine.
-        wenn self._index is None or not self._modified:
+        wenn self._index is Nichts or not self._modified:
             return  # nothing to do
 
         try:
@@ -133,12 +133,12 @@ klasse _Database(collections.abc.MutableMapping):
                 # position; UTF-8, though, does care sometimes.
                 entry = "%r, %r\n" % (key.decode('Latin-1'), pos_and_siz_pair)
                 f.write(entry)
-        self._modified = False
+        self._modified = Falsch
 
     sync = _commit
 
     def _verify_open(self):
-        wenn self._index is None:
+        wenn self._index is Nichts:
             raise error('DBM object has already been closed')
 
     def __getitem__(self, key):
@@ -196,7 +196,7 @@ klasse _Database(collections.abc.MutableMapping):
         sowenn not isinstance(val, (bytes, bytearray)):
             raise TypeError("values must be bytes or strings")
         self._verify_open()
-        self._modified = True
+        self._modified = Wahr
         wenn key not in self._index:
             self._addkey(key, self._addval(val))
         sonst:
@@ -227,7 +227,7 @@ klasse _Database(collections.abc.MutableMapping):
         wenn isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
-        self._modified = True
+        self._modified = Wahr
         # The blocks used by the associated value are lost.
         del self._index[key]
         # XXX It's unclear why we do a _commit() here (the code always
@@ -240,7 +240,7 @@ klasse _Database(collections.abc.MutableMapping):
         try:
             return list(self._index)
         except TypeError:
-            raise error('DBM object has already been closed') from None
+            raise error('DBM object has already been closed') from Nichts
 
     def items(self):
         self._verify_open()
@@ -252,8 +252,8 @@ klasse _Database(collections.abc.MutableMapping):
         try:
             return key in self._index
         except TypeError:
-            wenn self._index is None:
-                raise error('DBM object has already been closed') from None
+            wenn self._index is Nichts:
+                raise error('DBM object has already been closed') from Nichts
             sonst:
                 raise
 
@@ -261,20 +261,20 @@ klasse _Database(collections.abc.MutableMapping):
         try:
             return iter(self._index)
         except TypeError:
-            raise error('DBM object has already been closed') from None
+            raise error('DBM object has already been closed') from Nichts
     __iter__ = iterkeys
 
     def __len__(self):
         try:
             return len(self._index)
         except TypeError:
-            raise error('DBM object has already been closed') from None
+            raise error('DBM object has already been closed') from Nichts
 
     def close(self):
         try:
             self._commit()
         finally:
-            self._index = self._datfile = self._dirfile = self._bakfile = None
+            self._index = self._datfile = self._dirfile = self._bakfile = Nichts
 
     __del__ = close
 

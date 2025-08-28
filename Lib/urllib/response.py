@@ -17,7 +17,7 @@ klasse addbase(tempfile._TemporaryFileWrapper):
     # XXX Add a method to expose the timeout on the underlying socket?
 
     def __init__(self, fp):
-        super(addbase,  self).__init__(fp, '<urllib response>', delete=False)
+        super(addbase,  self).__init__(fp, '<urllib response>', delete=Falsch)
         # Keep reference around as this was part of the original API.
         self.fp = fp
 
@@ -47,8 +47,8 @@ klasse addclosehook(addbase):
             closehook = self.closehook
             hookargs = self.hookargs
             wenn closehook:
-                self.closehook = None
-                self.hookargs = None
+                self.closehook = Nichts
+                self.hookargs = Nichts
                 closehook(*hookargs)
         finally:
             super(addclosehook, self).close()
@@ -68,7 +68,7 @@ klasse addinfo(addbase):
 klasse addinfourl(addinfo):
     """class to add info() and geturl() methods to an open file."""
 
-    def __init__(self, fp, headers, url, code=None):
+    def __init__(self, fp, headers, url, code=Nichts):
         super(addinfourl, self).__init__(fp, headers)
         self.url = url
         self.code = code

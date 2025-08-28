@@ -7,7 +7,7 @@ importlib = util.import_importlib('importlib')
 machinery = util.import_importlib('importlib.machinery')
 
 
-@unittest.skipIf(util.EXTENSIONS is None or util.EXTENSIONS.filename is None,
+@unittest.skipIf(util.EXTENSIONS is Nichts or util.EXTENSIONS.filename is Nichts,
                  'dynamic loading not supported or test module not available')
 @util.case_insensitive_tests
 klasse ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
@@ -25,17 +25,17 @@ klasse ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
     def test_case_sensitive(self):
         with os_helper.EnvironmentVarGuard() as env:
             env.unset('PYTHONCASEOK')
-            self.caseok_env_changed(should_exist=False)
+            self.caseok_env_changed(should_exist=Falsch)
             spec = self.find_spec()
-            self.assertIsNone(spec)
+            self.assertIsNichts(spec)
 
     @unittest.skipIf(sys.flags.ignore_environment, 'ignore_environment flag was set')
     def test_case_insensitivity(self):
         with os_helper.EnvironmentVarGuard() as env:
             env.set('PYTHONCASEOK', '1')
-            self.caseok_env_changed(should_exist=True)
+            self.caseok_env_changed(should_exist=Wahr)
             spec = self.find_spec()
-            self.assertTrue(spec)
+            self.assertWahr(spec)
 
 
 (Frozen_ExtensionCaseSensitivity,

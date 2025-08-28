@@ -76,8 +76,8 @@ def _get_default_invalidation_mode():
         return PycInvalidationMode.TIMESTAMP
 
 
-def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
-            invalidation_mode=None, quiet=0):
+def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
+            invalidation_mode=Nichts, quiet=0):
     """Byte-compile one Python source file to Python bytecode.
 
     :param file: The source file name.
@@ -87,15 +87,15 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
         error messages.  Defaults to the source file name.
     :param doraise: Flag indicating whether or not an exception should be
         raised when a compile error is found.  If an exception occurs and this
-        flag is set to False, a string indicating the nature of the exception
+        flag is set to Falsch, a string indicating the nature of the exception
         will be printed, and the function will return to the caller. If an
-        exception occurs and this flag is set to True, a PyCompileError
+        exception occurs and this flag is set to Wahr, a PyCompileError
         exception will be raised.
     :param optimize: The optimization level fuer the compiler.  Valid values
         are -1, 0, 1 and 2.  A value of -1 means to use the optimization
         level of the current interpreter, as given by -O command line options.
     :param invalidation_mode:
-    :param quiet: Return full output with False or 0, errors only with 1,
+    :param quiet: Return full output with Falsch or 0, errors only with 1,
         and no output with 2.
 
     :return: Path to the resulting byte compiled file.
@@ -121,9 +121,9 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
     the resulting file would be regular and thus not the same type of file as
     it was previously.
     """
-    wenn invalidation_mode is None:
+    wenn invalidation_mode is Nichts:
         invalidation_mode = _get_default_invalidation_mode()
-    wenn cfile is None:
+    wenn cfile is Nichts:
         wenn optimize >= 0:
             optimization = optimize wenn optimize >= 1 sonst ''
             cfile = importlib.util.cache_from_source(file,
@@ -177,7 +177,7 @@ def main():
     import argparse
 
     description = 'A simple command-line interface fuer py_compile module.'
-    parser = argparse.ArgumentParser(description=description, color=True)
+    parser = argparse.ArgumentParser(description=description, color=Wahr)
     parser.add_argument(
         '-q', '--quiet',
         action='store_true',
@@ -195,7 +195,7 @@ def main():
         filenames = args.filenames
     fuer filename in filenames:
         try:
-            compile(filename, doraise=True)
+            compile(filename, doraise=Wahr)
         except PyCompileError as error:
             wenn args.quiet:
                 parser.exit(1)

@@ -31,8 +31,8 @@ def main():
             thread.start()
         fuer thread in threads:
             thread.join()
-        sys.modules.pop('concurrent.futures', None)
-        sys.modules.pop('concurrent.futures.thread', None)
+        sys.modules.pop('concurrent.futures', Nichts)
+        sys.modules.pop('concurrent.futures.thread', Nichts)
 
 wenn __name__ == "__main__":
     main()

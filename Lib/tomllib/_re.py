@@ -8,7 +8,7 @@ from datetime import date, datetime, time, timedelta, timezone, tzinfo
 from functools import lru_cache
 import re
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
     from typing import Any
 
@@ -72,25 +72,25 @@ def match_to_datetime(match: re.Match[str]) -> datetime | date:
         offset_minute_str,
     ) = match.groups()
     year, month, day = int(year_str), int(month_str), int(day_str)
-    wenn hour_str is None:
+    wenn hour_str is Nichts:
         return date(year, month, day)
     hour, minute, sec = int(hour_str), int(minute_str), int(sec_str)
     micros = int(micros_str.ljust(6, "0")) wenn micros_str sonst 0
     wenn offset_sign_str:
-        tz: tzinfo | None = cached_tz(
+        tz: tzinfo | Nichts = cached_tz(
             offset_hour_str, offset_minute_str, offset_sign_str
         )
     sowenn zulu_time:
         tz = timezone.utc
     sonst:  # local date-time
-        tz = None
+        tz = Nichts
     return datetime(year, month, day, hour, minute, sec, micros, tzinfo=tz)
 
 
 # No need to limit cache size. This is only ever called on input
 # that matched RE_DATETIME, so there is an implicit bound of
 # 24 (hours) * 60 (minutes) * 2 (offset direction) = 2880.
-@lru_cache(maxsize=None)
+@lru_cache(maxsize=Nichts)
 def cached_tz(hour_str: str, minute_str: str, sign_str: str) -> timezone:
     sign = 1 wenn sign_str == "+" sonst -1
     return timezone(

@@ -163,17 +163,17 @@ PatternError = error = _compiler.PatternError
 
 def match(pattern, string, flags=0):
     """Try to apply the pattern at the start of the string, returning
-    a Match object, or None wenn no match was found."""
+    a Match object, or Nichts wenn no match was found."""
     return _compile(pattern, flags).match(string)
 
 def fullmatch(pattern, string, flags=0):
     """Try to apply the pattern to all of the string, returning
-    a Match object, or None wenn no match was found."""
+    a Match object, or Nichts wenn no match was found."""
     return _compile(pattern, flags).fullmatch(string)
 
 def search(pattern, string, flags=0):
     """Scan through string looking fuer a match to the pattern, returning
-    a Match object, or None wenn no match was found."""
+    a Match object, or Nichts wenn no match was found."""
     return _compile(pattern, flags).search(string)
 
 klasse _ZeroSentinel(int):
@@ -338,8 +338,8 @@ def _compile(pattern, flags):
 
     key = (type(pattern), pattern, flags)
     # Item in _cache should be moved to the end wenn found.
-    p = _cache.pop(key, None)
-    wenn p is None:
+    p = _cache.pop(key, Nichts)
+    wenn p is Nichts:
         wenn isinstance(pattern, Pattern):
             wenn flags:
                 raise ValueError(
@@ -404,14 +404,14 @@ klasse Scanner:
                 (SUBPATTERN, (gid, 0, 0, _parser.parse(phrase, flags))),
                 ]))
             s.closegroup(gid, p[-1])
-        p = _parser.SubPattern(s, [(BRANCH, (None, p))])
+        p = _parser.SubPattern(s, [(BRANCH, (Nichts, p))])
         self.scanner = _compiler.compile(p)
     def scan(self, string):
         result = []
         append = result.append
         match = self.scanner.scanner(string).match
         i = 0
-        while True:
+        while Wahr:
             m = match()
             wenn not m:
                 break
@@ -422,7 +422,7 @@ klasse Scanner:
             wenn callable(action):
                 self.match = m
                 action = action(self, m.group())
-            wenn action is not None:
+            wenn action is not Nichts:
                 append(action)
             i = j
         return result, string[i:]

@@ -67,9 +67,9 @@ klasse TestCase(unittest.TestCase):
         # Inspired by http://bugs.python.org/issue24975
         klasse X:
             def __init__(self):
-                self.called = False
+                self.called = Falsch
             def __call__(self):
-                self.called = True
+                self.called = Wahr
                 return 4
         x = X()
         expr = """
@@ -79,13 +79,13 @@ f'{a * x()}'"""
         c = compile(t, '', 'exec')
 
         # Make sure x was not called.
-        self.assertFalse(x.called)
+        self.assertFalsch(x.called)
 
         # Actually run the code.
         exec(c)
 
         # Make sure x was called.
-        self.assertTrue(x.called)
+        self.assertWahr(x.called)
 
     def test_ast_line_numbers(self):
         expr = """
@@ -442,7 +442,7 @@ y = (
             (elt.col_offset, elt.end_col_offset)
             fuer elt in x.value.elts
         ]
-        self.assertTrue(all(
+        self.assertWahr(all(
             offset == (4, 10)
             fuer offset in offsets
         ))
@@ -452,7 +452,7 @@ y = (
             (elt.col_offset, elt.end_col_offset)
             fuer elt in y.value.elts
         ]
-        self.assertTrue(all(
+        self.assertWahr(all(
             offset == (4, 14)
             fuer offset in offsets
         ))
@@ -567,11 +567,11 @@ x = (
     def test_docstring(self):
         def f():
             f'''Not a docstring'''
-        self.assertIsNone(f.__doc__)
+        self.assertIsNichts(f.__doc__)
         def g():
             '''Not a docstring''' \
             f''
-        self.assertIsNone(g.__doc__)
+        self.assertIsNichts(g.__doc__)
 
     def test_literal_eval(self):
         with self.assertRaisesRegex(ValueError, 'malformed node or string'):
@@ -1096,7 +1096,7 @@ x = (
 
         # but don't emit the paren warning in general cases
         with self.assertRaisesRegex(SyntaxError, "f-string: expecting a valid expression after '{'"):
-            eval("f'{+ lambda:None}'")
+            eval("f'{+ lambda:Nichts}'")
 
     def test_valid_prefixes(self):
         self.assertEqual(F'{1}', "1")
@@ -1164,7 +1164,7 @@ x = (
 
         g = fn(4)
         self.assertEqual(next(g), 8)
-        self.assertEqual(next(g), None)
+        self.assertEqual(next(g), Nichts)
 
     def test_yield_send(self):
         def fn(x):
@@ -1323,16 +1323,16 @@ x = (
         #  case in the f-string parser to look fuer != as not ending an
         #  expression. Normally it would, while looking fuer !s or !r.
 
-        self.assertEqual(f'{3!=4}', 'True')
-        self.assertEqual(f'{3!=4:}', 'True')
-        self.assertEqual(f'{3!=4!s}', 'True')
+        self.assertEqual(f'{3!=4}', 'Wahr')
+        self.assertEqual(f'{3!=4:}', 'Wahr')
+        self.assertEqual(f'{3!=4!s}', 'Wahr')
         self.assertEqual(f'{3!=4!s:.3}', 'Tru')
 
     def test_equal_equal(self):
         # Because an expression ending in = has special meaning,
         # there's a special test fuer ==. Make sure it works.
 
-        self.assertEqual(f'{0==1}', 'False')
+        self.assertEqual(f'{0==1}', 'Falsch')
 
     def test_conversions(self):
         self.assertEqual(f'{3.14:10.10}', '      3.14')
@@ -1586,10 +1586,10 @@ x = (
         # Since = is handled specially, make sure all existing uses of
         # it still work.
 
-        self.assertEqual(f'{0==1}', 'False')
-        self.assertEqual(f'{0!=1}', 'True')
-        self.assertEqual(f'{0<=1}', 'True')
-        self.assertEqual(f'{0>=1}', 'False')
+        self.assertEqual(f'{0==1}', 'Falsch')
+        self.assertEqual(f'{0!=1}', 'Wahr')
+        self.assertEqual(f'{0<=1}', 'Wahr')
+        self.assertEqual(f'{0>=1}', 'Falsch')
         self.assertEqual(f'{(x:="5")}', '5')
         self.assertEqual(x, '5')
         self.assertEqual(f'{(x:=5)}', '5')
@@ -1790,21 +1790,21 @@ print(f'''{{
             self.assertEqual(get_code(f"'{s}'"), get_code(f"f'{s}'"))
 
     def test_gh129093(self):
-        self.assertEqual(f'{1==2=}', '1==2=False')
-        self.assertEqual(f'{1 == 2=}', '1 == 2=False')
-        self.assertEqual(f'{1!=2=}', '1!=2=True')
-        self.assertEqual(f'{1 != 2=}', '1 != 2=True')
+        self.assertEqual(f'{1==2=}', '1==2=Falsch')
+        self.assertEqual(f'{1 == 2=}', '1 == 2=Falsch')
+        self.assertEqual(f'{1!=2=}', '1!=2=Wahr')
+        self.assertEqual(f'{1 != 2=}', '1 != 2=Wahr')
 
-        self.assertEqual(f'{(1) != 2=}', '(1) != 2=True')
-        self.assertEqual(f'{(1*2) != (3)=}', '(1*2) != (3)=True')
+        self.assertEqual(f'{(1) != 2=}', '(1) != 2=Wahr')
+        self.assertEqual(f'{(1*2) != (3)=}', '(1*2) != (3)=Wahr')
 
-        self.assertEqual(f'{1 != 2 == 3 != 4=}', '1 != 2 == 3 != 4=False')
-        self.assertEqual(f'{1 == 2 != 3 == 4=}', '1 == 2 != 3 == 4=False')
+        self.assertEqual(f'{1 != 2 == 3 != 4=}', '1 != 2 == 3 != 4=Falsch')
+        self.assertEqual(f'{1 == 2 != 3 == 4=}', '1 == 2 != 3 == 4=Falsch')
 
-        self.assertEqual(f'{f'{1==2=}'=}', "f'{1==2=}'='1==2=False'")
-        self.assertEqual(f'{f'{1 == 2=}'=}', "f'{1 == 2=}'='1 == 2=False'")
-        self.assertEqual(f'{f'{1!=2=}'=}', "f'{1!=2=}'='1!=2=True'")
-        self.assertEqual(f'{f'{1 != 2=}'=}', "f'{1 != 2=}'='1 != 2=True'")
+        self.assertEqual(f'{f'{1==2=}'=}', "f'{1==2=}'='1==2=Falsch'")
+        self.assertEqual(f'{f'{1 == 2=}'=}', "f'{1 == 2=}'='1 == 2=Falsch'")
+        self.assertEqual(f'{f'{1!=2=}'=}', "f'{1!=2=}'='1!=2=Wahr'")
+        self.assertEqual(f'{f'{1 != 2=}'=}', "f'{1 != 2=}'='1 != 2=Wahr'")
 
     def test_newlines_in_format_specifiers(self):
         cases = [

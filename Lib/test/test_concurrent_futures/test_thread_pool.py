@@ -21,7 +21,7 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
             finished.append(n)
 
         self.executor.map(record_finished, range(10))
-        self.executor.shutdown(wait=True)
+        self.executor.shutdown(wait=Wahr)
         self.assertCountEqual(finished, range(10))
 
     def test_default_workers(self):
@@ -40,7 +40,7 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
         self.assertEqual(len(executor._threads), executor._max_workers)
         fuer i in range(15 * executor._max_workers):
             sem.release()
-        executor.shutdown(wait=True)
+        executor.shutdown(wait=Wahr)
 
     @support.requires_gil_enabled("gh-117344: test is flaky without the GIL")
     def test_idle_thread_reuse(self):
@@ -49,7 +49,7 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
         executor.submit(mul, 6, 7).result()
         executor.submit(mul, 3, 14).result()
         self.assertEqual(len(executor._threads), 1)
-        executor.shutdown(wait=True)
+        executor.shutdown(wait=Wahr)
 
     @support.requires_fork()
     @unittest.skipUnless(hasattr(os, 'register_at_fork'), 'need os.register_at_fork')

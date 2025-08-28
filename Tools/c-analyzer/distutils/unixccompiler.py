@@ -45,14 +45,14 @@ klasse UnixCCompiler(CCompiler):
     # are pretty generic; they will probably have to be set by an outsider
     # (eg. using information discovered by the sysconfig about building
     # Python extensions).
-    executables = {'preprocessor' : None,
+    executables = {'preprocessor' : Nichts,
                    'compiler'     : ["cc"],
                    'compiler_so'  : ["cc"],
                    'compiler_cxx' : ["cc"],
                    'linker_so'    : ["cc", "-shared"],
                    'linker_exe'   : ["cc"],
                    'archiver'     : ["ar", "-cr"],
-                   'ranlib'       : None,
+                   'ranlib'       : Nichts,
                   }
 
     wenn sys.platform[:6] == "darwin":
@@ -75,9 +75,9 @@ klasse UnixCCompiler(CCompiler):
     wenn sys.platform == "cygwin":
         exe_extension = ".exe"
 
-    def preprocess(self, source, output_file=None, macros=None,
-                   include_dirs=None, extra_preargs=None, extra_postargs=None):
-        fixed_args = self._fix_compile_args(None, macros, include_dirs)
+    def preprocess(self, source, output_file=Nichts, macros=Nichts,
+                   include_dirs=Nichts, extra_preargs=Nichts, extra_postargs=Nichts):
+        fixed_args = self._fix_compile_args(Nichts, macros, include_dirs)
         ignore, macros, include_dirs = fixed_args
         pp_opts = gen_preprocess_options(macros, include_dirs)
         pp_args = self.preprocessor + pp_opts
@@ -93,7 +93,7 @@ klasse UnixCCompiler(CCompiler):
         # generating output to stdout, or there's a target output file and
         # the source file is newer than the target (or the target doesn't
         # exist).
-        wenn self.force or output_file is None or newer(source, output_file):
+        wenn self.force or output_file is Nichts or newer(source, output_file):
             wenn output_file:
                 self.mkpath(os.path.dirname(output_file))
             try:

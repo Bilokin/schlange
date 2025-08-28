@@ -56,7 +56,7 @@ klasse UndoDelegatorTest(unittest.TestCase):
         self.assertEqual(text.get('1.0', '1.3'), 'foo')
         text.event_generate('<<undo>>')
         self.delegator.undo_event('event')
-        self.assertTrue(self.delegator.bell.called)
+        self.assertWahr(self.delegator.bell.called)
 
     def test_redo_event(self):
         text = self.text
@@ -68,7 +68,7 @@ klasse UndoDelegatorTest(unittest.TestCase):
         text.event_generate('<<redo>>')
         self.assertEqual(text.get('1.0', '1.3'), 'bar')
         text.event_generate('<<redo>>')
-        self.assertTrue(self.delegator.bell.called)
+        self.assertWahr(self.delegator.bell.called)
 
     def test_dump_event(self):
         """
@@ -82,9 +82,9 @@ klasse UndoDelegatorTest(unittest.TestCase):
         text.insert('insert', 'foo')
         text.insert('insert', 'bar')
         text.delete('1.2', '1.4')
-        self.assertTupleEqual((d.pointer, d.can_merge), (3, True))
+        self.assertTupleEqual((d.pointer, d.can_merge), (3, Wahr))
         text.event_generate('<<undo>>')
-        self.assertTupleEqual((d.pointer, d.can_merge), (2, False))
+        self.assertTupleEqual((d.pointer, d.can_merge), (2, Falsch))
 
     def test_get_set_saved(self):
         # test the getter method get_saved
@@ -92,18 +92,18 @@ klasse UndoDelegatorTest(unittest.TestCase):
         # indirectly test check_saved
         d = self.delegator
 
-        self.assertTrue(d.get_saved())
+        self.assertWahr(d.get_saved())
         self.text.insert('insert', 'a')
-        self.assertFalse(d.get_saved())
+        self.assertFalsch(d.get_saved())
         d.saved_change_hook = Mock()
 
-        d.set_saved(True)
+        d.set_saved(Wahr)
         self.assertEqual(d.pointer, d.saved)
-        self.assertTrue(d.saved_change_hook.called)
+        self.assertWahr(d.saved_change_hook.called)
 
-        d.set_saved(False)
+        d.set_saved(Falsch)
         self.assertEqual(d.saved, -1)
-        self.assertTrue(d.saved_change_hook.called)
+        self.assertWahr(d.saved_change_hook.called)
 
     def test_undo_start_stop(self):
         # test the undo_block_start and undo_block_stop methods
@@ -132,4 +132,4 @@ klasse UndoDelegatorTest(unittest.TestCase):
 
 
 wenn __name__ == '__main__':
-    unittest.main(verbosity=2, exit=False)
+    unittest.main(verbosity=2, exit=Falsch)

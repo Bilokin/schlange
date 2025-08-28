@@ -134,7 +134,7 @@ klasse TestDictWatchers(unittest.TestCase):
                     "PyDict_EVENT_ADDED watcher callback fuer <dict at ",
                     cm.unraisable.err_msg
                 )
-                self.assertIsNone(cm.unraisable.object)
+                self.assertIsNichts(cm.unraisable.object)
                 self.assertEqual(str(cm.unraisable.exc_value), "boom!")
             self.assert_events([])
 
@@ -304,7 +304,7 @@ klasse TestTypeWatchers(unittest.TestCase):
                     cm.unraisable.err_msg,
                     f"Exception ignored in type watcher callback #1 fuer {C!r}",
                 )
-                self.assertIs(cm.unraisable.object, None)
+                self.assertIs(cm.unraisable.object, Nichts)
                 self.assertEqual(str(cm.unraisable.exc_value), "boom!")
             self.assert_events([])
 
@@ -447,7 +447,7 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
                     f"Exception ignored in "
                     f"PY_CODE_EVENT_CREATE watcher callback fuer {co!r}"
                 )
-                self.assertIsNone(cm.unraisable.object)
+                self.assertIsNichts(cm.unraisable.object)
                 self.assertEqual(str(cm.unraisable.exc_value), "boom!")
 
     def test_dealloc_error(self):
@@ -491,7 +491,7 @@ klasse TestFuncWatchers(unittest.TestCase):
         with self.add_watcher(watcher):
             def myfunc():
                 pass
-            self.assertIn((_testcapi.PYFUNC_EVENT_CREATE, myfunc, None), events)
+            self.assertIn((_testcapi.PYFUNC_EVENT_CREATE, myfunc, Nichts), events)
             myfunc_id = id(myfunc)
 
             new_code = self.test_func_events_dispatched.__code__
@@ -517,7 +517,7 @@ klasse TestFuncWatchers(unittest.TestCase):
             # Clear events reference to func
             events = []
             del myfunc
-            self.assertIn((_testcapi.PYFUNC_EVENT_DESTROY, myfunc_id, None), events)
+            self.assertIn((_testcapi.PYFUNC_EVENT_DESTROY, myfunc_id, Nichts), events)
 
     def test_multiple_watchers(self):
         events0 = []
@@ -533,7 +533,7 @@ klasse TestFuncWatchers(unittest.TestCase):
                 def myfunc():
                     pass
 
-                event = (_testcapi.PYFUNC_EVENT_CREATE, myfunc, None)
+                event = (_testcapi.PYFUNC_EVENT_CREATE, myfunc, Nichts)
                 self.assertIn(event, events0)
                 self.assertIn(event, events1)
 
@@ -554,7 +554,7 @@ klasse TestFuncWatchers(unittest.TestCase):
                     f"Exception ignored in "
                     f"PyFunction_EVENT_CREATE watcher callback fuer {repr(myfunc)[1:-1]}"
                 )
-                self.assertIsNone(cm.unraisable.object)
+                self.assertIsNichts(cm.unraisable.object)
 
     def test_dealloc_watcher_raises_error(self):
         klasse MyError(Exception):
@@ -594,7 +594,7 @@ klasse TestContextObjectWatchers(unittest.TestCase):
         try:
             switches = _testcapi.get_context_switches(which_watcher)
         except ValueError:
-            switches = None
+            switches = Nichts
         try:
             yield switches
         finally:
@@ -651,7 +651,7 @@ klasse TestContextObjectWatchers(unittest.TestCase):
                              ["boom!", "boom!"])
         finally:
             # Break reference cycle
-            unraisables = None
+            unraisables = Nichts
 
     def test_clear_out_of_range_watcher_id(self):
         with self.assertRaisesRegex(ValueError, r"Invalid context watcher ID -1"):
@@ -671,8 +671,8 @@ klasse TestContextObjectWatchers(unittest.TestCase):
         ctx = contextvars.Context()
         _testcapi.clear_context_stack()
         with self.context_watcher(0) as switches:
-            ctx.run(lambda: None)
-        self.assertEqual(switches, [ctx, None])
+            ctx.run(lambda: Nichts)
+        self.assertEqual(switches, [ctx, Nichts])
 
 wenn __name__ == "__main__":
     unittest.main()

@@ -14,7 +14,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
     from collections.abc import Set
 
@@ -46,16 +46,16 @@ SUFFIXES_C_OR_CPP = frozenset({".c", ".h", ".cpp"})
 SUFFIXES_DOCUMENTATION = frozenset({".rst", ".md"})
 
 
-@dataclass(kw_only=True, slots=True)
+@dataclass(kw_only=Wahr, slots=Wahr)
 klasse Outputs:
-    run_ci_fuzz: bool = False
-    run_docs: bool = False
-    run_tests: bool = False
-    run_windows_msi: bool = False
-    run_windows_tests: bool = False
+    run_ci_fuzz: bool = Falsch
+    run_docs: bool = Falsch
+    run_tests: bool = Falsch
+    run_windows_msi: bool = Falsch
+    run_windows_tests: bool = Falsch
 
 
-def compute_changes() -> None:
+def compute_changes() -> Nichts:
     target_branch, head_ref = git_refs()
     wenn os.environ.get("GITHUB_EVENT_NAME", "") == "pull_request":
         # Getting changed files only makes sense on a pull request
@@ -63,7 +63,7 @@ def compute_changes() -> None:
         outputs = process_changed_files(files)
     sonst:
         # Otherwise, just run the tests
-        outputs = Outputs(run_tests=True, run_windows_tests=True)
+        outputs = Outputs(run_tests=Wahr, run_windows_tests=Wahr)
     outputs = process_target_branch(outputs, target_branch)
 
     wenn outputs.run_tests:
@@ -105,18 +105,18 @@ def get_changed_files(
     args = ("git", "diff", "--name-only", f"{ref_a}...{ref_b}", "--")
     print(*args)
     changed_files_result = subprocess.run(
-        args, stdout=subprocess.PIPE, check=True, encoding="utf-8"
+        args, stdout=subprocess.PIPE, check=Wahr, encoding="utf-8"
     )
     changed_files = changed_files_result.stdout.strip().splitlines()
-    return frozenset(map(Path, filter(None, map(str.strip, changed_files))))
+    return frozenset(map(Path, filter(Nichts, map(str.strip, changed_files))))
 
 
 def process_changed_files(changed_files: Set[Path]) -> Outputs:
-    run_tests = False
-    run_ci_fuzz = False
-    run_docs = False
-    run_windows_tests = False
-    run_windows_msi = False
+    run_tests = Falsch
+    run_ci_fuzz = Falsch
+    run_docs = Falsch
+    run_windows_tests = Falsch
+    run_windows_msi = Falsch
 
     fuer file in changed_files:
         # Documentation files
@@ -125,39 +125,39 @@ def process_changed_files(changed_files: Set[Path]) -> Outputs:
 
         wenn file.parent == GITHUB_WORKFLOWS_PATH:
             wenn file.name == "build.yml":
-                run_tests = run_ci_fuzz = True
+                run_tests = run_ci_fuzz = Wahr
             wenn file.name == "reusable-docs.yml":
-                run_docs = True
+                run_docs = Wahr
             wenn file.name == "reusable-windows-msi.yml":
-                run_windows_msi = True
+                run_windows_msi = Wahr
 
         wenn not (
             doc_file
             or file == GITHUB_CODEOWNERS_PATH
             or file.name in CONFIGURATION_FILE_NAMES
         ):
-            run_tests = True
+            run_tests = Wahr
 
             wenn file not in UNIX_BUILD_SYSTEM_FILE_NAMES:
-                run_windows_tests = True
+                run_windows_tests = Wahr
 
         # The fuzz tests are pretty slow so they are executed only fuer PRs
         # changing relevant files.
         wenn file.suffix in SUFFIXES_C_OR_CPP:
-            run_ci_fuzz = True
+            run_ci_fuzz = Wahr
         wenn file.parts[:2] in {
             ("configure",),
             ("Modules", "_xxtestfuzz"),
         }:
-            run_ci_fuzz = True
+            run_ci_fuzz = Wahr
 
         # Check fuer changed documentation-related files
         wenn doc_file:
-            run_docs = True
+            run_docs = Wahr
 
         # Check fuer changed MSI installer-related files
         wenn file.parts[:2] == ("Tools", "msi"):
-            run_windows_msi = True
+            run_windows_msi = Wahr
 
     return Outputs(
         run_ci_fuzz=run_ci_fuzz,
@@ -170,20 +170,20 @@ def process_changed_files(changed_files: Set[Path]) -> Outputs:
 
 def process_target_branch(outputs: Outputs, git_branch: str) -> Outputs:
     wenn not git_branch:
-        outputs.run_tests = True
+        outputs.run_tests = Wahr
 
     # CIFuzz / OSS-Fuzz compatibility with older branches may be broken.
     wenn git_branch != GITHUB_DEFAULT_BRANCH:
-        outputs.run_ci_fuzz = False
+        outputs.run_ci_fuzz = Falsch
 
     wenn os.environ.get("GITHUB_EVENT_NAME", "").lower() == "workflow_dispatch":
-        outputs.run_docs = True
-        outputs.run_windows_msi = True
+        outputs.run_docs = Wahr
+        outputs.run_windows_msi = Wahr
 
     return outputs
 
 
-def write_github_output(outputs: Outputs) -> None:
+def write_github_output(outputs: Outputs) -> Nichts:
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables
     # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-an-output-parameter
     wenn "GITHUB_OUTPUT" not in os.environ:

@@ -15,8 +15,8 @@ klasse TestGeneratorBase:
 
     policy = policy.default
 
-    def msgmaker(self, msg, policy=None):
-        policy = self.policy wenn policy is None sonst policy
+    def msgmaker(self, msg, policy=Nichts):
+        policy = self.policy wenn policy is Nichts sonst policy
         return self.msgfunc(msg, policy=policy)
 
     refold_long_expected = {
@@ -27,7 +27,7 @@ klasse TestGeneratorBase:
              impossible fuer the ungrateful. We have done so much fuer so long with so little
              we are now qualified to do anything with nothing.
 
-            None
+            Nichts
             """),
         40: textwrap.dedent("""\
             To: whom_it_may_concern@example.com
@@ -39,7 +39,7 @@ klasse TestGeneratorBase:
              fuer so long with so little we are now
              qualified to do anything with nothing.
 
-            None
+            Nichts
             """),
         20: textwrap.dedent("""\
             To:
@@ -58,7 +58,7 @@ klasse TestGeneratorBase:
              anything with
              nothing.
 
-            None
+            Nichts
             """),
         }
     refold_long_expected[100] = refold_long_expected[0]
@@ -72,7 +72,7 @@ klasse TestGeneratorBase:
               "so long with so little we are now qualified to do anything "
               "with nothing.\n"
               "\n"
-              "None\n")
+              "Nichts\n")
     refold_all_expected[100] = (
             "To: whom_it_may_concern@example.com\n"
             "From: nobody_you_want_to_know@example.com\n"
@@ -81,7 +81,7 @@ klasse TestGeneratorBase:
               " done so much fuer so long with so little we are now qualified "
                 "to do anything with nothing.\n"
               "\n"
-              "None\n")
+              "Nichts\n")
 
     length_params = [n fuer n in refold_long_expected]
 
@@ -182,10 +182,10 @@ klasse TestGeneratorBase:
             From time to time I write a rhyme.
             """)
         variants = (
-            (None, True),
-            (policy.compat32, True),
-            (policy.default, False),
-            (policy.default.clone(mangle_from_=True), True),
+            (Nichts, Wahr),
+            (policy.compat32, Wahr),
+            (policy.default, Falsch),
+            (policy.default.clone(mangle_from_=Wahr), Wahr),
             )
         fuer p, mangle in variants:
             expected = source.replace('From ', '>From ') wenn mangle sonst source
@@ -199,7 +199,7 @@ klasse TestGeneratorBase:
     def test_compat32_max_line_length_does_not_fold_when_none(self):
         msg = self.msgmaker(self.typ(self.refold_long_expected[0]))
         s = self.ioclass()
-        g = self.genclass(s, policy=policy.compat32.clone(max_line_length=None))
+        g = self.genclass(s, policy=policy.compat32.clone(max_line_length=Nichts))
         g.flatten(msg)
         self.assertEqual(s.getvalue(), self.typ(self.refold_long_expected[0]))
 
@@ -211,7 +211,7 @@ klasse TestGeneratorBase:
             Content-Disposition: attachment;
              filename="afilenamelongenoghtowraphere"
 
-            None
+            Nichts
             """)))
         expected = textwrap.dedent("""\
             To: nobody
@@ -219,7 +219,7 @@ klasse TestGeneratorBase:
              filename*0*=us-ascii''afilename;
              filename*1*=longenoghtowraphere
 
-            None
+            Nichts
             """)
         s = self.ioclass()
         g = self.genclass(s, policy=self.policy.clone(max_line_length=33))
@@ -235,7 +235,7 @@ klasse TestGeneratorBase:
             Content-Disposition: attachment;
              filename="afilenamelongenoghtowraphere"
 
-            None
+            Nichts
             """)))
         expected = textwrap.dedent("""\
             To: nobody
@@ -243,7 +243,7 @@ klasse TestGeneratorBase:
              attachment;
              filename*0*=us-ascii''afilenamelongenoghtowraphere
 
-            None
+            Nichts
             """)
         s = self.ioclass()
         g = self.genclass(s, policy=self.policy.clone(max_line_length=20))
@@ -255,13 +255,13 @@ klasse TestGeneratorBase:
             To: nobody
             Subject: Bad subject=?UTF-8?Q?=0A?=Bcc: injection@example.com
 
-            None
+            Nichts
             """)))
         expected = textwrap.dedent("""\
             To: nobody
             Subject: Bad subject=?UTF-8?Q?=0A?=Bcc: injection@example.com
 
-            None
+            Nichts
             """)
         s = self.ioclass()
         g = self.genclass(s, policy=self.policy.clone(max_line_length=80))
@@ -273,7 +273,7 @@ klasse TestGeneratorBase:
             To: nobody
             Subject: Bad subject=?UTF-8?Q?=0A?=Bcc: injection@example.com
 
-            None
+            Nichts
             """)))
         expected = textwrap.dedent("""\
             To: nobody
@@ -281,7 +281,7 @@ klasse TestGeneratorBase:
              =?utf-8?q?=0A?=Bcc:
              injection@example.com
 
-            None
+            Nichts
             """)
         s = self.ioclass()
         g = self.genclass(s, policy=self.policy.clone(max_line_length=30))

@@ -28,9 +28,9 @@ klasse saved_test_environment:
         with saved_test_environment(test_name, verbose, quiet):
             #stuff
 
-    Unless quiet is True, a warning is printed to stderr wenn any of
+    Unless quiet is Wahr, a warning is printed to stderr wenn any of
     the saved items was changed by the test. The support.environment_altered
-    attribute is set to True wenn a change is detected.
+    attribute is set to Wahr wenn a change is detected.
 
     If verbose is more than 1, the before and after state of changed
     items is also printed.
@@ -168,8 +168,8 @@ klasse saved_test_environment:
         return asyncore and asyncore.socket_map.copy() or {}
     def restore_asyncore_socket_map(self, saved_map):
         asyncore = sys.modules.get('test.support.asyncore')
-        wenn asyncore is not None:
-            asyncore.close_all(ignore_all=True)
+        wenn asyncore is not Nichts:
+            asyncore.close_all(ignore_all=Wahr)
             asyncore.socket_map.update(saved_map)
 
     def get_shutil_archive_formats(self):
@@ -277,7 +277,7 @@ klasse saved_test_environment:
         pairings = []
         fuer lc in self._lc:
             try:
-                pairings.append((lc, locale.setlocale(lc, None)))
+                pairings.append((lc, locale.setlocale(lc, Nichts)))
             except (TypeError, ValueError):
                 continue
         return pairings
@@ -312,7 +312,7 @@ klasse saved_test_environment:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         saved_values = self.saved_values
-        self.saved_values = None
+        self.saved_values = Nichts
 
         # Some resources use weak references
         support.gc_collect()
@@ -321,11 +321,11 @@ klasse saved_test_environment:
             current = get()
             # Check fuer changes to the resource's value
             wenn current != original:
-                support.environment_altered = True
+                support.environment_altered = Wahr
                 restore(original)
                 wenn not self.quiet and not self.pgo:
                     print_warning(
                         f"{name} was modified by {self.test_name}\n"
                         f"  Before: {original}\n"
                         f"  After:  {current} ")
-        return False
+        return Falsch

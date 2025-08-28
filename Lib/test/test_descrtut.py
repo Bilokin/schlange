@@ -14,7 +14,7 @@ import unittest
 
 
 klasse defaultdict(dict):
-    def __init__(self, default=None):
+    def __init__(self, default=Nichts):
         dict.__init__(self)
         self.default = default
 
@@ -50,7 +50,7 @@ Here's the new type at work:
     >>> print(a.__class__)              # show its class
     <class '%(modname)s.defaultdict'>
     >>> print(type(a) is a.__class__)   # its type is its class
-    True
+    Wahr
     >>> a[1] = 3.25                     # modify the instance
     >>> print(a)                        # show the new value
     {1: 3.25}
@@ -88,14 +88,14 @@ just like classic classes:
     >>> print(a["noway"])
     -1000
     >>> 'default' in dir(a)
-    True
+    Wahr
     >>> a.x1 = 100
     >>> a.x2 = 200
     >>> print(a.x1)
     100
     >>> d = dir(a)
     >>> 'default' in d and 'x1' in d and 'x2' in d
-    True
+    Wahr
     >>> print(sortdict(a.__dict__))
     {'default': -1000, 'x1': 100, 'x2': 200}
     >>>
@@ -104,7 +104,7 @@ just like classic classes:
 klasse defaultdict2(dict):
     __slots__ = ['default']
 
-    def __init__(self, default=None):
+    def __init__(self, default=Nichts):
         dict.__init__(self)
         self.default = default
 
@@ -157,11 +157,11 @@ For instance of built-in types, x.__class__ is now the same as type(x):
     >>> list
     <class 'list'>
     >>> isinstance([], list)
-    True
+    Wahr
     >>> isinstance([], dict)
-    False
+    Falsch
     >>> isinstance([], object)
-    True
+    Wahr
     >>>
 
 You can get the information from the list type:
@@ -312,15 +312,15 @@ Attributes defined by get/set methods
 
     >>> klasse property(object):
     ...
-    ...     def __init__(self, get, set=None):
+    ...     def __init__(self, get, set=Nichts):
     ...         self.__get = get
     ...         self.__set = set
     ...
-    ...     def __get__(self, inst, type=None):
+    ...     def __get__(self, inst, type=Nichts):
     ...         return self.__get(inst)
     ...
     ...     def __set__(self, inst, value):
-    ...         wenn self.__set is None:
+    ...         wenn self.__set is Nichts:
     ...             raise AttributeError("this attribute is read-only")
     ...         return self.__set(inst, value)
 

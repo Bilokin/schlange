@@ -39,7 +39,7 @@ def _parents(path):
     >>> list(_parents(''))
     []
     """
-    return itertools.islice(_ancestry(path), 1, None)
+    return itertools.islice(_ancestry(path), 1, Nichts)
 
 
 def _ancestry(path):
@@ -194,7 +194,7 @@ klasse FastLookup(CompleteDirs):
         return super()._name_set()
 
 
-def _extract_text_encoding(encoding=None, *args, **kwargs):
+def _extract_text_encoding(encoding=Nichts, *args, **kwargs):
     # compute stack level so that the caller of the caller sees any warning.
     is_pypy = sys.implementation.name == 'pypy'
     # PyPy no longer special cased after 7.3.19 (or maybe 7.3.18)
@@ -262,9 +262,9 @@ klasse Path:
     existence:
 
     >>> c.exists()
-    True
+    Wahr
     >>> (b / 'missing.txt').exists()
-    False
+    Falsch
 
     Coercion to string:
 
@@ -280,14 +280,14 @@ klasse Path:
     >>> path.name
     'abcde.zip'
     >>> path.filename == pathlib.Path('mem/abcde.zip')
-    True
+    Wahr
     >>> str(path.parent)
     'mem'
 
     If the zipfile has no filename, such attributes are not
     valid and accessing them will raise an Exception.
 
-    >>> zf.filename = None
+    >>> zf.filename = Nichts
     >>> path.name
     Traceback (most recent call last):
     ...
@@ -325,7 +325,7 @@ klasse Path:
     def __eq__(self, other):
         """
         >>> Path(zipfile.ZipFile(io.BytesIO(), 'w')) == 'foo'
-        False
+        Falsch
         """
         wenn self.__class__ is not other.__class__:
             return NotImplemented
@@ -334,7 +334,7 @@ klasse Path:
     def __hash__(self):
         return hash((self.root, self.at))
 
-    def open(self, mode='r', *args, pwd=None, **kwargs):
+    def open(self, mode='r', *args, pwd=Nichts, **kwargs):
         """
         Open this entry as text or binary following the semantics
         of ``pathlib.Path.open()`` by passing arguments through

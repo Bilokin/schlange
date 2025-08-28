@@ -12,7 +12,7 @@ klasse HtmlTests(unittest.TestCase):
             html.escape('\'<script>"&foo;"</script>\''),
             '&#x27;&lt;script&gt;&quot;&amp;foo;&quot;&lt;/script&gt;&#x27;')
         self.assertEqual(
-            html.escape('\'<script>"&foo;"</script>\'', False),
+            html.escape('\'<script>"&foo;"</script>\'', Falsch),
             '\'&lt;script&gt;"&amp;foo;"&lt;/script&gt;\'')
 
     def test_unescape(self):

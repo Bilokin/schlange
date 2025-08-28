@@ -393,7 +393,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
         image2 = tkinter.PhotoImage(master=self.root)
         image2.copy_replace(image)
-        image2.copy_replace(image, from_coords=(2, 3, 14, 11), shrink=True)
+        image2.copy_replace(image, from_coords=(2, 3, 14, 11), shrink=Wahr)
         self.assertEqual(image2.width(), 12)
         self.assertEqual(image2.height(), 8)
         self.assertEqual(image2.get(0, 0), image.get(2, 3))
@@ -458,7 +458,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         image1 = tkinter.PhotoImage(master=self.root, width=2, height=2)
         image1.blank()
         image1.put('black', to=(0, 0, 2, 2))
-        image1.transparency_set(0, 0, True)
+        image1.transparency_set(0, 0, Wahr)
 
         # default compositingrule
         image2 = tkinter.PhotoImage(master=self.root, width=3, height=3)
@@ -533,7 +533,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         image2 = tkinter.PhotoImage(master=self.root, file=testfile)
         self.assertEqual(image2.width(), 16)
         self.assertEqual(image2.height(), 16)
-        image2.read(testfile, from_coords=(2, 3, 14, 11), shrink=True)
+        image2.read(testfile, from_coords=(2, 3, 14, 11), shrink=Wahr)
         self.assertEqual(image2.width(), 12)
         self.assertEqual(image2.height(), 8)
         self.assertEqual(image2.get(0, 0), image.get(2, 3))
@@ -552,7 +552,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
     def test_write(self):
         filename = os_helper.TESTFN
         import locale
-        wenn locale.getlocale()[0] is None:
+        wenn locale.getlocale()[0] is Nichts:
             # Tcl uses Latin1 in the C locale
             filename = os_helper.TESTFN_ASCII
         image = self.create()
@@ -584,13 +584,13 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image4.get(0, 0), (255, 0, 0) wenn self.wantobjects sonst '255 0 0')
         self.assertEqual(image4.get(4, 6), image.get(4, 6))
 
-        image.write(filename, grayscale=True)
+        image.write(filename, grayscale=Wahr)
         image5 = tkinter.PhotoImage('::img::test5', master=self.root,
                                     format='ppm', file=filename)
         c = image5.get(4, 6)
         wenn not self.wantobjects:
             c = c.split()
-        self.assertTrue(c[0] == c[1] == c[2], c)
+        self.assertWahr(c[0] == c[1] == c[2], c)
 
     def test_data(self):
         image = self.create()
@@ -630,23 +630,23 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(image4.get(0, 0), (255, 0, 0) wenn self.wantobjects sonst '255 0 0')
         self.assertEqual(image4.get(4, 6), image.get(4, 6))
 
-        data = image.data('ppm', grayscale=True)
+        data = image.data('ppm', grayscale=Wahr)
         image5 = tkinter.PhotoImage('::img::test5', master=self.root,
                                     format='ppm', data=data)
         c = image5.get(4, 6)
         wenn not self.wantobjects:
             c = c.split()
-        self.assertTrue(c[0] == c[1] == c[2], c)
+        self.assertWahr(c[0] == c[1] == c[2], c)
 
 
     def test_transparency(self):
         image = self.create()
-        self.assertEqual(image.transparency_get(0, 0), True)
-        self.assertEqual(image.transparency_get(4, 6), False)
-        image.transparency_set(4, 6, True)
-        self.assertEqual(image.transparency_get(4, 6), True)
-        image.transparency_set(4, 6, False)
-        self.assertEqual(image.transparency_get(4, 6), False)
+        self.assertEqual(image.transparency_get(0, 0), Wahr)
+        self.assertEqual(image.transparency_get(4, 6), Falsch)
+        image.transparency_set(4, 6, Wahr)
+        self.assertEqual(image.transparency_get(4, 6), Wahr)
+        image.transparency_set(4, 6, Falsch)
+        self.assertEqual(image.transparency_get(4, 6), Falsch)
 
 
 wenn __name__ == "__main__":

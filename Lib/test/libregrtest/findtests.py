@@ -31,11 +31,11 @@ SPLITTESTDIRS: set[TestName] = {
 }
 
 
-def findtestdir(path: StrPath | None = None) -> StrPath:
+def findtestdir(path: StrPath | Nichts = Nichts) -> StrPath:
     return path or os.path.dirname(os.path.dirname(__file__)) or os.curdir
 
 
-def findtests(*, testdir: StrPath | None = None, exclude: Container[str] = (),
+def findtests(*, testdir: StrPath | Nichts = Nichts, exclude: Container[str] = (),
               split_test_dirs: set[TestName] = SPLITTESTDIRS,
               base_mod: str = "") -> TestList:
     """Return a list of all applicable test modules."""
@@ -61,7 +61,7 @@ def findtests(*, testdir: StrPath | None = None, exclude: Container[str] = (),
     return sorted(tests)
 
 
-def split_test_packages(tests, *, testdir: StrPath | None = None,
+def split_test_packages(tests, *, testdir: StrPath | Nichts = Nichts,
                         exclude: Container[str] = (),
                         split_test_dirs=SPLITTESTDIRS) -> list[TestName]:
     testdir = findtestdir(testdir)
@@ -77,7 +77,7 @@ def split_test_packages(tests, *, testdir: StrPath | None = None,
     return splitted
 
 
-def _list_cases(suite: unittest.TestSuite) -> None:
+def _list_cases(suite: unittest.TestSuite) -> Nichts:
     fuer test in suite:
         wenn isinstance(test, unittest.loader._FailedTest):  # type: ignore[attr-defined]
             continue
@@ -88,9 +88,9 @@ def _list_cases(suite: unittest.TestSuite) -> None:
                 print(test.id())
 
 def list_cases(tests: TestTuple, *,
-               match_tests: TestFilter | None = None,
-               test_dir: StrPath | None = None) -> None:
-    support.verbose = False
+               match_tests: TestFilter | Nichts = Nichts,
+               test_dir: StrPath | Nichts = Nichts) -> Nichts:
+    support.verbose = Falsch
     set_match_tests(match_tests)
 
     skipped = []

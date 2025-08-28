@@ -34,7 +34,7 @@ klasse BufferSizeTest:
             line = f.readline()
             self.assertEqual(line, s)
             line = f.readline()
-            self.assertFalse(line) # Must be at EOF
+            self.assertFalsch(line) # Must be at EOF
             f.close()
         finally:
             os_helper.unlink(os_helper.TESTFN)

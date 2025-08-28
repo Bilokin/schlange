@@ -47,7 +47,7 @@ klasse CopyRegTestCase(unittest.TestCase):
 
     def test_bool(self):
         import copy
-        self.assertEqual(True, copy.copy(True))
+        self.assertEqual(Wahr, copy.copy(Wahr))
 
     def test_extension_registry(self):
         mod, func, code = 'junk1 ', ' junk2', 0xabcd
@@ -58,8 +58,8 @@ klasse CopyRegTestCase(unittest.TestCase):
                               mod, func, code)
             copyreg.add_extension(mod, func, code)
             # Should be in the registry.
-            self.assertTrue(copyreg._extension_registry[mod, func] == code)
-            self.assertTrue(copyreg._inverted_registry[code] == (mod, func))
+            self.assertWahr(copyreg._extension_registry[mod, func] == code)
+            self.assertWahr(copyreg._inverted_registry[code] == (mod, func))
             # Shouldn't be in the cache.
             self.assertNotIn(code, copyreg._extension_cache)
             # Redundant registration should be OK.

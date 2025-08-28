@@ -21,7 +21,7 @@ from mailbox import Mailbox, _PartialFile
 try:
     import ctypes
 except ImportError:
-    ctypes = None
+    ctypes = Nichts
 from difflib import SequenceMatcher
 from filecmp import dircmp
 from fileinput import FileInput
@@ -35,18 +35,18 @@ try:
     from multiprocessing.queues import JoinableQueue as MPJoinableQueue
 except ImportError:
     # _multiprocessing module is optional
-    ValueProxy = None
-    DictProxy = None
-    ListProxy = None
-    ApplyResult = None
-    MPSimpleQueue = None
-    MPQueue = None
-    MPJoinableQueue = None
+    ValueProxy = Nichts
+    DictProxy = Nichts
+    ListProxy = Nichts
+    ApplyResult = Nichts
+    MPSimpleQueue = Nichts
+    MPQueue = Nichts
+    MPJoinableQueue = Nichts
 try:
     from multiprocessing.shared_memory import ShareableList
 except ImportError:
     # multiprocessing.shared_memory is not available on e.g. Android
-    ShareableList = None
+    ShareableList = Nichts
 from os import DirEntry
 from re import Pattern, Match
 from types import GenericAlias, MappingProxyType, AsyncGeneratorType, CoroutineType, GeneratorType
@@ -60,7 +60,7 @@ from typing import Unpack
 try:
     from tkinter import Event
 except ImportError:
-    Event = None
+    Event = Nichts
 from string.templatelib import Template, Interpolation
 
 from typing import TypeVar
@@ -144,17 +144,17 @@ klasse BaseTest(unittest.TestCase):
                      Template,
                      Interpolation,
                     ]
-    wenn ctypes is not None:
+    wenn ctypes is not Nichts:
         generic_types.extend((ctypes.Array, ctypes.LibraryLoader, ctypes.py_object))
-    wenn ValueProxy is not None:
+    wenn ValueProxy is not Nichts:
         generic_types.extend((ValueProxy, DictProxy, ListProxy, ApplyResult,
                               MPSimpleQueue, MPQueue, MPJoinableQueue))
-    wenn Event is not None:
+    wenn Event is not Nichts:
         generic_types.append(Event)
 
     def test_subscriptable(self):
         fuer t in self.generic_types:
-            wenn t is None:
+            wenn t is Nichts:
                 continue
             tname = t.__name__
             with self.subTest(f"Testing {tname}"):
@@ -204,9 +204,9 @@ klasse BaseTest(unittest.TestCase):
         self.assertEqual(C.__class__, type)
 
     def test_class_methods(self):
-        t = dict[int, None]
-        self.assertEqual(dict.fromkeys(range(2)), {0: None, 1: None})  # This works
-        self.assertEqual(t.fromkeys(range(2)), {0: None, 1: None})  # Should be equivalent
+        t = dict[int, Nichts]
+        self.assertEqual(dict.fromkeys(range(2)), {0: Nichts, 1: Nichts})  # This works
+        self.assertEqual(t.fromkeys(range(2)), {0: Nichts, 1: Nichts})  # Should be equivalent
 
     def test_no_chaining(self):
         t = list[int]
@@ -356,7 +356,7 @@ klasse BaseTest(unittest.TestCase):
         self.assertNotEqual((*tuple[int],)[0], tuple[int])
 
     def test_isinstance(self):
-        self.assertTrue(isinstance([], list))
+        self.assertWahr(isinstance([], list))
         with self.assertRaises(TypeError):
             isinstance([], list[str])
 
@@ -369,7 +369,7 @@ klasse BaseTest(unittest.TestCase):
     def test_type_generic(self):
         t = type[int]
         Test = t('Test', (), {})
-        self.assertTrue(isinstance(Test, type))
+        self.assertWahr(isinstance(Test, type))
         test = Test()
         self.assertEqual(t(test), Test)
         self.assertEqual(t(0), int)
@@ -417,9 +417,9 @@ klasse BaseTest(unittest.TestCase):
 
     def test_unpack(self):
         alias = tuple[str, ...]
-        self.assertIs(alias.__unpacked__, False)
+        self.assertIs(alias.__unpacked__, Falsch)
         unpacked = (*alias,)[0]
-        self.assertIs(unpacked.__unpacked__, True)
+        self.assertIs(unpacked.__unpacked__, Wahr)
 
     def test_union(self):
         a = typing.Union[list[int], list[str]]
@@ -433,13 +433,13 @@ klasse BaseTest(unittest.TestCase):
 
     def test_dir(self):
         dir_of_gen_alias = set(dir(list[int]))
-        self.assertTrue(dir_of_gen_alias.issuperset(dir(list)))
+        self.assertWahr(dir_of_gen_alias.issuperset(dir(list)))
         fuer generic_alias_property in ("__origin__", "__args__", "__parameters__"):
             self.assertIn(generic_alias_property, dir_of_gen_alias)
 
     def test_weakref(self):
         fuer t in self.generic_types:
-            wenn t is None:
+            wenn t is Nichts:
                 continue
             tname = t.__name__
             with self.subTest(f"Testing {tname}"):

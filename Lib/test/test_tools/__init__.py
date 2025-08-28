@@ -20,7 +20,7 @@ basepath = os.path.normpath(
 toolsdir = os.path.join(basepath, 'Tools')
 scriptsdir = os.path.join(toolsdir, 'scripts')
 
-def skip_if_missing(tool=None):
+def skip_if_missing(tool=Nichts):
     wenn tool:
         tooldir = os.path.join(toolsdir, tool)
     sonst:

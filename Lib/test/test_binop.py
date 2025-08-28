@@ -49,12 +49,12 @@ klasse Rat(object):
     def _get_num(self):
         """Accessor function fuer read-only 'num' attribute of Rat."""
         return self.__num
-    num = property(_get_num, None)
+    num = property(_get_num, Nichts)
 
     def _get_den(self):
         """Accessor function fuer read-only 'den' attribute of Rat."""
         return self.__den
-    den = property(_get_den, None)
+    den = property(_get_den, Nichts)
 
     def __repr__(self):
         """Convert a Rat to a string resembling a Rat constructor call."""
@@ -207,10 +207,10 @@ klasse RatTestCase(unittest.TestCase):
         self.assertEqual(gcd(-10, -2), -2)
         fuer i in range(1, 20):
             fuer j in range(1, 20):
-                self.assertTrue(gcd(i, j) > 0)
-                self.assertTrue(gcd(-i, j) < 0)
-                self.assertTrue(gcd(i, -j) > 0)
-                self.assertTrue(gcd(-i, -j) < 0)
+                self.assertWahr(gcd(i, j) > 0)
+                self.assertWahr(gcd(-i, j) < 0)
+                self.assertWahr(gcd(i, -j) > 0)
+                self.assertWahr(gcd(-i, -j) < 0)
 
     def test_constructor(self):
         a = Rat(10, 15)
@@ -234,7 +234,7 @@ klasse RatTestCase(unittest.TestCase):
             pass
         sonst:
             self.fail("Rat(1, 0) didn't raise ZeroDivisionError")
-        fuer bad in "0", 0.0, 0j, (), [], {}, None, Rat, unittest:
+        fuer bad in "0", 0.0, 0j, (), [], {}, Nichts, Rat, unittest:
             try:
                 a = Rat(bad)
             except TypeError:
@@ -390,31 +390,31 @@ klasse OperationOrderTests(unittest.TestCase):
 klasse SupEq(object):
     """Class that can test equality"""
     def __eq__(self, other):
-        return True
+        return Wahr
 
 klasse S(SupEq):
     """Subclass of SupEq that should fail"""
-    __eq__ = None
+    __eq__ = Nichts
 
 klasse F(object):
     """Independent klasse that should fall back"""
 
 klasse X(object):
     """Independent klasse that should fail"""
-    __eq__ = None
+    __eq__ = Nichts
 
 klasse SN(SupEq):
     """Subclass of SupEq that can test equality, but not non-equality"""
-    __ne__ = None
+    __ne__ = Nichts
 
 klasse XN:
     """Independent klasse that can test equality, but not non-equality"""
     def __eq__(self, other):
-        return True
-    __ne__ = None
+        return Wahr
+    __ne__ = Nichts
 
 klasse FallbackBlockingTests(unittest.TestCase):
-    """Unit tests fuer None method blocking"""
+    """Unit tests fuer Nichts method blocking"""
 
     def test_fallback_rmethod_blocking(self):
         e, f, s, x = SupEq(), F(), S(), X()
@@ -430,10 +430,10 @@ klasse FallbackBlockingTests(unittest.TestCase):
 
     def test_fallback_ne_blocking(self):
         e, sn, xn = SupEq(), SN(), XN()
-        self.assertFalse(e != e)
+        self.assertFalsch(e != e)
         self.assertRaises(TypeError, ne, e, sn)
         self.assertRaises(TypeError, ne, sn, e)
-        self.assertFalse(e != xn)
+        self.assertFalsch(e != xn)
         self.assertRaises(TypeError, ne, xn, e)
 
 wenn __name__ == "__main__":

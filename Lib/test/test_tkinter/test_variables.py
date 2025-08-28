@@ -12,10 +12,10 @@ from test.test_tkinter.support import AbstractDefaultRootTest, tcl_version
 klasse Var(Variable):
 
     _default = "default"
-    side_effect = False
+    side_effect = Falsch
 
     def set(self, value):
-        self.side_effect = True
+        self.side_effect = Wahr
         super().set(value)
 
 
@@ -44,24 +44,24 @@ klasse TestVariable(TestBase):
         self.assertEqual("varname", str(v))
 
     def test___del__(self):
-        self.assertFalse(self.info_exists("varname"))
+        self.assertFalsch(self.info_exists("varname"))
         v = Variable(self.root, "sample string", "varname")
-        self.assertTrue(self.info_exists("varname"))
+        self.assertWahr(self.info_exists("varname"))
         del v
         support.gc_collect()  # For PyPy or other GCs.
-        self.assertFalse(self.info_exists("varname"))
+        self.assertFalsch(self.info_exists("varname"))
 
     def test_dont_unset_not_existing(self):
-        self.assertFalse(self.info_exists("varname"))
+        self.assertFalsch(self.info_exists("varname"))
         v1 = Variable(self.root, name="name")
         v2 = Variable(self.root, name="name")
         del v1
         support.gc_collect()  # For PyPy or other GCs.
-        self.assertFalse(self.info_exists("name"))
+        self.assertFalsch(self.info_exists("name"))
         # shouldn't raise exception
         del v2
         support.gc_collect()  # For PyPy or other GCs.
-        self.assertFalse(self.info_exists("name"))
+        self.assertFalsch(self.info_exists("name"))
 
     def test_equality(self):
         # values doesn't matter, only klasse and name are checked
@@ -107,9 +107,9 @@ klasse TestVariable(TestBase):
 
     def test_initialize(self):
         v = Var(self.root)
-        self.assertFalse(v.side_effect)
+        self.assertFalsch(v.side_effect)
         v.set("value")
-        self.assertTrue(v.side_effect)
+        self.assertWahr(v.side_effect)
 
     def test_trace_old(self):
         wenn tcl_version >= (9, 0):
@@ -299,25 +299,25 @@ klasse TestBooleanVar(TestBase):
 
     def test_default(self):
         v = BooleanVar(self.root)
-        self.assertIs(v.get(), False)
+        self.assertIs(v.get(), Falsch)
 
     def test_get(self):
-        v = BooleanVar(self.root, True, "name")
-        self.assertIs(v.get(), True)
+        v = BooleanVar(self.root, Wahr, "name")
+        self.assertIs(v.get(), Wahr)
         self.root.globalsetvar("name", "0")
-        self.assertIs(v.get(), False)
+        self.assertIs(v.get(), Falsch)
         self.root.globalsetvar("name", 42 wenn self.root.wantobjects() sonst 1)
-        self.assertIs(v.get(), True)
+        self.assertIs(v.get(), Wahr)
         self.root.globalsetvar("name", 0)
-        self.assertIs(v.get(), False)
+        self.assertIs(v.get(), Falsch)
         self.root.globalsetvar("name", "on")
-        self.assertIs(v.get(), True)
+        self.assertIs(v.get(), Wahr)
 
     def test_set(self):
         true = 1 wenn self.root.wantobjects() sonst "1"
         false = 0 wenn self.root.wantobjects() sonst "0"
         v = BooleanVar(self.root, name="name")
-        v.set(True)
+        v.set(Wahr)
         self.assertEqual(self.root.globalgetvar("name"), true)
         v.set("0")
         self.assertEqual(self.root.globalgetvar("name"), false)

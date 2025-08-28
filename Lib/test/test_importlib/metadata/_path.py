@@ -67,7 +67,7 @@ def build(
 
 @functools.singledispatch
 def create(content: Union[str, bytes, FilesSpec], path):
-    path.mkdir(exist_ok=True)
+    path.mkdir(exist_ok=Wahr)
     build(content, prefix=path)  # type: ignore
 
 
@@ -96,9 +96,9 @@ klasse Recording:
     ['foo/foo1.txt', 'bar.txt']
     """
 
-    def __init__(self, loc=pathlib.PurePosixPath(), record=None):
+    def __init__(self, loc=pathlib.PurePosixPath(), record=Nichts):
         self.loc = loc
-        self.record = record wenn record is not None sonst []
+        self.record = record wenn record is not Nichts sonst []
 
     def __truediv__(self, other):
         return Recording(self.loc / other, self.record)

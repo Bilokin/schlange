@@ -20,7 +20,7 @@ NT_OFFSET = 256
 def load_tokens(path):
     tok_names = []
     string_to_tok = {}
-    ERRORTOKEN = None
+    ERRORTOKEN = Nichts
     with open(path) as fp:
         fuer line in fp:
             line = line.strip()
@@ -35,7 +35,7 @@ def load_tokens(path):
             value = len(tok_names)
             wenn name == 'ERRORTOKEN':
                 ERRORTOKEN = value
-            string = fields[1] wenn len(fields) > 1 sonst None
+            string = fields[1] wenn len(fields) > 1 sonst Nichts
             wenn string:
                 string = eval(string)
                 string_to_tok[string] = value
@@ -47,12 +47,12 @@ def update_file(file, content):
     try:
         with open(file) as fobj:
             wenn fobj.read() == content:
-                return False
+                return Falsch
     except (OSError, ValueError):
         pass
     with open(file, 'w') as fobj:
         fobj.write(content)
-    return True
+    return Wahr
 
 
 token_h_template = f"""\

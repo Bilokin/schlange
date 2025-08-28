@@ -10,7 +10,7 @@ from test.support import import_helper
 
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
-NULL = None
+NULL = Nichts
 BAD_ARGUMENT = re.escape('bad argument type fuer built-in operation')
 
 
@@ -423,8 +423,8 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(decodecharmap(b'\1\0\2', ['', 'b', 'cd']), 'bcd')
 
         self.assertRaises(UnicodeDecodeError, decodecharmap, b'\0', {})
-        self.assertRaises(UnicodeDecodeError, decodecharmap, b'\0', {0: None})
-        self.assertEqual(decodecharmap(b'\1\0\2', [None, 'b', 'c'], 'replace'), 'b\ufffdc')
+        self.assertRaises(UnicodeDecodeError, decodecharmap, b'\0', {0: Nichts})
+        self.assertEqual(decodecharmap(b'\1\0\2', [Nichts, 'b', 'c'], 'replace'), 'b\ufffdc')
         self.assertEqual(decodecharmap(b'\1\0\2\xff', NULL), '\1\0\2\xff')
         self.assertRaises(TypeError, decodecharmap, b'\0', 42)
 
@@ -442,7 +442,7 @@ klasse CAPIUnicodeTest(unittest.TestCase):
         self.assertEqual(ascharmapstring('abc', {97: 3, 98: b'', 99: b'spam'}), b'\3spam')
 
         self.assertRaises(UnicodeEncodeError, ascharmapstring, 'a', {})
-        self.assertRaises(UnicodeEncodeError, ascharmapstring, 'a', {97: None})
+        self.assertRaises(UnicodeEncodeError, ascharmapstring, 'a', {97: Nichts})
         self.assertRaises(TypeError, ascharmapstring, b'a', {})
         self.assertRaises(TypeError, ascharmapstring, [], {})
         self.assertRaises(TypeError, ascharmapstring, 'a', NULL)
@@ -544,11 +544,11 @@ klasse CAPICodecs(unittest.TestCase):
             return (type(c)().join(reversed(c)), len(c))
 
         klasse IncrementalEncoder(codecs.IncrementalEncoder):
-            def encode(self, input, final=False):
+            def encode(self, input, final=Falsch):
                 return codec_encoder(input)
 
         klasse IncrementalDecoder(codecs.IncrementalDecoder):
-            def decode(self, input, final=False):
+            def decode(self, input, final=Falsch):
                 return codec_decoder(input)
 
         klasse StreamReader(codecs.StreamReader):
@@ -578,7 +578,7 @@ klasse CAPICodecs(unittest.TestCase):
         def search_function(encoding):
             wenn encoding == self.encoding_name:
                 return info
-            return None
+            return Nichts
 
         self.codec_info = info
         self.search_function = search_function
@@ -594,7 +594,7 @@ klasse CAPICodecs(unittest.TestCase):
     def test_codec_register(self):
         search_function, encoding = self.search_function, self.encoding_name
         # register the search function using the C API
-        self.assertIsNone(_testcapi.codec_register(search_function))
+        self.assertIsNichts(_testcapi.codec_register(search_function))
         # in case the test failed before cleaning up
         self.addCleanup(codecs.unregister, self.search_function)
         self.assertIs(codecs.lookup(encoding), search_function(encoding))
@@ -610,16 +610,16 @@ klasse CAPICodecs(unittest.TestCase):
         codecs.register(search_function)
         # in case the test failed before cleaning up
         self.addCleanup(codecs.unregister, self.search_function)
-        self.assertIsNotNone(codecs.lookup(encoding))
+        self.assertIsNotNichts(codecs.lookup(encoding))
         # unregister the search function using the C API
-        self.assertIsNone(_testcapi.codec_unregister(search_function))
+        self.assertIsNichts(_testcapi.codec_unregister(search_function))
         self.assertRaises(LookupError, codecs.lookup, encoding)
 
     def test_codec_known_encoding(self):
         self.assertRaises(LookupError, codecs.lookup, 'unknown-codec')
-        self.assertFalse(_testcapi.codec_known_encoding('unknown-codec'))
-        self.assertFalse(_testcapi.codec_known_encoding('unknown_codec'))
-        self.assertFalse(_testcapi.codec_known_encoding('UNKNOWN-codec'))
+        self.assertFalsch(_testcapi.codec_known_encoding('unknown-codec'))
+        self.assertFalsch(_testcapi.codec_known_encoding('unknown_codec'))
+        self.assertFalsch(_testcapi.codec_known_encoding('UNKNOWN-codec'))
 
         encoding_name = self.encoding_name
         self.assertRaises(LookupError, codecs.lookup, encoding_name)
@@ -633,7 +633,7 @@ klasse CAPICodecs(unittest.TestCase):
             encoding_name.replace('_', '-'),
         ]:
             with self.subTest(name):
-                self.assertTrue(_testcapi.codec_known_encoding(name))
+                self.assertWahr(_testcapi.codec_known_encoding(name))
 
     def test_codec_encode(self):
         encode = _testcapi.codec_encode

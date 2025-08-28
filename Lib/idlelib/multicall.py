@@ -77,7 +77,7 @@ klasse _SimpleBinder:
         self.widget = widget
         self.widgetinst = widgetinst
         self.bindedfuncs = []
-        self.handlerid = None
+        self.handlerid = Nichts
 
     def bind(self, triplet, func):
         wenn not self.handlerid:
@@ -87,7 +87,7 @@ klasse _SimpleBinder:
                 fuer i in range(len(l)-1, -1, -1):
                     func = l[i]
                     wenn func not in wascalled:
-                        wascalled[func] = True
+                        wascalled[func] = Wahr
                         r = func(event)
                         wenn r:
                             return r
@@ -99,7 +99,7 @@ klasse _SimpleBinder:
         self.bindedfuncs.remove(func)
         wenn not self.bindedfuncs:
             self.widget.unbind(self.widgetinst, self.sequence, self.handlerid)
-            self.handlerid = None
+            self.handlerid = Nichts
 
     def __del__(self):
         wenn self.handlerid:
@@ -135,7 +135,7 @@ def expand_substates(states):
     statelist = []
     fuer state in states:
         substates = list({state & x fuer x in states})
-        substates.sort(key=nbits, reverse=True)
+        substates.sort(key=nbits, reverse=Wahr)
         statelist.append(substates)
     return statelist
 
@@ -154,7 +154,7 @@ klasse _ComplexBinder:
     # This klasse binds many functions, and only unbinds them when it is deleted.
     # self.handlerids is the list of seqs and ids of binded handler functions.
     # The binded functions sit in a dictionary of lists of lists, which maps
-    # a detail (or None) and a state into a list of functions.
+    # a detail (or Nichts) and a state into a list of functions.
     # When a new detail is discovered, handlers fuer all the possible states
     # are binded.
 
@@ -163,16 +163,16 @@ klasse _ComplexBinder:
                     mc_type = mc_type, mc_state = mc_state,
                     ishandlerrunning = self.ishandlerrunning,
                     doafterhandler = self.doafterhandler):
-            ishandlerrunning[:] = [True]
+            ishandlerrunning[:] = [Wahr]
             event.mc_type = mc_type
             event.mc_state = mc_state
             wascalled = {}
-            r = None
+            r = Nichts
             fuer l in lists:
                 fuer i in range(len(l)-1, -1, -1):
                     func = l[i]
                     wenn func not in wascalled:
-                        wascalled[func] = True
+                        wascalled[func] = Wahr
                         r = l[i](event)
                         wenn r:
                             break
@@ -192,7 +192,7 @@ klasse _ComplexBinder:
         self.typename = _types[type][0]
         self.widget = widget
         self.widgetinst = widgetinst
-        self.bindedfuncs = {None: [[] fuer s in _states]}
+        self.bindedfuncs = {Nichts: [[] fuer s in _states]}
         self.handlerids = []
         # we don't want to change the lists of functions while a handler is
         # running - it will mess up the loop and anyway, we usually want the
@@ -204,7 +204,7 @@ klasse _ComplexBinder:
         self.ishandlerrunning = []
         self.doafterhandler = []
         fuer s in _states:
-            lists = [self.bindedfuncs[None][i] fuer i in _state_subsets[s]]
+            lists = [self.bindedfuncs[Nichts][i] fuer i in _state_subsets[s]]
             handler = self.__create_handler(lists, type, _state_codes[s])
             seq = '<'+_state_names[s]+self.typename+'>'
             self.handlerids.append((seq, self.widget.bind(self.widgetinst,
@@ -215,7 +215,7 @@ klasse _ComplexBinder:
             self.bindedfuncs[triplet[2]] = [[] fuer s in _states]
             fuer s in _states:
                 lists = [ self.bindedfuncs[detail][i]
-                          fuer detail in (triplet[2], None)
+                          fuer detail in (triplet[2], Nichts)
                           fuer i in _state_subsets[s]       ]
                 handler = self.__create_handler(lists, self.type,
                                                 _state_codes[s])
@@ -267,11 +267,11 @@ _button_re = re.compile(r"^[1-5]$")
 def _parse_sequence(sequence):
     """Get a string which should describe an event sequence. If it is
     successfully parsed as one, return a tuple containing the state (as an int),
-    the event type (as an index of _types), and the detail - None wenn none, or a
-    string wenn there is one. If the parsing is unsuccessful, return None.
+    the event type (as an index of _types), and the detail - Nichts wenn none, or a
+    string wenn there is one. If the parsing is unsuccessful, return Nichts.
     """
     wenn not sequence or sequence[0] != '<' or sequence[-1] != '>':
-        return None
+        return Nichts
     words = sequence[1:-1].split('-')
     modifiers = 0
     while words and words[0] in _modifier_names:
@@ -281,12 +281,12 @@ def _parse_sequence(sequence):
         type = _type_names[words[0]]
         del words[0]
     sonst:
-        return None
+        return Nichts
     wenn _binder_classes[type] is _SimpleBinder:
         wenn modifiers or words:
-            return None
+            return Nichts
         sonst:
-            detail = None
+            detail = Nichts
     sonst:
         # _ComplexBinder
         wenn type in [_type_names[s] fuer s in ("KeyPress", "KeyRelease")]:
@@ -295,11 +295,11 @@ def _parse_sequence(sequence):
             type_re = _button_re
 
         wenn not words:
-            detail = None
+            detail = Nichts
         sowenn len(words) == 1 and type_re.match(words[0]):
             detail = words[0]
         sonst:
-            return None
+            return Nichts
 
     return modifiers, type, detail
 
@@ -331,49 +331,49 @@ def MultiCallCreator(widget):
             self.__binders = [_binder_classes[i](i, widget, self)
                               fuer i in range(len(_types))]
 
-        def bind(self, sequence=None, func=None, add=None):
+        def bind(self, sequence=Nichts, func=Nichts, add=Nichts):
             #print("bind(%s, %s, %s)" % (sequence, func, add),
             #      file=sys.__stderr__)
             wenn type(sequence) is str and len(sequence) > 2 and \
                sequence[:2] == "<<" and sequence[-2:] == ">>":
                 wenn sequence in self.__eventinfo:
                     ei = self.__eventinfo[sequence]
-                    wenn ei[0] is not None:
+                    wenn ei[0] is not Nichts:
                         fuer triplet in ei[1]:
                             self.__binders[triplet[1]].unbind(triplet, ei[0])
                     ei[0] = func
-                    wenn ei[0] is not None:
+                    wenn ei[0] is not Nichts:
                         fuer triplet in ei[1]:
                             self.__binders[triplet[1]].bind(triplet, func)
                 sonst:
                     self.__eventinfo[sequence] = [func, []]
             return widget.bind(self, sequence, func, add)
 
-        def unbind(self, sequence, funcid=None):
+        def unbind(self, sequence, funcid=Nichts):
             wenn type(sequence) is str and len(sequence) > 2 and \
                sequence[:2] == "<<" and sequence[-2:] == ">>" and \
                sequence in self.__eventinfo:
                 func, triplets = self.__eventinfo[sequence]
-                wenn func is not None:
+                wenn func is not Nichts:
                     fuer triplet in triplets:
                         self.__binders[triplet[1]].unbind(triplet, func)
-                    self.__eventinfo[sequence][0] = None
+                    self.__eventinfo[sequence][0] = Nichts
             return widget.unbind(self, sequence, funcid)
 
         def event_add(self, virtual, *sequences):
             #print("event_add(%s, %s)" % (repr(virtual), repr(sequences)),
             #      file=sys.__stderr__)
             wenn virtual not in self.__eventinfo:
-                self.__eventinfo[virtual] = [None, []]
+                self.__eventinfo[virtual] = [Nichts, []]
 
             func, triplets = self.__eventinfo[virtual]
             fuer seq in sequences:
                 triplet = _parse_sequence(seq)
-                wenn triplet is None:
+                wenn triplet is Nichts:
                     #print("Tkinter event_add(%s)" % seq, file=sys.__stderr__)
                     widget.event_add(self, virtual, seq)
                 sonst:
-                    wenn func is not None:
+                    wenn func is not Nichts:
                         self.__binders[triplet[1]].bind(triplet, func)
                     triplets.append(triplet)
 
@@ -383,16 +383,16 @@ def MultiCallCreator(widget):
             func, triplets = self.__eventinfo[virtual]
             fuer seq in sequences:
                 triplet = _parse_sequence(seq)
-                wenn triplet is None:
+                wenn triplet is Nichts:
                     #print("Tkinter event_delete: %s" % seq, file=sys.__stderr__)
                     widget.event_delete(self, virtual, seq)
                 sonst:
-                    wenn func is not None:
+                    wenn func is not Nichts:
                         self.__binders[triplet[1]].unbind(triplet, func)
                     triplets.remove(triplet)
 
-        def event_info(self, virtual=None):
-            wenn virtual is None or virtual not in self.__eventinfo:
+        def event_info(self, virtual=Nichts):
+            wenn virtual is Nichts or virtual not in self.__eventinfo:
                 return widget.event_info(self, virtual)
             sonst:
                 return tuple(map(_triplet_to_sequence,
@@ -445,7 +445,7 @@ def _multi_call(parent):  # htest #
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_mainmenu', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_mainmenu', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_multi_call)

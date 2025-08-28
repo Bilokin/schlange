@@ -109,7 +109,7 @@ klasse InheritedHashWithEquality(FixedHash, OnlyEquality): pass
 klasse InheritedHashWithInequality(FixedHash, OnlyInequality): pass
 
 klasse NoHash(object):
-    __hash__ = None
+    __hash__ = Nichts
 
 klasse HashInheritanceTestCase(unittest.TestCase):
     default_expected = [object(),
@@ -174,14 +174,14 @@ klasse HashRandomizationTests:
     def get_hash_command(self, repr_):
         return 'print(hash(eval(%a)))' % repr_
 
-    def get_hash(self, repr_, seed=None):
+    def get_hash(self, repr_, seed=Nichts):
         env = os.environ.copy()
-        env['__cleanenv'] = True  # signal to assert_python not to do a copy
+        env['__cleanenv'] = Wahr  # signal to assert_python not to do a copy
                                   # of os.environ on its own
-        wenn seed is not None:
+        wenn seed is not Nichts:
             env['PYTHONHASHSEED'] = str(seed)
         sonst:
-            env.pop('PYTHONHASHSEED', None)
+            env.pop('PYTHONHASHSEED', Nichts)
         out = assert_python_ok(
             '-c', self.get_hash_command(repr_),
             **env)
@@ -195,8 +195,8 @@ klasse HashRandomizationTests:
         self.assertNotEqual(run1, run2)
 
 klasse StringlikeHashRandomizationTests(HashRandomizationTests):
-    repr_ = None
-    repr_long = None
+    repr_ = Nichts
+    repr_long = Nichts
 
     # 32bit little, 64bit little, 32bit big, 64bit big
     known_hashes = {
@@ -282,7 +282,7 @@ klasse StringlikeHashRandomizationTests(HashRandomizationTests):
 
     @skip_unless_internalhash
     def test_long_fixed_hash(self):
-        wenn self.repr_long is None:
+        wenn self.repr_long is Nichts:
             return
         h = self.get_expected_hash(2, 11)
         self.assertEqual(self.get_hash(self.repr_long, seed=42), h)

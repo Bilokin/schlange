@@ -34,7 +34,7 @@ klasse StructSeqTest(unittest.TestCase):
 
     def test_repr(self):
         t = time.gmtime()
-        self.assertTrue(repr(t))
+        self.assertWahr(repr(t))
         t = time.gmtime(0)
         self.assertEqual(repr(t),
             "time.struct_time(tm_year=1970, tm_mon=1, tm_mday=1, tm_hour=0, "
@@ -74,11 +74,11 @@ klasse StructSeqTest(unittest.TestCase):
         t1 = time.gmtime()
         t2 = type(t1)(t1)
         self.assertEqual(t1, t2)
-        self.assertTrue(not (t1 < t2))
-        self.assertTrue(t1 <= t2)
-        self.assertTrue(not (t1 > t2))
-        self.assertTrue(t1 >= t2)
-        self.assertTrue(not (t1 != t2))
+        self.assertWahr(not (t1 < t2))
+        self.assertWahr(t1 <= t2)
+        self.assertWahr(not (t1 > t2))
+        self.assertWahr(t1 >= t2)
+        self.assertWahr(not (t1 != t2))
 
     def test_fields(self):
         t = time.gmtime()
@@ -90,10 +90,10 @@ klasse StructSeqTest(unittest.TestCase):
         t = time.struct_time
 
         self.assertRaises(TypeError, t)
-        self.assertRaises(TypeError, t, None)
+        self.assertRaises(TypeError, t, Nichts)
         self.assertRaises(TypeError, t, "123")
         self.assertRaises(TypeError, t, "123", dict={})
-        self.assertRaises(TypeError, t, "123456789", dict=None)
+        self.assertRaises(TypeError, t, "123456789", dict=Nichts)
         self.assertRaises(TypeError, t, seq="123456789", dict={})
 
         self.assertEqual(t("123456789"), tuple("123456789"))
@@ -247,7 +247,7 @@ klasse StructSeqTest(unittest.TestCase):
         # Test extended slicing by comparing with list slicing.
         t = time.gmtime()
         L = list(t)
-        indices = (0, None, 1, 3, 19, 300, -1, -2, -31, -300)
+        indices = (0, Nichts, 1, 3, 19, 300, -1, -2, -31, -300)
         fuer start in indices:
             fuer stop in indices:
                 # Skip step 0 (invalid)

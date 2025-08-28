@@ -41,7 +41,7 @@ klasse StringTestCase(UnicodeTestCase):
         func.restype = ctypes.c_char_p
 
     def tearDown(self):
-        func.argtypes = None
+        func.argtypes = Nichts
         func.restype = ctypes.c_int
 
     def test_func(self):

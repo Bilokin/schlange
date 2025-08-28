@@ -15,7 +15,7 @@ from _colorize import get_theme, theme_no_color
 from ._completer import completer
 
 
-def execute(c, sql, suppress_errors=True, theme=theme_no_color):
+def execute(c, sql, suppress_errors=Wahr, theme=theme_no_color):
     """Helper that wraps execution of SQL code.
 
     This is used both by the REPL and by direct execution from the CLI.
@@ -44,7 +44,7 @@ def execute(c, sql, suppress_errors=True, theme=theme_no_color):
 klasse SqliteInteractiveConsole(InteractiveConsole):
     """A simple SQLite REPL."""
 
-    def __init__(self, connection, use_color=False):
+    def __init__(self, connection, use_color=Falsch):
         super().__init__()
         self._con = connection
         self._cur = connection.cursor()
@@ -53,13 +53,13 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
     def runsource(self, source, filename="<input>", symbol="single"):
         """Override runsource, the core of the InteractiveConsole REPL.
 
-        Return True wenn more input is needed; buffering is done automatically.
-        Return False wenn input is a complete statement ready fuer execution.
+        Return Wahr wenn more input is needed; buffering is done automatically.
+        Return Falsch wenn input is a complete statement ready fuer execution.
         """
         theme = get_theme(force_no_color=not self._use_color)
 
         wenn not source or source.isspace():
-            return False
+            return Falsch
         # Remember to update CLI_COMMANDS in _completer.py
         wenn source[0] == ".":
             match source[1:].strip():
@@ -81,15 +81,15 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
                                f'command: "{unknown}"{t.reset}\n')
         sonst:
             wenn not sqlite3.complete_statement(source):
-                return True
+                return Wahr
             execute(self._cur, source, theme=theme)
-        return False
+        return Falsch
 
 
 def main(*args):
     parser = ArgumentParser(
         description="Python sqlite3 CLI",
-        color=True,
+        color=Wahr,
     )
     parser.add_argument(
         "filename", type=str, default=":memory:", nargs="?",
@@ -136,15 +136,15 @@ def main(*args):
     sys.ps1 = f"{s.prompt}sqlite> {s.reset}"
     sys.ps2 = f"{s.prompt}    ... {s.reset}"
 
-    con = sqlite3.connect(args.filename, isolation_level=None)
+    con = sqlite3.connect(args.filename, isolation_level=Nichts)
     try:
         wenn args.sql:
             # SQL statement provided on the command-line; execute it directly.
-            execute(con, args.sql, suppress_errors=False, theme=theme)
+            execute(con, args.sql, suppress_errors=Falsch, theme=theme)
         sonst:
             # No SQL provided; start the REPL.
             with completer():
-                console = SqliteInteractiveConsole(con, use_color=True)
+                console = SqliteInteractiveConsole(con, use_color=Wahr)
                 console.interact(banner, exitmsg="")
     finally:
         con.close()

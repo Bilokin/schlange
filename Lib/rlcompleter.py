@@ -40,7 +40,7 @@ import warnings
 __all__ = ["Completer"]
 
 klasse Completer:
-    def __init__(self, namespace = None):
+    def __init__(self, namespace = Nichts):
         """Create a new completer fuer the command line.
 
         Completer([namespace]) -> completer instance.
@@ -61,7 +61,7 @@ klasse Completer:
         # Don't bind to namespace quite yet, but flag whether the user wants a
         # specific namespace or to use __main__.__dict__. This will allow us
         # to bind to __main__.__dict__ at completion time, not now.
-        wenn namespace is None:
+        wenn namespace is Nichts:
             self.use_main_ns = 1
         sonst:
             self.use_main_ns = 0
@@ -71,7 +71,7 @@ klasse Completer:
         """Return the next possible completion fuer 'text'.
 
         This is called successively with state == 0, 1, 2, ... until it
-        returns None.  The completion should begin with 'text'.
+        returns Nichts.  The completion should begin with 'text'.
 
         """
         wenn self.use_main_ns:
@@ -86,7 +86,7 @@ klasse Completer:
                 sonst:
                     return '\t'
             sonst:
-                return None
+                return Nichts
 
         wenn state == 0:
             with warnings.catch_warnings(action="ignore"):
@@ -97,7 +97,7 @@ klasse Completer:
         try:
             return self.matches[state]
         except IndexError:
-            return None
+            return Nichts
 
     def _callable_postfix(self, val, word):
         wenn callable(val):
@@ -125,7 +125,7 @@ klasse Completer:
                 seen.add(word)
                 wenn word in {'finally', 'try'}:
                     word = word + ':'
-                sowenn word not in {'False', 'None', 'True',
+                sowenn word not in {'Falsch', 'Nichts', 'Wahr',
                                   'break', 'continue', 'pass',
                                   'else', '_'}:
                     word = word + ' '
@@ -172,13 +172,13 @@ klasse Completer:
         sowenn attr == '_':
             noprefix = '__'
         sonst:
-            noprefix = None
-        while True:
+            noprefix = Nichts
+        while Wahr:
             fuer word in words:
                 wenn (word[:n] == attr and
                     not (noprefix and word[:n+1] == noprefix)):
                     match = "%s.%s" % (expr, word)
-                    wenn isinstance(getattr(type(thisobject), word, None),
+                    wenn isinstance(getattr(type(thisobject), word, Nichts),
                                   property):
                         # bpo-44752: thisobject.word is a method decorated by
                         # `@property`. What follows applies a postfix if
@@ -188,7 +188,7 @@ klasse Completer:
                         # property method, which is not desirable.
                         matches.append(match)
                         continue
-                    wenn (value := getattr(thisobject, word, None)) is not None:
+                    wenn (value := getattr(thisobject, word, Nichts)) is not Nichts:
                         matches.append(self._callable_postfix(value, match))
                     sonst:
                         matches.append(match)
@@ -197,7 +197,7 @@ klasse Completer:
             wenn noprefix == '_':
                 noprefix = '__'
             sonst:
-                noprefix = None
+                noprefix = Nichts
         matches.sort()
         return matches
 
@@ -211,11 +211,11 @@ def get_class_members(klass):
 try:
     import readline
 except ImportError:
-    _readline_available = False
+    _readline_available = Falsch
 sonst:
     readline.set_completer(Completer().complete)
     # Release references early at shutdown (the readline module's
     # contents are quasi-immortal, and the completer function holds a
     # reference to globals).
-    atexit.register(lambda: readline.set_completer(None))
-    _readline_available = True
+    atexit.register(lambda: readline.set_completer(Nichts))
+    _readline_available = Wahr

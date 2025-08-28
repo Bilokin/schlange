@@ -70,8 +70,8 @@ klasse TestHeap:
 
         self.assertRaises(TypeError, self.module.heappush, [])
         try:
-            self.assertRaises(TypeError, self.module.heappush, None, None)
-            self.assertRaises(TypeError, self.module.heappop, None)
+            self.assertRaises(TypeError, self.module.heappush, Nichts, Nichts)
+            self.assertRaises(TypeError, self.module.heappop, Nichts)
         except AttributeError:
             pass
 
@@ -91,7 +91,7 @@ klasse TestHeap:
             self.check_max_invariant(heap)
             results.append(item)
         data_sorted = data[:]
-        data_sorted.sort(reverse=True)
+        data_sorted.sort(reverse=Wahr)
 
         self.assertEqual(data_sorted, results)
         # 2) Check that the invariant holds fuer a sorted array
@@ -100,15 +100,15 @@ klasse TestHeap:
         self.assertRaises(TypeError, self.module.heappush_max, [])
 
         exc_types = (AttributeError, TypeError)
-        self.assertRaises(exc_types, self.module.heappush_max, None, None)
-        self.assertRaises(exc_types, self.module.heappop_max, None)
+        self.assertRaises(exc_types, self.module.heappush_max, Nichts, Nichts)
+        self.assertRaises(exc_types, self.module.heappop_max, Nichts)
 
     def check_invariant(self, heap):
         # Check the heap invariant.
         fuer pos, item in enumerate(heap):
             wenn pos: # pos 0 has no parent
                 parentpos = (pos-1) >> 1
-                self.assertTrue(heap[parentpos] <= item)
+                self.assertWahr(heap[parentpos] <= item)
 
     def check_max_invariant(self, heap):
         fuer pos, item in enumerate(heap[1:], start=1):
@@ -121,7 +121,7 @@ klasse TestHeap:
             self.module.heapify(heap)
             self.check_invariant(heap)
 
-        self.assertRaises(TypeError, self.module.heapify, None)
+        self.assertRaises(TypeError, self.module.heapify, Nichts)
 
     def test_heapify_max(self):
         fuer size in list(range(30)) + [20000]:
@@ -129,7 +129,7 @@ klasse TestHeap:
             self.module.heapify_max(heap)
             self.check_max_invariant(heap)
 
-        self.assertRaises(TypeError, self.module.heapify_max, None)
+        self.assertRaises(TypeError, self.module.heapify_max, Nichts)
 
     def test_naive_nbest(self):
         data = [random.randrange(2000) fuer i in range(1000)]
@@ -160,9 +160,9 @@ klasse TestHeap:
                 self.module.heapreplace(heap, item)
         self.assertEqual(list(self.heapiter(heap)), sorted(data)[-10:])
 
-        self.assertRaises(TypeError, self.module.heapreplace, None)
-        self.assertRaises(TypeError, self.module.heapreplace, None, None)
-        self.assertRaises(IndexError, self.module.heapreplace, [], None)
+        self.assertRaises(TypeError, self.module.heapreplace, Nichts)
+        self.assertRaises(TypeError, self.module.heapreplace, Nichts, Nichts)
+        self.assertRaises(IndexError, self.module.heapreplace, [], Nichts)
 
     def test_nbest_maxheap(self):
         # With a max heap instead of a min heap, the "N-best" algorithm can
@@ -212,12 +212,12 @@ klasse TestHeap:
         fuer item in data[10:]:
             wenn item < heap[0]:  # this gets rarer the longer we run
                 self.module.heapreplace_max(heap, item)
-        expected = sorted(data, reverse=True)[-10:]
+        expected = sorted(data, reverse=Wahr)[-10:]
         self.assertEqual(list(self.heapiter_max(heap)), expected)
 
-        self.assertRaises(TypeError, self.module.heapreplace_max, None)
-        self.assertRaises(TypeError, self.module.heapreplace_max, None, None)
-        self.assertRaises(IndexError, self.module.heapreplace_max, [], None)
+        self.assertRaises(TypeError, self.module.heapreplace_max, Nichts)
+        self.assertRaises(TypeError, self.module.heapreplace_max, Nichts, Nichts)
+        self.assertRaises(IndexError, self.module.heapreplace_max, [], Nichts)
 
     def test_nworst_minheap(self):
         # Min-heap variant of "test_nbest_maxheap"
@@ -226,7 +226,7 @@ klasse TestHeap:
         self.module.heapify(heap)
         result = [self.module.heappop(heap) fuer _ in range(10)]
         result.reverse()
-        expected = sorted(data, reverse=True)[-10:]
+        expected = sorted(data, reverse=Wahr)[-10:]
         self.assertEqual(result, expected)
 
     def test_nworst_with_pushpop(self):
@@ -236,7 +236,7 @@ klasse TestHeap:
         self.module.heapify_max(heap)
         fuer item in data[10:]:
             self.module.heappushpop_max(heap, item)
-        expected = sorted(data, reverse=True)[-10:]
+        expected = sorted(data, reverse=Wahr)[-10:]
         self.assertEqual(list(self.heapiter_max(heap)), expected)
         self.assertEqual(self.module.heappushpop_max([], 'x'), 'x')
 
@@ -312,7 +312,7 @@ klasse TestHeap:
                 fuer item in data:
                     self.module.heappush_max(heap, item)
             heap_sorted = [self.module.heappop_max(heap) fuer i in range(size)]
-            self.assertEqual(heap_sorted, sorted(data, reverse=True))
+            self.assertEqual(heap_sorted, sorted(data, reverse=Wahr))
 
     def test_merge(self):
         inputs = []
@@ -323,8 +323,8 @@ klasse TestHeap:
                 row.append(tup)
             inputs.append(row)
 
-        fuer key in [None, itemgetter(0), itemgetter(1), itemgetter(1, 0)]:
-            fuer reverse in [False, True]:
+        fuer key in [Nichts, itemgetter(0), itemgetter(1), itemgetter(1, 0)]:
+            fuer reverse in [Falsch, Wahr]:
                 seqs = []
                 fuer seq in inputs:
                     seqs.append(sorted(seq, key=key, reverse=reverse))
@@ -364,7 +364,7 @@ klasse TestHeap:
 
     def test_nsmallest(self):
         data = [(random.randrange(2000), i) fuer i in range(1000)]
-        fuer f in (None, lambda x:  x[0] * 547 % 2000):
+        fuer f in (Nichts, lambda x:  x[0] * 547 % 2000):
             fuer n in (0, 1, 2, 10, 100, 400, 999, 1000, 1100):
                 self.assertEqual(list(self.module.nsmallest(n, data)),
                                  sorted(data)[:n])
@@ -373,12 +373,12 @@ klasse TestHeap:
 
     def test_nlargest(self):
         data = [(random.randrange(2000), i) fuer i in range(1000)]
-        fuer f in (None, lambda x:  x[0] * 547 % 2000):
+        fuer f in (Nichts, lambda x:  x[0] * 547 % 2000):
             fuer n in (0, 1, 2, 10, 100, 400, 999, 1000, 1100):
                 self.assertEqual(list(self.module.nlargest(n, data)),
-                                 sorted(data, reverse=True)[:n])
+                                 sorted(data, reverse=Wahr)[:n])
                 self.assertEqual(list(self.module.nlargest(n, data, key=f)),
-                                 sorted(data, key=f, reverse=True)[:n])
+                                 sorted(data, key=f, reverse=Wahr)[:n])
 
     def test_comparison_operator(self):
         # Issue 3051: Make sure heapq works with both __lt__
@@ -398,7 +398,7 @@ klasse TestHeap:
             def __le__(self, other):
                 return self.x >= other.x
         data = [random.random() fuer i in range(100)]
-        target = sorted(data, reverse=True)
+        target = sorted(data, reverse=Wahr)
         self.assertEqual(hsort(data, LT), target)
         self.assertRaises(TypeError, data, LE)
 

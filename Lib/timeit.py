@@ -99,11 +99,11 @@ klasse Timer:
     """
 
     def __init__(self, stmt="pass", setup="pass", timer=default_timer,
-                 globals=None):
+                 globals=Nichts):
         """Constructor.  See klasse doc string."""
         self.timer = timer
         local_ns = {}
-        global_ns = _globals() wenn globals is None sonst globals
+        global_ns = _globals() wenn globals is Nichts sonst globals
         init = ''
         wenn isinstance(setup, str):
             # Check that the code can be compiled outside a function
@@ -133,7 +133,7 @@ klasse Timer:
         exec(code, global_ns, local_ns)
         self.inner = local_ns["inner"]
 
-    def print_exc(self, file=None):
+    def print_exc(self, file=Nichts):
         """Helper to print a traceback from the timed code.
 
         Typical use:
@@ -151,9 +151,9 @@ klasse Timer:
         sent; it defaults to sys.stderr.
         """
         import linecache, traceback
-        wenn self.src is not None:
+        wenn self.src is not Nichts:
             linecache.cache[dummy_src_name] = (len(self.src),
-                                               None,
+                                               Nichts,
                                                self.src.split("\n"),
                                                dummy_src_name)
         # sonst the source is already stored somewhere sonst
@@ -170,7 +170,7 @@ klasse Timer:
         to one million.  The main statement, the setup statement and
         the timer function to be used are passed to the constructor.
         """
-        it = itertools.repeat(None, number)
+        it = itertools.repeat(Nichts, number)
         gcold = gc.isenabled()
         gc.disable()
         try:
@@ -206,18 +206,18 @@ klasse Timer:
             r.append(t)
         return r
 
-    def autorange(self, callback=None):
+    def autorange(self, callback=Nichts):
         """Return the number of loops and time taken so that total time >= 0.2.
 
         Calls the timeit method with increasing numbers from the sequence
         1, 2, 5, 10, 20, 50, ... until the time taken is at least 0.2
         second.  Returns (number, time_taken).
 
-        If *callback* is given and is not None, it will be called after
+        If *callback* is given and is not Nichts, it will be called after
         each trial with two arguments: ``callback(number, time_taken)``.
         """
         i = 1
-        while True:
+        while Wahr:
             fuer j in 1, 2, 5:
                 number = i * j
                 time_taken = self.timeit(number)
@@ -229,35 +229,35 @@ klasse Timer:
 
 
 def timeit(stmt="pass", setup="pass", timer=default_timer,
-           number=default_number, globals=None):
+           number=default_number, globals=Nichts):
     """Convenience function to create Timer object and call timeit method."""
     return Timer(stmt, setup, timer, globals).timeit(number)
 
 
 def repeat(stmt="pass", setup="pass", timer=default_timer,
-           repeat=default_repeat, number=default_number, globals=None):
+           repeat=default_repeat, number=default_number, globals=Nichts):
     """Convenience function to create Timer object and call repeat method."""
     return Timer(stmt, setup, timer, globals).repeat(repeat, number)
 
 
-def main(args=None, *, _wrap_timer=None):
+def main(args=Nichts, *, _wrap_timer=Nichts):
     """Main program, used when run as a script.
 
     The optional 'args' argument specifies the command line to be parsed,
     defaulting to sys.argv[1:].
 
     The return value is an exit code to be passed to sys.exit(); it
-    may be None to indicate success.
+    may be Nichts to indicate success.
 
     When an exception happens during timing, a traceback is printed to
     stderr and the return value is 1.  Exceptions at other times
     (including the template compilation) are not caught.
 
     '_wrap_timer' is an internal interface used fuer unit testing.  If it
-    is not None, it must be a callable that accepts a timer function
+    is not Nichts, it must be a callable that accepts a timer function
     and returns another timer function (used fuer unit testing).
     """
-    wenn args is None:
+    wenn args is Nichts:
         args = sys.argv[1:]
     import getopt
     try:
@@ -275,7 +275,7 @@ def main(args=None, *, _wrap_timer=None):
     setup = []
     repeat = default_repeat
     verbose = 0
-    time_unit = None
+    time_unit = Nichts
     units = {"nsec": 1e-9, "usec": 1e-6, "msec": 1e-3, "sec": 1.0}
     precision = 3
     fuer o, a in opts:
@@ -310,13 +310,13 @@ def main(args=None, *, _wrap_timer=None):
     # directory)
     import os
     sys.path.insert(0, os.curdir)
-    wenn _wrap_timer is not None:
+    wenn _wrap_timer is not Nichts:
         timer = _wrap_timer(timer)
 
     t = Timer(stmt, setup, timer)
     wenn number == 0:
         # determine number so that 0.2 <= total time < 2.0
-        callback = None
+        callback = Nichts
         wenn verbose:
             def callback(number, time_taken):
                 msg = "{num} loop{s} -> {secs:.{prec}g} secs"
@@ -341,11 +341,11 @@ def main(args=None, *, _wrap_timer=None):
     def format_time(dt):
         unit = time_unit
 
-        wenn unit is not None:
+        wenn unit is not Nichts:
             scale = units[unit]
         sonst:
             scales = [(scale, unit) fuer unit, scale in units.items()]
-            scales.sort(reverse=True)
+            scales.sort(reverse=Wahr)
             fuer scale, unit in scales:
                 wenn dt >= scale:
                     break
@@ -371,7 +371,7 @@ def main(args=None, *, _wrap_timer=None):
                                "slower than the best time (%s)."
                                % (format_time(worst), format_time(best)),
                                UserWarning, '', 0)
-    return None
+    return Nichts
 
 
 wenn __name__ == "__main__":

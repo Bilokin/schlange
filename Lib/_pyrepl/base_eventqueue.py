@@ -31,7 +31,7 @@ from .console import Event
 from .trace import trace
 
 klasse BaseEventQueue:
-    def __init__(self, encoding: str, keymap_dict: dict[bytes, str]) -> None:
+    def __init__(self, encoding: str, keymap_dict: dict[bytes, str]) -> Nichts:
         self.compiled_keymap = keymap.compile_keymap(keymap_dict)
         self.keymap = self.compiled_keymap
         trace("keymap {k!r}", k=self.keymap)
@@ -39,14 +39,14 @@ klasse BaseEventQueue:
         self.events: deque[Event] = deque()
         self.buf = bytearray()
 
-    def get(self) -> Event | None:
+    def get(self) -> Event | Nichts:
         """
         Retrieves the next event from the queue.
         """
         wenn self.events:
             return self.events.popleft()
         sonst:
-            return None
+            return Nichts
 
     def empty(self) -> bool:
         """
@@ -62,14 +62,14 @@ klasse BaseEventQueue:
         self.buf = bytearray()
         return old
 
-    def insert(self, event: Event) -> None:
+    def insert(self, event: Event) -> Nichts:
         """
         Inserts an event into the queue.
         """
         trace('added event {event}', event=event)
         self.events.append(event)
 
-    def push(self, char: int | bytes) -> None:
+    def push(self, char: int | bytes) -> Nichts:
         """
         Processes a character by updating the buffer and handling special key mappings.
         """

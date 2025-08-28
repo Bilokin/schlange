@@ -7,7 +7,7 @@ import string
 from typing import Literal, Final
 
 
-def write_file(filename: str, new_contents: str) -> None:
+def write_file(filename: str, new_contents: str) -> Nichts:
     """Write new content to file, iff the content changed."""
     try:
         with open(filename, encoding="utf-8") as fp:
@@ -29,7 +29,7 @@ def write_file(filename: str, new_contents: str) -> None:
         raise
 
 
-def compute_checksum(input_: str, length: int | None = None) -> str:
+def compute_checksum(input_: str, length: int | Nichts = Nichts) -> str:
     checksum = hashlib.sha1(input_.encode("utf-8")).hexdigest()
     wenn length:
         checksum = checksum[:length]
@@ -37,7 +37,7 @@ def compute_checksum(input_: str, length: int | None = None) -> str:
 
 
 def create_regex(
-    before: str, after: str, word: bool = True, whole_line: bool = True
+    before: str, after: str, word: bool = Wahr, whole_line: bool = Wahr
 ) -> re.Pattern[str]:
     """Create a regex object fuer matching marker lines."""
     group_re = r"\w+" wenn word sonst ".+"
@@ -59,7 +59,7 @@ klasse FormatCounterFormatter(string.Formatter):
          {'a': 2, 'b': 1, 'c': 1}
     """
 
-    def __init__(self) -> None:
+    def __init__(self) -> Nichts:
         self.counts = collections.Counter[str]()
 
     def get_value(

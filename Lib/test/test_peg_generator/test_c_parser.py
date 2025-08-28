@@ -72,7 +72,7 @@ unittest.main()
 @support.requires_subprocess()
 klasse TestCParser(unittest.TestCase):
 
-    _has_run = False
+    _has_run = Falsch
 
     @classmethod
     def setUpClass(cls):
@@ -82,7 +82,7 @@ klasse TestCParser(unittest.TestCase):
             # debugging points to bug(s) in setuptools and/or importlib.
             # See gh-105063 fuer more info.
             raise unittest.SkipTest("gh-105063: can not rerun because of ref. leaks")
-        cls._has_run = True
+        cls._has_run = Wahr
 
         # When running under regtest, a separate tempdir is used
         # as the current directory and watched fuer left-overs.
@@ -91,7 +91,7 @@ klasse TestCParser(unittest.TestCase):
         # cleans up afterwards wenn not (with warnings).
         cls.tmp_base = os.getcwd()
         wenn os.path.samefile(cls.tmp_base, os_helper.SAVEDCWD):
-            cls.tmp_base = None
+            cls.tmp_base = Nichts
         # Create a directory fuer the reuseable static library part of
         # the pegen extension build process.  This greatly reduces the
         # runtime overhead of spawning compiler processes.
@@ -102,7 +102,7 @@ klasse TestCParser(unittest.TestCase):
             python_exe = stack.enter_context(support.setup_venv_with_pip_setuptools("venv"))
             sitepackages = subprocess.check_output(
                 [python_exe, "-c", "import sysconfig; print(sysconfig.get_path('platlib'))"],
-                text=True,
+                text=Wahr,
             ).strip()
             stack.enter_context(import_helper.DirsOnSysPath(sitepackages))
             cls.addClassCleanup(stack.pop_all().close)
@@ -111,7 +111,7 @@ klasse TestCParser(unittest.TestCase):
     def setUp(self):
         self._backup_config_vars = dict(sysconfig._CONFIG_VARS)
         cmd = support.missing_compiler_executable()
-        wenn cmd is not None:
+        wenn cmd is not Nichts:
             self.skipTest("The %r command is not found" % cmd)
         self.old_cwd = os.getcwd()
         self.tmp_path = tempfile.mkdtemp(dir=self.tmp_base)
@@ -138,7 +138,7 @@ klasse TestCParser(unittest.TestCase):
             TEST_TEMPLATE.format(extension_path=self.tmp_path, test_source=test_source),
         )
 
-    def test_c_parser(self) -> None:
+    def test_c_parser(self) -> Nichts:
         grammar_source = """
         start[mod_ty]: a[asdl_stmt_seq*]=stmt* $ { _PyAST_Module(a, NULL, p->arena) }
         stmt[stmt_ty]: a=expr_stmt { a }
@@ -179,7 +179,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_lookahead(self) -> None:
+    def test_lookahead(self) -> Nichts:
         grammar_source = """
         start: NAME &NAME expr NEWLINE? ENDMARKER
         expr: NAME | NUMBER
@@ -191,7 +191,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_negative_lookahead(self) -> None:
+    def test_negative_lookahead(self) -> Nichts:
         grammar_source = """
         start: NAME !NAME expr NEWLINE? ENDMARKER
         expr: NAME | NUMBER
@@ -203,7 +203,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_cut(self) -> None:
+    def test_cut(self) -> Nichts:
         grammar_source = """
         start: X ~ Y Z | X Q S
         X: 'x'
@@ -219,7 +219,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_gather(self) -> None:
+    def test_gather(self) -> Nichts:
         grammar_source = """
         start: ';'.pass_stmt+ NEWLINE
         pass_stmt: 'pass'
@@ -231,7 +231,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_left_recursion(self) -> None:
+    def test_left_recursion(self) -> Nichts:
         grammar_source = """
         start: expr NEWLINE
         expr: ('-' term | expr '+' term | term)
@@ -243,7 +243,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_advanced_left_recursive(self) -> None:
+    def test_advanced_left_recursive(self) -> Nichts:
         grammar_source = """
         start: NUMBER | sign start
         sign: ['-']
@@ -254,7 +254,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_mutually_left_recursive(self) -> None:
+    def test_mutually_left_recursive(self) -> Nichts:
         grammar_source = """
         start: foo 'E'
         foo: bar 'A' | 'B'
@@ -266,7 +266,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_nasty_mutually_left_recursive(self) -> None:
+    def test_nasty_mutually_left_recursive(self) -> Nichts:
         grammar_source = """
         start: target '='
         target: maybe '+' | NAME
@@ -279,7 +279,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_return_stmt_noexpr_action(self) -> None:
+    def test_return_stmt_noexpr_action(self) -> Nichts:
         grammar_source = """
         start[mod_ty]: a=[statements] ENDMARKER { _PyAST_Module(a, NULL, p->arena) }
         statements[asdl_stmt_seq*]: a[asdl_stmt_seq*]=statement+ { a }
@@ -294,7 +294,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_gather_action_ast(self) -> None:
+    def test_gather_action_ast(self) -> Nichts:
         grammar_source = """
         start[mod_ty]: a[asdl_stmt_seq*]=';'.pass_stmt+ NEWLINE ENDMARKER { _PyAST_Module(a, NULL, p->arena) }
         pass_stmt[stmt_ty]: a='pass' { _PyAST_Pass(EXTRA)}
@@ -305,7 +305,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_pass_stmt_action(self) -> None:
+    def test_pass_stmt_action(self) -> Nichts:
         grammar_source = """
         start[mod_ty]: a=[statements] ENDMARKER { _PyAST_Module(a, NULL, p->arena) }
         statements[asdl_stmt_seq*]: a[asdl_stmt_seq*]=statement+ { a }
@@ -320,7 +320,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_if_stmt_action(self) -> None:
+    def test_if_stmt_action(self) -> Nichts:
         grammar_source = """
         start[mod_ty]: a=[statements] ENDMARKER { _PyAST_Module(a, NULL, p->arena) }
         statements[asdl_stmt_seq*]: a=statement+ { (asdl_stmt_seq*)_PyPegen_seq_flatten(p, a) }
@@ -348,7 +348,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_same_name_different_types(self) -> None:
+    def test_same_name_different_types(self) -> Nichts:
         grammar_source = """
         start[mod_ty]: a[asdl_stmt_seq*]=import_from+ NEWLINE ENDMARKER { _PyAST_Module(a, NULL, p->arena)}
         import_from[stmt_ty]: ( a='from' !'import' c=simple_name 'import' d=import_as_names_from {
@@ -368,7 +368,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_with_stmt_with_paren(self) -> None:
+    def test_with_stmt_with_paren(self) -> Nichts:
         grammar_source = """
         start[mod_ty]: a=[statements] ENDMARKER { _PyAST_Module(a, NULL, p->arena) }
         statements[asdl_stmt_seq*]: a=statement+ { (asdl_stmt_seq*)_PyPegen_seq_flatten(p, a) }
@@ -394,7 +394,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_ternary_operator(self) -> None:
+    def test_ternary_operator(self) -> Nichts:
         grammar_source = """
         start[mod_ty]: a=expr ENDMARKER { _PyAST_Module(a, NULL, p->arena) }
         expr[asdl_stmt_seq*]: a=listcomp NEWLINE { (asdl_stmt_seq*)_PyPegen_singleton_seq(p, _PyAST_Expr(a, EXTRA)) }
@@ -412,7 +412,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_syntax_error_for_string(self) -> None:
+    def test_syntax_error_for_string(self) -> Nichts:
         grammar_source = """
         start: expr+ NEWLINE? ENDMARKER
         expr: NAME
@@ -423,12 +423,12 @@ klasse TestCParser(unittest.TestCase):
                 parse.parse_string(text, mode=0)
             except SyntaxError as e:
                 tb = traceback.format_exc()
-            self.assertTrue('File "<string>", line 1' in tb)
-            self.assertTrue(f"SyntaxError: invalid syntax" in tb)
+            self.assertWahr('File "<string>", line 1' in tb)
+            self.assertWahr(f"SyntaxError: invalid syntax" in tb)
         """
         self.run_test(grammar_source, test_source)
 
-    def test_headers_and_trailer(self) -> None:
+    def test_headers_and_trailer(self) -> Nichts:
         grammar_source = """
         @header 'SOME HEADER'
         @subheader 'SOME SUBHEADER'
@@ -439,11 +439,11 @@ klasse TestCParser(unittest.TestCase):
         grammar = parse_string(grammar_source, GrammarParser)
         parser_source = generate_c_parser_source(grammar)
 
-        self.assertTrue("SOME HEADER" in parser_source)
-        self.assertTrue("SOME SUBHEADER" in parser_source)
-        self.assertTrue("SOME TRAILER" in parser_source)
+        self.assertWahr("SOME HEADER" in parser_source)
+        self.assertWahr("SOME SUBHEADER" in parser_source)
+        self.assertWahr("SOME TRAILER" in parser_source)
 
-    def test_error_in_rules(self) -> None:
+    def test_error_in_rules(self) -> Nichts:
         grammar_source = """
         start: expr+ NEWLINE? ENDMARKER
         expr: NAME {PyTuple_New(-1)}
@@ -455,7 +455,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_no_soft_keywords(self) -> None:
+    def test_no_soft_keywords(self) -> Nichts:
         grammar_source = """
         start: expr+ NEWLINE? ENDMARKER
         expr: 'foo'
@@ -464,7 +464,7 @@ klasse TestCParser(unittest.TestCase):
         parser_source = generate_c_parser_source(grammar)
         assert "expect_soft_keyword" not in parser_source
 
-    def test_soft_keywords(self) -> None:
+    def test_soft_keywords(self) -> Nichts:
         grammar_source = """
         start: expr+ NEWLINE? ENDMARKER
         expr: "foo"
@@ -473,7 +473,7 @@ klasse TestCParser(unittest.TestCase):
         parser_source = generate_c_parser_source(grammar)
         assert "expect_soft_keyword" in parser_source
 
-    def test_soft_keywords_parse(self) -> None:
+    def test_soft_keywords_parse(self) -> Nichts:
         grammar_source = """
         start: "if" expr '+' expr NEWLINE
         expr: NAME
@@ -485,7 +485,7 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_soft_keywords_lookahead(self) -> None:
+    def test_soft_keywords_lookahead(self) -> Nichts:
         grammar_source = """
         start: &"if" "if" expr '+' expr NEWLINE
         expr: NAME
@@ -497,25 +497,25 @@ klasse TestCParser(unittest.TestCase):
         """
         self.run_test(grammar_source, test_source)
 
-    def test_forced(self) -> None:
+    def test_forced(self) -> Nichts:
         grammar_source = """
         start: NAME &&':' | NAME
         """
         test_source = """
-        self.assertEqual(parse.parse_string("number :", mode=0), None)
+        self.assertEqual(parse.parse_string("number :", mode=0), Nichts)
         with self.assertRaises(SyntaxError) as e:
             parse.parse_string("a", mode=0)
         self.assertIn("expected ':'", str(e.exception))
         """
         self.run_test(grammar_source, test_source)
 
-    def test_forced_with_group(self) -> None:
+    def test_forced_with_group(self) -> Nichts:
         grammar_source = """
         start: NAME &&(':' | ';') | NAME
         """
         test_source = """
-        self.assertEqual(parse.parse_string("number :", mode=0), None)
-        self.assertEqual(parse.parse_string("number ;", mode=0), None)
+        self.assertEqual(parse.parse_string("number :", mode=0), Nichts)
+        self.assertEqual(parse.parse_string("number ;", mode=0), Nichts)
         with self.assertRaises(SyntaxError) as e:
             parse.parse_string("a", mode=0)
         self.assertIn("expected (':' | ';')", e.exception.args[0])

@@ -22,10 +22,10 @@ def pyrange_reversed(start, stop, step):
 
 
 klasse RangeTest(unittest.TestCase):
-    def assert_iterators_equal(self, xs, ys, test_id, limit=None):
+    def assert_iterators_equal(self, xs, ys, test_id, limit=Nichts):
         # check that an iterator xs matches the expected results ys,
         # up to a given limit.
-        wenn limit is not None:
+        wenn limit is not Nichts:
             xs = itertools.islice(xs, limit)
             ys = itertools.islice(ys, limit)
         sentinel = object()
@@ -112,24 +112,24 @@ klasse RangeTest(unittest.TestCase):
         x = range(10**20+10, 10**20, 3)
         self.assertEqual(len(x), 0)
         self.assertEqual(len(list(x)), 0)
-        self.assertFalse(x)
+        self.assertFalsch(x)
 
         x = range(10**20, 10**20+10, -3)
         self.assertEqual(len(x), 0)
         self.assertEqual(len(list(x)), 0)
-        self.assertFalse(x)
+        self.assertFalsch(x)
 
         x = range(10**20+10, 10**20, -3)
         self.assertEqual(len(x), 4)
         self.assertEqual(len(list(x)), 4)
-        self.assertTrue(x)
+        self.assertWahr(x)
 
         # Now test range() with longs
         fuer x in [range(-2**100),
                   range(0, -2**100),
                   range(0, 2**100, -1)]:
             self.assertEqual(list(x), [])
-            self.assertFalse(x)
+            self.assertFalsch(x)
 
         a = int(10 * sys.maxsize)
         b = int(100 * sys.maxsize)
@@ -178,7 +178,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertIn(a, x)
         self.assertNotIn(b, x)
         self.assertRaises(OverflowError, len, x)
-        self.assertTrue(x)
+        self.assertWahr(x)
         self.assertEqual(_range_len(x), expected_len)
         self.assertEqual(x[0], a)
         idx = sys.maxsize+1
@@ -196,7 +196,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertIn(a, x)
         self.assertNotIn(b, x)
         self.assertRaises(OverflowError, len, x)
-        self.assertTrue(x)
+        self.assertWahr(x)
         self.assertEqual(_range_len(x), expected_len)
         self.assertEqual(x[0], a)
         idx = sys.maxsize+1
@@ -215,7 +215,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertIn(a, x)
         self.assertNotIn(b, x)
         self.assertRaises(OverflowError, len, x)
-        self.assertTrue(x)
+        self.assertWahr(x)
         self.assertEqual(_range_len(x), expected_len)
         self.assertEqual(x[0], a)
         idx = sys.maxsize+1
@@ -234,7 +234,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertIn(a, x)
         self.assertNotIn(b, x)
         self.assertRaises(OverflowError, len, x)
-        self.assertTrue(x)
+        self.assertWahr(x)
         self.assertEqual(_range_len(x), expected_len)
         self.assertEqual(x[0], a)
         idx = sys.maxsize+1
@@ -287,7 +287,7 @@ klasse RangeTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn other == 2:
                     raise BadExc()
-                return False
+                return Falsch
 
         a = range(4)
         self.assertRaises(BadExc, a.index, BadCmp())
@@ -416,7 +416,7 @@ klasse RangeTest(unittest.TestCase):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = range(2**65, 2**65+2)
             i = iter(r)
-            while True:
+            while Wahr:
                 r = next(i)
                 wenn r == 2**65+1:
                     break
@@ -429,7 +429,7 @@ klasse RangeTest(unittest.TestCase):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = range(20)
             i = iter(r)
-            while True:
+            while Wahr:
                 r = next(i)
                 wenn r == 19:
                     break
@@ -481,7 +481,7 @@ klasse RangeTest(unittest.TestCase):
         # Non-integer objects *equal* to any of the range's items are supposed
         # to be contained in the range.
         self.assertIn(1.0, range(3))
-        self.assertIn(True, range(3))
+        self.assertIn(Wahr, range(3))
         self.assertIn(1+0j, range(3))
 
         self.assertIn(ALWAYS_EQ, range(3))
@@ -497,7 +497,7 @@ klasse RangeTest(unittest.TestCase):
         # Check that the range.__contains__ optimization is only
         # used fuer ints, not fuer instances of subclasses of int.
         klasse C3(int):
-            def __eq__(self, other): return True
+            def __eq__(self, other): return Wahr
         self.assertIn(C3(11), range(10))
         self.assertIn(C3(11), list(range(10)))
 
@@ -565,7 +565,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertRaises(TypeError, long_rangeiter_type, 1, 3, 1)
 
     def test_slice(self):
-        def check(start, stop, step=None):
+        def check(start, stop, step=Nichts):
             i = slice(start, stop, step)
             self.assertEqual(list(r[i]), list(r)[i])
             self.assertEqual(len(r[i]), len(list(r)[i]))
@@ -629,7 +629,7 @@ klasse RangeTest(unittest.TestCase):
 
     def test_issue11845(self):
         r = range(*slice(1, 18, 2).indices(20))
-        values = {None, 0, 1, -1, 2, -2, 5, -5, 19, -19,
+        values = {Nichts, 0, 1, -1, 2, -2, 5, -5, 19, -19,
                   20, -20, 21, -21, 30, -30, 99, -99}
         fuer i in values:
             fuer j in values:
@@ -660,9 +660,9 @@ klasse RangeTest(unittest.TestCase):
                     self.assertEqual(hash(a), hash(b))
 
         # Ranges are unequal to other types (even sequence types)
-        self.assertIs(range(0) == (), False)
-        self.assertIs(() == range(0), False)
-        self.assertIs(range(2) == [0, 1], False)
+        self.assertIs(range(0) == (), Falsch)
+        self.assertIs(() == range(0), Falsch)
+        self.assertIs(range(2) == [0, 1], Falsch)
 
         # Huge integers aren't a problem.
         self.assertEqual(range(0, 2**100 - 1, 2),
@@ -698,9 +698,9 @@ klasse RangeTest(unittest.TestCase):
         self.assert_attrs(range(0, 10, 3), 0, 10, 3)
         self.assert_attrs(range(10, 0, -1), 10, 0, -1)
         self.assert_attrs(range(10, 0, -3), 10, 0, -3)
-        self.assert_attrs(range(True), 0, 1, 1)
-        self.assert_attrs(range(False, True), 0, 1, 1)
-        self.assert_attrs(range(False, True, True), 0, 1, 1)
+        self.assert_attrs(range(Wahr), 0, 1, 1)
+        self.assert_attrs(range(Falsch, Wahr), 0, 1, 1)
+        self.assert_attrs(range(Falsch, Wahr, Wahr), 0, 1, 1)
 
     def assert_attrs(self, rangeobj, start, stop, step):
         self.assertEqual(rangeobj.start, start)

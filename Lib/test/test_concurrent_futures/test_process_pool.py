@@ -116,12 +116,12 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         future = self.executor.submit(id, obj)
         future.result()
 
-        self.assertTrue(obj.event.wait(timeout=1))
+        self.assertWahr(obj.event.wait(timeout=1))
 
         # explicitly destroy the object to ensure that EventfulGCObj.__del__()
         # is called while manager is still running.
         support.gc_collect()
-        obj = None
+        obj = Nichts
         support.gc_collect()
 
         mgr.shutdown()
@@ -143,7 +143,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     def test_idle_process_reuse_one(self):
         executor = self.executor
         assert executor._max_workers >= 4
-        wenn self.get_context().get_start_method(allow_none=False) == "fork":
+        wenn self.get_context().get_start_method(allow_none=Falsch) == "fork":
             raise unittest.SkipTest("Incompatible with the fork start method.")
         executor.submit(mul, 21, 2).result()
         executor.submit(mul, 6, 7).result()
@@ -153,7 +153,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     def test_idle_process_reuse_multiple(self):
         executor = self.executor
         assert executor._max_workers <= 5
-        wenn self.get_context().get_start_method(allow_none=False) == "fork":
+        wenn self.get_context().get_start_method(allow_none=Falsch) == "fork":
             raise unittest.SkipTest("Incompatible with the fork start method.")
         executor.submit(mul, 12, 7).result()
         executor.submit(mul, 33, 25)
@@ -166,7 +166,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     def test_max_tasks_per_child(self):
         context = self.get_context()
-        wenn context.get_start_method(allow_none=False) == "fork":
+        wenn context.get_start_method(allow_none=Falsch) == "fork":
             with self.assertRaises(ValueError):
                 self.executor_type(1, mp_context=context, max_tasks_per_child=3)
             return
@@ -200,7 +200,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     def test_max_tasks_early_shutdown(self):
         context = self.get_context()
-        wenn context.get_start_method(allow_none=False) == "fork":
+        wenn context.get_start_method(allow_none=Falsch) == "fork":
             raise unittest.SkipTest("Incompatible with the fork start method.")
         # not using self.executor as we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
@@ -321,7 +321,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     def test_force_shutdown_workers_stops_pool(self, function_name):
         with self.executor_type(max_workers=1) as executor:
             task = executor.submit(time.sleep, 0)
-            self.assertIsNone(task.result())
+            self.assertIsNichts(task.result())
 
             worker_process = list(executor._processes.values())[0]
             getattr(executor, function_name)()

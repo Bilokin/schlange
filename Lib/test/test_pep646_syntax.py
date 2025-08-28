@@ -7,22 +7,22 @@ Setup
 
     >>> klasse AClass:
     ...    def __init__(self):
-    ...        self._setitem_name = None
-    ...        self._setitem_val = None
-    ...        self._delitem_name = None
+    ...        self._setitem_name = Nichts
+    ...        self._setitem_val = Nichts
+    ...        self._delitem_name = Nichts
     ...    def __setitem__(self, name, val):
-    ...        self._delitem_name = None
+    ...        self._delitem_name = Nichts
     ...        self._setitem_name = name
     ...        self._setitem_val = val
     ...    def __repr__(self):
-    ...        wenn self._setitem_name is not None:
+    ...        wenn self._setitem_name is not Nichts:
     ...            return f"A[{self._setitem_name}]={self._setitem_val}"
-    ...        sowenn self._delitem_name is not None:
+    ...        sowenn self._delitem_name is not Nichts:
     ...            return f"delA[{self._delitem_name}]"
     ...    def __getitem__(self, name):
     ...        return ParameterisedA(name)
     ...    def __delitem__(self, name):
-    ...        self._setitem_name = None
+    ...        self._setitem_name = Nichts
     ...        self._delitem_name = name
     ...
     >>> klasse ParameterisedA:
@@ -163,14 +163,14 @@ Slices that are supposed to work, starring a list
     delA[(0, 1, 2, 3)]
 
     >>> A[1:2, *l]
-    A[(slice(1, 2, None), 1, 2, 3)]
+    A[(slice(1, 2, Nichts), 1, 2, 3)]
     >>> A[1:2, *l] = 1; A
-    A[(slice(1, 2, None), 1, 2, 3)]=1
+    A[(slice(1, 2, Nichts), 1, 2, 3)]=1
     >>> del A[1:2, *l]; A
-    delA[(slice(1, 2, None), 1, 2, 3)]
+    delA[(slice(1, 2, Nichts), 1, 2, 3)]
 
     >>> repr(A[1:2, *l]) == repr(A[1:2, 1, 2, 3])
-    True
+    Wahr
 
 Slices that are supposed to work, starring a tuple
 
@@ -198,14 +198,14 @@ Slices that are supposed to work, starring a tuple
     delA[(0, 1, 2, 3)]
 
     >>> A[1:2, *t]
-    A[(slice(1, 2, None), 1, 2, 3)]
+    A[(slice(1, 2, Nichts), 1, 2, 3)]
     >>> A[1:2, *t] = 1; A
-    A[(slice(1, 2, None), 1, 2, 3)]=1
+    A[(slice(1, 2, Nichts), 1, 2, 3)]=1
     >>> del A[1:2, *t]; A
-    delA[(slice(1, 2, None), 1, 2, 3)]
+    delA[(slice(1, 2, Nichts), 1, 2, 3)]
 
     >>> repr(A[1:2, *t]) == repr(A[1:2, 1, 2, 3])
-    True
+    Wahr
 
 Starring an expression (rather than a name) in a slice
 
@@ -259,40 +259,40 @@ Using both a starred object and a start:stop in a slice
 is *not* valid syntax.)
 
     >>> A[1:2, *b]
-    A[(slice(1, 2, None), StarredB)]
+    A[(slice(1, 2, Nichts), StarredB)]
     >>> A[*b, 1:2]
-    A[(StarredB, slice(1, 2, None))]
+    A[(StarredB, slice(1, 2, Nichts))]
     >>> A[1:2, *b, 1:2]
-    A[(slice(1, 2, None), StarredB, slice(1, 2, None))]
+    A[(slice(1, 2, Nichts), StarredB, slice(1, 2, Nichts))]
     >>> A[*b, 1:2, *b]
-    A[(StarredB, slice(1, 2, None), StarredB)]
+    A[(StarredB, slice(1, 2, Nichts), StarredB)]
 
     >>> A[1:, *b]
-    A[(slice(1, None, None), StarredB)]
+    A[(slice(1, Nichts, Nichts), StarredB)]
     >>> A[*b, 1:]
-    A[(StarredB, slice(1, None, None))]
+    A[(StarredB, slice(1, Nichts, Nichts))]
     >>> A[1:, *b, 1:]
-    A[(slice(1, None, None), StarredB, slice(1, None, None))]
+    A[(slice(1, Nichts, Nichts), StarredB, slice(1, Nichts, Nichts))]
     >>> A[*b, 1:, *b]
-    A[(StarredB, slice(1, None, None), StarredB)]
+    A[(StarredB, slice(1, Nichts, Nichts), StarredB)]
 
     >>> A[:1, *b]
-    A[(slice(None, 1, None), StarredB)]
+    A[(slice(Nichts, 1, Nichts), StarredB)]
     >>> A[*b, :1]
-    A[(StarredB, slice(None, 1, None))]
+    A[(StarredB, slice(Nichts, 1, Nichts))]
     >>> A[:1, *b, :1]
-    A[(slice(None, 1, None), StarredB, slice(None, 1, None))]
+    A[(slice(Nichts, 1, Nichts), StarredB, slice(Nichts, 1, Nichts))]
     >>> A[*b, :1, *b]
-    A[(StarredB, slice(None, 1, None), StarredB)]
+    A[(StarredB, slice(Nichts, 1, Nichts), StarredB)]
 
     >>> A[:, *b]
-    A[(slice(None, None, None), StarredB)]
+    A[(slice(Nichts, Nichts, Nichts), StarredB)]
     >>> A[*b, :]
-    A[(StarredB, slice(None, None, None))]
+    A[(StarredB, slice(Nichts, Nichts, Nichts))]
     >>> A[:, *b, :]
-    A[(slice(None, None, None), StarredB, slice(None, None, None))]
+    A[(slice(Nichts, Nichts, Nichts), StarredB, slice(Nichts, Nichts, Nichts))]
     >>> A[*b, :, *b]
-    A[(StarredB, slice(None, None, None), StarredB)]
+    A[(StarredB, slice(Nichts, Nichts, Nichts), StarredB)]
 
 *args annotated as starred expression
 

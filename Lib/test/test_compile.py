@@ -16,7 +16,7 @@ import warnings
 try:
     import _testinternalcapi
 except ImportError:
-    _testinternalcapi = None
+    _testinternalcapi = Nichts
 
 from test import support
 from test.support import (script_helper, requires_debug_ranges, run_code,
@@ -67,7 +67,7 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertRaises(SyntaxError, compile, "1+*3", "filename", "exec")
 
     def test_none_keyword_arg(self):
-        self.assertRaises(SyntaxError, compile, "f(None=1)", "<string>", "exec")
+        self.assertRaises(SyntaxError, compile, "f(Nichts=1)", "<string>", "exec")
 
     def test_duplicate_global_local(self):
         self.assertRaises(SyntaxError, exec, 'def f(a): global a; a = 1')
@@ -253,7 +253,7 @@ klasse TestSpecifics(unittest.TestCase):
             h = -9223372036854775807  # 1 << 63 - 1
 
             fuer variable in self.test_32_63_bit_values.__code__.co_consts:
-                wenn variable is not None:
+                wenn variable is not Nichts:
                     self.assertIsInstance(variable, int)
 
     def test_sequence_unpacking_error(self):
@@ -264,18 +264,18 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_none_assignment(self):
         stmts = [
-            'None = 0',
-            'None += 0',
-            '__builtins__.None = 0',
-            'def None(): pass',
-            'class None: pass',
-            '(a, None) = 0, 0',
-            'for None in range(10): pass',
-            'def f(None): pass',
-            'import None',
-            'import x as None',
-            'from x import None',
-            'from x import y as None'
+            'Nichts = 0',
+            'Nichts += 0',
+            '__builtins__.Nichts = 0',
+            'def Nichts(): pass',
+            'class Nichts: pass',
+            '(a, Nichts) = 0, 0',
+            'for Nichts in range(10): pass',
+            'def f(Nichts): pass',
+            'import Nichts',
+            'import x as Nichts',
+            'from x import Nichts',
+            'from x import y as Nichts'
         ]
         fuer stmt in stmts:
             stmt += "\n"
@@ -340,7 +340,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_lambda_doc(self):
         l = lambda: "foo"
-        self.assertIsNone(l.__doc__)
+        self.assertIsNichts(l.__doc__)
 
     def test_lambda_consts(self):
         l = lambda: "this is the only const"
@@ -477,7 +477,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_dead_code_with_except_handler_compiles(self):
         compile(textwrap.dedent("""
-                wenn None:
+                wenn Nichts:
                     with CM:
                         x = 1
                 sonst:
@@ -584,7 +584,7 @@ klasse TestSpecifics(unittest.TestCase):
             fcontents = f.read()
         sample_code = [
             ['<assign>', 'x = 5'],
-            ['<ifblock>', """if True:\n    pass\n"""],
+            ['<ifblock>', """if Wahr:\n    pass\n"""],
             ['<forblock>', """for n in [1, 2, 3]:\n    print(n)\n"""],
             ['<deffunc>', """def foo():\n    pass\nfoo()\n"""],
             [fname, fcontents],
@@ -593,7 +593,7 @@ klasse TestSpecifics(unittest.TestCase):
         fuer fname, code in sample_code:
             co1 = compile(code, '%s1' % fname, 'exec')
             ast = compile(code, '%s2' % fname, 'exec', _ast.PyCF_ONLY_AST)
-            self.assertTrue(type(ast) == _ast.Module)
+            self.assertWahr(type(ast) == _ast.Module)
             co2 = compile(ast, '%s3' % fname, 'exec')
             self.assertEqual(co1, co2)
             # the code object's filename comes from the second compilation step
@@ -670,7 +670,7 @@ klasse TestSpecifics(unittest.TestCase):
         self.compile_single("1; 2")
         self.compile_single("import sys; sys")
         self.compile_single("def f():\n   pass")
-        self.compile_single("while False:\n   pass")
+        self.compile_single("while Falsch:\n   pass")
         self.compile_single("if x:\n   f(x)")
         self.compile_single("if x:\n   f(x)\nelse:\n   g(x)")
         self.compile_single("class T:\n   pass")
@@ -777,7 +777,7 @@ klasse TestSpecifics(unittest.TestCase):
             self.check_constant(f1, const)
             self.assertEqual(repr(f1()), repr(const))
 
-        check_same_constant(None)
+        check_same_constant(Nichts)
         check_same_constant(0.0)
         check_same_constant(b'abc')
         check_same_constant('abc')
@@ -802,7 +802,7 @@ klasse TestSpecifics(unittest.TestCase):
         f1, f2 = lambda x: x in {0}, lambda x: x in {0}
         self.assertIs(f1.__code__.co_consts, f2.__code__.co_consts)
         self.check_constant(f1, frozenset({0}))
-        self.assertTrue(f1(0))
+        self.assertWahr(f1(0))
 
     # Merging equal co_linetable is not a strict requirement
     # fuer the Python semantics, it's a more an implementation detail.
@@ -818,7 +818,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_remove_unused_consts(self):
         def f():
             "docstring"
-            wenn True:
+            wenn Wahr:
                 return "used"
             sonst:
                 return "unused"
@@ -828,16 +828,16 @@ klasse TestSpecifics(unittest.TestCase):
 
     @support.cpython_only
     def test_remove_unused_consts_no_docstring(self):
-        # the first item (None fuer no docstring in this case) is
+        # the first item (Nichts fuer no docstring in this case) is
         # always retained.
         def f():
-            wenn True:
+            wenn Wahr:
                 return "used"
             sonst:
                 return "unused"
 
         self.assertEqual(f.__code__.co_consts,
-                         (True, "used"))
+                         (Wahr, "used"))
 
     @support.cpython_only
     def test_remove_unused_consts_extended_args(self):
@@ -846,8 +846,8 @@ klasse TestSpecifics(unittest.TestCase):
         code.append("\ts = ''\n")
         code.append("\tfor i in range(1):\n")
         fuer i in range(N):
-            code.append(f"\t\tif True: s += 't{i}'\n")
-            code.append(f"\t\tif False: s += 'f{i}'\n")
+            code.append(f"\t\tif Wahr: s += 't{i}'\n")
+            code.append(f"\t\tif Falsch: s += 'f{i}'\n")
         code.append("\treturn s\n")
 
         code = "".join(code)
@@ -863,8 +863,8 @@ klasse TestSpecifics(unittest.TestCase):
     # Stripping unused constants is not a strict requirement fuer the
     # Python semantics, it's a more an implementation detail.
     @support.cpython_only
-    def test_strip_unused_None(self):
-        # Python 3.10rc1 appended None to co_consts when None is not used
+    def test_strip_unused_Nichts(self):
+        # Python 3.10rc1 appended Nichts to co_consts when Nichts is not used
         # at all. See bpo-45056.
         def f1():
             "docstring"
@@ -919,11 +919,11 @@ klasse TestSpecifics(unittest.TestCase):
                     self.assertEqual(ns['with_docstring'].__doc__, "docstring")
                     self.assertEqual(ns['two_strings'].__doc__, "docstring")
                 sonst:
-                    self.assertIsNone(ns['with_docstring'].__doc__)
-                    self.assertIsNone(ns['two_strings'].__doc__)
-                self.assertIsNone(ns['with_fstring'].__doc__)
-                self.assertIsNone(ns['with_const_expression'].__doc__)
-                self.assertIsNone(ns['multiple_const_strings'].__doc__)
+                    self.assertIsNichts(ns['with_docstring'].__doc__)
+                    self.assertIsNichts(ns['two_strings'].__doc__)
+                self.assertIsNichts(ns['with_fstring'].__doc__)
+                self.assertIsNichts(ns['with_const_expression'].__doc__)
+                self.assertIsNichts(ns['multiple_const_strings'].__doc__)
 
     @support.cpython_only
     def test_docstring_interactive_mode(self):
@@ -945,7 +945,7 @@ klasse TestSpecifics(unittest.TestCase):
                     wenn opt < 2:
                         self.assertEqual(ns['with_docstring'].__doc__, "docstring")
                     sonst:
-                        self.assertIsNone(ns['with_docstring'].__doc__)
+                        self.assertIsNichts(ns['with_docstring'].__doc__)
 
     @support.cpython_only
     def test_docstring_omitted(self):
@@ -1008,8 +1008,8 @@ klasse TestSpecifics(unittest.TestCase):
         self.assertIsNot(f1.__code__, f2.__code__)
         self.check_constant(f1, frozenset({0}))
         self.check_constant(f2, frozenset({0.0}))
-        self.assertTrue(f1(0))
-        self.assertTrue(f2(0.0))
+        self.assertWahr(f1(0))
+        self.assertWahr(f2(0.0))
 
     def test_path_like_objects(self):
         # An implicit test fuer PyUnicode_FSDecoder().
@@ -1035,13 +1035,13 @@ klasse TestSpecifics(unittest.TestCase):
 
         def unused_block_if_else():
             wenn 1:
-                return None
+                return Nichts
             sonst:
                 return 42
 
         def unused_block_while_else():
             while 1:
-                return None
+                return Nichts
             sonst:
                 return 42
 
@@ -1052,15 +1052,15 @@ klasse TestSpecifics(unittest.TestCase):
             opcodes = list(dis.get_instructions(func))
             self.assertLessEqual(len(opcodes), 4)
             self.assertEqual('RETURN_VALUE', opcodes[-1].opname)
-            self.assertEqual(None, opcodes[-1].argval)
+            self.assertEqual(Nichts, opcodes[-1].argval)
 
     def test_false_while_loop(self):
         def break_in_while():
-            while False:
+            while Falsch:
                 break
 
         def continue_in_while():
-            while False:
+            while Falsch:
                 continue
 
         funcs = [break_in_while, continue_in_while]
@@ -1070,20 +1070,20 @@ klasse TestSpecifics(unittest.TestCase):
             opcodes = list(dis.get_instructions(func))
             self.assertEqual(3, len(opcodes))
             self.assertEqual('RETURN_VALUE', opcodes[-1].opname)
-            self.assertEqual(None, opcodes[1].argval)
+            self.assertEqual(Nichts, opcodes[1].argval)
 
     def test_consts_in_conditionals(self):
         def and_true(x):
-            return True and x
+            return Wahr and x
 
         def and_false(x):
-            return False and x
+            return Falsch and x
 
         def or_true(x):
-            return True or x
+            return Wahr or x
 
         def or_false(x):
-            return False or x
+            return Falsch or x
 
         funcs = [and_true, and_false, or_true, or_false]
 
@@ -1163,8 +1163,8 @@ klasse TestSpecifics(unittest.TestCase):
         assert line1 not in [line fuer (_, _, line) in call.__code__.co_lines()]
 
     def test_lineno_after_implicit_return(self):
-        TRUE = True
-        # Don't use constant True or False, as compiler will remove test
+        TRUE = Wahr
+        # Don't use constant Wahr or Falsch, as compiler will remove test
         def if1(x):
             x()
             wenn TRUE:
@@ -1180,18 +1180,18 @@ klasse TestSpecifics(unittest.TestCase):
             wenn TRUE:
                 pass
             sonst:
-                return None
+                return Nichts
         def if4(x):
             x()
             wenn not TRUE:
                 pass
         funcs = [ if1, if2, if3, if4]
         lastlines = [ 3, 3, 3, 2]
-        frame = None
+        frame = Nichts
         def save_caller_frame():
             nonlocal frame
             frame = sys._getframe(1)
-        fuer func, lastline in zip(funcs, lastlines, strict=True):
+        fuer func, lastline in zip(funcs, lastlines, strict=Wahr):
             with self.subTest(func=func):
                 func(save_caller_frame)
                 self.assertEqual(frame.f_lineno-frame.f_code.co_firstlineno, lastline)
@@ -1205,7 +1205,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         fuer func in (no_code1, no_code2):
             with self.subTest(func=func):
-                wenn func is no_code1 and no_code1.__doc__ is None:
+                wenn func is no_code1 and no_code1.__doc__ is Nichts:
                     continue
                 code = func.__code__
                 [(start, end, line)] = code.co_lines()
@@ -1217,7 +1217,7 @@ klasse TestSpecifics(unittest.TestCase):
         last_line = -2
         res = []
         fuer _, _, line in code.co_lines():
-            wenn line is not None and line != last_line:
+            wenn line is not Nichts and line != last_line:
                 res.append(line - code.co_firstlineno)
                 last_line = line
         return res
@@ -1261,7 +1261,7 @@ klasse TestSpecifics(unittest.TestCase):
         func_lines = [ load_attr_lines, load_method_lines,
                  store_attr_lines, aug_store_attr_lines]
 
-        fuer func, lines in zip(funcs, func_lines, strict=True):
+        fuer func, lines in zip(funcs, func_lines, strict=Wahr):
             with self.subTest(func=func):
                 code_lines = self.get_code_lines(func.__code__)
                 self.assertEqual(lines, code_lines)
@@ -1290,16 +1290,16 @@ klasse TestSpecifics(unittest.TestCase):
         code_lines = self.get_code_lines(test.__code__)
         self.assertEqual(expected_lines, code_lines)
 
-    def check_line_numbers(self, code, opnames=None):
+    def check_line_numbers(self, code, opnames=Nichts):
         # Check that all instructions whose op matches opnames
         # have a line number. opnames can be a single name, or
-        # a sequence of names. If it is None, match all ops.
+        # a sequence of names. If it is Nichts, match all ops.
 
         wenn isinstance(opnames, str):
             opnames = (opnames, )
         fuer inst in dis.Bytecode(code):
             wenn opnames and inst.opname in opnames:
-                self.assertIsNotNone(inst.positions.lineno)
+                self.assertIsNotNichts(inst.positions.lineno)
 
     def test_line_number_synthetic_jump_multiple_predecessors(self):
         def f():
@@ -1373,7 +1373,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         def if_else_break():
             val = 1
-            while True:
+            while Wahr:
                 wenn val > 0:
                     val -= 1
                 sonst:
@@ -1389,7 +1389,7 @@ klasse TestSpecifics(unittest.TestCase):
         )
 
         fuer line, instr in enumerate(
-            dis.Bytecode(if_else_break, show_caches=True)
+            dis.Bytecode(if_else_break, show_caches=Wahr)
         ):
             wenn instr.opname == 'JUMP_FORWARD':
                 self.assertNotEqual(instr.arg, 0)
@@ -1430,7 +1430,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         check_op_count(load, "BINARY_SLICE", 3)
         check_op_count(load, "BUILD_SLICE", 0)
-        check_consts(load, slice, [slice(None, None, None)])
+        check_consts(load, slice, [slice(Nichts, Nichts, Nichts)])
         check_op_count(load, "BINARY_OP", 4)
 
         def store():
@@ -1442,7 +1442,7 @@ klasse TestSpecifics(unittest.TestCase):
         check_op_count(store, "STORE_SLICE", 3)
         check_op_count(store, "BUILD_SLICE", 0)
         check_op_count(store, "STORE_SUBSCR", 1)
-        check_consts(store, slice, [slice(None, None, None)])
+        check_consts(store, slice, [slice(Nichts, Nichts, Nichts)])
 
         def long_slice():
             return x[a:b:c]
@@ -1489,17 +1489,17 @@ klasse TestSpecifics(unittest.TestCase):
         def different_but_equal():
             x[:0] = y
             x[:0.0] = y
-            x[:False] = y
-            x[:None] = y
+            x[:Falsch] = y
+            x[:Nichts] = y
 
         check_consts(
             different_but_equal,
             slice,
             [
-                slice(None, 0, None),
-                slice(None, 0.0, None),
-                slice(None, False, None),
-                slice(None, None, None)
+                slice(Nichts, 0, Nichts),
+                slice(Nichts, 0.0, Nichts),
+                slice(Nichts, Falsch, Nichts),
+                slice(Nichts, Nichts, Nichts)
             ]
         )
 
@@ -1531,9 +1531,9 @@ klasse TestSpecifics(unittest.TestCase):
     def test_if_expression_expression_empty_block(self):
         # See regression in gh-99708
         exprs = [
-            "assert (False wenn 1 sonst True)",
-            "def f():\n\tif not (False wenn 1 sonst True): raise AssertionError",
-            "def f():\n\tif not (False wenn 1 sonst True): return 12",
+            "assert (Falsch wenn 1 sonst Wahr)",
+            "def f():\n\tif not (Falsch wenn 1 sonst Wahr): raise AssertionError",
+            "def f():\n\tif not (Falsch wenn 1 sonst Wahr): return 12",
         ]
         fuer expr in exprs:
             with self.subTest(expr=expr):
@@ -1628,7 +1628,7 @@ klasse TestSpecifics(unittest.TestCase):
     def test_regression_gh_120225(self):
         async def name_4():
             match b'':
-                case True:
+                case Wahr:
                     pass
                 case name_5 wenn f'e':
                     {name_3: name_4 async fuer name_2 in name_5}
@@ -1650,14 +1650,14 @@ klasse TestSpecifics(unittest.TestCase):
         # See gh-131927
         # Compile warnings originating from the same file and
         # line are now only emitted once.
-        with warnings.catch_warnings(record=True) as caught:
+        with warnings.catch_warnings(record=Wahr) as caught:
             warnings.simplefilter("default")
             compile('1 is 1', '<stdin>', 'eval')
             compile('1 is 1', '<stdin>', 'eval')
 
         self.assertEqual(len(caught), 1)
 
-        with warnings.catch_warnings(record=True) as caught:
+        with warnings.catch_warnings(record=Wahr) as caught:
             warnings.simplefilter("always")
             compile('1 is 1', '<stdin>', 'eval')
             compile('1 is 1', '<stdin>', 'eval')
@@ -1676,7 +1676,7 @@ klasse TestSpecifics(unittest.TestCase):
                 1 is 1
         """)
 
-        with warnings.catch_warnings(record=True) as caught:
+        with warnings.catch_warnings(record=Wahr) as caught:
             warnings.simplefilter("default")
             compile(source, '<stdin>', 'exec')
 
@@ -1694,10 +1694,10 @@ klasse TestBooleanExpression(unittest.TestCase):
             return self.value
 
     klasse Yes(Value):
-        value = True
+        value = Wahr
 
     klasse No(Value):
-        value = False
+        value = Falsch
 
     def test_short_circuit_and(self):
         v = [self.Yes(), self.No(), self.Yes()]
@@ -1748,7 +1748,7 @@ klasse TestSourcePositions(unittest.TestCase):
         # in one of the AST nodes of the source code.
         code = compile(snippet, 'test_compile.py', 'exec')
         ast_tree = compile(snippet, 'test_compile.py', 'exec', _ast.PyCF_ONLY_AST)
-        self.assertTrue(type(ast_tree) == _ast.Module)
+        self.assertWahr(type(ast_tree) == _ast.Module)
 
         # Use an AST visitor that notes all the offsets.
         lines, end_lines, columns, end_columns = set(), set(), set(), set()
@@ -1768,15 +1768,15 @@ klasse TestSourcePositions(unittest.TestCase):
         fuer (line, end_line, col, end_col) in code.co_positions():
             wenn line == 0:
                 continue # This is an artificial module-start line
-            # If the offset is not None (indicating missing data), ensure that
+            # If the offset is not Nichts (indicating missing data), ensure that
             # it was part of one of the AST nodes.
-            wenn line is not None:
+            wenn line is not Nichts:
                 self.assertIn(line, lines)
-            wenn end_line is not None:
+            wenn end_line is not Nichts:
                 self.assertIn(end_line, end_lines)
-            wenn col is not None:
+            wenn col is not Nichts:
                 self.assertIn(col, columns)
-            wenn end_col is not None:
+            wenn end_col is not Nichts:
                 self.assertIn(end_col, end_columns)
 
         return code, ast_tree
@@ -1854,7 +1854,7 @@ klasse TestSourcePositions(unittest.TestCase):
         # compare d and 0
         self.assertOpcodeSourcePositionIs(compiled_code, 'COMPARE_OP',
             line=4, end_line=4, column=8, end_column=13, occurrence=1)
-        # jump wenn comparison it True
+        # jump wenn comparison it Wahr
         self.assertOpcodeSourcePositionIs(compiled_code, 'POP_JUMP_IF_TRUE',
             line=4, end_line=4, column=8, end_column=13, occurrence=2)
 
@@ -2171,7 +2171,7 @@ klasse TestSourcePositions(unittest.TestCase):
         import abc, dis
         import ast as art
 
-        abc = None
+        abc = Nichts
         dix = dis
         ast = art
 
@@ -2260,10 +2260,10 @@ klasse TestSourcePositions(unittest.TestCase):
                 0
             )
         fuer line, end_line, column, end_column in f.__code__.co_positions():
-            self.assertIsNotNone(line)
-            self.assertIsNotNone(end_line)
-            self.assertIsNotNone(column)
-            self.assertIsNotNone(end_column)
+            self.assertIsNotNichts(line)
+            self.assertIsNotNichts(end_line)
+            self.assertIsNotNichts(column)
+            self.assertIsNotNichts(end_column)
             self.assertLessEqual((line, column), (end_line, end_column))
 
     @support.cpython_only
@@ -2336,12 +2336,12 @@ klasse TestSourcePositions(unittest.TestCase):
             start_line, end_line, _, _ = instr.positions
             self.assertEqual(start_line, end_line)
 
-        # Expect four `LOAD_CONST None` instructions:
+        # Expect four `LOAD_CONST Nichts` instructions:
         # three fuer the no-exception __exit__ call, and one fuer the return.
         # They should all have the locations of the context manager ('xyz').
 
         load_none = [instr fuer instr in dis.get_instructions(f) if
-                     instr.opname == 'LOAD_CONST' and instr.argval is None]
+                     instr.opname == 'LOAD_CONST' and instr.argval is Nichts]
         return_value = [instr fuer instr in dis.get_instructions(f) if
                         instr.opname == 'RETURN_VALUE']
 
@@ -2497,7 +2497,7 @@ klasse TestStackSizeStability(unittest.TestCase):
     # Check that repeating certain snippets doesn't increase the stack size
     # beyond what a single snippet requires.
 
-    def check_stack_size(self, snippet, async_=False):
+    def check_stack_size(self, snippet, async_=Falsch):
         def compile_snippet(i):
             ns = {}
             script = """def func():\n""" + i * snippet
@@ -2775,14 +2775,14 @@ klasse TestStackSizeStability(unittest.TestCase):
             async with x as y:
                 a
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Wahr)
 
     def test_async_for(self):
         snippet = """
             async fuer x in y:
                 a
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Wahr)
 
     def test_async_for_else(self):
         snippet = """
@@ -2791,7 +2791,7 @@ klasse TestStackSizeStability(unittest.TestCase):
             sonst:
                 b
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Wahr)
 
     def test_for_break_continue_inside_async_with_block(self):
         snippet = """
@@ -2806,7 +2806,7 @@ klasse TestStackSizeStability(unittest.TestCase):
             sonst:
                 b
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Wahr)
 
     def test_return_inside_async_with_block(self):
         snippet = """
@@ -2816,10 +2816,10 @@ klasse TestStackSizeStability(unittest.TestCase):
                 sonst:
                     a
             """
-        self.check_stack_size(snippet, async_=True)
+        self.check_stack_size(snippet, async_=Wahr)
 
 @support.cpython_only
-@unittest.skipIf(_testinternalcapi is None, 'need _testinternalcapi module')
+@unittest.skipIf(_testinternalcapi is Nichts, 'need _testinternalcapi module')
 klasse TestInstructionSequence(unittest.TestCase):
     def compare_instructions(self, seq, expected):
         self.assertEqual([(opcode.opname[i[0]],) + i[1:] fuer i in seq.get_instructions()],
@@ -2845,7 +2845,7 @@ klasse TestInstructionSequence(unittest.TestCase):
                     ('LOAD_CONST', 1, 3),
                     ('JUMP', 5, 4),
                     ('LOAD_CONST', 2, 4),
-                    ('RETURN_VALUE', None, 3),
+                    ('RETURN_VALUE', Nichts, 3),
                    ]
 
         self.compare_instructions(seq, [ex + (0,0,0) fuer ex in expected])

@@ -5,7 +5,7 @@ from test.support import import_helper
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 
-NULL = None
+NULL = Nichts
 PY_SSIZE_T_MIN = _testcapi.PY_SSIZE_T_MIN
 PY_SSIZE_T_MAX = _testcapi.PY_SSIZE_T_MAX
 
@@ -18,13 +18,13 @@ klasse CAPITest(unittest.TestCase):
         # Test PyTuple_Check()
         check = _testlimitedcapi.tuple_check
 
-        self.assertTrue(check((1, 2)))
-        self.assertTrue(check(()))
-        self.assertTrue(check(TupleSubclass((1, 2))))
-        self.assertFalse(check({1: 2}))
-        self.assertFalse(check([1, 2]))
-        self.assertFalse(check(42))
-        self.assertFalse(check(object()))
+        self.assertWahr(check((1, 2)))
+        self.assertWahr(check(()))
+        self.assertWahr(check(TupleSubclass((1, 2))))
+        self.assertFalsch(check({1: 2}))
+        self.assertFalsch(check([1, 2]))
+        self.assertFalsch(check(42))
+        self.assertFalsch(check(object()))
 
         # CRASHES check(NULL)
 
@@ -32,13 +32,13 @@ klasse CAPITest(unittest.TestCase):
         # Test PyTuple_CheckExact()
         check = _testlimitedcapi.tuple_checkexact
 
-        self.assertTrue(check((1, 2)))
-        self.assertTrue(check(()))
-        self.assertFalse(check(TupleSubclass((1, 2))))
-        self.assertFalse(check({1: 2}))
-        self.assertFalse(check([1, 2]))
-        self.assertFalse(check(42))
-        self.assertFalse(check(object()))
+        self.assertWahr(check((1, 2)))
+        self.assertWahr(check(()))
+        self.assertFalsch(check(TupleSubclass((1, 2))))
+        self.assertFalsch(check({1: 2}))
+        self.assertFalsch(check([1, 2]))
+        self.assertFalsch(check(42))
+        self.assertFalsch(check(object()))
 
         # CRASHES check(NULL)
 
@@ -56,7 +56,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertIs(type(tup2), tuple)
         self.assertEqual(size(tup2), 1)
         self.assertIsNot(tup2, tup1)
-        self.assertTrue(checknull(tup2, 0))
+        self.assertWahr(checknull(tup2, 0))
 
         self.assertRaises(SystemError, tuple_new, -1)
         self.assertRaises(SystemError, tuple_new, PY_SSIZE_T_MIN)
@@ -183,7 +183,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(setitem(tup, 1, []), ([1], []))
 
         tup2 = setitem(tup, 1, NULL)
-        self.assertTrue(checknull(tup2, 1))
+        self.assertWahr(checknull(tup2, 1))
 
         tup2 = TupleSubclass(([1], [2]))
         self.assertRaises(SystemError, setitem, tup2, 0, [])
@@ -207,7 +207,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(set_item(tup, 1, []), ([1], []))
 
         tup2 = set_item(tup, 1, NULL)
-        self.assertTrue(checknull(tup2, 1))
+        self.assertWahr(checknull(tup2, 1))
 
         tup2 = TupleSubclass(([1], [2]))
         self.assertIs(set_item(tup2, 0, []), tup2)
@@ -224,14 +224,14 @@ klasse CAPITest(unittest.TestCase):
         checknull = _testcapi._check_tuple_item_is_NULL
 
         a = ()
-        b = resize(a, 0, False)
+        b = resize(a, 0, Falsch)
         self.assertEqual(len(a), 0)
         self.assertEqual(len(b), 0)
-        b = resize(a, 2, False)
+        b = resize(a, 2, Falsch)
         self.assertEqual(len(a), 0)
         self.assertEqual(len(b), 2)
-        self.assertTrue(checknull(b, 0))
-        self.assertTrue(checknull(b, 1))
+        self.assertWahr(checknull(b, 0))
+        self.assertWahr(checknull(b, 1))
 
         a = ([1], [2], [3])
         b = resize(a, 3)
@@ -241,8 +241,8 @@ klasse CAPITest(unittest.TestCase):
         b = resize(a, 5)
         self.assertEqual(len(b), 5)
         self.assertEqual(b[:3], a)
-        self.assertTrue(checknull(b, 3))
-        self.assertTrue(checknull(b, 4))
+        self.assertWahr(checknull(b, 3))
+        self.assertWahr(checknull(b, 4))
 
         a = ()
         self.assertRaises(MemoryError, resize, a, PY_SSIZE_T_MAX)
@@ -250,11 +250,11 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, resize, a, PY_SSIZE_T_MIN)
         # refcount > 1
         a = (1, 2, 3)
-        self.assertRaises(SystemError, resize, a, 3, False)
-        self.assertRaises(SystemError, resize, a, 0, False)
+        self.assertRaises(SystemError, resize, a, 3, Falsch)
+        self.assertRaises(SystemError, resize, a, 0, Falsch)
         # non-tuple
-        self.assertRaises(SystemError, resize, [1, 2, 3], 0, False)
-        self.assertRaises(SystemError, resize, NULL, 0, False)
+        self.assertRaises(SystemError, resize, [1, 2, 3], 0, Falsch)
+        self.assertRaises(SystemError, resize, NULL, 0, Falsch)
 
     def test_bug_59313(self):
         # Before 3.14, the C-API function PySequence_Tuple

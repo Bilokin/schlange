@@ -29,9 +29,9 @@ from io import DEFAULT_BUFFER_SIZE
 
 try:
     import ssl
-    HAVE_SSL = True
+    HAVE_SSL = Wahr
 except ImportError:
-    HAVE_SSL = False
+    HAVE_SSL = Falsch
 
 __all__ = ["IMAP4", "IMAP4_stream", "Internaldate2tuple",
            "Int2AP", "ParseFlags", "Time2Internaldate"]
@@ -138,12 +138,12 @@ klasse IMAP4:
 
     r"""IMAP4 client class.
 
-    Instantiate with: IMAP4([host[, port[, timeout=None]]])
+    Instantiate with: IMAP4([host[, port[, timeout=Nichts]]])
 
             host - host's name (default: localhost);
             port - port number (default: standard IMAP4 port).
-            timeout - socket timeout (default: None)
-                      If timeout is not given or is None,
+            timeout - socket timeout (default: Nichts)
+                      If timeout is not given or is Nichts,
                       the global default socket timeout is used
 
     All IMAP4rev1 commands are supported by methods of the same
@@ -188,18 +188,18 @@ klasse IMAP4:
     klasse readonly(abort): pass     # Mailbox status changed to READ-ONLY
     klasse _responsetimeout(TimeoutError): pass # No response during IDLE
 
-    def __init__(self, host='', port=IMAP4_PORT, timeout=None):
+    def __init__(self, host='', port=IMAP4_PORT, timeout=Nichts):
         self.debug = Debug
         self.state = 'LOGOUT'
-        self.literal = None             # A literal argument to a command
+        self.literal = Nichts             # A literal argument to a command
         self.tagged_commands = {}       # Tagged commands awaiting response
         self.untagged_responses = {}    # {typ: [data, ...], ...}
         self.continuation_response = '' # Last continuation response
         self._idle_responses = []       # Response queue fuer idle iteration
-        self._idle_capture = False      # Whether to queue responses fuer idle
-        self.is_readonly = False        # READ-ONLY desired state
+        self._idle_capture = Falsch      # Whether to queue responses fuer idle
+        self.is_readonly = Falsch        # READ-ONLY desired state
         self.tagnum = 0
-        self._tls_established = False
+        self._tls_established = Falsch
         self._mode_ascii()
         self._readbuf = []
 
@@ -217,14 +217,14 @@ klasse IMAP4:
             raise
 
     def _mode_ascii(self):
-        self.utf8_enabled = False
+        self.utf8_enabled = Falsch
         self._encoding = 'ascii'
         self.Literal = re.compile(_Literal, re.ASCII)
         self.Untagged_status = re.compile(_Untagged_status, re.ASCII)
 
 
     def _mode_utf8(self):
-        self.utf8_enabled = True
+        self.utf8_enabled = Wahr
         self._encoding = 'utf-8'
         self.Literal = re.compile(_Literal)
         self.Untagged_status = re.compile(_Untagged_status)
@@ -296,18 +296,18 @@ klasse IMAP4:
 
     def _create_socket(self, timeout):
         # Default value of IMAP4.host is '', but socket.getaddrinfo()
-        # (which is used by socket.create_connection()) expects None
+        # (which is used by socket.create_connection()) expects Nichts
         # as a default value fuer host.
-        wenn timeout is not None and not timeout:
+        wenn timeout is not Nichts and not timeout:
             raise ValueError('Non-blocking socket (timeout=0) is not supported')
-        host = None wenn not self.host sonst self.host
+        host = Nichts wenn not self.host sonst self.host
         sys.audit("imaplib.open", self, self.host, self.port)
         address = (host, self.port)
-        wenn timeout is not None:
+        wenn timeout is not Nichts:
             return socket.create_connection(address, timeout)
         return socket.create_connection(address)
 
-    def open(self, host='', port=IMAP4_PORT, timeout=None):
+    def open(self, host='', port=IMAP4_PORT, timeout=Nichts):
         """Setup connection to remote server on "host:port"
             (default: localhost:standard IMAP4 port).
         This connection will be used by the routines:
@@ -452,11 +452,11 @@ klasse IMAP4:
 
         (typ, [data]) = <instance>.recent()
 
-        'data' is None wenn no new messages,
+        'data' is Nichts wenn no new messages,
         sonst list of RECENT responses, most recent last.
         """
         name = 'RECENT'
-        typ, dat = self._untagged_response('OK', [None], name)
+        typ, dat = self._untagged_response('OK', [Nichts], name)
         wenn dat[-1]:
             return typ, dat
         typ, dat = self.noop()  # Prod server fuer response
@@ -464,13 +464,13 @@ klasse IMAP4:
 
 
     def response(self, code):
-        """Return data fuer response 'code' wenn received, or None.
+        """Return data fuer response 'code' wenn received, or Nichts.
 
         Old value fuer response 'code' is cleared.
 
         (code, [data]) = <instance>.response(code)
         """
-        return self._untagged_response(code, [None], code.upper())
+        return self._untagged_response(code, [Nichts], code.upper())
 
 
 
@@ -482,7 +482,7 @@ klasse IMAP4:
 
         (typ, [data]) = <instance>.append(mailbox, flags, date_time, message)
 
-                All args except 'message' can be None.
+                All args except 'message' can be Nichts.
         """
         name = 'APPEND'
         wenn not mailbox:
@@ -491,11 +491,11 @@ klasse IMAP4:
             wenn (flags[0],flags[-1]) != ('(',')'):
                 flags = '(%s)' % flags
         sonst:
-            flags = None
+            flags = Nichts
         wenn date_time:
             date_time = Time2Internaldate(date_time)
         sonst:
-            date_time = None
+            date_time = Nichts
         literal = MapCRLF.sub(CRLF, message)
         wenn self.utf8_enabled:
             literal = b'UTF8 (' + literal + b')'
@@ -517,7 +517,7 @@ klasse IMAP4:
         It will be called to process server continuation responses; the
         response argument it is passed will be a bytes.  It should return bytes
         data that will be base64 encoded and sent to the server.  It should
-        return None wenn the client abort response '*' should be sent instead.
+        return Nichts wenn the client abort response '*' should be sent instead.
         """
         mech = mechanism.upper()
         # XXX: shouldn't this code be removed, not commented out?
@@ -674,9 +674,9 @@ klasse IMAP4:
         return typ, [quotaroot, quota]
 
 
-    def idle(self, duration=None):
+    def idle(self, duration=Nichts):
         """Return an iterable IDLE context manager producing untagged responses.
-        If the argument is not None, limit iteration to 'duration' seconds.
+        If the argument is not Nichts, limit iteration to 'duration' seconds.
 
         with M.idle(duration=29 * 60) as idler:
             fuer typ, data in idler:
@@ -830,24 +830,24 @@ klasse IMAP4:
         (typ, [data]) = <instance>.search(charset, criterion, ...)
 
         'data' is space separated list of matching message numbers.
-        If UTF8 is enabled, charset MUST be None.
+        If UTF8 is enabled, charset MUST be Nichts.
         """
         name = 'SEARCH'
         wenn charset:
             wenn self.utf8_enabled:
-                raise IMAP4.error("Non-None charset not valid in UTF8 mode")
+                raise IMAP4.error("Non-Nichts charset not valid in UTF8 mode")
             typ, dat = self._simple_command(name, 'CHARSET', charset, *criteria)
         sonst:
             typ, dat = self._simple_command(name, *criteria)
         return self._untagged_response(typ, dat, name)
 
 
-    def select(self, mailbox='INBOX', readonly=False):
+    def select(self, mailbox='INBOX', readonly=Falsch):
         """Select a mailbox.
 
         Flush all untagged responses.
 
-        (typ, [data]) = <instance>.select(mailbox='INBOX', readonly=False)
+        (typ, [data]) = <instance>.select(mailbox='INBOX', readonly=Falsch)
 
         'data' is count of messages in mailbox ('EXISTS' response).
 
@@ -871,7 +871,7 @@ klasse IMAP4:
                 wenn self.debug >= 1:
                     self._dump_ur(self.untagged_responses)
             raise self.readonly('%s is not writable' % mailbox)
-        return typ, self.untagged_responses.get('EXISTS', [None])
+        return typ, self.untagged_responses.get('EXISTS', [Nichts])
 
 
     def setacl(self, mailbox, who, what):
@@ -913,7 +913,7 @@ klasse IMAP4:
         return self._untagged_response(typ, dat, name)
 
 
-    def starttls(self, ssl_context=None):
+    def starttls(self, ssl_context=Nichts):
         name = 'STARTTLS'
         wenn not HAVE_SSL:
             raise self.error('SSL support missing')
@@ -922,14 +922,14 @@ klasse IMAP4:
         wenn name not in self.capabilities:
             raise self.abort('TLS not supported by server')
         # Generate a default SSL context wenn none was passed.
-        wenn ssl_context is None:
+        wenn ssl_context is Nichts:
             ssl_context = ssl._create_stdlib_context()
         typ, dat = self._simple_command(name)
         wenn typ == 'OK':
             self.sock = ssl_context.wrap_socket(self.sock,
                                                 server_hostname=self.host)
             self._file = self.sock.makefile('rb')
-            self._tls_established = True
+            self._tls_established = Wahr
             self._get_capabilities()
         sonst:
             raise self.error("Couldn't establish TLS session")
@@ -1049,7 +1049,7 @@ klasse IMAP4:
 
 
     def _append_untagged(self, typ, dat):
-        wenn dat is None:
+        wenn dat is Nichts:
             dat = b''
 
         # During idle, queue untagged responses fuer delivery via iteration
@@ -1089,7 +1089,7 @@ klasse IMAP4:
     def _command(self, name, *args):
 
         wenn self.state not in Commands[name]:
-            self.literal = None
+            self.literal = Nichts
             raise self.error("command %s illegal in state %s, "
                              "only allowed in states %s" %
                              (name, self.state,
@@ -1107,18 +1107,18 @@ klasse IMAP4:
         name = bytes(name, self._encoding)
         data = tag + b' ' + name
         fuer arg in args:
-            wenn arg is None: continue
+            wenn arg is Nichts: continue
             wenn isinstance(arg, str):
                 arg = bytes(arg, self._encoding)
             data = data + b' ' + arg
 
         literal = self.literal
-        wenn literal is not None:
-            self.literal = None
+        wenn literal is not Nichts:
+            self.literal = Nichts
             wenn type(literal) is type(self._command):
                 literator = literal
             sonst:
-                literator = None
+                literator = Nichts
                 data = data + bytes(' {%s}' % len(literal), self._encoding)
 
         wenn __debug__:
@@ -1132,7 +1132,7 @@ klasse IMAP4:
         except OSError as val:
             raise self.abort('socket error: %s' % val)
 
-        wenn literal is None:
+        wenn literal is Nichts:
             return tag
 
         while 1:
@@ -1183,26 +1183,26 @@ klasse IMAP4:
 
     def _get_capabilities(self):
         typ, dat = self.capability()
-        wenn dat == [None]:
+        wenn dat == [Nichts]:
             raise self.error('no CAPABILITY response from server')
         dat = str(dat[-1], self._encoding)
         dat = dat.upper()
         self.capabilities = tuple(dat.split())
 
 
-    def _get_response(self, start_timeout=False):
+    def _get_response(self, start_timeout=Falsch):
 
         # Read response and store.
         #
-        # Returns None fuer continuation responses,
+        # Returns Nichts fuer continuation responses,
         # otherwise first response line received.
         #
         # If start_timeout is given, temporarily uses it as a socket
         # timeout while waiting fuer the start of a response, raising
         # _responsetimeout wenn one doesn't arrive. (Used by Idler.)
 
-        wenn start_timeout is not False and self.sock:
-            assert start_timeout is None or start_timeout > 0
+        wenn start_timeout is not Falsch and self.sock:
+            assert start_timeout is Nichts or start_timeout > 0
             saved_timeout = self.sock.gettimeout()
             self.sock.settimeout(start_timeout)
             try:
@@ -1226,7 +1226,7 @@ klasse IMAP4:
             dat = self.mo.group('data')
             self.tagged_commands[tag] = (typ, [dat])
         sonst:
-            dat2 = None
+            dat2 = Nichts
 
             # '*' (untagged) responses?
 
@@ -1234,19 +1234,19 @@ klasse IMAP4:
                 wenn self._match(self.Untagged_status, resp):
                     dat2 = self.mo.group('data2')
 
-            wenn self.mo is None:
+            wenn self.mo is Nichts:
                 # Only other possibility is '+' (continuation) response...
 
                 wenn self._match(Continuation, resp):
                     self.continuation_response = self.mo.group('data')
-                    return None     # NB: indicates continuation
+                    return Nichts     # NB: indicates continuation
 
                 raise self.abort("unexpected response: %r" % resp)
 
             typ = self.mo.group('type')
             typ = str(typ, self._encoding)
             dat = self.mo.group('data')
-            wenn dat is None: dat = b''        # Null untagged response
+            wenn dat is Nichts: dat = b''        # Null untagged response
             wenn dat2: dat = dat + b' ' + dat2
 
             # Is there a literal to come?
@@ -1285,18 +1285,18 @@ klasse IMAP4:
         return resp
 
 
-    def _get_tagged_response(self, tag, expect_bye=False):
+    def _get_tagged_response(self, tag, expect_bye=Falsch):
 
         while 1:
             result = self.tagged_commands[tag]
-            wenn result is not None:
+            wenn result is not Nichts:
                 del self.tagged_commands[tag]
                 return result
 
             wenn expect_bye:
                 typ = 'BYE'
-                bye = self.untagged_responses.pop(typ, None)
-                wenn bye is not None:
+                bye = self.untagged_responses.pop(typ, Nichts)
+                wenn bye is not Nichts:
                     # Server replies to the "LOGOUT" command with "BYE"
                     return (typ, bye)
 
@@ -1344,16 +1344,16 @@ klasse IMAP4:
 
         self.mo = cre.match(s)
         wenn __debug__:
-            wenn self.mo is not None and self.debug >= 5:
+            wenn self.mo is not Nichts and self.debug >= 5:
                 self._mesg("\tmatched %r => %r" % (cre.pattern, self.mo.groups()))
-        return self.mo is not None
+        return self.mo is not Nichts
 
 
     def _new_tag(self):
 
         tag = self.tagpre + bytes(str(self.tagnum), self._encoding)
         self.tagnum = self.tagnum + 1
-        self.tagged_commands[tag] = None
+        self.tagged_commands[tag] = Nichts
         return tag
 
 
@@ -1374,7 +1374,7 @@ klasse IMAP4:
         wenn typ == 'NO':
             return typ, dat
         wenn not name in self.untagged_responses:
-            return typ, [None]
+            return typ, [Nichts]
         data = self.untagged_responses.pop(name)
         wenn __debug__:
             wenn self.debug >= 5:
@@ -1384,8 +1384,8 @@ klasse IMAP4:
 
     wenn __debug__:
 
-        def _mesg(self, s, secs=None):
-            wenn secs is None:
+        def _mesg(self, s, secs=Nichts):
+            wenn secs is Nichts:
                 secs = time.time()
             tm = time.strftime('%M:%S', time.localtime(secs))
             sys.stderr.write('  %s.%02d %s\n' % (tm, (secs*100)%100, s))
@@ -1427,17 +1427,17 @@ klasse Idler:
     Note: The name and structure of this klasse are subject to change.
     """
 
-    def __init__(self, imap, duration=None):
+    def __init__(self, imap, duration=Nichts):
         wenn 'IDLE' not in imap.capabilities:
             raise imap.error("Server does not support IMAP4 IDLE")
-        wenn duration is not None and not imap.sock:
+        wenn duration is not Nichts and not imap.sock:
             # IMAP4_stream pipes don't support timeouts
             raise imap.error('duration requires a socket connection')
         self._duration = duration
-        self._deadline = None
+        self._deadline = Nichts
         self._imap = imap
-        self._tag = None
-        self._saved_state = None
+        self._tag = Nichts
+        self._saved_state = Nichts
 
     def __enter__(self):
         imap = self._imap
@@ -1450,7 +1450,7 @@ klasse Idler:
         # Start capturing untagged responses before sending IDLE,
         # so we can deliver via iteration any that arrive while
         # the IDLE command continuation request is still pending.
-        imap._idle_capture = True
+        imap._idle_capture = Wahr
 
         try:
             self._tag = imap._command('IDLE')
@@ -1458,7 +1458,7 @@ klasse Idler:
             # untagged responses before acting on IDLE.  These lines will be
             # returned by _get_response().  When the server is ready, it will
             # send an IDLE continuation request, indicated by _get_response()
-            # returning None.  We therefore process responses in a loop until
+            # returning Nichts.  We therefore process responses in a loop until
             # this occurs.
             while resp := imap._get_response():
                 wenn imap.tagged_commands[self._tag]:
@@ -1471,10 +1471,10 @@ klasse Idler:
                 prompt = imap.continuation_response
                 imap._mesg(f'idle continuation prompt: {prompt}')
         except BaseException:
-            imap._idle_capture = False
+            imap._idle_capture = Falsch
             raise
 
-        wenn self._duration is not None:
+        wenn self._duration is not Nichts:
             self._deadline = time.monotonic() + self._duration
 
         self._saved_state = imap.state
@@ -1491,7 +1491,7 @@ klasse Idler:
 
         # Stop intercepting untagged responses before sending DONE,
         # since we can no longer deliver them via iteration.
-        imap._idle_capture = False
+        imap._idle_capture = Falsch
 
         # If we captured untagged responses while the IDLE command
         # continuation request was still pending, but the user did not
@@ -1518,14 +1518,14 @@ klasse Idler:
             wenn not exc_type:
                 raise
 
-        return False  # Do not suppress context body exceptions
+        return Falsch  # Do not suppress context body exceptions
 
     def __iter__(self):
         return self
 
-    def _pop(self, timeout, default=('', None)):
+    def _pop(self, timeout, default=('', Nichts)):
         # Get the next response, or a default value on timeout.
-        # The timeout arg can be an int or float, or None fuer no timeout.
+        # The timeout arg can be an int or float, or Nichts fuer no timeout.
         # Timeouts require a socket connection (not IMAP4_stream).
         # This method ignores self._duration.
 
@@ -1555,7 +1555,7 @@ klasse Idler:
         wenn __debug__ and imap.debug >= 4:
             imap._mesg(f'idle _pop({timeout}) reading')
 
-        wenn timeout is not None:
+        wenn timeout is not Nichts:
             wenn timeout <= 0:
                 return default
             timeout = float(timeout)  # Required by socket.settimeout()
@@ -1576,8 +1576,8 @@ klasse Idler:
     def __next__(self):
         imap = self._imap
 
-        wenn self._duration is None:
-            timeout = None
+        wenn self._duration is Nichts:
+            timeout = Nichts
         sonst:
             timeout = self._deadline - time.monotonic()
         typ, data = self._pop(timeout)
@@ -1608,7 +1608,7 @@ klasse Idler:
         except StopIteration:
             return
 
-        while response := self._pop(interval, None):
+        while response := self._pop(interval, Nichts):
             yield response
 
 
@@ -1618,13 +1618,13 @@ wenn HAVE_SSL:
 
         """IMAP4 client klasse over SSL connection
 
-        Instantiate with: IMAP4_SSL([host[, port[, ssl_context[, timeout=None]]]])
+        Instantiate with: IMAP4_SSL([host[, port[, ssl_context[, timeout=Nichts]]]])
 
                 host - host's name (default: localhost);
                 port - port number (default: standard IMAP4 SSL port);
                 ssl_context - a SSLContext object that contains your certificate chain
-                              and private key (default: None)
-                timeout - socket timeout (default: None) If timeout is not given or is None,
+                              and private key (default: Nichts)
+                timeout - socket timeout (default: Nichts) If timeout is not given or is Nichts,
                           the global default socket timeout is used
 
         fuer more documentation see the docstring of the parent klasse IMAP4.
@@ -1632,8 +1632,8 @@ wenn HAVE_SSL:
 
 
         def __init__(self, host='', port=IMAP4_SSL_PORT,
-                     *, ssl_context=None, timeout=None):
-            wenn ssl_context is None:
+                     *, ssl_context=Nichts, timeout=Nichts):
+            wenn ssl_context is Nichts:
                 ssl_context = ssl._create_stdlib_context()
             self.ssl_context = ssl_context
             IMAP4.__init__(self, host, port, timeout)
@@ -1643,7 +1643,7 @@ wenn HAVE_SSL:
             return self.ssl_context.wrap_socket(sock,
                                                 server_hostname=self.host)
 
-        def open(self, host='', port=IMAP4_SSL_PORT, timeout=None):
+        def open(self, host='', port=IMAP4_SSL_PORT, timeout=Nichts):
             """Setup connection to remote server on "host:port".
                 (default: localhost:standard IMAP4 SSL port).
             This connection will be used by the routines:
@@ -1671,19 +1671,19 @@ klasse IMAP4_stream(IMAP4):
         IMAP4.__init__(self)
 
 
-    def open(self, host=None, port=None, timeout=None):
+    def open(self, host=Nichts, port=Nichts, timeout=Nichts):
         """Setup a stream connection.
         This connection will be used by the routines:
             read, readline, send, shutdown.
         """
-        self.host = None        # For compatibility with parent class
-        self.port = None
-        self.sock = None
-        self._file = None
+        self.host = Nichts        # For compatibility with parent class
+        self.port = Nichts
+        self.sock = Nichts
+        self._file = Nichts
         self.process = subprocess.Popen(self.command,
             bufsize=DEFAULT_BUFFER_SIZE,
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            shell=True, close_fds=True)
+            shell=Wahr, close_fds=Wahr)
         self.writefile = self.process.stdin
         self.readfile = self.process.stdout
 
@@ -1722,7 +1722,7 @@ klasse _Authenticator:
 
     def process(self, data):
         ret = self.mech(self.decode(data))
-        wenn ret is None:
+        wenn ret is Nichts:
             return b'*'     # Abort conversation
         return self.encode(ret)
 
@@ -1762,12 +1762,12 @@ def Internaldate2tuple(resp):
     """Parse an IMAP4 INTERNALDATE string.
 
     Return corresponding local time.  The return value is a
-    time.struct_time tuple or None wenn the string has wrong format.
+    time.struct_time tuple or Nichts wenn the string has wrong format.
     """
 
     mo = InternalDate.match(resp)
     wenn not mo:
-        return None
+        return Nichts
 
     mon = Mon2num[mo.group('mon')]
     zonen = mo.group('zonen')
@@ -1846,7 +1846,7 @@ def Time2Internaldate(date_time):
         delta = timedelta(seconds=gmtoff)
         dt = datetime(*date_time[:6], tzinfo=timezone(delta))
     sowenn isinstance(date_time, datetime):
-        wenn date_time.tzinfo is None:
+        wenn date_time.tzinfo is Nichts:
             raise ValueError("date_time must be aware")
         dt = date_time
     sowenn isinstance(date_time, str) and (date_time[0],date_time[-1]) == ('"','"'):
@@ -1871,7 +1871,7 @@ wenn __name__ == '__main__':
     except getopt.error as val:
         optlist, args = (), ()
 
-    stream_command = None
+    stream_command = Nichts
     fuer opt,val in optlist:
         wenn opt == '-d':
             Debug = int(val)
@@ -1892,10 +1892,10 @@ wenn __name__ == '__main__':
     ('create', ('/tmp/xxx 1',)),
     ('rename', ('/tmp/xxx 1', '/tmp/yyy')),
     ('CREATE', ('/tmp/yyz 2',)),
-    ('append', ('/tmp/yyz 2', None, None, test_mesg)),
+    ('append', ('/tmp/yyz 2', Nichts, Nichts, test_mesg)),
     ('list', ('/tmp', 'yy*')),
     ('select', ('/tmp/yyz 2',)),
-    ('search', (None, 'SUBJECT', 'test')),
+    ('search', (Nichts, 'SUBJECT', 'test')),
     ('fetch', ('1', '(FLAGS INTERNALDATE RFC822)')),
     ('store', ('1', 'FLAGS', r'(\Deleted)')),
     ('namespace', ()),
@@ -1909,7 +1909,7 @@ wenn __name__ == '__main__':
     ('response',('UIDVALIDITY',)),
     ('uid', ('SEARCH', 'ALL')),
     ('response', ('EXISTS',)),
-    ('append', (None, None, None, test_mesg)),
+    ('append', (Nichts, Nichts, Nichts, test_mesg)),
     ('recent', ()),
     ('logout', ()),
     )

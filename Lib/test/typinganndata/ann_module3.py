@@ -7,11 +7,11 @@ def f_bad_ann():
     __annotations__[1] = 2
 
 klasse C_OK:
-    def __init__(self, x: int) -> None:
+    def __init__(self, x: int) -> Nichts:
         self.x: no_such_name = x  # This one is OK as proposed by Guido
 
 klasse D_bad_ann:
-    def __init__(self, x: int) -> None:
+    def __init__(self, x: int) -> Nichts:
         sfel.y: int = 0
 
 def g_bad_ann():

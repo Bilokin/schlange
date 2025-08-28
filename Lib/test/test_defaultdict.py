@@ -13,7 +13,7 @@ klasse TestDefaultDict(unittest.TestCase):
 
     def test_basic(self):
         d1 = defaultdict()
-        self.assertEqual(d1.default_factory, None)
+        self.assertEqual(d1.default_factory, Nichts)
         d1.default_factory = list
         d1[12].append(42)
         self.assertEqual(d1, {12: [42]})
@@ -22,7 +22,7 @@ klasse TestDefaultDict(unittest.TestCase):
         d1[13]
         d1[14]
         self.assertEqual(d1, {12: [42, 24], 13: [], 14: []})
-        self.assertTrue(d1[12] is not d1[13] is not d1[14])
+        self.assertWahr(d1[12] is not d1[13] is not d1[14])
         d2 = defaultdict(list, foo=1, bar=2)
         self.assertEqual(d2.default_factory, list)
         self.assertEqual(d2, {"foo": 1, "bar": 2})
@@ -37,8 +37,8 @@ klasse TestDefaultDict(unittest.TestCase):
         self.assertIn(42, d2.keys())
         self.assertNotIn(12, d2)
         self.assertNotIn(12, d2.keys())
-        d2.default_factory = None
-        self.assertEqual(d2.default_factory, None)
+        d2.default_factory = Nichts
+        self.assertEqual(d2.default_factory, Nichts)
         try:
             d2[15]
         except KeyError as err:
@@ -55,18 +55,18 @@ klasse TestDefaultDict(unittest.TestCase):
 
     def test_repr(self):
         d1 = defaultdict()
-        self.assertEqual(d1.default_factory, None)
-        self.assertEqual(repr(d1), "defaultdict(None, {})")
+        self.assertEqual(d1.default_factory, Nichts)
+        self.assertEqual(repr(d1), "defaultdict(Nichts, {})")
         self.assertEqual(eval(repr(d1)), d1)
         d1[11] = 41
-        self.assertEqual(repr(d1), "defaultdict(None, {11: 41})")
+        self.assertEqual(repr(d1), "defaultdict(Nichts, {11: 41})")
         d2 = defaultdict(int)
         self.assertEqual(d2.default_factory, int)
         d2[12] = 42
         self.assertEqual(repr(d2), "defaultdict(<class 'int'>, {12: 42})")
         def foo(): return 43
         d3 = defaultdict(foo)
-        self.assertTrue(d3.default_factory is foo)
+        self.assertWahr(d3.default_factory is foo)
         d3[13]
         self.assertEqual(repr(d3), "defaultdict(%s, {13: 43})" % repr(foo))
 
@@ -74,7 +74,7 @@ klasse TestDefaultDict(unittest.TestCase):
         d1 = defaultdict()
         d2 = d1.copy()
         self.assertEqual(type(d2), defaultdict)
-        self.assertEqual(d2.default_factory, None)
+        self.assertEqual(d2.default_factory, Nichts)
         self.assertEqual(d2, {})
         d1.default_factory = list
         d3 = d1.copy()
@@ -110,7 +110,7 @@ klasse TestDefaultDict(unittest.TestCase):
         d2 = copy.deepcopy(d1)
         self.assertEqual(d2.default_factory, foobar)
         self.assertEqual(d2, d1)
-        self.assertTrue(d1[1] is not d2[1])
+        self.assertWahr(d1[1] is not d2[1])
         d1.default_factory = list
         d2 = copy.deepcopy(d1)
         self.assertEqual(d2.default_factory, list)
@@ -184,7 +184,7 @@ klasse TestDefaultDict(unittest.TestCase):
         self.assertEqual(list(i), [1, 2, 0])
 
         with self.assertRaises(TypeError):
-            i |= None
+            i |= Nichts
 
 wenn __name__ == "__main__":
     unittest.main()

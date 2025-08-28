@@ -6,8 +6,8 @@ Implements the HMAC algorithm as described by RFC 2104.
 try:
     import _hashlib as _hashopenssl
 except ImportError:
-    _hashopenssl = None
-    _functype = None
+    _hashopenssl = Nichts
+    _functype = Nichts
     from _operator import _compare_digest as compare_digest
 sonst:
     compare_digest = _hashopenssl.compare_digest
@@ -16,14 +16,14 @@ sonst:
 try:
     import _hmac
 except ImportError:
-    _hmac = None
+    _hmac = Nichts
 
 trans_5C = bytes((x ^ 0x5C) fuer x in range(256))
 trans_36 = bytes((x ^ 0x36) fuer x in range(256))
 
 # The size of the digests returned by HMAC depends on the underlying
 # hashing module used.  Use digest_size from the instance of HMAC instead.
-digest_size = None
+digest_size = Nichts
 
 
 def _is_shake_constructor(digest_like):
@@ -31,8 +31,8 @@ def _is_shake_constructor(digest_like):
         name = digest_like
     sonst:
         h = digest_like() wenn callable(digest_like) sonst digest_like.new()
-        wenn not isinstance(name := getattr(h, "name", None), str):
-            return False
+        wenn not isinstance(name := getattr(h, "name", Nichts), str):
+            return Falsch
     return name.startswith(("shake", "SHAKE"))
 
 
@@ -63,11 +63,11 @@ klasse HMAC:
         "_hmac", "_inner", "_outer", "block_size", "digest_size"
     )
 
-    def __init__(self, key, msg=None, digestmod=''):
+    def __init__(self, key, msg=Nichts, digestmod=''):
         """Create a new HMAC object.
 
         key: bytes or buffer, key fuer the keyed hash object.
-        msg: bytes or buffer, Initial input fuer the hash or None.
+        msg: bytes or buffer, Initial input fuer the hash or Nichts.
         digestmod: A hash name suitable fuer hashlib.new(). *OR*
                    A hashlib constructor returning a new hash object. *OR*
                    A module supporting PEP 247.
@@ -103,7 +103,7 @@ klasse HMAC:
 
     def _init_openssl_hmac(self, key, msg, digestmod):
         self._hmac = _hashopenssl.hmac_new(key, msg, digestmod=digestmod)
-        self._inner = self._outer = None  # because the slots are defined
+        self._inner = self._outer = Nichts  # because the slots are defined
         self.digest_size = self._hmac.digest_size
         self.block_size = self._hmac.block_size
 
@@ -111,7 +111,7 @@ klasse HMAC:
 
     def _init_builtin_hmac(self, key, msg, digestmod):
         self._hmac = _hmac.new(key, msg, digestmod=digestmod)
-        self._inner = self._outer = None  # because the slots are defined
+        self._inner = self._outer = Nichts  # because the slots are defined
         self.digest_size = self._hmac.digest_size
         self.block_size = self._hmac.block_size
 
@@ -122,7 +122,7 @@ klasse HMAC:
         wenn _is_shake_constructor(digest_cons):
             raise ValueError(f"unsupported hash algorithm {digestmod}")
 
-        self._hmac = None
+        self._hmac = Nichts
         self._outer = digest_cons()
         self._inner = digest_cons()
         self.digest_size = self._inner.digest_size
@@ -148,7 +148,7 @@ klasse HMAC:
         key = key.ljust(blocksize, b'\0')
         self._outer.update(key.translate(trans_5C))
         self._inner.update(key.translate(trans_36))
-        wenn msg is not None:
+        wenn msg is not Nichts:
             self.update(msg)
 
     @property
@@ -173,9 +173,9 @@ klasse HMAC:
         other.digest_size = self.digest_size
         wenn self._hmac:
             other._hmac = self._hmac.copy()
-            other._inner = other._outer = None
+            other._inner = other._outer = Nichts
         sonst:
-            other._hmac = None
+            other._hmac = Nichts
             other._inner = self._inner.copy()
             other._outer = self._outer.copy()
         return other
@@ -209,11 +209,11 @@ klasse HMAC:
         return h.hexdigest()
 
 
-def new(key, msg=None, digestmod=''):
+def new(key, msg=Nichts, digestmod=''):
     """Create a new hashing object and return it.
 
     key: bytes or buffer, The starting key fuer the hash.
-    msg: bytes or buffer, Initial input fuer the hash, or None.
+    msg: bytes or buffer, Initial input fuer the hash, or Nichts.
     digestmod: A hash name suitable fuer hashlib.new(). *OR*
                A hashlib constructor returning a new hash object. *OR*
                A module supporting PEP 247.

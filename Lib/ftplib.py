@@ -78,7 +78,7 @@ klasse FTP:
             host, user, passwd, acct, timeout, source_address, encoding
 
     The first four arguments are all strings, and have default value ''.
-    The parameter ´timeout´ must be numeric and defaults to None wenn not
+    The parameter ´timeout´ must be numeric and defaults to Nichts wenn not
     passed, meaning that no timeout will be set on any ftp socket(s).
     If a timeout is passed, then this is now the default timeout fuer all ftp
     socket operations fuer this instance.
@@ -99,15 +99,15 @@ klasse FTP:
     host = ''
     port = FTP_PORT
     maxline = MAXLINE
-    sock = None
-    file = None
-    welcome = None
-    passiveserver = True
-    # Disables https://bugs.python.org/issue43285 security wenn set to True.
-    trust_server_pasv_ipv4_address = False
+    sock = Nichts
+    file = Nichts
+    welcome = Nichts
+    passiveserver = Wahr
+    # Disables https://bugs.python.org/issue43285 security wenn set to Wahr.
+    trust_server_pasv_ipv4_address = Falsch
 
     def __init__(self, host='', user='', passwd='', acct='',
-                 timeout=_GLOBAL_DEFAULT_TIMEOUT, source_address=None, *,
+                 timeout=_GLOBAL_DEFAULT_TIMEOUT, source_address=Nichts, *,
                  encoding='utf-8'):
         """Initialization method (called by klasse instantiation).
         Initialize host to localhost, port to standard ftp port.
@@ -127,16 +127,16 @@ klasse FTP:
 
     # Context management protocol: try to quit() wenn active
     def __exit__(self, *args):
-        wenn self.sock is not None:
+        wenn self.sock is not Nichts:
             try:
                 self.quit()
             except (OSError, EOFError):
                 pass
             finally:
-                wenn self.sock is not None:
+                wenn self.sock is not Nichts:
                     self.close()
 
-    def connect(self, host='', port=0, timeout=-999, source_address=None):
+    def connect(self, host='', port=0, timeout=-999, source_address=Nichts):
         '''Connect to host.  Arguments are:
          - host: hostname to connect to (string, default previous host)
          - port: port to connect to (integer, default previous port)
@@ -150,9 +150,9 @@ klasse FTP:
             self.port = port
         wenn timeout != -999:
             self.timeout = timeout
-        wenn self.timeout is not None and not self.timeout:
+        wenn self.timeout is not Nichts and not self.timeout:
             raise ValueError('Non-blocking socket (timeout=0) is not supported')
-        wenn source_address is not None:
+        wenn source_address is not Nichts:
             self.source_address = source_address
         sys.audit("ftplib.connect", self, self.host, self.port)
         self.sock = socket.create_connection((self.host, self.port), self.timeout,
@@ -333,7 +333,7 @@ klasse FTP:
             host, port = parse229(self.sendcmd('EPSV'), self.sock.getpeername())
         return host, port
 
-    def ntransfercmd(self, cmd, rest=None):
+    def ntransfercmd(self, cmd, rest=Nichts):
         """Initiate a transfer over the data connection.
 
         If the transfer is active, send a port command and the
@@ -341,20 +341,20 @@ klasse FTP:
         passive, send a pasv command, connect to it, and start the
         transfer command.  Either way, return the socket fuer the
         connection and the expected size of the transfer.  The
-        expected size may be None wenn it could not be determined.
+        expected size may be Nichts wenn it could not be determined.
 
         Optional 'rest' argument can be a string that is sent as the
         argument to a REST command.  This is essentially a server
         marker used to tell the server to skip over any data up to the
         given marker.
         """
-        size = None
+        size = Nichts
         wenn self.passiveserver:
             host, port = self.makepasv()
             conn = socket.create_connection((host, port), self.timeout,
                                             source_address=self.source_address)
             try:
-                wenn rest is not None:
+                wenn rest is not Nichts:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
                 # Some servers apparently send a 200 reply to
@@ -372,7 +372,7 @@ klasse FTP:
                 raise
         sonst:
             with self.makeport() as sock:
-                wenn rest is not None:
+                wenn rest is not Nichts:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
                 # See above.
@@ -388,7 +388,7 @@ klasse FTP:
             size = parse150(resp)
         return conn, size
 
-    def transfercmd(self, cmd, rest=None):
+    def transfercmd(self, cmd, rest=Nichts):
         """Like ntransfercmd() but returns only the socket."""
         return self.ntransfercmd(cmd, rest)[0]
 
@@ -418,7 +418,7 @@ klasse FTP:
             raise error_reply(resp)
         return resp
 
-    def retrbinary(self, cmd, callback, blocksize=8192, rest=None):
+    def retrbinary(self, cmd, callback, blocksize=8192, rest=Nichts):
         """Retrieve data in binary mode.  A new port is created fuer you.
 
         Args:
@@ -427,7 +427,7 @@ klasse FTP:
                     block of data read.
           blocksize: The maximum number of bytes to read from the
                      socket at one time.  [default: 8192]
-          rest: Passed to transfercmd().  [default: None]
+          rest: Passed to transfercmd().  [default: Nichts]
 
         Returns:
           The response code.
@@ -437,11 +437,11 @@ klasse FTP:
             while data := conn.recv(blocksize):
                 callback(data)
             # shutdown ssl layer
-            wenn _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            wenn _SSLSocket is not Nichts and isinstance(conn, _SSLSocket):
                 conn.unwrap()
         return self.voidresp()
 
-    def retrlines(self, cmd, callback = None):
+    def retrlines(self, cmd, callback = Nichts):
         """Retrieve data in line mode.  A new port is created fuer you.
 
         Args:
@@ -453,7 +453,7 @@ klasse FTP:
         Returns:
           The response code.
         """
-        wenn callback is None:
+        wenn callback is Nichts:
             callback = print_line
         resp = self.sendcmd('TYPE A')
         with self.transfercmd(cmd) as conn, \
@@ -472,11 +472,11 @@ klasse FTP:
                     line = line[:-1]
                 callback(line)
             # shutdown ssl layer
-            wenn _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            wenn _SSLSocket is not Nichts and isinstance(conn, _SSLSocket):
                 conn.unwrap()
         return self.voidresp()
 
-    def storbinary(self, cmd, fp, blocksize=8192, callback=None, rest=None):
+    def storbinary(self, cmd, fp, blocksize=8192, callback=Nichts, rest=Nichts):
         """Store a file in binary mode.  A new port is created fuer you.
 
         Args:
@@ -485,8 +485,8 @@ klasse FTP:
           blocksize: The maximum data size to read from fp and send over
                      the connection at once.  [default: 8192]
           callback: An optional single parameter callable that is called on
-                    each block of data after it is sent.  [default: None]
-          rest: Passed to transfercmd().  [default: None]
+                    each block of data after it is sent.  [default: Nichts]
+          rest: Passed to transfercmd().  [default: Nichts]
 
         Returns:
           The response code.
@@ -498,18 +498,18 @@ klasse FTP:
                 wenn callback:
                     callback(buf)
             # shutdown ssl layer
-            wenn _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            wenn _SSLSocket is not Nichts and isinstance(conn, _SSLSocket):
                 conn.unwrap()
         return self.voidresp()
 
-    def storlines(self, cmd, fp, callback=None):
+    def storlines(self, cmd, fp, callback=Nichts):
         """Store a file in line mode.  A new port is created fuer you.
 
         Args:
           cmd: A STOR command.
           fp: A file-like object with a readline() method.
           callback: An optional single parameter callable that is called on
-                    each line after it is sent.  [default: None]
+                    each line after it is sent.  [default: Nichts]
 
         Returns:
           The response code.
@@ -529,7 +529,7 @@ klasse FTP:
                 wenn callback:
                     callback(buf)
             # shutdown ssl layer
-            wenn _SSLSocket is not None and isinstance(conn, _SSLSocket):
+            wenn _SSLSocket is not Nichts and isinstance(conn, _SSLSocket):
                 conn.unwrap()
         return self.voidresp()
 
@@ -554,7 +554,7 @@ klasse FTP:
         non-empty arguments before it are concatenated to the
         LIST command.  (This *should* only be used fuer a pathname.)'''
         cmd = 'LIST'
-        func = None
+        func = Nichts
         wenn args[-1:] and not isinstance(args[-1], str):
             args, func = args[:-1], args[-1]
         fuer arg in args:
@@ -658,19 +658,19 @@ klasse FTP:
         '''Close the connection without assuming anything about it.'''
         try:
             file = self.file
-            self.file = None
-            wenn file is not None:
+            self.file = Nichts
+            wenn file is not Nichts:
                 file.close()
         finally:
             sock = self.sock
-            self.sock = None
-            wenn sock is not None:
+            self.sock = Nichts
+            wenn sock is not Nichts:
                 sock.close()
 
 try:
     import ssl
 except ImportError:
-    _SSLSocket = None
+    _SSLSocket = Nichts
 sonst:
     _SSLSocket = ssl.SSLSocket
 
@@ -709,16 +709,16 @@ sonst:
         '''
 
         def __init__(self, host='', user='', passwd='', acct='',
-                     *, context=None, timeout=_GLOBAL_DEFAULT_TIMEOUT,
-                     source_address=None, encoding='utf-8'):
-            wenn context is None:
+                     *, context=Nichts, timeout=_GLOBAL_DEFAULT_TIMEOUT,
+                     source_address=Nichts, encoding='utf-8'):
+            wenn context is Nichts:
                 context = ssl._create_stdlib_context()
             self.context = context
-            self._prot_p = False
+            self._prot_p = Falsch
             super().__init__(host, user, passwd, acct,
                              timeout, source_address, encoding=encoding)
 
-        def login(self, user='', passwd='', acct='', secure=True):
+        def login(self, user='', passwd='', acct='', secure=Wahr):
             wenn secure and not isinstance(self.sock, ssl.SSLSocket):
                 self.auth()
             return super().login(user, passwd, acct)
@@ -756,18 +756,18 @@ sonst:
             # connection should not be encapsulated.
             self.voidcmd('PBSZ 0')
             resp = self.voidcmd('PROT P')
-            self._prot_p = True
+            self._prot_p = Wahr
             return resp
 
         def prot_c(self):
             '''Set up clear text data connection.'''
             resp = self.voidcmd('PROT C')
-            self._prot_p = False
+            self._prot_p = Falsch
             return resp
 
         # --- Overridden FTP methods
 
-        def ntransfercmd(self, cmd, rest=None):
+        def ntransfercmd(self, cmd, rest=Nichts):
             conn, size = super().ntransfercmd(cmd, rest)
             wenn self._prot_p:
                 conn = self.context.wrap_socket(conn,
@@ -787,27 +787,27 @@ sonst:
     all_errors = (Error, OSError, EOFError, ssl.SSLError)
 
 
-_150_re = None
+_150_re = Nichts
 
 def parse150(resp):
     '''Parse the '150' response fuer a RETR request.
-    Returns the expected transfer size or None; size is not guaranteed to
+    Returns the expected transfer size or Nichts; size is not guaranteed to
     be present in the 150 message.
     '''
     wenn resp[:3] != '150':
         raise error_reply(resp)
     global _150_re
-    wenn _150_re is None:
+    wenn _150_re is Nichts:
         import re
         _150_re = re.compile(
             r"150 .* \((\d+) bytes\)", re.IGNORECASE | re.ASCII)
     m = _150_re.match(resp)
     wenn not m:
-        return None
+        return Nichts
     return int(m.group(1))
 
 
-_227_re = None
+_227_re = Nichts
 
 def parse227(resp):
     '''Parse the '227' response fuer a PASV request.
@@ -816,7 +816,7 @@ def parse227(resp):
     wenn resp[:3] != '227':
         raise error_reply(resp)
     global _227_re
-    wenn _227_re is None:
+    wenn _227_re is Nichts:
         import re
         _227_re = re.compile(r'(\d+),(\d+),(\d+),(\d+),(\d+),(\d+)', re.ASCII)
     m = _227_re.search(resp)
@@ -920,7 +920,7 @@ def test():
     import netrc
 
     debugging = 0
-    rcfile = None
+    rcfile = Nichts
     while sys.argv[1] == '-d':
         debugging = debugging+1
         del sys.argv[1]
@@ -935,7 +935,7 @@ def test():
     try:
         netrcobj = netrc.netrc(rcfile)
     except OSError:
-        wenn rcfile is not None:
+        wenn rcfile is not Nichts:
             print("Could not open account file -- using anonymous login.",
                   file=sys.stderr)
     sonst:

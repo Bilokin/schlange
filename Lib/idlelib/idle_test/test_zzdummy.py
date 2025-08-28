@@ -100,13 +100,13 @@ klasse ZZDummyTest(unittest.TestCase):
         eq(self.zz.ztext, '# ignore #')
 
         # No lines have the leading text.
-        expected = [False, False, False, False, False, False, False]
+        expected = [Falsch, Falsch, Falsch, Falsch, Falsch, Falsch, Falsch]
         actual = self.checklines(text, zz.ztext)
         eq(expected, actual)
 
         text.tag_add('sel', '2.0', '4.end')
         eq(zz.z_in_event(), 'break')
-        expected = [False, True, True, True, False, False, False]
+        expected = [Falsch, Wahr, Wahr, Wahr, Falsch, Falsch, Falsch]
         actual = self.checklines(text, zz.ztext)
         eq(expected, actual)
 
@@ -129,7 +129,7 @@ klasse ZZDummyTest(unittest.TestCase):
         text.tag_remove('sel', '1.0', 'end')
         text.tag_add('sel', '3.0', '4.end')
         eq(zz.z_out_event(), 'break')
-        expected = [False, True, False, False, True, False, False]
+        expected = [Falsch, Wahr, Falsch, Falsch, Wahr, Falsch, Falsch]
         actual = self.checklines(text, zz.ztext)
         eq(expected, actual)
 

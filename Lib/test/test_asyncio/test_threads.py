@@ -8,7 +8,7 @@ from unittest import mock
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
@@ -46,9 +46,9 @@ klasse ToThreadTests(unittest.IsolatedAsyncioTestCase):
         # Unlike run_in_executor(), to_thread() should directly accept kwargs.
         func = mock.Mock()
 
-        await asyncio.to_thread(func, 'test', something=True)
+        await asyncio.to_thread(func, 'test', something=Wahr)
 
-        func.assert_called_once_with('test', something=True)
+        func.assert_called_once_with('test', something=Wahr)
 
     async def test_to_thread_contextvars(self):
         test_ctx = ContextVar('test_ctx')

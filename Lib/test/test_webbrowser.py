@@ -15,7 +15,7 @@ from test.support import threading_helper
 from unittest import mock
 
 # The webbrowser module uses threading locks
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 URL = 'https://www.example.com'
 CMD_NAME = 'test'
@@ -26,7 +26,7 @@ klasse PopenMock(mock.MagicMock):
     def poll(self):
         return 0
 
-    def wait(self, seconds=None):
+    def wait(self, seconds=Nichts):
         return 0
 
 
@@ -87,7 +87,7 @@ klasse ChromeCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
     def test_open_with_autoraise_false(self):
-        self._test('open', kw=dict(autoraise=False),
+        self._test('open', kw=dict(autoraise=Falsch),
                    options=[],
                    arguments=[URL])
 
@@ -121,7 +121,7 @@ klasse EdgeCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
     def test_open_with_autoraise_false(self):
-        self._test('open', kw=dict(autoraise=False),
+        self._test('open', kw=dict(autoraise=Falsch),
                    options=[],
                    arguments=[URL])
 
@@ -146,7 +146,7 @@ klasse MozillaCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
     def test_open_with_autoraise_false(self):
-        self._test('open', kw=dict(autoraise=False),
+        self._test('open', kw=dict(autoraise=Falsch),
                    options=[],
                    arguments=[URL])
 
@@ -171,7 +171,7 @@ klasse EpiphanyCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
     def test_open_with_autoraise_false(self):
-        self._test('open', kw=dict(autoraise=False),
+        self._test('open', kw=dict(autoraise=Falsch),
                    options=['-noraise', '-n'],
                    arguments=[URL])
 
@@ -196,7 +196,7 @@ klasse OperaCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
     def test_open_with_autoraise_false(self):
-        self._test('open', kw=dict(autoraise=False),
+        self._test('open', kw=dict(autoraise=Falsch),
                    options=[],
                    arguments=[URL])
 
@@ -242,7 +242,7 @@ klasse IOSBrowserTest(unittest.TestCase):
         # as a proxy fuer object instance references
         return "|".join(str(a) fuer a in args)
 
-    @unittest.skipIf(getattr(webbrowser, "objc", None) is None,
+    @unittest.skipIf(getattr(webbrowser, "objc", Nichts) is Nichts,
                      "iOS Webbrowser tests require ctypes")
     def setUp(self):
         # Intercept the objc library. Wrap the calls to get the
@@ -285,15 +285,15 @@ klasse IOSBrowserTest(unittest.TestCase):
             self._obj_ref(*shared_app_args),
             "S#openURL:options:completionHandler:",
             self._obj_ref(*url_obj_args),
-            None,
-            None
+            Nichts,
+            Nichts
         )
 
     def test_open(self):
         self._test('open')
 
     def test_open_with_autoraise_false(self):
-        self._test('open', autoraise=False)
+        self._test('open', autoraise=Falsch)
 
     def test_open_new(self):
         self._test('open_new')
@@ -307,14 +307,14 @@ klasse MockPopenPipe:
         self.cmd = cmd
         self.mode = mode
         self.pipe = io.StringIO()
-        self._closed = False
+        self._closed = Falsch
 
     def write(self, buf):
         self.pipe.write(buf)
 
     def close(self):
-        self._closed = True
-        return None
+        self._closed = Wahr
+        return Nichts
 
 
 @unittest.skipUnless(sys.platform == "darwin", "macOS specific test")
@@ -342,7 +342,7 @@ klasse MacOSXOSAScriptTest(unittest.TestCase):
     def test_default_open(self):
         url = "https://python.org"
         self.browser.open(url)
-        self.assertTrue(self.popen_pipe._closed)
+        self.assertWahr(self.popen_pipe._closed)
         self.assertEqual(self.popen_pipe.cmd, "osascript")
         script = self.popen_pipe.pipe.getvalue()
         self.assertEqual(script.strip(), f'open location "{url}"')
@@ -396,12 +396,12 @@ klasse BrowserRegistrationTest(unittest.TestCase):
 
         webbrowser.register('Example1', ExampleBrowser)
         expected_tryorder = ['Example1']
-        expected_browsers['example1'] = [ExampleBrowser, None]
+        expected_browsers['example1'] = [ExampleBrowser, Nichts]
         self.assertEqual(webbrowser._tryorder, expected_tryorder)
         self.assertEqual(webbrowser._browsers, expected_browsers)
 
         instance = ExampleBrowser()
-        wenn preferred is not None:
+        wenn preferred is not Nichts:
             webbrowser.register('example2', ExampleBrowser, instance,
                                 preferred=preferred)
         sonst:
@@ -415,13 +415,13 @@ klasse BrowserRegistrationTest(unittest.TestCase):
         self.assertEqual(webbrowser._browsers, expected_browsers)
 
     def test_register(self):
-        self._check_registration(preferred=False)
+        self._check_registration(preferred=Falsch)
 
     def test_register_default(self):
-        self._check_registration(preferred=None)
+        self._check_registration(preferred=Nichts)
 
     def test_register_preferred(self):
-        self._check_registration(preferred=True)
+        self._check_registration(preferred=Wahr)
 
     @unittest.skipUnless(sys.platform == "darwin", "macOS specific test")
     def test_no_xdg_settings_on_macOS(self):
@@ -437,32 +437,32 @@ klasse BrowserRegistrationTest(unittest.TestCase):
 klasse ImportTest(unittest.TestCase):
     def test_register(self):
         webbrowser = import_helper.import_fresh_module('webbrowser')
-        self.assertIsNone(webbrowser._tryorder)
-        self.assertFalse(webbrowser._browsers)
+        self.assertIsNichts(webbrowser._tryorder)
+        self.assertFalsch(webbrowser._browsers)
 
         klasse ExampleBrowser:
             pass
         webbrowser.register('Example1', ExampleBrowser)
-        self.assertTrue(webbrowser._tryorder)
+        self.assertWahr(webbrowser._tryorder)
         self.assertEqual(webbrowser._tryorder[-1], 'Example1')
-        self.assertTrue(webbrowser._browsers)
+        self.assertWahr(webbrowser._browsers)
         self.assertIn('example1', webbrowser._browsers)
-        self.assertEqual(webbrowser._browsers['example1'], [ExampleBrowser, None])
+        self.assertEqual(webbrowser._browsers['example1'], [ExampleBrowser, Nichts])
 
     def test_get(self):
         webbrowser = import_helper.import_fresh_module('webbrowser')
-        self.assertIsNone(webbrowser._tryorder)
-        self.assertFalse(webbrowser._browsers)
+        self.assertIsNichts(webbrowser._tryorder)
+        self.assertFalsch(webbrowser._browsers)
 
         with self.assertRaises(webbrowser.Error):
             webbrowser.get('fakebrowser')
-        self.assertIsNotNone(webbrowser._tryorder)
+        self.assertIsNotNichts(webbrowser._tryorder)
 
     @unittest.skipIf(" " in sys.executable, "test assumes no space in path (GH-114452)")
     def test_synthesize(self):
         webbrowser = import_helper.import_fresh_module('webbrowser')
         name = os.path.basename(sys.executable).lower()
-        webbrowser.register(name, None, webbrowser.GenericBrowser(name))
+        webbrowser.register(name, Nichts, webbrowser.GenericBrowser(name))
         webbrowser.get(sys.executable)
 
     @unittest.skipIf(
@@ -565,8 +565,8 @@ klasse CliTest(unittest.TestCase):
             ("--new-tab https://example.com", "https://example.com", 2),
         ]:
             with (
-                mock.patch("webbrowser.open", return_value=None) as mock_open,
-                mock.patch("builtins.print", return_value=None),
+                mock.patch("webbrowser.open", return_value=Nichts) as mock_open,
+                mock.patch("builtins.print", return_value=Nichts),
             ):
                 webbrowser.main(shlex.split(command))
                 mock_open.assert_called_once_with(expected_url, expected_new_win)

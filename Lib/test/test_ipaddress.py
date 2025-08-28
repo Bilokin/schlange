@@ -51,8 +51,8 @@ klasse BaseTestCase(unittest.TestCase):
         with cm as exc:
             yield exc
         # Ensure we produce clean tracebacks on failure
-        wenn exc.exception.__context__ is not None:
-            self.assertTrue(exc.exception.__suppress_context__)
+        wenn exc.exception.__context__ is not Nichts:
+            self.assertWahr(exc.exception.__suppress_context__)
 
     def assertAddressError(self, details, *args):
         """Ensure a clean AddressValueError"""
@@ -674,37 +674,37 @@ klasse NetworkTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
 
     def test_subnet_of(self):
         # containee left of container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('10.0.0.0/30').subnet_of(
                 self.factory('10.0.1.0/24')))
         # containee inside container
-        self.assertTrue(
+        self.assertWahr(
             self.factory('10.0.0.0/30').subnet_of(
                 self.factory('10.0.0.0/24')))
         # containee right of container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('10.0.0.0/30').subnet_of(
                 self.factory('10.0.1.0/24')))
         # containee larger than container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('10.0.1.0/24').subnet_of(
                 self.factory('10.0.0.0/30')))
 
     def test_supernet_of(self):
         # containee left of container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('10.0.0.0/30').supernet_of(
                 self.factory('10.0.1.0/24')))
         # containee inside container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('10.0.0.0/30').supernet_of(
                 self.factory('10.0.0.0/24')))
         # containee right of container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('10.0.0.0/30').supernet_of(
                 self.factory('10.0.1.0/24')))
         # containee larger than container
-        self.assertTrue(
+        self.assertWahr(
             self.factory('10.0.0.0/24').supernet_of(
                 self.factory('10.0.0.0/30')))
 
@@ -837,44 +837,44 @@ klasse NetworkTestCase_v6(BaseTestCase, NetmaskTestMixin_v6):
 
     def test_subnet_of(self):
         # containee left of container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('2000:999::/56').subnet_of(
                 self.factory('2000:aaa::/48')))
         # containee inside container
-        self.assertTrue(
+        self.assertWahr(
             self.factory('2000:aaa::/56').subnet_of(
                 self.factory('2000:aaa::/48')))
         # containee right of container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('2000:bbb::/56').subnet_of(
                 self.factory('2000:aaa::/48')))
         # containee larger than container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('2000:aaa::/48').subnet_of(
                 self.factory('2000:aaa::/56')))
 
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('2000:999::%scope/56').subnet_of(
                 self.factory('2000:aaa::%scope/48')))
-        self.assertTrue(
+        self.assertWahr(
             self.factory('2000:aaa::%scope/56').subnet_of(
                 self.factory('2000:aaa::%scope/48')))
 
     def test_supernet_of(self):
         # containee left of container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('2000:999::/56').supernet_of(
                 self.factory('2000:aaa::/48')))
         # containee inside container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('2000:aaa::/56').supernet_of(
                 self.factory('2000:aaa::/48')))
         # containee right of container
-        self.assertFalse(
+        self.assertFalsch(
             self.factory('2000:bbb::/56').supernet_of(
                 self.factory('2000:aaa::/48')))
         # containee larger than container
-        self.assertTrue(
+        self.assertWahr(
             self.factory('2000:aaa::/48').supernet_of(
                 self.factory('2000:aaa::/56')))
 
@@ -935,7 +935,7 @@ klasse ComparisonTests(unittest.TestCase):
         other = object()
         fuer obj in self.objects_with_scoped:
             self.assertNotEqual(obj, other)
-            self.assertFalse(obj == other)
+            self.assertFalsch(obj == other)
             self.assertEqual(obj.__eq__(other), NotImplemented)
             self.assertEqual(obj.__ne__(other), NotImplemented)
 
@@ -980,10 +980,10 @@ klasse ComparisonTests(unittest.TestCase):
             self.assertLessEqual(lhs, rhs)
             self.assertGreater(rhs, lhs)
             self.assertGreaterEqual(rhs, lhs)
-            self.assertFalse(lhs > rhs)
-            self.assertFalse(rhs < lhs)
-            self.assertFalse(lhs >= rhs)
-            self.assertFalse(rhs <= lhs)
+            self.assertFalsch(lhs > rhs)
+            self.assertFalsch(rhs < lhs)
+            self.assertFalsch(lhs >= rhs)
+            self.assertFalsch(rhs <= lhs)
 
     def test_containment(self):
         fuer obj in self.v4_addresses:
@@ -1021,14 +1021,14 @@ klasse ComparisonTests(unittest.TestCase):
                 obj <= other
             with self.assertRaises(TypeError):
                 obj >= other
-            self.assertTrue(obj < LARGEST)
-            self.assertFalse(obj > LARGEST)
-            self.assertTrue(obj <= LARGEST)
-            self.assertFalse(obj >= LARGEST)
-            self.assertFalse(obj < SMALLEST)
-            self.assertTrue(obj > SMALLEST)
-            self.assertFalse(obj <= SMALLEST)
-            self.assertTrue(obj >= SMALLEST)
+            self.assertWahr(obj < LARGEST)
+            self.assertFalsch(obj > LARGEST)
+            self.assertWahr(obj <= LARGEST)
+            self.assertFalsch(obj >= LARGEST)
+            self.assertFalsch(obj < SMALLEST)
+            self.assertWahr(obj > SMALLEST)
+            self.assertFalsch(obj <= SMALLEST)
+            self.assertWahr(obj >= SMALLEST)
 
     def test_mixed_type_key(self):
         # with get_mixed_type_key, you can sort addresses and network.
@@ -1120,7 +1120,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
                                                 '255.255.255.255')), net)
         self.assertEqual(ipaddress.IPv4Network((3221225985,
                                                 '255.255.255.255')), net)
-        # strict=True and host bits set
+        # strict=Wahr and host bits set
         with self.assertRaises(ValueError):
             ipaddress.IPv4Network(('192.0.2.1', 24))
         with self.assertRaises(ValueError):
@@ -1133,23 +1133,23 @@ klasse IpaddrUnitTest(unittest.TestCase):
             ipaddress.IPv4Network((ip, '255.255.255.0'))
         with self.assertRaises(ValueError):
             ipaddress.IPv4Network((3221225985, '255.255.255.0'))
-        # strict=False and host bits set
+        # strict=Falsch and host bits set
         net = ipaddress.IPv4Network('192.0.2.0/24')
         self.assertEqual(ipaddress.IPv4Network(('192.0.2.1', 24),
-                                               strict=False), net)
+                                               strict=Falsch), net)
         self.assertEqual(ipaddress.IPv4Network((ip, 24),
-                                               strict=False), net)
+                                               strict=Falsch), net)
         self.assertEqual(ipaddress.IPv4Network((3221225985, 24),
-                                               strict=False), net)
+                                               strict=Falsch), net)
         self.assertEqual(ipaddress.IPv4Network(('192.0.2.1',
                                                 '255.255.255.0'),
-                                               strict=False), net)
+                                               strict=Falsch), net)
         self.assertEqual(ipaddress.IPv4Network((ip,
                                                 '255.255.255.0'),
-                                               strict=False), net)
+                                               strict=Falsch), net)
         self.assertEqual(ipaddress.IPv4Network((3221225985,
                                                 '255.255.255.0'),
-                                               strict=False), net)
+                                               strict=Falsch), net)
 
         # /24
         ip = ipaddress.IPv4Address('192.0.2.0')
@@ -1201,7 +1201,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
         ip_scoped = ipaddress.IPv6Address('2001:db8::%scope')
 
-        # strict=True and host bits set
+        # strict=Wahr and host bits set
         ip = ipaddress.IPv6Address('2001:db8::1')
         with self.assertRaises(ValueError):
             ipaddress.IPv6Network(('2001:db8::1', 96))
@@ -1210,16 +1210,16 @@ klasse IpaddrUnitTest(unittest.TestCase):
                 42540766411282592856903984951653826561, 96))
         with self.assertRaises(ValueError):
             ipaddress.IPv6Network((ip, 96))
-        # strict=False and host bits set
+        # strict=Falsch and host bits set
         net = ipaddress.IPv6Network('2001:db8::/96')
         self.assertEqual(ipaddress.IPv6Network(('2001:db8::1', 96),
-                                               strict=False),
+                                               strict=Falsch),
                          net)
         self.assertEqual(ipaddress.IPv6Network(
                              (42540766411282592856903984951653826561, 96),
-                             strict=False),
+                             strict=Falsch),
                          net)
-        self.assertEqual(ipaddress.IPv6Network((ip, 96), strict=False),
+        self.assertEqual(ipaddress.IPv6Network((ip, 96), strict=Falsch),
                          net)
 
         # /96
@@ -1234,7 +1234,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
             ipaddress.IPv6Network(('2001:db8::1%scope', 96))
         with self.assertRaises(ValueError):
             ipaddress.IPv6Network((ip_scoped, 96))
-        # strict=False and host bits set
+        # strict=Falsch and host bits set
 
         # Invalid netmask
         with self.assertRaises(ValueError):
@@ -1363,15 +1363,15 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
     def testGetScopeId(self):
         self.assertEqual(self.ipv6_address.scope_id,
-                         None)
+                         Nichts)
         self.assertEqual(str(self.ipv6_scoped_address.scope_id),
                          'scope')
         self.assertEqual(self.ipv6_interface.scope_id,
-                         None)
+                         Nichts)
         self.assertEqual(str(self.ipv6_scoped_interface.scope_id),
                          'scope')
         self.assertEqual(self.ipv6_network.network_address.scope_id,
-                         None)
+                         Nichts)
         self.assertEqual(str(self.ipv6_scoped_network.network_address.scope_id),
                          'scope')
 
@@ -1677,7 +1677,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertIn(addr1, self.ipv4_network)
         # issue 61, bad network comparison on like-ip'd network objects
         # with identical broadcast addresses.
-        self.assertFalse(ipaddress.IPv4Network('1.1.0.0/16').__contains__(
+        self.assertFalsch(ipaddress.IPv4Network('1.1.0.0/16').__contains__(
                 ipaddress.IPv4Network('1.0.0.0/15')))
 
     def testNth(self):
@@ -1703,98 +1703,98 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertEqual(addr_list[-1], addr[-1])
 
     def testEqual(self):
-        self.assertTrue(self.ipv4_interface ==
+        self.assertWahr(self.ipv4_interface ==
                         ipaddress.IPv4Interface('1.2.3.4/24'))
-        self.assertFalse(self.ipv4_interface ==
+        self.assertFalsch(self.ipv4_interface ==
                          ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertFalse(self.ipv4_interface ==
+        self.assertFalsch(self.ipv4_interface ==
                          ipaddress.IPv6Interface('::1.2.3.4/24'))
-        self.assertFalse(self.ipv4_interface ==
+        self.assertFalsch(self.ipv4_interface ==
                          ipaddress.IPv6Interface('::1.2.3.4%scope/24'))
-        self.assertFalse(self.ipv4_interface == '')
-        self.assertFalse(self.ipv4_interface == [])
-        self.assertFalse(self.ipv4_interface == 2)
+        self.assertFalsch(self.ipv4_interface == '')
+        self.assertFalsch(self.ipv4_interface == [])
+        self.assertFalsch(self.ipv4_interface == 2)
 
-        self.assertTrue(self.ipv6_interface ==
+        self.assertWahr(self.ipv6_interface ==
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/64'))
-        self.assertFalse(self.ipv6_interface ==
+        self.assertFalsch(self.ipv6_interface ==
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/63'))
-        self.assertFalse(self.ipv6_interface ==
+        self.assertFalsch(self.ipv6_interface ==
                          ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertFalse(self.ipv6_interface == '')
-        self.assertFalse(self.ipv6_interface == [])
-        self.assertFalse(self.ipv6_interface == 2)
+        self.assertFalsch(self.ipv6_interface == '')
+        self.assertFalsch(self.ipv6_interface == [])
+        self.assertFalsch(self.ipv6_interface == 2)
 
-        self.assertTrue(self.ipv6_scoped_interface ==
+        self.assertWahr(self.ipv6_scoped_interface ==
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1%scope/64'))
-        self.assertTrue(self.ipv6_with_ipv4_part ==
+        self.assertWahr(self.ipv6_with_ipv4_part ==
             ipaddress.IPv6Interface('0000:0000:0000:0000:0000:0000:0102:0304'))
-        self.assertFalse(self.ipv6_scoped_interface ==
+        self.assertFalsch(self.ipv6_scoped_interface ==
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1%scope/63'))
-        self.assertFalse(self.ipv6_scoped_interface ==
+        self.assertFalsch(self.ipv6_scoped_interface ==
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/64'))
-        self.assertFalse(self.ipv6_scoped_interface ==
+        self.assertFalsch(self.ipv6_scoped_interface ==
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/63'))
-        self.assertFalse(self.ipv6_scoped_interface ==
+        self.assertFalsch(self.ipv6_scoped_interface ==
                          ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertFalse(self.ipv6_scoped_interface == '')
-        self.assertFalse(self.ipv6_scoped_interface == [])
-        self.assertFalse(self.ipv6_scoped_interface == 2)
+        self.assertFalsch(self.ipv6_scoped_interface == '')
+        self.assertFalsch(self.ipv6_scoped_interface == [])
+        self.assertFalsch(self.ipv6_scoped_interface == 2)
 
     def testNotEqual(self):
-        self.assertFalse(self.ipv4_interface !=
+        self.assertFalsch(self.ipv4_interface !=
                          ipaddress.IPv4Interface('1.2.3.4/24'))
-        self.assertTrue(self.ipv4_interface !=
+        self.assertWahr(self.ipv4_interface !=
                         ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertTrue(self.ipv4_interface !=
+        self.assertWahr(self.ipv4_interface !=
                         ipaddress.IPv6Interface('::1.2.3.4/24'))
-        self.assertTrue(self.ipv4_interface !=
+        self.assertWahr(self.ipv4_interface !=
                         ipaddress.IPv6Interface('::1.2.3.4%scope/24'))
-        self.assertTrue(self.ipv4_interface != '')
-        self.assertTrue(self.ipv4_interface != [])
-        self.assertTrue(self.ipv4_interface != 2)
+        self.assertWahr(self.ipv4_interface != '')
+        self.assertWahr(self.ipv4_interface != [])
+        self.assertWahr(self.ipv4_interface != 2)
 
-        self.assertTrue(self.ipv4_address !=
+        self.assertWahr(self.ipv4_address !=
                          ipaddress.IPv4Address('1.2.3.5'))
-        self.assertTrue(self.ipv4_address != '')
-        self.assertTrue(self.ipv4_address != [])
-        self.assertTrue(self.ipv4_address != 2)
+        self.assertWahr(self.ipv4_address != '')
+        self.assertWahr(self.ipv4_address != [])
+        self.assertWahr(self.ipv4_address != 2)
 
-        self.assertFalse(self.ipv6_interface !=
+        self.assertFalsch(self.ipv6_interface !=
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/64'))
-        self.assertTrue(self.ipv6_interface !=
+        self.assertWahr(self.ipv6_interface !=
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/63'))
-        self.assertTrue(self.ipv6_interface !=
+        self.assertWahr(self.ipv6_interface !=
                         ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertTrue(self.ipv6_interface != '')
-        self.assertTrue(self.ipv6_interface != [])
-        self.assertTrue(self.ipv6_interface != 2)
+        self.assertWahr(self.ipv6_interface != '')
+        self.assertWahr(self.ipv6_interface != [])
+        self.assertWahr(self.ipv6_interface != 2)
 
-        self.assertTrue(self.ipv6_address !=
+        self.assertWahr(self.ipv6_address !=
                         ipaddress.IPv4Address('1.2.3.4'))
-        self.assertTrue(self.ipv6_address != '')
-        self.assertTrue(self.ipv6_address != [])
-        self.assertTrue(self.ipv6_address != 2)
+        self.assertWahr(self.ipv6_address != '')
+        self.assertWahr(self.ipv6_address != [])
+        self.assertWahr(self.ipv6_address != 2)
 
-        self.assertFalse(self.ipv6_scoped_interface !=
+        self.assertFalsch(self.ipv6_scoped_interface !=
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1%scope/64'))
-        self.assertTrue(self.ipv6_scoped_interface !=
+        self.assertWahr(self.ipv6_scoped_interface !=
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1%scope/63'))
-        self.assertTrue(self.ipv6_scoped_interface !=
+        self.assertWahr(self.ipv6_scoped_interface !=
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/64'))
-        self.assertTrue(self.ipv6_scoped_interface !=
+        self.assertWahr(self.ipv6_scoped_interface !=
             ipaddress.IPv6Interface('2001:658:22a:cafe:200::1/63'))
-        self.assertTrue(self.ipv6_scoped_interface !=
+        self.assertWahr(self.ipv6_scoped_interface !=
                         ipaddress.IPv4Interface('1.2.3.4/23'))
-        self.assertTrue(self.ipv6_scoped_interface != '')
-        self.assertTrue(self.ipv6_scoped_interface != [])
-        self.assertTrue(self.ipv6_scoped_interface != 2)
+        self.assertWahr(self.ipv6_scoped_interface != '')
+        self.assertWahr(self.ipv6_scoped_interface != [])
+        self.assertWahr(self.ipv6_scoped_interface != 2)
 
-        self.assertTrue(self.ipv6_scoped_address !=
+        self.assertWahr(self.ipv6_scoped_address !=
                         ipaddress.IPv4Address('1.2.3.4'))
-        self.assertTrue(self.ipv6_scoped_address != '')
-        self.assertTrue(self.ipv6_scoped_address != [])
-        self.assertTrue(self.ipv6_scoped_address != 2)
+        self.assertWahr(self.ipv6_scoped_address != '')
+        self.assertWahr(self.ipv6_scoped_address != [])
+        self.assertWahr(self.ipv6_scoped_address != 2)
 
     def testSlash32Constructor(self):
         self.assertEqual(str(ipaddress.IPv4Interface(
@@ -1982,94 +1982,94 @@ klasse IpaddrUnitTest(unittest.TestCase):
                                     ipaddress.ip_network('1.1.0.0')))
 
     def testAddressComparison(self):
-        self.assertTrue(ipaddress.ip_address('1.1.1.1') <=
+        self.assertWahr(ipaddress.ip_address('1.1.1.1') <=
                         ipaddress.ip_address('1.1.1.1'))
-        self.assertTrue(ipaddress.ip_address('1.1.1.1') <=
+        self.assertWahr(ipaddress.ip_address('1.1.1.1') <=
                         ipaddress.ip_address('1.1.1.2'))
-        self.assertTrue(ipaddress.ip_address('::1') <=
+        self.assertWahr(ipaddress.ip_address('::1') <=
                         ipaddress.ip_address('::1'))
-        self.assertTrue(ipaddress.ip_address('::1') <=
+        self.assertWahr(ipaddress.ip_address('::1') <=
                         ipaddress.ip_address('::2'))
-        self.assertTrue(ipaddress.ip_address('::1%scope') <=
+        self.assertWahr(ipaddress.ip_address('::1%scope') <=
                         ipaddress.ip_address('::1%scope'))
-        self.assertTrue(ipaddress.ip_address('::1%scope') <=
+        self.assertWahr(ipaddress.ip_address('::1%scope') <=
                         ipaddress.ip_address('::2%scope'))
 
     def testInterfaceComparison(self):
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/24') ==
+        self.assertWahr(ipaddress.ip_interface('1.1.1.1/24') ==
                         ipaddress.ip_interface('1.1.1.1/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/16') <
+        self.assertWahr(ipaddress.ip_interface('1.1.1.1/16') <
                         ipaddress.ip_interface('1.1.1.1/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/24') <
+        self.assertWahr(ipaddress.ip_interface('1.1.1.1/24') <
                         ipaddress.ip_interface('1.1.1.2/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.2/16') <
+        self.assertWahr(ipaddress.ip_interface('1.1.1.2/16') <
                         ipaddress.ip_interface('1.1.1.1/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/24') >
+        self.assertWahr(ipaddress.ip_interface('1.1.1.1/24') >
                         ipaddress.ip_interface('1.1.1.1/16'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.2/24') >
+        self.assertWahr(ipaddress.ip_interface('1.1.1.2/24') >
                         ipaddress.ip_interface('1.1.1.1/24'))
-        self.assertTrue(ipaddress.ip_interface('1.1.1.1/24') >
+        self.assertWahr(ipaddress.ip_interface('1.1.1.1/24') >
                         ipaddress.ip_interface('1.1.1.2/16'))
 
-        self.assertTrue(ipaddress.ip_interface('::1/64') ==
+        self.assertWahr(ipaddress.ip_interface('::1/64') ==
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::1/64') <
+        self.assertWahr(ipaddress.ip_interface('::1/64') <
                         ipaddress.ip_interface('::1/80'))
-        self.assertTrue(ipaddress.ip_interface('::1/64') <
+        self.assertWahr(ipaddress.ip_interface('::1/64') <
                         ipaddress.ip_interface('::2/64'))
-        self.assertTrue(ipaddress.ip_interface('::2/48') <
+        self.assertWahr(ipaddress.ip_interface('::2/48') <
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::1/80') >
+        self.assertWahr(ipaddress.ip_interface('::1/80') >
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::2/64') >
+        self.assertWahr(ipaddress.ip_interface('::2/64') >
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::1/64') >
+        self.assertWahr(ipaddress.ip_interface('::1/64') >
                         ipaddress.ip_interface('::2/48'))
 
-        self.assertTrue(ipaddress.ip_interface('::1%scope/64') ==
+        self.assertWahr(ipaddress.ip_interface('::1%scope/64') ==
                         ipaddress.ip_interface('::1%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::1%scope/64') <
+        self.assertWahr(ipaddress.ip_interface('::1%scope/64') <
                         ipaddress.ip_interface('::1%scope/80'))
-        self.assertTrue(ipaddress.ip_interface('::1%scope/64') <
+        self.assertWahr(ipaddress.ip_interface('::1%scope/64') <
                         ipaddress.ip_interface('::2%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::2%scope/48') <
+        self.assertWahr(ipaddress.ip_interface('::2%scope/48') <
                         ipaddress.ip_interface('::1%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::1%scope/80') >
+        self.assertWahr(ipaddress.ip_interface('::1%scope/80') >
                         ipaddress.ip_interface('::1%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::2%scope/64') >
+        self.assertWahr(ipaddress.ip_interface('::2%scope/64') >
                         ipaddress.ip_interface('::1%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::1%scope/64') >
+        self.assertWahr(ipaddress.ip_interface('::1%scope/64') >
                         ipaddress.ip_interface('::2%scope/48'))
 
 
-        self.assertFalse(ipaddress.ip_interface('::1%scope/64') ==
+        self.assertFalsch(ipaddress.ip_interface('::1%scope/64') ==
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::1%scope/64') <
+        self.assertWahr(ipaddress.ip_interface('::1%scope/64') <
                         ipaddress.ip_interface('::1/80'))
-        self.assertTrue(ipaddress.ip_interface('::1%scope/64') <
+        self.assertWahr(ipaddress.ip_interface('::1%scope/64') <
                         ipaddress.ip_interface('::2/64'))
-        self.assertTrue(ipaddress.ip_interface('::2%scope/48') <
+        self.assertWahr(ipaddress.ip_interface('::2%scope/48') <
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::1%scope/80') >
+        self.assertWahr(ipaddress.ip_interface('::1%scope/80') >
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::2%scope/64') >
+        self.assertWahr(ipaddress.ip_interface('::2%scope/64') >
                         ipaddress.ip_interface('::1/64'))
-        self.assertTrue(ipaddress.ip_interface('::1%scope/64') >
+        self.assertWahr(ipaddress.ip_interface('::1%scope/64') >
                         ipaddress.ip_interface('::2/48'))
 
-        self.assertFalse(ipaddress.ip_interface('::1/64') ==
+        self.assertFalsch(ipaddress.ip_interface('::1/64') ==
                         ipaddress.ip_interface('::1%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::1/64') <
+        self.assertWahr(ipaddress.ip_interface('::1/64') <
                         ipaddress.ip_interface('::1%scope/80'))
-        self.assertTrue(ipaddress.ip_interface('::1/64') <
+        self.assertWahr(ipaddress.ip_interface('::1/64') <
                         ipaddress.ip_interface('::2%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::2/48') <
+        self.assertWahr(ipaddress.ip_interface('::2/48') <
                         ipaddress.ip_interface('::1%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::1/80') >
+        self.assertWahr(ipaddress.ip_interface('::1/80') >
                         ipaddress.ip_interface('::1%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::2/64') >
+        self.assertWahr(ipaddress.ip_interface('::2/64') >
                         ipaddress.ip_interface('::1%scope/64'))
-        self.assertTrue(ipaddress.ip_interface('::1/64') >
+        self.assertWahr(ipaddress.ip_interface('::1/64') >
                         ipaddress.ip_interface('::2%scope/48'))
 
     def testNetworkComparison(self):
@@ -2078,8 +2078,8 @@ klasse IpaddrUnitTest(unittest.TestCase):
         ip2 = ipaddress.IPv4Network('1.1.1.0/32')
         ip3 = ipaddress.IPv4Network('1.1.2.0/24')
 
-        self.assertTrue(ip1 < ip3)
-        self.assertTrue(ip3 > ip2)
+        self.assertWahr(ip1 < ip3)
+        self.assertWahr(ip3 > ip2)
 
         self.assertEqual(ip1.compare_networks(ip1), 0)
 
@@ -2089,16 +2089,16 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
         self.assertEqual(ip1.compare_networks(ip3), -1)
         self.assertEqual(ip3.compare_networks(ip1), 1)
-        self.assertTrue(ip1._get_networks_key() < ip3._get_networks_key())
+        self.assertWahr(ip1._get_networks_key() < ip3._get_networks_key())
 
         ip1 = ipaddress.IPv6Network('2001:2000::/96')
         ip2 = ipaddress.IPv6Network('2001:2001::/96')
         ip3 = ipaddress.IPv6Network('2001:ffff:2000::/96')
 
-        self.assertTrue(ip1 < ip3)
-        self.assertTrue(ip3 > ip2)
+        self.assertWahr(ip1 < ip3)
+        self.assertWahr(ip3 > ip2)
         self.assertEqual(ip1.compare_networks(ip3), -1)
-        self.assertTrue(ip1._get_networks_key() < ip3._get_networks_key())
+        self.assertWahr(ip1._get_networks_key() < ip3._get_networks_key())
 
         # Test comparing different protocols.
         # Should always raise a TypeError.
@@ -2114,18 +2114,18 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
         # Regression test fuer issue 19.
         ip1 = ipaddress.ip_network('10.1.2.128/25')
-        self.assertFalse(ip1 < ip1)
-        self.assertFalse(ip1 > ip1)
+        self.assertFalsch(ip1 < ip1)
+        self.assertFalsch(ip1 > ip1)
         ip2 = ipaddress.ip_network('10.1.3.0/24')
-        self.assertTrue(ip1 < ip2)
-        self.assertFalse(ip2 < ip1)
-        self.assertFalse(ip1 > ip2)
-        self.assertTrue(ip2 > ip1)
+        self.assertWahr(ip1 < ip2)
+        self.assertFalsch(ip2 < ip1)
+        self.assertFalsch(ip1 > ip2)
+        self.assertWahr(ip2 > ip1)
         ip3 = ipaddress.ip_network('10.1.3.0/25')
-        self.assertTrue(ip2 < ip3)
-        self.assertFalse(ip3 < ip2)
-        self.assertFalse(ip2 > ip3)
-        self.assertTrue(ip3 > ip2)
+        self.assertWahr(ip2 < ip3)
+        self.assertFalsch(ip3 < ip2)
+        self.assertFalsch(ip2 > ip3)
+        self.assertWahr(ip3 > ip2)
 
         # Regression test fuer issue 28.
         ip1 = ipaddress.ip_network('10.10.10.0/31')
@@ -2145,18 +2145,18 @@ klasse IpaddrUnitTest(unittest.TestCase):
                       NotImplemented)
 
         # <=, >=
-        self.assertTrue(ipaddress.ip_network('1.1.1.1') <=
+        self.assertWahr(ipaddress.ip_network('1.1.1.1') <=
                         ipaddress.ip_network('1.1.1.1'))
-        self.assertTrue(ipaddress.ip_network('1.1.1.1') <=
+        self.assertWahr(ipaddress.ip_network('1.1.1.1') <=
                         ipaddress.ip_network('1.1.1.2'))
-        self.assertFalse(ipaddress.ip_network('1.1.1.2') <=
+        self.assertFalsch(ipaddress.ip_network('1.1.1.2') <=
                         ipaddress.ip_network('1.1.1.1'))
 
-        self.assertTrue(ipaddress.ip_network('::1') <=
+        self.assertWahr(ipaddress.ip_network('::1') <=
                         ipaddress.ip_network('::1'))
-        self.assertTrue(ipaddress.ip_network('::1') <=
+        self.assertWahr(ipaddress.ip_network('::1') <=
                         ipaddress.ip_network('::2'))
-        self.assertFalse(ipaddress.ip_network('::2') <=
+        self.assertFalsch(ipaddress.ip_network('::2') <=
                          ipaddress.ip_network('::1'))
 
     def testStrictNetworks(self):
@@ -2168,9 +2168,9 @@ klasse IpaddrUnitTest(unittest.TestCase):
         other = ipaddress.IPv4Network('1.2.3.0/30')
         other2 = ipaddress.IPv4Network('1.2.2.0/24')
         other3 = ipaddress.IPv4Network('1.2.2.64/26')
-        self.assertTrue(self.ipv4_network.overlaps(other))
-        self.assertFalse(self.ipv4_network.overlaps(other2))
-        self.assertTrue(other2.overlaps(other3))
+        self.assertWahr(self.ipv4_network.overlaps(other))
+        self.assertFalsch(self.ipv4_network.overlaps(other2))
+        self.assertWahr(other2.overlaps(other3))
 
     def testEmbeddedIpv4(self):
         ipv4_string = '192.168.0.1'
@@ -2264,217 +2264,217 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
     def testReservedIpv4(self):
         # test networks
-        self.assertEqual(True, ipaddress.ip_interface(
+        self.assertEqual(Wahr, ipaddress.ip_interface(
                 '224.1.1.1/31').is_multicast)
-        self.assertEqual(False, ipaddress.ip_network('240.0.0.0').is_multicast)
-        self.assertEqual(True, ipaddress.ip_network('240.0.0.0').is_reserved)
+        self.assertEqual(Falsch, ipaddress.ip_network('240.0.0.0').is_multicast)
+        self.assertEqual(Wahr, ipaddress.ip_network('240.0.0.0').is_reserved)
 
-        self.assertTrue(ipaddress.ip_interface('0.0.0.0/32').is_unspecified)
-        self.assertFalse(ipaddress.ip_interface('0.0.0.0/31').is_unspecified)
-        self.assertFalse(ipaddress.ip_interface('1.2.3.4/32').is_unspecified)
+        self.assertWahr(ipaddress.ip_interface('0.0.0.0/32').is_unspecified)
+        self.assertFalsch(ipaddress.ip_interface('0.0.0.0/31').is_unspecified)
+        self.assertFalsch(ipaddress.ip_interface('1.2.3.4/32').is_unspecified)
 
-        self.assertEqual(True, ipaddress.ip_interface(
+        self.assertEqual(Wahr, ipaddress.ip_interface(
                 '192.168.1.1/17').is_private)
-        self.assertEqual(False, ipaddress.ip_network('192.169.0.0').is_private)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Falsch, ipaddress.ip_network('192.169.0.0').is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network(
                 '10.255.255.255').is_private)
-        self.assertEqual(False, ipaddress.ip_network('11.0.0.0').is_private)
-        self.assertEqual(False, ipaddress.ip_network('11.0.0.0').is_reserved)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Falsch, ipaddress.ip_network('11.0.0.0').is_private)
+        self.assertEqual(Falsch, ipaddress.ip_network('11.0.0.0').is_reserved)
+        self.assertEqual(Wahr, ipaddress.ip_network(
                 '172.31.255.255').is_private)
-        self.assertEqual(False, ipaddress.ip_network('172.32.0.0').is_private)
-        self.assertEqual(True,
+        self.assertEqual(Falsch, ipaddress.ip_network('172.32.0.0').is_private)
+        self.assertEqual(Wahr,
                          ipaddress.ip_network('169.254.1.0/24').is_link_local)
 
-        self.assertEqual(True,
+        self.assertEqual(Wahr,
                           ipaddress.ip_interface(
                               '169.254.100.200/24').is_link_local)
-        self.assertEqual(False,
+        self.assertEqual(Falsch,
                           ipaddress.ip_interface(
                               '169.255.100.200/24').is_link_local)
 
-        self.assertEqual(True,
+        self.assertEqual(Wahr,
                           ipaddress.ip_network(
                               '127.100.200.254/32').is_loopback)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Wahr, ipaddress.ip_network(
                 '127.42.0.0/16').is_loopback)
-        self.assertEqual(False, ipaddress.ip_network('128.0.0.0').is_loopback)
-        self.assertEqual(False,
+        self.assertEqual(Falsch, ipaddress.ip_network('128.0.0.0').is_loopback)
+        self.assertEqual(Falsch,
                          ipaddress.ip_network('100.64.0.0/10').is_private)
-        self.assertEqual(False, ipaddress.ip_network('100.64.0.0/10').is_global)
+        self.assertEqual(Falsch, ipaddress.ip_network('100.64.0.0/10').is_global)
 
-        self.assertEqual(True,
+        self.assertEqual(Wahr,
                          ipaddress.ip_network('192.0.2.128/25').is_private)
-        self.assertEqual(True,
+        self.assertEqual(Wahr,
                          ipaddress.ip_network('192.0.3.0/24').is_global)
 
         # test addresses
-        self.assertEqual(True, ipaddress.ip_address('0.0.0.0').is_unspecified)
-        self.assertEqual(True, ipaddress.ip_address('224.1.1.1').is_multicast)
-        self.assertEqual(False, ipaddress.ip_address('240.0.0.0').is_multicast)
-        self.assertEqual(True, ipaddress.ip_address('240.0.0.1').is_reserved)
-        self.assertEqual(False,
+        self.assertEqual(Wahr, ipaddress.ip_address('0.0.0.0').is_unspecified)
+        self.assertEqual(Wahr, ipaddress.ip_address('224.1.1.1').is_multicast)
+        self.assertEqual(Falsch, ipaddress.ip_address('240.0.0.0').is_multicast)
+        self.assertEqual(Wahr, ipaddress.ip_address('240.0.0.1').is_reserved)
+        self.assertEqual(Falsch,
                          ipaddress.ip_address('239.255.255.255').is_reserved)
 
-        self.assertEqual(True, ipaddress.ip_address('192.168.1.1').is_private)
-        self.assertEqual(False, ipaddress.ip_address('192.169.0.0').is_private)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Wahr, ipaddress.ip_address('192.168.1.1').is_private)
+        self.assertEqual(Falsch, ipaddress.ip_address('192.169.0.0').is_private)
+        self.assertEqual(Wahr, ipaddress.ip_address(
                 '10.255.255.255').is_private)
-        self.assertEqual(False, ipaddress.ip_address('11.0.0.0').is_private)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Falsch, ipaddress.ip_address('11.0.0.0').is_private)
+        self.assertEqual(Wahr, ipaddress.ip_address(
                 '172.31.255.255').is_private)
-        self.assertEqual(False, ipaddress.ip_address('172.32.0.0').is_private)
-        self.assertFalse(ipaddress.ip_address('192.0.0.0').is_global)
-        self.assertTrue(ipaddress.ip_address('192.0.0.9').is_global)
-        self.assertTrue(ipaddress.ip_address('192.0.0.10').is_global)
-        self.assertFalse(ipaddress.ip_address('192.0.0.255').is_global)
+        self.assertEqual(Falsch, ipaddress.ip_address('172.32.0.0').is_private)
+        self.assertFalsch(ipaddress.ip_address('192.0.0.0').is_global)
+        self.assertWahr(ipaddress.ip_address('192.0.0.9').is_global)
+        self.assertWahr(ipaddress.ip_address('192.0.0.10').is_global)
+        self.assertFalsch(ipaddress.ip_address('192.0.0.255').is_global)
 
-        self.assertEqual(True,
+        self.assertEqual(Wahr,
                          ipaddress.ip_address('169.254.100.200').is_link_local)
-        self.assertEqual(False,
+        self.assertEqual(Falsch,
                          ipaddress.ip_address('169.255.100.200').is_link_local)
 
-        self.assertTrue(ipaddress.ip_address('192.0.7.1').is_global)
-        self.assertFalse(ipaddress.ip_address('203.0.113.1').is_global)
+        self.assertWahr(ipaddress.ip_address('192.0.7.1').is_global)
+        self.assertFalsch(ipaddress.ip_address('203.0.113.1').is_global)
 
-        self.assertEqual(True,
+        self.assertEqual(Wahr,
                           ipaddress.ip_address('127.100.200.254').is_loopback)
-        self.assertEqual(True, ipaddress.ip_address('127.42.0.0').is_loopback)
-        self.assertEqual(False, ipaddress.ip_address('128.0.0.0').is_loopback)
-        self.assertEqual(True, ipaddress.ip_network('0.0.0.0').is_unspecified)
+        self.assertEqual(Wahr, ipaddress.ip_address('127.42.0.0').is_loopback)
+        self.assertEqual(Falsch, ipaddress.ip_address('128.0.0.0').is_loopback)
+        self.assertEqual(Wahr, ipaddress.ip_network('0.0.0.0').is_unspecified)
 
     def testPrivateNetworks(self):
-        self.assertEqual(False, ipaddress.ip_network("0.0.0.0/0").is_private)
-        self.assertEqual(False, ipaddress.ip_network("1.0.0.0/8").is_private)
+        self.assertEqual(Falsch, ipaddress.ip_network("0.0.0.0/0").is_private)
+        self.assertEqual(Falsch, ipaddress.ip_network("1.0.0.0/8").is_private)
 
-        self.assertEqual(True, ipaddress.ip_network("0.0.0.0/8").is_private)
-        self.assertEqual(True, ipaddress.ip_network("10.0.0.0/8").is_private)
-        self.assertEqual(True, ipaddress.ip_network("127.0.0.0/8").is_private)
-        self.assertEqual(True, ipaddress.ip_network("169.254.0.0/16").is_private)
-        self.assertEqual(True, ipaddress.ip_network("172.16.0.0/12").is_private)
-        self.assertEqual(True, ipaddress.ip_network("192.0.0.0/29").is_private)
-        self.assertEqual(False, ipaddress.ip_network("192.0.0.9/32").is_private)
-        self.assertEqual(True, ipaddress.ip_network("192.0.0.170/31").is_private)
-        self.assertEqual(True, ipaddress.ip_network("192.0.2.0/24").is_private)
-        self.assertEqual(True, ipaddress.ip_network("192.168.0.0/16").is_private)
-        self.assertEqual(True, ipaddress.ip_network("198.18.0.0/15").is_private)
-        self.assertEqual(True, ipaddress.ip_network("198.51.100.0/24").is_private)
-        self.assertEqual(True, ipaddress.ip_network("203.0.113.0/24").is_private)
-        self.assertEqual(True, ipaddress.ip_network("240.0.0.0/4").is_private)
-        self.assertEqual(True, ipaddress.ip_network("255.255.255.255/32").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("0.0.0.0/8").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("10.0.0.0/8").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("127.0.0.0/8").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("169.254.0.0/16").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("172.16.0.0/12").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("192.0.0.0/29").is_private)
+        self.assertEqual(Falsch, ipaddress.ip_network("192.0.0.9/32").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("192.0.0.170/31").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("192.0.2.0/24").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("192.168.0.0/16").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("198.18.0.0/15").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("198.51.100.0/24").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("203.0.113.0/24").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("240.0.0.0/4").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("255.255.255.255/32").is_private)
 
-        self.assertEqual(False, ipaddress.ip_network("::/0").is_private)
-        self.assertEqual(False, ipaddress.ip_network("::ff/128").is_private)
+        self.assertEqual(Falsch, ipaddress.ip_network("::/0").is_private)
+        self.assertEqual(Falsch, ipaddress.ip_network("::ff/128").is_private)
 
-        self.assertEqual(True, ipaddress.ip_network("::1/128").is_private)
-        self.assertEqual(True, ipaddress.ip_network("::/128").is_private)
-        self.assertEqual(True, ipaddress.ip_network("::ffff:0:0/96").is_private)
-        self.assertEqual(True, ipaddress.ip_network("100::/64").is_private)
-        self.assertEqual(True, ipaddress.ip_network("2001:2::/48").is_private)
-        self.assertEqual(False, ipaddress.ip_network("2001:3::/48").is_private)
-        self.assertEqual(True, ipaddress.ip_network("2001:db8::/32").is_private)
-        self.assertEqual(True, ipaddress.ip_network("2001:10::/28").is_private)
-        self.assertEqual(True, ipaddress.ip_network("fc00::/7").is_private)
-        self.assertEqual(True, ipaddress.ip_network("fe80::/10").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("::1/128").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("::/128").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("::ffff:0:0/96").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("100::/64").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("2001:2::/48").is_private)
+        self.assertEqual(Falsch, ipaddress.ip_network("2001:3::/48").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("2001:db8::/32").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("2001:10::/28").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("fc00::/7").is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network("fe80::/10").is_private)
 
     def testReservedIpv6(self):
 
-        self.assertEqual(True, ipaddress.ip_network('ffff::').is_multicast)
-        self.assertEqual(True, ipaddress.ip_network(2**128 - 1).is_multicast)
-        self.assertEqual(True, ipaddress.ip_network('ff00::').is_multicast)
-        self.assertEqual(False, ipaddress.ip_network('fdff::').is_multicast)
+        self.assertEqual(Wahr, ipaddress.ip_network('ffff::').is_multicast)
+        self.assertEqual(Wahr, ipaddress.ip_network(2**128 - 1).is_multicast)
+        self.assertEqual(Wahr, ipaddress.ip_network('ff00::').is_multicast)
+        self.assertEqual(Falsch, ipaddress.ip_network('fdff::').is_multicast)
 
-        self.assertEqual(True, ipaddress.ip_network('fecf::').is_site_local)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Wahr, ipaddress.ip_network('fecf::').is_site_local)
+        self.assertEqual(Wahr, ipaddress.ip_network(
                 'feff:ffff:ffff:ffff::').is_site_local)
-        self.assertEqual(False, ipaddress.ip_network(
+        self.assertEqual(Falsch, ipaddress.ip_network(
                 'fbf:ffff::').is_site_local)
-        self.assertEqual(False, ipaddress.ip_network('ff00::').is_site_local)
+        self.assertEqual(Falsch, ipaddress.ip_network('ff00::').is_site_local)
 
-        self.assertEqual(True, ipaddress.ip_network('fc00::').is_private)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Wahr, ipaddress.ip_network('fc00::').is_private)
+        self.assertEqual(Wahr, ipaddress.ip_network(
                 'fc00:ffff:ffff:ffff::').is_private)
-        self.assertEqual(False, ipaddress.ip_network('fbff:ffff::').is_private)
-        self.assertEqual(False, ipaddress.ip_network('fe00::').is_private)
+        self.assertEqual(Falsch, ipaddress.ip_network('fbff:ffff::').is_private)
+        self.assertEqual(Falsch, ipaddress.ip_network('fe00::').is_private)
 
-        self.assertEqual(True, ipaddress.ip_network('fea0::').is_link_local)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Wahr, ipaddress.ip_network('fea0::').is_link_local)
+        self.assertEqual(Wahr, ipaddress.ip_network(
                 'febf:ffff::').is_link_local)
-        self.assertEqual(False, ipaddress.ip_network(
+        self.assertEqual(Falsch, ipaddress.ip_network(
                 'fe7f:ffff::').is_link_local)
-        self.assertEqual(False, ipaddress.ip_network('fec0::').is_link_local)
+        self.assertEqual(Falsch, ipaddress.ip_network('fec0::').is_link_local)
 
-        self.assertEqual(True, ipaddress.ip_interface('0:0::0:01').is_loopback)
-        self.assertEqual(False, ipaddress.ip_interface('::1/127').is_loopback)
-        self.assertEqual(False, ipaddress.ip_network('::').is_loopback)
-        self.assertEqual(False, ipaddress.ip_network('::2').is_loopback)
+        self.assertEqual(Wahr, ipaddress.ip_interface('0:0::0:01').is_loopback)
+        self.assertEqual(Falsch, ipaddress.ip_interface('::1/127').is_loopback)
+        self.assertEqual(Falsch, ipaddress.ip_network('::').is_loopback)
+        self.assertEqual(Falsch, ipaddress.ip_network('::2').is_loopback)
 
-        self.assertEqual(True, ipaddress.ip_network('0::0').is_unspecified)
-        self.assertEqual(False, ipaddress.ip_network('::1').is_unspecified)
-        self.assertEqual(False, ipaddress.ip_network('::/127').is_unspecified)
+        self.assertEqual(Wahr, ipaddress.ip_network('0::0').is_unspecified)
+        self.assertEqual(Falsch, ipaddress.ip_network('::1').is_unspecified)
+        self.assertEqual(Falsch, ipaddress.ip_network('::/127').is_unspecified)
 
-        self.assertEqual(True,
+        self.assertEqual(Wahr,
                          ipaddress.ip_network('2001::1/128').is_private)
-        self.assertEqual(True,
+        self.assertEqual(Wahr,
                          ipaddress.ip_network('200::1/128').is_global)
         # test addresses
-        self.assertEqual(True, ipaddress.ip_address('ffff::').is_multicast)
-        self.assertEqual(True, ipaddress.ip_address(2**128 - 1).is_multicast)
-        self.assertEqual(True, ipaddress.ip_address('ff00::').is_multicast)
-        self.assertEqual(False, ipaddress.ip_address('fdff::').is_multicast)
+        self.assertEqual(Wahr, ipaddress.ip_address('ffff::').is_multicast)
+        self.assertEqual(Wahr, ipaddress.ip_address(2**128 - 1).is_multicast)
+        self.assertEqual(Wahr, ipaddress.ip_address('ff00::').is_multicast)
+        self.assertEqual(Falsch, ipaddress.ip_address('fdff::').is_multicast)
 
-        self.assertEqual(True, ipaddress.ip_address('fecf::').is_site_local)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Wahr, ipaddress.ip_address('fecf::').is_site_local)
+        self.assertEqual(Wahr, ipaddress.ip_address(
                 'feff:ffff:ffff:ffff::').is_site_local)
-        self.assertEqual(False, ipaddress.ip_address(
+        self.assertEqual(Falsch, ipaddress.ip_address(
                 'fbf:ffff::').is_site_local)
-        self.assertEqual(False, ipaddress.ip_address('ff00::').is_site_local)
+        self.assertEqual(Falsch, ipaddress.ip_address('ff00::').is_site_local)
 
-        self.assertEqual(True, ipaddress.ip_address('fc00::').is_private)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Wahr, ipaddress.ip_address('fc00::').is_private)
+        self.assertEqual(Wahr, ipaddress.ip_address(
                 'fc00:ffff:ffff:ffff::').is_private)
-        self.assertEqual(False, ipaddress.ip_address('fbff:ffff::').is_private)
-        self.assertEqual(False, ipaddress.ip_address('fe00::').is_private)
+        self.assertEqual(Falsch, ipaddress.ip_address('fbff:ffff::').is_private)
+        self.assertEqual(Falsch, ipaddress.ip_address('fe00::').is_private)
 
-        self.assertEqual(True, ipaddress.ip_address('fea0::').is_link_local)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Wahr, ipaddress.ip_address('fea0::').is_link_local)
+        self.assertEqual(Wahr, ipaddress.ip_address(
                 'febf:ffff::').is_link_local)
-        self.assertEqual(False, ipaddress.ip_address(
+        self.assertEqual(Falsch, ipaddress.ip_address(
                 'fe7f:ffff::').is_link_local)
-        self.assertEqual(False, ipaddress.ip_address('fec0::').is_link_local)
+        self.assertEqual(Falsch, ipaddress.ip_address('fec0::').is_link_local)
 
-        self.assertEqual(True, ipaddress.ip_address('0:0::0:01').is_loopback)
-        self.assertEqual(True, ipaddress.ip_address('::1').is_loopback)
-        self.assertEqual(False, ipaddress.ip_address('::2').is_loopback)
+        self.assertEqual(Wahr, ipaddress.ip_address('0:0::0:01').is_loopback)
+        self.assertEqual(Wahr, ipaddress.ip_address('::1').is_loopback)
+        self.assertEqual(Falsch, ipaddress.ip_address('::2').is_loopback)
 
-        self.assertEqual(True, ipaddress.ip_address('0::0').is_unspecified)
-        self.assertEqual(False, ipaddress.ip_address('::1').is_unspecified)
+        self.assertEqual(Wahr, ipaddress.ip_address('0::0').is_unspecified)
+        self.assertEqual(Falsch, ipaddress.ip_address('::1').is_unspecified)
 
-        self.assertFalse(ipaddress.ip_address('64:ff9b:1::').is_global)
-        self.assertFalse(ipaddress.ip_address('2001::').is_global)
-        self.assertTrue(ipaddress.ip_address('2001:1::1').is_global)
-        self.assertTrue(ipaddress.ip_address('2001:1::2').is_global)
-        self.assertFalse(ipaddress.ip_address('2001:2::').is_global)
-        self.assertTrue(ipaddress.ip_address('2001:3::').is_global)
-        self.assertFalse(ipaddress.ip_address('2001:4::').is_global)
-        self.assertTrue(ipaddress.ip_address('2001:4:112::').is_global)
-        self.assertFalse(ipaddress.ip_address('2001:10::').is_global)
-        self.assertTrue(ipaddress.ip_address('2001:20::').is_global)
-        self.assertTrue(ipaddress.ip_address('2001:30::').is_global)
-        self.assertFalse(ipaddress.ip_address('2001:40::').is_global)
-        self.assertFalse(ipaddress.ip_address('2002::').is_global)
+        self.assertFalsch(ipaddress.ip_address('64:ff9b:1::').is_global)
+        self.assertFalsch(ipaddress.ip_address('2001::').is_global)
+        self.assertWahr(ipaddress.ip_address('2001:1::1').is_global)
+        self.assertWahr(ipaddress.ip_address('2001:1::2').is_global)
+        self.assertFalsch(ipaddress.ip_address('2001:2::').is_global)
+        self.assertWahr(ipaddress.ip_address('2001:3::').is_global)
+        self.assertFalsch(ipaddress.ip_address('2001:4::').is_global)
+        self.assertWahr(ipaddress.ip_address('2001:4:112::').is_global)
+        self.assertFalsch(ipaddress.ip_address('2001:10::').is_global)
+        self.assertWahr(ipaddress.ip_address('2001:20::').is_global)
+        self.assertWahr(ipaddress.ip_address('2001:30::').is_global)
+        self.assertFalsch(ipaddress.ip_address('2001:40::').is_global)
+        self.assertFalsch(ipaddress.ip_address('2002::').is_global)
         # gh-124217: conform with RFC 9637
-        self.assertFalse(ipaddress.ip_address('3fff::').is_global)
+        self.assertFalsch(ipaddress.ip_address('3fff::').is_global)
 
         # some generic IETF reserved addresses
-        self.assertEqual(True, ipaddress.ip_address('100::').is_reserved)
-        self.assertEqual(True, ipaddress.ip_network('4000::1/128').is_reserved)
+        self.assertEqual(Wahr, ipaddress.ip_address('100::').is_reserved)
+        self.assertEqual(Wahr, ipaddress.ip_network('4000::1/128').is_reserved)
 
     def testIpv4Mapped(self):
         self.assertEqual(
                 ipaddress.ip_address('::ffff:192.168.1.1').ipv4_mapped,
                 ipaddress.ip_address('192.168.1.1'))
-        self.assertEqual(ipaddress.ip_address('::c0a8:101').ipv4_mapped, None)
+        self.assertEqual(ipaddress.ip_address('::c0a8:101').ipv4_mapped, Nichts)
         self.assertEqual(ipaddress.ip_address('::ffff:c0a8:101').ipv4_mapped,
                          ipaddress.ip_address('192.168.1.1'))
 
@@ -2504,24 +2504,24 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
     def testIpv4MappedPrivateCheck(self):
         self.assertEqual(
-                True, ipaddress.ip_address('::ffff:192.168.1.1').is_private)
+                Wahr, ipaddress.ip_address('::ffff:192.168.1.1').is_private)
         self.assertEqual(
-                False, ipaddress.ip_address('::ffff:172.32.0.0').is_private)
+                Falsch, ipaddress.ip_address('::ffff:172.32.0.0').is_private)
 
     def testIpv4MappedLoopbackCheck(self):
         # test networks
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Wahr, ipaddress.ip_network(
                 '::ffff:127.100.200.254/128').is_loopback)
-        self.assertEqual(True, ipaddress.ip_network(
+        self.assertEqual(Wahr, ipaddress.ip_network(
                 '::ffff:127.42.0.0/112').is_loopback)
-        self.assertEqual(False, ipaddress.ip_network(
+        self.assertEqual(Falsch, ipaddress.ip_network(
                 '::ffff:128.0.0.0').is_loopback)
         # test addresses
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Wahr, ipaddress.ip_address(
                 '::ffff:127.100.200.254').is_loopback)
-        self.assertEqual(True, ipaddress.ip_address(
+        self.assertEqual(Wahr, ipaddress.ip_address(
                 '::ffff:127.42.0.0').is_loopback)
-        self.assertEqual(False, ipaddress.ip_address(
+        self.assertEqual(Falsch, ipaddress.ip_address(
                 '::ffff:128.0.0.0').is_loopback)
 
     def testAddrExclude(self):
@@ -2562,10 +2562,10 @@ klasse IpaddrUnitTest(unittest.TestCase):
         ip1 = ipaddress.ip_address('10.1.1.0')
         ip2 = ipaddress.ip_address('1::')
         dummy = {}
-        dummy[self.ipv4_address] = None
-        dummy[self.ipv6_address] = None
-        dummy[ip1] = None
-        dummy[ip2] = None
+        dummy[self.ipv4_address] = Nichts
+        dummy[self.ipv6_address] = Nichts
+        dummy[ip1] = Nichts
+        dummy[ip2] = Nichts
         self.assertIn(self.ipv4_address, dummy)
         self.assertIn(ip2, dummy)
 
@@ -2763,9 +2763,9 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertEqual((server, client),
                          ipaddress.ip_address(teredo_addr).teredo)
         bad_addr = '2000::4136:e378:8000:63bf:3fff:fdd2'
-        self.assertFalse(ipaddress.ip_address(bad_addr).teredo)
+        self.assertFalsch(ipaddress.ip_address(bad_addr).teredo)
         bad_addr = '2001:0001:4136:e378:8000:63bf:3fff:fdd2'
-        self.assertFalse(ipaddress.ip_address(bad_addr).teredo)
+        self.assertFalsch(ipaddress.ip_address(bad_addr).teredo)
 
         # i77
         teredo_addr = ipaddress.IPv6Address('2001:0:5ef5:79fd:0:59d:a0e5:ba1')
@@ -2778,7 +2778,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         bad_addr = ipaddress.ip_address('2000:ac1d:2d64::1')
         self.assertEqual(ipaddress.IPv4Address('172.29.45.100'),
                          sixtofouraddr.sixtofour)
-        self.assertFalse(bad_addr.sixtofour)
+        self.assertFalsch(bad_addr.sixtofour)
 
     # issue41004 Hash collisions in IPv4Interface and IPv6Interface
     def testV4HashIsNotConstant(self):

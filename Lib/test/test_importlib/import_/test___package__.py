@@ -20,7 +20,7 @@ klasse Using__package__:
           return '{0}.{1}'.format(base, name)
 
     But since there is no guarantee that __package__ has been set (or not been
-    set to None [None]), there has to be a way to calculate the attribute's value
+    set to Nichts [Nichts]), there has to be a way to calculate the attribute's value
     [__name__]::
 
       def calc_package(caller_name, has___path__):
@@ -60,12 +60,12 @@ klasse Using__package__:
         with self.assertWarns(ImportWarning):
             self.import_module({'__name__': 'pkg.fake', '__path__': []})
 
-    def test_None_as___package__(self):
-        # [None]
+    def test_Nichts_as___package__(self):
+        # [Nichts]
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             module = self.import_module({
-                '__name__': 'pkg.fake', '__path__': [], '__package__': None })
+                '__name__': 'pkg.fake', '__path__': [], '__package__': Nichts })
         self.assertEqual(module.__name__, 'pkg')
 
     def test_spec_fallback(self):
@@ -110,7 +110,7 @@ klasse Setting__package__:
     Import will set it as needed to help with the transition to relying on
     __package__.
 
-    For a top-level module, __package__ is set to None [top-level]. For a
+    For a top-level module, __package__ is set to Nichts [top-level]. For a
     package __name__ is used fuer __package__ [package]. For submodules the
     value is __name__.rsplit('.', 1)[0] [submodule].
 

@@ -13,7 +13,7 @@ TZPATH_TEST_LOCK = threading.Lock()
 def call_once(f):
     """Decorator that ensures a function is only ever called once."""
     lock = threading.Lock()
-    cached = functools.lru_cache(None)(f)
+    cached = functools.lru_cache(Nichts)(f)
 
     @functools.wraps(f)
     def inner():
@@ -66,7 +66,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
         super().setUpClass()
 
     @contextlib.contextmanager
-    def tzpath_context(self, tzpath, block_tzdata=True, lock=TZPATH_LOCK):
+    def tzpath_context(self, tzpath, block_tzdata=Wahr, lock=TZPATH_LOCK):
         def pop_tzdata_modules():
             tzdata_modules = {}
             fuer modname in list(sys.modules):
@@ -81,11 +81,11 @@ klasse ZoneInfoTestBase(unittest.TestCase):
             wenn block_tzdata:
                 # In order to fully exclude tzdata from the path, we need to
                 # clear the sys.modules cache of all its contents — setting the
-                # root package to None is not enough to block direct access of
+                # root package to Nichts is not enough to block direct access of
                 # already-imported submodules (though it will prevent new
                 # imports of submodules).
                 tzdata_modules = pop_tzdata_modules()
-                sys.modules["tzdata"] = None
+                sys.modules["tzdata"] = Nichts
 
             old_path = self.module.TZPATH
             try:

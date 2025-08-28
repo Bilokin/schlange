@@ -34,12 +34,12 @@ printable = digits + ascii_letters + punctuation + whitespace
 # Functions which aren't available as string methods.
 
 # Capitalize the words in a string, e.g. " aBc  dEf " -> "Abc Def".
-def capwords(s, sep=None):
+def capwords(s, sep=Nichts):
     """capwords(s [,sep]) -> string
 
     Split the argument into words using split, capitalize each
     word using capitalize, and join the capitalized words using
-    join.  If the optional second argument sep is absent or None,
+    join.  If the optional second argument sep is absent or Nichts,
     runs of whitespace characters are replaced by a single space
     and leading and trailing whitespace are removed, otherwise
     sep is used to split and join the words.
@@ -54,8 +54,8 @@ _sentinel_dict = {}
 
 klasse _TemplatePattern:
     # This descriptor is overwritten in ``Template._compile_pattern()``.
-    def __get__(self, instance, cls=None):
-        wenn cls is None:
+    def __get__(self, instance, cls=Nichts):
+        wenn cls is Nichts:
             return self
         return cls._compile_pattern()
 _TemplatePattern = _TemplatePattern()
@@ -70,8 +70,8 @@ klasse Template:
     # backward compatibility.  So we use the ?a local flag and [a-z] pattern.
     # See https://bugs.python.org/issue31672
     idpattern = r'(?a:[_a-z][_a-z0-9]*)'
-    braceidpattern = None
-    flags = None  # default: re.IGNORECASE
+    braceidpattern = Nichts
+    flags = Nichts  # default: re.IGNORECASE
 
     pattern = _TemplatePattern  # use a descriptor to compile the pattern
 
@@ -96,7 +96,7 @@ klasse Template:
               (?P<invalid>)             # Other ill-formed delimiter exprs
             )
             """
-        wenn cls.flags is None:
+        wenn cls.flags is Nichts:
             cls.flags = re.IGNORECASE
         pat = cls.pattern = re.compile(pattern, cls.flags | re.VERBOSE)
         return pat
@@ -108,7 +108,7 @@ klasse Template:
 
     def _invalid(self, mo):
         i = mo.start('invalid')
-        lines = self.template[:i].splitlines(keepends=True)
+        lines = self.template[:i].splitlines(keepends=Wahr)
         wenn not lines:
             colno = 1
             lineno = 1
@@ -128,11 +128,11 @@ klasse Template:
         def convert(mo):
             # Check the most common path first.
             named = mo.group('named') or mo.group('braced')
-            wenn named is not None:
+            wenn named is not Nichts:
                 return str(mapping[named])
-            wenn mo.group('escaped') is not None:
+            wenn mo.group('escaped') is not Nichts:
                 return self.delimiter
-            wenn mo.group('invalid') is not None:
+            wenn mo.group('invalid') is not Nichts:
                 self._invalid(mo)
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
@@ -147,14 +147,14 @@ klasse Template:
         # Helper function fuer .sub()
         def convert(mo):
             named = mo.group('named') or mo.group('braced')
-            wenn named is not None:
+            wenn named is not Nichts:
                 try:
                     return str(mapping[named])
                 except KeyError:
                     return mo.group()
-            wenn mo.group('escaped') is not None:
+            wenn mo.group('escaped') is not Nichts:
                 return self.delimiter
-            wenn mo.group('invalid') is not None:
+            wenn mo.group('invalid') is not Nichts:
                 return mo.group()
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
@@ -162,28 +162,28 @@ klasse Template:
 
     def is_valid(self):
         fuer mo in self.pattern.finditer(self.template):
-            wenn mo.group('invalid') is not None:
-                return False
-            wenn (mo.group('named') is None
-                and mo.group('braced') is None
-                and mo.group('escaped') is None):
-                # If all the groups are None, there must be
+            wenn mo.group('invalid') is not Nichts:
+                return Falsch
+            wenn (mo.group('named') is Nichts
+                and mo.group('braced') is Nichts
+                and mo.group('escaped') is Nichts):
+                # If all the groups are Nichts, there must be
                 # another group we're not expecting
                 raise ValueError('Unrecognized named group in pattern',
                     self.pattern)
-        return True
+        return Wahr
 
     def get_identifiers(self):
         ids = []
         fuer mo in self.pattern.finditer(self.template):
             named = mo.group('named') or mo.group('braced')
-            wenn named is not None and named not in ids:
+            wenn named is not Nichts and named not in ids:
                 # add a named group only the first time it appears
                 ids.append(named)
-            sowenn (named is None
-                and mo.group('invalid') is None
-                and mo.group('escaped') is None):
-                # If all the groups are None, there must be
+            sowenn (named is Nichts
+                and mo.group('invalid') is Nichts
+                and mo.group('escaped') is Nichts):
+                # If all the groups are Nichts, there must be
                 # another group we're not expecting
                 raise ValueError('Unrecognized named group in pattern',
                     self.pattern)
@@ -221,14 +221,14 @@ klasse Formatter:
                 result.append(literal_text)
 
             # wenn there's a field, output it
-            wenn field_name is not None:
+            wenn field_name is not Nichts:
                 # this is some markup, find the object and do
                 #  the formatting
 
                 # handle arg indexing when empty field first parts are given.
                 field_first, _ = _string.formatter_field_name_split(field_name)
                 wenn field_first == '':
-                    wenn auto_arg_index is False:
+                    wenn auto_arg_index is Falsch:
                         raise ValueError('cannot switch from manual field '
                                          'specification to automatic field '
                                          'numbering')
@@ -241,7 +241,7 @@ klasse Formatter:
                                          'specification')
                     # disable auto arg incrementing, wenn it gets
                     # used later on, then an exception will be raised
-                    auto_arg_index = False
+                    auto_arg_index = Falsch
 
                 # given the field_name, find the object it references
                 #  and the argument it came from
@@ -276,7 +276,7 @@ klasse Formatter:
 
     def convert_field(self, value, conversion):
         # do any conversion on the resulting object
-        wenn conversion is None:
+        wenn conversion is Nichts:
             return value
         sowenn conversion == 's':
             return str(value)
@@ -291,7 +291,7 @@ klasse Formatter:
         Return an iterable that contains tuples of the form
         (literal_text, field_name, format_spec, conversion).
 
-        *field_name* can be None, in which case there's no object
+        *field_name* can be Nichts, in which case there's no object
         to format and output; otherwise, it is looked up and
         formatted with *format_spec* and *conversion*.
         """

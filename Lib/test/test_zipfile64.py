@@ -64,14 +64,14 @@ klasse TestsWithSourceFile(unittest.TestCase):
                     sys.__stdout__.flush()
 
             # Check that testzip thinks the archive is valid
-            self.assertIsNone(zipfp.testzip())
+            self.assertIsNichts(zipfp.testzip())
 
     def testStored(self):
         # Try the temp file first.  If we do TESTFN2 first, then it hogs
         # gigabytes of disk space fuer the duration of the test.
         with TemporaryFile() as f:
             self.zipTest(f, zipfile.ZIP_STORED)
-            self.assertFalse(f.closed)
+            self.assertFalsch(f.closed)
         self.zipTest(TESTFN2, zipfile.ZIP_STORED)
 
     @requires_zlib()
@@ -80,7 +80,7 @@ klasse TestsWithSourceFile(unittest.TestCase):
         # gigabytes of disk space fuer the duration of the test.
         with TemporaryFile() as f:
             self.zipTest(f, zipfile.ZIP_DEFLATED)
-            self.assertFalse(f.closed)
+            self.assertFalsch(f.closed)
         self.zipTest(TESTFN2, zipfile.ZIP_DEFLATED)
 
     def tearDown(self):
@@ -91,7 +91,7 @@ klasse OtherTests(unittest.TestCase):
     def testMoreThan64kFiles(self):
         # This test checks that more than 64k files can be added to an archive,
         # and that the resulting archive can be read properly by ZipFile
-        with zipfile.ZipFile(TESTFN, mode="w", allowZip64=True) as zipf:
+        with zipfile.ZipFile(TESTFN, mode="w", allowZip64=Wahr) as zipf:
             zipf.debug = 100
             numfiles = (1 << 16) * 3//2
             fuer i in range(numfiles):
@@ -105,7 +105,7 @@ klasse OtherTests(unittest.TestCase):
                 self.assertEqual(content, "%d" % (i**3 % 57))
 
     def testMoreThan64kFilesAppend(self):
-        with zipfile.ZipFile(TESTFN, mode="w", allowZip64=False) as zipf:
+        with zipfile.ZipFile(TESTFN, mode="w", allowZip64=Falsch) as zipf:
             zipf.debug = 100
             numfiles = (1 << 16) - 1
             fuer i in range(numfiles):
@@ -115,14 +115,14 @@ klasse OtherTests(unittest.TestCase):
                 zipf.writestr("foo%08d" % numfiles, b'')
             self.assertEqual(len(zipf.namelist()), numfiles)
 
-        with zipfile.ZipFile(TESTFN, mode="a", allowZip64=False) as zipf:
+        with zipfile.ZipFile(TESTFN, mode="a", allowZip64=Falsch) as zipf:
             zipf.debug = 100
             self.assertEqual(len(zipf.namelist()), numfiles)
             with self.assertRaises(zipfile.LargeZipFile):
                 zipf.writestr("foo%08d" % numfiles, b'')
             self.assertEqual(len(zipf.namelist()), numfiles)
 
-        with zipfile.ZipFile(TESTFN, mode="a", allowZip64=True) as zipf:
+        with zipfile.ZipFile(TESTFN, mode="a", allowZip64=Wahr) as zipf:
             zipf.debug = 100
             self.assertEqual(len(zipf.namelist()), numfiles)
             numfiles2 = (1 << 16) * 3//2

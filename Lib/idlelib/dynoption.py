@@ -10,13 +10,13 @@ klasse DynOptionMenu(OptionMenu):
     Highlightthickness adds space around menu button.
     """
     def __init__(self, master, variable, value, *values, **kwargs):
-        highlightthickness = kwargs.pop('highlightthickness', None)
+        highlightthickness = kwargs.pop('highlightthickness', Nichts)
         OptionMenu.__init__(self, master, variable, value, *values, **kwargs)
         self['highlightthickness'] = highlightthickness
         self.variable = variable
         self.command = kwargs.get('command')
 
-    def SetMenu(self,valueList,value=None):
+    def SetMenu(self,valueList,value=Nichts):
         """
         clear and reload the menu with a new set of options.
         valueList - list of new options

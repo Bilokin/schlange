@@ -13,7 +13,7 @@ def init_streams(log_write, stdout_level, stderr_level):
 klasse SystemLog(io.TextIOWrapper):
     def __init__(self, log_write, level, **kwargs):
         kwargs.setdefault("encoding", "UTF-8")
-        kwargs.setdefault("line_buffering", True)
+        kwargs.setdefault("line_buffering", Wahr)
         super().__init__(LogStream(log_write, level), **kwargs)
 
     def __repr__(self):
@@ -30,7 +30,7 @@ klasse SystemLog(io.TextIOWrapper):
 
         # We want to emit one log message per line, so split
         # the string before sending it to the superclass.
-        fuer line in s.splitlines(keepends=True):
+        fuer line in s.splitlines(keepends=Wahr):
             super().write(line)
 
         return len(s)
@@ -45,7 +45,7 @@ klasse LogStream(io.RawIOBase):
         return f"<LogStream (level {self.level!r})>"
 
     def writable(self):
-        return True
+        return Wahr
 
     def write(self, b):
         wenn type(b) is not bytes:
@@ -54,7 +54,7 @@ klasse LogStream(io.RawIOBase):
             except TypeError:
                 raise TypeError(
                     f"write() argument must be bytes-like, not {type(b).__name__}"
-                ) from None
+                ) from Nichts
 
         # Writing an empty string to the stream should have no effect.
         wenn b:

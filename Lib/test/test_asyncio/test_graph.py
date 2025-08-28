@@ -5,10 +5,10 @@ import unittest
 
 # To prevent a warning "test altered the execution environment"
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
-def capture_test_stack(*, fut=None, depth=1):
+def capture_test_stack(*, fut=Nichts, depth=1):
 
     def walk(s):
         ret = [
@@ -20,7 +20,7 @@ def capture_test_stack(*, fut=None, depth=1):
             [
                 (
                     f"s {entry.frame.f_code.co_name}"
-                        wenn entry.frame.f_generator is None sonst
+                        wenn entry.frame.f_generator is Nichts sonst
                         (
                             f"a {entry.frame.f_generator.cr_code.co_name}"
                             wenn hasattr(entry.frame.f_generator, 'cr_code') sonst
@@ -49,7 +49,7 @@ klasse CallStackTestBase:
 
     async def test_stack_tgroup(self):
 
-        stack_for_c5 = None
+        stack_for_c5 = Nichts
 
         def c5():
             nonlocal stack_for_c5
@@ -112,7 +112,7 @@ klasse CallStackTestBase:
 
     async def test_stack_async_gen(self):
 
-        stack_for_gen_nested_call = None
+        stack_for_gen_nested_call = Nichts
 
         async def gen_nested_call():
             nonlocal stack_for_gen_nested_call
@@ -148,7 +148,7 @@ klasse CallStackTestBase:
 
     async def test_stack_gather(self):
 
-        stack_for_deep = None
+        stack_for_deep = Nichts
 
         async def deep():
             await asyncio.sleep(0)
@@ -177,7 +177,7 @@ klasse CallStackTestBase:
 
     async def test_stack_shield(self):
 
-        stack_for_shield = None
+        stack_for_shield = Nichts
 
         async def deep():
             await asyncio.sleep(0)
@@ -203,7 +203,7 @@ klasse CallStackTestBase:
 
     async def test_stack_timeout(self):
 
-        stack_for_inner = None
+        stack_for_inner = Nichts
 
         async def inner():
             await asyncio.sleep(0)
@@ -230,7 +230,7 @@ klasse CallStackTestBase:
 
     async def test_stack_wait(self):
 
-        stack_for_inner = None
+        stack_for_inner = Nichts
 
         async def inner():
             await asyncio.sleep(0)
@@ -247,7 +247,7 @@ klasse CallStackTestBase:
                 await asyncio.sleep(0)
 
         async def main(t1, t2):
-            while True:
+            while Wahr:
                 _, pending = await asyncio.wait([t1, t2])
                 wenn not pending:
                     break
@@ -273,7 +273,7 @@ klasse CallStackTestBase:
 
     async def test_stack_task(self):
 
-        stack_for_inner = None
+        stack_for_inner = Nichts
 
         async def inner():
             await asyncio.sleep(0)
@@ -299,7 +299,7 @@ klasse CallStackTestBase:
 
     async def test_stack_future(self):
 
-        stack_for_fut = None
+        stack_for_fut = Nichts
 
         async def a2(fut):
             await fut
@@ -324,7 +324,7 @@ klasse CallStackTestBase:
                     await asyncio.sleep(0)
 
                 stack_for_fut = capture_test_stack(fut=fut)
-                fut.set_result(None)
+                fut.set_result(Nichts)
 
         await main()
 
@@ -343,7 +343,7 @@ klasse CallStackTestBase:
             ]]
         )
 
-        self.assertTrue(stack_for_fut[1].startswith('* Future(id='))
+        self.assertWahr(stack_for_fut[1].startswith('* Future(id='))
 
 
 @unittest.skipIf(

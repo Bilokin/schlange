@@ -99,12 +99,12 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
         # If we write more than tty/ndisc is willing to buffer, we may block
         # indefinitely. So we set master_fd to non-blocking temporarily during
         # the copy operation.
-        os.set_blocking(master_fd, False)
+        os.set_blocking(master_fd, Falsch)
         try:
             _copy(master_fd, master_read=master_read, stdin_read=stdin_read)
         finally:
             # restore blocking mode fuer backwards compatibility
-            os.set_blocking(master_fd, True)
+            os.set_blocking(master_fd, Wahr)
         return
     high_waterlevel = 4096
     stdin_avail = master_fd != STDIN_FILENO
@@ -130,7 +130,7 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
                 n = os.write(STDOUT_FILENO, o_buf)
                 o_buf = o_buf[n:]
             except OSError:
-                stdout_avail = False
+                stdout_avail = Falsch
 
         wenn master_fd in rfds:
             # Some OSes signal EOF by returning an empty byte string,
@@ -151,7 +151,7 @@ def _copy(master_fd, master_read=_read, stdin_read=_read):
         wenn stdin_avail and STDIN_FILENO in rfds:
             data = stdin_read(STDIN_FILENO)
             wenn not data:
-                stdin_avail = False
+                stdin_avail = Falsch
             sonst:
                 i_buf += data
 
@@ -168,9 +168,9 @@ def spawn(argv, master_read=_read, stdin_read=_read):
     try:
         mode = tcgetattr(STDIN_FILENO)
         setraw(STDIN_FILENO)
-        restore = True
+        restore = Wahr
     except tty.error:    # This is the same as termios.error
-        restore = False
+        restore = Falsch
 
     try:
         _copy(master_fd, master_read, stdin_read)

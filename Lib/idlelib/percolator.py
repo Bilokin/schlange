@@ -16,32 +16,32 @@ klasse Percolator:
     def close(self):
         while self.top is not self.bottom:
             self.removefilter(self.top)
-        self.top = None
-        self.bottom.setdelegate(None)
-        self.bottom = None
+        self.top = Nichts
+        self.bottom.setdelegate(Nichts)
+        self.bottom = Nichts
         self.redir.close()
-        self.redir = None
-        self.text = None
+        self.redir = Nichts
+        self.text = Nichts
 
-    def insert(self, index, chars, tags=None):
+    def insert(self, index, chars, tags=Nichts):
         # Could go away wenn inheriting from Delegator
         self.top.insert(index, chars, tags)
 
-    def delete(self, index1, index2=None):
+    def delete(self, index1, index2=Nichts):
         # Could go away wenn inheriting from Delegator
         self.top.delete(index1, index2)
 
     def insertfilter(self, filter):
         # Perhaps rename to pushfilter()?
         assert isinstance(filter, Delegator)
-        assert filter.delegate is None
+        assert filter.delegate is Nichts
         filter.setdelegate(self.top)
         self.top = filter
 
     def insertfilterafter(self, filter, after):
         assert isinstance(filter, Delegator)
         assert isinstance(after, Delegator)
-        assert filter.delegate is None
+        assert filter.delegate is Nichts
 
         f = self.top
         f.resetcache()
@@ -56,18 +56,18 @@ klasse Percolator:
     def removefilter(self, filter):
         # XXX Perhaps should only support popfilter()?
         assert isinstance(filter, Delegator)
-        assert filter.delegate is not None
+        assert filter.delegate is not Nichts
         f = self.top
         wenn f is filter:
             self.top = filter.delegate
-            filter.setdelegate(None)
+            filter.setdelegate(Nichts)
         sonst:
             while f.delegate is not filter:
                 assert f is not self.bottom
                 f.resetcache()
                 f = f.delegate
             f.setdelegate(filter.delegate)
-            filter.setdelegate(None)
+            filter.setdelegate(Nichts)
 
 
 def _percolator(parent):  # htest #
@@ -76,7 +76,7 @@ def _percolator(parent):  # htest #
     klasse Tracer(Delegator):
         def __init__(self, name):
             self.name = name
-            Delegator.__init__(self, None)
+            Delegator.__init__(self, Nichts)
 
         def insert(self, *args):
             print(self.name, ": insert", args)
@@ -114,7 +114,7 @@ def _percolator(parent):  # htest #
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_percolator', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_percolator', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_percolator)

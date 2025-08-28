@@ -16,7 +16,7 @@ import sqlite3
 from dbm.sqlite3 import _normalize_uri
 
 
-root_in_posix = False
+root_in_posix = Falsch
 wenn hasattr(os, 'geteuid'):
     root_in_posix = (os.geteuid() == 0)
 
@@ -131,9 +131,9 @@ klasse ReadOnlyFilesystem(unittest.TestCase):
         with dbm_sqlite3.open(self.db_path, "w") as db:
             try:
                 db[b"newkey"] = b"newvalue"
-                modified = True  # on Windows and macOS
+                modified = Wahr  # on Windows and macOS
             except dbm_sqlite3.error:
-                modified = False
+                modified = Falsch
         with dbm_sqlite3.open(self.db_path, "r") as db:
             wenn modified:
                 self.assertEqual(db[b"newkey"], b"newvalue")
@@ -180,11 +180,11 @@ klasse ReadWrite(_SQLiteDbmTests):
 
     def test_readwrite_null_key(self):
         with self.assertRaises(dbm_sqlite3.error):
-            self.db[None] = "value"
+            self.db[Nichts] = "value"
 
     def test_readwrite_null_value(self):
         with self.assertRaises(dbm_sqlite3.error):
-            self.db[b"key"] = None
+            self.db[b"key"] = Nichts
 
 
 klasse Misuse(_SQLiteDbmTests):
@@ -309,7 +309,7 @@ klasse CorruptDatabase(_SQLiteDbmTests):
                 cx.execute("DROP TABLE IF EXISTS Dict")
                 cx.execute("CREATE TABLE Dict (invalid_schema)")
 
-    def check(self, flag, fn, should_succeed=False):
+    def check(self, flag, fn, should_succeed=Falsch):
         with closing(dbm_sqlite3.open(self.filename, flag)) as db:
             with self.assertRaises(dbm_sqlite3.error):
                 fn(db)

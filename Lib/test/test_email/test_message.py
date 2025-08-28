@@ -7,7 +7,7 @@ from test.test_email import TestEmailBase, parameterize
 
 # Helper.
 def first(iterable):
-    return next(filter(lambda x: x is not None, iterable), None)
+    return next(filter(lambda x: x is not Nichts, iterable), Nichts)
 
 
 klasse Test(TestEmailBase):
@@ -53,13 +53,13 @@ klasse TestEmailMessageBase:
     message_params = {
 
         'empty_message': (
-            (None, None, 0),
+            (Nichts, Nichts, 0),
             (),
             (),
             ""),
 
         'non_mime_plain': (
-            (None, None, 0),
+            (Nichts, Nichts, 0),
             (),
             (),
             textwrap.dedent("""\
@@ -69,7 +69,7 @@ klasse TestEmailMessageBase:
                 """)),
 
         'mime_non_text': (
-            (None, None, None),
+            (Nichts, Nichts, Nichts),
             (),
             (),
             textwrap.dedent("""\
@@ -81,7 +81,7 @@ klasse TestEmailMessageBase:
                 """)),
 
         'plain_html_alternative': (
-            (None, 2, 1),
+            (Nichts, 2, 1),
             (),
             (1, 2),
             textwrap.dedent("""\
@@ -104,7 +104,7 @@ klasse TestEmailMessageBase:
                 """)),
 
         'plain_html_mixed': (
-            (None, 2, 1),
+            (Nichts, 2, 1),
             (),
             (1, 2),
             textwrap.dedent("""\
@@ -128,7 +128,7 @@ klasse TestEmailMessageBase:
                 """)),
 
         'plain_html_attachment_mixed': (
-            (None, None, 1),
+            (Nichts, Nichts, 1),
             (2,),
             (1, 2),
             textwrap.dedent("""\
@@ -151,7 +151,7 @@ klasse TestEmailMessageBase:
                 """)),
 
         'html_text_attachment_mixed': (
-            (None, 2, None),
+            (Nichts, 2, Nichts),
             (1,),
             (1, 2),
             textwrap.dedent("""\
@@ -174,7 +174,7 @@ klasse TestEmailMessageBase:
                 """)),
 
         'html_text_attachment_inline_mixed': (
-            (None, 2, 1),
+            (Nichts, 2, 1),
             (),
             (1, 2),
             textwrap.dedent("""\
@@ -199,7 +199,7 @@ klasse TestEmailMessageBase:
 
         # RFC 2387
         'related': (
-            (0, 1, None),
+            (0, 1, Nichts),
             (2,),
             (1, 2),
             textwrap.dedent("""\
@@ -225,7 +225,7 @@ klasse TestEmailMessageBase:
         # it proves we distinguish between text parts based on 'start'.  The
         # content would not, of course, actually work :)
         'related_with_start': (
-            (0, 2, None),
+            (0, 2, Nichts),
             (1,),
             (1, 2),
             textwrap.dedent("""\
@@ -357,7 +357,7 @@ klasse TestEmailMessageBase:
         # first one wenn there isn't any start parameter.  That is, this is a
         # broken related.
         'mixed_related_alternative_plain_html_wrong_order': (
-            (1, None, None),
+            (1, Nichts, Nichts),
             (6, 7),
             (1, 6, 7),
             textwrap.dedent("""\
@@ -407,7 +407,7 @@ klasse TestEmailMessageBase:
                 """)),
 
         'message_rfc822': (
-            (None, None, None),
+            (Nichts, Nichts, Nichts),
             (),
             (),
             textwrap.dedent("""\
@@ -422,7 +422,7 @@ klasse TestEmailMessageBase:
                 """)),
 
         'mixed_text_message_rfc822': (
-            (None, None, 1),
+            (Nichts, Nichts, 1),
             (2,),
             (1, 2),
             textwrap.dedent("""\
@@ -451,7 +451,7 @@ klasse TestEmailMessageBase:
     def message_as_get_body(self, body_parts, attachments, parts, msg):
         m = self._str_msg(msg)
         allparts = list(m.walk())
-        expected = [None wenn n is None sonst allparts[n] fuer n in body_parts]
+        expected = [Nichts wenn n is Nichts sonst allparts[n] fuer n in body_parts]
         related = 0; html = 1; plain = 2
         self.assertEqual(m.get_body(), first(expected))
         self.assertEqual(m.get_body(preferencelist=(
@@ -550,7 +550,7 @@ klasse TestEmailMessageBase:
     # outcome is whether xxx_method should raise ValueError error when called
     # on multipart/subtype.  Blank outcome means it depends on xxx (add
     # succeeds, make raises).  Note: 'none' means there are content-type
-    # headers but payload is None...this happening in practice would be very
+    # headers but payload is Nichts...this happening in practice would be very
     # unusual, so treating it as wenn there were content seems reasonable.
     #    method          subtype           outcome
     subtype_params = (
@@ -576,7 +576,7 @@ klasse TestEmailMessageBase:
 
     def _make_subtype_test_message(self, subtype):
         m = self.message()
-        payload = None
+        payload = Nichts
         msg_headers =  [
             ('To', 'foo@bar.com'),
             ('From', 'bar@foo.com'),
@@ -651,7 +651,7 @@ klasse TestEmailMessageBase:
         sowenn subtype != 'no_content':
             m['Content-Type'] = 'multipart/' + subtype
         getattr(m, 'make_' + method)(boundary="abc")
-        self.assertTrue(m.is_multipart())
+        self.assertWahr(m.is_multipart())
         self.assertEqual(m.get_boundary(), 'abc')
 
     def test_policy_on_part_made_by_make_comes_from_message(self):
@@ -693,7 +693,7 @@ klasse TestEmailMessageBase:
             self.assertEqual(part['Content-Disposition'], 'inline')
         sonst:
             # Otherwise we don't guess.
-            self.assertIsNone(part['Content-Disposition'])
+            self.assertIsNichts(part['Content-Disposition'])
 
     klasse _TestSetRaisingContentManager:
         klasse CustomError(Exception):
@@ -714,7 +714,7 @@ klasse TestEmailMessageBase:
         m.clear()
         self.assertEqual(len(m), 0)
         self.assertEqual(list(m.items()), [])
-        self.assertIsNone(m.get_payload())
+        self.assertIsNichts(m.get_payload())
         self.assertEqual(list(m.iter_parts()), [])
 
     def message_as_clear_content(self, body_parts, attachments, parts, msg):
@@ -723,20 +723,20 @@ klasse TestEmailMessageBase:
                             wenn not h.lower().startswith('content-')]
         m.clear_content()
         self.assertEqual(list(m.keys()), expected_headers)
-        self.assertIsNone(m.get_payload())
+        self.assertIsNichts(m.get_payload())
         self.assertEqual(list(m.iter_parts()), [])
 
     def test_is_attachment(self):
         m = self._make_message()
-        self.assertFalse(m.is_attachment())
+        self.assertFalsch(m.is_attachment())
         m['Content-Disposition'] = 'inline'
-        self.assertFalse(m.is_attachment())
+        self.assertFalsch(m.is_attachment())
         m.replace_header('Content-Disposition', 'attachment')
-        self.assertTrue(m.is_attachment())
+        self.assertWahr(m.is_attachment())
         m.replace_header('Content-Disposition', 'AtTachMent')
-        self.assertTrue(m.is_attachment())
+        self.assertWahr(m.is_attachment())
         m.set_param('filename', 'abc.png', 'Content-Disposition')
-        self.assertTrue(m.is_attachment())
+        self.assertWahr(m.is_attachment())
 
     def test_iter_attachments_mutation(self):
         # We had a bug where iter_attachments was mutating the list.
@@ -774,7 +774,7 @@ klasse TestEmailMessageBase:
     def get_payload_surrogate_as_gh_94606(self, msg, expected):
         """test fuer GH issue 94606"""
         m = self._str_msg(msg)
-        payload = m.get_payload(decode=True)
+        payload = m.get_payload(decode=Wahr)
         self.assertEqual(expected, payload)
 
 
@@ -813,9 +813,9 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
     def test_as_string_unixform(self):
         m = self._str_msg('test')
         m.set_unixfrom('From foo@bar Thu Jan  1 00:00:00 1970')
-        self.assertEqual(m.as_string(unixfrom=True),
+        self.assertEqual(m.as_string(unixfrom=Wahr),
                         'From foo@bar Thu Jan  1 00:00:00 1970\n\ntest')
-        self.assertEqual(m.as_string(unixfrom=False), '\ntest')
+        self.assertEqual(m.as_string(unixfrom=Falsch), '\ntest')
 
     def test_str_defaults_to_policy_max_line_length(self):
         m = self._str_msg('Subject: long line' + ' ab'*50 + '\n\n')
@@ -1062,7 +1062,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
         m = self._make_message()
         m.add_header('Content-Transfer-Encoding', 'quoted-printable')
         m.set_payload(payload)
-        self.assertEqual(m.get_payload(decode=True), payload)
+        self.assertEqual(m.get_payload(decode=Wahr), payload)
 
 
 klasse TestMIMEPart(TestEmailMessageBase, TestEmailBase):

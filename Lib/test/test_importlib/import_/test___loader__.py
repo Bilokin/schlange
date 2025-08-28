@@ -6,11 +6,11 @@ from test.test_importlib import util
 
 klasse SpecLoaderMock:
 
-    def find_spec(self, fullname, path=None, target=None):
+    def find_spec(self, fullname, path=Nichts, target=Nichts):
         return machinery.ModuleSpec(fullname, self)
 
     def create_module(self, spec):
-        return None
+        return Nichts
 
     def exec_module(self, module):
         pass

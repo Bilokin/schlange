@@ -18,20 +18,20 @@ from test.test_asyncio import utils as test_utils
 try:
     import ssl
 except ImportError:
-    ssl = None
+    ssl = Nichts
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse MySendfileProto(asyncio.Protocol):
 
-    def __init__(self, loop=None, close_after=0):
-        self.transport = None
+    def __init__(self, loop=Nichts, close_after=0):
+        self.transport = Nichts
         self.state = 'INITIAL'
         self.nbytes = 0
-        wenn loop is not None:
+        wenn loop is not Nichts:
             self.connected = loop.create_future()
             self.done = loop.create_future()
         self.data = bytearray()
@@ -46,7 +46,7 @@ klasse MySendfileProto(asyncio.Protocol):
         self._assert_state('INITIAL')
         self.state = 'CONNECTED'
         wenn self.connected:
-            self.connected.set_result(None)
+            self.connected.set_result(Nichts)
 
     def eof_received(self):
         self._assert_state('CONNECTED')
@@ -56,7 +56,7 @@ klasse MySendfileProto(asyncio.Protocol):
         self._assert_state('CONNECTED', 'EOF')
         self.state = 'CLOSED'
         wenn self.done:
-            self.done.set_result(None)
+            self.done.set_result(Nichts)
 
     def data_received(self, data):
         self._assert_state('CONNECTED')
@@ -70,22 +70,22 @@ klasse MySendfileProto(asyncio.Protocol):
 klasse MyProto(asyncio.Protocol):
 
     def __init__(self, loop):
-        self.started = False
-        self.closed = False
+        self.started = Falsch
+        self.closed = Falsch
         self.data = bytearray()
         self.fut = loop.create_future()
-        self.transport = None
+        self.transport = Nichts
 
     def connection_made(self, transport):
-        self.started = True
+        self.started = Wahr
         self.transport = transport
 
     def data_received(self, data):
         self.data.extend(data)
 
     def connection_lost(self, exc):
-        self.closed = True
-        self.fut.set_result(None)
+        self.closed = Wahr
+        self.fut.set_result(Nichts)
 
     async def wait_closed(self):
         await self.fut
@@ -147,9 +147,9 @@ klasse SockSendfileMixin(SendfileBase):
         constants.SENDFILE_FALLBACK_READBUFFER_SIZE = cls.__old_bufsize
         super().tearDownClass()
 
-    def make_socket(self, cleanup=True):
+    def make_socket(self, cleanup=Wahr):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         wenn cleanup:
             self.addCleanup(sock.close)
         return sock
@@ -159,20 +159,20 @@ klasse SockSendfileMixin(SendfileBase):
         # small data sets.
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, self.BUF_SIZE)
 
-    def reduce_send_buffer_size(self, sock, transport=None):
+    def reduce_send_buffer_size(self, sock, transport=Nichts):
         # Reduce send socket buffer size to test on relative small data sets.
 
         # On macOS, SO_SNDBUF is reset by connect(). So this method
         # should be called after the socket is connected.
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.BUF_SIZE)
 
-        wenn transport is not None:
+        wenn transport is not Nichts:
             transport.set_write_buffer_limits(high=self.BUF_SIZE)
 
     def prepare_socksendfile(self):
         proto = MyProto(self.loop)
         port = socket_helper.find_unused_port()
-        srv_sock = self.make_socket(cleanup=False)
+        srv_sock = self.make_socket(cleanup=Falsch)
         srv_sock.bind((socket_helper.HOST, port))
         server = self.run_loop(self.loop.create_server(
             lambda: proto, sock=srv_sock))
@@ -183,8 +183,8 @@ klasse SockSendfileMixin(SendfileBase):
         self.reduce_send_buffer_size(sock)
 
         def cleanup():
-            wenn proto.transport is not None:
-                # can be None wenn the task was cancelled before
+            wenn proto.transport is not Nichts:
+                # can be Nichts wenn the task was cancelled before
                 # connection_made callback
                 proto.transport.close()
                 self.run_loop(proto.wait_closed())
@@ -221,7 +221,7 @@ klasse SockSendfileMixin(SendfileBase):
         sock, proto = self.prepare_socksendfile()
         with tempfile.TemporaryFile() as f:
             ret = self.run_loop(self.loop.sock_sendfile(sock, f,
-                                                        0, None))
+                                                        0, Nichts))
         sock.close()
         self.run_loop(proto.wait_closed())
 
@@ -247,7 +247,7 @@ klasse SendfileMixin(SendfileBase):
 
     # Note: sendfile via SSL transport is equal to sendfile fallback
 
-    def prepare_sendfile(self, *, is_ssl=False, close_after=0):
+    def prepare_sendfile(self, *, is_ssl=Falsch, close_after=0):
         port = socket_helper.find_unused_port()
         srv_proto = MySendfileProto(loop=self.loop,
                                     close_after=close_after)
@@ -257,8 +257,8 @@ klasse SendfileMixin(SendfileBase):
             srv_ctx = test_utils.simple_server_sslcontext()
             cli_ctx = test_utils.simple_client_sslcontext()
         sonst:
-            srv_ctx = None
-            cli_ctx = None
+            srv_ctx = Nichts
+            cli_ctx = Nichts
         srv_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         srv_sock.bind((socket_helper.HOST, port))
         server = self.run_loop(self.loop.create_server(
@@ -268,7 +268,7 @@ klasse SendfileMixin(SendfileBase):
         wenn is_ssl:
             server_hostname = socket_helper.HOST
         sonst:
-            server_hostname = None
+            server_hostname = Nichts
         cli_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         cli_sock.connect((socket_helper.HOST, port))
 
@@ -352,7 +352,7 @@ klasse SendfileMixin(SendfileBase):
                                     "not supported"):
             self.run_loop(
                 self.loop.sendfile(cli_proto.transport, self.file,
-                                   fallback=False))
+                                   fallback=Falsch))
 
         cli_proto.transport.close()
         self.run_loop(srv_proto.done)
@@ -360,7 +360,7 @@ klasse SendfileMixin(SendfileBase):
         self.assertEqual(self.file.tell(), 0)
 
     def test_sendfile_ssl(self):
-        srv_proto, cli_proto = self.prepare_sendfile(is_ssl=True)
+        srv_proto, cli_proto = self.prepare_sendfile(is_ssl=Wahr)
         ret = self.run_loop(
             self.loop.sendfile(cli_proto.transport, self.file))
         cli_proto.transport.close()
@@ -394,7 +394,7 @@ klasse SendfileMixin(SendfileBase):
         self.assertEqual(self.file.tell(), len(self.DATA))
 
     def test_sendfile_ssl_pre_and_post_data(self):
-        srv_proto, cli_proto = self.prepare_sendfile(is_ssl=True)
+        srv_proto, cli_proto = self.prepare_sendfile(is_ssl=Wahr)
         PREFIX = b'zxcvbnm' * 1024
         SUFFIX = b'0987654321' * 1024
         cli_proto.transport.write(PREFIX)
@@ -419,7 +419,7 @@ klasse SendfileMixin(SendfileBase):
         self.assertEqual(self.file.tell(), 1100)
 
     def test_sendfile_ssl_partial(self):
-        srv_proto, cli_proto = self.prepare_sendfile(is_ssl=True)
+        srv_proto, cli_proto = self.prepare_sendfile(is_ssl=Wahr)
         ret = self.run_loop(
             self.loop.sendfile(cli_proto.transport, self.file, 1000, 100))
         cli_proto.transport.close()
@@ -443,7 +443,7 @@ klasse SendfileMixin(SendfileBase):
 
     def test_sendfile_ssl_close_peer_after_receiving(self):
         srv_proto, cli_proto = self.prepare_sendfile(
-            is_ssl=True, close_after=len(self.DATA))
+            is_ssl=Wahr, close_after=len(self.DATA))
         ret = self.run_loop(
             self.loop.sendfile(cli_proto.transport, self.file))
         self.run_loop(srv_proto.done)
@@ -465,14 +465,14 @@ klasse SendfileMixin(SendfileBase):
                 self.loop.sendfile(cli_proto.transport, self.file))
         self.run_loop(srv_proto.done)
 
-        self.assertTrue(1024 <= srv_proto.nbytes < len(self.DATA),
+        self.assertWahr(1024 <= srv_proto.nbytes < len(self.DATA),
                         srv_proto.nbytes)
         wenn not (sys.platform == 'win32'
                 and isinstance(self.loop, asyncio.ProactorEventLoop)):
             # On Windows, Proactor uses transmitFile, which does not update tell()
-            self.assertTrue(1024 <= self.file.tell() < len(self.DATA),
+            self.assertWahr(1024 <= self.file.tell() < len(self.DATA),
                             self.file.tell())
-        self.assertTrue(cli_proto.transport.is_closing())
+        self.assertWahr(cli_proto.transport.is_closing())
 
     def test_sendfile_fallback_close_peer_in_the_middle_of_receiving(self):
 
@@ -498,9 +498,9 @@ klasse SendfileMixin(SendfileBase):
 
         self.run_loop(srv_proto.done)
 
-        self.assertTrue(1024 <= srv_proto.nbytes < len(self.DATA),
+        self.assertWahr(1024 <= srv_proto.nbytes < len(self.DATA),
                         srv_proto.nbytes)
-        self.assertTrue(1024 <= self.file.tell() < len(self.DATA),
+        self.assertWahr(1024 <= self.file.tell() < len(self.DATA),
                         self.file.tell())
 
     @unittest.skipIf(not hasattr(os, 'sendfile'),
@@ -510,7 +510,7 @@ klasse SendfileMixin(SendfileBase):
         fut = self.loop.create_future()
 
         async def coro():
-            fut.set_result(None)
+            fut.set_result(Nichts)
             return await self.loop.sendfile(cli_proto.transport, self.file)
 
         t = self.loop.create_task(coro())
@@ -523,11 +523,11 @@ klasse SendfileMixin(SendfileBase):
 
     def test_sendfile_no_fallback_for_fallback_transport(self):
         transport = mock.Mock()
-        transport.is_closing.side_effect = lambda: False
+        transport.is_closing.side_effect = lambda: Falsch
         transport._sendfile_compatible = constants._SendfileMode.FALLBACK
         with self.assertRaisesRegex(RuntimeError, 'fallback is disabled'):
             self.loop.run_until_complete(
-                self.loop.sendfile(transport, None, fallback=False))
+                self.loop.sendfile(transport, Nichts, fallback=Falsch))
 
 
 klasse SendfileTestsBase(SendfileMixin, SockSendfileMixin):

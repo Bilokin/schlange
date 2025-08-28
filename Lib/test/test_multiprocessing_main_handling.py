@@ -108,7 +108,7 @@ pool.join()
 # These helpers were copied from test_cmd_line_script & tweaked a bit...
 
 def _make_test_script(script_dir, script_basename,
-                      source=test_source, omit_suffix=False):
+                      source=test_source, omit_suffix=Falsch):
     to_return = make_script(script_dir, script_basename,
                             source, omit_suffix)
     # Hack to check explicit relative imports
@@ -134,8 +134,8 @@ sys.path.insert(0, %s)
 runpy._run_module_as_main(%r)
 """
 
-def _make_launch_script(script_dir, script_basename, module_name, path=None):
-    wenn path is None:
+def _make_launch_script(script_dir, script_basename, module_name, path=Nichts):
+    wenn path is Nichts:
         path = "os.path.dirname(__file__)"
     sonst:
         path = repr(path)
@@ -145,7 +145,7 @@ def _make_launch_script(script_dir, script_basename, module_name, path=None):
     return to_return
 
 klasse MultiProcessingCmdLineMixin():
-    maxDiff = None # Show full tracebacks on subprocess failure
+    maxDiff = Nichts # Show full tracebacks on subprocess failure
 
     def setUp(self):
         wenn self.start_method not in AVAILABLE_START_METHODS:
@@ -164,7 +164,7 @@ klasse MultiProcessingCmdLineMixin():
         wenn not __debug__:
             cmd_line_switches += ('-' + 'O' * sys.flags.optimize,)
         run_args = cmd_line_switches + (script_name, self.start_method)
-        rc, out, err = assert_python_ok(*run_args, __isolated=False)
+        rc, out, err = assert_python_ok(*run_args, __isolated=Falsch)
         self._check_output(script_name, rc, out, err)
 
     def test_basic_script(self):
@@ -175,7 +175,7 @@ klasse MultiProcessingCmdLineMixin():
     def test_basic_script_no_suffix(self):
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script',
-                                            omit_suffix=True)
+                                            omit_suffix=Wahr)
             self._check_script(script_name)
 
     def test_ipython_workaround(self):
@@ -190,13 +190,13 @@ klasse MultiProcessingCmdLineMixin():
             self._check_script(script_name)
             script_no_suffix = _make_test_script(script_dir, 'ipython',
                                                  source=source,
-                                                 omit_suffix=True)
+                                                 omit_suffix=Wahr)
             self._check_script(script_no_suffix)
 
     def test_script_compiled(self):
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script')
-            py_compile.compile(script_name, doraise=True)
+            py_compile.compile(script_name, doraise=Wahr)
             os.remove(script_name)
             pyc_file = import_helper.make_legacy_pyc(script_name)
             self._check_script(pyc_file)
@@ -213,7 +213,7 @@ klasse MultiProcessingCmdLineMixin():
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__',
                                             source=source)
-            py_compile.compile(script_name, doraise=True)
+            py_compile.compile(script_name, doraise=Wahr)
             os.remove(script_name)
             pyc_file = import_helper.make_legacy_pyc(script_name)
             self._check_script(script_dir)
@@ -231,7 +231,7 @@ klasse MultiProcessingCmdLineMixin():
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__',
                                             source=source)
-            compiled_name = py_compile.compile(script_name, doraise=True)
+            compiled_name = py_compile.compile(script_name, doraise=Wahr)
             zip_name, run_name = make_zip_script(script_dir, 'test_zip', compiled_name)
             self._check_script(zip_name)
 
@@ -273,7 +273,7 @@ klasse MultiProcessingCmdLineMixin():
             make_pkg(pkg_dir)
             script_name = _make_test_script(pkg_dir, '__main__',
                                             source=source)
-            compiled_name = py_compile.compile(script_name, doraise=True)
+            compiled_name = py_compile.compile(script_name, doraise=Wahr)
             os.remove(script_name)
             pyc_file = import_helper.make_legacy_pyc(script_name)
             launch_name = _make_launch_script(script_dir, 'launch', 'test_pkg')

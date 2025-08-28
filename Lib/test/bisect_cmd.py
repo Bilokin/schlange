@@ -61,7 +61,7 @@ def list_cases(args):
     cmd.extend(args.test_args)
     proc = subprocess.run(cmd,
                           stdout=subprocess.PIPE,
-                          universal_newlines=True)
+                          universal_newlines=Wahr)
     exitcode = proc.returncode
     wenn exitcode:
         cmd = format_shell_args(cmd)
@@ -72,7 +72,7 @@ def list_cases(args):
     return tests
 
 
-def run_tests(args, tests, huntrleaks=None):
+def run_tests(args, tests, huntrleaks=Nichts):
     tmp = tempfile.mktemp()
     try:
         write_tests(tmp, tests)

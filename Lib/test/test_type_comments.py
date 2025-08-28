@@ -8,7 +8,7 @@ def foo():
     # type: () -> int
     pass
 
-def bar():  # type: () -> None
+def bar():  # type: () -> Nichts
     pass
 """
 
@@ -232,7 +232,7 @@ klasse TypeCommentTests(unittest.TestCase):
     highest = sys.version_info[1]  # Highest minor version
 
     def parse(self, source, feature_version=highest):
-        return ast.parse(source, type_comments=True,
+        return ast.parse(source, type_comments=Wahr,
                          feature_version=feature_version)
 
     def parse_all(self, source, minver=lowest, maxver=highest, expected_regex=""):
@@ -254,18 +254,18 @@ klasse TypeCommentTests(unittest.TestCase):
     def test_funcdef(self):
         fuer tree in self.parse_all(funcdef):
             self.assertEqual(tree.body[0].type_comment, "() -> int")
-            self.assertEqual(tree.body[1].type_comment, "() -> None")
+            self.assertEqual(tree.body[1].type_comment, "() -> Nichts")
         tree = self.classic_parse(funcdef)
-        self.assertEqual(tree.body[0].type_comment, None)
-        self.assertEqual(tree.body[1].type_comment, None)
+        self.assertEqual(tree.body[0].type_comment, Nichts)
+        self.assertEqual(tree.body[1].type_comment, Nichts)
 
     def test_asyncdef(self):
         fuer tree in self.parse_all(asyncdef, minver=5):
             self.assertEqual(tree.body[0].type_comment, "() -> int")
             self.assertEqual(tree.body[1].type_comment, "() -> int")
         tree = self.classic_parse(asyncdef)
-        self.assertEqual(tree.body[0].type_comment, None)
-        self.assertEqual(tree.body[1].type_comment, None)
+        self.assertEqual(tree.body[0].type_comment, Nichts)
+        self.assertEqual(tree.body[1].type_comment, Nichts)
 
     def test_asyncvar(self):
         with self.assertRaises(SyntaxError):
@@ -300,27 +300,27 @@ klasse TypeCommentTests(unittest.TestCase):
         fuer tree in self.parse_all(forstmt):
             self.assertEqual(tree.body[0].type_comment, "int")
         tree = self.classic_parse(forstmt)
-        self.assertEqual(tree.body[0].type_comment, None)
+        self.assertEqual(tree.body[0].type_comment, Nichts)
 
     def test_withstmt(self):
         fuer tree in self.parse_all(withstmt):
             self.assertEqual(tree.body[0].type_comment, "int")
         tree = self.classic_parse(withstmt)
-        self.assertEqual(tree.body[0].type_comment, None)
+        self.assertEqual(tree.body[0].type_comment, Nichts)
 
     def test_parenthesized_withstmt(self):
         fuer tree in self.parse_all(parenthesized_withstmt):
             self.assertEqual(tree.body[0].type_comment, "int")
             self.assertEqual(tree.body[1].type_comment, "int")
         tree = self.classic_parse(parenthesized_withstmt)
-        self.assertEqual(tree.body[0].type_comment, None)
-        self.assertEqual(tree.body[1].type_comment, None)
+        self.assertEqual(tree.body[0].type_comment, Nichts)
+        self.assertEqual(tree.body[1].type_comment, Nichts)
 
     def test_vardecl(self):
         fuer tree in self.parse_all(vardecl):
             self.assertEqual(tree.body[0].type_comment, "int")
         tree = self.classic_parse(vardecl)
-        self.assertEqual(tree.body[0].type_comment, None)
+        self.assertEqual(tree.body[0].type_comment, Nichts)
 
     def test_ignores(self):
         fuer tree in self.parse_all(ignores):
@@ -363,8 +363,8 @@ klasse TypeCommentTests(unittest.TestCase):
         tree = self.classic_parse(longargs)
         fuer t in tree.body:
             fuer arg in t.args.args + [t.args.vararg, t.args.kwarg]:
-                wenn arg is not None:
-                    self.assertIsNone(arg.type_comment, "%s(%s:%r)" %
+                wenn arg is not Nichts:
+                    self.assertIsNichts(arg.type_comment, "%s(%s:%r)" %
                                       (t.name, arg.arg, arg.type_comment))
 
     def test_inappropriate_type_comments(self):
@@ -377,15 +377,15 @@ klasse TypeCommentTests(unittest.TestCase):
         """
 
         def check_both_ways(source):
-            ast.parse(source, type_comments=False)
+            ast.parse(source, type_comments=Falsch)
             fuer tree in self.parse_all(source, maxver=0):
                 pass
 
         check_both_ways("pass  # type: int\n")
         check_both_ways("foo()  # type: int\n")
         check_both_ways("x += 1  # type: int\n")
-        check_both_ways("while True:  # type: int\n  continue\n")
-        check_both_ways("while True:\n  continue  # type: int\n")
+        check_both_ways("while Wahr:  # type: int\n  continue\n")
+        check_both_ways("while Wahr:\n  continue  # type: int\n")
         check_both_ways("try:  # type: int\n  pass\nfinally:\n  pass\n")
         check_both_ways("try:\n  pass\nfinally:  # type: int\n  pass\n")
         check_both_ways("pass  # type: ignorewhatever\n")
@@ -414,11 +414,11 @@ klasse TypeCommentTests(unittest.TestCase):
         self.assertEqual(tree.argtypes[2].id, "Any")
         self.assertEqual(tree.returns.id, "float")
 
-        tree = parse_func_type_input("(*int) -> None")
+        tree = parse_func_type_input("(*int) -> Nichts")
         self.assertEqual(tree.argtypes[0].id, "int")
-        tree = parse_func_type_input("(**int) -> None")
+        tree = parse_func_type_input("(**int) -> Nichts")
         self.assertEqual(tree.argtypes[0].id, "int")
-        tree = parse_func_type_input("(*int, **str) -> None")
+        tree = parse_func_type_input("(*int, **str) -> Nichts")
         self.assertEqual(tree.argtypes[0].id, "int")
         self.assertEqual(tree.argtypes[1].id, "str")
 

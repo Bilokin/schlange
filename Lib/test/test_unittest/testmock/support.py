@@ -7,7 +7,7 @@ def is_instance(obj, klass):
 
 
 klasse SomeClass(object):
-    class_attribute = None
+    class_attribute = Nichts
 
     def wibble(self): pass
 

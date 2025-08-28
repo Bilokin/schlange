@@ -9,14 +9,14 @@ klasse ExceptionIsLikeMixin:
         an equality test: they only need to be the same type and contain equal
         `exc_obj.args`.
         """
-        wenn exc is None and template is None:
+        wenn exc is Nichts and template is Nichts:
             return
 
-        wenn template is None:
+        wenn template is Nichts:
             self.fail(f"unexpected exception: {exc}")
 
-        wenn exc is None:
-            self.fail(f"expected an exception like {template!r}, got None")
+        wenn exc is Nichts:
+            self.fail(f"expected an exception like {template!r}, got Nichts")
 
         wenn not isinstance(exc, ExceptionGroup):
             self.assertEqual(exc.__class__, template.__class__)

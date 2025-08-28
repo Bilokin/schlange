@@ -9,7 +9,7 @@ from test.test_email import TestEmailBase
 klasse TestDefectsBase:
 
     policy = policy.default
-    raise_expected = False
+    raise_expected = Falsch
 
     @contextlib.contextmanager
     def _raise_point(self, defect):
@@ -231,7 +231,7 @@ klasse TestDefectsBase:
             """)
         msg = self._str_msg(source)
         with self._raise_point(errors.InvalidBase64PaddingDefect):
-            payload = msg.get_payload(decode=True)
+            payload = msg.get_payload(decode=Wahr)
         wenn self.raise_expected: return
         self.assertEqual(payload, b'vi')
         self.assertDefectsEqual(self.get_defects(msg),
@@ -248,7 +248,7 @@ klasse TestDefectsBase:
             """)
         msg = self._str_msg(source)
         with self._raise_point(errors.InvalidBase64CharactersDefect):
-            payload = msg.get_payload(decode=True)
+            payload = msg.get_payload(decode=Wahr)
         wenn self.raise_expected: return
         self.assertEqual(payload, b'vi')
         self.assertDefectsEqual(self.get_defects(msg),
@@ -265,7 +265,7 @@ klasse TestDefectsBase:
             """)
         msg = self._str_msg(source)
         with self._raise_point(errors.InvalidBase64LengthDefect):
-            payload = msg.get_payload(decode=True)
+            payload = msg.get_payload(decode=Wahr)
         wenn self.raise_expected: return
         self.assertEqual(payload, b'abcde')
         self.assertDefectsEqual(self.get_defects(msg),
@@ -310,7 +310,7 @@ klasse TestDefectDetection(TestDefectsBase, TestEmailBase):
 klasse TestDefectCapture(TestDefectsBase, TestEmailBase):
 
     klasse CapturePolicy(policy.EmailPolicy):
-        captured = None
+        captured = Nichts
         def register_defect(self, obj, defect):
             self.captured.append(defect)
 
@@ -324,8 +324,8 @@ klasse TestDefectCapture(TestDefectsBase, TestEmailBase):
 klasse TestDefectRaising(TestDefectsBase, TestEmailBase):
 
     policy = TestDefectsBase.policy
-    policy = policy.clone(raise_on_defect=True)
-    raise_expected = True
+    policy = policy.clone(raise_on_defect=Wahr)
+    raise_expected = Wahr
 
     @contextlib.contextmanager
     def _raise_point(self, defect):

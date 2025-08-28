@@ -10,7 +10,7 @@ from test.support import (threading_helper, check_impl_detail,
 from test.support.import_helper import import_module
 
 # Skip this module on other interpreters, it is cpython specific:
-wenn check_impl_detail(cpython=False):
+wenn check_impl_detail(cpython=Falsch):
     raise unittest.SkipTest('implementation detail specific to cpython')
 
 _testinternalcapi = import_module("_testinternalcapi")
@@ -28,12 +28,12 @@ def have_dict_key_versions():
 
 klasse TestBase(unittest.TestCase):
     def assert_specialized(self, f, opname):
-        instructions = dis.get_instructions(f, adaptive=True)
+        instructions = dis.get_instructions(f, adaptive=Wahr)
         opnames = {instruction.opname fuer instruction in instructions}
         self.assertIn(opname, opnames)
 
     def assert_no_opcode(self, f, opname):
-        instructions = dis.get_instructions(f, adaptive=True)
+        instructions = dis.get_instructions(f, adaptive=Wahr)
         opnames = {instruction.opname fuer instruction in instructions}
         self.assertNotIn(opname, opnames)
 
@@ -80,7 +80,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
             assert f(o) == 1
 
         Descriptor.__get__ = lambda self, instance, value: 2
-        Descriptor.__set__ = lambda *args: None
+        Descriptor.__set__ = lambda *args: Nichts
 
         self.assertEqual(f(o), 2)
 
@@ -92,96 +92,96 @@ klasse TestLoadAttrCache(unittest.TestCase):
             attribute = Descriptor()
 
         klasse Class(metaclass=Metaclass):
-            attribute = True
+            attribute = Wahr
 
         def __get__(self, instance, owner):
-            return False
+            return Falsch
 
         def __set__(self, instance, value):
-            return None
+            return Nichts
 
         def f():
             return Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
         Descriptor.__get__ = __get__
         Descriptor.__set__ = __set__
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-            self.assertFalse(f())
+            self.assertFalsch(f())
 
     def test_metaclass_descriptor_shadows_class_attribute(self):
         klasse Metaclass(type):
             @property
             def attribute(self):
-                return True
+                return Wahr
 
         klasse Class(metaclass=Metaclass):
-            attribute = False
+            attribute = Falsch
 
         def f():
             return Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
     def test_metaclass_set_descriptor_after_optimization(self):
         klasse Metaclass(type):
             pass
 
         klasse Class(metaclass=Metaclass):
-            attribute = True
+            attribute = Wahr
 
         @property
         def attribute(self):
-            return False
+            return Falsch
 
         def f():
             return Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
         Metaclass.attribute = attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-            self.assertFalse(f())
+            self.assertFalsch(f())
 
     def test_metaclass_del_descriptor_after_optimization(self):
         klasse Metaclass(type):
             @property
             def attribute(self):
-                return True
+                return Wahr
 
         klasse Class(metaclass=Metaclass):
-            attribute = False
+            attribute = Falsch
 
         def f():
             return Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
         del Metaclass.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-            self.assertFalse(f())
+            self.assertFalsch(f())
 
     def test_type_descriptor_shadows_attribute_method(self):
         klasse Class:
-            mro = None
+            mro = Nichts
 
         def f():
             return Class.mro
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertIsNone(f())
+            self.assertIsNichts(f())
 
     def test_type_descriptor_shadows_attribute_member(self):
         klasse Class:
-            __base__ = None
+            __base__ = Nichts
 
         def f():
             return Class.__base__
@@ -202,27 +202,27 @@ klasse TestLoadAttrCache(unittest.TestCase):
     def test_metaclass_getattribute(self):
         klasse Metaclass(type):
             def __getattribute__(self, name):
-                return True
+                return Wahr
 
         klasse Class(metaclass=Metaclass):
-            attribute = False
+            attribute = Falsch
 
         def f():
             return Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
     def test_metaclass_swap(self):
         klasse OldMetaclass(type):
             @property
             def attribute(self):
-                return True
+                return Wahr
 
         klasse NewMetaclass(type):
             @property
             def attribute(self):
-                return False
+                return Falsch
 
         klasse Class(metaclass=OldMetaclass):
             pass
@@ -231,12 +231,12 @@ klasse TestLoadAttrCache(unittest.TestCase):
             return Class.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
         Class.__class__ = NewMetaclass
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-            self.assertFalse(f())
+            self.assertFalsch(f())
 
     def test_load_shadowing_slot_should_raise_type_error(self):
         klasse Class:
@@ -315,13 +315,13 @@ klasse TestLoadMethodCache(unittest.TestCase):
             attribute = Descriptor()
 
         def __get__(self, instance, owner):
-            return lambda: False
+            return lambda: Falsch
 
         def __set__(self, instance, value):
-            return None
+            return Nichts
 
         def attribute():
-            return True
+            return Wahr
 
         instance = Class()
         instance.attribute = attribute
@@ -330,13 +330,13 @@ klasse TestLoadMethodCache(unittest.TestCase):
             return instance.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
         Descriptor.__get__ = __get__
         Descriptor.__set__ = __set__
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-            self.assertFalse(f())
+            self.assertFalsch(f())
 
     def test_metaclass_descriptor_added_after_optimization(self):
         klasse Descriptor:
@@ -347,41 +347,41 @@ klasse TestLoadMethodCache(unittest.TestCase):
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return True
+                return Wahr
 
         def __get__(self, instance, owner):
-            return lambda: False
+            return lambda: Falsch
 
         def __set__(self, instance, value):
-            return None
+            return Nichts
 
         def f():
             return Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
         Descriptor.__get__ = __get__
         Descriptor.__set__ = __set__
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-            self.assertFalse(f())
+            self.assertFalsch(f())
 
     def test_metaclass_descriptor_shadows_class_attribute(self):
         klasse Metaclass(type):
             @property
             def attribute(self):
-                return lambda: True
+                return lambda: Wahr
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return False
+                return Falsch
 
         def f():
             return Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
     def test_metaclass_set_descriptor_after_optimization(self):
         klasse Metaclass(type):
@@ -389,43 +389,43 @@ klasse TestLoadMethodCache(unittest.TestCase):
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return True
+                return Wahr
 
         @property
         def attribute(self):
-            return lambda: False
+            return lambda: Falsch
 
         def f():
             return Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
         Metaclass.attribute = attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-            self.assertFalse(f())
+            self.assertFalsch(f())
 
     def test_metaclass_del_descriptor_after_optimization(self):
         klasse Metaclass(type):
             @property
             def attribute(self):
-                return lambda: True
+                return lambda: Wahr
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return False
+                return Falsch
 
         def f():
             return Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
         del Metaclass.attribute
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-            self.assertFalse(f())
+            self.assertFalsch(f())
 
     def test_type_descriptor_shadows_attribute_method(self):
         klasse Class:
@@ -452,28 +452,28 @@ klasse TestLoadMethodCache(unittest.TestCase):
     def test_metaclass_getattribute(self):
         klasse Metaclass(type):
             def __getattribute__(self, name):
-                return lambda: True
+                return lambda: Wahr
 
         klasse Class(metaclass=Metaclass):
             def attribute():
-                return False
+                return Falsch
 
         def f():
             return Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
     def test_metaclass_swap(self):
         klasse OldMetaclass(type):
             @property
             def attribute(self):
-                return lambda: True
+                return lambda: Wahr
 
         klasse NewMetaclass(type):
             @property
             def attribute(self):
-                return lambda: False
+                return lambda: Falsch
 
         klasse Class(metaclass=OldMetaclass):
             pass
@@ -482,12 +482,12 @@ klasse TestLoadMethodCache(unittest.TestCase):
             return Class.attribute()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            self.assertTrue(f())
+            self.assertWahr(f())
 
         Class.__class__ = NewMetaclass
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-            self.assertFalse(f())
+            self.assertFalsch(f())
 
 
 klasse InitTakesArg:
@@ -500,7 +500,7 @@ klasse TestCallCache(TestBase):
         def f():
             pass
 
-        f.__defaults__ = (None,)
+        f.__defaults__ = (Nichts,)
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
             f()
 
@@ -508,19 +508,19 @@ klasse TestCallCache(TestBase):
         def f(x):
             pass
 
-        f.__defaults__ = (None, None)
+        f.__defaults__ = (Nichts, Nichts)
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            f(None)
+            f(Nichts)
             f()
 
     def test_too_many_defaults_2(self):
         def f(x, y):
             pass
 
-        f.__defaults__ = (None, None, None)
+        f.__defaults__ = (Nichts, Nichts, Nichts)
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            f(None, None)
-            f(None)
+            f(Nichts, Nichts)
+            f(Nichts)
             f()
 
     @requires_jit_disabled
@@ -561,7 +561,7 @@ klasse TestCallCache(TestBase):
             instantiate()
 
     def test_recursion_check_for_general_calls(self):
-        def test(default=None):
+        def test(default=Nichts):
             return test()
 
         with self.assertRaises(RecursionError):
@@ -588,7 +588,7 @@ klasse TestRacesDoNotCrash(TestBase):
 
     @requires_jit_disabled
     def assert_races_do_not_crash(
-        self, opname, get_items, read, write, *, check_items=False
+        self, opname, get_items, read, write, *, check_items=Falsch
     ):
         # This might need a few dozen loops in some cases:
         fuer _ in range(self.LOOPS):
@@ -623,7 +623,7 @@ klasse TestRacesDoNotCrash(TestBase):
     def test_binary_subscr_getitem(self):
         def get_items():
             klasse C:
-                __getitem__ = lambda self, item: None
+                __getitem__ = lambda self, item: Nichts
 
             items = []
             fuer _ in range(self.ITEMS):
@@ -634,7 +634,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def read(items):
             fuer item in items:
                 try:
-                    item[None]
+                    item[Nichts]
                 except TypeError:
                     pass
 
@@ -644,7 +644,7 @@ klasse TestRacesDoNotCrash(TestBase):
                     del item.__getitem__
                 except AttributeError:
                     pass
-                type(item).__getitem__ = lambda self, item: None
+                type(item).__getitem__ = lambda self, item: Nichts
 
         opname = "BINARY_OP_SUBSCR_GETITEM"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -654,7 +654,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def get_items():
             items = []
             fuer _ in range(self.ITEMS):
-                item = [None]
+                item = [Nichts]
                 items.append(item)
             return items
 
@@ -668,7 +668,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 item.clear()
-                item.append(None)
+                item.append(Nichts)
 
         opname = "BINARY_OP_SUBSCR_LIST_INT"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -710,7 +710,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def get_items():
             items = []
             fuer _ in range(self.ITEMS):
-                item = [None]
+                item = [Nichts]
                 items.append(item)
             return items
 
@@ -722,7 +722,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 item.clear()
-                item.append(None)
+                item.append(Nichts)
 
         opname = "FOR_ITER_LIST"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -794,7 +794,7 @@ klasse TestRacesDoNotCrash(TestBase):
     def test_load_attr_getattribute_overridden(self):
         def get_items():
             klasse C:
-                __getattribute__ = lambda self, name: None
+                __getattribute__ = lambda self, name: Nichts
 
             items = []
             fuer _ in range(self.ITEMS):
@@ -815,7 +815,7 @@ klasse TestRacesDoNotCrash(TestBase):
                     del item.__getattribute__
                 except AttributeError:
                     pass
-                type(item).__getattribute__ = lambda self, name: None
+                type(item).__getattribute__ = lambda self, name: Nichts
 
         opname = "LOAD_ATTR_GETATTRIBUTE_OVERRIDDEN"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -829,7 +829,7 @@ klasse TestRacesDoNotCrash(TestBase):
             items = []
             fuer _ in range(self.ITEMS):
                 item = C()
-                item.a = None
+                item.a = Nichts
                 items.append(item)
             return items
 
@@ -839,7 +839,7 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def write(items):
             fuer item in items:
-                item.__dict__[None] = None
+                item.__dict__[Nichts] = Nichts
 
         opname = "LOAD_ATTR_INSTANCE_VALUE"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -848,7 +848,7 @@ klasse TestRacesDoNotCrash(TestBase):
     def test_load_attr_method_lazy_dict(self):
         def get_items():
             klasse C(Exception):
-                m = lambda self: None
+                m = lambda self: Nichts
 
             items = []
             fuer _ in range(self.ITEMS):
@@ -869,7 +869,7 @@ klasse TestRacesDoNotCrash(TestBase):
                     del item.m
                 except AttributeError:
                     pass
-                type(item).m = lambda self: None
+                type(item).m = lambda self: Nichts
 
         opname = "LOAD_ATTR_METHOD_LAZY_DICT"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -879,7 +879,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def get_items():
             klasse C:
                 __slots__ = ()
-                m = lambda self: None
+                m = lambda self: Nichts
 
             items = []
             fuer _ in range(self.ITEMS):
@@ -900,7 +900,7 @@ klasse TestRacesDoNotCrash(TestBase):
                     del item.m
                 except AttributeError:
                     pass
-                type(item).m = lambda self: None
+                type(item).m = lambda self: Nichts
 
         opname = "LOAD_ATTR_METHOD_NO_DICT"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -909,7 +909,7 @@ klasse TestRacesDoNotCrash(TestBase):
     def test_load_attr_method_with_values(self):
         def get_items():
             klasse C:
-                m = lambda self: None
+                m = lambda self: Nichts
 
             items = []
             fuer _ in range(self.ITEMS):
@@ -930,7 +930,7 @@ klasse TestRacesDoNotCrash(TestBase):
                     del item.m
                 except AttributeError:
                     pass
-                type(item).m = lambda self: None
+                type(item).m = lambda self: Nichts
 
         opname = "LOAD_ATTR_METHOD_WITH_VALUES"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -964,7 +964,7 @@ klasse TestRacesDoNotCrash(TestBase):
     def test_load_attr_property(self):
         def get_items():
             klasse C:
-                a = property(lambda self: None)
+                a = property(lambda self: Nichts)
 
             items = []
             fuer _ in range(self.ITEMS):
@@ -985,7 +985,7 @@ klasse TestRacesDoNotCrash(TestBase):
                     del type(item).a
                 except AttributeError:
                     pass
-                type(item).a = property(lambda self: None)
+                type(item).a = property(lambda self: Nichts)
 
         opname = "LOAD_ATTR_PROPERTY"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -1026,10 +1026,10 @@ klasse TestRacesDoNotCrash(TestBase):
             items = []
             fuer _ in range(self.ITEMS):
                 item = C()
-                item.a = None
+                item.a = Nichts
                 # Resize into a combined unicode dict:
                 fuer i in range(_testinternalcapi.SHARED_KEYS_MAX_SIZE - 1):
-                    setattr(item, f"_{i}", None)
+                    setattr(item, f"_{i}", Nichts)
                 items.append(item)
             return items
 
@@ -1039,7 +1039,7 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def write(items):
             fuer item in items:
-                item.__dict__[None] = None
+                item.__dict__[Nichts] = Nichts
 
         opname = "LOAD_ATTR_WITH_HINT"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -1051,7 +1051,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def get_items():
             items = []
             fuer _ in range(self.ITEMS):
-                item = eval("lambda: x", {"x": None})
+                item = eval("lambda: x", {"x": Nichts})
                 items.append(item)
             return items
 
@@ -1061,11 +1061,11 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def write(items):
             fuer item in items:
-                item.__globals__[None] = None
+                item.__globals__[Nichts] = Nichts
 
         opname = "LOAD_GLOBAL_MODULE"
         self.assert_races_do_not_crash(
-            opname, get_items, read, write, check_items=True
+            opname, get_items, read, write, check_items=Wahr
         )
 
     @requires_specialization
@@ -1082,11 +1082,11 @@ klasse TestRacesDoNotCrash(TestBase):
 
         def read(items):
             fuer item in items:
-                item.a = None
+                item.a = Nichts
 
         def write(items):
             fuer item in items:
-                item.__dict__[None] = None
+                item.__dict__[Nichts] = Nichts
 
         opname = "STORE_ATTR_INSTANCE_VALUE"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -1102,17 +1102,17 @@ klasse TestRacesDoNotCrash(TestBase):
                 item = C()
                 # Resize into a combined unicode dict:
                 fuer i in range(_testinternalcapi.SHARED_KEYS_MAX_SIZE - 1):
-                    setattr(item, f"_{i}", None)
+                    setattr(item, f"_{i}", Nichts)
                 items.append(item)
             return items
 
         def read(items):
             fuer item in items:
-                item.a = None
+                item.a = Nichts
 
         def write(items):
             fuer item in items:
-                item.__dict__[None] = None
+                item.__dict__[Nichts] = Nichts
 
         opname = "STORE_ATTR_WITH_HINT"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -1122,21 +1122,21 @@ klasse TestRacesDoNotCrash(TestBase):
         def get_items():
             items = []
             fuer _ in range(self.ITEMS):
-                item = [None]
+                item = [Nichts]
                 items.append(item)
             return items
 
         def read(items):
             fuer item in items:
                 try:
-                    item[0] = None
+                    item[0] = Nichts
                 except IndexError:
                     pass
 
         def write(items):
             fuer item in items:
                 item.clear()
-                item.append(None)
+                item.append(Nichts)
 
         opname = "STORE_SUBSCR_LIST_INT"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -1146,7 +1146,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def get_items():
             items = []
             fuer _ in range(self.ITEMS):
-                item = [None]
+                item = [Nichts]
                 items.append(item)
             return items
 
@@ -1160,7 +1160,7 @@ klasse TestRacesDoNotCrash(TestBase):
         def write(items):
             fuer item in items:
                 item.clear()
-                item.append(None)
+                item.append(Nichts)
 
         opname = "UNPACK_SEQUENCE_LIST"
         self.assert_races_do_not_crash(opname, get_items, read, write)
@@ -1266,7 +1266,7 @@ klasse TestInstanceDict(unittest.TestCase):
             c.a
         self.assertIs(
             _testinternalcapi.get_object_dict_values(c),
-            None
+            Nichts
         )
         self.assertEqual(
             c.__dict__,
@@ -1301,7 +1301,7 @@ klasse TestInstanceDict(unittest.TestCase):
         c = NoInlineAorB()
         c.a = 0
         c.b = 1
-        self.assertFalse(_testinternalcapi.has_inline_values(c))
+        self.assertFalsch(_testinternalcapi.has_inline_values(c))
 
         def f(o, n):
             fuer i in range(n):
@@ -1406,11 +1406,11 @@ klasse TestSpecializer(TestBase):
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 self.assertEqual(compactlong_lhs(1.0), (43.0, 41.0, 42.0, 42.0))
             fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-                self.assertTrue(all(filter(lambda x: x is nan, compactlong_lhs(nan))))
+                self.assertWahr(all(filter(lambda x: x is nan, compactlong_lhs(nan))))
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 self.assertEqual(compactlong_rhs(42.0), (84.0, 0.0, 84.0, 1.0))
             fuer _ in range(_testinternalcapi.SPECIALIZATION_COOLDOWN):
-                self.assertTrue(all(filter(lambda x: x is nan, compactlong_rhs(nan))))
+                self.assertWahr(all(filter(lambda x: x is nan, compactlong_rhs(nan))))
 
             self.assert_no_opcode(compactlong_lhs, "BINARY_OP_EXTEND")
             self.assert_no_opcode(compactlong_rhs, "BINARY_OP_EXTEND")
@@ -1485,8 +1485,8 @@ klasse TestSpecializer(TestBase):
         def contains_op_dict():
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 a, b = 1, {1: 2, 2: 5}
-                self.assertTrue(a in b)
-                self.assertFalse(3 in b)
+                self.assertWahr(a in b)
+                self.assertFalsch(3 in b)
 
         contains_op_dict()
         self.assert_specialized(contains_op_dict, "CONTAINS_OP_DICT")
@@ -1495,8 +1495,8 @@ klasse TestSpecializer(TestBase):
         def contains_op_set():
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 a, b = 1, {1, 2}
-                self.assertTrue(a in b)
-                self.assertFalse(3 in b)
+                self.assertWahr(a in b)
+                self.assertFalsch(3 in b)
 
         contains_op_set()
         self.assert_specialized(contains_op_set, "CONTAINS_OP_SET")
@@ -1506,9 +1506,9 @@ klasse TestSpecializer(TestBase):
     @requires_specialization_ft
     def test_send_with(self):
         def run_async(coro):
-            while True:
+            while Wahr:
                 try:
-                    coro.send(None)
+                    coro.send(Nichts)
                 except StopIteration:
                     break
 
@@ -1533,7 +1533,7 @@ klasse TestSpecializer(TestBase):
     @requires_specialization_ft
     def test_send_yield_from(self):
         def g():
-            yield None
+            yield Nichts
 
         def send_yield_from():
             yield from g()
@@ -1561,7 +1561,7 @@ klasse TestSpecializer(TestBase):
         self.assert_no_opcode(set_slot, "STORE_ATTR")
 
         # Adding a property fuer 'x' should unspecialize it.
-        C.x = property(lambda self: None, lambda self, x: None)
+        C.x = property(lambda self: Nichts, lambda self, x: Nichts)
         set_slot(_testinternalcapi.SPECIALIZATION_COOLDOWN)
         self.assert_no_opcode(set_slot, "STORE_ATTR_SLOT")
 
@@ -1583,7 +1583,7 @@ klasse TestSpecializer(TestBase):
         self.assert_no_opcode(set_value, "STORE_ATTR")
 
         # Adding a property fuer 'x' should unspecialize it.
-        C.x = property(lambda self: None, lambda self, x: None)
+        C.x = property(lambda self: Nichts, lambda self, x: Nichts)
         set_value(_testinternalcapi.SPECIALIZATION_COOLDOWN)
         self.assert_no_opcode(set_value, "STORE_ATTR_INSTANCE_VALUE")
 
@@ -1595,7 +1595,7 @@ klasse TestSpecializer(TestBase):
 
         c = C()
         fuer i in range(_testinternalcapi.SHARED_KEYS_MAX_SIZE - 1):
-            setattr(c, f"_{i}", None)
+            setattr(c, f"_{i}", Nichts)
 
         @reset_code
         def set_value(n):
@@ -1608,7 +1608,7 @@ klasse TestSpecializer(TestBase):
         self.assert_no_opcode(set_value, "STORE_ATTR")
 
         # Adding a property fuer 'x' should unspecialize it.
-        C.x = property(lambda self: None, lambda self, x: None)
+        C.x = property(lambda self: Nichts, lambda self, x: Nichts)
         set_value(_testinternalcapi.SPECIALIZATION_COOLDOWN)
         self.assert_no_opcode(set_value, "STORE_ATTR_WITH_HINT")
 
@@ -1658,7 +1658,7 @@ klasse TestSpecializer(TestBase):
 
         def to_bool_none():
             count = 0
-            elems = [None] * _testinternalcapi.SPECIALIZATION_THRESHOLD
+            elems = [Nichts] * _testinternalcapi.SPECIALIZATION_THRESHOLD
             fuer e in elems:
                 wenn not e:
                     count += 1
@@ -1784,7 +1784,7 @@ klasse TestSpecializer(TestBase):
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 a, b = 1, 2
                 c = a == b
-                self.assertFalse(c)
+                self.assertFalsch(c)
 
         compare_op_int()
         self.assert_specialized(compare_op_int, "COMPARE_OP_INT")
@@ -1794,7 +1794,7 @@ klasse TestSpecializer(TestBase):
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 a, b = 1.0, 2.0
                 c = a == b
-                self.assertFalse(c)
+                self.assertFalsch(c)
 
         compare_op_float()
         self.assert_specialized(compare_op_float, "COMPARE_OP_FLOAT")
@@ -1804,7 +1804,7 @@ klasse TestSpecializer(TestBase):
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
                 a, b = "spam", "ham"
                 c = a == b
-                self.assertFalse(c)
+                self.assertFalsch(c)
 
         compare_op_str()
         self.assert_specialized(compare_op_str, "COMPARE_OP_STR")

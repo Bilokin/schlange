@@ -14,7 +14,7 @@ from test.support import threading_helper
 try:
     from _testinternalcapi import hamt
 except ImportError:
-    hamt = None
+    hamt = Nichts
 
 
 def isolated_context(func):
@@ -170,13 +170,13 @@ klasse ContextTest(unittest.TestCase):
         var = contextvars.ContextVar('var')
 
         def func2():
-            self.assertIsNone(var.get(None))
+            self.assertIsNichts(var.get(Nichts))
 
         def func1():
-            self.assertIsNone(var.get(None))
+            self.assertIsNichts(var.get(Nichts))
             var.set('spam')
             ctx2.run(func2)
-            self.assertEqual(var.get(None), 'spam')
+            self.assertEqual(var.get(Nichts), 'spam')
 
             cur = contextvars.copy_context()
             self.assertEqual(len(cur), 1)
@@ -193,14 +193,14 @@ klasse ContextTest(unittest.TestCase):
         var = contextvars.ContextVar('var')
 
         def func():
-            self.assertIsNone(var.get(None))
+            self.assertIsNichts(var.get(Nichts))
             var.set('spam')
             1 / 0
 
         with self.assertRaises(ZeroDivisionError):
             ctx.run(func)
 
-        self.assertIsNone(var.get(None))
+        self.assertIsNichts(var.get(Nichts))
 
     def test_context_run_6(self):
         ctx = contextvars.Context()
@@ -208,7 +208,7 @@ klasse ContextTest(unittest.TestCase):
 
         def fun():
             self.assertEqual(c.get(), 0)
-            self.assertIsNone(ctx.get(c))
+            self.assertIsNichts(ctx.get(c))
 
             c.set(42)
             self.assertEqual(c.get(), 42)
@@ -231,23 +231,23 @@ klasse ContextTest(unittest.TestCase):
         with self.assertRaises(LookupError):
             c.get()
 
-        self.assertIsNone(c.get(None))
+        self.assertIsNichts(c.get(Nichts))
 
         t0 = c.set(42)
         self.assertEqual(c.get(), 42)
-        self.assertEqual(c.get(None), 42)
+        self.assertEqual(c.get(Nichts), 42)
         self.assertIs(t0.old_value, t0.MISSING)
         self.assertIs(t0.old_value, contextvars.Token.MISSING)
         self.assertIs(t0.var, c)
 
         t = c.set('spam')
         self.assertEqual(c.get(), 'spam')
-        self.assertEqual(c.get(None), 'spam')
+        self.assertEqual(c.get(Nichts), 'spam')
         self.assertEqual(t.old_value, 42)
         c.reset(t)
 
         self.assertEqual(c.get(), 42)
-        self.assertEqual(c.get(None), 42)
+        self.assertEqual(c.get(Nichts), 42)
 
         c.set('spam2')
         with self.assertRaisesRegex(RuntimeError, 'has already been used'):
@@ -260,7 +260,7 @@ klasse ContextTest(unittest.TestCase):
         c.reset(t0)
         with self.assertRaisesRegex(RuntimeError, 'has already been used'):
             c.reset(t0)
-        self.assertIsNone(c.get(None))
+        self.assertIsNichts(c.get(Nichts))
 
         self.assertIn(c, ctx1)
         self.assertEqual(ctx1[c], 'spam2')
@@ -297,7 +297,7 @@ klasse ContextTest(unittest.TestCase):
             self.assertEqual(c.get(), 42)
             with self.assertRaises(KeyError):
                 ctx[c]
-            self.assertIsNone(ctx.get(c))
+            self.assertIsNichts(ctx.get(c))
             self.assertEqual(ctx.get(c, 'spam'), 'spam')
             self.assertNotIn(c, ctx)
             self.assertEqual(list(ctx.keys()), [])
@@ -364,7 +364,7 @@ klasse ContextTest(unittest.TestCase):
     def test_context_isinstance(self):
         ctx = contextvars.Context()
         self.assertIsInstance(ctx, collections.abc.Mapping)
-        self.assertTrue(issubclass(contextvars.Context, collections.abc.Mapping))
+        self.assertWahr(issubclass(contextvars.Context, collections.abc.Mapping))
 
         mapping_methods = (
             '__contains__', '__eq__', '__getitem__', '__iter__', '__len__',
@@ -372,7 +372,7 @@ klasse ContextTest(unittest.TestCase):
         )
         fuer name in mapping_methods:
             with self.subTest(name=name):
-                self.assertTrue(callable(getattr(ctx, name)))
+                self.assertWahr(callable(getattr(ctx, name)))
 
     @isolated_context
     @threading_helper.requires_working_threading()
@@ -404,8 +404,8 @@ klasse ContextTest(unittest.TestCase):
             wenn sys.flags.thread_inherit_context:
                 expected = 1
             sonst:
-                expected = None
-            self.assertEqual(cvar.get(None), expected)
+                expected = Nichts
+            self.assertEqual(cvar.get(Nichts), expected)
 
         # By default, context is inherited based on the
         # sys.flags.thread_inherit_context option.
@@ -414,15 +414,15 @@ klasse ContextTest(unittest.TestCase):
         thread.start()
         thread.join()
 
-        # Passing 'None' explicitly should have same behaviour as not
+        # Passing 'Nichts' explicitly should have same behaviour as not
         # passing parameter.
-        thread = threading.Thread(target=run_context_none, context=None)
+        thread = threading.Thread(target=run_context_none, context=Nichts)
         thread.start()
         thread.join()
 
         # An explicit Context value can also be passed
         custom_ctx = contextvars.Context()
-        custom_var = None
+        custom_var = Nichts
 
         def setup_context():
             nonlocal custom_var
@@ -561,9 +561,9 @@ klasse ContextTest(unittest.TestCase):
 
 
 klasse HashKey:
-    _crasher = None
+    _crasher = Nichts
 
-    def __init__(self, hash, name, *, error_on_eq_to=None):
+    def __init__(self, hash, name, *, error_on_eq_to=Nichts):
         assert hash != -1
         self.name = name
         self.hash = hash
@@ -573,7 +573,7 @@ klasse HashKey:
         return f'<Key name:{self.name} hash:{self.hash}>'
 
     def __hash__(self):
-        wenn self._crasher is not None and self._crasher.error_on_hash:
+        wenn self._crasher is not Nichts and self._crasher.error_on_hash:
             raise HashingError
 
         return self.hash
@@ -582,12 +582,12 @@ klasse HashKey:
         wenn not isinstance(other, HashKey):
             return NotImplemented
 
-        wenn self._crasher is not None and self._crasher.error_on_eq:
+        wenn self._crasher is not Nichts and self._crasher.error_on_eq:
             raise EqError
 
-        wenn self.error_on_eq_to is not None and self.error_on_eq_to is other:
+        wenn self.error_on_eq_to is not Nichts and self.error_on_eq_to is other:
             raise ValueError(f'cannot compare {self!r} to {other!r}')
-        wenn other.error_on_eq_to is not None and other.error_on_eq_to is self:
+        wenn other.error_on_eq_to is not Nichts and other.error_on_eq_to is self:
             raise ValueError(f'cannot compare {other!r} to {self!r}')
 
         return (self.name, self.hash) == (other.name, other.hash)
@@ -595,28 +595,28 @@ klasse HashKey:
 
 klasse KeyStr(str):
     def __hash__(self):
-        wenn HashKey._crasher is not None and HashKey._crasher.error_on_hash:
+        wenn HashKey._crasher is not Nichts and HashKey._crasher.error_on_hash:
             raise HashingError
         return super().__hash__()
 
     def __eq__(self, other):
-        wenn HashKey._crasher is not None and HashKey._crasher.error_on_eq:
+        wenn HashKey._crasher is not Nichts and HashKey._crasher.error_on_eq:
             raise EqError
         return super().__eq__(other)
 
 
 klasse HaskKeyCrasher:
-    def __init__(self, *, error_on_hash=False, error_on_eq=False):
+    def __init__(self, *, error_on_hash=Falsch, error_on_eq=Falsch):
         self.error_on_hash = error_on_hash
         self.error_on_eq = error_on_eq
 
     def __enter__(self):
-        wenn HashKey._crasher is not None:
+        wenn HashKey._crasher is not Nichts:
             raise RuntimeError('cannot nest crashers')
         HashKey._crasher = self
 
     def __exit__(self, *exc):
-        HashKey._crasher = None
+        HashKey._crasher = Nichts
 
 
 klasse HashingError(Exception):
@@ -627,7 +627,7 @@ klasse EqError(Exception):
     pass
 
 
-@unittest.skipIf(hamt is None, '_testinternalcapi.hamt() not available')
+@unittest.skipIf(hamt is Nichts, '_testinternalcapi.hamt() not available')
 klasse HamtTest(unittest.TestCase):
 
     def test_hashkey_helper_1(self):
@@ -646,7 +646,7 @@ klasse HamtTest(unittest.TestCase):
 
     def test_hamt_basics_1(self):
         h = hamt()
-        h = None  # NoQA
+        h = Nichts  # NoQA
 
     def test_hamt_basics_2(self):
         h = hamt()
@@ -657,7 +657,7 @@ klasse HamtTest(unittest.TestCase):
         self.assertEqual(len(h), 0)
         self.assertEqual(len(h2), 1)
 
-        self.assertIsNone(h.get('a'))
+        self.assertIsNichts(h.get('a'))
         self.assertEqual(h.get('a', 42), 42)
 
         self.assertEqual(h2.get('a'), 'b')
@@ -670,13 +670,13 @@ klasse HamtTest(unittest.TestCase):
         self.assertEqual(h3.get('a'), 'b')
         self.assertEqual(h3.get('b'), 10)
 
-        self.assertIsNone(h.get('b'))
-        self.assertIsNone(h2.get('b'))
+        self.assertIsNichts(h.get('b'))
+        self.assertIsNichts(h2.get('b'))
 
-        self.assertIsNone(h.get('a'))
+        self.assertIsNichts(h.get('a'))
         self.assertEqual(h2.get('a'), 'b')
 
-        h = h2 = h3 = None
+        h = h2 = h3 = Nichts
 
     def test_hamt_basics_3(self):
         h = hamt()
@@ -703,11 +703,11 @@ klasse HamtTest(unittest.TestCase):
         h2 = h.set(k1, 'a')
         h3 = h2.set(k2, 'b')
 
-        self.assertEqual(h.get(k1), None)
-        self.assertEqual(h.get(k2), None)
+        self.assertEqual(h.get(k1), Nichts)
+        self.assertEqual(h.get(k2), Nichts)
 
         self.assertEqual(h2.get(k1), 'a')
-        self.assertEqual(h2.get(k2), None)
+        self.assertEqual(h2.get(k2), Nichts)
 
         self.assertEqual(h3.get(k1), 'a')
         self.assertEqual(h3.get(k2), 'b')
@@ -719,7 +719,7 @@ klasse HamtTest(unittest.TestCase):
         self.assertEqual(h3.get(k2), 'b')
         self.assertEqual(h4.get(k1), 'a')
         self.assertEqual(h4.get(k2), 'cc')
-        self.assertEqual(h4.get(k3), None)
+        self.assertEqual(h4.get(k3), Nichts)
         self.assertEqual(h5.get(k1), 'a')
         self.assertEqual(h5.get(k2), 'cc')
         self.assertEqual(h5.get(k2), 'cc')
@@ -782,14 +782,14 @@ klasse HamtTest(unittest.TestCase):
                 key = KeyStr(i)
 
                 wenn not (i % CRASH_HASH_EVERY):
-                    with HaskKeyCrasher(error_on_hash=True):
+                    with HaskKeyCrasher(error_on_hash=Wahr):
                         with self.assertRaises(HashingError):
                             h.set(key, i)
 
                 h = h.set(key, i)
 
                 wenn not (i % CRASH_EQ_EVERY):
-                    with HaskKeyCrasher(error_on_eq=True):
+                    with HaskKeyCrasher(error_on_eq=Wahr):
                         with self.assertRaises(EqError):
                             h.get(KeyStr(i))  # really trigger __eq__
 
@@ -811,12 +811,12 @@ klasse HamtTest(unittest.TestCase):
                 key = KeyStr(i)
 
                 wenn not (iter_i % CRASH_HASH_EVERY):
-                    with HaskKeyCrasher(error_on_hash=True):
+                    with HaskKeyCrasher(error_on_hash=Wahr):
                         with self.assertRaises(HashingError):
                             h.delete(key)
 
                 wenn not (iter_i % CRASH_EQ_EVERY):
-                    with HaskKeyCrasher(error_on_eq=True):
+                    with HaskKeyCrasher(error_on_eq=Wahr):
                         with self.assertRaises(EqError):
                             h.delete(KeyStr(i))
 
@@ -845,7 +845,7 @@ klasse HamtTest(unittest.TestCase):
             fuer i, key in enumerate(keys_to_delete):
                 hm = hm.delete(str(key))
                 self.assertEqual(hm.get(str(key), 'not found'), 'not found')
-                dm.pop(str(key), None)
+                dm.pop(str(key), Nichts)
                 self.assertEqual(len(d), len(h))
 
                 wenn not (i % TEST_ITERS_EVERY):
@@ -1162,36 +1162,36 @@ klasse HamtTest(unittest.TestCase):
         h2 = hamt()
         h2 = h2.set(A, 'a')
 
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertFalsch(h1 == h2)
+        self.assertWahr(h1 != h2)
 
         h2 = h2.set(B, 'b')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertFalsch(h1 == h2)
+        self.assertWahr(h1 != h2)
 
         h2 = h2.set(C, 'c')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertFalsch(h1 == h2)
+        self.assertWahr(h1 != h2)
 
         h2 = h2.set(D, 'd2')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertFalsch(h1 == h2)
+        self.assertWahr(h1 != h2)
 
         h2 = h2.set(D, 'd')
-        self.assertTrue(h1 == h2)
-        self.assertFalse(h1 != h2)
+        self.assertWahr(h1 == h2)
+        self.assertFalsch(h1 != h2)
 
         h2 = h2.set(E, 'e')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertFalsch(h1 == h2)
+        self.assertWahr(h1 != h2)
 
         h2 = h2.delete(D)
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertFalsch(h1 == h2)
+        self.assertWahr(h1 != h2)
 
         h2 = h2.set(E, 'd')
-        self.assertFalse(h1 == h2)
-        self.assertTrue(h1 != h2)
+        self.assertFalsch(h1 == h2)
+        self.assertWahr(h1 != h2)
 
     def test_hamt_eq_2(self):
         A = HashKey(100, 'A')
@@ -1230,7 +1230,7 @@ klasse HamtTest(unittest.TestCase):
         gc.collect()
         gc.collect()
 
-        self.assertIsNone(ref())
+        self.assertIsNichts(ref())
 
     def test_hamt_gc_2(self):
         A = HashKey(100, 'A')
@@ -1250,7 +1250,7 @@ klasse HamtTest(unittest.TestCase):
         gc.collect()
         gc.collect()
 
-        self.assertIsNone(ref())
+        self.assertIsNichts(ref())
 
     def test_hamt_in_1(self):
         A = HashKey(100, 'A')
@@ -1261,15 +1261,15 @@ klasse HamtTest(unittest.TestCase):
         h = hamt()
         h = h.set(A, 1)
 
-        self.assertTrue(A in h)
-        self.assertFalse(B in h)
+        self.assertWahr(A in h)
+        self.assertFalsch(B in h)
 
         with self.assertRaises(EqError):
-            with HaskKeyCrasher(error_on_eq=True):
+            with HaskKeyCrasher(error_on_eq=Wahr):
                 AA in h
 
         with self.assertRaises(HashingError):
-            with HaskKeyCrasher(error_on_hash=True):
+            with HaskKeyCrasher(error_on_hash=Wahr):
                 AA in h
 
     def test_hamt_getitem_1(self):
@@ -1288,11 +1288,11 @@ klasse HamtTest(unittest.TestCase):
             h[B]
 
         with self.assertRaises(EqError):
-            with HaskKeyCrasher(error_on_eq=True):
+            with HaskKeyCrasher(error_on_eq=Wahr):
                 h[AA]
 
         with self.assertRaises(HashingError):
-            with HaskKeyCrasher(error_on_hash=True):
+            with HaskKeyCrasher(error_on_hash=Wahr):
                 h[AA]
 
 

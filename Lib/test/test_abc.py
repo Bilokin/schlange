@@ -18,7 +18,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
         def test_abstractproperty_basics(self):
             @abc.abstractproperty
             def foo(self): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            self.assertWahr(foo.__isabstractmethod__)
             def bar(self): pass
             self.assertNotHasAttr(bar, "__isabstractmethod__")
 
@@ -30,15 +30,15 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                 @property
                 def foo(self): return super().foo
             self.assertEqual(D().foo, 3)
-            self.assertFalse(getattr(D.foo, "__isabstractmethod__", False))
+            self.assertFalsch(getattr(D.foo, "__isabstractmethod__", Falsch))
 
         def test_abstractclassmethod_basics(self):
             @abc.abstractclassmethod
             def foo(cls): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            self.assertWahr(foo.__isabstractmethod__)
             @classmethod
             def bar(cls): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            self.assertFalsch(getattr(bar, "__isabstractmethod__", Falsch))
 
             klasse C(metaclass=abc_ABCMeta):
                 @abc.abstractclassmethod
@@ -53,10 +53,10 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
         def test_abstractstaticmethod_basics(self):
             @abc.abstractstaticmethod
             def foo(): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            self.assertWahr(foo.__isabstractmethod__)
             @staticmethod
             def bar(): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            self.assertFalsch(getattr(bar, "__isabstractmethod__", Falsch))
 
             klasse C(metaclass=abc_ABCMeta):
                 @abc.abstractstaticmethod
@@ -87,7 +87,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
         def test_abstractmethod_basics(self):
             @abc.abstractmethod
             def foo(self): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            self.assertWahr(foo.__isabstractmethod__)
             def bar(self): pass
             self.assertNotHasAttr(bar, "__isabstractmethod__")
 
@@ -95,9 +95,9 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             @property
             @abc.abstractmethod
             def foo(self): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            self.assertWahr(foo.__isabstractmethod__)
             def bar(self): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            self.assertFalsch(getattr(bar, "__isabstractmethod__", Falsch))
 
             klasse C(metaclass=abc_ABCMeta):
                 @property
@@ -113,10 +113,10 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             @classmethod
             @abc.abstractmethod
             def foo(cls): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            self.assertWahr(foo.__isabstractmethod__)
             @classmethod
             def bar(cls): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            self.assertFalsch(getattr(bar, "__isabstractmethod__", Falsch))
 
             klasse C(metaclass=abc_ABCMeta):
                 @classmethod
@@ -133,10 +133,10 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             @staticmethod
             @abc.abstractmethod
             def foo(): pass
-            self.assertTrue(foo.__isabstractmethod__)
+            self.assertWahr(foo.__isabstractmethod__)
             @staticmethod
             def bar(): pass
-            self.assertFalse(getattr(bar, "__isabstractmethod__", False))
+            self.assertFalsch(getattr(bar, "__isabstractmethod__", Falsch))
 
             klasse C(metaclass=abc_ABCMeta):
                 @staticmethod
@@ -178,23 +178,23 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                     def bar(self): pass  # concrete
                 self.assertEqual(C.__abstractmethods__, {"foo"})
                 self.assertRaises(TypeError, C)  # because foo is abstract
-                self.assertTrue(isabstract(C))
+                self.assertWahr(isabstract(C))
                 klasse D(C):
                     def bar(self): pass  # concrete override of concrete
                 self.assertEqual(D.__abstractmethods__, {"foo"})
                 self.assertRaises(TypeError, D)  # because foo is still abstract
-                self.assertTrue(isabstract(D))
+                self.assertWahr(isabstract(D))
                 klasse E(D):
                     def foo(self): pass
                 self.assertEqual(E.__abstractmethods__, set())
                 E()  # now foo is concrete, too
-                self.assertFalse(isabstract(E))
+                self.assertFalsch(isabstract(E))
                 klasse F(E):
                     @abstractthing
                     def bar(self): pass  # abstract override of concrete
                 self.assertEqual(F.__abstractmethods__, {"bar"})
                 self.assertRaises(TypeError, F)  # because bar is abstract now
-                self.assertTrue(isabstract(F))
+                self.assertWahr(isabstract(F))
 
         def test_descriptors_with_abstractmethod(self):
             klasse C(metaclass=abc_ABCMeta):
@@ -229,7 +229,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
 
         def test_customdescriptors_with_abstractmethod(self):
             klasse Descriptor:
-                def __init__(self, fget, fset=None):
+                def __init__(self, fget, fset=Nichts):
                     self._fget = fget
                     self._fset = fset
                 def getter(self, callable):
@@ -238,8 +238,8 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                     return Descriptor(self._fget, callable)
                 @property
                 def __isabstractmethod__(self):
-                    return (getattr(self._fget, '__isabstractmethod__', False)
-                            or getattr(self._fset, '__isabstractmethod__', False))
+                    return (getattr(self._fget, '__isabstractmethod__', Falsch)
+                            or getattr(self._fset, '__isabstractmethod__', Falsch))
             klasse C(metaclass=abc_ABCMeta):
                 @Descriptor
                 @abc.abstractmethod
@@ -255,7 +255,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             klasse E(D):
                 @D.foo.setter
                 def foo(self, val): pass
-            self.assertFalse(E.foo.__isabstractmethod__)
+            self.assertFalsch(E.foo.__isabstractmethod__)
 
         def test_metaclass_abc(self):
             # Metaclasses can be ABCs, too.
@@ -432,7 +432,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             # bpo-34441: Check that issubclass() doesn't crash on bogus
             # classes.
             bogus_subclasses = [
-                None,
+                Nichts,
                 lambda x: [],
                 lambda: 42,
                 lambda: [42],
@@ -552,7 +552,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
             self.assertRaisesRegex(TypeError, msg, B)
             self.assertEqual(B.__abstractmethods__, {'foo'})
 
-            B.foo = lambda self: None
+            B.foo = lambda self: Nichts
 
             abc.update_abstractmethods(B)
 
@@ -566,7 +566,7 @@ def test_factory(abc_ABCMeta, abc_get_cache_token):
                     pass
 
             def class_decorator(cls):
-                cls.foo = lambda self: None
+                cls.foo = lambda self: Nichts
                 return cls
 
             @abc.update_abstractmethods
@@ -691,9 +691,9 @@ TestLegacyAPI_C, TestABC_C, TestABCWithInitSubclass_C = test_factory(abc.ABCMeta
 
 # gh-130095: The _py_abc tests are not thread-safe when run with
 # `--parallel-threads`
-TestLegacyAPI_Py.__unittest_thread_unsafe__ = True
-TestABC_Py.__unittest_thread_unsafe__ = True
-TestABCWithInitSubclass_Py.__unittest_thread_unsafe__ = True
+TestLegacyAPI_Py.__unittest_thread_unsafe__ = Wahr
+TestABC_Py.__unittest_thread_unsafe__ = Wahr
+TestABCWithInitSubclass_Py.__unittest_thread_unsafe__ = Wahr
 
 wenn __name__ == "__main__":
     unittest.main()

@@ -36,7 +36,7 @@ klasse OrderedDictTests:
     def test_init(self):
         OrderedDict = self.OrderedDict
         with self.assertRaises(TypeError):
-            OrderedDict([('a', 1), ('b', 2)], None)                                 # too many args
+            OrderedDict([('a', 1), ('b', 2)], Nichts)                                 # too many args
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         self.assertEqual(sorted(OrderedDict(dict(pairs)).items()), pairs)           # dict input
         self.assertEqual(sorted(OrderedDict(**dict(pairs)).items()), pairs)         # kwds input
@@ -68,7 +68,7 @@ klasse OrderedDictTests:
     def test_update(self):
         OrderedDict = self.OrderedDict
         with self.assertRaises(TypeError):
-            OrderedDict().update([('a', 1), ('b', 2)], None)                        # too many args
+            OrderedDict().update([('a', 1), ('b', 2)], Nichts)                        # too many args
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         od = OrderedDict()
         od.update(dict(pairs))
@@ -138,9 +138,9 @@ klasse OrderedDictTests:
     def test_fromkeys(self):
         OrderedDict = self.OrderedDict
         od = OrderedDict.fromkeys('abc')
-        self.assertEqual(list(od.items()), [(c, None) fuer c in 'abc'])
-        od = OrderedDict.fromkeys('abc', value=None)
-        self.assertEqual(list(od.items()), [(c, None) fuer c in 'abc'])
+        self.assertEqual(list(od.items()), [(c, Nichts) fuer c in 'abc'])
+        od = OrderedDict.fromkeys('abc', value=Nichts)
+        self.assertEqual(list(od.items()), [(c, Nichts) fuer c in 'abc'])
         od = OrderedDict.fromkeys('abc', value=0)
         self.assertEqual(list(od.items()), [(c, 0) fuer c in 'abc'])
 
@@ -207,7 +207,7 @@ klasse OrderedDictTests:
     def test_sorted_iterators(self):
         OrderedDict = self.OrderedDict
         with self.assertRaises(TypeError):
-            OrderedDict([('a', 1), ('b', 2)], None)
+            OrderedDict([('a', 1), ('b', 2)], Nichts)
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         od = OrderedDict(pairs)
         self.assertEqual(sorted(od), [t[0] fuer t in pairs])
@@ -247,9 +247,9 @@ klasse OrderedDictTests:
 
         obj = OrderedDict(pairs)
         fuer i in range(8):
-            obj.popitem(True)
-        obj.popitem(True)
-        obj.popitem(last=True)
+            obj.popitem(Wahr)
+        obj.popitem(Wahr)
+        obj.popitem(last=Wahr)
         self.assertEqual(len(obj), 20)
 
     def test_pop(self):
@@ -345,7 +345,7 @@ klasse OrderedDictTests:
         od = OrderedDict(pairs)
         # yaml.dump(od) -->
         # '!!python/object/apply:__main__.OrderedDict\n- - [a, 1]\n  - [b, 2]\n'
-        self.assertTrue(all(type(pair)==list fuer pair in od.__reduce__()[1]))
+        self.assertWahr(all(type(pair)==list fuer pair in od.__reduce__()[1]))
 
     def test_reduce_not_too_fat(self):
         OrderedDict = self.OrderedDict
@@ -353,7 +353,7 @@ klasse OrderedDictTests:
         pairs = [('c', 1), ('b', 2), ('a', 3), ('d', 4), ('e', 5), ('f', 6)]
         od = OrderedDict(pairs)
         self.assertIsInstance(od.__dict__, dict)
-        self.assertIsNone(od.__reduce__()[2])
+        self.assertIsNichts(od.__reduce__()[2])
         od.x = 10
         self.assertEqual(od.__dict__['x'], 10)
         self.assertEqual(od.__reduce__()[2], {'x': 10})
@@ -385,7 +385,7 @@ klasse OrderedDictTests:
         od = OrderedDict.fromkeys('abc')
         od['x'] = od
         self.assertEqual(repr(od),
-            "OrderedDict({'a': None, 'b': None, 'c': None, 'x': ...})")
+            "OrderedDict({'a': Nichts, 'b': Nichts, 'c': Nichts, 'x': ...})")
 
     def test_repr_recursive_values(self):
         OrderedDict = self.OrderedDict
@@ -439,25 +439,25 @@ klasse OrderedDictTests:
         self.assertEqual(list(od), list('abcde'))
         od.move_to_end('c')
         self.assertEqual(list(od), list('abdec'))
-        od.move_to_end('c', False)
+        od.move_to_end('c', Falsch)
         self.assertEqual(list(od), list('cabde'))
-        od.move_to_end('c', False)
+        od.move_to_end('c', Falsch)
         self.assertEqual(list(od), list('cabde'))
         od.move_to_end('e')
         self.assertEqual(list(od), list('cabde'))
-        od.move_to_end('b', last=False)
+        od.move_to_end('b', last=Falsch)
         self.assertEqual(list(od), list('bcade'))
         with self.assertRaises(KeyError):
             od.move_to_end('x')
         with self.assertRaises(KeyError):
-            od.move_to_end('x', False)
+            od.move_to_end('x', Falsch)
 
     def test_move_to_end_issue25406(self):
         OrderedDict = self.OrderedDict
         od = OrderedDict.fromkeys('abc')
-        od.move_to_end('c', last=False)
+        od.move_to_end('c', last=Falsch)
         self.assertEqual(list(od), list('cab'))
-        od.move_to_end('a', last=False)
+        od.move_to_end('a', last=Falsch)
         self.assertEqual(list(od), list('acb'))
 
         od = OrderedDict.fromkeys('abc')
@@ -495,9 +495,9 @@ klasse OrderedDictTests:
         # correctly fuer OrderedDict: deleting a highly nested OrderDict
         # should not crash Python.
         OrderedDict = self.OrderedDict
-        obj = None
+        obj = Nichts
         fuer _ in range(1000):
-            obj = OrderedDict([(None, obj)])
+            obj = OrderedDict([(Nichts, obj)])
         del obj
         support.gc_collect()
 
@@ -510,9 +510,9 @@ klasse OrderedDictTests:
         klasse MyOD(OrderedDict):
             def __del__(self):
                 deleted.append(self.i)
-        obj = None
+        obj = Nichts
         fuer i in range(100):
-            obj = MyOD([(None, obj)])
+            obj = MyOD([(Nichts, obj)])
             obj.i = i
         del obj
         support.gc_collect()
@@ -531,7 +531,7 @@ klasse OrderedDictTests:
                 try:
                     return self.value == other.value
                 except AttributeError:
-                    return False
+                    return Falsch
             def __repr__(self):
                 return self.value
 
@@ -610,7 +610,7 @@ klasse OrderedDictTests:
             fuer c1 in '0123456789ABCDEF':
                 wenn len(od) == 4:
                     # This should not raise a KeyError.
-                    od.popitem(last=False)
+                    od.popitem(last=Falsch)
                 key = c0 + c1
                 od[key] = key
 
@@ -674,11 +674,11 @@ klasse OrderedDictTests:
         OrderedDict = self.OrderedDict
         klasse A:
             od = OrderedDict()
-        A.od[A] = None
+        A.od[A] = Nichts
         r = weakref.ref(A)
         del A
         gc.collect()
-        self.assertIsNone(r())
+        self.assertIsNichts(r())
 
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, self.OrderedDict)
@@ -719,7 +719,7 @@ klasse OrderedDictTests:
         self.assertEqual(a, expected)
 
         with self.assertRaises(TypeError):
-            a | None
+            a | Nichts
         with self.assertRaises(TypeError):
             a | ()
         with self.assertRaises(TypeError):
@@ -734,12 +734,12 @@ klasse OrderedDictTests:
         # bpo-42536: OrderedDict.items's tuple-reuse speed trick breaks the GC's
         # assumptions about what can be untracked. Make sure we re-track result
         # tuples whenever we reuse them.
-        it = iter(self.OrderedDict({None: []}).items())
+        it = iter(self.OrderedDict({Nichts: []}).items())
         gc.collect()
         # That GC collection probably untracked the recycled internal result
-        # tuple, which is initialized to (None, None). Make sure it's re-tracked
+        # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
         # when it's mutated and returned from __next__:
-        self.assertTrue(gc.is_tracked(next(it)))
+        self.assertWahr(gc.is_tracked(next(it)))
 
 
 klasse _TriggerSideEffectOnEqual:
@@ -750,7 +750,7 @@ klasse _TriggerSideEffectOnEqual:
         wenn self.__class__.count == self.__class__.trigger:
             self.side_effect()
         self.__class__.count += 1
-        return True
+        return Wahr
 
     def __hash__(self):
         # all instances represent the same key
@@ -854,7 +854,7 @@ klasse CPythonOrderedDictSideEffects:
         dict2 = self.OrderedDict(dict.fromkeys((0, Key(), 4.2)))
         self.check_runtime_error_issue119004(dict1, dict2)
         self.assertEqual(Key.count, 2)
-        self.assertDictEqual(dict1, {0: None, 'a': 'c', 4.2: None})
+        self.assertDictEqual(dict1, {0: Nichts, 'a': 'c', 4.2: Nichts})
         self.assertDictEqual(dict2, dict.fromkeys((0, Key(), 4.2)))
 
     def test_issue119004_change_size_by_delete_key_in_dict_eq(self):
@@ -927,7 +927,7 @@ klasse CPythonOrderedDictTests(OrderedDictTests,
                 self.assertLess(i, 5)
         with self.assertRaises(RuntimeError):
             fuer k in od:
-                od['f'] = None
+                od['f'] = Nichts
         with self.assertRaises(RuntimeError):
             fuer k in od:
                 del od['c']
@@ -1068,7 +1068,7 @@ klasse SimpleLRUCache:
     def __setitem__(self, key, value):
         self.counts['set'] += 1
         while key not in self and len(self) >= self.size:
-            self.popitem(last=False)
+            self.popitem(last=Falsch)
         super().__setitem__(key, value)
         self.move_to_end(key)
 
@@ -1092,8 +1092,8 @@ klasse SimpleLRUCacheTests:
         c = self.type2test(3)
         fuer i in range(1, 4):
             c[i] = i
-        self.assertEqual(c.popitem(last=False), (1, 1))
-        self.assertEqual(c.popitem(last=True), (3, 3))
+        self.assertEqual(c.popitem(last=Falsch), (1, 1))
+        self.assertEqual(c.popitem(last=Wahr), (3, 3))
         self.assertEqual(c.counts, {'get': 0, 'set': 3, 'del': 0})
 
     def test_pop(self):

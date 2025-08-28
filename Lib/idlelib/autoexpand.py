@@ -22,7 +22,7 @@ klasse AutoExpand:
     def __init__(self, editwin):
         self.text = editwin.text
         self.bell = self.text.bell
-        self.state = None
+        self.state = Nichts
 
     def expand_word_event(self, event):
         "Replace the current word with the next expansion."

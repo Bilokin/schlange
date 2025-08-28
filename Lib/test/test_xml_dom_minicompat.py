@@ -15,8 +15,8 @@ klasse EmptyNodeListTestCase(unittest.TestCase):
         # Test item access on an EmptyNodeList.
         node_list = EmptyNodeList()
 
-        self.assertIsNone(node_list.item(0))
-        self.assertIsNone(node_list.item(-1)) # invalid item
+        self.assertIsNichts(node_list.item(0))
+        self.assertIsNichts(node_list.item(-1)) # invalid item
 
         with self.assertRaises(IndexError):
             node_list[0]
@@ -48,8 +48,8 @@ klasse NodeListTestCase(unittest.TestCase):
         # First, use an empty NodeList.
         node_list = NodeList()
 
-        self.assertIsNone(node_list.item(0))
-        self.assertIsNone(node_list.item(-1))
+        self.assertIsNichts(node_list.item(0))
+        self.assertIsNichts(node_list.item(-1))
 
         with self.assertRaises(IndexError):
             node_list[0]
@@ -61,7 +61,7 @@ klasse NodeListTestCase(unittest.TestCase):
         node_list.append(999)
 
         self.assertEqual(node_list.item(0), 111)
-        self.assertIsNone(node_list.item(-1)) # invalid item
+        self.assertIsNichts(node_list.item(-1)) # invalid item
 
         self.assertEqual(node_list[0], 111)
         self.assertEqual(node_list[-1], 999)

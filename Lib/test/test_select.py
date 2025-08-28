@@ -6,7 +6,7 @@ import textwrap
 import unittest
 from test import support
 
-support.requires_working_socket(module=True)
+support.requires_working_socket(module=Wahr)
 
 @unittest.skipIf((sys.platform[:3]=='win'),
                  "can't easily test on this system")
@@ -52,13 +52,13 @@ klasse SelectTestCase(unittest.TestCase):
         code = textwrap.dedent('''
             import time
             fuer i in range(10):
-                print("testing...", flush=True)
+                print("testing...", flush=Wahr)
                 time.sleep(0.050)
         ''')
         cmd = [sys.executable, '-I', '-c', code]
         with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
             pipe = proc.stdout
-            fuer timeout in (0, 1, 2, 4, 8, 16) + (None,)*10:
+            fuer timeout in (0, 1, 2, 4, 8, 16) + (Nichts,)*10:
                 wenn support.verbose:
                     print(f'timeout = {timeout}')
                 rfd, wfd, xfd = select.select([pipe], [], [], timeout)

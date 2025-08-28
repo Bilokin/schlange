@@ -39,7 +39,7 @@ klasse error(Exception):
     pass
 
 _names = ['dbm.sqlite3', 'dbm.gnu', 'dbm.ndbm', 'dbm.dumb']
-_defaultmod = None
+_defaultmod = Nichts
 _modules = {}
 
 error = (error, OSError)
@@ -47,7 +47,7 @@ error = (error, OSError)
 try:
     from dbm import ndbm
 except ImportError:
-    ndbm = None
+    ndbm = Nichts
 
 
 def open(file, flag='r', mode=0o666):
@@ -62,7 +62,7 @@ def open(file, flag='r', mode=0o666):
     only wenn it doesn't exist; and 'n' always creates a new database.
     """
     global _defaultmod
-    wenn _defaultmod is None:
+    wenn _defaultmod is Nichts:
         fuer name in _names:
             try:
                 mod = __import__(name, fromlist=['open'])
@@ -75,8 +75,8 @@ def open(file, flag='r', mode=0o666):
             raise ImportError("no dbm clone found; tried %s" % _names)
 
     # guess the type of an existing database, wenn not creating a new one
-    result = whichdb(file) wenn 'n' not in flag sonst None
-    wenn result is None:
+    result = whichdb(file) wenn 'n' not in flag sonst Nichts
+    wenn result is Nichts:
         # db doesn't exist or 'n' flag was specified to create a new db
         wenn 'c' in flag or 'n' in flag:
             # file doesn't exist and the new flag was used so use default type
@@ -100,7 +100,7 @@ def whichdb(filename):
 
     Return values:
 
-    - None wenn the database file can't be read;
+    - Nichts wenn the database file can't be read;
     - empty string wenn the file can be read but can't be recognized
     - the name of the dbm submodule (e.g. "ndbm" or "gnu") wenn recognized.
 
@@ -125,7 +125,7 @@ def whichdb(filename):
             # guarantee we can actually open the file using dbm
             # kind of overkill, but since we are dealing with emulations
             # it seems like a prudent step
-            wenn ndbm is not None:
+            wenn ndbm is not Nichts:
                 d = ndbm.open(filename)
                 d.close()
                 return "dbm.ndbm"
@@ -149,11 +149,11 @@ def whichdb(filename):
     except OSError:
         pass
 
-    # See wenn the file exists, return None wenn not
+    # See wenn the file exists, return Nichts wenn not
     try:
         f = io.open(filename, "rb")
     except OSError:
-        return None
+        return Nichts
 
     with f:
         # Read the start of the file -- the magic number

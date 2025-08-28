@@ -113,7 +113,7 @@ def list_sort_worst_case(size: int, rand: random.Random) -> list[float]:
 # =========
 
 klasse Benchmark:
-    def __init__(self, name: str, size: int, seed: int) -> None:
+    def __init__(self, name: str, size: int, seed: int) -> Nichts:
         self._name = name
         self._size = size
         self._seed = seed
@@ -134,14 +134,14 @@ klasse Benchmark:
         return [data.copy() fuer _ in range(loops)]
 
 
-def add_cmdline_args(cmd: list[str], args) -> None:
+def add_cmdline_args(cmd: list[str], args) -> Nichts:
     wenn args.benchmark:
         cmd.append(args.benchmark)
     cmd.append(f"--size={args.size}")
     cmd.append(f"--rng-seed={args.rng_seed}")
 
 
-def add_parser_args(parser: argparse.ArgumentParser) -> None:
+def add_parser_args(parser: argparse.ArgumentParser) -> Nichts:
     parser.add_argument(
         "benchmark",
         choices=BENCHMARKS,

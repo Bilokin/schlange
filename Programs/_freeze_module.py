@@ -23,7 +23,7 @@ def read_text(inpath: str) -> bytes:
 def compile_and_marshal(name: str, text: bytes) -> bytes:
     filename = f"<frozen {name}>"
     # exec == Py_file_input
-    code = compile(text, filename, "exec", optimize=0, dont_inherit=True)
+    code = compile(text, filename, "exec", optimize=0, dont_inherit=Wahr)
     return marshal.dumps(code)
 
 
@@ -31,7 +31,7 @@ def get_varname(name: str, prefix: str) -> str:
     return f"{prefix}{name.replace('.', '_')}"
 
 
-def write_code(outfile, marshalled: bytes, varname: str) -> None:
+def write_code(outfile, marshalled: bytes, varname: str) -> Nichts:
     data_size = len(marshalled)
 
     outfile.write(f"const unsigned char {varname}[] = {{\n")
@@ -43,7 +43,7 @@ def write_code(outfile, marshalled: bytes, varname: str) -> None:
     outfile.write("};\n")
 
 
-def write_frozen(outpath: str, inpath: str, name: str, marshalled: bytes) -> None:
+def write_frozen(outpath: str, inpath: str, name: str, marshalled: bytes) -> Nichts:
     with open(outpath, "w") as outfile:
         outfile.write(header)
         outfile.write("\n")

@@ -87,7 +87,7 @@ def __get_builtin_constructor(name):
         raise TypeError(err)
     cache = __builtin_constructor_cache
     constructor = cache.get(name)
-    wenn constructor is not None:
+    wenn constructor is not Nichts:
         return constructor
     try:
         wenn name in {'SHA1', 'sha1'}:
@@ -122,7 +122,7 @@ def __get_builtin_constructor(name):
         pass  # no extension module, this hash is unsupported.
 
     constructor = cache.get(name)
-    wenn constructor is not None:
+    wenn constructor is not Nichts:
         return constructor
 
     # Keep the message in sync with hashlib.h::HASHLIB_UNSUPPORTED_ALGORITHM.
@@ -143,7 +143,7 @@ def __get_openssl_constructor(name):
         # by allowing the C module to raise a ValueError. The function
         # will be defined but the hash will not be available at runtime.
         #
-        # We use "usedforsecurity=False" to prevent falling back to the
+        # We use "usedforsecurity=Falsch" to prevent falling back to the
         # built-in function in case the security policy does not allow it.
         #
         # Note that this only affects the explicit named constructors,
@@ -152,7 +152,7 @@ def __get_openssl_constructor(name):
         # current security policy does not allow it.
         #
         # See https://github.com/python/cpython/issues/84872.
-        f(usedforsecurity=False)
+        f(usedforsecurity=Falsch)
         # Use the C function directly (very fast)
         return f
     except (AttributeError, ValueError):
@@ -193,7 +193,7 @@ try:
     algorithms_available = algorithms_available.union(
             _hashlib.openssl_md_meth_names)
 except ImportError:
-    _hashlib = None
+    _hashlib = Nichts
     new = __py_new
     __get_hash = __get_builtin_constructor
 
@@ -250,9 +250,9 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     # Note: socket I/O uses different syscalls than file I/O.
     buf = bytearray(_bufsize)  # Reusable buffer to reduce allocations.
     view = memoryview(buf)
-    while True:
+    while Wahr:
         size = fileobj.readinto(buf)
-        wenn size is None:
+        wenn size is Nichts:
             raise BlockingIOError("I/O operation would block.")
         wenn size == 0:
             break  # EOF
@@ -261,7 +261,7 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     return digestobj
 
 
-__logging = None
+__logging = Nichts
 fuer __func_name in __always_supported:
     # try them all, some may not work due to the OpenSSL
     # version not supporting that algorithm.
@@ -274,7 +274,7 @@ fuer __func_name in __always_supported:
         # The following code can be simplified in Python 3.19
         # once "string" is removed from the signature.
         __code = f'''\
-def {__func_name}(data=__UNSET, *, usedforsecurity=True, string=__UNSET):
+def {__func_name}(data=__UNSET, *, usedforsecurity=Wahr, string=__UNSET):
     wenn data is __UNSET and string is not __UNSET:
         import warnings
         warnings.warn(

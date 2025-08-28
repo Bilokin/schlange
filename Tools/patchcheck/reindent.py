@@ -48,16 +48,16 @@ import os
 import shutil
 import sys
 
-verbose = False
-recurse = False
-dryrun = False
-makebackup = True
+verbose = Falsch
+recurse = Falsch
+dryrun = Falsch
+makebackup = Wahr
 # A specified newline to be used in the output (set by --newline option)
-spec_newline = None
+spec_newline = Nichts
 
 
-def usage(msg=None):
-    wenn msg is None:
+def usage(msg=Nichts):
+    wenn msg is Nichts:
         msg = __doc__
     print(msg, file=sys.stderr)
 
@@ -77,13 +77,13 @@ def main():
         return
     fuer o, a in opts:
         wenn o in ('-d', '--dryrun'):
-            dryrun = True
+            dryrun = Wahr
         sowenn o in ('-r', '--recurse'):
-            recurse = True
+            recurse = Wahr
         sowenn o in ('-n', '--nobackup'):
-            makebackup = False
+            makebackup = Falsch
         sowenn o in ('-v', '--verbose'):
-            verbose = True
+            verbose = Wahr
         sowenn o in ('--newline',):
             wenn not a.upper() in ('CRLF', 'LF'):
                 usage()
@@ -150,11 +150,11 @@ def check(file):
                 r.write(f)
             wenn verbose:
                 print("wrote new", file)
-        return True
+        return Wahr
     sonst:
         wenn verbose:
             print("unchanged.")
-        return False
+        return Falsch
 
 
 def _rstrip(line, JUNK='\n \t'):
@@ -185,7 +185,7 @@ klasse Reindenter:
         # Note that a line is all-blank iff it's "\n".
         self.lines = [_rstrip(line).expandtabs() + "\n"
                       fuer line in self.raw]
-        self.lines.insert(0, None)
+        self.lines.insert(0, Nichts)
         self.index = 1  # index into self.lines of next line
 
         # List of (lineno, indentlevel) pairs, one fuer each stmt and

@@ -51,9 +51,9 @@ klasse TestChannels(TestBase):
         interp = interpreters.create()
         rch, sch = channels.create()
 
-        self.assertTrue(
+        self.assertWahr(
             interpreters.is_shareable(rch))
-        self.assertTrue(
+        self.assertWahr(
             interpreters.is_shareable(sch))
 
         sch.send_nowait(rch)
@@ -89,10 +89,10 @@ klasse TestChannels(TestBase):
         rafter = rch.is_closed
         safter = sch.is_closed
 
-        self.assertFalse(rbefore)
-        self.assertFalse(sbefore)
-        self.assertTrue(rafter)
-        self.assertTrue(safter)
+        self.assertFalsch(rbefore)
+        self.assertFalsch(sbefore)
+        self.assertWahr(rafter)
+        self.assertWahr(safter)
 
 
 klasse TestRecvChannelAttrs(TestBase):
@@ -212,7 +212,7 @@ klasse TestSendRecv(TestBase):
         r, s = channels.create()
 
         def f():
-            while True:
+            while Wahr:
                 try:
                     obj = r.recv()
                     break
@@ -241,9 +241,9 @@ klasse TestSendRecv(TestBase):
 
     def test_send_recv_nowait_main_with_default(self):
         r, _ = channels.create()
-        obj = r.recv_nowait(None)
+        obj = r.recv_nowait(Nichts)
 
-        self.assertIsNone(obj)
+        self.assertIsNichts(obj)
 
     def test_send_recv_nowait_same_interpreter(self):
         interp = interpreters.create()
@@ -316,7 +316,7 @@ klasse TestSendRecv(TestBase):
         default = object()
         rch, sch = channels.create()
         obj1 = rch.recv_nowait(default)
-        sch.send_nowait(None)
+        sch.send_nowait(Nichts)
         sch.send_nowait(1)
         sch.send_nowait(b'spam')
         sch.send_nowait(b'eggs')
@@ -327,7 +327,7 @@ klasse TestSendRecv(TestBase):
         obj6 = rch.recv_nowait(default)
 
         self.assertIs(obj1, default)
-        self.assertIs(obj2, None)
+        self.assertIs(obj2, Nichts)
         self.assertEqual(obj3, 1)
         self.assertEqual(obj4, b'spam')
         self.assertEqual(obj5, b'eggs')
@@ -335,12 +335,12 @@ klasse TestSendRecv(TestBase):
 
     def test_send_buffer(self):
         buf = bytearray(b'spamspamspam')
-        obj = None
+        obj = Nichts
         rch, sch = channels.create()
 
         def f():
             nonlocal obj
-            while True:
+            while Wahr:
                 try:
                     obj = rch.recv()
                     break
@@ -377,7 +377,7 @@ klasse TestSendRecv(TestBase):
         self.assertEqual(obj, buf)
 
     def test_send_cleared_with_subinterpreter(self):
-        def common(rch, sch, unbound=None, presize=0):
+        def common(rch, sch, unbound=Nichts, presize=0):
             wenn not unbound:
                 extraargs = ''
             sowenn unbound is channels.UNBOUND:
@@ -481,7 +481,7 @@ klasse TestSendRecv(TestBase):
         # If we don't associate the main interpreter with the channel
         # then the channel will be automatically closed when interp
         # is destroyed.
-        sch.send_nowait(None)
+        sch.send_nowait(Nichts)
         rch.recv()
         self.assertEqual(_channels.get_count(rch.id), 0)
 

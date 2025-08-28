@@ -24,7 +24,7 @@ klasse Index:
 # `Py_`-prefixed API. They should behave the same in Python
 
 def _make_test_object(cls):
-    return cls(False,  # T_BOOL
+    return cls(Falsch,  # T_BOOL
                1,      # T_BYTE
                2,      # T_UBYTE
                3,      # T_SHORT
@@ -47,26 +47,26 @@ klasse ReadWriteTests:
     def setUp(self):
         self.ts = _make_test_object(self.cls)
 
-    def _test_write(self, name, value, expected=None):
-        wenn expected is None:
+    def _test_write(self, name, value, expected=Nichts):
+        wenn expected is Nichts:
             expected = value
         ts = self.ts
         setattr(ts, name, value)
         self.assertEqual(getattr(ts, name), expected)
 
-    def _test_warn(self, name, value, expected=None):
+    def _test_warn(self, name, value, expected=Nichts):
         ts = self.ts
         self.assertWarns(RuntimeWarning, setattr, ts, name, value)
-        wenn expected is not None:
+        wenn expected is not Nichts:
             self.assertEqual(getattr(ts, name), expected)
 
     def _test_overflow(self, name, value):
         ts = self.ts
         self.assertRaises(OverflowError, setattr, ts, name, value)
 
-    def _test_int_range(self, name, minval, maxval, *, hardlimit=None,
-                        indexlimit=None):
-        wenn hardlimit is None:
+    def _test_int_range(self, name, minval, maxval, *, hardlimit=Nichts,
+                        indexlimit=Nichts):
+        wenn hardlimit is Nichts:
             hardlimit = (minval, maxval)
         ts = self.ts
         self._test_write(name, minval)
@@ -83,7 +83,7 @@ klasse ReadWriteTests:
             self._test_warn(name, maxval+1, minval)
             self._test_warn(name, hardmaxval)
 
-        wenn indexlimit is False:
+        wenn indexlimit is Falsch:
             self.assertRaises(TypeError, setattr, ts, name, Index(minval))
             self.assertRaises(TypeError, setattr, ts, name, Index(maxval))
         sonst:
@@ -102,13 +102,13 @@ klasse ReadWriteTests:
 
     def test_bool(self):
         ts = self.ts
-        ts.T_BOOL = True
-        self.assertIs(ts.T_BOOL, True)
-        ts.T_BOOL = False
-        self.assertIs(ts.T_BOOL, False)
+        ts.T_BOOL = Wahr
+        self.assertIs(ts.T_BOOL, Wahr)
+        ts.T_BOOL = Falsch
+        self.assertIs(ts.T_BOOL, Falsch)
         self.assertRaises(TypeError, setattr, ts, 'T_BOOL', 1)
         self.assertRaises(TypeError, setattr, ts, 'T_BOOL', 0)
-        self.assertRaises(TypeError, setattr, ts, 'T_BOOL', None)
+        self.assertRaises(TypeError, setattr, ts, 'T_BOOL', Nichts)
 
     def test_byte(self):
         self._test_int_range('T_BYTE', CHAR_MIN, CHAR_MAX,
@@ -134,7 +134,7 @@ klasse ReadWriteTests:
                              hardlimit=(LONG_MIN, ULONG_MAX))
 
     def test_py_ssize_t(self):
-        self._test_int_range('T_PYSSIZET', PY_SSIZE_T_MIN, PY_SSIZE_T_MAX, indexlimit=False)
+        self._test_int_range('T_PYSSIZET', PY_SSIZE_T_MIN, PY_SSIZE_T_MAX, indexlimit=Falsch)
 
     def test_longlong(self):
         self._test_int_range('T_LONGLONG', LLONG_MIN, LLONG_MAX)
@@ -155,7 +155,7 @@ klasse ReadWriteTests:
 
         # issue8014: this produced 'bad argument to internal function'
         # internal error
-        fuer nonint in None, 3.2j, "full of eels", {}, []:
+        fuer nonint in Nichts, 3.2j, "full of eels", {}, []:
             fuer attr in integer_attributes:
                 self.assertRaises(TypeError, setattr, ts, attr, nonint)
 

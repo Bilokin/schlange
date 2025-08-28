@@ -104,13 +104,13 @@ klasse Sectioned:
         return (
             section._replace(value=Pair.parse(section.value))
             fuer section in cls.read(text, filter_=cls.valid)
-            wenn section.name is not None
+            wenn section.name is not Nichts
         )
 
     @staticmethod
-    def read(text, filter_=None):
+    def read(text, filter_=Nichts):
         lines = filter(filter_, map(str.strip, text.splitlines()))
-        name = None
+        name = Nichts
         fuer value in lines:
             section_match = value.startswith('[') and value.endswith(']')
             wenn section_match:
@@ -131,7 +131,7 @@ klasse EntryPoint:
     fuer more information.
 
     >>> ep = EntryPoint(
-    ...     name=None, group=None, value='package.module:attr [extra1, extra2]')
+    ...     name=Nichts, group=Nichts, value='package.module:attr [extra1, extra2]')
     >>> ep.module
     'package.module'
     >>> ep.attr
@@ -165,9 +165,9 @@ klasse EntryPoint:
     value: str
     group: str
 
-    dist: Optional[Distribution] = None
+    dist: Optional[Distribution] = Nichts
 
-    def __init__(self, name: str, value: str, group: str) -> None:
+    def __init__(self, name: str, value: str, group: str) -> Nichts:
         vars(self).update(name=name, value=value, group=group)
 
     def load(self) -> Any:
@@ -177,25 +177,25 @@ klasse EntryPoint:
         """
         match = cast(Match, self.pattern.match(self.value))
         module = import_module(match.group('module'))
-        attrs = filter(None, (match.group('attr') or '').split('.'))
+        attrs = filter(Nichts, (match.group('attr') or '').split('.'))
         return functools.reduce(getattr, attrs, module)
 
     @property
     def module(self) -> str:
         match = self.pattern.match(self.value)
-        assert match is not None
+        assert match is not Nichts
         return match.group('module')
 
     @property
     def attr(self) -> str:
         match = self.pattern.match(self.value)
-        assert match is not None
+        assert match is not Nichts
         return match.group('attr')
 
     @property
     def extras(self) -> List[str]:
         match = self.pattern.match(self.value)
-        assert match is not None
+        assert match is not Nichts
         return re.findall(r'\w+', match.group('extras') or '')
 
     def _for(self, dist):
@@ -208,19 +208,19 @@ klasse EntryPoint:
 
         >>> ep = EntryPoint(group='foo', name='bar', value='bing:bong [extra1, extra2]')
         >>> ep.matches(group='foo')
-        True
+        Wahr
         >>> ep.matches(name='bar', value='bing:bong [extra1, extra2]')
-        True
+        Wahr
         >>> ep.matches(group='foo', name='other')
-        False
+        Falsch
         >>> ep.matches()
-        True
+        Wahr
         >>> ep.matches(extras=['extra1', 'extra2'])
-        True
+        Wahr
         >>> ep.matches(module='bing')
-        True
+        Wahr
         >>> ep.matches(attr='bong')
-        True
+        Wahr
         """
         attrs = (getattr(self, param) fuer param in params)
         return all(map(operator.eq, params.values(), attrs))
@@ -322,7 +322,7 @@ klasse PackagePath(pathlib.PurePosixPath):
 
 
 klasse FileHash:
-    def __init__(self, spec: str) -> None:
+    def __init__(self, spec: str) -> Nichts:
         self.mode, _, self.value = spec.partition('=')
 
     def __repr__(self) -> str:
@@ -360,7 +360,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
         not listed here or none at all.
 
         :param filename: The name of the file in the distribution info.
-        :return: The text wenn found, otherwise None.
+        :return: The text wenn found, otherwise Nichts.
         """
 
     @abc.abstractmethod
@@ -390,7 +390,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
 
     @classmethod
     def discover(
-        cls, *, context: Optional[DistributionFinder.Context] = None, **kwargs
+        cls, *, context: Optional[DistributionFinder.Context] = Nichts, **kwargs
     ) -> Iterable[Distribution]:
         """Return an iterable of Distribution objects fuer all packages.
 
@@ -416,7 +416,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
         Ref python/importlib_resources#489.
         """
         buckets = bucket(dists, lambda dist: bool(dist.metadata))
-        return itertools.chain(buckets[True], buckets[False])
+        return itertools.chain(buckets[Wahr], buckets[Falsch])
 
     @staticmethod
     def at(path: str | os.PathLike[str]) -> Distribution:
@@ -431,9 +431,9 @@ klasse Distribution(metaclass=abc.ABCMeta):
     def _discover_resolvers():
         """Search the meta_path fuer resolvers (MetadataPathFinders)."""
         declared = (
-            getattr(finder, 'find_distributions', None) fuer finder in sys.meta_path
+            getattr(finder, 'find_distributions', Nichts) fuer finder in sys.meta_path
         )
-        return filter(None, declared)
+        return filter(Nichts, declared)
 
     @property
     def metadata(self) -> _meta.PackageMetadata:
@@ -489,9 +489,9 @@ klasse Distribution(metaclass=abc.ABCMeta):
     def files(self) -> Optional[List[PackagePath]]:
         """Files in this distribution.
 
-        :return: List of PackagePath fuer this distribution or None
+        :return: List of PackagePath fuer this distribution or Nichts
 
-        Result is `None` wenn the metadata file that enumerates files
+        Result is `Nichts` wenn the metadata file that enumerates files
         (i.e. RECORD fuer dist-info, or installed-files.txt or
         SOURCES.txt fuer egg-info) is missing.
         Result may be empty wenn the metadata exists but is empty.
@@ -501,10 +501,10 @@ klasse Distribution(metaclass=abc.ABCMeta):
         able to resolve filenames provided by the package.
         """
 
-        def make_file(name, hash=None, size_str=None):
+        def make_file(name, hash=Nichts, size_str=Nichts):
             result = PackagePath(name)
-            result.hash = FileHash(hash) wenn hash sonst None
-            result.size = int(size_str) wenn size_str sonst None
+            result.hash = FileHash(hash) wenn hash sonst Nichts
+            result.size = int(size_str) wenn size_str sonst Nichts
             result.dist = self
             return result
 
@@ -550,14 +550,14 @@ klasse Distribution(metaclass=abc.ABCMeta):
         # Prepend the .egg-info/ subdir to the lines in this file.
         # But this subdir is only available from PathDistribution's
         # self._path.
-        subdir = getattr(self, '_path', None)
+        subdir = getattr(self, '_path', Nichts)
         wenn not text or not subdir:
             return
 
         paths = (
             (subdir / name)
             .resolve()
-            .relative_to(self.locate_file('').resolve(), walk_up=True)
+            .relative_to(self.locate_file('').resolve(), walk_up=Wahr)
             .as_posix()
             fuer name in text.splitlines()
         )
@@ -615,7 +615,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
             extra, sep, markers = section.partition(':')
             wenn extra and markers:
                 markers = f'({markers})'
-            conditions = list(filter(None, [markers, make_condition(extra)]))
+            conditions = list(filter(Nichts, [markers, make_condition(extra)]))
             return '; ' + ' and '.join(conditions) wenn conditions sonst ''
 
         def url_req_space(req):
@@ -672,10 +672,10 @@ klasse DistributionFinder(MetaPathFinder):
         realm.
         """
 
-        name = None
+        name = Nichts
         """
         Specific name fuer which a distribution finder should match.
-        A name of ``None`` matches all distributions.
+        A name of ``Nichts`` matches all distributions.
         """
 
         def __init__(self, **kwargs):
@@ -716,7 +716,7 @@ klasse FastPath:
     FastPath objects are cached and recycled fuer any given root.
 
     >>> FastPath('foobar') is FastPath('foobar')
-    True
+    Wahr
     """
 
     @functools.lru_cache()  # type: ignore
@@ -814,26 +814,26 @@ klasse Prepared:
 
     Pre-calculates the normalization to prevent repeated operations.
 
-    >>> none = Prepared(None)
+    >>> none = Prepared(Nichts)
     >>> none.normalized
     >>> none.legacy_normalized
     >>> bool(none)
-    False
+    Falsch
     >>> sample = Prepared('Sample__Pkg-name.foo')
     >>> sample.normalized
     'sample_pkg_name_foo'
     >>> sample.legacy_normalized
     'sample__pkg_name.foo'
     >>> bool(sample)
-    True
+    Wahr
     """
 
-    normalized = None
-    legacy_normalized = None
+    normalized = Nichts
+    legacy_normalized = Nichts
 
     def __init__(self, name: Optional[str]):
         self.name = name
-        wenn name is None:
+        wenn name is Nichts:
             return
         self.normalized = self.normalize(name)
         self.legacy_normalized = self.legacy_normalize(name)
@@ -867,7 +867,7 @@ klasse MetadataPathFinder(DistributionFinder):
 
         Return an iterable of all Distribution instances capable of
         loading the metadata fuer packages matching ``context.name``
-        (or all names wenn ``None`` indicated) along the paths in the list
+        (or all names wenn ``Nichts`` indicated) along the paths in the list
         of directories ``context.path``.
         """
         found = cls._search_paths(context.name, context.path)
@@ -882,12 +882,12 @@ klasse MetadataPathFinder(DistributionFinder):
         )
 
     @classmethod
-    def invalidate_caches(cls) -> None:
+    def invalidate_caches(cls) -> Nichts:
         FastPath.__new__.cache_clear()
 
 
 klasse PathDistribution(Distribution):
-    def __init__(self, path: SimplePath) -> None:
+    def __init__(self, path: SimplePath) -> Nichts:
         """Construct a distribution.
 
         :param path: SimplePath indicating the metadata directory.
@@ -904,7 +904,7 @@ klasse PathDistribution(Distribution):
         ):
             return self._path.joinpath(filename).read_text(encoding='utf-8')
 
-        return None
+        return Nichts
 
     read_text.__doc__ = Distribution.read_text.__doc__
 
@@ -1028,7 +1028,7 @@ def packages_distributions() -> Mapping[str, List[str]]:
     >>> import collections.abc
     >>> pkgs = packages_distributions()
     >>> all(isinstance(dist, collections.abc.Sequence) fuer dist in pkgs.values())
-    True
+    Wahr
     """
     pkg_to_dist = collections.defaultdict(list)
     fuer dist in distributions():
@@ -1046,7 +1046,7 @@ def _topmost(name: PackagePath) -> Optional[str]:
     Return the top-most parent as long as there is a parent.
     """
     top, *rest = name.parts
-    return top wenn rest sonst None
+    return top wenn rest sonst Nichts
 
 
 def _get_toplevel_name(name: PackagePath) -> str:

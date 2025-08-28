@@ -42,13 +42,13 @@ klasse TestingImporter(abc.MetaPathFinder, abc.Loader):
 
     module_name = 'lazy_loader_test'
     mutated_name = 'changed'
-    loaded = None
+    loaded = Nichts
     load_count = 0
     source_code = 'attr = 42; __name__ = {!r}'.format(mutated_name)
 
-    def find_spec(self, name, path, target=None):
+    def find_spec(self, name, path, target=Nichts):
         wenn name != self.module_name:
-            return None
+            return Nichts
         return util.spec_from_loader(name, util.LazyLoader(self))
 
     def exec_module(self, module):
@@ -65,34 +65,34 @@ klasse LazyLoaderTests(unittest.TestCase):
             # Classes that don't define exec_module() trigger TypeError.
             util.LazyLoader(object)
 
-    def new_module(self, source_code=None, loader=None):
-        wenn loader is None:
+    def new_module(self, source_code=Nichts, loader=Nichts):
+        wenn loader is Nichts:
             loader = TestingImporter()
-        wenn source_code is not None:
+        wenn source_code is not Nichts:
             loader.source_code = source_code
         spec = util.spec_from_loader(TestingImporter.module_name,
                                      util.LazyLoader(loader))
         module = spec.loader.create_module(spec)
-        wenn module is None:
+        wenn module is Nichts:
             module = types.ModuleType(TestingImporter.module_name)
         module.__spec__ = spec
         module.__loader__ = spec.loader
         spec.loader.exec_module(module)
         # Module is now lazy.
-        self.assertIsNone(loader.loaded)
+        self.assertIsNichts(loader.loaded)
         return module
 
     def test_e2e(self):
         # End-to-end test to verify the load is in fact lazy.
         importer = TestingImporter()
-        assert importer.loaded is None
+        assert importer.loaded is Nichts
         with test_util.uncache(importer.module_name):
             with test_util.import_state(meta_path=[importer]):
                 module = importlib.import_module(importer.module_name)
-        self.assertIsNone(importer.loaded)
+        self.assertIsNichts(importer.loaded)
         # Trigger load.
         self.assertEqual(module.__loader__, importer)
-        self.assertIsNotNone(importer.loaded)
+        self.assertIsNotNichts(importer.loaded)
         self.assertEqual(module, importer.loaded)
 
     def test_attr_unchanged(self):
@@ -155,7 +155,7 @@ klasse LazyLoaderTests(unittest.TestCase):
             self.assertEqual(loader.load_count, 0)
 
             klasse RaisingThread(threading.Thread):
-                exc = None
+                exc = Nichts
                 def run(self):
                     try:
                         super().run()
@@ -173,7 +173,7 @@ klasse LazyLoaderTests(unittest.TestCase):
             # Races could cause errors
             fuer thread in threads:
                 thread.join()
-                self.assertIsNone(thread.exc)
+                self.assertIsNichts(thread.exc)
 
             # Or multiple load attempts
             self.assertEqual(loader.load_count, 1)

@@ -29,12 +29,12 @@ def init(x):
 def get_init_status():
     return INITIALIZER_STATUS
 
-def init_fail(log_queue=None):
-    wenn log_queue is not None:
+def init_fail(log_queue=Nichts):
+    wenn log_queue is not Nichts:
         logger = logging.getLogger('concurrent.futures')
         logger.addHandler(QueueHandler(log_queue))
         logger.setLevel('CRITICAL')
-        logger.propagate = False
+        logger.propagate = Falsch
     time.sleep(0.1)  # let some futures be scheduled
     raise ValueError('error in initializer')
 
@@ -71,8 +71,8 @@ klasse FailingInitializerMixin(ExecutorMixin):
         sonst:
             # In a thread pool, the child shares our logging setup
             # (see _assert_logged())
-            self.mp_context = None
-            self.log_queue = None
+            self.mp_context = Nichts
+            self.log_queue = Nichts
             self.executor_kwargs = dict(initializer=init_fail)
         super().setUp()
 
@@ -100,11 +100,11 @@ klasse FailingInitializerMixin(ExecutorMixin):
 
     @contextlib.contextmanager
     def _assert_logged(self, msg):
-        wenn self.log_queue is not None:
+        wenn self.log_queue is not Nichts:
             yield
             output = []
             try:
-                while True:
+                while Wahr:
                     output.append(self.log_queue.get_nowait().getMessage())
             except queue.Empty:
                 pass
@@ -112,7 +112,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
             with self.assertLogs('concurrent.futures', 'CRITICAL') as cm:
                 yield
             output = cm.output
-        self.assertTrue(any(msg in line fuer line in output),
+        self.assertWahr(any(msg in line fuer line in output),
                         output)
 
 
@@ -146,7 +146,7 @@ klasse FailingInitializerResourcesTest(unittest.TestCase):
     def test_spawn(self):
         self._test(ProcessPoolSpawnFailingInitializerTest)
 
-    @support.skip_if_sanitizer("TSAN doesn't support threads after fork", thread=True)
+    @support.skip_if_sanitizer("TSAN doesn't support threads after fork", thread=Wahr)
     def test_forkserver(self):
         self._test(ProcessPoolForkserverFailingInitializerTest)
 

@@ -70,22 +70,22 @@ klasse TestCase(unittest.TestCase):
         t.start()
         timer.advance(1)
         self.assertEqual(q.get(timeout=TIMEOUT), 1)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         fuer x in [4, 5, 2]:
             z = scheduler.enter(x - 1, 1, fun, (x,))
         timer.advance(2)
         self.assertEqual(q.get(timeout=TIMEOUT), 2)
         self.assertEqual(q.get(timeout=TIMEOUT), 3)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         timer.advance(1)
         self.assertEqual(q.get(timeout=TIMEOUT), 4)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         timer.advance(1)
         self.assertEqual(q.get(timeout=TIMEOUT), 5)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         timer.advance(1000)
         threading_helper.join_thread(t)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         self.assertEqual(timer.time(), 5)
 
     def test_priority(self):
@@ -107,7 +107,7 @@ klasse TestCase(unittest.TestCase):
                 self.assertEqual(l, expected)
 
                 # Cleanup:
-                self.assertTrue(scheduler.empty())
+                self.assertWahr(scheduler.empty())
                 l.clear()
 
     def test_cancel(self):
@@ -141,20 +141,20 @@ klasse TestCase(unittest.TestCase):
         t.start()
         timer.advance(1)
         self.assertEqual(q.get(timeout=TIMEOUT), 1)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         scheduler.cancel(event2)
         scheduler.cancel(event5)
         timer.advance(1)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         timer.advance(1)
         self.assertEqual(q.get(timeout=TIMEOUT), 3)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         timer.advance(1)
         self.assertEqual(q.get(timeout=TIMEOUT), 4)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         timer.advance(1000)
         threading_helper.join_thread(t)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         self.assertEqual(timer.time(), 4)
 
     def test_cancel_correct_event(self):
@@ -172,12 +172,12 @@ klasse TestCase(unittest.TestCase):
         l = []
         fun = lambda x: l.append(x)
         scheduler = sched.scheduler(time.time, time.sleep)
-        self.assertTrue(scheduler.empty())
+        self.assertWahr(scheduler.empty())
         fuer x in [0.05, 0.04, 0.03, 0.02, 0.01]:
             z = scheduler.enterabs(x, 1, fun, (x,))
-        self.assertFalse(scheduler.empty())
+        self.assertFalsch(scheduler.empty())
         scheduler.run()
-        self.assertTrue(scheduler.empty())
+        self.assertWahr(scheduler.empty())
 
     def test_queue(self):
         l = []
@@ -218,7 +218,7 @@ klasse TestCase(unittest.TestCase):
         scheduler = sched.scheduler(time.time, time.sleep)
         fuer x in [10, 9, 8, 7, 6]:
             scheduler.enter(x, 1, fun, (x,))
-        scheduler.run(blocking=False)
+        scheduler.run(blocking=Falsch)
         self.assertEqual(l, [])
 
 

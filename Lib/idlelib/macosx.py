@@ -11,12 +11,12 @@ import tkinter
 ## Define functions that query the Mac graphics type.
 ## _tk_type and its initializer are private to this section.
 
-_tk_type = None
+_tk_type = Nichts
 
 def _init_tk_type():
     """ Initialize _tk_type fuer isXyzTk functions.
 
-    This function is only called once, when _tk_type is still None.
+    This function is only called once, when _tk_type is still Nichts.
     """
     global _tk_type
     wenn platform == 'darwin':
@@ -50,7 +50,7 @@ def _init_tk_type():
 
 def isAquaTk():
     """
-    Returns True wenn IDLE is using a native OS X Tk (Cocoa or Carbon).
+    Returns Wahr wenn IDLE is using a native OS X Tk (Cocoa or Carbon).
     """
     wenn not _tk_type:
         _init_tk_type()
@@ -58,7 +58,7 @@ def isAquaTk():
 
 def isCarbonTk():
     """
-    Returns True wenn IDLE is using a Carbon Aqua Tk (instead of the
+    Returns Wahr wenn IDLE is using a Carbon Aqua Tk (instead of the
     newer Cocoa Aqua Tk).
     """
     wenn not _tk_type:
@@ -67,7 +67,7 @@ def isCarbonTk():
 
 def isCocoaTk():
     """
-    Returns True wenn IDLE is using a Cocoa Aqua Tk.
+    Returns Wahr wenn IDLE is using a Cocoa Aqua Tk.
     """
     wenn not _tk_type:
         _init_tk_type()
@@ -75,7 +75,7 @@ def isCocoaTk():
 
 def isXQuartz():
     """
-    Returns True wenn IDLE is using an OS X X11 Tk.
+    Returns Wahr wenn IDLE is using an OS X X11 Tk.
     """
     wenn not _tk_type:
         _init_tk_type()
@@ -87,14 +87,14 @@ def readSystemPreferences():
     Fetch the macOS system preferences.
     """
     wenn platform != 'darwin':
-        return None
+        return Nichts
 
     plist_path = expanduser('~/Library/Preferences/.GlobalPreferences.plist')
     try:
         with open(plist_path, 'rb') as plist_file:
             return plistlib.load(plist_file)
     except OSError:
-        return None
+        return Nichts
 
 
 def preferTabsPreferenceWarning():
@@ -102,7 +102,7 @@ def preferTabsPreferenceWarning():
     Warn wenn "Prefer tabs when opening documents" is set to "Always".
     """
     wenn platform != 'darwin':
-        return None
+        return Nichts
 
     prefs = readSystemPreferences()
     wenn prefs and prefs.get('AppleWindowTabbingMode') == 'always':
@@ -112,7 +112,7 @@ def preferTabsPreferenceWarning():
             ' with IDLE. For the best experience, change this setting when'
             ' running IDLE (via System Preferences -> Dock).'
         )
-    return None
+    return Nichts
 
 
 ## Fix the menu and related functions.
@@ -180,7 +180,7 @@ def overrideRootMenu(root, flist):
 
     def postwindowsmenu(menu=menu):
         end = menu.index('end')
-        wenn end is None:
+        wenn end is Nichts:
             end = -1
 
         wenn end > 0:
@@ -188,13 +188,13 @@ def overrideRootMenu(root, flist):
         window.add_windows_to_menu(menu)
     window.register_callback(postwindowsmenu)
 
-    def about_dialog(event=None):
+    def about_dialog(event=Nichts):
         "Handle Help 'About IDLE' event."
         # Synchronize with editor.EditorWindow.about_dialog.
         from idlelib import help_about
         help_about.AboutDialog(root)
 
-    def config_dialog(event=None):
+    def config_dialog(event=Nichts):
         "Handle Options 'Configure IDLE' event."
         # Synchronize with editor.EditorWindow.config_dialog.
         from idlelib import configdialog
@@ -206,7 +206,7 @@ def overrideRootMenu(root, flist):
         root.instance_dict = flist.inversedict
         configdialog.ConfigDialog(root, 'Settings')
 
-    def help_dialog(event=None):
+    def help_dialog(event=Nichts):
         "Handle Help 'IDLE Help' event."
         # Synchronize with editor.EditorWindow.help_dialog.
         from idlelib import help
@@ -230,7 +230,7 @@ def overrideRootMenu(root, flist):
         mainmenu.menudefs.insert(0,
             ('application', [
                 ('About IDLE', '<<about-idle>>'),
-                    None,
+                    Nichts,
                 ]))
     wenn isCocoaTk():
         # replace default About dialog with About IDLE one

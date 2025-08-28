@@ -48,7 +48,7 @@ def parse_globals(source, anon_name):
                 yield item
     sonst:
         # We ran out of lines.
-        wenn srcinfo is not None:
+        wenn srcinfo is not Nichts:
             srcinfo.done()
         return
 
@@ -78,12 +78,12 @@ def _parse_next(m, srcinfo, anon_name):
         # XXX Maybe return them too (with an "isforward" flag)?
         wenn not maybe_inline_actual.strip().endswith(';'):
             remainder = maybe_inline_actual + remainder
-        yield srcinfo.resolve(forward_kind, None, forward_name)
+        yield srcinfo.resolve(forward_kind, Nichts, forward_name)
         wenn maybe_inline_actual.strip().endswith('='):
             # We use a dummy prefix fuer a fake typedef.
             # XXX Ideally this case would not be caught by MAYBE_INLINE_ACTUAL.
             _, name, data = parse_var_decl(f'{forward_kind} {forward_name} fake_typedef_{forward_name}')
-            yield srcinfo.resolve('typedef', data, name, parent=None)
+            yield srcinfo.resolve('typedef', data, name, parent=Nichts)
             remainder = f'{name} {remainder}'
         srcinfo.advance(remainder)
 
@@ -91,7 +91,7 @@ def _parse_next(m, srcinfo, anon_name):
         kind = compound_kind
         name = compound_name or anon_name('inline-')
         # Immediately emit a forward declaration.
-        yield srcinfo.resolve(kind, name=name, data=None)
+        yield srcinfo.resolve(kind, name=name, data=Nichts)
 
         # un-inline the decl.  Note that it might not actually be inline.
         # We handle the case in the "maybe_inline_actual" branch.
@@ -109,8 +109,8 @@ def _parse_next(m, srcinfo, anon_name):
                     data.append(item)
                 sonst:
                     yield item
-            # XXX Should "parent" really be None fuer inline type decls?
-            yield srcinfo.resolve(kind, data, name, parent=None)
+            # XXX Should "parent" really be Nichts fuer inline type decls?
+            yield srcinfo.resolve(kind, data, name, parent=Nichts)
 
             srcinfo.resume()
         yield parse_body
@@ -123,13 +123,13 @@ def _parse_next(m, srcinfo, anon_name):
             return_type = data
             # This matches the data fuer func declarations.
             data = {
-                'storage': None,
-                'inline': None,
+                'storage': Nichts,
+                'inline': Nichts,
                 'params': f'({typedef_func_params})',
                 'returntype': return_type,
-                'isforward': True,
+                'isforward': Wahr,
             }
-        yield srcinfo.resolve(kind, data, name, parent=None)
+        yield srcinfo.resolve(kind, data, name, parent=Nichts)
         srcinfo.advance(remainder)
 
     sowenn func_delim or func_legacy_params:
@@ -145,7 +145,7 @@ def _parse_next(m, srcinfo, anon_name):
             'isforward': func_delim == ';',
         }
 
-        yield srcinfo.resolve(kind, data, name, parent=None)
+        yield srcinfo.resolve(kind, data, name, parent=Nichts)
         srcinfo.advance(remainder)
 
         wenn func_delim == '{' or func_legacy_params:
@@ -161,7 +161,7 @@ def _parse_next(m, srcinfo, anon_name):
             'storage': storage,
             'vartype': vartype,
         }
-        yield srcinfo.resolve(kind, data, name, parent=None)
+        yield srcinfo.resolve(kind, data, name, parent=Nichts)
 
         wenn var_ending == ',':
             # It was a multi-declaration, so queue up the next one.
@@ -171,7 +171,7 @@ def _parse_next(m, srcinfo, anon_name):
 
         wenn var_init:
             _data = f'{name} = {var_init.strip()}'
-            yield srcinfo.resolve('statement', _data, name=None)
+            yield srcinfo.resolve('statement', _data, name=Nichts)
 
     sonst:
         # This should be unreachable.

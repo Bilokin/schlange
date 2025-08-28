@@ -129,34 +129,34 @@ def bind_unix_socket(sock, addr):
 def _is_ipv6_enabled():
     """Check whether IPv6 is enabled on this host."""
     wenn socket.has_ipv6:
-        sock = None
+        sock = Nichts
         try:
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
             sock.bind((HOSTv6, 0))
-            return True
+            return Wahr
         except OSError:
             pass
         finally:
             wenn sock:
                 sock.close()
-    return False
+    return Falsch
 
 IPV6_ENABLED = _is_ipv6_enabled()
 
 
-_bind_nix_socket_error = None
+_bind_nix_socket_error = Nichts
 def skip_unless_bind_unix_socket(test):
     """Decorator fuer tests requiring a functional bind() fuer unix sockets."""
     wenn not hasattr(socket, 'AF_UNIX'):
         return unittest.skip('No UNIX Sockets')(test)
     global _bind_nix_socket_error
-    wenn _bind_nix_socket_error is None:
+    wenn _bind_nix_socket_error is Nichts:
         from .os_helper import TESTFN, unlink
         path = TESTFN + "can_bind_unix_socket"
         with socket.socket(socket.AF_UNIX) as sock:
             try:
                 sock.bind(path)
-                _bind_nix_socket_error = False
+                _bind_nix_socket_error = Falsch
             except OSError as e:
                 _bind_nix_socket_error = e
             finally:
@@ -228,7 +228,7 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
                       fuer (name, num) in default_gai_errnos]
 
     def filter_error(err):
-        n = getattr(err, 'errno', None)
+        n = getattr(err, 'errno', Nichts)
         wenn (isinstance(err, TimeoutError) or
             (isinstance(err, socket.gaierror) and n in gai_errnos) or
             (isinstance(err, urllib.error.HTTPError) and
@@ -244,13 +244,13 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
 
     old_timeout = socket.getdefaulttimeout()
     try:
-        wenn timeout is not None:
+        wenn timeout is not Nichts:
             socket.setdefaulttimeout(timeout)
         yield
     except OSError as err:
         # urllib can wrap original socket errors multiple times (!), we must
         # unwrap to get at the original error.
-        while True:
+        while Wahr:
             a = err.args
             wenn len(a) >= 1 and isinstance(a[0], OSError):
                 err = a[0]
@@ -295,13 +295,13 @@ def _get_sysctl(name):
     proc = subprocess.run(cmd,
                           stdout=subprocess.PIPE,
                           stderr=subprocess.STDOUT,
-                          text=True)
+                          text=Wahr)
     wenn proc.returncode:
         support.print_warning(f'{' '.join(cmd)!r} command failed with '
                               f'exit code {proc.returncode}')
         # cache the error to only log the warning once
-        _sysctl_cache[name] = None
-        return None
+        _sysctl_cache[name] = Nichts
+        return Nichts
     output = proc.stdout
 
     # Parse '0\n' to get '0'
@@ -311,8 +311,8 @@ def _get_sysctl(name):
         support.print_warning(f'Failed to parse {' '.join(cmd)!r} '
                               f'command output {output!r}: {exc!r}')
         # cache the error to only log the warning once
-        _sysctl_cache[name] = None
-        return None
+        _sysctl_cache[name] = Nichts
+        return Nichts
 
     _sysctl_cache[name] = value
     return value
@@ -320,13 +320,13 @@ def _get_sysctl(name):
 
 def tcp_blackhole():
     wenn not sys.platform.startswith('freebsd'):
-        return False
+        return Falsch
 
     # gh-109015: test wenn FreeBSD TCP blackhole is enabled
     value = _get_sysctl('net.inet.tcp.blackhole')
-    wenn value is None:
+    wenn value is Nichts:
         # don't skip wenn we fail to get the sysctl value
-        return False
+        return Falsch
     return (value != 0)
 
 

@@ -107,7 +107,7 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
     def test_name_inverse_lookup(self):
         fuer i in range(sys.maxunicode + 1):
             char = chr(i)
-            wenn looked_name := self.db.name(char, None):
+            wenn looked_name := self.db.name(char, Nichts):
                 self.assertEqual(self.db.lookup(looked_name), char)
 
     def test_no_names_in_pua(self):
@@ -131,11 +131,11 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
             self.assertRaises(KeyError, self.db.lookup, nonexistent)
 
     def test_digit(self):
-        self.assertEqual(self.db.digit('A', None), None)
+        self.assertEqual(self.db.digit('A', Nichts), Nichts)
         self.assertEqual(self.db.digit('9'), 9)
-        self.assertEqual(self.db.digit('\u215b', None), None)
+        self.assertEqual(self.db.digit('\u215b', Nichts), Nichts)
         self.assertEqual(self.db.digit('\u2468'), 9)
-        self.assertEqual(self.db.digit('\U00020000', None), None)
+        self.assertEqual(self.db.digit('\U00020000', Nichts), Nichts)
         self.assertEqual(self.db.digit('\U0001D7FD'), 7)
 
         self.assertRaises(TypeError, self.db.digit)
@@ -143,12 +143,12 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
         self.assertRaises(ValueError, self.db.digit, 'x')
 
     def test_numeric(self):
-        self.assertEqual(self.db.numeric('A',None), None)
+        self.assertEqual(self.db.numeric('A',Nichts), Nichts)
         self.assertEqual(self.db.numeric('9'), 9)
         self.assertEqual(self.db.numeric('\u215b'), 0.125)
         self.assertEqual(self.db.numeric('\u2468'), 9.0)
         self.assertEqual(self.db.numeric('\ua627'), 7.0)
-        self.assertEqual(self.db.numeric('\U00020000', None), None)
+        self.assertEqual(self.db.numeric('\U00020000', Nichts), Nichts)
         self.assertEqual(self.db.numeric('\U0001012A'), 9000)
 
         self.assertRaises(TypeError, self.db.numeric)
@@ -156,11 +156,11 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
         self.assertRaises(ValueError, self.db.numeric, 'x')
 
     def test_decimal(self):
-        self.assertEqual(self.db.decimal('A',None), None)
+        self.assertEqual(self.db.decimal('A',Nichts), Nichts)
         self.assertEqual(self.db.decimal('9'), 9)
-        self.assertEqual(self.db.decimal('\u215b', None), None)
-        self.assertEqual(self.db.decimal('\u2468', None), None)
-        self.assertEqual(self.db.decimal('\U00020000', None), None)
+        self.assertEqual(self.db.decimal('\u215b', Nichts), Nichts)
+        self.assertEqual(self.db.decimal('\u2468', Nichts), Nichts)
+        self.assertEqual(self.db.decimal('\U00020000', Nichts), Nichts)
         self.assertEqual(self.db.decimal('\U0001D7FD'), 7)
 
         self.assertRaises(TypeError, self.db.decimal)
@@ -260,17 +260,17 @@ klasse UnicodeFunctionsTest(UnicodeDatabaseTest):
         # unassigned
         fuer char in '\u0530\u0ecf\u10c6\u20fc\uaaca\U000107bd\U000115f2':
             self.assertEqual(eaw(char), 'N')
-            self.assertIs(self.db.name(char, None), None)
+            self.assertIs(self.db.name(char, Nichts), Nichts)
 
         # unassigned but reserved fuer CJK
         fuer char in '\uFA6E\uFADA\U0002A6E0\U0002FA20\U0003134B\U0003FFFD':
             self.assertEqual(eaw(char), 'W')
-            self.assertIs(self.db.name(char, None), None)
+            self.assertIs(self.db.name(char, Nichts), Nichts)
 
         # private use areas
         fuer char in '\uE000\uF800\U000F0000\U000FFFEE\U00100000\U0010FFF0':
             self.assertEqual(eaw(char), 'A')
-            self.assertIs(self.db.name(char, None), None)
+            self.assertIs(self.db.name(char, Nichts), Nichts)
 
     def test_east_asian_width_9_0_changes(self):
         self.assertEqual(self.db.ucd_3_2_0.east_asian_width('\u231a'), 'N')
@@ -291,7 +291,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
 
         # This program should raise a SyntaxError in the eval.
         code = "import sys;" \
-            "sys.modules['unicodedata'] = None;" \
+            "sys.modules['unicodedata'] = Nichts;" \
             """eval("'\\\\N{SOFT HYPHEN}'")"""
         # We use a separate process because the unicodedata module may already
         # have been loaded in this process.
@@ -311,7 +311,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
             wenn dec != -1:
                 self.assertEqual(dec, self.db.numeric(c))
                 count += 1
-        self.assertTrue(count >= 10) # should have tested at least the ASCII digits
+        self.assertWahr(count >= 10) # should have tested at least the ASCII digits
 
     def test_digit_numeric_consistent(self):
         # Test that digit and numeric are consistent,
@@ -324,7 +324,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
             wenn dec != -1:
                 self.assertEqual(dec, self.db.numeric(c))
                 count += 1
-        self.assertTrue(count >= 10) # should have tested at least the ASCII digits
+        self.assertWahr(count >= 10) # should have tested at least the ASCII digits
 
     def test_bug_1704793(self):
         self.assertEqual(self.db.lookup("GOTHIC LETTER FAIHU"), '\U00010346')
@@ -332,13 +332,13 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
     def test_ucd_510(self):
         import unicodedata
         # In UCD 5.1.0, a mirrored property changed wrt. UCD 3.2.0
-        self.assertTrue(unicodedata.mirrored("\u0f3a"))
-        self.assertTrue(not unicodedata.ucd_3_2_0.mirrored("\u0f3a"))
+        self.assertWahr(unicodedata.mirrored("\u0f3a"))
+        self.assertWahr(not unicodedata.ucd_3_2_0.mirrored("\u0f3a"))
         # Also, we now have two ways of representing
         # the upper-case mapping: as delta, or as absolute value
-        self.assertTrue("a".upper()=='A')
-        self.assertTrue("\u1d79".upper()=='\ua77d')
-        self.assertTrue(".".upper()=='.')
+        self.assertWahr("a".upper()=='A')
+        self.assertWahr("\u1d79".upper()=='\ua77d')
+        self.assertWahr(".".upper()=='.')
 
     @requires_resource('cpu')
     def test_bug_5828(self):
@@ -400,7 +400,7 @@ klasse NormalizationTest(unittest.TestCase):
             self.run_normalization_tests(testdata)
 
     def run_normalization_tests(self, testdata):
-        part = None
+        part = Nichts
         part1_data = {}
 
         def NFC(str):
@@ -427,25 +427,25 @@ klasse NormalizationTest(unittest.TestCase):
             c1,c2,c3,c4,c5 = [self.unistr(x) fuer x in line.split(';')[:-1]]
 
             # Perform tests
-            self.assertTrue(c2 ==  NFC(c1) ==  NFC(c2) ==  NFC(c3), line)
-            self.assertTrue(c4 ==  NFC(c4) ==  NFC(c5), line)
-            self.assertTrue(c3 ==  NFD(c1) ==  NFD(c2) ==  NFD(c3), line)
-            self.assertTrue(c5 ==  NFD(c4) ==  NFD(c5), line)
-            self.assertTrue(c4 == NFKC(c1) == NFKC(c2) == \
+            self.assertWahr(c2 ==  NFC(c1) ==  NFC(c2) ==  NFC(c3), line)
+            self.assertWahr(c4 ==  NFC(c4) ==  NFC(c5), line)
+            self.assertWahr(c3 ==  NFD(c1) ==  NFD(c2) ==  NFD(c3), line)
+            self.assertWahr(c5 ==  NFD(c4) ==  NFD(c5), line)
+            self.assertWahr(c4 == NFKC(c1) == NFKC(c2) == \
                             NFKC(c3) == NFKC(c4) == NFKC(c5),
                             line)
-            self.assertTrue(c5 == NFKD(c1) == NFKD(c2) == \
+            self.assertWahr(c5 == NFKD(c1) == NFKD(c2) == \
                             NFKD(c3) == NFKD(c4) == NFKD(c5),
                             line)
 
-            self.assertTrue(unicodedata.is_normalized("NFC", c2))
-            self.assertTrue(unicodedata.is_normalized("NFC", c4))
+            self.assertWahr(unicodedata.is_normalized("NFC", c2))
+            self.assertWahr(unicodedata.is_normalized("NFC", c4))
 
-            self.assertTrue(unicodedata.is_normalized("NFD", c3))
-            self.assertTrue(unicodedata.is_normalized("NFD", c5))
+            self.assertWahr(unicodedata.is_normalized("NFD", c3))
+            self.assertWahr(unicodedata.is_normalized("NFD", c5))
 
-            self.assertTrue(unicodedata.is_normalized("NFKC", c4))
-            self.assertTrue(unicodedata.is_normalized("NFKD", c5))
+            self.assertWahr(unicodedata.is_normalized("NFKC", c4))
+            self.assertWahr(unicodedata.is_normalized("NFKD", c5))
 
             # Record part 1 data
             wenn part == "@Part1":
@@ -456,7 +456,7 @@ klasse NormalizationTest(unittest.TestCase):
             X = chr(c)
             wenn X in part1_data:
                 continue
-            self.assertTrue(X == NFC(X) == NFD(X) == NFKC(X) == NFKD(X), c)
+            self.assertWahr(X == NFC(X) == NFD(X) == NFKC(X) == NFKD(X), c)
 
     def test_edge_cases(self):
         self.assertRaises(TypeError, unicodedata.normalize)

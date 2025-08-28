@@ -52,7 +52,7 @@ klasse TestXXLimited(CommonTests, unittest.TestCase):
         self.assertEqual(xxo.demo("abc"), "abc")
         self.assertEqual(xxo.demo(xxo), xxo)
         self.assertEqual(xxo.demo(other), other)
-        self.assertEqual(xxo.demo(0), None)
+        self.assertEqual(xxo.demo(0), Nichts)
 
     def test_error(self):
         with self.assertRaises(self.module.Error):
@@ -77,7 +77,7 @@ klasse TestXXLimited35(CommonTests, unittest.TestCase):
         xxo = self.module.Xxo()
         other = self.module.Xxo()
         self.assertEqual(xxo.demo("abc"), "abc")
-        self.assertEqual(xxo.demo(0), None)
+        self.assertEqual(xxo.demo(0), Nichts)
 
     def test_roj(self):
         # the roj function always fails

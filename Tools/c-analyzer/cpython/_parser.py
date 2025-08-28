@@ -358,10 +358,10 @@ MAX_SIZES = {
 
 
 def get_preprocessor(*,
-                     file_macros=None,
-                     file_includes=None,
-                     file_incldirs=None,
-                     file_same=None,
+                     file_macros=Nichts,
+                     file_includes=Nichts,
+                     file_incldirs=Nichts,
+                     file_same=Nichts,
                      **kwargs
                      ):
     macros = tuple(MACROS)
@@ -386,9 +386,9 @@ def get_preprocessor(*,
 
 
 def parse_file(filename, *,
-               match_kind=None,
-               ignore_exc=None,
-               log_err=None,
+               match_kind=Nichts,
+               ignore_exc=Nichts,
+               log_err=Nichts,
                ):
     get_file_preprocessor = get_preprocessor(
         ignore_exc=ignore_exc,
@@ -402,14 +402,14 @@ def parse_file(filename, *,
     )
 
 
-def parse_files(filenames=None, *,
-                match_kind=None,
-                ignore_exc=None,
-                log_err=None,
-                get_file_preprocessor=None,
+def parse_files(filenames=Nichts, *,
+                match_kind=Nichts,
+                ignore_exc=Nichts,
+                log_err=Nichts,
+                get_file_preprocessor=Nichts,
                 **file_kwargs
                 ):
-    wenn get_file_preprocessor is None:
+    wenn get_file_preprocessor is Nichts:
         get_file_preprocessor = get_preprocessor(
             ignore_exc=ignore_exc,
             log_err=log_err,

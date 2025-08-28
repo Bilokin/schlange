@@ -7,11 +7,11 @@ from test.support import (cpython_only, is_wasi, requires_limited_api, Py_DEBUG,
 try:
     import _testcapi
 except ImportError:
-    _testcapi = None
+    _testcapi = Nichts
 try:
     import _testlimitedcapi
 except ImportError:
-    _testlimitedcapi = None
+    _testlimitedcapi = Nichts
 import struct
 import collections
 import itertools
@@ -22,7 +22,7 @@ import types
 
 klasse BadStr(str):
     def __eq__(self, other):
-        return True
+        return Wahr
     def __hash__(self):
         # Guaranteed different hash
         return str.__hash__(self) ^ 3
@@ -55,7 +55,7 @@ klasse FunctionCalls(unittest.TestCase):
         fuer c in callables:
             fuer _ in range(1000):
                 try:
-                    c(None)
+                    c(Nichts)
                 except TypeError:
                     pass
         # BOOM!
@@ -74,7 +74,7 @@ klasse CFunctionCallsErrorMessages(unittest.TestCase):
 
     def test_varargs3(self):
         msg = r"^from_bytes\(\) takes at most 2 positional arguments \(3 given\)"
-        self.assertRaisesRegex(TypeError, msg, int.from_bytes, b'a', 'little', False)
+        self.assertRaisesRegex(TypeError, msg, int.from_bytes, b'a', 'little', Falsch)
 
     def test_varargs1min(self):
         msg = (r"get\(\) takes at least 1 argument \(0 given\)|"
@@ -251,7 +251,7 @@ klasse CFunctionCallsErrorMessages(unittest.TestCase):
         self.assertRaisesRegex(TypeError, msg, mod)
 
 
-@unittest.skipIf(_testcapi is None, "requires _testcapi")
+@unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
 klasse TestCallingConventions(unittest.TestCase):
     """Test calling using various C calling conventions (METH_*) from Python
 
@@ -418,7 +418,7 @@ klasse TestCallingConventionsStatic(TestCallingConventions):
 
     def setUp(self):
         self.obj = _testcapi.MethStatic()
-        self.expected_self = None
+        self.expected_self = Nichts
 
 
 def pyfunc(arg1, arg2):
@@ -500,7 +500,7 @@ klasse FastCallTests(unittest.TestCase):
             (_instance, _instance),  # bound method
             (_testcapi.MethClass, _testcapi.MethClass),  # klasse method on class
             (_testcapi.MethClass(), _testcapi.MethClass),  # klasse method on inst.
-            (_testcapi.MethStatic, None),  # static method
+            (_testcapi.MethStatic, Nichts),  # static method
         ):
             CALLS_POSARGS.extend([
                 (obj.meth_varargs, (1, 2), (expected_self, (1, 2))),
@@ -533,23 +533,23 @@ klasse FastCallTests(unittest.TestCase):
 
     def check_result(self, result, expected):
         wenn isinstance(expected, tuple) and expected[-1] is NULL_OR_EMPTY:
-            wenn result[-1] in ({}, None):
+            wenn result[-1] in ({}, Nichts):
                 expected = (*expected[:-1], result[-1])
         self.assertEqual(result, expected)
 
-    @unittest.skipIf(_testcapi is None, "requires _testcapi")
+    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def test_vectorcall_dict(self):
         # Test PyObject_VectorcallDict()
 
         fuer func, args, expected in self.CALLS_POSARGS:
             with self.subTest(func=func, args=args):
                 # kwargs=NULL
-                result = _testcapi.pyobject_fastcalldict(func, args, None)
+                result = _testcapi.pyobject_fastcalldict(func, args, Nichts)
                 self.check_result(result, expected)
 
                 wenn not args:
                     # args=NULL, nargs=0, kwargs=NULL
-                    result = _testcapi.pyobject_fastcalldict(func, None, None)
+                    result = _testcapi.pyobject_fastcalldict(func, Nichts, Nichts)
                     self.check_result(result, expected)
 
         fuer func, args, kwargs, expected in self.CALLS_KWARGS:
@@ -557,14 +557,14 @@ klasse FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_fastcalldict(func, args, kwargs)
                 self.check_result(result, expected)
 
-    @unittest.skipIf(_testcapi is None, "requires _testcapi")
+    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     def test_vectorcall(self):
         # Test PyObject_Vectorcall()
 
         fuer func, args, expected in self.CALLS_POSARGS:
             with self.subTest(func=func, args=args):
                 # kwnames=NULL
-                result = _testcapi.pyobject_vectorcall(func, args, None)
+                result = _testcapi.pyobject_vectorcall(func, args, Nichts)
                 self.check_result(result, expected)
 
                 # kwnames=()
@@ -573,11 +573,11 @@ klasse FastCallTests(unittest.TestCase):
 
                 wenn not args:
                     # kwnames=NULL
-                    result = _testcapi.pyobject_vectorcall(func, None, None)
+                    result = _testcapi.pyobject_vectorcall(func, Nichts, Nichts)
                     self.check_result(result, expected)
 
                     # kwnames=()
-                    result = _testcapi.pyobject_vectorcall(func, None, ())
+                    result = _testcapi.pyobject_vectorcall(func, Nichts, ())
                     self.check_result(result, expected)
 
         fuer func, args, kwargs, expected in self.CALLS_KWARGS:
@@ -619,48 +619,48 @@ def testfunction_kw(self, *, kw):
     return self
 
 
-@unittest.skipIf(_testcapi is None, "requires _testcapi")
+@unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
 klasse TestPEP590(unittest.TestCase):
 
     def test_method_descriptor_flag(self):
         import functools
         cached = functools.lru_cache(1)(testfunction)
 
-        self.assertFalse(type(repr).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(list.append).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(list.__add__).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(testfunction).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(type(cached).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertFalsch(type(repr).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertWahr(type(list.append).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertWahr(type(list.__add__).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertWahr(type(testfunction).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertWahr(type(cached).__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
-        self.assertTrue(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertTrue(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
-        self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertWahr(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertWahr(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertFalsch(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
         # Mutable heap types should not inherit Py_TPFLAGS_METHOD_DESCRIPTOR
         klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
-        self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
+        self.assertFalsch(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
     def test_vectorcall_flag(self):
-        self.assertTrue(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        self.assertTrue(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
-        self.assertTrue(_testcapi.MethodDescriptor2.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertWahr(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertWahr(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertFalsch(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertWahr(_testcapi.MethodDescriptor2.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
         # Mutable heap types should inherit Py_TPFLAGS_HAVE_VECTORCALL,
         # but should lose it when __call__ is overridden
         klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
-        self.assertTrue(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertWahr(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
         MethodDescriptorHeap.__call__ = print
-        self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertFalsch(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
         # Mutable heap types should not inherit Py_TPFLAGS_HAVE_VECTORCALL if
         # they define __call__ directly
         klasse MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             def __call__(self):
                 pass
-        self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
+        self.assertFalsch(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
     def test_vectorcall_override(self):
         # Check that tp_call can correctly override vectorcall.
@@ -700,28 +700,28 @@ klasse TestPEP590(unittest.TestCase):
 
         # Initial state: tp_call
         self.assertEqual(instance(), "tp_call")
-        self.assertEqual(_testcapi.has_vectorcall_flag(SuperType), True)
-        self.assertEqual(_testcapi.has_vectorcall_flag(DerivedType), True)
-        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType1), True)
-        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType2), True)
+        self.assertEqual(_testcapi.has_vectorcall_flag(SuperType), Wahr)
+        self.assertEqual(_testcapi.has_vectorcall_flag(DerivedType), Wahr)
+        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType1), Wahr)
+        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType2), Wahr)
 
         # Setting the vectorcall function
         instance.set_vectorcall(SuperType)
 
         self.assertEqual(instance(), "vectorcall")
-        self.assertEqual(_testcapi.has_vectorcall_flag(SuperType), True)
-        self.assertEqual(_testcapi.has_vectorcall_flag(DerivedType), True)
-        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType1), True)
-        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType2), True)
+        self.assertEqual(_testcapi.has_vectorcall_flag(SuperType), Wahr)
+        self.assertEqual(_testcapi.has_vectorcall_flag(DerivedType), Wahr)
+        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType1), Wahr)
+        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType2), Wahr)
 
         # Setting __call__ should remove vectorcall from all subclasses
         SuperType.__call__ = lambda self: "custom"
 
         self.assertEqual(instance(), "custom")
-        self.assertEqual(_testcapi.has_vectorcall_flag(SuperType), False)
-        self.assertEqual(_testcapi.has_vectorcall_flag(DerivedType), False)
-        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType1), True)
-        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType2), True)
+        self.assertEqual(_testcapi.has_vectorcall_flag(SuperType), Falsch)
+        self.assertEqual(_testcapi.has_vectorcall_flag(DerivedType), Falsch)
+        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType1), Wahr)
+        self.assertEqual(_testcapi.has_vectorcall_flag(UnaffectedType2), Wahr)
 
 
     def test_vectorcall(self):
@@ -735,14 +735,14 @@ klasse TestPEP590(unittest.TestCase):
 
         # A list of (function, args, kwargs, result) calls to test
         calls = [(len, (range(42),), {}, 42),
-                 (list.append, ([], 0), {}, None),
-                 ([].append, (0,), {}, None),
+                 (list.append, ([], 0), {}, Nichts),
+                 ([].append, (0,), {}, Nichts),
                  (sum, ([36],), {"start":6}, 42),
                  (testfunction, (42,), {}, 42),
-                 (testfunction_kw, (42,), {"kw":None}, 42),
-                 (_testcapi.MethodDescriptorBase(), (0,), {}, True),
-                 (_testcapi.MethodDescriptorDerived(), (0,), {}, True),
-                 (_testcapi.MethodDescriptor2(), (0,), {}, False)]
+                 (testfunction_kw, (42,), {"kw":Nichts}, 42),
+                 (_testcapi.MethodDescriptorBase(), (0,), {}, Wahr),
+                 (_testcapi.MethodDescriptorDerived(), (0,), {}, Wahr),
+                 (_testcapi.MethodDescriptor2(), (0,), {}, Falsch)]
 
         from _testcapi import pyobject_vectorcall, pyvectorcall_call
         from types import MethodType
@@ -778,11 +778,11 @@ klasse TestPEP590(unittest.TestCase):
                 return super().__call__(*args)
 
         calls += [
-            (dict.update, ({},), {"key":True}, None),
-            ({}.update, ({},), {"key":True}, None),
-            (MethodDescriptorHeap(), (0,), {}, True),
+            (dict.update, ({},), {"key":Wahr}, Nichts),
+            ({}.update, ({},), {"key":Wahr}, Nichts),
+            (MethodDescriptorHeap(), (0,), {}, Wahr),
             (MethodDescriptorOverridden(), (0,), {}, 'new'),
-            (MethodDescriptorSuper(), (0,), {}, True),
+            (MethodDescriptorSuper(), (0,), {}, Wahr),
         ]
 
         fuer (func, args, kwargs, expected) in calls:
@@ -792,7 +792,7 @@ klasse TestPEP590(unittest.TestCase):
                 wrapped = partial(func)
                 wenn not kwargs:
                     self.assertEqual(expected, func(*args))
-                    self.assertEqual(expected, pyobject_vectorcall(func, args, None))
+                    self.assertEqual(expected, pyobject_vectorcall(func, args, Nichts))
                     self.assertEqual(expected, meth(*args1))
                     self.assertEqual(expected, wrapped(*args))
                 self.assertEqual(expected, func(*args, **kwargs))
@@ -955,13 +955,13 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
         self.assertNotIn("Did you mean", str(cm.exception))
 
     def test_unexpected_keyword_suggestion_valid_positions(self):
-        def foo(blech=None, /, aaa=None, *args, late1=None):
+        def foo(blech=Nichts, /, aaa=Nichts, *args, late1=Nichts):
             pass
 
         cases = [
-            ("blach", None),
+            ("blach", Nichts),
             ("aa", "aaa"),
-            ("orgs", None),
+            ("orgs", Nichts),
             ("late11", "late1"),
         ]
 
@@ -969,29 +969,29 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
             with self.subTest(keyword):
                 ctx = self.check_suggestion_includes(suggestion) wenn suggestion sonst self.check_suggestion_not_present()
                 with ctx:
-                    foo(**{keyword:None})
+                    foo(**{keyword:Nichts})
 
     def test_unexpected_keyword_suggestion_kinds(self):
 
-        def substitution(noise=None, more_noise=None, a = None, blech = None):
+        def substitution(noise=Nichts, more_noise=Nichts, a = Nichts, blech = Nichts):
             pass
 
-        def elimination(noise = None, more_noise = None, a = None, blch = None):
+        def elimination(noise = Nichts, more_noise = Nichts, a = Nichts, blch = Nichts):
             pass
 
-        def addition(noise = None, more_noise = None, a = None, bluchin = None):
+        def addition(noise = Nichts, more_noise = Nichts, a = Nichts, bluchin = Nichts):
             pass
 
-        def substitution_over_elimination(blach = None, bluc = None):
+        def substitution_over_elimination(blach = Nichts, bluc = Nichts):
             pass
 
-        def substitution_over_addition(blach = None, bluchi = None):
+        def substitution_over_addition(blach = Nichts, bluchi = Nichts):
             pass
 
-        def elimination_over_addition(bluc = None, blucha = None):
+        def elimination_over_addition(bluc = Nichts, blucha = Nichts):
             pass
 
-        def case_change_over_substitution(BLuch=None, Luch = None, fluch = None):
+        def case_change_over_substitution(BLuch=Nichts, Luch = Nichts, fluch = Nichts):
             pass
 
         fuer func, suggestion in [
@@ -1006,7 +1006,7 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
         ]:
             with self.subTest(suggestion):
                 with self.check_suggestion_includes(suggestion):
-                    func(bluch=None)
+                    func(bluch=Nichts)
 
     def test_unexpected_keyword_suggestion_via_getargs(self):
         with self.check_suggestion_includes("maxsplit"):
@@ -1039,8 +1039,8 @@ klasse TestRecursion(unittest.TestCase):
 
     @skip_on_s390x
     @unittest.skipIf(is_wasi and Py_DEBUG, "requires deep stack")
-    @skip_if_sanitizer("requires deep stack", thread=True)
-    @unittest.skipIf(_testcapi is None, "requires _testcapi")
+    @skip_if_sanitizer("requires deep stack", thread=Wahr)
+    @unittest.skipIf(_testcapi is Nichts, "requires _testcapi")
     @skip_emscripten_stack_overflow()
     @skip_wasi_stack_overflow()
     def test_super_deep(self):
@@ -1094,7 +1094,7 @@ klasse TestFunctionWithManyArgs(unittest.TestCase):
                 self.assertEqual(l['f'](*range(N)), N//2)
 
 
-@unittest.skipIf(_testcapi is None, 'need _testcapi')
+@unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
 klasse TestCAPI(unittest.TestCase):
     def test_cfunction_call(self):
         def func(*args, **kwargs):

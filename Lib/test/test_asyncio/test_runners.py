@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 def interrupt_self():
@@ -23,7 +23,7 @@ klasse TestPolicy(asyncio.events._AbstractEventLoopPolicy):
 
     def __init__(self, loop_factory):
         self.loop_factory = loop_factory
-        self.loop = None
+        self.loop = Nichts
 
     def get_event_loop(self):
         # shouldn't ever be called by asyncio.run()
@@ -33,7 +33,7 @@ klasse TestPolicy(asyncio.events._AbstractEventLoopPolicy):
         return self.loop_factory()
 
     def set_event_loop(self, loop):
-        wenn loop is not None:
+        wenn loop is not Nichts:
             # we want to check wenn the loop is closed
             # in BaseTest.tearDown
             self.loop = loop
@@ -46,13 +46,13 @@ klasse BaseTest(unittest.TestCase):
         loop._process_events = mock.Mock()
         # Mock waking event loop from select
         loop._write_to_self = mock.Mock()
-        loop._write_to_self.return_value = None
+        loop._write_to_self.return_value = Nichts
         loop._selector = mock.Mock()
         loop._selector.select.return_value = ()
-        loop.shutdown_ag_run = False
+        loop.shutdown_ag_run = Falsch
 
         async def shutdown_asyncgens():
-            loop.shutdown_ag_run = True
+            loop.shutdown_ag_run = Wahr
         loop.shutdown_asyncgens = shutdown_asyncgens
 
         return loop
@@ -65,11 +65,11 @@ klasse BaseTest(unittest.TestCase):
 
     def tearDown(self):
         policy = asyncio.events._get_event_loop_policy()
-        wenn policy.loop is not None:
-            self.assertTrue(policy.loop.is_closed())
-            self.assertTrue(policy.loop.shutdown_ag_run)
+        wenn policy.loop is not Nichts:
+            self.assertWahr(policy.loop.is_closed())
+            self.assertWahr(policy.loop.shutdown_ag_run)
 
-        asyncio.events._set_event_loop_policy(None)
+        asyncio.events._set_event_loop_policy(Nichts)
         super().tearDown()
 
 
@@ -91,7 +91,7 @@ klasse RunTests(BaseTest):
             asyncio.run(main())
 
     def test_asyncio_run_only_coro(self):
-        fuer o in {1, lambda: None}:
+        fuer o in {1, lambda: Nichts}:
             with self.subTest(obj=o), \
                     self.assertRaisesRegex(TypeError,
                                            'an awaitable is required'):
@@ -102,14 +102,14 @@ klasse RunTests(BaseTest):
             loop = asyncio.get_event_loop()
             self.assertIs(loop.get_debug(), expected)
 
-        asyncio.run(main(False), debug=False)
-        asyncio.run(main(True), debug=True)
-        with mock.patch('asyncio.coroutines._is_debug_mode', lambda: True):
-            asyncio.run(main(True))
-            asyncio.run(main(False), debug=False)
-        with mock.patch('asyncio.coroutines._is_debug_mode', lambda: False):
-            asyncio.run(main(True), debug=True)
-            asyncio.run(main(False))
+        asyncio.run(main(Falsch), debug=Falsch)
+        asyncio.run(main(Wahr), debug=Wahr)
+        with mock.patch('asyncio.coroutines._is_debug_mode', lambda: Wahr):
+            asyncio.run(main(Wahr))
+            asyncio.run(main(Falsch), debug=Falsch)
+        with mock.patch('asyncio.coroutines._is_debug_mode', lambda: Falsch):
+            asyncio.run(main(Wahr), debug=Wahr)
+            asyncio.run(main(Falsch))
 
     def test_asyncio_run_from_running_loop(self):
         async def main():
@@ -124,7 +124,7 @@ klasse RunTests(BaseTest):
             asyncio.run(main())
 
     def test_asyncio_run_cancels_hanging_tasks(self):
-        lo_task = None
+        lo_task = Nichts
 
         async def leftover():
             await asyncio.sleep(0.1)
@@ -135,10 +135,10 @@ klasse RunTests(BaseTest):
             return 123
 
         self.assertEqual(asyncio.run(main()), 123)
-        self.assertTrue(lo_task.done())
+        self.assertWahr(lo_task.done())
 
     def test_asyncio_run_reports_hanging_tasks_errors(self):
-        lo_task = None
+        lo_task = Nichts
         call_exc_handler_mock = mock.Mock()
 
         async def leftover():
@@ -156,7 +156,7 @@ klasse RunTests(BaseTest):
             return 123
 
         self.assertEqual(asyncio.run(main()), 123)
-        self.assertTrue(lo_task.done())
+        self.assertWahr(lo_task.done())
 
         call_exc_handler_mock.assert_called_with({
             'message': test_utils.MockPattern(r'asyncio.run.*shutdown'),
@@ -165,14 +165,14 @@ klasse RunTests(BaseTest):
         })
 
     def test_asyncio_run_closes_gens_after_hanging_tasks_errors(self):
-        spinner = None
-        lazyboy = None
+        spinner = Nichts
+        lazyboy = Nichts
 
         klasse FancyExit(Exception):
             pass
 
         async def fidget():
-            while True:
+            while Wahr:
                 yield 1
                 await asyncio.sleep(1)
 
@@ -196,10 +196,10 @@ klasse RunTests(BaseTest):
         with self.assertRaises(FancyExit):
             asyncio.run(main())
 
-        self.assertTrue(lazyboy.done())
+        self.assertWahr(lazyboy.done())
 
-        self.assertIsNone(spinner.ag_frame)
-        self.assertFalse(spinner.ag_running)
+        self.assertIsNichts(spinner.ag_frame)
+        self.assertFalsch(spinner.ag_running)
 
     def test_asyncio_run_set_event_loop(self):
         #See https://github.com/python/cpython/issues/93896
@@ -211,7 +211,7 @@ klasse RunTests(BaseTest):
         policy = asyncio.events._get_event_loop_policy()
         policy.set_event_loop = mock.Mock()
         asyncio.run(main())
-        self.assertTrue(policy.set_event_loop.called)
+        self.assertWahr(policy.set_event_loop.called)
 
     def test_asyncio_run_without_uncancel(self):
         # See https://github.com/python/cpython/issues/95097
@@ -287,12 +287,12 @@ klasse RunTests(BaseTest):
 klasse RunnerTests(BaseTest):
 
     def test_non_debug(self):
-        with asyncio.Runner(debug=False) as runner:
-            self.assertFalse(runner.get_loop().get_debug())
+        with asyncio.Runner(debug=Falsch) as runner:
+            self.assertFalsch(runner.get_loop().get_debug())
 
     def test_debug(self):
-        with asyncio.Runner(debug=True) as runner:
-            self.assertTrue(runner.get_loop().get_debug())
+        with asyncio.Runner(debug=Wahr) as runner:
+            self.assertWahr(runner.get_loop().get_debug())
 
     def test_custom_factory(self):
         loop = mock.Mock()
@@ -314,7 +314,7 @@ klasse RunnerTests(BaseTest):
         ):
             runner.get_loop()
 
-        self.assertTrue(loop.is_closed())
+        self.assertWahr(loop.is_closed())
 
     def test_run_non_coro(self):
         with asyncio.Runner() as runner:
@@ -352,18 +352,18 @@ klasse RunnerTests(BaseTest):
         ):
             runner.get_loop()
 
-        self.assertTrue(loop.is_closed())
+        self.assertWahr(loop.is_closed())
 
     def test_double_close(self):
         runner = asyncio.Runner()
         loop = runner.get_loop()
 
         runner.close()
-        self.assertTrue(loop.is_closed())
+        self.assertWahr(loop.is_closed())
 
         # the second call is no-op
         runner.close()
-        self.assertTrue(loop.is_closed())
+        self.assertWahr(loop.is_closed())
 
     def test_second_with_block_raises(self):
         ret = []
@@ -429,7 +429,7 @@ klasse RunnerTests(BaseTest):
 
         async def coro():
             with self.assertRaises(asyncio.CancelledError):
-                while True:
+                while Wahr:
                     await asyncio.sleep(0)
             raise asyncio.CancelledError()
 
@@ -454,7 +454,7 @@ klasse RunnerTests(BaseTest):
             with self.assertRaises(KeyboardInterrupt):
                 runner.run(coro(fut))
 
-            self.assertTrue(fut.cancelled())
+            self.assertWahr(fut.cancelled())
 
     def test_interrupt_cancelled_task(self):
         # interrupting cancelled main task doesn't raise KeyboardInterrupt

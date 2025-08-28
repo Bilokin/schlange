@@ -221,29 +221,29 @@ Verify exception propagation
         next(g)
     StopIteration
 
-Make sure that None is a valid return value
+Make sure that Nichts is a valid return value
 
-    >>> list(None fuer i in range(10))
-    [None, None, None, None, None, None, None, None, None, None]
+    >>> list(Nichts fuer i in range(10))
+    [Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts]
 
 Check that generator attributes are present
 
     >>> g = (i*i fuer i in range(3))
     >>> expected = set(['gi_frame', 'gi_running'])
     >>> set(attr fuer attr in dir(g) wenn not attr.startswith('__')) >= expected
-    True
+    Wahr
 
     >>> from test.support import HAVE_DOCSTRINGS
     >>> print(g.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
     Implement next(self).
     >>> import types
     >>> isinstance(g, types.GeneratorType)
-    True
+    Wahr
 
 Check the __iter__ slot is defined to return self
 
     >>> iter(g) is g
-    True
+    Wahr
 
 Verify that the running flag is set properly
 
@@ -262,7 +262,7 @@ Verify that genexps are weakly referencable
     >>> g = (i*i fuer i in range(4))
     >>> wr = weakref.ref(g)
     >>> wr() is g
-    True
+    Wahr
     >>> p = weakref.proxy(g)
     >>> list(p)
     [0, 1, 4, 9]

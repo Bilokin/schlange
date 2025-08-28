@@ -18,7 +18,7 @@ klasse TooltipBase:
         Note that a widget will only be shown when showtip() is called.
         """
         self.anchor_widget = anchor_widget
-        self.tipwindow = None
+        self.tipwindow = Nichts
 
     def __del__(self):
         self.hidetip()
@@ -71,7 +71,7 @@ klasse TooltipBase:
         """hide the tooltip"""
         # Note: This is called by __del__, so careful when overriding/extending
         tw = self.tipwindow
-        self.tipwindow = None
+        self.tipwindow = Nichts
         wenn tw:
             try:
                 tw.destroy()
@@ -95,7 +95,7 @@ klasse OnHoverTooltipBase(TooltipBase):
         super().__init__(anchor_widget)
         self.hover_delay = hover_delay
 
-        self._after_id = None
+        self._after_id = Nichts
         self._id1 = self.anchor_widget.bind("<Enter>", self._show_event)
         self._id2 = self.anchor_widget.bind("<Leave>", self._hide_event)
         self._id3 = self.anchor_widget.bind("<Button>", self._hide_event)
@@ -109,14 +109,14 @@ klasse OnHoverTooltipBase(TooltipBase):
             pass
         super().__del__()
 
-    def _show_event(self, event=None):
+    def _show_event(self, event=Nichts):
         """event handler to display the tooltip"""
         wenn self.hover_delay:
             self.schedule()
         sonst:
             self.showtip()
 
-    def _hide_event(self, event=None):
+    def _hide_event(self, event=Nichts):
         """event handler to hide the tooltip"""
         self.hidetip()
 
@@ -129,7 +129,7 @@ klasse OnHoverTooltipBase(TooltipBase):
     def unschedule(self):
         """cancel the future display of the tooltip"""
         after_id = self._after_id
-        self._after_id = None
+        self._after_id = Nichts
         wenn after_id:
             self.anchor_widget.after_cancel(after_id)
 
@@ -179,12 +179,12 @@ def _tooltip(parent):  # htest #
     Hovertip(button1, "This is tooltip text fuer button1.", hover_delay=500)
     button2 = Button(top, text="Button 2 -- no hover delay")
     button2.pack()
-    Hovertip(button2, "This is tooltip\ntext fuer button2.", hover_delay=None)
+    Hovertip(button2, "This is tooltip\ntext fuer button2.", hover_delay=Nichts)
 
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_tooltip', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_tooltip', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_tooltip)

@@ -22,12 +22,12 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
     #
     # Sounds complicated, I know, but this mimics a situation where an
     # extension type raises an AttributeError when its __bases__ attribute is
-    # gotten.  In that case, isinstance() should return False.
+    # gotten.  In that case, isinstance() should return Falsch.
     def test_class_has_no_bases(self):
         klasse I(object):
             def getclass(self):
                 # This must return an object that has no __bases__ attribute
-                return None
+                return Nichts
             __class__ = property(getclass)
 
         klasse C(object):
@@ -35,7 +35,7 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
                 return ()
             __bases__ = property(getbases)
 
-        self.assertEqual(False, isinstance(I(), C()))
+        self.assertEqual(Falsch, isinstance(I(), C()))
 
     # Like above except that inst.__class__.__bases__ raises an exception
     # other than AttributeError
@@ -189,36 +189,36 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
 
     def test_isinstance_normal(self):
         # normal instances
-        self.assertEqual(True, isinstance(Super(), Super))
-        self.assertEqual(False, isinstance(Super(), Child))
-        self.assertEqual(False, isinstance(Super(), AbstractSuper))
-        self.assertEqual(False, isinstance(Super(), AbstractChild))
+        self.assertEqual(Wahr, isinstance(Super(), Super))
+        self.assertEqual(Falsch, isinstance(Super(), Child))
+        self.assertEqual(Falsch, isinstance(Super(), AbstractSuper))
+        self.assertEqual(Falsch, isinstance(Super(), AbstractChild))
 
-        self.assertEqual(True, isinstance(Child(), Super))
-        self.assertEqual(False, isinstance(Child(), AbstractSuper))
+        self.assertEqual(Wahr, isinstance(Child(), Super))
+        self.assertEqual(Falsch, isinstance(Child(), AbstractSuper))
 
     def test_isinstance_abstract(self):
         # abstract instances
-        self.assertEqual(True, isinstance(AbstractSuper(), AbstractSuper))
-        self.assertEqual(False, isinstance(AbstractSuper(), AbstractChild))
-        self.assertEqual(False, isinstance(AbstractSuper(), Super))
-        self.assertEqual(False, isinstance(AbstractSuper(), Child))
+        self.assertEqual(Wahr, isinstance(AbstractSuper(), AbstractSuper))
+        self.assertEqual(Falsch, isinstance(AbstractSuper(), AbstractChild))
+        self.assertEqual(Falsch, isinstance(AbstractSuper(), Super))
+        self.assertEqual(Falsch, isinstance(AbstractSuper(), Child))
 
-        self.assertEqual(True, isinstance(AbstractChild(), AbstractChild))
-        self.assertEqual(True, isinstance(AbstractChild(), AbstractSuper))
-        self.assertEqual(False, isinstance(AbstractChild(), Super))
-        self.assertEqual(False, isinstance(AbstractChild(), Child))
+        self.assertEqual(Wahr, isinstance(AbstractChild(), AbstractChild))
+        self.assertEqual(Wahr, isinstance(AbstractChild(), AbstractSuper))
+        self.assertEqual(Falsch, isinstance(AbstractChild(), Super))
+        self.assertEqual(Falsch, isinstance(AbstractChild(), Child))
 
     def test_isinstance_with_or_union(self):
-        self.assertTrue(isinstance(Super(), Super | int))
-        self.assertFalse(isinstance(None, str | int))
-        self.assertTrue(isinstance(3, str | int))
-        self.assertTrue(isinstance("", str | int))
-        self.assertTrue(isinstance([], typing.List | typing.Tuple))
-        self.assertTrue(isinstance(2, typing.List | int))
-        self.assertFalse(isinstance(2, typing.List | typing.Tuple))
-        self.assertTrue(isinstance(None, int | None))
-        self.assertFalse(isinstance(3.14, int | str))
+        self.assertWahr(isinstance(Super(), Super | int))
+        self.assertFalsch(isinstance(Nichts, str | int))
+        self.assertWahr(isinstance(3, str | int))
+        self.assertWahr(isinstance("", str | int))
+        self.assertWahr(isinstance([], typing.List | typing.Tuple))
+        self.assertWahr(isinstance(2, typing.List | int))
+        self.assertFalsch(isinstance(2, typing.List | typing.Tuple))
+        self.assertWahr(isinstance(Nichts, int | Nichts))
+        self.assertFalsch(isinstance(3.14, int | str))
         with self.assertRaises(TypeError):
             isinstance(2, list[int])
         with self.assertRaises(TypeError):
@@ -230,38 +230,38 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
 
     def test_subclass_normal(self):
         # normal classes
-        self.assertEqual(True, issubclass(Super, Super))
-        self.assertEqual(False, issubclass(Super, AbstractSuper))
-        self.assertEqual(False, issubclass(Super, Child))
+        self.assertEqual(Wahr, issubclass(Super, Super))
+        self.assertEqual(Falsch, issubclass(Super, AbstractSuper))
+        self.assertEqual(Falsch, issubclass(Super, Child))
 
-        self.assertEqual(True, issubclass(Child, Child))
-        self.assertEqual(True, issubclass(Child, Super))
-        self.assertEqual(False, issubclass(Child, AbstractSuper))
-        self.assertTrue(issubclass(typing.List, typing.List|typing.Tuple))
-        self.assertFalse(issubclass(int, typing.List|typing.Tuple))
+        self.assertEqual(Wahr, issubclass(Child, Child))
+        self.assertEqual(Wahr, issubclass(Child, Super))
+        self.assertEqual(Falsch, issubclass(Child, AbstractSuper))
+        self.assertWahr(issubclass(typing.List, typing.List|typing.Tuple))
+        self.assertFalsch(issubclass(int, typing.List|typing.Tuple))
 
     def test_subclass_abstract(self):
         # abstract classes
-        self.assertEqual(True, issubclass(AbstractSuper, AbstractSuper))
-        self.assertEqual(False, issubclass(AbstractSuper, AbstractChild))
-        self.assertEqual(False, issubclass(AbstractSuper, Child))
+        self.assertEqual(Wahr, issubclass(AbstractSuper, AbstractSuper))
+        self.assertEqual(Falsch, issubclass(AbstractSuper, AbstractChild))
+        self.assertEqual(Falsch, issubclass(AbstractSuper, Child))
 
-        self.assertEqual(True, issubclass(AbstractChild, AbstractChild))
-        self.assertEqual(True, issubclass(AbstractChild, AbstractSuper))
-        self.assertEqual(False, issubclass(AbstractChild, Super))
-        self.assertEqual(False, issubclass(AbstractChild, Child))
+        self.assertEqual(Wahr, issubclass(AbstractChild, AbstractChild))
+        self.assertEqual(Wahr, issubclass(AbstractChild, AbstractSuper))
+        self.assertEqual(Falsch, issubclass(AbstractChild, Super))
+        self.assertEqual(Falsch, issubclass(AbstractChild, Child))
 
     def test_subclass_tuple(self):
         # test with a tuple as the second argument classes
-        self.assertEqual(True, issubclass(Child, (Child,)))
-        self.assertEqual(True, issubclass(Child, (Super,)))
-        self.assertEqual(False, issubclass(Super, (Child,)))
-        self.assertEqual(True, issubclass(Super, (Child, Super)))
-        self.assertEqual(False, issubclass(Child, ()))
-        self.assertEqual(True, issubclass(Super, (Child, (Super,))))
+        self.assertEqual(Wahr, issubclass(Child, (Child,)))
+        self.assertEqual(Wahr, issubclass(Child, (Super,)))
+        self.assertEqual(Falsch, issubclass(Super, (Child,)))
+        self.assertEqual(Wahr, issubclass(Super, (Child, Super)))
+        self.assertEqual(Falsch, issubclass(Child, ()))
+        self.assertEqual(Wahr, issubclass(Super, (Child, (Super,))))
 
-        self.assertEqual(True, issubclass(int, (int, (float, int))))
-        self.assertEqual(True, issubclass(str, (str, (Child, str))))
+        self.assertEqual(Wahr, issubclass(int, (int, (float, int))))
+        self.assertEqual(Wahr, issubclass(str, (str, (Child, str))))
 
     @support.skip_wasi_stack_overflow()
     @support.skip_emscripten_stack_overflow()
@@ -278,10 +278,10 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertRaises(RecursionError, blowstack, isinstance, '', str)
 
     def test_subclass_with_union(self):
-        self.assertTrue(issubclass(int, int | float | int))
-        self.assertTrue(issubclass(str, str | Child | str))
-        self.assertFalse(issubclass(dict, float|str))
-        self.assertFalse(issubclass(object, float|str))
+        self.assertWahr(issubclass(int, int | float | int))
+        self.assertWahr(issubclass(str, str | Child | str))
+        self.assertFalsch(issubclass(dict, float|str))
+        self.assertFalsch(issubclass(object, float|str))
         with self.assertRaises(TypeError):
             issubclass(2, Child | Super)
         with self.assertRaises(TypeError):
@@ -305,7 +305,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
             def __bases__(self):
                 return (A(), )
 
-        self.assertEqual(True, issubclass(B(), int))
+        self.assertEqual(Wahr, issubclass(B(), int))
 
     def test_infinite_recursion_in_bases(self):
         klasse X:
@@ -323,7 +323,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         """Regression test fuer bpo-30570."""
         klasse Failure(object):
             def __getattr__(self, attr):
-                return (self, None)
+                return (self, Nichts)
         with support.infinite_recursion():
             with self.assertRaises(RecursionError):
                 issubclass(Failure(), int)
@@ -358,7 +358,7 @@ def blowstack(fxn, arg, compare_to):
     # Make sure that calling isinstance with a deeply nested tuple fuer its
     # argument will raise RecursionError eventually.
     tuple_arg = (compare_to,)
-    while True:
+    while Wahr:
         fuer _ in range(100):
             tuple_arg = (tuple_arg,)
         fxn(arg, tuple_arg)

@@ -92,16 +92,16 @@ wenn __name__ == '__main__':
         fname = 'Lib/html/entities.py'
         temp_fname = fname + '.temp'
         with open(fname) as f1, open(temp_fname, 'w') as f2:
-            skip = False
+            skip = Falsch
             fuer line in f1:
                 wenn line.startswith(HTML5_SECTION_START):
                     write_items(new_html5, file=f2)
-                    skip = True
+                    skip = Wahr
                     continue
                 wenn skip:
                     # skip the old items until the }
                     wenn line.startswith('}'):
-                        skip = False
+                        skip = Falsch
                     continue
                 f2.write(line)
         os.remove(fname)

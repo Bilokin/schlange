@@ -12,10 +12,10 @@ import codecs
 encode = oem_encode
 
 def decode(input, errors='strict'):
-    return oem_decode(input, errors, True)
+    return oem_decode(input, errors, Wahr)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return oem_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):

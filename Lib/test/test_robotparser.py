@@ -14,7 +14,7 @@ klasse BaseRobotTest:
     agent = 'test_robotparser'
     good = []
     bad = []
-    site_maps = None
+    site_maps = Nichts
 
     def setUp(self):
         lines = io.StringIO(self.robots_txt).readlines()
@@ -31,13 +31,13 @@ klasse BaseRobotTest:
         fuer url in self.good:
             agent, url = self.get_agent_and_url(url)
             with self.subTest(url=url, agent=agent):
-                self.assertTrue(self.parser.can_fetch(agent, url))
+                self.assertWahr(self.parser.can_fetch(agent, url))
 
     def test_bad_urls(self):
         fuer url in self.bad:
             agent, url = self.get_agent_and_url(url)
             with self.subTest(url=url, agent=agent):
-                self.assertFalse(self.parser.can_fetch(agent, url))
+                self.assertFalsch(self.parser.can_fetch(agent, url))
 
     def test_site_maps(self):
         self.assertEqual(self.parser.site_maps(), self.site_maps)
@@ -99,8 +99,8 @@ Disallow: /
 
 
 klasse BaseRequestRateTest(BaseRobotTest):
-    request_rate = None
-    crawl_delay = None
+    request_rate = Nichts
+    crawl_delay = Nichts
 
     def test_request_rate(self):
         parser = self.parser
@@ -111,7 +111,7 @@ klasse BaseRequestRateTest(BaseRobotTest):
 
                 parsed_request_rate = parser.request_rate(agent)
                 self.assertEqual(parsed_request_rate, self.request_rate)
-                wenn self.request_rate is not None:
+                wenn self.request_rate is not Nichts:
                     self.assertIsInstance(
                         parsed_request_rate,
                         urllib.robotparser.RequestRate
@@ -327,7 +327,7 @@ klasse PasswordProtectedSiteTestCase(unittest.TestCase):
             # Time between requests is short enough that we won't wake
             # up spuriously too many times.
             kwargs={'poll_interval':0.01})
-        self.t.daemon = True  # In case this function raises.
+        self.t.daemon = Wahr  # In case this function raises.
         self.t.start()
 
     def tearDown(self):
@@ -343,7 +343,7 @@ klasse PasswordProtectedSiteTestCase(unittest.TestCase):
         parser = urllib.robotparser.RobotFileParser()
         parser.set_url(url)
         parser.read()
-        self.assertFalse(parser.can_fetch("*", robots_url))
+        self.assertFalsch(parser.can_fetch("*", robots_url))
 
 
 @support.requires_working_socket()
@@ -365,28 +365,28 @@ klasse NetworkTestCase(unittest.TestCase):
         )
 
     def test_basic(self):
-        self.assertFalse(self.parser.disallow_all)
-        self.assertFalse(self.parser.allow_all)
+        self.assertFalsch(self.parser.disallow_all)
+        self.assertFalsch(self.parser.allow_all)
         self.assertGreater(self.parser.mtime(), 0)
-        self.assertFalse(self.parser.crawl_delay('*'))
-        self.assertFalse(self.parser.request_rate('*'))
+        self.assertFalsch(self.parser.crawl_delay('*'))
+        self.assertFalsch(self.parser.request_rate('*'))
 
     def test_can_fetch(self):
-        self.assertTrue(self.parser.can_fetch('*', self.url('elsewhere')))
-        self.assertFalse(self.parser.can_fetch('Nutch', self.base_url))
-        self.assertFalse(self.parser.can_fetch('Nutch', self.url('brian')))
-        self.assertFalse(self.parser.can_fetch('Nutch', self.url('webstats')))
-        self.assertFalse(self.parser.can_fetch('*', self.url('webstats')))
-        self.assertTrue(self.parser.can_fetch('*', self.base_url))
+        self.assertWahr(self.parser.can_fetch('*', self.url('elsewhere')))
+        self.assertFalsch(self.parser.can_fetch('Nutch', self.base_url))
+        self.assertFalsch(self.parser.can_fetch('Nutch', self.url('brian')))
+        self.assertFalsch(self.parser.can_fetch('Nutch', self.url('webstats')))
+        self.assertFalsch(self.parser.can_fetch('*', self.url('webstats')))
+        self.assertWahr(self.parser.can_fetch('*', self.base_url))
 
     def test_read_404(self):
         parser = urllib.robotparser.RobotFileParser(self.url('i-robot.txt'))
         parser.read()
-        self.assertTrue(parser.allow_all)
-        self.assertFalse(parser.disallow_all)
+        self.assertWahr(parser.allow_all)
+        self.assertFalsch(parser.disallow_all)
         self.assertEqual(parser.mtime(), 0)
-        self.assertIsNone(parser.crawl_delay('*'))
-        self.assertIsNone(parser.request_rate('*'))
+        self.assertIsNichts(parser.crawl_delay('*'))
+        self.assertIsNichts(parser.request_rate('*'))
 
 wenn __name__=='__main__':
     unittest.main()

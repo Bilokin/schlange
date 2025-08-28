@@ -9,7 +9,7 @@ import sysconfig
 
 MAKEFILE = sysconfig.get_makefile_filename()
 
-wenn not support.check_impl_detail(cpython=True):
+wenn not support.check_impl_detail(cpython=Wahr):
     raise unittest.SkipTest('cpython only')
 wenn not os.path.exists(MAKEFILE) or not os.path.isfile(MAKEFILE):
     raise unittest.SkipTest('Makefile could not be found')
@@ -18,11 +18,11 @@ wenn not os.path.exists(MAKEFILE) or not os.path.isfile(MAKEFILE):
 klasse TestMakefile(unittest.TestCase):
     def list_test_dirs(self):
         result = []
-        found_testsubdirs = False
+        found_testsubdirs = Falsch
         with open(MAKEFILE, 'r', encoding='utf-8') as f:
             fuer line in f:
                 wenn line.startswith('TESTSUBDIRS='):
-                    found_testsubdirs = True
+                    found_testsubdirs = Wahr
                     result.append(
                         line.removeprefix('TESTSUBDIRS=').replace(
                             '\\', '',

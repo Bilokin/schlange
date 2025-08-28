@@ -128,10 +128,10 @@ klasse PkgutilTests(unittest.TestCase):
             self.assertEqual(names, [pkg])
         finally:
             del sys.path[0]
-            sys.modules.pop(pkg, None)
+            sys.modules.pop(pkg, Nichts)
 
-        # assert path must be None or list of paths
-        expected_msg = "path must be None or list of paths to look fuer modules in"
+        # assert path must be Nichts or list of paths
+        expected_msg = "path must be Nichts or list of paths to look fuer modules in"
         with self.assertRaisesRegex(ValueError, expected_msg):
             list(pkgutil.iter_modules("invalid_path"))
 
@@ -259,10 +259,10 @@ klasse PkgutilTests(unittest.TestCase):
         )
 
         failure_cases = (
-            (None, TypeError),
+            (Nichts, TypeError),
             (1, TypeError),
             (2.0, TypeError),
-            (True, TypeError),
+            (Wahr, TypeError),
             ('', ValueError),
             ('?abc', ValueError),
             ('abc/foo', ValueError),
@@ -292,7 +292,7 @@ klasse PkgutilTests(unittest.TestCase):
         fuer uw in unicode_words:
             d = os.path.join(self.dirname, uw)
             try:
-                os.makedirs(d, exist_ok=True)
+                os.makedirs(d, exist_ok=Wahr)
             except  UnicodeEncodeError:
                 # When filesystem encoding cannot encode uw: skip this test
                 continue
@@ -359,7 +359,7 @@ klasse PkgutilPEP302Tests(unittest.TestCase):
 
     klasse MyTestLoader(object):
         def create_module(self, spec):
-            return None
+            return Nichts
 
         def exec_module(self, mod):
             # Count how many times the module is reloaded
@@ -369,7 +369,7 @@ klasse PkgutilPEP302Tests(unittest.TestCase):
             return "Hello, world!"
 
     klasse MyTestImporter(object):
-        def find_spec(self, fullname, path=None, target=None):
+        def find_spec(self, fullname, path=Nichts, target=Nichts):
             loader = PkgutilPEP302Tests.MyTestLoader()
             return spec_from_file_location(fullname,
                                            '<%s>' % loader.__class__.__name__,
@@ -455,8 +455,8 @@ klasse ExtendPathTests(unittest.TestCase):
         dirname = self.create_init(pkgname)
         pathitem = os.path.join(dirname, pkgname)
         fullname = '{}.{}'.format(pkgname, modname)
-        sys.modules.pop(fullname, None)
-        sys.modules.pop(pkgname, None)
+        sys.modules.pop(fullname, Nichts)
+        sys.modules.pop(pkgname, Nichts)
         try:
             self.create_submodule(dirname, pkgname, modname, 0)
 
@@ -477,7 +477,7 @@ klasse ExtendPathTests(unittest.TestCase):
                 self.assertEqual(finder, expected_importer)
                 self.assertIsInstance(loader,
                                       importlib.machinery.SourceFileLoader)
-                self.assertIsNone(finder.find_spec(pkgname))
+                self.assertIsNichts(finder.find_spec(pkgname))
 
             with self.assertRaises(ImportError):
                 list(iter_importers('invalid.module'))
@@ -531,7 +531,7 @@ klasse ExtendPathTests(unittest.TestCase):
         self.assertEqual('notalist', pkgutil.extend_path('notalist', 'foo'))
         self.assertEqual(('not', 'a', 'list'), pkgutil.extend_path(('not', 'a', 'list'), 'foo'))
         self.assertEqual(123, pkgutil.extend_path(123, 'foo'))
-        self.assertEqual(None, pkgutil.extend_path(None, 'foo'))
+        self.assertEqual(Nichts, pkgutil.extend_path(Nichts, 'foo'))
 
         # Cleanup
         shutil.rmtree(dirname_0)
@@ -574,7 +574,7 @@ klasse NestedNamespacePackageTest(unittest.TestCase):
     def create_module(self, name, contents):
         base, final = name.rsplit('.', 1)
         base_path = os.path.join(self.basedir, base.replace('.', os.path.sep))
-        os.makedirs(base_path, exist_ok=True)
+        os.makedirs(base_path, exist_ok=Wahr)
         with open(os.path.join(base_path, final + ".py"), 'w') as f:
             f.write(contents)
 
@@ -610,7 +610,7 @@ klasse ImportlibMigrationTests(unittest.TestCase):
     def test_get_importer_avoids_emulation(self):
         # We use an illegal path so *none* of the path hooks should fire
         with check_warnings() as w:
-            self.assertIsNone(pkgutil.get_importer("*??"))
+            self.assertIsNichts(pkgutil.get_importer("*??"))
             self.assertEqual(len(w.warnings), 0)
 
     def test_issue44061(self):

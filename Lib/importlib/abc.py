@@ -6,7 +6,7 @@ try:
 except ImportError as exc:
     wenn exc.name != '_frozen_importlib':
         raise
-    _frozen_importlib = None
+    _frozen_importlib = Nichts
 try:
     import _frozen_importlib_external
 except ImportError:
@@ -25,7 +25,7 @@ __all__ = [
 def _register(abstract_cls, *classes):
     fuer cls in classes:
         abstract_cls.register(cls)
-        wenn _frozen_importlib is not None:
+        wenn _frozen_importlib is not Nichts:
             try:
                 frozen_cls = getattr(_frozen_importlib, cls.__name__)
             except AttributeError:
@@ -101,13 +101,13 @@ klasse InspectLoader(Loader):
         """Method which returns the code object fuer the module.
 
         The fullname is a str.  Returns a types.CodeType wenn possible, sonst
-        returns None wenn a code object does not make sense
+        returns Nichts wenn a code object does not make sense
         (e.g. built-in module). Raises ImportError wenn the module cannot be
         found.
         """
         source = self.get_source(fullname)
-        wenn source is None:
-            return None
+        wenn source is Nichts:
+            return Nichts
         return self.source_to_code(source)
 
     @abc.abstractmethod
@@ -125,7 +125,7 @@ klasse InspectLoader(Loader):
 
         The 'data' argument can be anything that compile() can handle. The'path'
         argument should be where the data was retrieved (when applicable)."""
-        return compile(data, path, 'exec', dont_inherit=True)
+        return compile(data, path, 'exec', dont_inherit=Wahr)
 
     exec_module = _bootstrap_external._LoaderBasics.exec_module
     load_module = _bootstrap_external._LoaderBasics.load_module
@@ -154,12 +154,12 @@ klasse ExecutionLoader(InspectLoader):
     def get_code(self, fullname):
         """Method to return the code object fuer fullname.
 
-        Should return None wenn not applicable (e.g. built-in module).
+        Should return Nichts wenn not applicable (e.g. built-in module).
         Raise ImportError wenn the module cannot be found.
         """
         source = self.get_source(fullname)
-        wenn source is None:
-            return None
+        wenn source is Nichts:
+            return Nichts
         try:
             path = self.get_filename(fullname)
         except ImportError:

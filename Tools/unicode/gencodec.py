@@ -51,7 +51,7 @@ def parsecodes(codes, len=len, range=range):
         meta-codes (in angular brackets, e.g. <LR> and <RL>) are
         ignored.
 
-        Empty codes or illegal ones are returned as None.
+        Empty codes or illegal ones are returned as Nichts.
 
     """
     wenn not codes:
@@ -97,7 +97,7 @@ def readmap(filename):
         enc,uni,comment = m.groups()
         enc = parsecodes(enc)
         uni = parsecodes(uni)
-        wenn comment is None:
+        wenn comment is Nichts:
             comment = ''
         sonst:
             comment = comment[1:].strip()
@@ -112,7 +112,7 @@ def readmap(filename):
 
     # If there are more identity-mapped entries than unmapped entries,
     # it pays to generate an identity dictionary first, and add explicit
-    # mappings to None fuer the rest
+    # mappings to Nichts fuer the rest
     wenn len(identity) >= len(unmapped):
         fuer enc in unmapped:
             enc2uni[enc] = (MISSING_CODE, "")
@@ -122,8 +122,8 @@ def readmap(filename):
 
 def hexrepr(t, precision=4):
 
-    wenn t is None:
-        return 'None'
+    wenn t is Nichts:
+        return 'Nichts'
     try:
         len(t)
     except TypeError:
@@ -160,7 +160,7 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
             (mapkey, mapcomment) = mapkey
         wenn isinstance(mapvalue, tuple):
             (mapvalue, mapcomment) = mapvalue
-        wenn mapkey is None:
+        wenn mapkey is Nichts:
             continue
         wenn (identity and
             mapkey == mapvalue and
@@ -219,7 +219,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
             maxkey = mapkey
     wenn maxkey > MAX_TABLE_SIZE:
         # Table too large
-        return None
+        return Nichts
 
     # Create table code
     maxchar = 0
@@ -234,7 +234,7 @@ def python_tabledef_code(varname, map, comments=1, key_precision=2):
         sonst:
             wenn isinstance(mapvalue, tuple):
                 # 1-n mappings not supported
-                return None
+                return Nichts
             sonst:
                 mapchar = chr(mapvalue)
         maxchar = max(maxchar, ord(mapchar))
@@ -297,11 +297,11 @@ klasse Codec(codecs.Codec):
 ''' % (encodingname, name, suffix, suffix)]
     l.append('''\
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return codecs.charmap_encode(input, self.errors, encoding_%s)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         return codecs.charmap_decode(input, self.errors, decoding_%s)[0]''' %
         (suffix, suffix))
 

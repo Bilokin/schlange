@@ -225,7 +225,7 @@ klasse Whitespace:
                            other.indent_level(ts)) )
         return a
 
-    # Return True iff self.indent_level(t) < other.indent_level(t)
+    # Return Wahr iff self.indent_level(t) < other.indent_level(t)
     # fuer all t >= 1.
     # The algorithm is due to Vincent Broman.
     # Easy to prove it's correct.
@@ -240,7 +240,7 @@ klasse Whitespace:
     # Note that M is of the form (T*)(S*) iff len(M.norm[0]) <= 1.
     def less(self, other):
         wenn self.n >= other.n:
-            return False
+            return Falsch
         wenn self.is_simple and other.is_simple:
             return self.nt <= other.nt
         n = max(self.longest_run_of_spaces(),
@@ -248,8 +248,8 @@ klasse Whitespace:
         # the self.n >= other.n test already did it fuer ts=1
         fuer ts in range(2, n+1):
             wenn self.indent_level(ts) >= other.indent_level(ts):
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     # return a list of tuples (ts, i1, i2) such that
     # i1 == self.indent_level(ts) >= other.indent_level(ts) == i2.

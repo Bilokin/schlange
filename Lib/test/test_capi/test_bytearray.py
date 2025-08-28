@@ -4,7 +4,7 @@ from test.support import import_helper
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
 
-NULL = None
+NULL = Nichts
 
 klasse ByteArraySubclass(bytearray):
     pass
@@ -20,28 +20,28 @@ klasse CAPITest(unittest.TestCase):
     def test_check(self):
         # Test PyByteArray_Check()
         check = _testlimitedcapi.bytearray_check
-        self.assertTrue(check(bytearray(b'')))
-        self.assertTrue(check(bytearray(b'abc')))
-        self.assertFalse(check(b'abc'))
-        self.assertTrue(check(ByteArraySubclass(b'abc')))
-        self.assertFalse(check(BytesLike(b'abc')))
-        self.assertFalse(check(3))
-        self.assertFalse(check([]))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(bytearray(b'')))
+        self.assertWahr(check(bytearray(b'abc')))
+        self.assertFalsch(check(b'abc'))
+        self.assertWahr(check(ByteArraySubclass(b'abc')))
+        self.assertFalsch(check(BytesLike(b'abc')))
+        self.assertFalsch(check(3))
+        self.assertFalsch(check([]))
+        self.assertFalsch(check(object()))
 
         # CRASHES check(NULL)
 
     def test_checkexact(self):
         # Test PyByteArray_CheckExact()
         check = _testlimitedcapi.bytearray_checkexact
-        self.assertTrue(check(bytearray(b'')))
-        self.assertTrue(check(bytearray(b'abc')))
-        self.assertFalse(check(b'abc'))
-        self.assertFalse(check(ByteArraySubclass(b'abc')))
-        self.assertFalse(check(BytesLike(b'abc')))
-        self.assertFalse(check(3))
-        self.assertFalse(check([]))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(bytearray(b'')))
+        self.assertWahr(check(bytearray(b'abc')))
+        self.assertFalsch(check(b'abc'))
+        self.assertFalsch(check(ByteArraySubclass(b'abc')))
+        self.assertFalsch(check(BytesLike(b'abc')))
+        self.assertFalsch(check(3))
+        self.assertFalsch(check([]))
+        self.assertFalsch(check(object()))
 
         # CRASHES check(NULL)
 

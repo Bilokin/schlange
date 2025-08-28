@@ -7,7 +7,7 @@ del t
 
 def convert(obj, /, conversion):
     """Convert *obj* using formatted string literal semantics."""
-    wenn conversion is None:
+    wenn conversion is Nichts:
         return obj
     wenn conversion == 'r':
         return repr(obj)
@@ -26,8 +26,8 @@ def _template_unpickle(*args):
     strings, interpolations = args
     parts = []
     fuer string, interpolation in itertools.zip_longest(strings, interpolations):
-        wenn string is not None:
+        wenn string is not Nichts:
             parts.append(string)
-        wenn interpolation is not None:
+        wenn interpolation is not Nichts:
             parts.append(interpolation)
     return Template(*parts)

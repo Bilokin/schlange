@@ -37,7 +37,7 @@ klasse TestError(unittest.TestCase):
     def test_invalid_char_quotes(self):
         with self.assertRaises(tomllib.TOMLDecodeError) as exc_info:
             tomllib.loads("v = '\n'")
-        self.assertTrue(" '\\n' " in str(exc_info.exception))
+        self.assertWahr(" '\\n' " in str(exc_info.exception))
 
     def test_type_error(self):
         with self.assertRaises(TypeError) as exc_info:
@@ -45,7 +45,7 @@ klasse TestError(unittest.TestCase):
         self.assertEqual(str(exc_info.exception), "Expected str object, not 'bytes'")
 
         with self.assertRaises(TypeError) as exc_info:
-            tomllib.loads(False)  # type: ignore[arg-type]
+            tomllib.loads(Falsch)  # type: ignore[arg-type]
         self.assertEqual(str(exc_info.exception), "Expected str object, not 'bool'")
 
     def test_module_name(self):
@@ -71,11 +71,11 @@ klasse TestError(unittest.TestCase):
         fuer args in [
             (),
             ("err msg",),
-            (None,),
-            (None, "doc"),
-            ("err msg", None),
-            (None, "doc", None),
-            ("err msg", "doc", None),
+            (Nichts,),
+            (Nichts, "doc"),
+            ("err msg", Nichts),
+            (Nichts, "doc", Nichts),
+            ("err msg", "doc", Nichts),
             ("one", "two", "three", "four"),
             ("one", "two", 3, "four", "five"),
         ]:

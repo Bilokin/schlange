@@ -228,20 +228,20 @@ klasse SymtableTest(unittest.TestCase):
         self.assertGreater(self.GenericMine.get_id(), 0)
 
     def test_optimized(self):
-        self.assertFalse(self.top.is_optimized())
+        self.assertFalsch(self.top.is_optimized())
 
-        self.assertTrue(self.spam.is_optimized())
+        self.assertWahr(self.spam.is_optimized())
 
     def test_nested(self):
-        self.assertFalse(self.top.is_nested())
-        self.assertFalse(self.Mine.is_nested())
-        self.assertFalse(self.spam.is_nested())
-        self.assertTrue(self.internal.is_nested())
+        self.assertFalsch(self.top.is_nested())
+        self.assertFalsch(self.Mine.is_nested())
+        self.assertFalsch(self.spam.is_nested())
+        self.assertWahr(self.internal.is_nested())
 
     def test_children(self):
-        self.assertTrue(self.top.has_children())
-        self.assertTrue(self.Mine.has_children())
-        self.assertFalse(self.foo.has_children())
+        self.assertWahr(self.top.has_children())
+        self.assertWahr(self.Mine.has_children())
+        self.assertFalsch(self.foo.has_children())
 
     def test_lineno(self):
         self.assertEqual(self.top.get_lineno(), 0)
@@ -256,42 +256,42 @@ klasse SymtableTest(unittest.TestCase):
         self.assertEqual(self.internal.get_frees(), ("x",))
 
     def test_globals(self):
-        self.assertTrue(self.spam.lookup("glob").is_global())
-        self.assertFalse(self.spam.lookup("glob").is_declared_global())
-        self.assertTrue(self.spam.lookup("bar").is_global())
-        self.assertTrue(self.spam.lookup("bar").is_declared_global())
-        self.assertFalse(self.internal.lookup("x").is_global())
-        self.assertFalse(self.Mine.lookup("instance_var").is_global())
-        self.assertTrue(self.spam.lookup("bar").is_global())
+        self.assertWahr(self.spam.lookup("glob").is_global())
+        self.assertFalsch(self.spam.lookup("glob").is_declared_global())
+        self.assertWahr(self.spam.lookup("bar").is_global())
+        self.assertWahr(self.spam.lookup("bar").is_declared_global())
+        self.assertFalsch(self.internal.lookup("x").is_global())
+        self.assertFalsch(self.Mine.lookup("instance_var").is_global())
+        self.assertWahr(self.spam.lookup("bar").is_global())
         # Module-scope globals are both global and local
-        self.assertTrue(self.top.lookup("some_non_assigned_global_var").is_global())
-        self.assertTrue(self.top.lookup("some_assigned_global_var").is_global())
+        self.assertWahr(self.top.lookup("some_non_assigned_global_var").is_global())
+        self.assertWahr(self.top.lookup("some_assigned_global_var").is_global())
 
     def test_nonlocal(self):
-        self.assertFalse(self.spam.lookup("some_var").is_nonlocal())
-        self.assertTrue(self.other_internal.lookup("some_var").is_nonlocal())
+        self.assertFalsch(self.spam.lookup("some_var").is_nonlocal())
+        self.assertWahr(self.other_internal.lookup("some_var").is_nonlocal())
         expected = ("some_var",)
         self.assertEqual(self.other_internal.get_nonlocals(), expected)
 
     def test_local(self):
-        self.assertTrue(self.spam.lookup("x").is_local())
-        self.assertFalse(self.spam.lookup("bar").is_local())
+        self.assertWahr(self.spam.lookup("x").is_local())
+        self.assertFalsch(self.spam.lookup("bar").is_local())
         # Module-scope globals are both global and local
-        self.assertTrue(self.top.lookup("some_non_assigned_global_var").is_local())
-        self.assertTrue(self.top.lookup("some_assigned_global_var").is_local())
+        self.assertWahr(self.top.lookup("some_non_assigned_global_var").is_local())
+        self.assertWahr(self.top.lookup("some_assigned_global_var").is_local())
 
     def test_free(self):
-        self.assertTrue(self.internal.lookup("x").is_free())
+        self.assertWahr(self.internal.lookup("x").is_free())
 
     def test_referenced(self):
-        self.assertTrue(self.internal.lookup("x").is_referenced())
-        self.assertTrue(self.spam.lookup("internal").is_referenced())
-        self.assertFalse(self.spam.lookup("x").is_referenced())
+        self.assertWahr(self.internal.lookup("x").is_referenced())
+        self.assertWahr(self.spam.lookup("internal").is_referenced())
+        self.assertFalsch(self.spam.lookup("x").is_referenced())
 
     def test_parameters(self):
         fuer sym in ("a", "var", "kw"):
-            self.assertTrue(self.spam.lookup(sym).is_parameter())
-        self.assertFalse(self.spam.lookup("x").is_parameter())
+            self.assertWahr(self.spam.lookup(sym).is_parameter())
+        self.assertFalsch(self.spam.lookup("x").is_parameter())
 
     def test_symbol_lookup(self):
         self.assertEqual(len(self.top.get_identifiers()),
@@ -300,14 +300,14 @@ klasse SymtableTest(unittest.TestCase):
         self.assertRaises(KeyError, self.top.lookup, "not_here")
 
     def test_namespaces(self):
-        self.assertTrue(self.top.lookup("Mine").is_namespace())
-        self.assertTrue(self.Mine.lookup("a_method").is_namespace())
-        self.assertTrue(self.top.lookup("spam").is_namespace())
-        self.assertTrue(self.spam.lookup("internal").is_namespace())
-        self.assertTrue(self.top.lookup("namespace_test").is_namespace())
-        self.assertFalse(self.spam.lookup("x").is_namespace())
+        self.assertWahr(self.top.lookup("Mine").is_namespace())
+        self.assertWahr(self.Mine.lookup("a_method").is_namespace())
+        self.assertWahr(self.top.lookup("spam").is_namespace())
+        self.assertWahr(self.spam.lookup("internal").is_namespace())
+        self.assertWahr(self.top.lookup("namespace_test").is_namespace())
+        self.assertFalsch(self.spam.lookup("x").is_namespace())
 
-        self.assertTrue(self.top.lookup("spam").get_namespace() is self.spam)
+        self.assertWahr(self.top.lookup("spam").get_namespace() is self.spam)
         ns_test = self.top.lookup("namespace_test")
         self.assertEqual(len(ns_test.get_namespaces()), 2)
         self.assertRaises(ValueError, ns_test.get_namespace)
@@ -317,29 +317,29 @@ klasse SymtableTest(unittest.TestCase):
         self.assertRaises(ValueError, ns_test_2.get_namespace)
 
     def test_assigned(self):
-        self.assertTrue(self.spam.lookup("x").is_assigned())
-        self.assertTrue(self.spam.lookup("bar").is_assigned())
-        self.assertTrue(self.top.lookup("spam").is_assigned())
-        self.assertTrue(self.Mine.lookup("a_method").is_assigned())
-        self.assertFalse(self.internal.lookup("x").is_assigned())
+        self.assertWahr(self.spam.lookup("x").is_assigned())
+        self.assertWahr(self.spam.lookup("bar").is_assigned())
+        self.assertWahr(self.top.lookup("spam").is_assigned())
+        self.assertWahr(self.Mine.lookup("a_method").is_assigned())
+        self.assertFalsch(self.internal.lookup("x").is_assigned())
 
     def test_annotated(self):
         st1 = symtable.symtable('def f():\n    x: int\n', 'test', 'exec')
         st2 = st1.get_children()[1]
         self.assertEqual(st2.get_type(), "function")
-        self.assertTrue(st2.lookup('x').is_local())
-        self.assertTrue(st2.lookup('x').is_annotated())
-        self.assertFalse(st2.lookup('x').is_global())
+        self.assertWahr(st2.lookup('x').is_local())
+        self.assertWahr(st2.lookup('x').is_annotated())
+        self.assertFalsch(st2.lookup('x').is_global())
         st3 = symtable.symtable('def f():\n    x = 1\n', 'test', 'exec')
         st4 = st3.get_children()[1]
         self.assertEqual(st4.get_type(), "function")
-        self.assertTrue(st4.lookup('x').is_local())
-        self.assertFalse(st4.lookup('x').is_annotated())
+        self.assertWahr(st4.lookup('x').is_local())
+        self.assertFalsch(st4.lookup('x').is_annotated())
 
         # Test that annotations in the global scope are valid after the
         # variable is declared as nonlocal.
         st5 = symtable.symtable('global x\nx: int', 'test', 'exec')
-        self.assertTrue(st5.lookup("x").is_global())
+        self.assertWahr(st5.lookup("x").is_global())
 
         # Test that annotations fuer nonlocals are valid after the
         # variable is declared as nonlocal.
@@ -351,7 +351,7 @@ klasse SymtableTest(unittest.TestCase):
                                 'test', 'exec')
 
     def test_imported(self):
-        self.assertTrue(self.top.lookup("sys").is_imported())
+        self.assertWahr(self.top.lookup("sys").is_imported())
 
     def test_name(self):
         self.assertEqual(self.top.get_name(), "top")
@@ -419,7 +419,7 @@ klasse SymtableTest(unittest.TestCase):
                 check_body(gen, ())
 
             # test generator expression + variable named 'genexpr'
-            with self.subTest(gen=gen, isvar=True):
+            with self.subTest(gen=gen, isvar=Wahr):
                 check_body('\n'.join((gen, 'genexpr = 1')), ())
                 check_body('\n'.join(('genexpr = 1', gen)), ())
 
@@ -473,12 +473,12 @@ klasse SymtableTest(unittest.TestCase):
 
     def test_bytes(self):
         top = symtable.symtable(TEST_CODE.encode('utf8'), "?", "exec")
-        self.assertIsNotNone(find_block(top, "Mine"))
+        self.assertIsNotNichts(find_block(top, "Mine"))
 
         code = b'# -*- coding: iso8859-15 -*-\nclass \xb4: pass\n'
 
         top = symtable.symtable(code, "?", "exec")
-        self.assertIsNotNone(find_block(top, "\u017d"))
+        self.assertIsNotNichts(find_block(top, "\u017d"))
 
     def test_symtable_repr(self):
         self.assertEqual(str(self.top), "<SymbolTable fuer module ?>")
@@ -533,7 +533,7 @@ klasse SymtableTest(unittest.TestCase):
         st = st.get_children()[0]
         self.assertIs(st.get_type(), symtable.SymbolTableType.FUNCTION)
         self.assertEqual(st.get_name(), "<lambda>")
-        self.assertFalse(st.is_nested())
+        self.assertFalsch(st.is_nested())
         self.assertEqual(sorted(st.get_identifiers()), ["x"])
         self.assertEqual(st.get_children(), [])
 
@@ -543,13 +543,13 @@ klasse SymtableTest(unittest.TestCase):
         st = st.get_children()[0]
         self.assertIs(st.get_type(), symtable.SymbolTableType.FUNCTION)
         self.assertEqual(st.get_name(), "<lambda>")
-        self.assertFalse(st.is_nested())
+        self.assertFalsch(st.is_nested())
         self.assertEqual(sorted(st.get_identifiers()), ["x"])
         self.assertEqual(len(st.get_children()), 1)
         st = st.get_children()[0]
         self.assertIs(st.get_type(), symtable.SymbolTableType.FUNCTION)
         self.assertEqual(st.get_name(), "<lambda>")
-        self.assertTrue(st.is_nested())
+        self.assertWahr(st.is_nested())
         self.assertEqual(sorted(st.get_identifiers()), ["y"])
         self.assertEqual(st.get_children(), [])
 
@@ -559,7 +559,7 @@ klasse SymtableTest(unittest.TestCase):
         st = st.get_children()[0]
         self.assertIs(st.get_type(), symtable.SymbolTableType.FUNCTION)
         self.assertEqual(st.get_name(), "<genexpr>")
-        self.assertFalse(st.is_nested())
+        self.assertFalsch(st.is_nested())
         self.assertEqual(sorted(st.get_identifiers()), [".0", "x"])
         self.assertEqual(st.get_children(), [])
 
@@ -569,13 +569,13 @@ klasse SymtableTest(unittest.TestCase):
         st = st.get_children()[0]
         self.assertIs(st.get_type(), symtable.SymbolTableType.FUNCTION)
         self.assertEqual(st.get_name(), "<genexpr>")
-        self.assertFalse(st.is_nested())
+        self.assertFalsch(st.is_nested())
         self.assertEqual(sorted(st.get_identifiers()), [".0", "x"])
         self.assertEqual(len(st.get_children()), 1)
         st = st.get_children()[0]
         self.assertIs(st.get_type(), symtable.SymbolTableType.FUNCTION)
         self.assertEqual(st.get_name(), "<genexpr>")
-        self.assertTrue(st.is_nested())
+        self.assertWahr(st.is_nested())
         self.assertEqual(sorted(st.get_identifiers()), [".0", "y"])
         self.assertEqual(st.get_children(), [])
 
@@ -602,7 +602,7 @@ klasse ComprehensionTests(unittest.TestCase):
 
 
 klasse CommandLineTest(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
 
     def test_file(self):
         filename = os_helper.TESTFN

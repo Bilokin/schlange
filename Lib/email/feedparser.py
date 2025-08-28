@@ -60,7 +60,7 @@ klasse BufferedSubFile(object):
         # The stack of false-EOF checking predicates.
         self._eofstack = []
         # A flag indicating whether the file has been closed or not.
-        self._closed = False
+        self._closed = Falsch
 
     def push_eof_matcher(self, pred):
         self._eofstack.append(pred)
@@ -74,7 +74,7 @@ klasse BufferedSubFile(object):
         self.pushlines(self._partial.readlines())
         self._partial.seek(0)
         self._partial.truncate()
-        self._closed = True
+        self._closed = Wahr
 
     def readline(self):
         wenn not self._lines:
@@ -136,7 +136,7 @@ klasse BufferedSubFile(object):
 klasse FeedParser:
     """A feed-style parser of email."""
 
-    def __init__(self, _factory=None, *, policy=compat32):
+    def __init__(self, _factory=Nichts, *, policy=compat32):
         """_factory is called with no arguments to create a new message obj
 
         The policy keyword specifies a policy object that controls a number of
@@ -145,9 +145,9 @@ klasse FeedParser:
 
         """
         self.policy = policy
-        self._old_style_factory = False
-        wenn _factory is None:
-            wenn policy.message_factory is None:
+        self._old_style_factory = Falsch
+        wenn _factory is Nichts:
+            wenn policy.message_factory is Nichts:
                 from email.message import Message
                 self._factory = Message
             sonst:
@@ -158,17 +158,17 @@ klasse FeedParser:
                 _factory(policy=self.policy)
             except TypeError:
                 # Assume this is an old-style factory
-                self._old_style_factory = True
+                self._old_style_factory = Wahr
         self._input = BufferedSubFile()
         self._msgstack = []
         self._parse = self._parsegen().__next__
-        self._cur = None
-        self._last = None
-        self._headersonly = False
+        self._cur = Nichts
+        self._last = Nichts
+        self._headersonly = Falsch
 
     # Non-public interface fuer supporting Parser's headersonly flag
     def _set_headersonly(self):
-        self._headersonly = True
+        self._headersonly = Wahr
 
     def feed(self, data):
         """Push more data into the parser."""
@@ -212,7 +212,7 @@ klasse FeedParser:
         wenn self._msgstack:
             self._cur = self._msgstack[-1]
         sonst:
-            self._cur = None
+            self._cur = Nichts
         return retval
 
     def _parsegen(self):
@@ -243,7 +243,7 @@ klasse FeedParser:
         # remaining lines in the input are thrown into the message body.
         wenn self._headersonly:
             lines = []
-            while True:
+            while Wahr:
                 line = self._input.readline()
                 wenn line is NeedMoreData:
                     yield NeedMoreData
@@ -259,7 +259,7 @@ klasse FeedParser:
             # nested message object, but the processing is a bit different
             # than standard message/* types because there is no body fuer the
             # nested messages.  A blank line separates the subparts.
-            while True:
+            while Wahr:
                 self._input.push_eof_matcher(NLCRE.match)
                 fuer retval in self._parsegen():
                     wenn retval is NeedMoreData:
@@ -275,13 +275,13 @@ klasse FeedParser:
                 # EOF.  We want to see wenn we're at the end of this subpart, so
                 # first consume the blank line, then test the next line to see
                 # wenn we're at this subpart's EOF.
-                while True:
+                while Wahr:
                     line = self._input.readline()
                     wenn line is NeedMoreData:
                         yield NeedMoreData
                         continue
                     break
-                while True:
+                while Wahr:
                     line = self._input.readline()
                     wenn line is NeedMoreData:
                         yield NeedMoreData
@@ -304,7 +304,7 @@ klasse FeedParser:
             return
         wenn self._cur.get_content_maintype() == 'multipart':
             boundary = self._cur.get_boundary()
-            wenn boundary is None:
+            wenn boundary is Nichts:
                 # The message /claims/ to be a multipart but it has not
                 # defined a boundary.  That's a problem which we'll handle by
                 # reading everything until the EOF and marking the message as
@@ -331,13 +331,13 @@ klasse FeedParser:
             separator = '--' + boundary
             def boundarymatch(line):
                 wenn not line.startswith(separator):
-                    return None
+                    return Nichts
                 return boundaryendRE.match(line, len(separator))
-            capturing_preamble = True
+            capturing_preamble = Wahr
             preamble = []
-            linesep = False
-            close_boundary_seen = False
-            while True:
+            linesep = Falsch
+            close_boundary_seen = Falsch
+            while Wahr:
                 line = self._input.readline()
                 wenn line is NeedMoreData:
                     yield NeedMoreData
@@ -351,7 +351,7 @@ klasse FeedParser:
                     # the closing boundary, then we need to initialize the
                     # epilogue with the empty string (see below).
                     wenn mo.group('end'):
-                        close_boundary_seen = True
+                        close_boundary_seen = Wahr
                         linesep = mo.group('linesep')
                         break
                     # We saw an inter-part boundary.  Were we in the preamble?
@@ -364,14 +364,14 @@ klasse FeedParser:
                             wenn eolmo:
                                 preamble[-1] = lastline[:-len(eolmo.group(0))]
                             self._cur.preamble = EMPTYSTRING.join(preamble)
-                        capturing_preamble = False
+                        capturing_preamble = Falsch
                         self._input.unreadline(line)
                         continue
                     # We saw a boundary separating two parts.  Consume any
                     # multiple boundary lines that may be following.  Our
                     # interpretation of RFC 2046 BNF grammar does not produce
                     # body parts within such double boundaries.
-                    while True:
+                    while Wahr:
                         line = self._input.readline()
                         wenn line is NeedMoreData:
                             yield NeedMoreData
@@ -395,8 +395,8 @@ klasse FeedParser:
                     wenn self._last.get_content_maintype() == 'multipart':
                         epilogue = self._last.epilogue
                         wenn epilogue == '':
-                            self._last.epilogue = None
-                        sowenn epilogue is not None:
+                            self._last.epilogue = Nichts
+                        sowenn epilogue is not Nichts:
                             mo = NLCRE_eol.search(epilogue)
                             wenn mo:
                                 end = len(mo.group(0))
@@ -439,7 +439,7 @@ klasse FeedParser:
                 return
             # Everything from here to the EOF is epilogue.  If the end boundary
             # ended in a newline, we'll need to make sure the epilogue isn't
-            # None
+            # Nichts
             wenn linesep:
                 epilogue = ['']
             sonst:

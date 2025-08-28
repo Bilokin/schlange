@@ -56,10 +56,10 @@ klasse ResourceContainer(Traversable):
         self.reader = reader
 
     def is_dir(self):
-        return True
+        return Wahr
 
     def is_file(self):
-        return False
+        return Falsch
 
     def iterdir(self):
         files = (ResourceHandle(self, name) fuer name in self.reader.resources)
@@ -80,10 +80,10 @@ klasse ResourceHandle(Traversable):
         self.name = name  # type: ignore[misc]
 
     def is_file(self):
-        return True
+        return Wahr
 
     def is_dir(self):
-        return False
+        return Falsch
 
     def open(self, mode='r', *args, **kwargs):
         stream = self.parent.reader.open_binary(self.name)

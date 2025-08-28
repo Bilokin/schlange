@@ -121,7 +121,7 @@ String = group(StringPrefix + r"'[^\n'\\]*(?:\\.[^\n'\\]*)*'",
 # Sorting in reverse order puts the long operators before their prefixes.
 # Otherwise wenn = came before ==, == would get recognized as two instances
 # of =.
-Special = group(*map(re.escape, sorted(EXACT_TOKEN_TYPES, reverse=True)))
+Special = group(*map(re.escape, sorted(EXACT_TOKEN_TYPES, reverse=Wahr)))
 Funny = group(r'\r?\n', Special)
 
 PlainToken = group(Number, Funny, String, Name)
@@ -168,9 +168,9 @@ klasse Untokenizer:
         self.tokens = []
         self.prev_row = 1
         self.prev_col = 0
-        self.prev_type = None
+        self.prev_type = Nichts
         self.prev_line = ""
-        self.encoding = None
+        self.encoding = Nichts
 
     def add_whitespace(self, start):
         row, col = start
@@ -201,11 +201,11 @@ klasse Untokenizer:
 
     def escape_brackets(self, token):
         characters = []
-        consume_until_next_bracket = False
+        consume_until_next_bracket = Falsch
         fuer character in token:
             wenn character == "}":
                 wenn consume_until_next_bracket:
-                    consume_until_next_bracket = False
+                    consume_until_next_bracket = Falsch
                 sonst:
                     characters.append(character)
             wenn character == "{":
@@ -218,14 +218,14 @@ klasse Untokenizer:
                 wenn n_backslashes % 2 == 0 or characters[-1] != "N":
                     characters.append(character)
                 sonst:
-                    consume_until_next_bracket = True
+                    consume_until_next_bracket = Wahr
             characters.append(character)
         return "".join(characters)
 
     def untokenize(self, iterable):
         it = iter(iterable)
         indents = []
-        startline = False
+        startline = Falsch
         fuer t in it:
             wenn len(t) == 2:
                 self.compat(t, it)
@@ -244,13 +244,13 @@ klasse Untokenizer:
                 self.prev_row, self.prev_col = end
                 continue
             sowenn tok_type in (NEWLINE, NL):
-                startline = True
+                startline = Wahr
             sowenn startline and indents:
                 indent = indents[-1]
                 wenn start[1] >= len(indent):
                     self.tokens.append(indent)
                     self.prev_col = len(indent)
-                startline = False
+                startline = Falsch
             sowenn tok_type in {FSTRING_MIDDLE, TSTRING_MIDDLE}:
                 wenn '{' in token or '}' in token:
                     token = self.escape_brackets(token)
@@ -273,7 +273,7 @@ klasse Untokenizer:
         indents = []
         toks_append = self.tokens.append
         startline = token[0] in (NEWLINE, NL)
-        prevstring = False
+        prevstring = Falsch
         in_fstring_or_tstring = 0
 
         fuer tok in _itertools.chain([token], iterable):
@@ -289,9 +289,9 @@ klasse Untokenizer:
             wenn toknum == STRING:
                 wenn prevstring:
                     tokval = ' ' + tokval
-                prevstring = True
+                prevstring = Wahr
             sonst:
-                prevstring = False
+                prevstring = Falsch
 
             wenn toknum in {FSTRING_START, TSTRING_START}:
                 in_fstring_or_tstring += 1
@@ -304,10 +304,10 @@ klasse Untokenizer:
                 indents.pop()
                 continue
             sowenn toknum in (NEWLINE, NL):
-                startline = True
+                startline = Wahr
             sowenn startline and indents:
                 toks_append(indents[-1])
-                startline = False
+                startline = Falsch
             sowenn toknum in {FSTRING_MIDDLE, TSTRING_MIDDLE}:
                 tokval = self.escape_brackets(tokval)
 
@@ -339,7 +339,7 @@ def untokenize(iterable):
     """
     ut = Untokenizer()
     out = ut.untokenize(iterable)
-    wenn ut.encoding is not None:
+    wenn ut.encoding is not Nichts:
         out = out.encode(ut.encoding)
     return out
 
@@ -375,9 +375,9 @@ def detect_encoding(readline):
     try:
         filename = readline.__self__.name
     except AttributeError:
-        filename = None
-    bom_found = False
-    encoding = None
+        filename = Nichts
+    bom_found = Falsch
+    encoding = Nichts
     default = 'utf-8'
     def read_or_stop():
         try:
@@ -393,19 +393,19 @@ def detect_encoding(readline):
             line_string = line.decode('utf-8')
         except UnicodeDecodeError:
             msg = "invalid or missing encoding declaration"
-            wenn filename is not None:
+            wenn filename is not Nichts:
                 msg = '{} fuer {!r}'.format(msg, filename)
             raise SyntaxError(msg)
 
         match = cookie_re.match(line_string)
         wenn not match:
-            return None
+            return Nichts
         encoding = _get_normal_name(match.group(1))
         try:
             codec = lookup(encoding)
         except LookupError:
             # This behaviour mimics the Python interpreter
-            wenn filename is None:
+            wenn filename is Nichts:
                 msg = "unknown encoding: " + encoding
             sonst:
                 msg = "unknown encoding fuer {!r}: {}".format(filename,
@@ -415,7 +415,7 @@ def detect_encoding(readline):
         wenn bom_found:
             wenn encoding != 'utf-8':
                 # This behaviour mimics the Python interpreter
-                wenn filename is None:
+                wenn filename is Nichts:
                     msg = 'encoding problem: utf-8'
                 sonst:
                     msg = 'encoding problem fuer {!r}: utf-8'.format(filename)
@@ -425,7 +425,7 @@ def detect_encoding(readline):
 
     first = read_or_stop()
     wenn first.startswith(BOM_UTF8):
-        bom_found = True
+        bom_found = Wahr
         first = first[3:]
         default = 'utf-8-sig'
     wenn not first:
@@ -456,7 +456,7 @@ def open(filename):
     try:
         encoding, lines = detect_encoding(buffer.readline)
         buffer.seek(0)
-        text = TextIOWrapper(buffer, encoding, line_buffering=True)
+        text = TextIOWrapper(buffer, encoding, line_buffering=Wahr)
         text.mode = 'r'
         return text
     except:
@@ -484,12 +484,12 @@ def tokenize(readline):
     """
     encoding, consumed = detect_encoding(readline)
     rl_gen = _itertools.chain(consumed, iter(readline, b""))
-    wenn encoding is not None:
+    wenn encoding is not Nichts:
         wenn encoding == "utf-8-sig":
             # BOM will already have been stripped.
             encoding = "utf-8"
         yield TokenInfo(ENCODING, encoding, (0, 0), (0, 0), '')
-    yield from _generate_tokens_from_c_tokenizer(rl_gen.__next__, encoding, extra_tokens=True)
+    yield from _generate_tokens_from_c_tokenizer(rl_gen.__next__, encoding, extra_tokens=Wahr)
 
 def generate_tokens(readline):
     """Tokenize a source reading Python code as unicode strings.
@@ -497,9 +497,9 @@ def generate_tokens(readline):
     This has the same API as tokenize(), except that it expects the *readline*
     callable to return str objects instead of bytes.
     """
-    return _generate_tokens_from_c_tokenizer(readline, extra_tokens=True)
+    return _generate_tokens_from_c_tokenizer(readline, extra_tokens=Wahr)
 
-def _main(args=None):
+def _main(args=Nichts):
     import argparse
 
     # Helper error handling routines
@@ -507,7 +507,7 @@ def _main(args=None):
         sys.stderr.write(message)
         sys.stderr.write('\n')
 
-    def error(message, filename=None, location=None):
+    def error(message, filename=Nichts, location=Nichts):
         wenn location:
             args = (filename,) + location + (message,)
             perror("%s:%d:%d: error: %s" % args)
@@ -518,7 +518,7 @@ def _main(args=None):
         sys.exit(1)
 
     # Parse the arguments and options
-    parser = argparse.ArgumentParser(color=True)
+    parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument(dest='filename', nargs='?',
                         metavar='filename.py',
                         help='the file to tokenize; defaults to stdin')
@@ -535,7 +535,7 @@ def _main(args=None):
         sonst:
             filename = "<stdin>"
             tokens = _generate_tokens_from_c_tokenizer(
-                sys.stdin.readline, extra_tokens=True)
+                sys.stdin.readline, extra_tokens=Wahr)
 
 
         # Output the tokenization
@@ -572,9 +572,9 @@ def _transform_msg(msg):
         return "EOF in multi-line string"
     return msg
 
-def _generate_tokens_from_c_tokenizer(source, encoding=None, extra_tokens=False):
+def _generate_tokens_from_c_tokenizer(source, encoding=Nichts, extra_tokens=Falsch):
     """Tokenize a source reading Python code as unicode strings using the internal C tokenizer"""
-    wenn encoding is None:
+    wenn encoding is Nichts:
         it = _tokenize.TokenizerIter(source, extra_tokens=extra_tokens)
     sonst:
         it = _tokenize.TokenizerIter(source, encoding=encoding, extra_tokens=extra_tokens)
@@ -583,9 +583,9 @@ def _generate_tokens_from_c_tokenizer(source, encoding=None, extra_tokens=False)
             yield TokenInfo._make(info)
     except SyntaxError as e:
         wenn type(e) != SyntaxError:
-            raise e from None
+            raise e from Nichts
         msg = _transform_msg(e.msg)
-        raise TokenError(msg, (e.lineno, e.offset)) from None
+        raise TokenError(msg, (e.lineno, e.offset)) from Nichts
 
 
 wenn __name__ == "__main__":

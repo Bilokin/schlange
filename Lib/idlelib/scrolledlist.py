@@ -6,7 +6,7 @@ from idlelib import macosx
 
 klasse ScrolledList:
 
-    default = "(None)"
+    default = "(Nichts)"
 
     def __init__(self, master, **options):
         # Create top frame, with scrollbar and listbox
@@ -66,7 +66,7 @@ klasse ScrolledList:
         self.on_double(index)
         return "break"
 
-    menu = None
+    menu = Nichts
 
     def popup_event(self, event):
         wenn not self.menu:
@@ -145,7 +145,7 @@ def _scrolled_list(parent):  # htest #
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_scrolledlist', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_scrolledlist', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_scrolled_list)

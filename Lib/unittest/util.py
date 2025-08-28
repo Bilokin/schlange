@@ -3,7 +3,7 @@
 from collections import namedtuple, Counter
 from os.path import commonprefix
 
-__unittest = True
+__unittest = Wahr
 
 _MAX_LENGTH = 80
 _PLACEHOLDER_LEN = 12
@@ -42,7 +42,7 @@ def _common_shorten_repr(*args):
     return tuple(prefix + _shorten(s[prefixlen:], _MIN_DIFF_LEN, _MIN_END_LEN)
                  fuer s in args)
 
-def safe_repr(obj, short=False):
+def safe_repr(obj, short=Falsch):
     try:
         result = repr(obj)
     except Exception:
@@ -65,7 +65,7 @@ def sorted_list_difference(expected, actual):
     i = j = 0
     missing = []
     unexpected = []
-    while True:
+    while Wahr:
         try:
             e = expected[i]
             a = actual[j]

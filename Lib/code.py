@@ -22,17 +22,17 @@ klasse InteractiveInterpreter:
 
     """
 
-    def __init__(self, locals=None):
+    def __init__(self, locals=Nichts):
         """Constructor.
 
         The optional 'locals' argument specifies a mapping to use as the
         namespace in which code will be executed; it defaults to a newly
         created dictionary with key "__name__" set to "__console__" and
-        key "__doc__" set to None.
+        key "__doc__" set to Nichts.
 
         """
-        wenn locals is None:
-            locals = {"__name__": "__console__", "__doc__": None}
+        wenn locals is Nichts:
+            locals = {"__name__": "__console__", "__doc__": Nichts}
         self.locals = locals
         self.compile = CommandCompiler()
 
@@ -48,13 +48,13 @@ klasse InteractiveInterpreter:
         will be printed by calling the showsyntaxerror() method.
 
         2) The input is incomplete, and more input is required;
-        compile_command() returned None.  Nothing happens.
+        compile_command() returned Nichts.  Nothing happens.
 
         3) The input is complete; compile_command() returned a code
         object.  The code is executed by calling self.runcode() (which
         also handles run-time exceptions, except fuer SystemExit).
 
-        The return value is True in case 2, False in the other cases (unless
+        The return value is Wahr in case 2, Falsch in the other cases (unless
         an exception is raised).  The return value can be used to
         decide whether to use sys.ps1 or sys.ps2 to prompt the next
         line.
@@ -65,15 +65,15 @@ klasse InteractiveInterpreter:
         except (OverflowError, SyntaxError, ValueError):
             # Case 1
             self.showsyntaxerror(filename, source=source)
-            return False
+            return Falsch
 
-        wenn code is None:
+        wenn code is Nichts:
             # Case 2
-            return True
+            return Wahr
 
         # Case 3
         self.runcode(code)
-        return False
+        return Falsch
 
     def runcode(self, code):
         """Execute a code object.
@@ -94,7 +94,7 @@ klasse InteractiveInterpreter:
         except:
             self.showtraceback()
 
-    def showsyntaxerror(self, filename=None, **kwargs):
+    def showsyntaxerror(self, filename=Nichts, **kwargs):
         """Display the syntax error that just occurred.
 
         This doesn't display a stack trace because there isn't one.
@@ -111,9 +111,9 @@ klasse InteractiveInterpreter:
             wenn filename and issubclass(typ, SyntaxError):
                 value.filename = filename
             source = kwargs.pop('source', "")
-            self._showtraceback(typ, value, None, source)
+            self._showtraceback(typ, value, Nichts, source)
         finally:
-            typ = value = tb = None
+            typ = value = tb = Nichts
 
     def showtraceback(self):
         """Display the exception that just occurred.
@@ -127,7 +127,7 @@ klasse InteractiveInterpreter:
             typ, value, tb = sys.exc_info()
             self._showtraceback(typ, value, tb.tb_next, "")
         finally:
-            typ = value = tb = None
+            typ = value = tb = Nichts
 
     def _showtraceback(self, typ, value, tb, source):
         sys.last_type = typ
@@ -136,7 +136,7 @@ klasse InteractiveInterpreter:
         # Set the line of text that the exception refers to
         lines = source.splitlines()
         wenn (source and typ is SyntaxError
-                and not value.text and value.lineno is not None
+                and not value.text and value.lineno is not Nichts
                 and len(lines) >= value.lineno):
             value.text = lines[value.lineno - 1]
         sys.last_exc = sys.last_value = value
@@ -150,7 +150,7 @@ klasse InteractiveInterpreter:
             except SystemExit:
                 raise
             except BaseException as e:
-                e.__context__ = None
+                e.__context__ = Nichts
                 e = e.with_traceback(e.__traceback__.tb_next)
                 print('Error in sys.excepthook:', file=sys.stderr)
                 sys.__excepthook__(type(e), e, e.__traceback__)
@@ -182,7 +182,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
 
     """
 
-    def __init__(self, locals=None, filename="<console>", *, local_exit=False):
+    def __init__(self, locals=Nichts, filename="<console>", *, local_exit=Falsch):
         """Constructor.
 
         The optional locals argument will be passed to the
@@ -201,7 +201,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
         """Reset the input buffer."""
         self.buffer = []
 
-    def interact(self, banner=None, exitmsg=None):
+    def interact(self, banner=Nichts, exitmsg=Nichts):
         """Closely emulate the interactive Python console.
 
         The optional banner argument specifies the banner to print
@@ -213,25 +213,25 @@ klasse InteractiveConsole(InteractiveInterpreter):
 
         The optional exitmsg argument specifies the exit message
         printed when exiting. Pass the empty string to suppress
-        printing an exit message. If exitmsg is not given or None,
+        printing an exit message. If exitmsg is not given or Nichts,
         a default message is printed.
 
         """
         try:
             sys.ps1
-            delete_ps1_after = False
+            delete_ps1_after = Falsch
         except AttributeError:
             sys.ps1 = ">>> "
-            delete_ps1_after = True
+            delete_ps1_after = Wahr
         try:
             sys.ps2
-            delete_ps2_after = False
+            delete_ps2_after = Falsch
         except AttributeError:
             sys.ps2 = "... "
-            delete_ps2_after = True
+            delete_ps2_after = Wahr
 
         cprt = 'Type "help", "copyright", "credits" or "license" fuer more information.'
-        wenn banner is None:
+        wenn banner is Nichts:
             self.write("Python %s on %s\n%s\n(%s)\n" %
                        (sys.version, sys.platform, cprt,
                         self.__class__.__name__))
@@ -244,12 +244,12 @@ klasse InteractiveConsole(InteractiveInterpreter):
         # process. exit and quit in builtins closes sys.stdin which makes
         # it super difficult to restore
         #
-        # When self.local_exit is True, we overwrite the builtins so
+        # When self.local_exit is Wahr, we overwrite the builtins so
         # exit() and quit() only raises SystemExit and we can catch that
         # to only exit the interactive shell
 
-        _exit = None
-        _quit = None
+        _exit = Nichts
+        _quit = Nichts
 
         wenn self.local_exit:
             wenn hasattr(builtins, "exit"):
@@ -261,7 +261,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
                 builtins.quit = Quitter("quit")
 
         try:
-            while True:
+            while Wahr:
                 try:
                     wenn more:
                         prompt = sys.ps2
@@ -286,10 +286,10 @@ klasse InteractiveConsole(InteractiveInterpreter):
                         raise e
         finally:
             # restore exit and quit in builtins wenn they were modified
-            wenn _exit is not None:
+            wenn _exit is not Nichts:
                 builtins.exit = _exit
 
-            wenn _quit is not None:
+            wenn _quit is not Nichts:
                 builtins.quit = _quit
 
             wenn delete_ps1_after:
@@ -298,12 +298,12 @@ klasse InteractiveConsole(InteractiveInterpreter):
             wenn delete_ps2_after:
                 del sys.ps2
 
-            wenn exitmsg is None:
+            wenn exitmsg is Nichts:
                 self.write('now exiting %s...\n' % self.__class__.__name__)
             sowenn exitmsg != '':
                 self.write('%s\n' % exitmsg)
 
-    def push(self, line, filename=None, _symbol="single"):
+    def push(self, line, filename=Nichts, _symbol="single"):
         """Push a line to the interpreter.
 
         The line should not have a trailing newline; it may have
@@ -319,7 +319,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
         """
         self.buffer.append(line)
         source = "\n".join(self.buffer)
-        wenn filename is None:
+        wenn filename is Nichts:
             filename = self.filename
         more = self.runsource(source, filename, symbol=_symbol)
         wenn not more:
@@ -351,28 +351,28 @@ klasse Quitter:
     def __repr__(self):
         return f'Use {self.name} or {self.eof} to exit'
 
-    def __call__(self, code=None):
+    def __call__(self, code=Nichts):
         raise SystemExit(code)
 
 
-def interact(banner=None, readfunc=None, local=None, exitmsg=None, local_exit=False):
+def interact(banner=Nichts, readfunc=Nichts, local=Nichts, exitmsg=Nichts, local_exit=Falsch):
     """Closely emulate the interactive Python interpreter.
 
     This is a backwards compatible interface to the InteractiveConsole
     class.  When readfunc is not specified, it attempts to import the
     readline module to enable GNU readline wenn it is available.
 
-    Arguments (all optional, all default to None):
+    Arguments (all optional, all default to Nichts):
 
     banner -- passed to InteractiveConsole.interact()
-    readfunc -- wenn not None, replaces InteractiveConsole.raw_input()
+    readfunc -- wenn not Nichts, replaces InteractiveConsole.raw_input()
     local -- passed to InteractiveInterpreter.__init__()
     exitmsg -- passed to InteractiveConsole.interact()
     local_exit -- passed to InteractiveConsole.__init__()
 
     """
     console = InteractiveConsole(local, local_exit=local_exit)
-    wenn readfunc is not None:
+    wenn readfunc is not Nichts:
         console.raw_input = readfunc
     sonst:
         try:
@@ -385,12 +385,12 @@ def interact(banner=None, readfunc=None, local=None, exitmsg=None, local_exit=Fa
 wenn __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(color=True)
+    parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument('-q', action='store_true',
                        help="don't print version and copyright messages")
     args = parser.parse_args()
     wenn args.q or sys.flags.quiet:
         banner = ''
     sonst:
-        banner = None
+        banner = Nichts
     interact(banner)

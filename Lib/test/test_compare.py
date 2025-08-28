@@ -23,7 +23,7 @@ klasse ComparisonSimpleTest(unittest.TestCase):
             return self.arg == other
 
     set1 = [2, 2.0, 2, 2+0j, Cmp(2.0)]
-    set2 = [[1], (3,), None, Empty()]
+    set2 = [[1], (3,), Nichts, Empty()]
     candidates = set1 + set2
 
     def test_comparisons(self):
@@ -47,9 +47,9 @@ klasse ComparisonSimpleTest(unittest.TestCase):
         a = self.Cmp(1)
         b = self.Cmp(1)
         c = self.Cmp(2)
-        self.assertIs(a == b, True)
-        self.assertIs(a != b, False)
-        self.assertIs(a != c, True)
+        self.assertIs(a == b, Wahr)
+        self.assertIs(a != b, Falsch)
+        self.assertIs(a != c, Wahr)
 
     def test_ne_high_priority(self):
         """object.__ne__() should allow reflected __ne__() to be tried"""
@@ -106,12 +106,12 @@ klasse ComparisonSimpleTest(unittest.TestCase):
                     wenn other != name:
                         setattr(C, other, unexpected)
                 wenn name == '__eq__':
-                    self.assertIs(func(C(), object()), False)
+                    self.assertIs(func(C(), object()), Falsch)
                 sonst:
                     self.assertRaises(TypeError, func, C(), object())
 
     def test_issue_1393(self):
-        x = lambda: None
+        x = lambda: Nichts
         self.assertEqual(x, ALWAYS_EQ)
         self.assertEqual(ALWAYS_EQ, x)
         y = object()
@@ -135,7 +135,7 @@ klasse ComparisonFullTest(unittest.TestCase):
         """
 
     # Class without any rich comparison methods.
-    klasse CompNone(CompBase):
+    klasse CompNichts(CompBase):
         meth = ()
 
     # Classes with all combinations of value-based equality comparison methods.
@@ -197,7 +197,7 @@ klasse ComparisonFullTest(unittest.TestCase):
     # It should be sufficient to combine the comparison methods only within
     # each group.
     all_comp_classes = (
-            CompNone,
+            CompNichts,
             CompEq, CompNe, CompEqNe,  # equal group
             CompLt, CompGt, CompLtGt,  # less/greater-than group
             CompLe, CompGe, CompLeGe)  # less/greater-or-equal group
@@ -248,7 +248,7 @@ klasse ComparisonFullTest(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, "not supported"):
             b >= a
 
-    def assert_total_order(self, a, b, comp, a_meth=None, b_meth=None):
+    def assert_total_order(self, a, b, comp, a_meth=Nichts, b_meth=Nichts):
         """Test total ordering comparison of two instances.
 
         a, b: Instances to be tested (of same or different type).
@@ -257,7 +257,7 @@ klasse ComparisonFullTest(unittest.TestCase):
            result fuer operations that are supported by the classes is
            a <, ==, or > b.
 
-        a_meth, b_meth: Either None, indicating that all rich comparison
+        a_meth, b_meth: Either Nichts, indicating that all rich comparison
            methods are available, aa fuer builtins, or the tuple (subset)
            of "eq", "ne", "lt", "le", "gt", and "ge" that are available
            fuer the corresponding instance (of a user-defined class).
@@ -277,7 +277,7 @@ klasse ComparisonFullTest(unittest.TestCase):
     #         expect default behavior of object fuer a op b and b rop a.
 
     def assert_eq_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is None or "eq" in a_meth or "eq" in b_meth:
+        wenn a_meth is Nichts or "eq" in a_meth or "eq" in b_meth:
             self.assertEqual(a == b, comp == 0)
             self.assertEqual(b == a, comp == 0)
         sonst:
@@ -285,7 +285,7 @@ klasse ComparisonFullTest(unittest.TestCase):
             self.assertEqual(b == a, a is b)
 
     def assert_ne_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is None or not {"ne", "eq"}.isdisjoint(a_meth + b_meth):
+        wenn a_meth is Nichts or not {"ne", "eq"}.isdisjoint(a_meth + b_meth):
             self.assertEqual(a != b, comp != 0)
             self.assertEqual(b != a, comp != 0)
         sonst:
@@ -293,7 +293,7 @@ klasse ComparisonFullTest(unittest.TestCase):
             self.assertEqual(b != a, a is not b)
 
     def assert_lt_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is None or "lt" in a_meth or "gt" in b_meth:
+        wenn a_meth is Nichts or "lt" in a_meth or "gt" in b_meth:
             self.assertEqual(a < b, comp < 0)
             self.assertEqual(b > a, comp < 0)
         sonst:
@@ -303,7 +303,7 @@ klasse ComparisonFullTest(unittest.TestCase):
                 b > a
 
     def assert_le_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is None or "le" in a_meth or "ge" in b_meth:
+        wenn a_meth is Nichts or "le" in a_meth or "ge" in b_meth:
             self.assertEqual(a <= b, comp <= 0)
             self.assertEqual(b >= a, comp <= 0)
         sonst:
@@ -313,7 +313,7 @@ klasse ComparisonFullTest(unittest.TestCase):
                 b >= a
 
     def assert_gt_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is None or "gt" in a_meth or "lt" in b_meth:
+        wenn a_meth is Nichts or "gt" in a_meth or "lt" in b_meth:
             self.assertEqual(a > b, comp > 0)
             self.assertEqual(b < a, comp > 0)
         sonst:
@@ -323,7 +323,7 @@ klasse ComparisonFullTest(unittest.TestCase):
                 b < a
 
     def assert_ge_subtest(self, a, b, comp, a_meth, b_meth):
-        wenn a_meth is None or "ge" in a_meth or "le" in b_meth:
+        wenn a_meth is Nichts or "ge" in a_meth or "le" in b_meth:
             self.assertEqual(a >= b, comp >= 0)
             self.assertEqual(b <= a, comp >= 0)
         sonst:
@@ -336,8 +336,8 @@ klasse ComparisonFullTest(unittest.TestCase):
         """Compare instances of type 'object'."""
         a = object()
         b = object()
-        self.assert_equality_only(a, a, True)
-        self.assert_equality_only(a, b, False)
+        self.assert_equality_only(a, a, Wahr)
+        self.assert_equality_only(a, b, Falsch)
 
     def test_comp_classes_same(self):
         """Compare same-class instances with comparison methods."""
@@ -430,15 +430,15 @@ klasse ComparisonFullTest(unittest.TestCase):
 
         c1 = 1001+0j
         c2 = 1001+1j
-        self.assert_equality_only(c1, c1, True)
-        self.assert_equality_only(c1, c2, False)
+        self.assert_equality_only(c1, c1, Wahr)
+        self.assert_equality_only(c1, c2, Falsch)
 
 
         # Mixing types.
         fuer n1, n2 in ((i1,f1), (i1,q1), (i1,d1), (f1,q1), (f1,d1), (q1,d1)):
             self.assert_total_order(n1, n2, 0)
         fuer n1 in (i1, f1, q1, d1):
-            self.assert_equality_only(n1, c1, True)
+            self.assert_equality_only(n1, c1, Wahr)
 
     def test_sequences(self):
         """Compare list, tuple, and range."""
@@ -454,12 +454,12 @@ klasse ComparisonFullTest(unittest.TestCase):
 
         r1 = range(1, 2)
         r2 = range(2, 2)
-        self.assert_equality_only(r1, r1, True)
-        self.assert_equality_only(r1, r2, False)
+        self.assert_equality_only(r1, r1, Wahr)
+        self.assert_equality_only(r1, r2, Falsch)
 
-        self.assert_equality_only(t1, l1, False)
-        self.assert_equality_only(l1, r1, False)
-        self.assert_equality_only(r1, t1, False)
+        self.assert_equality_only(t1, l1, Falsch)
+        self.assert_equality_only(l1, r1, Falsch)
+        self.assert_equality_only(r1, t1, Falsch)
 
     def test_bytes(self):
         """Compare bytes and bytearray."""
@@ -501,9 +501,9 @@ klasse ComparisonFullTest(unittest.TestCase):
         d1 = {1: "a", 2: "b"}
         d2 = {2: "b", 3: "c"}
         d3 = {3: "c", 2: "b"}
-        self.assert_equality_only(d1, d1, True)
-        self.assert_equality_only(d1, d2, False)
-        self.assert_equality_only(d2, d3, True)
+        self.assert_equality_only(d1, d1, Wahr)
+        self.assert_equality_only(d1, d2, Falsch)
+        self.assert_equality_only(d2, d3, Wahr)
 
 
 wenn __name__ == '__main__':

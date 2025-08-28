@@ -17,7 +17,7 @@ klasse Block(Turtle):
 
     def __init__(self, size):
         self.size = size
-        Turtle.__init__(self, shape="square", visible=False)
+        Turtle.__init__(self, shape="square", visible=Falsch)
         self.pu()
         self.shapesize(size * 1.5, 1.5, 2) # square-->rectangle
         self.fillcolor("black")
@@ -168,10 +168,10 @@ def init_shelf():
         s.push(Block(i))
 
 def disable_keys():
-    onkey(None, "s")
-    onkey(None, "i")
-    onkey(None, "q")
-    onkey(None, "r")
+    onkey(Nichts, "s")
+    onkey(Nichts, "i")
+    onkey(Nichts, "q")
+    onkey(Nichts, "r")
 
 def enable_keys():
     onkey(start_isort, "i")

@@ -12,29 +12,29 @@ from test.support import threading_helper
 from test import lock_tests
 
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 
 klasse ModuleLockAsRLockTests:
     locktype = classmethod(lambda cls: cls.LockType("some_lock"))
 
     # _is_owned() unsupported
-    test__is_owned = None
-    # acquire(blocking=False) unsupported
-    test_try_acquire = None
-    test_try_acquire_contended = None
+    test__is_owned = Nichts
+    # acquire(blocking=Falsch) unsupported
+    test_try_acquire = Nichts
+    test_try_acquire_contended = Nichts
     # `with` unsupported
-    test_with = None
+    test_with = Nichts
     # acquire(timeout=...) unsupported
-    test_timeout = None
+    test_timeout = Nichts
     # _release_save() unsupported
-    test_release_save_unacquired = None
+    test_release_save_unacquired = Nichts
     # _recursion_count() unsupported
-    test_recursion_count = None
+    test_recursion_count = Nichts
     # lock status in repr unsupported
-    test_repr = None
-    test_locked_repr = None
-    test_repr_count = None
+    test_repr = Nichts
+    test_locked_repr = Nichts
+    test_repr_count = Nichts
 
     def tearDown(self):
         fuer splitinit in init.values():
@@ -57,10 +57,10 @@ klasse DeadlockAvoidanceTests:
             self.old_switchinterval = sys.getswitchinterval()
             support.setswitchinterval(0.000001)
         except AttributeError:
-            self.old_switchinterval = None
+            self.old_switchinterval = Nichts
 
     def tearDown(self):
-        wenn self.old_switchinterval is not None:
+        wenn self.old_switchinterval is not Nichts:
             sys.setswitchinterval(self.old_switchinterval)
 
     def run_deadlock_avoidance_test(self, create_deadlock):
@@ -75,14 +75,14 @@ klasse DeadlockAvoidanceTests:
         results = []
 
         def _acquire(lock):
-            """Try to acquire the lock. Return True on success,
-            False on deadlock."""
+            """Try to acquire the lock. Return Wahr on success,
+            Falsch on deadlock."""
             try:
                 lock.acquire()
             except self.DeadlockError:
-                return False
+                return Falsch
             sonst:
-                return True
+                return Wahr
 
         def f():
             a, b = pairs.pop()
@@ -100,18 +100,18 @@ klasse DeadlockAvoidanceTests:
         return results
 
     def test_deadlock(self):
-        results = self.run_deadlock_avoidance_test(True)
+        results = self.run_deadlock_avoidance_test(Wahr)
         # At least one of the threads detected a potential deadlock on its
         # second acquire() call.  It may be several of them, because the
         # deadlock avoidance mechanism is conservative.
-        nb_deadlocks = results.count((True, False))
+        nb_deadlocks = results.count((Wahr, Falsch))
         self.assertGreaterEqual(nb_deadlocks, 1)
-        self.assertEqual(results.count((True, True)), len(results) - nb_deadlocks)
+        self.assertEqual(results.count((Wahr, Wahr)), len(results) - nb_deadlocks)
 
     def test_no_deadlock(self):
-        results = self.run_deadlock_avoidance_test(False)
-        self.assertEqual(results.count((True, False)), 0)
-        self.assertEqual(results.count((True, True)), len(results))
+        results = self.run_deadlock_avoidance_test(Falsch)
+        self.assertEqual(results.count((Wahr, Falsch)), 0)
+        self.assertEqual(results.count((Wahr, Wahr)), len(results))
 
 
 DEADLOCK_ERRORS = {kind: splitinit._bootstrap._DeadlockError
@@ -139,7 +139,7 @@ klasse LifetimeTests:
         del lock
         support.gc_collect()
         self.assertNotIn(name, self.bootstrap._module_locks)
-        self.assertIsNone(wr())
+        self.assertIsNichts(wr())
 
     def test_all_locks(self):
         support.gc_collect()

@@ -12,7 +12,7 @@ from email.mime.nonmultipart import MIMENonMultipart
 klasse MIMEText(MIMENonMultipart):
     """Class fuer generating text/* type MIME documents."""
 
-    def __init__(self, _text, _subtype='plain', _charset=None, *, policy=None):
+    def __init__(self, _text, _subtype='plain', _charset=Nichts, *, policy=Nichts):
         """Create a text/* type MIME document.
 
         _text is the string fuer this message object.
@@ -27,7 +27,7 @@ klasse MIMEText(MIMENonMultipart):
         # If no _charset was specified, check to see wenn there are non-ascii
         # characters present. If not, use 'us-ascii', otherwise use utf-8.
         # XXX: This can be removed once #7304 is fixed.
-        wenn _charset is None:
+        wenn _charset is Nichts:
             try:
                 _text.encode('us-ascii')
                 _charset = 'us-ascii'

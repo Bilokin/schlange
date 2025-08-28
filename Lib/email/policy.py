@@ -46,10 +46,10 @@ klasse EmailPolicy(Policy):
     In addition to the settable attributes listed above that apply to
     all Policies, this policy adds the following additional attributes:
 
-    utf8                -- wenn False (the default) message headers will be
+    utf8                -- wenn Falsch (the default) message headers will be
                            serialized as ASCII, using encoded words to encode
                            any non-ASCII characters in the source strings.  If
-                           True, the message headers will be serialized using
+                           Wahr, the message headers will be serialized using
                            utf8 and will not contain encoded words (see RFC
                            6532 fuer more on this serialization format).
 
@@ -91,7 +91,7 @@ klasse EmailPolicy(Policy):
     """
 
     message_factory = EmailMessage
-    utf8 = False
+    utf8 = Falsch
     refold_source = 'long'
     header_factory = HeaderRegistry()
     content_manager = raw_data_manager
@@ -188,7 +188,7 @@ klasse EmailPolicy(Policy):
         using the unknown-8bit charset.
 
         """
-        return self._fold(name, value, refold_binary=True)
+        return self._fold(name, value, refold_binary=Wahr)
 
     def fold_binary(self, name, value):
         """+
@@ -208,7 +208,7 @@ klasse EmailPolicy(Policy):
         charset = 'utf8' wenn self.utf8 sonst 'ascii'
         return folded.encode(charset, 'surrogateescape')
 
-    def _fold(self, name, value, refold_binary=False):
+    def _fold(self, name, value, refold_binary=Falsch):
         wenn hasattr(value, 'name'):
             return value.fold(policy=self)
         maxlen = self.max_line_length wenn self.max_line_length sonst sys.maxsize
@@ -233,7 +233,7 @@ klasse EmailPolicy(Policy):
 default = EmailPolicy()
 # Make the default policy use the klasse default header_factory
 del default.header_factory
-strict = default.clone(raise_on_defect=True)
+strict = default.clone(raise_on_defect=Wahr)
 SMTP = default.clone(linesep='\r\n')
-HTTP = default.clone(linesep='\r\n', max_line_length=None)
-SMTPUTF8 = SMTP.clone(utf8=True)
+HTTP = default.clone(linesep='\r\n', max_line_length=Nichts)
+SMTPUTF8 = SMTP.clone(utf8=Wahr)

@@ -102,7 +102,7 @@ klasse ReadTestBase:
     def test_iterdir_info(self):
         fuer child in self.root.iterdir():
             self.assertIsInstance(child.info, PathInfo)
-            self.assertTrue(child.info.exists(follow_symlinks=False))
+            self.assertWahr(child.info.exists(follow_symlinks=Falsch))
 
     def test_glob(self):
         wenn not self.ground.can_symlink:
@@ -115,7 +115,7 @@ klasse ReadTestBase:
             wenn altsep:
                 expected = {name.replace(altsep, sep) fuer name in expected}
             expected = {p.joinpath(name) fuer name in expected}
-            actual = set(p.glob(pattern, recurse_symlinks=True))
+            actual = set(p.glob(pattern, recurse_symlinks=Wahr))
             self.assertEqual(actual, expected)
 
         it = p.glob("fileA")
@@ -199,129 +199,129 @@ klasse ReadTestBase:
         self.assertEqual(actual, expected)
 
     def test_walk_bottom_up(self):
-        seen_root = seen_dira = seen_dirb = seen_dirc = seen_dird = False
-        fuer path, dirnames, filenames in self.root.walk(top_down=False):
+        seen_root = seen_dira = seen_dirb = seen_dirc = seen_dird = Falsch
+        fuer path, dirnames, filenames in self.root.walk(top_down=Falsch):
             wenn path == self.root:
-                self.assertFalse(seen_root)
-                self.assertTrue(seen_dira)
-                self.assertTrue(seen_dirb)
-                self.assertTrue(seen_dirc)
+                self.assertFalsch(seen_root)
+                self.assertWahr(seen_dira)
+                self.assertWahr(seen_dirb)
+                self.assertWahr(seen_dirc)
                 self.assertEqual(sorted(dirnames), ['dirA', 'dirB', 'dirC'])
                 self.assertEqual(sorted(filenames),
                                  ['brokenLink', 'brokenLinkLoop', 'fileA', 'linkA', 'linkB']
                                  wenn self.ground.can_symlink sonst ['fileA'])
-                seen_root = True
+                seen_root = Wahr
             sowenn path == self.root / 'dirA':
-                self.assertFalse(seen_root)
-                self.assertFalse(seen_dira)
+                self.assertFalsch(seen_root)
+                self.assertFalsch(seen_dira)
                 self.assertEqual(dirnames, [])
                 self.assertEqual(filenames, ['linkC'] wenn self.ground.can_symlink sonst [])
-                seen_dira = True
+                seen_dira = Wahr
             sowenn path == self.root / 'dirB':
-                self.assertFalse(seen_root)
-                self.assertFalse(seen_dirb)
+                self.assertFalsch(seen_root)
+                self.assertFalsch(seen_dirb)
                 self.assertEqual(dirnames, [])
                 self.assertEqual(filenames, ['fileB'])
-                seen_dirb = True
+                seen_dirb = Wahr
             sowenn path == self.root / 'dirC':
-                self.assertFalse(seen_root)
-                self.assertFalse(seen_dirc)
-                self.assertTrue(seen_dird)
+                self.assertFalsch(seen_root)
+                self.assertFalsch(seen_dirc)
+                self.assertWahr(seen_dird)
                 self.assertEqual(dirnames, ['dirD'])
                 self.assertEqual(sorted(filenames), ['fileC', 'novel.txt'])
-                seen_dirc = True
+                seen_dirc = Wahr
             sowenn path == self.root / 'dirC' / 'dirD':
-                self.assertFalse(seen_root)
-                self.assertFalse(seen_dirc)
-                self.assertFalse(seen_dird)
+                self.assertFalsch(seen_root)
+                self.assertFalsch(seen_dirc)
+                self.assertFalsch(seen_dird)
                 self.assertEqual(dirnames, [])
                 self.assertEqual(filenames, ['fileD'])
-                seen_dird = True
+                seen_dird = Wahr
             sonst:
                 raise AssertionError(f"Unexpected path: {path}")
-        self.assertTrue(seen_root)
+        self.assertWahr(seen_root)
 
     def test_info_exists(self):
         p = self.root
-        self.assertTrue(p.info.exists())
-        self.assertTrue((p / 'dirA').info.exists())
-        self.assertTrue((p / 'dirA').info.exists(follow_symlinks=False))
-        self.assertTrue((p / 'fileA').info.exists())
-        self.assertTrue((p / 'fileA').info.exists(follow_symlinks=False))
-        self.assertFalse((p / 'non-existing').info.exists())
-        self.assertFalse((p / 'non-existing').info.exists(follow_symlinks=False))
+        self.assertWahr(p.info.exists())
+        self.assertWahr((p / 'dirA').info.exists())
+        self.assertWahr((p / 'dirA').info.exists(follow_symlinks=Falsch))
+        self.assertWahr((p / 'fileA').info.exists())
+        self.assertWahr((p / 'fileA').info.exists(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'non-existing').info.exists())
+        self.assertFalsch((p / 'non-existing').info.exists(follow_symlinks=Falsch))
         wenn self.ground.can_symlink:
-            self.assertTrue((p / 'linkA').info.exists())
-            self.assertTrue((p / 'linkA').info.exists(follow_symlinks=False))
-            self.assertTrue((p / 'linkB').info.exists())
-            self.assertTrue((p / 'linkB').info.exists(follow_symlinks=True))
-            self.assertFalse((p / 'brokenLink').info.exists())
-            self.assertTrue((p / 'brokenLink').info.exists(follow_symlinks=False))
-            self.assertFalse((p / 'brokenLinkLoop').info.exists())
-            self.assertTrue((p / 'brokenLinkLoop').info.exists(follow_symlinks=False))
-        self.assertFalse((p / 'fileA\udfff').info.exists())
-        self.assertFalse((p / 'fileA\udfff').info.exists(follow_symlinks=False))
-        self.assertFalse((p / 'fileA\x00').info.exists())
-        self.assertFalse((p / 'fileA\x00').info.exists(follow_symlinks=False))
+            self.assertWahr((p / 'linkA').info.exists())
+            self.assertWahr((p / 'linkA').info.exists(follow_symlinks=Falsch))
+            self.assertWahr((p / 'linkB').info.exists())
+            self.assertWahr((p / 'linkB').info.exists(follow_symlinks=Wahr))
+            self.assertFalsch((p / 'brokenLink').info.exists())
+            self.assertWahr((p / 'brokenLink').info.exists(follow_symlinks=Falsch))
+            self.assertFalsch((p / 'brokenLinkLoop').info.exists())
+            self.assertWahr((p / 'brokenLinkLoop').info.exists(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'fileA\udfff').info.exists())
+        self.assertFalsch((p / 'fileA\udfff').info.exists(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'fileA\x00').info.exists())
+        self.assertFalsch((p / 'fileA\x00').info.exists(follow_symlinks=Falsch))
 
     def test_info_is_dir(self):
         p = self.root
-        self.assertTrue((p / 'dirA').info.is_dir())
-        self.assertTrue((p / 'dirA').info.is_dir(follow_symlinks=False))
-        self.assertFalse((p / 'fileA').info.is_dir())
-        self.assertFalse((p / 'fileA').info.is_dir(follow_symlinks=False))
-        self.assertFalse((p / 'non-existing').info.is_dir())
-        self.assertFalse((p / 'non-existing').info.is_dir(follow_symlinks=False))
+        self.assertWahr((p / 'dirA').info.is_dir())
+        self.assertWahr((p / 'dirA').info.is_dir(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'fileA').info.is_dir())
+        self.assertFalsch((p / 'fileA').info.is_dir(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'non-existing').info.is_dir())
+        self.assertFalsch((p / 'non-existing').info.is_dir(follow_symlinks=Falsch))
         wenn self.ground.can_symlink:
-            self.assertFalse((p / 'linkA').info.is_dir())
-            self.assertFalse((p / 'linkA').info.is_dir(follow_symlinks=False))
-            self.assertTrue((p / 'linkB').info.is_dir())
-            self.assertFalse((p / 'linkB').info.is_dir(follow_symlinks=False))
-            self.assertFalse((p / 'brokenLink').info.is_dir())
-            self.assertFalse((p / 'brokenLink').info.is_dir(follow_symlinks=False))
-            self.assertFalse((p / 'brokenLinkLoop').info.is_dir())
-            self.assertFalse((p / 'brokenLinkLoop').info.is_dir(follow_symlinks=False))
-        self.assertFalse((p / 'dirA\udfff').info.is_dir())
-        self.assertFalse((p / 'dirA\udfff').info.is_dir(follow_symlinks=False))
-        self.assertFalse((p / 'dirA\x00').info.is_dir())
-        self.assertFalse((p / 'dirA\x00').info.is_dir(follow_symlinks=False))
+            self.assertFalsch((p / 'linkA').info.is_dir())
+            self.assertFalsch((p / 'linkA').info.is_dir(follow_symlinks=Falsch))
+            self.assertWahr((p / 'linkB').info.is_dir())
+            self.assertFalsch((p / 'linkB').info.is_dir(follow_symlinks=Falsch))
+            self.assertFalsch((p / 'brokenLink').info.is_dir())
+            self.assertFalsch((p / 'brokenLink').info.is_dir(follow_symlinks=Falsch))
+            self.assertFalsch((p / 'brokenLinkLoop').info.is_dir())
+            self.assertFalsch((p / 'brokenLinkLoop').info.is_dir(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'dirA\udfff').info.is_dir())
+        self.assertFalsch((p / 'dirA\udfff').info.is_dir(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'dirA\x00').info.is_dir())
+        self.assertFalsch((p / 'dirA\x00').info.is_dir(follow_symlinks=Falsch))
 
     def test_info_is_file(self):
         p = self.root
-        self.assertTrue((p / 'fileA').info.is_file())
-        self.assertTrue((p / 'fileA').info.is_file(follow_symlinks=False))
-        self.assertFalse((p / 'dirA').info.is_file())
-        self.assertFalse((p / 'dirA').info.is_file(follow_symlinks=False))
-        self.assertFalse((p / 'non-existing').info.is_file())
-        self.assertFalse((p / 'non-existing').info.is_file(follow_symlinks=False))
+        self.assertWahr((p / 'fileA').info.is_file())
+        self.assertWahr((p / 'fileA').info.is_file(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'dirA').info.is_file())
+        self.assertFalsch((p / 'dirA').info.is_file(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'non-existing').info.is_file())
+        self.assertFalsch((p / 'non-existing').info.is_file(follow_symlinks=Falsch))
         wenn self.ground.can_symlink:
-            self.assertTrue((p / 'linkA').info.is_file())
-            self.assertFalse((p / 'linkA').info.is_file(follow_symlinks=False))
-            self.assertFalse((p / 'linkB').info.is_file())
-            self.assertFalse((p / 'linkB').info.is_file(follow_symlinks=False))
-            self.assertFalse((p / 'brokenLink').info.is_file())
-            self.assertFalse((p / 'brokenLink').info.is_file(follow_symlinks=False))
-            self.assertFalse((p / 'brokenLinkLoop').info.is_file())
-            self.assertFalse((p / 'brokenLinkLoop').info.is_file(follow_symlinks=False))
-        self.assertFalse((p / 'fileA\udfff').info.is_file())
-        self.assertFalse((p / 'fileA\udfff').info.is_file(follow_symlinks=False))
-        self.assertFalse((p / 'fileA\x00').info.is_file())
-        self.assertFalse((p / 'fileA\x00').info.is_file(follow_symlinks=False))
+            self.assertWahr((p / 'linkA').info.is_file())
+            self.assertFalsch((p / 'linkA').info.is_file(follow_symlinks=Falsch))
+            self.assertFalsch((p / 'linkB').info.is_file())
+            self.assertFalsch((p / 'linkB').info.is_file(follow_symlinks=Falsch))
+            self.assertFalsch((p / 'brokenLink').info.is_file())
+            self.assertFalsch((p / 'brokenLink').info.is_file(follow_symlinks=Falsch))
+            self.assertFalsch((p / 'brokenLinkLoop').info.is_file())
+            self.assertFalsch((p / 'brokenLinkLoop').info.is_file(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'fileA\udfff').info.is_file())
+        self.assertFalsch((p / 'fileA\udfff').info.is_file(follow_symlinks=Falsch))
+        self.assertFalsch((p / 'fileA\x00').info.is_file())
+        self.assertFalsch((p / 'fileA\x00').info.is_file(follow_symlinks=Falsch))
 
     def test_info_is_symlink(self):
         p = self.root
-        self.assertFalse((p / 'fileA').info.is_symlink())
-        self.assertFalse((p / 'dirA').info.is_symlink())
-        self.assertFalse((p / 'non-existing').info.is_symlink())
+        self.assertFalsch((p / 'fileA').info.is_symlink())
+        self.assertFalsch((p / 'dirA').info.is_symlink())
+        self.assertFalsch((p / 'non-existing').info.is_symlink())
         wenn self.ground.can_symlink:
-            self.assertTrue((p / 'linkA').info.is_symlink())
-            self.assertTrue((p / 'linkB').info.is_symlink())
-            self.assertTrue((p / 'brokenLink').info.is_symlink())
-            self.assertFalse((p / 'linkA\udfff').info.is_symlink())
-            self.assertFalse((p / 'linkA\x00').info.is_symlink())
-            self.assertTrue((p / 'brokenLinkLoop').info.is_symlink())
-        self.assertFalse((p / 'fileA\udfff').info.is_symlink())
-        self.assertFalse((p / 'fileA\x00').info.is_symlink())
+            self.assertWahr((p / 'linkA').info.is_symlink())
+            self.assertWahr((p / 'linkB').info.is_symlink())
+            self.assertWahr((p / 'brokenLink').info.is_symlink())
+            self.assertFalsch((p / 'linkA\udfff').info.is_symlink())
+            self.assertFalsch((p / 'linkA\x00').info.is_symlink())
+            self.assertWahr((p / 'brokenLinkLoop').info.is_symlink())
+        self.assertFalsch((p / 'fileA\udfff').info.is_symlink())
+        self.assertFalsch((p / 'fileA\x00').info.is_symlink())
 
 
 klasse ZipPathReadTest(ReadTestBase, unittest.TestCase):

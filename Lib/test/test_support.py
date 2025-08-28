@@ -35,7 +35,7 @@ klasse LogCaptureHandler(logging.StreamHandler):
         super().__init__(io.StringIO())
         self.records = []
 
-    def emit(self, record) -> None:
+    def emit(self, record) -> Nichts:
         self.records.append(record)
         super().emit(record)
 
@@ -77,7 +77,7 @@ klasse TestSupport(unittest.TestCase):
 
     def test_ignored_deprecations_are_silent(self):
         """Test support.ignore_deprecations_from() silences warnings"""
-        with warnings.catch_warnings(record=True) as warning_objs:
+        with warnings.catch_warnings(record=Wahr) as warning_objs:
             warnings_helper._warn_about_deprecation()
             warnings.warn("You should NOT be seeing this.", DeprecationWarning)
             messages = [str(w.message) fuer w in warning_objs]
@@ -110,7 +110,7 @@ klasse TestSupport(unittest.TestCase):
         with open(TESTFN, "w", encoding="utf-8") as f:
             pass
         os_helper.unlink(TESTFN)
-        self.assertFalse(os.path.exists(TESTFN))
+        self.assertFalsch(os.path.exists(TESTFN))
         os_helper.unlink(TESTFN)
 
     def test_rmtree(self):
@@ -119,7 +119,7 @@ klasse TestSupport(unittest.TestCase):
         os.mkdir(dirpath)
         os.mkdir(subdirpath)
         os_helper.rmtree(dirpath)
-        self.assertFalse(os.path.exists(dirpath))
+        self.assertFalsch(os.path.exists(dirpath))
         with support.swap_attr(support, 'verbose', 0):
             os_helper.rmtree(dirpath)
 
@@ -128,14 +128,14 @@ klasse TestSupport(unittest.TestCase):
         os.chmod(dirpath, stat.S_IRUSR|stat.S_IXUSR)
         with support.swap_attr(support, 'verbose', 0):
             os_helper.rmtree(dirpath)
-        self.assertFalse(os.path.exists(dirpath))
+        self.assertFalsch(os.path.exists(dirpath))
 
         os.mkdir(dirpath)
         os.mkdir(subdirpath)
         os.chmod(dirpath, 0)
         with support.swap_attr(support, 'verbose', 0):
             os_helper.rmtree(dirpath)
-        self.assertFalse(os.path.exists(dirpath))
+        self.assertFalsch(os.path.exists(dirpath))
 
     def test_forget(self):
         mod_filename = TESTFN + '.py'
@@ -181,19 +181,19 @@ klasse TestSupport(unittest.TestCase):
 
         try:
             path = os.path.join(parent_dir, 'temp')
-            self.assertFalse(os.path.isdir(path))
+            self.assertFalsch(os.path.isdir(path))
             with os_helper.temp_dir(path) as temp_path:
                 self.assertEqual(temp_path, path)
-                self.assertTrue(os.path.isdir(path))
-            self.assertFalse(os.path.isdir(path))
+                self.assertWahr(os.path.isdir(path))
+            self.assertFalsch(os.path.isdir(path))
         finally:
             os_helper.rmtree(parent_dir)
 
     def test_temp_dir__path_none(self):
         """Test passing no path."""
         with os_helper.temp_dir() as temp_path:
-            self.assertTrue(os.path.isdir(temp_path))
-        self.assertFalse(os.path.isdir(temp_path))
+            self.assertWahr(os.path.isdir(temp_path))
+        self.assertFalsch(os.path.isdir(temp_path))
 
     def test_temp_dir__existing_dir__quiet_default(self):
         """Test passing a directory that already exists."""
@@ -204,25 +204,25 @@ klasse TestSupport(unittest.TestCase):
         path = tempfile.mkdtemp()
         path = os.path.realpath(path)
         try:
-            self.assertTrue(os.path.isdir(path))
+            self.assertWahr(os.path.isdir(path))
             self.assertRaises(FileExistsError, call_temp_dir, path)
             # Make sure temp_dir did not delete the original directory.
-            self.assertTrue(os.path.isdir(path))
+            self.assertWahr(os.path.isdir(path))
         finally:
             shutil.rmtree(path)
 
     def test_temp_dir__existing_dir__quiet_true(self):
-        """Test passing a directory that already exists with quiet=True."""
+        """Test passing a directory that already exists with quiet=Wahr."""
         path = tempfile.mkdtemp()
         path = os.path.realpath(path)
 
         try:
             with warnings_helper.check_warnings() as recorder, _caplog() as caplog:
-                with os_helper.temp_dir(path, quiet=True) as temp_path:
+                with os_helper.temp_dir(path, quiet=Wahr) as temp_path:
                     self.assertEqual(path, temp_path)
                 warnings = [str(w.message) fuer w in recorder.warnings]
             # Make sure temp_dir did not delete the original directory.
-            self.assertTrue(os.path.isdir(path))
+            self.assertWahr(os.path.isdir(path))
         finally:
             shutil.rmtree(path)
 
@@ -288,13 +288,13 @@ klasse TestSupport(unittest.TestCase):
         self.assertEqual(os.getcwd(), original_cwd)
 
     def test_change_cwd__non_existent_dir__quiet_true(self):
-        """Test passing a non-existent directory with quiet=True."""
+        """Test passing a non-existent directory with quiet=Wahr."""
         original_cwd = os.getcwd()
 
         with os_helper.temp_dir() as parent_dir:
             bad_dir = os.path.join(parent_dir, 'does_not_exist')
             with warnings_helper.check_warnings() as recorder, _caplog() as caplog:
-                with os_helper.change_cwd(bad_dir, quiet=True) as new_cwd:
+                with os_helper.change_cwd(bad_dir, quiet=Wahr) as new_cwd:
                     self.assertEqual(new_cwd, original_cwd)
                     self.assertEqual(os.getcwd(), new_cwd)
                 warnings = [str(w.message) fuer w in recorder.warnings]
@@ -315,7 +315,7 @@ klasse TestSupport(unittest.TestCase):
         """Check the warning message when os.chdir() fails."""
         path = TESTFN + '_does_not_exist'
         with warnings_helper.check_warnings() as recorder, _caplog() as caplog:
-            with os_helper.change_cwd(path=path, quiet=True):
+            with os_helper.change_cwd(path=path, quiet=Wahr):
                 pass
             messages = [str(w.message) fuer w in recorder.warnings]
 
@@ -335,16 +335,16 @@ klasse TestSupport(unittest.TestCase):
         here = os.getcwd()
         with os_helper.temp_cwd(name=TESTFN):
             self.assertEqual(os.path.basename(os.getcwd()), TESTFN)
-        self.assertFalse(os.path.exists(TESTFN))
+        self.assertFalsch(os.path.exists(TESTFN))
         self.assertEqual(os.getcwd(), here)
 
 
     def test_temp_cwd__name_none(self):
-        """Test passing None to temp_cwd()."""
+        """Test passing Nichts to temp_cwd()."""
         original_cwd = os.getcwd()
-        with os_helper.temp_cwd(name=None) as new_cwd:
+        with os_helper.temp_cwd(name=Nichts) as new_cwd:
             self.assertNotEqual(new_cwd, original_cwd)
-            self.assertTrue(os.path.isdir(new_cwd))
+            self.assertWahr(os.path.isdir(new_cwd))
             self.assertEqual(os.getcwd(), new_cwd)
         self.assertEqual(os.getcwd(), original_cwd)
 
@@ -409,7 +409,7 @@ klasse TestSupport(unittest.TestCase):
         self.assertEqual(obj.x, 1)
         with support.swap_attr(obj, "y", 5) as y:
             self.assertEqual(obj.y, 5)
-            self.assertIsNone(y)
+            self.assertIsNichts(y)
         self.assertNotHasAttr(obj, 'y')
         with support.swap_attr(obj, "y", 5):
             del obj.y
@@ -423,23 +423,23 @@ klasse TestSupport(unittest.TestCase):
         self.assertEqual(D["x"], 1)
         with support.swap_item(D, "y", 5) as y:
             self.assertEqual(D["y"], 5)
-            self.assertIsNone(y)
+            self.assertIsNichts(y)
         self.assertNotIn("y", D)
         with support.swap_item(D, "y", 5):
             del D["y"]
         self.assertNotIn("y", D)
 
     klasse RefClass:
-        attribute1 = None
-        attribute2 = None
-        _hidden_attribute1 = None
-        __magic_1__ = None
+        attribute1 = Nichts
+        attribute2 = Nichts
+        _hidden_attribute1 = Nichts
+        __magic_1__ = Nichts
 
     klasse OtherClass:
-        attribute2 = None
-        attribute3 = None
-        __magic_1__ = None
-        __magic_2__ = None
+        attribute2 = Nichts
+        attribute3 = Nichts
+        __magic_1__ = Nichts
+        __magic_2__ = Nichts
 
     def test_detect_api_mismatch(self):
         missing_items = support.detect_api_mismatch(self.RefClass,
@@ -501,7 +501,7 @@ klasse TestSupport(unittest.TestCase):
 
         was_altered = support.environment_altered
         try:
-            support.environment_altered = False
+            support.environment_altered = Falsch
             stderr = io.StringIO()
 
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
@@ -515,7 +515,7 @@ klasse TestSupport(unittest.TestCase):
 
             msg = "Warning -- reap_children() reaped child process %s" % pid
             self.assertIn(msg, stderr.getvalue())
-            self.assertTrue(support.environment_altered)
+            self.assertWahr(support.environment_altered)
         finally:
             support.environment_altered = was_altered
 
@@ -524,7 +524,7 @@ klasse TestSupport(unittest.TestCase):
         support.reap_children()
 
     @support.requires_subprocess()
-    def check_options(self, args, func, expected=None):
+    def check_options(self, args, func, expected=Nichts):
         code = f'from test.support import {func}; print(repr({func}()))'
         cmd = [sys.executable, *args, '-c', code]
         env = {key: value fuer key, value in os.environ.items()
@@ -532,9 +532,9 @@ klasse TestSupport(unittest.TestCase):
         proc = subprocess.run(cmd,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.DEVNULL,
-                              universal_newlines=True,
+                              universal_newlines=Wahr,
                               env=env)
-        wenn expected is None:
+        wenn expected is Nichts:
             expected = args
         self.assertEqual(proc.stdout.rstrip(), repr(expected))
         self.assertEqual(proc.returncode, 0)
@@ -619,9 +619,9 @@ klasse TestSupport(unittest.TestCase):
 
     def test_has_strftime_extensions(self):
         wenn sys.platform == "win32":
-            self.assertFalse(support.has_strftime_extensions)
+            self.assertFalsch(support.has_strftime_extensions)
         sonst:
-            self.assertTrue(support.has_strftime_extensions)
+            self.assertWahr(support.has_strftime_extensions)
 
     def test_get_recursion_depth(self):
         # test support.get_recursion_depth()
@@ -787,9 +787,9 @@ klasse TestSupport(unittest.TestCase):
 
     def test_linked_to_musl(self):
         linked = support.linked_to_musl()
-        self.assertIsNotNone(linked)
+        self.assertIsNotNichts(linked)
         wenn support.is_wasm32:
-            self.assertTrue(linked)
+            self.assertWahr(linked)
         # The value is cached, so make sure it returns the same value again.
         self.assertIs(linked, support.linked_to_musl())
         # The unlike libc, the musl version is a triple.
@@ -846,13 +846,13 @@ klasse TestHashlibSupport(unittest.TestCase):
         wenn not self._hashlib.get_fips_mode():
             self.skipTest("requires FIPS mode")
 
-    def check_context(self, disabled=True):
+    def check_context(self, disabled=Wahr):
         wenn disabled:
             return self.assertRaises(ValueError)
         return contextlib.nullcontext()
 
-    def try_import_attribute(self, fullname, default=None):
-        wenn fullname is None:
+    def try_import_attribute(self, fullname, default=Nichts):
+        wenn fullname is Nichts:
             return default
         assert fullname.count('.') == 1, fullname
         module_name, attribute = fullname.split('.', maxsplit=1)
@@ -869,13 +869,13 @@ klasse TestHashlibSupport(unittest.TestCase):
         info = hashlib_helper.get_hash_info(name)
         match implementation:
             case "hashlib":
-                assert info.hashlib is not None, info
+                assert info.hashlib is not Nichts, info
                 return getattr(self.hashlib, info.hashlib)
             case "openssl":
                 try:
-                    return getattr(self._hashlib, info.openssl, None)
+                    return getattr(self._hashlib, info.openssl, Nichts)
                 except TypeError:
-                    return None
+                    return Nichts
         fullname = info.fullname(implementation)
         return self.try_import_attribute(fullname)
 
@@ -883,7 +883,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         fullname = hashlib_helper._EXPLICIT_HMAC_CONSTRUCTORS[name]
         return self.try_import_attribute(fullname)
 
-    def check_openssl_hash(self, name, *, disabled=True):
+    def check_openssl_hash(self, name, *, disabled=Wahr):
         """Check that OpenSSL HASH interface is enabled/disabled."""
         with self.check_context(disabled):
             _ = self._hashlib.new(name)
@@ -892,7 +892,7 @@ klasse TestHashlibSupport(unittest.TestCase):
             with self.check_context(disabled):
                 _ = do_hash(b"")
 
-    def check_openssl_hmac(self, name, *, disabled=True):
+    def check_openssl_hmac(self, name, *, disabled=Wahr):
         """Check that OpenSSL HMAC interface is enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
             # HMAC-BLAKE and HMAC-SHAKE raise a ValueError as they are not
@@ -904,14 +904,14 @@ klasse TestHashlibSupport(unittest.TestCase):
                 _ = self._hashlib.hmac_digest(b"", b"", name)
         # OpenSSL does not provide one-shot explicit HMAC functions
 
-    def check_builtin_hash(self, name, *, disabled=True):
+    def check_builtin_hash(self, name, *, disabled=Wahr):
         """Check that HACL* HASH interface is enabled/disabled."""
         wenn do_hash := self.fetch_hash_function(name, "builtin"):
             self.assertEqual(do_hash.__name__, name)
             with self.check_context(disabled):
                 _ = do_hash(b"")
 
-    def check_builtin_hmac(self, name, *, disabled=True):
+    def check_builtin_hmac(self, name, *, disabled=Wahr):
         """Check that HACL* HMAC interface is enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
             # HMAC-BLAKE and HMAC-SHAKE raise a ValueError as they are not
@@ -936,8 +936,8 @@ klasse TestHashlibSupport(unittest.TestCase):
         ('name', 'allow_openssl', 'allow_builtin'),
         itertools.product(
             hashlib_helper.CANONICAL_DIGEST_NAMES,
-            [True, False],
-            [True, False],
+            [Wahr, Falsch],
+            [Wahr, Falsch],
         )
     )
     def test_disable_hash(self, name, allow_openssl, allow_builtin):
@@ -988,20 +988,20 @@ klasse TestHashlibSupport(unittest.TestCase):
         self.assertRaises(ValueError, self.hashlib.md5)
         self.assertRaises(ValueError, self._hashlib.openssl_md5)
 
-        kwargs = dict(usedforsecurity=True)
+        kwargs = dict(usedforsecurity=Wahr)
         self.assertRaises(ValueError, self.hashlib.new, "md5", **kwargs)
         self.assertRaises(ValueError, self._hashlib.new, "md5", **kwargs)
         self.assertRaises(ValueError, self.hashlib.md5, **kwargs)
         self.assertRaises(ValueError, self._hashlib.openssl_md5, **kwargs)
 
-    @hashlib_helper.block_algorithm("md5", allow_openssl=True)
+    @hashlib_helper.block_algorithm("md5", allow_openssl=Wahr)
     def test_disable_hash_md5_in_fips_mode_allow_openssl(self):
         self.skip_if_not_fips_mode()
         # Allow the OpenSSL interface to be used but not the HACL* one.
         # hashlib.new("md5") is dispatched to hashlib.openssl_md5()
         self.assertRaises(ValueError, self.hashlib.new, "md5")
         # dispatched to hashlib.openssl_md5() in FIPS mode
-        h2 = self.hashlib.new("md5", usedforsecurity=False)
+        h2 = self.hashlib.new("md5", usedforsecurity=Falsch)
         self.assertIsInstance(h2, self._hashlib.HASH)
 
         # block_algorithm() does not mock hashlib.md5 and _hashlib.openssl_md5
@@ -1011,17 +1011,17 @@ klasse TestHashlibSupport(unittest.TestCase):
         hashlib_md5 = inspect.unwrap(self.hashlib.md5)
         self.assertIs(hashlib_md5, self._hashlib.openssl_md5)
         self.assertRaises(ValueError, self.hashlib.md5)
-        # allow MD5 to be used in FIPS mode wenn usedforsecurity=False
-        h3 = self.hashlib.md5(usedforsecurity=False)
+        # allow MD5 to be used in FIPS mode wenn usedforsecurity=Falsch
+        h3 = self.hashlib.md5(usedforsecurity=Falsch)
         self.assertIsInstance(h3, self._hashlib.HASH)
 
-    @hashlib_helper.block_algorithm("md5", allow_builtin=True)
+    @hashlib_helper.block_algorithm("md5", allow_builtin=Wahr)
     def test_disable_hash_md5_in_fips_mode_allow_builtin(self):
         self.skip_if_not_fips_mode()
         # Allow the HACL* interface to be used but not the OpenSSL one.
         h1 = self.hashlib.new("md5")  # dispatched to _md5.md5()
         self.assertNotIsInstance(h1, self._hashlib.HASH)
-        h2 = self.hashlib.new("md5", usedforsecurity=False)
+        h2 = self.hashlib.new("md5", usedforsecurity=Falsch)
         self.assertIsInstance(h2, type(h1))
 
         # block_algorithm() mocks hashlib.md5 and _hashlib.openssl_md5
@@ -1033,17 +1033,17 @@ klasse TestHashlibSupport(unittest.TestCase):
         self.assertIs(hashlib_md5, openssl_md5)
         self.assertRaises(ValueError, self.hashlib.md5)
         self.assertRaises(ValueError, self.hashlib.md5,
-                          usedforsecurity=False)
+                          usedforsecurity=Falsch)
 
     @hashlib_helper.block_algorithm("md5",
-                                    allow_openssl=True,
-                                    allow_builtin=True)
+                                    allow_openssl=Wahr,
+                                    allow_builtin=Wahr)
     def test_disable_hash_md5_in_fips_mode_allow_all(self):
         self.skip_if_not_fips_mode()
         # hashlib.new() isn't blocked as it falls back to _md5.md5
         self.assertIsInstance(self.hashlib.new("md5"), self._md5.MD5Type)
         self.assertRaises(ValueError, self._hashlib.new, "md5")
-        h = self._hashlib.new("md5", usedforsecurity=False)
+        h = self._hashlib.new("md5", usedforsecurity=Falsch)
         self.assertIsInstance(h, self._hashlib.HASH)
 
         self.assertNotHasAttr(self.hashlib.md5, "__wrapped__")
@@ -1051,7 +1051,7 @@ klasse TestHashlibSupport(unittest.TestCase):
 
         self.assertIs(self.hashlib.md5, self._hashlib.openssl_md5)
         self.assertRaises(ValueError, self.hashlib.md5)
-        h = self.hashlib.md5(usedforsecurity=False)
+        h = self.hashlib.md5(usedforsecurity=Falsch)
         self.assertIsInstance(h, self._hashlib.HASH)
 
 

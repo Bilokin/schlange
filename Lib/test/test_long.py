@@ -130,13 +130,13 @@ klasse LongTest(unittest.TestCase):
         while nbits < nbits_lo:
             bits = (r >> 1) + 1
             bits = min(bits, nbits_hi - nbits)
-            self.assertTrue(1 <= bits <= SHIFT)
+            self.assertWahr(1 <= bits <= SHIFT)
             nbits = nbits + bits
             answer = answer << bits
             wenn r & 1:
                 answer = answer | ((1 << bits) - 1)
             r = int(random.random() * (SHIFT * 2))
-        self.assertTrue(nbits_lo <= nbits <= nbits_hi)
+        self.assertWahr(nbits_lo <= nbits <= nbits_hi)
         wenn random.random() < 0.5:
             answer = -answer
         return answer
@@ -163,9 +163,9 @@ klasse LongTest(unittest.TestCase):
             eq(r, r2, "divmod returns different mod than %")
             eq(x, q*y + r, "x != q*y + r after divmod")
             wenn y > 0:
-                self.assertTrue(0 <= r < y, "bad mod from divmod")
+                self.assertWahr(0 <= r < y, "bad mod from divmod")
             sonst:
-                self.assertTrue(y < r <= 0, "bad mod from divmod")
+                self.assertWahr(y < r <= 0, "bad mod from divmod")
 
     def test_division(self):
         digits = list(range(1, MAXDIGITS+1)) + list(range(KARATSUBA_CUTOFF,
@@ -625,50 +625,50 @@ klasse LongTest(unittest.TestCase):
     def test_mixed_compares_huge_integer(self, size):
         v = 1 << size
         f = sys.float_info.max
-        self.assertIs(f == v, False)
-        self.assertIs(f != v, True)
-        self.assertIs(f < v, True)
-        self.assertIs(f <= v, True)
-        self.assertIs(f > v, False)
-        self.assertIs(f >= v, False)
+        self.assertIs(f == v, Falsch)
+        self.assertIs(f != v, Wahr)
+        self.assertIs(f < v, Wahr)
+        self.assertIs(f <= v, Wahr)
+        self.assertIs(f > v, Falsch)
+        self.assertIs(f >= v, Falsch)
         f = float('inf')
-        self.assertIs(f == v, False)
-        self.assertIs(f != v, True)
-        self.assertIs(f < v, False)
-        self.assertIs(f <= v, False)
-        self.assertIs(f > v, True)
-        self.assertIs(f >= v, True)
+        self.assertIs(f == v, Falsch)
+        self.assertIs(f != v, Wahr)
+        self.assertIs(f < v, Falsch)
+        self.assertIs(f <= v, Falsch)
+        self.assertIs(f > v, Wahr)
+        self.assertIs(f >= v, Wahr)
         f = float('nan')
-        self.assertIs(f == v, False)
-        self.assertIs(f != v, True)
-        self.assertIs(f < v, False)
-        self.assertIs(f <= v, False)
-        self.assertIs(f > v, False)
-        self.assertIs(f >= v, False)
+        self.assertIs(f == v, Falsch)
+        self.assertIs(f != v, Wahr)
+        self.assertIs(f < v, Falsch)
+        self.assertIs(f <= v, Falsch)
+        self.assertIs(f > v, Falsch)
+        self.assertIs(f >= v, Falsch)
 
         del v
         v = (-1) << size
         f = -sys.float_info.max
-        self.assertIs(f == v, False)
-        self.assertIs(f != v, True)
-        self.assertIs(f < v, False)
-        self.assertIs(f <= v, False)
-        self.assertIs(f > v, True)
-        self.assertIs(f >= v, True)
+        self.assertIs(f == v, Falsch)
+        self.assertIs(f != v, Wahr)
+        self.assertIs(f < v, Falsch)
+        self.assertIs(f <= v, Falsch)
+        self.assertIs(f > v, Wahr)
+        self.assertIs(f >= v, Wahr)
         f = float('-inf')
-        self.assertIs(f == v, False)
-        self.assertIs(f != v, True)
-        self.assertIs(f < v, True)
-        self.assertIs(f <= v, True)
-        self.assertIs(f > v, False)
-        self.assertIs(f >= v, False)
+        self.assertIs(f == v, Falsch)
+        self.assertIs(f != v, Wahr)
+        self.assertIs(f < v, Wahr)
+        self.assertIs(f <= v, Wahr)
+        self.assertIs(f > v, Falsch)
+        self.assertIs(f >= v, Falsch)
         f = float('nan')
-        self.assertIs(f == v, False)
-        self.assertIs(f != v, True)
-        self.assertIs(f < v, False)
-        self.assertIs(f <= v, False)
-        self.assertIs(f > v, False)
-        self.assertIs(f >= v, False)
+        self.assertIs(f == v, Falsch)
+        self.assertIs(f != v, Wahr)
+        self.assertIs(f < v, Falsch)
+        self.assertIs(f <= v, Falsch)
+        self.assertIs(f > v, Falsch)
+        self.assertIs(f >= v, Falsch)
 
     def test__format__(self):
         self.assertEqual(format(123456789, 'd'), '123456789')
@@ -839,7 +839,7 @@ klasse LongTest(unittest.TestCase):
         self.assertEqual(12 // -3, -4)
         self.assertEqual(12 // 3, 4)
 
-    def check_truediv(self, a, b, skip_small=True):
+    def check_truediv(self, a, b, skip_small=Wahr):
         """Verify that the result of a/b is correctly rounded, by
         comparing it with a pure Python implementation of correctly
         rounded division.  b should be nonzero."""
@@ -1148,7 +1148,7 @@ klasse LongTest(unittest.TestCase):
             self.assertEqual(k, len(bin(x).lstrip('-0b')))
             # Behaviour as specified in the docs
             wenn x != 0:
-                self.assertTrue(2**(k-1) <= abs(x) < 2**k)
+                self.assertWahr(2**(k-1) <= abs(x) < 2**k)
             sonst:
                 self.assertEqual(k, 0)
             # Alternative definition: x.bit_length() == 1 + floor(log_2(x))
@@ -1260,8 +1260,8 @@ klasse LongTest(unittest.TestCase):
             self.assertRaises(TypeError, round, 3, e)
 
     def test_to_bytes(self):
-        def check(tests, byteorder, signed=False):
-            def equivalent_python(n, length, byteorder, signed=False):
+        def check(tests, byteorder, signed=Falsch):
+            def equivalent_python(n, length, byteorder, signed=Falsch):
                 wenn byteorder == 'little':
                     order = range(length)
                 sowenn byteorder == 'big':
@@ -1319,7 +1319,7 @@ klasse LongTest(unittest.TestCase):
             -65536: b'\xff\x00\x00',
             -8388608: b'\x80\x00\x00'
         }
-        check(tests1, 'big', signed=True)
+        check(tests1, 'big', signed=Wahr)
 
         # Convert integers to signed little-endian byte arrays.
         tests2 = {
@@ -1341,7 +1341,7 @@ klasse LongTest(unittest.TestCase):
             -65536: b'\x00\x00\xff',
             -8388608: b'\x00\x00\x80'
         }
-        check(tests2, 'little', signed=True)
+        check(tests2, 'little', signed=Wahr)
 
         # Convert integers to unsigned big-endian byte arrays.
         tests3 = {
@@ -1356,7 +1356,7 @@ klasse LongTest(unittest.TestCase):
             65535: b'\xff\xff',
             65536: b'\x01\x00\x00'
         }
-        check(tests3, 'big', signed=False)
+        check(tests3, 'big', signed=Falsch)
 
         # Convert integers to unsigned little-endian byte arrays.
         tests4 = {
@@ -1371,18 +1371,18 @@ klasse LongTest(unittest.TestCase):
             65535: b'\xff\xff',
             65536: b'\x00\x00\x01'
         }
-        check(tests4, 'little', signed=False)
+        check(tests4, 'little', signed=Falsch)
 
-        self.assertRaises(OverflowError, (256).to_bytes, 1, 'big', signed=False)
-        self.assertRaises(OverflowError, (256).to_bytes, 1, 'big', signed=True)
-        self.assertRaises(OverflowError, (256).to_bytes, 1, 'little', signed=False)
-        self.assertRaises(OverflowError, (256).to_bytes, 1, 'little', signed=True)
-        self.assertRaises(OverflowError, (-1).to_bytes, 2, 'big', signed=False)
-        self.assertRaises(OverflowError, (-1).to_bytes, 2, 'little', signed=False)
+        self.assertRaises(OverflowError, (256).to_bytes, 1, 'big', signed=Falsch)
+        self.assertRaises(OverflowError, (256).to_bytes, 1, 'big', signed=Wahr)
+        self.assertRaises(OverflowError, (256).to_bytes, 1, 'little', signed=Falsch)
+        self.assertRaises(OverflowError, (256).to_bytes, 1, 'little', signed=Wahr)
+        self.assertRaises(OverflowError, (-1).to_bytes, 2, 'big', signed=Falsch)
+        self.assertRaises(OverflowError, (-1).to_bytes, 2, 'little', signed=Falsch)
         self.assertEqual((0).to_bytes(0, 'big'), b'')
         self.assertEqual((1).to_bytes(5, 'big'), b'\x00\x00\x00\x00\x01')
         self.assertEqual((0).to_bytes(5, 'big'), b'\x00\x00\x00\x00\x00')
-        self.assertEqual((-1).to_bytes(5, 'big', signed=True),
+        self.assertEqual((-1).to_bytes(5, 'big', signed=Wahr),
                          b'\xff\xff\xff\xff\xff')
         self.assertRaises(OverflowError, (1).to_bytes, 0, 'big')
 
@@ -1393,8 +1393,8 @@ klasse LongTest(unittest.TestCase):
         self.assertEqual((0).to_bytes(0, SubStr('little')), b'')
 
     def test_from_bytes(self):
-        def check(tests, byteorder, signed=False):
-            def equivalent_python(byte_array, byteorder, signed=False):
+        def check(tests, byteorder, signed=Falsch):
+            def equivalent_python(byte_array, byteorder, signed=Falsch):
                 wenn byteorder == 'little':
                     little_ordered = list(byte_array)
                 sowenn byteorder == 'big':
@@ -1462,7 +1462,7 @@ klasse LongTest(unittest.TestCase):
             b'\xff\x00\x00': -65536,
             b'\x80\x00\x00': -8388608
         }
-        check(tests1, 'big', signed=True)
+        check(tests1, 'big', signed=Wahr)
 
         # Convert signed little-endian byte arrays to integers.
         tests2 = {
@@ -1487,7 +1487,7 @@ klasse LongTest(unittest.TestCase):
             b'\x00\x00\xff': -65536,
             b'\x00\x00\x80': -8388608
         }
-        check(tests2, 'little', signed=True)
+        check(tests2, 'little', signed=Wahr)
 
         # Convert unsigned big-endian byte arrays to integers.
         tests3 = {
@@ -1503,7 +1503,7 @@ klasse LongTest(unittest.TestCase):
             b'\xff\xff': 65535,
             b'\x01\x00\x00': 65536,
         }
-        check(tests3, 'big', signed=False)
+        check(tests3, 'big', signed=Falsch)
 
         # Convert integers to unsigned little-endian byte arrays.
         tests4 = {
@@ -1519,7 +1519,7 @@ klasse LongTest(unittest.TestCase):
             b'\xff\xff': 65535,
             b'\x00\x00\x01': 65536,
         }
-        check(tests4, 'little', signed=False)
+        check(tests4, 'little', signed=Falsch)
 
         klasse myint(int):
             pass
@@ -1527,36 +1527,36 @@ klasse LongTest(unittest.TestCase):
         self.assertIs(type(myint.from_bytes(b'\x00', 'big')), myint)
         self.assertEqual(myint.from_bytes(b'\x01', 'big'), 1)
         self.assertIs(
-            type(myint.from_bytes(b'\x00', 'big', signed=False)), myint)
-        self.assertEqual(myint.from_bytes(b'\x01', 'big', signed=False), 1)
+            type(myint.from_bytes(b'\x00', 'big', signed=Falsch)), myint)
+        self.assertEqual(myint.from_bytes(b'\x01', 'big', signed=Falsch), 1)
         self.assertIs(type(myint.from_bytes(b'\x00', 'little')), myint)
         self.assertEqual(myint.from_bytes(b'\x01', 'little'), 1)
         self.assertIs(type(myint.from_bytes(
-            b'\x00', 'little', signed=False)), myint)
-        self.assertEqual(myint.from_bytes(b'\x01', 'little', signed=False), 1)
+            b'\x00', 'little', signed=Falsch)), myint)
+        self.assertEqual(myint.from_bytes(b'\x01', 'little', signed=Falsch), 1)
         self.assertEqual(
-            int.from_bytes([255, 0, 0], 'big', signed=True), -65536)
+            int.from_bytes([255, 0, 0], 'big', signed=Wahr), -65536)
         self.assertEqual(
-            int.from_bytes((255, 0, 0), 'big', signed=True), -65536)
+            int.from_bytes((255, 0, 0), 'big', signed=Wahr), -65536)
         self.assertEqual(int.from_bytes(
-            bytearray(b'\xff\x00\x00'), 'big', signed=True), -65536)
+            bytearray(b'\xff\x00\x00'), 'big', signed=Wahr), -65536)
         self.assertEqual(int.from_bytes(
-            bytearray(b'\xff\x00\x00'), 'big', signed=True), -65536)
+            bytearray(b'\xff\x00\x00'), 'big', signed=Wahr), -65536)
         self.assertEqual(int.from_bytes(
-            array.array('B', b'\xff\x00\x00'), 'big', signed=True), -65536)
+            array.array('B', b'\xff\x00\x00'), 'big', signed=Wahr), -65536)
         self.assertEqual(int.from_bytes(
-            memoryview(b'\xff\x00\x00'), 'big', signed=True), -65536)
+            memoryview(b'\xff\x00\x00'), 'big', signed=Wahr), -65536)
         self.assertRaises(ValueError, int.from_bytes, [256], 'big')
         self.assertRaises(ValueError, int.from_bytes, [0], 'big\x00')
         self.assertRaises(ValueError, int.from_bytes, [0], 'little\x00')
         self.assertRaises(TypeError, int.from_bytes, "", 'big')
         self.assertRaises(TypeError, int.from_bytes, "\x00", 'big')
         self.assertRaises(TypeError, int.from_bytes, 0, 'big')
-        self.assertRaises(TypeError, int.from_bytes, 0, 'big', True)
+        self.assertRaises(TypeError, int.from_bytes, 0, 'big', Wahr)
         self.assertRaises(TypeError, myint.from_bytes, "", 'big')
         self.assertRaises(TypeError, myint.from_bytes, "\x00", 'big')
         self.assertRaises(TypeError, myint.from_bytes, 0, 'big')
-        self.assertRaises(TypeError, int.from_bytes, 0, 'big', True)
+        self.assertRaises(TypeError, int.from_bytes, 0, 'big', Wahr)
 
         klasse myint2(int):
             def __new__(cls, value):
@@ -1601,13 +1601,13 @@ klasse LongTest(unittest.TestCase):
     def test_from_bytes_small(self):
         # bpo-46361
         fuer i in range(-5, 257):
-            b = i.to_bytes(2, signed=True)
-            self.assertIs(int.from_bytes(b, signed=True), i)
+            b = i.to_bytes(2, signed=Wahr)
+            self.assertIs(int.from_bytes(b, signed=Wahr), i)
 
     def test_is_integer(self):
-        self.assertTrue((-1).is_integer())
-        self.assertTrue((0).is_integer())
-        self.assertTrue((1).is_integer())
+        self.assertWahr((-1).is_integer())
+        self.assertWahr((0).is_integer())
+        self.assertWahr((1).is_integer())
 
     def test_access_to_nonexistent_digit_0(self):
         # http://bugs.python.org/issue14630: A bug in _PyLong_Copy meant that
@@ -1625,7 +1625,7 @@ klasse LongTest(unittest.TestCase):
 
     def test_shift_bool(self):
         # Issue #21422: ensure that bool << int and bool >> int return int
-        fuer value in (True, False):
+        fuer value in (Wahr, Falsch):
             fuer shift in (0, 2):
                 self.assertEqual(type(value << shift), int)
                 self.assertEqual(type(value >> shift), int)
@@ -1633,7 +1633,7 @@ klasse LongTest(unittest.TestCase):
     def test_as_integer_ratio(self):
         klasse myint(int):
             pass
-        tests = [10, 0, -10, 1, sys.maxsize + 1, True, False, myint(42)]
+        tests = [10, 0, -10, 1, sys.maxsize + 1, Wahr, Falsch, myint(42)]
         fuer value in tests:
             numerator, denominator = value.as_integer_ratio()
             self.assertEqual((numerator, denominator), (int(value), 1))

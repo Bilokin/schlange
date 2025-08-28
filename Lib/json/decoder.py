@@ -6,7 +6,7 @@ from json import scanner
 try:
     from _json import scanstring as c_scanstring
 except ImportError:
-    c_scanstring = None
+    c_scanstring = Nichts
 
 __all__ = ['JSONDecoder', 'JSONDecodeError']
 
@@ -59,7 +59,7 @@ BACKSLASH = {
 
 def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
     esc = _m(s, pos + 1)
-    wenn esc is not None:
+    wenn esc is not Nichts:
         try:
             return int(esc.group(), 16)
         except ValueError:
@@ -67,12 +67,12 @@ def _decode_uXXXX(s, pos, _m=HEXDIGITS.match):
     msg = "Invalid \\uXXXX escape"
     raise JSONDecodeError(msg, s, pos)
 
-def py_scanstring(s, end, strict=True,
+def py_scanstring(s, end, strict=Wahr,
         _b=BACKSLASH, _m=STRINGCHUNK.match):
     """Scan the string s fuer a JSON string. End is the index of the
     character in s after the quote that started the JSON string.
     Unescapes all valid JSON string escape sequences and raises ValueError
-    on attempt to decode an invalid string. If strict is False then literal
+    on attempt to decode an invalid string. If strict is Falsch then literal
     control characters are allowed in the string.
 
     Returns a tuple of the decoded string and the index of the character in s
@@ -82,7 +82,7 @@ def py_scanstring(s, end, strict=True,
     begin = end - 1
     while 1:
         chunk = _m(s, end)
-        wenn chunk is None:
+        wenn chunk is Nichts:
             raise JSONDecodeError("Unterminated string starting at", s, begin)
         end = chunk.end()
         content, terminator = chunk.groups()
@@ -105,7 +105,7 @@ def py_scanstring(s, end, strict=True,
             esc = s[end]
         except IndexError:
             raise JSONDecodeError("Unterminated string starting at",
-                                  s, begin) from None
+                                  s, begin) from Nichts
         # If not a unicode escape sequence, must be in the lookup table
         wenn esc != 'u':
             try:
@@ -135,12 +135,12 @@ WHITESPACE_STR = ' \t\n\r'
 
 
 def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
-               memo=None, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
+               memo=Nichts, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     s, end = s_and_end
     pairs = []
     pairs_append = pairs.append
     # Backwards compatibility
-    wenn memo is None:
+    wenn memo is Nichts:
         memo = {}
     memo_get = memo.setdefault
     # Use a slice to prevent IndexError from being raised, the following
@@ -153,18 +153,18 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
             nextchar = s[end:end + 1]
         # Trivial empty object
         wenn nextchar == '}':
-            wenn object_pairs_hook is not None:
+            wenn object_pairs_hook is not Nichts:
                 result = object_pairs_hook(pairs)
                 return result, end + 1
             pairs = {}
-            wenn object_hook is not None:
+            wenn object_hook is not Nichts:
                 pairs = object_hook(pairs)
             return pairs, end + 1
         sowenn nextchar != '"':
             raise JSONDecodeError(
                 "Expecting property name enclosed in double quotes", s, end)
     end += 1
-    while True:
+    while Wahr:
         key, end = scanstring(s, end, strict)
         key = memo_get(key, key)
         # To skip some function call overhead we optimize the fast paths where
@@ -186,7 +186,7 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         try:
             value, end = scan_once(s, end)
         except StopIteration as err:
-            raise JSONDecodeError("Expecting value", s, err.value) from None
+            raise JSONDecodeError("Expecting value", s, err.value) from Nichts
         pairs_append((key, value))
         try:
             nextchar = s[end]
@@ -210,11 +210,11 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
                 raise JSONDecodeError("Illegal trailing comma before end of object", s, comma_idx)
             raise JSONDecodeError(
                 "Expecting property name enclosed in double quotes", s, end - 1)
-    wenn object_pairs_hook is not None:
+    wenn object_pairs_hook is not Nichts:
         result = object_pairs_hook(pairs)
         return result, end
     pairs = dict(pairs)
-    wenn object_hook is not None:
+    wenn object_hook is not Nichts:
         pairs = object_hook(pairs)
     return pairs, end
 
@@ -229,11 +229,11 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     wenn nextchar == ']':
         return values, end + 1
     _append = values.append
-    while True:
+    while Wahr:
         try:
             value, end = scan_once(s, end)
         except StopIteration as err:
-            raise JSONDecodeError("Expecting value", s, err.value) from None
+            raise JSONDecodeError("Expecting value", s, err.value) from Nichts
         _append(value)
         nextchar = s[end:end + 1]
         wenn nextchar in _ws:
@@ -277,11 +277,11 @@ klasse JSONDecoder(object):
     +---------------+-------------------+
     | number (real) | float             |
     +---------------+-------------------+
-    | true          | True              |
+    | true          | Wahr              |
     +---------------+-------------------+
-    | false         | False             |
+    | false         | Falsch             |
     +---------------+-------------------+
-    | null          | None              |
+    | null          | Nichts              |
     +---------------+-------------------+
 
     It also understands ``NaN``, ``Infinity``, and ``-Infinity`` as
@@ -289,9 +289,9 @@ klasse JSONDecoder(object):
 
     """
 
-    def __init__(self, *, object_hook=None, parse_float=None,
-            parse_int=None, parse_constant=None, strict=True,
-            object_pairs_hook=None):
+    def __init__(self, *, object_hook=Nichts, parse_float=Nichts,
+            parse_int=Nichts, parse_constant=Nichts, strict=Wahr,
+            object_pairs_hook=Nichts):
         """``object_hook``, wenn specified, will be called with the result
         of every JSON object decoded and its return value will be used in
         place of the given ``dict``.  This can be used to provide custom
@@ -360,5 +360,5 @@ klasse JSONDecoder(object):
         try:
             obj, end = self.scan_once(s, idx)
         except StopIteration as err:
-            raise JSONDecodeError("Expecting value", s, err.value) from None
+            raise JSONDecodeError("Expecting value", s, err.value) from Nichts
         return obj, end

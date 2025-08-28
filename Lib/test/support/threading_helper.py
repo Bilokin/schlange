@@ -29,7 +29,7 @@ def threading_cleanup(*original_values):
     orig_count, orig_ndangling = original_values
 
     timeout = 1.0
-    fuer _ in support.sleeping_retry(timeout, error=False):
+    fuer _ in support.sleeping_retry(timeout, error=Falsch):
         # Copy the thread list to get a consistent output. threading._dangling
         # is a WeakSet, its value changes when it's read.
         dangling_threads = list(threading._dangling)
@@ -39,7 +39,7 @@ def threading_cleanup(*original_values):
             return
 
     # Timeout!
-    support.environment_altered = True
+    support.environment_altered = Wahr
     support.print_warning(
         f"threading_cleanup() failed to clean up threads "
         f"in {timeout:.1f} seconds\n"
@@ -70,7 +70,7 @@ def reap_threads(func):
 
 
 @contextlib.contextmanager
-def wait_threads_exit(timeout=None):
+def wait_threads_exit(timeout=Nichts):
     """
     bpo-31234: Context manager to wait until all threads created in the with
     statement exit.
@@ -84,14 +84,14 @@ def wait_threads_exit(timeout=None):
     which doesn't allow to wait fuer thread exit, whereas thread.Thread has a
     join() method.
     """
-    wenn timeout is None:
+    wenn timeout is Nichts:
         timeout = support.SHORT_TIMEOUT
     old_count = _thread._count()
     try:
         yield
     finally:
         start_time = time.monotonic()
-        fuer _ in support.sleeping_retry(timeout, error=False):
+        fuer _ in support.sleeping_retry(timeout, error=Falsch):
             support.gc_collect()
             count = _thread._count()
             wenn count <= old_count:
@@ -104,11 +104,11 @@ def wait_threads_exit(timeout=None):
             raise AssertionError(msg)
 
 
-def join_thread(thread, timeout=None):
+def join_thread(thread, timeout=Nichts):
     """Join a thread. Raise an AssertionError wenn the thread is still alive
     after timeout seconds.
     """
-    wenn timeout is None:
+    wenn timeout is Nichts:
         timeout = support.SHORT_TIMEOUT
     thread.join(timeout)
     wenn thread.is_alive():
@@ -117,12 +117,12 @@ def join_thread(thread, timeout=None):
 
 
 @contextlib.contextmanager
-def start_threads(threads, unlock=None):
+def start_threads(threads, unlock=Nichts):
     try:
         import faulthandler
     except ImportError:
         # It isn't supported on subinterpreters yet.
-        faulthandler = None
+        faulthandler = Nichts
     threads = list(threads)
     started = []
     try:
@@ -154,7 +154,7 @@ def start_threads(threads, unlock=None):
         finally:
             started = [t fuer t in started wenn t.is_alive()]
             wenn started:
-                wenn faulthandler is not None:
+                wenn faulthandler is not Nichts:
                     faulthandler.dump_traceback(sys.stdout)
                 raise AssertionError('Unable to join %d threads' % len(started))
 
@@ -191,11 +191,11 @@ klasse catch_threading_exception:
     """
 
     def __init__(self):
-        self.exc_type = None
-        self.exc_value = None
-        self.exc_traceback = None
-        self.thread = None
-        self._old_hook = None
+        self.exc_type = Nichts
+        self.exc_value = Nichts
+        self.exc_traceback = Nichts
+        self.thread = Nichts
+        self._old_hook = Nichts
 
     def _hook(self, args):
         self.exc_type = args.exc_type
@@ -230,14 +230,14 @@ def _can_start_thread() -> bool:
     wenn sys.platform == "emscripten":
         return sys._emscripten_info.pthreads
     sowenn sys.platform == "wasi":
-        return False
+        return Falsch
     sonst:
         # assume all other platforms have working thread support.
-        return True
+        return Wahr
 
 can_start_thread = _can_start_thread()
 
-def requires_working_threading(*, module=False):
+def requires_working_threading(*, module=Falsch):
     """Skip tests or modules that require working threading.
 
     Can be used as a function/class decorator or to skip an entire module.
@@ -270,5 +270,5 @@ def run_concurrently(worker_func, nthreads, args=(), kwargs={}):
             pass
 
         # If a worker thread raises an exception, re-raise it.
-        wenn cm.exc_value is not None:
+        wenn cm.exc_value is not Nichts:
             raise cm.exc_value

@@ -55,8 +55,8 @@ klasse WindowsConsoleTests(TestCase):
     def handle_events(
         self,
         events: Iterable[Event],
-        prepare_console=None,
-        prepare_reader=None,
+        prepare_console=Nichts,
+        prepare_reader=Nichts,
         **kwargs,
     ):
         prepare_console = prepare_console or partial(self.console, **kwargs)
@@ -113,7 +113,7 @@ klasse WindowsConsoleTests(TestCase):
             return console
 
         _, con = handle_all_events(
-            [Event(evt="resize", data=None)],
+            [Event(evt="resize", data=Nichts)],
             prepare_reader=same_reader,
             prepare_console=same_console,
         )
@@ -141,7 +141,7 @@ klasse WindowsConsoleTests(TestCase):
             return console
 
         _, con = handle_all_events(
-            [Event(evt="resize", data=None)],
+            [Event(evt="resize", data=Nichts)],
             prepare_reader=same_reader,
             prepare_console=same_console,
         )
@@ -223,7 +223,7 @@ klasse WindowsConsoleTests(TestCase):
             code_to_events(code),
             [
                 Event(evt="key", data="up", raw=bytearray(b"\x1bOA")),
-                Event(evt="scroll", data=None),
+                Event(evt="scroll", data=Nichts),
             ],
         )
         _, con = self.handle_events_short(events)
@@ -243,9 +243,9 @@ klasse WindowsConsoleTests(TestCase):
             code_to_events(code),
             [
                 Event(evt="key", data="up", raw=bytearray(b"\x1bOA")),
-                Event(evt="scroll", data=None),
+                Event(evt="scroll", data=Nichts),
                 Event(evt="key", data="down", raw=bytearray(b"\x1bOB")),
-                Event(evt="scroll", data=None),
+                Event(evt="scroll", data=Nichts),
             ],
         )
         _, con = self.handle_events_short(events)
@@ -275,7 +275,7 @@ klasse WindowsConsoleTests(TestCase):
             return console
 
         _, con = handle_all_events(
-            [Event(evt="resize", data=None)],
+            [Event(evt="resize", data=Nichts)],
             prepare_reader=same_reader,
             prepare_console=same_console,
         )
@@ -313,7 +313,7 @@ klasse WindowsConsoleTests(TestCase):
             return console
 
         _, con = handle_all_events(
-            [Event(evt="resize", data=None)],
+            [Event(evt="resize", data=Nichts)],
             prepare_reader=same_reader,
             prepare_console=same_console,
         )
@@ -385,9 +385,9 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.mock = MagicMock(side_effect=input_records)
         self.console._read_input = self.mock
         self.console._WindowsConsole__vt_support = kwargs.get("vt_support",
-                                                              False)
-        self.console.wait = MagicMock(return_value=True)
-        event = self.console.get_event(block=False)
+                                                              Falsch)
+        self.console.wait = MagicMock(return_value=Wahr)
+        event = self.console.get_event(block=Falsch)
         return event
 
     def get_input_record(self, unicode_char, vcode=0, control=0):
@@ -395,7 +395,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
             wc.KEY_EVENT,
             wc.ConsoleEvent(KeyEvent=
                 wc.KeyEvent(
-                    bKeyDown=True,
+                    bKeyDown=Wahr,
                     wRepeatCount=1,
                     wVirtualKeyCode=vcode,
                     wVirtualScanCode=0, # not used
@@ -404,7 +404,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
                     )))
 
     def test_EmptyBuffer(self):
-        self.assertEqual(self.get_event([None]), None)
+        self.assertEqual(self.get_event([Nichts]), Nichts)
         self.assertEqual(self.mock.call_count, 1)
 
     def test_WINDOW_BUFFER_SIZE_EVENT(self):
@@ -420,8 +420,8 @@ klasse WindowsConsoleGetEventTests(TestCase):
         ir = wc.INPUT_RECORD(
             wc.KEY_EVENT,
             wc.ConsoleEvent(KeyEvent=
-                wc.KeyEvent(bKeyDown=False)))
-        self.assertEqual(self.get_event([ir]), None)
+                wc.KeyEvent(bKeyDown=Falsch)))
+        self.assertEqual(self.get_event([ir]), Nichts)
         self.assertEqual(self.mock.call_count, 1)
 
     def test_unhandled_events(self):
@@ -430,8 +430,8 @@ klasse WindowsConsoleGetEventTests(TestCase):
                 event,
                 # fake data, nothing is read except bKeyDown
                 wc.ConsoleEvent(KeyEvent=
-                    wc.KeyEvent(bKeyDown=False)))
-            self.assertEqual(self.get_event([ir]), None)
+                    wc.KeyEvent(bKeyDown=Falsch)))
+            self.assertEqual(self.get_event([ir]), Nichts)
             self.assertEqual(self.mock.call_count, 1)
 
     def test_enter(self):
@@ -502,7 +502,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         # German layout this returns `µ`, see test_AltGr_m.
         ir = self.get_input_record(
             "\x00", self.VK_M, self.LEFT_ALT_PRESSED | self.LEFT_CTRL_PRESSED)
-        self.assertEqual(self.get_event([ir]), None)
+        self.assertEqual(self.get_event([ir]), Nichts)
         self.assertEqual(self.mock.call_count, 1)
 
     def test_m_LEFT_ALT_PRESSED(self):
@@ -560,19 +560,19 @@ klasse WindowsConsoleGetEventTests(TestCase):
 
     def test_enter_vt(self):
         ir = self.get_input_record("\r")
-        self.assertEqual(self.get_event([ir], vt_support=True),
+        self.assertEqual(self.get_event([ir], vt_support=Wahr),
                          Event("key", "\n"))
         self.assertEqual(self.mock.call_count, 1)
 
     def test_backspace_vt(self):
         ir = self.get_input_record("\x7f")
-        self.assertEqual(self.get_event([ir], vt_support=True),
+        self.assertEqual(self.get_event([ir], vt_support=Wahr),
                          Event("key", "backspace", b"\x7f"))
         self.assertEqual(self.mock.call_count, 1)
 
     def test_up_vt(self):
         irs = [self.get_input_record(x) fuer x in "\x1b[A"]
-        self.assertEqual(self.get_event(irs, vt_support=True),
+        self.assertEqual(self.get_event(irs, vt_support=Wahr),
                          Event(evt='key', data='up', raw=bytearray(b'\x1b[A')))
         self.assertEqual(self.mock.call_count, 3)
 

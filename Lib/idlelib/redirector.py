@@ -79,7 +79,7 @@ klasse WidgetRedirector:
         return OriginalCommand(self, operation)
 
     def unregister(self, operation):
-        '''Return the function fuer the operation, or None.
+        '''Return the function fuer the operation, or Nichts.
 
         Deleting the instance attribute unmasks the klasse attribute.
         '''
@@ -92,7 +92,7 @@ klasse WidgetRedirector:
                 pass
             return function
         sonst:
-            return None
+            return Nichts
 
     def dispatch(self, operation, *args):
         '''Callback from Tcl which runs when the widget is referenced.
@@ -168,7 +168,7 @@ def _widget_redirector(parent):  # htest #
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_redirector', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_redirector', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_widget_redirector)

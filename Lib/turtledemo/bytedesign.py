@@ -42,7 +42,7 @@ klasse Designer(Turtle):
         self.right(198)
         self.down()
         self.centerpiece(46 * scale, 143.4, scale)
-        self.getscreen().tracer(True)
+        self.getscreen().tracer(Wahr)
 
     def wheel(self, initpos, scale):
         self.right(54)

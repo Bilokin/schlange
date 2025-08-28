@@ -13,8 +13,8 @@ from email.mime.nonmultipart import MIMENonMultipart
 klasse MIMEImage(MIMENonMultipart):
     """Class fuer generating image/* type MIME documents."""
 
-    def __init__(self, _imagedata, _subtype=None,
-                 _encoder=encoders.encode_base64, *, policy=None, **_params):
+    def __init__(self, _imagedata, _subtype=Nichts,
+                 _encoder=encoders.encode_base64, *, policy=Nichts, **_params):
         """Create an image/* type MIME document.
 
         _imagedata contains the bytes fuer the raw image data.  If the data
@@ -34,8 +34,8 @@ klasse MIMEImage(MIMENonMultipart):
         constructor, which turns them into parameters on the Content-Type
         header.
         """
-        _subtype = _what(_imagedata) wenn _subtype is None sonst _subtype
-        wenn _subtype is None:
+        _subtype = _what(_imagedata) wenn _subtype is Nichts sonst _subtype
+        wenn _subtype is Nichts:
             raise TypeError('Could not guess image MIME subtype')
         MIMENonMultipart.__init__(self, 'image', _subtype, policy=policy,
                                   **_params)
@@ -52,7 +52,7 @@ def _what(data):
         wenn res := rule(data):
             return res
     sonst:
-        return None
+        return Nichts
 
 
 def rule(rulefunc):

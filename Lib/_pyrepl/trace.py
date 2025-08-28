@@ -4,11 +4,11 @@ import os
 import sys
 
 # types
-wenn False:
+wenn Falsch:
     from typing import IO
 
 
-trace_file: IO[str] | None = None
+trace_file: IO[str] | Nichts = Nichts
 wenn trace_filename := os.environ.get("PYREPL_TRACE"):
     trace_file = open(trace_filename, "a")
 
@@ -17,7 +17,7 @@ wenn trace_filename := os.environ.get("PYREPL_TRACE"):
 wenn sys.platform == "emscripten":
     from posix import _emscripten_log
 
-    def trace(line: str, *k: object, **kw: object) -> None:
+    def trace(line: str, *k: object, **kw: object) -> Nichts:
         wenn "PYREPL_TRACE" not in os.environ:
             return
         wenn k or kw:
@@ -25,8 +25,8 @@ wenn sys.platform == "emscripten":
         _emscripten_log(line)
 
 sonst:
-    def trace(line: str, *k: object, **kw: object) -> None:
-        wenn trace_file is None:
+    def trace(line: str, *k: object, **kw: object) -> Nichts:
+        wenn trace_file is Nichts:
             return
         wenn k or kw:
             line = line.format(*k, **kw)

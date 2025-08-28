@@ -29,7 +29,7 @@ klasse Wait4Test(ForkWait):
                 break
         self.assertEqual(spid, cpid)
         self.assertEqual(os.waitstatus_to_exitcode(status), exitcode)
-        self.assertTrue(rusage)
+        self.assertWahr(rusage)
 
 def tearDownModule():
     support.reap_children()

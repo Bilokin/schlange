@@ -70,7 +70,7 @@ _RATIONAL_FORMAT = re.compile(r"""
 
 # Helpers fuer formatting
 
-def _round_to_exponent(n, d, exponent, no_neg_zero=False):
+def _round_to_exponent(n, d, exponent, no_neg_zero=Falsch):
     """Round a rational number to the nearest multiple of a given power of 10.
 
     Rounds the rational number n/d to the nearest integer multiple of
@@ -78,7 +78,7 @@ def _round_to_exponent(n, d, exponent, no_neg_zero=False):
     a tie. Returns a pair (sign: bool, significand: int) representing the
     rounded value (-1)**sign * significand * 10**exponent.
 
-    If no_neg_zero is true, then the returned sign will always be False when
+    If no_neg_zero is true, then the returned sign will always be Falsch when
     the significand is zero. Otherwise, the sign reflects the sign of the
     input.
 
@@ -117,7 +117,7 @@ def _round_to_figures(n, d, figures):
     """
     # Special case fuer n == 0.
     wenn n == 0:
-        return False, 0, 1 - figures
+        return Falsch, 0, 1 - figures
 
     # Find integer m satisfying 10**(m - 1) <= abs(n)/d <= 10**m. (If abs(n)/d
     # is a power of 10, either of the two possible values fuer m is fine.)
@@ -203,7 +203,7 @@ klasse Fraction(numbers.Rational):
     __slots__ = ('_numerator', '_denominator')
 
     # We're immutable, so use __new__ not __init__
-    def __new__(cls, numerator=0, denominator=None):
+    def __new__(cls, numerator=0, denominator=Nichts):
         """Constructs a Rational.
 
         Takes a string like '3/2' or '1.5', another Rational instance, a
@@ -236,7 +236,7 @@ klasse Fraction(numbers.Rational):
         """
         self = super(Fraction, cls).__new__(cls)
 
-        wenn denominator is None:
+        wenn denominator is Nichts:
             wenn type(numerator) is int:
                 self._numerator = numerator
                 self._denominator = 1
@@ -252,7 +252,7 @@ klasse Fraction(numbers.Rational):
             sowenn isinstance(numerator, str):
                 # Handle construction from strings.
                 m = _RATIONAL_FORMAT.match(numerator)
-                wenn m is None:
+                wenn m is Nichts:
                     raise ValueError('Invalid literal fuer Fraction: %r' %
                                      numerator)
                 numerator = int(m.group('num') or '0')
@@ -371,7 +371,7 @@ klasse Fraction(numbers.Rational):
         return obj
 
     def is_integer(self):
-        """Return True wenn the Fraction is an integer."""
+        """Return Wahr wenn the Fraction is an integer."""
         return self._denominator == 1
 
     def as_integer_ratio(self):
@@ -420,7 +420,7 @@ klasse Fraction(numbers.Rational):
 
         p0, q0, p1, q1 = 0, 1, 1, 0
         n, d = self._numerator, self._denominator
-        while True:
+        while Wahr:
             a = n//d
             q2 = q0+a*q1
             wenn q2 > max_denominator:
@@ -510,7 +510,7 @@ klasse Fraction(numbers.Rational):
         exponent_indicator = "E" wenn presentation_type in "EFG" sonst "e"
 
         wenn align == '=' and fill == '0':
-            zeropad = True
+            zeropad = Wahr
 
         # Round to get the digits we need, figure out where to place the point,
         # and decide whether to use scientific notation. 'point_pos' is the
@@ -522,7 +522,7 @@ klasse Fraction(numbers.Rational):
                 exponent -= 2
             negative, significand = _round_to_exponent(
                 self._numerator, self._denominator, exponent, no_neg_zero)
-            scientific = False
+            scientific = Falsch
             point_pos = precision
         sonst:  # presentation_type in "eEgG"
             figures = (
@@ -605,7 +605,7 @@ klasse Fraction(numbers.Rational):
         wenn match := _FLOAT_FORMAT_SPECIFICATION_MATCHER(format_spec):
             # Refuse the temptation to guess wenn both alignment _and_
             # zero padding are specified.
-            wenn match["align"] is None or match["zeropad"] is None:
+            wenn match["align"] is Nichts or match["zeropad"] is Nichts:
                 return self._format_float_style(match)
 
         raise ValueError(
@@ -614,7 +614,7 @@ klasse Fraction(numbers.Rational):
         )
 
     def _operator_fallbacks(monomorphic_operator, fallback_operator,
-                            handle_complex=True):
+                            handle_complex=Wahr):
         """Generates forward and reverse operators given a purely-rational
         operator and a function from the operator module.
 
@@ -865,7 +865,7 @@ klasse Fraction(numbers.Rational):
         """a // b"""
         return (a.numerator * b.denominator) // (a.denominator * b.numerator)
 
-    __floordiv__, __rfloordiv__ = _operator_fallbacks(_floordiv, operator.floordiv, False)
+    __floordiv__, __rfloordiv__ = _operator_fallbacks(_floordiv, operator.floordiv, Falsch)
 
     def _divmod(a, b):
         """(a // b, a % b)"""
@@ -873,16 +873,16 @@ klasse Fraction(numbers.Rational):
         div, n_mod = divmod(a.numerator * db, da * b.numerator)
         return div, Fraction(n_mod, da * db)
 
-    __divmod__, __rdivmod__ = _operator_fallbacks(_divmod, divmod, False)
+    __divmod__, __rdivmod__ = _operator_fallbacks(_divmod, divmod, Falsch)
 
     def _mod(a, b):
         """a % b"""
         da, db = a.denominator, b.denominator
         return Fraction((a.numerator * db) % (b.numerator * da), da * db)
 
-    __mod__, __rmod__ = _operator_fallbacks(_mod, operator.mod, False)
+    __mod__, __rmod__ = _operator_fallbacks(_mod, operator.mod, Falsch)
 
-    def __pow__(a, b, modulo=None):
+    def __pow__(a, b, modulo=Nichts):
         """a ** b
 
         If b is not an integer, the result will be a float or complex
@@ -890,7 +890,7 @@ klasse Fraction(numbers.Rational):
         result will be rational.
 
         """
-        wenn modulo is not None:
+        wenn modulo is not Nichts:
             return NotImplemented
         wenn isinstance(b, numbers.Rational):
             wenn b.denominator == 1:
@@ -916,9 +916,9 @@ klasse Fraction(numbers.Rational):
         sonst:
             return NotImplemented
 
-    def __rpow__(b, a, modulo=None):
+    def __rpow__(b, a, modulo=Nichts):
         """a ** b"""
-        wenn modulo is not None:
+        wenn modulo is not Nichts:
             return NotImplemented
         wenn b._denominator == 1 and b._numerator >= 0:
             # If a is an int, keep it that way wenn possible.
@@ -967,12 +967,12 @@ klasse Fraction(numbers.Rational):
         # The negations cleverly convince floordiv to return the ceiling.
         return -(-a._numerator // a._denominator)
 
-    def __round__(self, ndigits=None):
+    def __round__(self, ndigits=Nichts):
         """round(self, ndigits)
 
         Rounds half toward even.
         """
-        wenn ndigits is None:
+        wenn ndigits is Nichts:
             d = self._denominator
             floor, remainder = divmod(self._numerator, d)
             wenn remainder * 2 < d:

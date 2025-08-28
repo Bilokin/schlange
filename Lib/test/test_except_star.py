@@ -140,7 +140,7 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
                 except* Exception as e:
                     return 42
                 finally:
-                    finished = True
+                    finished = Wahr
             """)
 
     def test_break_continue_in_except_star_block_valid(self):
@@ -174,15 +174,15 @@ klasse TestBreakContinueReturnInExceptStarBlock(unittest.TestCase):
 
 klasse ExceptStarTest(ExceptionIsLikeMixin, unittest.TestCase):
     def assertMetadataEqual(self, e1, e2):
-        wenn e1 is None or e2 is None:
-            self.assertTrue(e1 is None and e2 is None)
+        wenn e1 is Nichts or e2 is Nichts:
+            self.assertWahr(e1 is Nichts and e2 is Nichts)
         sonst:
             self.assertEqual(e1.__context__, e2.__context__)
             self.assertEqual(e1.__cause__, e2.__cause__)
             self.assertEqual(e1.__traceback__, e2.__traceback__)
 
     def assertMetadataNotEqual(self, e1, e2):
-        wenn e1 is None or e2 is None:
+        wenn e1 is Nichts or e2 is Nichts:
             self.assertNotEqual(e1, e2)
         sonst:
             return not (e1.__context__ == e2.__context__
@@ -193,7 +193,7 @@ klasse ExceptStarTest(ExceptionIsLikeMixin, unittest.TestCase):
 klasse TestExceptStarSplitSemantics(ExceptStarTest):
     def doSplitTestNamed(self, exc, T, match_template, rest_template):
         initial_sys_exception = sys.exception()
-        sys_exception = match = rest = None
+        sys_exception = match = rest = Nichts
         try:
             try:
                 raise exc
@@ -210,7 +210,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
 
     def doSplitTestUnnamed(self, exc, T, match_template, rest_template):
         initial_sys_exception = sys.exception()
-        sys_exception = match = rest = None
+        sys_exception = match = rest = Nichts
         try:
             try:
                 raise exc
@@ -249,7 +249,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
         self.doSplitTest(
             ExceptionGroup("test1", [ValueError("V"), TypeError("T")]),
             SyntaxError,
-            None,
+            Nichts,
             ExceptionGroup("test1", [ValueError("V"), TypeError("T")]))
 
     def test_match_single_type(self):
@@ -257,7 +257,7 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
             ExceptionGroup("test2", [ValueError("V1"), ValueError("V2")]),
             ValueError,
             ExceptionGroup("test2", [ValueError("V1"), ValueError("V2")]),
-            None)
+            Nichts)
 
     def test_match_single_type_partial_match(self):
         self.doSplitTest(
@@ -341,27 +341,27 @@ klasse TestExceptStarSplitSemantics(ExceptStarTest):
             ValueError("V"),
             ValueError,
             ExceptionGroup("", [ValueError("V")]),
-            None)
+            Nichts)
 
     def test_naked_exception_matched_wrapped2(self):
         self.doSplitTest(
             ValueError("V"),
             Exception,
             ExceptionGroup("", [ValueError("V")]),
-            None)
+            Nichts)
 
     def test_exception_group_except_star_Exception_not_wrapped(self):
         self.doSplitTest(
             ExceptionGroup("eg", [ValueError("V")]),
             Exception,
             ExceptionGroup("eg", [ValueError("V")]),
-            None)
+            Nichts)
 
     def test_plain_exception_not_matched(self):
         self.doSplitTest(
             ValueError("V"),
             TypeError,
-            None,
+            Nichts,
             ValueError("V"))
 
     def test_match__supertype(self):
@@ -907,7 +907,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
                     try:
                         raise TypeError(2)
                     except TypeError as te:
-                        raise EG("nested", [te], 101) from None
+                        raise EG("nested", [te], 101) from Nichts
                 except EG as nested:
                     try:
                         raise ValueError(1)
@@ -929,7 +929,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
     def test_falsy_exception_group_subclass(self):
         klasse FalsyEG(ExceptionGroup):
             def __bool__(self):
-                return False
+                return Falsch
 
             def derive(self, excs):
                 return FalsyEG(self.message, excs)
@@ -947,7 +947,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
             exc = e
 
         fuer e in [tes, ves, exc]:
-            self.assertFalse(e)
+            self.assertFalsch(e)
             self.assertIsInstance(e, FalsyEG)
 
         self.assertExceptionIsLike(exc, FalsyEG("eg", [TypeError(1)]))
@@ -985,7 +985,7 @@ klasse TestExceptStarExceptionGroupSubclass(ExceptStarTest):
         # we allow tuples of length > 2 fuer backwards compatibility
         klasse WeirdEG(ExceptionGroup):
             def split(self, *args):
-                return super().split(*args) + ("anything", 123456, None)
+                return super().split(*args) + ("anything", 123456, Nichts)
 
         try:
             raise WeirdEG("eg", [OSError(123), ValueError(456)])
@@ -1014,7 +1014,7 @@ klasse TestExceptStarCleanup(ExceptStarTest):
 
         self.assertExceptionIsLike(exc, ZeroDivisionError('division by zero'))
         self.assertExceptionIsLike(exc.__context__, ValueError(42))
-        self.assertEqual(sys.exception(), None)
+        self.assertEqual(sys.exception(), Nichts)
 
 
 klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
@@ -1022,15 +1022,15 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
     # unhashable or have a bad custom __eq__
 
     klasse UnhashableExc(ValueError):
-        __hash__ = None
+        __hash__ = Nichts
 
     klasse AlwaysEqualExc(ValueError):
         def __eq__(self, other):
-            return True
+            return Wahr
 
     klasse NeverEqualExc(ValueError):
         def __eq__(self, other):
-            return False
+            return Falsch
 
     klasse BrokenEqualExc(ValueError):
         def __eq__(self, other):
@@ -1043,7 +1043,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
                           self.BrokenEqualExc]
 
     def except_type(self, eg, type):
-        match, rest = None, None
+        match, rest = Nichts, Nichts
         try:
             try:
                 raise eg
@@ -1078,7 +1078,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
             with self.subTest(Bad):
                 eg = ExceptionGroup("eg", [TypeError(1), Bad(2)])
                 match, rest = self.except_type(eg, OSError)
-                self.assertIsNone(match)
+                self.assertIsNichts(match)
                 self.assertExceptionIsLike(rest, eg)
 
     def test_catch_everything_unhashable_leaf(self):
@@ -1087,7 +1087,7 @@ klasse TestExceptStar_WeirdLeafExceptions(ExceptStarTest):
                 eg = ExceptionGroup("eg", [TypeError(1), Bad(2)])
                 match, rest = self.except_type(eg, Exception)
                 self.assertExceptionIsLike(match, eg)
-                self.assertIsNone(rest)
+                self.assertIsNichts(rest)
 
     def test_reraise_unhashable_leaf(self):
         fuer Bad in self.bad_types:
@@ -1114,21 +1114,21 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
     # unhashable or have a bad custom __eq__
 
     klasse UnhashableEG(ExceptionGroup):
-        __hash__ = None
+        __hash__ = Nichts
 
         def derive(self, excs):
             return type(self)(self.message, excs)
 
     klasse AlwaysEqualEG(ExceptionGroup):
         def __eq__(self, other):
-            return True
+            return Wahr
 
         def derive(self, excs):
             return type(self)(self.message, excs)
 
     klasse NeverEqualEG(ExceptionGroup):
         def __eq__(self, other):
-            return False
+            return Falsch
 
         def derive(self, excs):
             return type(self)(self.message, excs)
@@ -1147,7 +1147,7 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
                           self.BrokenEqualEG]
 
     def except_type(self, eg, type):
-        match, rest = None, None
+        match, rest = Nichts, Nichts
         try:
             try:
                 raise eg
@@ -1178,7 +1178,7 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
                             BadEG("nested", [ValueError(2)])])
 
                 match, rest = self.except_type(eg, OSError)
-                self.assertIsNone(match)
+                self.assertIsNichts(match)
                 self.assertExceptionIsLike(rest, eg)
 
     def test_catch_all_unhashable_exception_group_subclass(self):
@@ -1191,7 +1191,7 @@ klasse TestExceptStar_WeirdExceptionGroupSubclass(ExceptStarTest):
 
                 match, rest = self.except_type(eg, Exception)
                 self.assertExceptionIsLike(match, eg)
-                self.assertIsNone(rest)
+                self.assertIsNichts(rest)
 
     def test_reraise_unhashable_eg(self):
         fuer BadEG in self.bad_types:

@@ -34,7 +34,7 @@ klasse Test(unittest.TestCase):
 
     def test_p2a_objects(self):
         array = (c_char_p * 5)()
-        self.assertEqual(array._objects, None)
+        self.assertEqual(array._objects, Nichts)
         array[0] = b"foo bar"
         self.assertEqual(array._objects, {'0': b"foo bar"})
 
@@ -86,7 +86,7 @@ klasse Test(unittest.TestCase):
         # The type argument must be a ctypes pointer type.
         array_type = c_byte * sizeof(c_int)
         array = array_type()
-        self.assertRaises(TypeError, cast, array, None)
+        self.assertRaises(TypeError, cast, array, Nichts)
         self.assertRaises(TypeError, cast, array, array_type)
         klasse Struct(Structure):
             _fields_ = [("a", c_int)]

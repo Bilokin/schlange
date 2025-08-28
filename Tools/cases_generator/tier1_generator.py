@@ -43,17 +43,17 @@ LABEL_START_MARKER = "/* BEGIN LABELS */"
 LABEL_END_MARKER = "/* END LABELS */"
 
 
-def declare_variable(var: StackItem, out: CWriter) -> None:
+def declare_variable(var: StackItem, out: CWriter) -> Nichts:
     type, null = type_and_null(var)
     space = " " wenn type[-1].isalnum() sonst ""
     out.emit(f"{type}{space}{var.name};\n")
 
 
-def declare_variables(inst: Instruction, out: CWriter) -> None:
+def declare_variables(inst: Instruction, out: CWriter) -> Nichts:
     try:
         stack = get_stack_effect(inst)
     except StackError as ex:
-        raise analysis_error(ex.args[0], inst.where) from None
+        raise analysis_error(ex.args[0], inst.where) from Nichts
     seen = {"unused"}
     fuer part in inst.parts:
         wenn not isinstance(part, Uop):
@@ -80,11 +80,11 @@ def write_uop(
     wenn isinstance(uop, Skip):
         entries = "entries" wenn uop.size > 1 sonst "entry"
         emitter.emit(f"/* Skip {uop.size} cache {entries} */\n")
-        return True, (offset + uop.size), stack
+        return Wahr, (offset + uop.size), stack
     wenn isinstance(uop, Flush):
         emitter.emit(f"// flush\n")
         stack.flush(emitter.out)
-        return True, offset, stack
+        return Wahr, offset, stack
     locals: dict[str, Local] = {}
     emitter.out.start_line()
     wenn braces:
@@ -104,11 +104,11 @@ def write_uop(
             emitter.emit(
                 f"{type}{cache.name} = {reader}(&this_instr[{offset}].cache);\n"
             )
-            wenn inst.family is None:
+            wenn inst.family is Nichts:
                 emitter.emit(f"(void){cache.name};\n")
         offset += cache.size
 
-    reachable, storage = emitter.emit_tokens(uop, storage, inst, False)
+    reachable, storage = emitter.emit_tokens(uop, storage, inst, Falsch)
     wenn braces:
         emitter.out.start_line()
         emitter.emit("}\n")
@@ -118,13 +118,13 @@ def write_uop(
 
 def uses_this(inst: Instruction) -> bool:
     wenn inst.properties.needs_this:
-        return True
+        return Wahr
     fuer uop in inst.parts:
         wenn not isinstance(uop, Uop):
             continue
         fuer cache in uop.caches:
             wenn cache.name != "unused":
-                return True
+                return Wahr
     # Can't be merged into the loop above, because
     # this must strictly be performed at the end.
     fuer uop in inst.parts:
@@ -133,8 +133,8 @@ def uses_this(inst: Instruction) -> bool:
         fuer tkn in uop.body.tokens():
             wenn (tkn.kind == "IDENTIFIER"
                     and (tkn.text in {"DEOPT_IF", "EXIT_IF", "AT_END_EXIT_IF"})):
-                return True
-    return False
+                return Wahr
+    return Falsch
 
 
 UNKNOWN_OPCODE_HANDLER ="""\
@@ -148,7 +148,7 @@ JUMP_TO_LABEL(error);
 
 def generate_tier1(
     filenames: list[str], analysis: Analysis, outfile: TextIO, lines: bool
-) -> None:
+) -> Nichts:
     write_header(__file__, filenames, outfile)
     outfile.write("""
 #ifdef TIER_TWO
@@ -199,15 +199,15 @@ def generate_tier1(
 
 def generate_tier1_labels(
     analysis: Analysis, emitter: Emitter
-) -> None:
+) -> Nichts:
     emitter.emit("\n")
     # Emit tail-callable labels as function defintions
     fuer name, label in analysis.labels.items():
         emitter.emit(f"LABEL({name})\n")
-        storage = Storage(Stack(), [], [], 0, False)
+        storage = Storage(Stack(), [], [], 0, Falsch)
         wenn label.spilled:
             storage.spilled = 1
-        emitter.emit_tokens(label, storage, None)
+        emitter.emit_tokens(label, storage, Nichts)
         emitter.emit("\n\n")
 
 def get_popped(inst: Instruction, analysis: Analysis) -> str:
@@ -216,7 +216,7 @@ def get_popped(inst: Instruction, analysis: Analysis) -> str:
 
 def generate_tier1_cases(
     analysis: Analysis, outfile: TextIO, lines: bool
-) -> None:
+) -> Nichts:
     out = CWriter(outfile, 2, lines)
     emitter = Emitter(out, analysis.labels)
     out.emit("\n")
@@ -250,7 +250,7 @@ def generate_tier1_cases(
                 out.emit(unused_guard)
         wenn inst.properties.uses_opcode:
             out.emit(f"opcode = {name};\n")
-        wenn inst.family is not None:
+        wenn inst.family is not Nichts:
             out.emit(
                 f"static_assert({inst.family.size} == {inst.size-1}"
                 ', "incorrect cache size");\n'
@@ -291,7 +291,7 @@ arg_parser.add_argument(
 
 def generate_tier1_from_files(
     filenames: list[str], outfilename: str, lines: bool
-) -> None:
+) -> Nichts:
     data = analyze_files(filenames)
     with open(outfilename, "w") as outfile:
         generate_tier1(filenames, data, outfile, lines)

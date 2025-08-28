@@ -14,14 +14,14 @@ from email import message
 klasse MIMEBase(message.Message):
     """Base klasse fuer MIME specializations."""
 
-    def __init__(self, _maintype, _subtype, *, policy=None, **_params):
+    def __init__(self, _maintype, _subtype, *, policy=Nichts, **_params):
         """This constructor adds a Content-Type: and a MIME-Version: header.
 
         The Content-Type: header is taken from the _maintype and _subtype
         arguments.  Additional parameters fuer this header are taken from the
         keyword arguments.
         """
-        wenn policy is None:
+        wenn policy is Nichts:
             policy = email.policy.compat32
         message.Message.__init__(self, policy=policy)
         ctype = '%s/%s' % (_maintype, _subtype)

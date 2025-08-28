@@ -18,7 +18,7 @@ __all__ = ["warn", "warn_explicit", "showwarning",
 # '_wm.<something>' rather than using the globals of this module.  If the
 # '_warnings' C extension is in use, some globals are replaced by functions
 # and variables defined in that extension.
-_wm = None
+_wm = Nichts
 
 
 def _set_module(module):
@@ -33,7 +33,7 @@ def _set_module(module):
 # - a klasse representing the warning category
 # - a compiled regex that must match the module that is being warned
 # - a line number fuer the line being warning, or 0 to mean any line
-# If either wenn the compiled regexs are None, match anything.
+# If either wenn the compiled regexs are Nichts, match anything.
 filters = []
 
 
@@ -52,11 +52,11 @@ _use_context = sys.flags.context_aware_warnings
 klasse _Context:
     def __init__(self, filters):
         self._filters = filters
-        self.log = None  # wenn set to a list, logging is enabled
+        self.log = Nichts  # wenn set to a list, logging is enabled
 
     def copy(self):
         context = _Context(self._filters[:])
-        wenn self.log is not None:
+        wenn self.log is not Nichts:
             context.log = self.log
         return context
 
@@ -66,7 +66,7 @@ klasse _Context:
 
 klasse _GlobalContext(_Context):
     def __init__(self):
-        self.log = None
+        self.log = Nichts
 
     @property
     def _filters(self):
@@ -118,28 +118,28 @@ def _filters_mutated_lock_held():
     _wm._filters_version += 1
 
 
-def showwarning(message, category, filename, lineno, file=None, line=None):
+def showwarning(message, category, filename, lineno, file=Nichts, line=Nichts):
     """Hook to write a warning to a file; replace wenn you like."""
     msg = _wm.WarningMessage(message, category, filename, lineno, file, line)
     _wm._showwarnmsg_impl(msg)
 
 
-def formatwarning(message, category, filename, lineno, line=None):
+def formatwarning(message, category, filename, lineno, line=Nichts):
     """Function to format a warning the standard way."""
-    msg = _wm.WarningMessage(message, category, filename, lineno, None, line)
+    msg = _wm.WarningMessage(message, category, filename, lineno, Nichts, line)
     return _wm._formatwarnmsg_impl(msg)
 
 
 def _showwarnmsg_impl(msg):
     context = _wm._get_context()
-    wenn context.log is not None:
+    wenn context.log is not Nichts:
         context._record_warning(msg)
         return
     file = msg.file
-    wenn file is None:
+    wenn file is Nichts:
         file = sys.stderr
-        wenn file is None:
-            # sys.stderr is None when run with pythonw.exe:
+        wenn file is Nichts:
+            # sys.stderr is Nichts when run with pythonw.exe:
             # warnings get lost
             return
     text = _wm._formatwarnmsg(msg)
@@ -154,30 +154,30 @@ def _formatwarnmsg_impl(msg):
     category = msg.category.__name__
     s =  f"{msg.filename}:{msg.lineno}: {category}: {msg.message}\n"
 
-    wenn msg.line is None:
+    wenn msg.line is Nichts:
         try:
             import linecache
             line = linecache.getline(msg.filename, msg.lineno)
         except Exception:
             # When a warning is logged during Python shutdown, linecache
             # and the import machinery don't work anymore
-            line = None
-            linecache = None
+            line = Nichts
+            linecache = Nichts
     sonst:
         line = msg.line
     wenn line:
         line = line.strip()
         s += "  %s\n" % line
 
-    wenn msg.source is not None:
+    wenn msg.source is not Nichts:
         try:
             import tracemalloc
         # Logging a warning should not raise a new exception:
         # catch Exception, not only ImportError and RecursionError.
         except Exception:
             # don't suggest to enable tracemalloc wenn it's not available
-            suggest_tracemalloc = False
-            tb = None
+            suggest_tracemalloc = Falsch
+            tb = Nichts
         sonst:
             try:
                 suggest_tracemalloc = not tracemalloc.is_tracing()
@@ -185,22 +185,22 @@ def _formatwarnmsg_impl(msg):
             except Exception:
                 # When a warning is logged during Python shutdown, tracemalloc
                 # and the import machinery don't work anymore
-                suggest_tracemalloc = False
-                tb = None
+                suggest_tracemalloc = Falsch
+                tb = Nichts
 
-        wenn tb is not None:
+        wenn tb is not Nichts:
             s += 'Object allocated at (most recent call last):\n'
             fuer frame in tb:
                 s += ('  File "%s", lineno %s\n'
                       % (frame.filename, frame.lineno))
 
                 try:
-                    wenn linecache is not None:
+                    wenn linecache is not Nichts:
                         line = linecache.getline(frame.filename, frame.lineno)
                     sonst:
-                        line = None
+                        line = Nichts
                 except Exception:
-                    line = None
+                    line = Nichts
                 wenn line:
                     line = line.strip()
                     s += '    %s\n' % line
@@ -252,7 +252,7 @@ def _formatwarnmsg(msg):
 
 
 def filterwarnings(action, message="", category=Warning, module="", lineno=0,
-                   append=False):
+                   append=Falsch):
     """Insert an entry into the list of warnings filters (at the front).
 
     'action' -- one of "error", "ignore", "always", "all", "default", "module",
@@ -282,16 +282,16 @@ def filterwarnings(action, message="", category=Warning, module="", lineno=0,
     wenn message:
         message = re.compile(message, re.I)
     sonst:
-        message = None
+        message = Nichts
     wenn module:
         module = re.compile(module)
     sonst:
-        module = None
+        module = Nichts
 
     _wm._add_filter(action, message, category, module, lineno, append=append)
 
 
-def simplefilter(action, category=Warning, lineno=0, append=False):
+def simplefilter(action, category=Warning, lineno=0, append=Falsch):
     """Insert a simple entry into the list of warnings filters (at the front).
 
     A simple filter matches all modules and messages.
@@ -307,7 +307,7 @@ def simplefilter(action, category=Warning, lineno=0, append=False):
         raise TypeError("lineno must be an int")
     wenn lineno < 0:
         raise ValueError("lineno must be an int >= 0")
-    _wm._add_filter(action, None, category, None, lineno, append=append)
+    _wm._add_filter(action, Nichts, category, Nichts, lineno, append=append)
 
 
 def _filters_mutated():
@@ -322,7 +322,7 @@ def _add_filter(*item, append):
         filters = _wm._get_filters()
         wenn not append:
             # Remove possible duplicate filters, so new one will be placed
-            # in correct place. If append=True and duplicate exists, do nothing.
+            # in correct place. If append=Wahr and duplicate exists, do nothing.
             try:
                 filters.remove(item)
             except ValueError:
@@ -378,7 +378,7 @@ def _setoption(arg):
             wenn lineno < 0:
                 raise ValueError
         except (ValueError, OverflowError):
-            raise _wm._OptionError("invalid lineno %r" % (lineno,)) from None
+            raise _wm._OptionError("invalid lineno %r" % (lineno,)) from Nichts
     sonst:
         lineno = 0
     _wm.filterwarnings(action, message, category, module, lineno)
@@ -404,13 +404,13 @@ def _getcategory(category):
     sonst:
         module, _, klass = category.rpartition('.')
         try:
-            m = __import__(module, None, None, [klass])
+            m = __import__(module, Nichts, Nichts, [klass])
         except ImportError:
-            raise _wm._OptionError("invalid module name: %r" % (module,)) from None
+            raise _wm._OptionError("invalid module name: %r" % (module,)) from Nichts
     try:
         cat = getattr(m, klass)
     except AttributeError:
-        raise _wm._OptionError("unknown warning category: %r" % (category,)) from None
+        raise _wm._OptionError("unknown warning category: %r" % (category,)) from Nichts
     wenn not issubclass(cat, Warning):
         raise _wm._OptionError("invalid warning category: %r" % (category,))
     return cat
@@ -432,7 +432,7 @@ def _is_internal_frame(frame):
 def _next_external_frame(frame, skip_file_prefixes):
     """Find the next frame that doesn't involve Python or user internals."""
     frame = frame.f_back
-    while frame is not None and (
+    while frame is not Nichts and (
             _is_internal_filename(filename := frame.f_code.co_filename) or
             _is_filename_to_skip(filename, skip_file_prefixes)):
         frame = frame.f_back
@@ -440,14 +440,14 @@ def _next_external_frame(frame, skip_file_prefixes):
 
 
 # Code typically replaced by _warnings
-def warn(message, category=None, stacklevel=1, source=None,
+def warn(message, category=Nichts, stacklevel=1, source=Nichts,
          *, skip_file_prefixes=()):
     """Issue a warning, or maybe ignore it or raise an exception."""
     # Check wenn message is already a Warning object
     wenn isinstance(message, Warning):
         category = message.__class__
     # Check category argument
-    wenn category is None:
+    wenn category is Nichts:
         category = UserWarning
     sowenn not isinstance(category, type):
         raise TypeError(f"category must be a Warning subclass, not "
@@ -471,7 +471,7 @@ def warn(message, category=None, stacklevel=1, source=None,
             # Look fuer one frame less since the above line starts us off.
             fuer x in range(stacklevel-1):
                 frame = _next_external_frame(frame, skip_file_prefixes)
-                wenn frame is None:
+                wenn frame is Nichts:
                     raise ValueError
     except ValueError:
         globals = sys.__dict__
@@ -499,10 +499,10 @@ def warn(message, category=None, stacklevel=1, source=None,
 
 
 def warn_explicit(message, category, filename, lineno,
-                  module=None, registry=None, module_globals=None,
-                  source=None):
+                  module=Nichts, registry=Nichts, module_globals=Nichts,
+                  source=Nichts):
     lineno = int(lineno)
-    wenn module is None:
+    wenn module is Nichts:
         module = filename or "<unknown>"
         wenn module[-3:].lower() == ".py":
             module = module[:-3] # XXX What about leading pathname?
@@ -514,7 +514,7 @@ def warn_explicit(message, category, filename, lineno,
         message = category(message)
     key = (text, category, lineno)
     with _wm._lock:
-        wenn registry is None:
+        wenn registry is Nichts:
             registry = {}
         wenn registry.get('version', 0) != _wm._filters_version:
             registry.clear()
@@ -525,9 +525,9 @@ def warn_explicit(message, category, filename, lineno,
         # Search the filters
         fuer item in _wm._get_filters():
             action, msg, cat, mod, ln = item
-            wenn ((msg is None or msg.match(text)) and
+            wenn ((msg is Nichts or msg.match(text)) and
                 issubclass(category, cat) and
-                (mod is None or mod.match(module)) and
+                (mod is Nichts or mod.match(module)) and
                 (ln == 0 or lineno == ln)):
                 break
         sonst:
@@ -576,8 +576,8 @@ klasse WarningMessage(object):
     _WARNING_DETAILS = ("message", "category", "filename", "lineno", "file",
                         "line", "source")
 
-    def __init__(self, message, category, filename, lineno, file=None,
-                 line=None, source=None):
+    def __init__(self, message, category, filename, lineno, file=Nichts,
+                 line=Nichts, source=Nichts):
         self.message = message
         self.category = category
         self.filename = filename
@@ -585,7 +585,7 @@ klasse WarningMessage(object):
         self.file = file
         self.line = line
         self.source = source
-        self._category_name = category.__name__ wenn category sonst None
+        self._category_name = category.__name__ wenn category sonst Nichts
 
     def __str__(self):
         return ("{message : %r, category : %r, filename : %r, lineno : %s, "
@@ -600,7 +600,7 @@ klasse catch_warnings(object):
 
     The 'record' argument specifies whether warnings should be captured by a
     custom implementation of warnings.showwarning() and be appended to a list
-    returned by the context manager. Otherwise None is returned by the context
+    returned by the context manager. Otherwise Nichts is returned by the context
     manager. The objects appended to the list are arguments whose attributes
     mirror the arguments to showwarning().
 
@@ -608,29 +608,29 @@ klasse catch_warnings(object):
     named 'warnings' and imported under that name. This argument is only useful
     when testing the warnings module itself.
 
-    If the 'action' argument is not None, the remaining arguments are passed
+    If the 'action' argument is not Nichts, the remaining arguments are passed
     to warnings.simplefilter() as wenn it were called immediately on entering the
     context.
     """
 
-    def __init__(self, *, record=False, module=None,
-                 action=None, category=Warning, lineno=0, append=False):
+    def __init__(self, *, record=Falsch, module=Nichts,
+                 action=Nichts, category=Warning, lineno=0, append=Falsch):
         """Specify whether to record warnings and wenn an alternative module
         should be used other than sys.modules['warnings'].
 
         """
         self._record = record
-        self._module = sys.modules['warnings'] wenn module is None sonst module
-        self._entered = False
-        wenn action is None:
-            self._filter = None
+        self._module = sys.modules['warnings'] wenn module is Nichts sonst module
+        self._entered = Falsch
+        wenn action is Nichts:
+            self._filter = Nichts
         sonst:
             self._filter = (action, category, lineno, append)
 
     def __repr__(self):
         args = []
         wenn self._record:
-            args.append("record=True")
+            args.append("record=Wahr")
         wenn self._module is not sys.modules['warnings']:
             args.append("module=%r" % self._module)
         name = type(self).__name__
@@ -639,12 +639,12 @@ klasse catch_warnings(object):
     def __enter__(self):
         wenn self._entered:
             raise RuntimeError("Cannot enter %r twice" % self)
-        self._entered = True
+        self._entered = Wahr
         with _wm._lock:
             wenn _use_context:
                 self._saved_context, context = self._module._new_context()
             sonst:
-                context = None
+                context = Nichts
                 self._filters = self._module.filters
                 self._module.filters = self._filters[:]
                 self._showwarning = self._module.showwarning
@@ -660,8 +660,8 @@ klasse catch_warnings(object):
                     # that _showwarnmsg() calls _showwarnmsg_impl()
                     self._module.showwarning = self._module._showwarning_orig
             sonst:
-                log = None
-        wenn self._filter is not None:
+                log = Nichts
+        wenn self._filter is not Nichts:
             self._module.simplefilter(*self._filter)
         return log
 
@@ -703,7 +703,7 @@ klasse deprecated:
     The warning specified by *category* will be emitted at runtime
     on use of deprecated objects. For functions, that happens on calls;
     fuer classes, on instantiation and on creation of subclasses.
-    If the *category* is ``None``, no warning is emitted at runtime.
+    If the *category* is ``Nichts``, no warning is emitted at runtime.
     The *stacklevel* determines where the
     warning is emitted. If it is ``1`` (the default), the warning
     is emitted at the direct caller of the deprecated object; wenn it
@@ -725,9 +725,9 @@ klasse deprecated:
         message: str,
         /,
         *,
-        category: type[Warning] | None = DeprecationWarning,
+        category: type[Warning] | Nichts = DeprecationWarning,
         stacklevel: int = 1,
-    ) -> None:
+    ) -> Nichts:
         wenn not isinstance(message, str):
             raise TypeError(
                 f"Expected an object of type str fuer 'message', not {type(message).__name__!r}"
@@ -742,7 +742,7 @@ klasse deprecated:
         msg = self.message
         category = self.category
         stacklevel = self.stacklevel
-        wenn category is None:
+        wenn category is Nichts:
             arg.__deprecated__ = msg
             return arg
         sowenn isinstance(arg, type):
@@ -806,7 +806,7 @@ klasse deprecated:
             return wrapper
         sonst:
             raise TypeError(
-                "@deprecated decorator with non-None category must be applied to "
+                "@deprecated decorator with non-Nichts category must be applied to "
                 f"a klasse or callable, not {arg!r}"
             )
 
@@ -838,7 +838,7 @@ def _warn_unawaited_coroutine(coro):
     msg_lines = [
         f"coroutine '{coro.__qualname__}' was never awaited\n"
     ]
-    wenn coro.cr_origin is not None:
+    wenn coro.cr_origin is not Nichts:
         import linecache, traceback
         def extract():
             fuer filename, lineno, funcname in reversed(coro.cr_origin):

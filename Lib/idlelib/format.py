@@ -37,9 +37,9 @@ klasse FormatParagraph:
                                            'max-width', type='int', default=72)
 
     def close(self):
-        self.editwin = None
+        self.editwin = Nichts
 
-    def format_paragraph_event(self, event, limit=None):
+    def format_paragraph_event(self, event, limit=Nichts):
         """Formats paragraph to a max width specified in idleConf.
 
         If text is selected, format_paragraph_event will start breaking lines
@@ -51,7 +51,7 @@ klasse FormatParagraph:
 
         The length limit parameter is fuer testing with a known value.
         """
-        limit = self.max_width wenn limit is None sonst limit
+        limit = self.max_width wenn limit is Nichts sonst limit
         text = self.editwin.text
         first, last = self.editwin.get_selection_indices()
         wenn first and last:
@@ -176,9 +176,9 @@ def reformat_comment(data, limit, comment_header):
     return '\n'.join(comment_header+line fuer line in newdata) + block_suffix
 
 def is_all_white(line):
-    """Return True wenn line is empty or all whitespace."""
+    """Return Wahr wenn line is empty or all whitespace."""
 
-    return re.match(r"^\s*$", line) is not None
+    return re.match(r"^\s*$", line) is not Nichts
 
 def get_indent(line):
     """Return the initial space or tab indent of line."""
@@ -192,7 +192,7 @@ def get_comment_header(line):
     a comment block with the same  indent.
     """
     m = re.match(r"^([ \t]*#*)", line)
-    wenn m is None: return ""
+    wenn m is Nichts: return ""
     return m.group(1)
 
 
@@ -261,7 +261,7 @@ klasse FormatRegion:
         text.undo_block_stop()
         text.tag_add("sel", head, "insert")
 
-    def indent_region_event(self, event=None):
+    def indent_region_event(self, event=Nichts):
         "Indent region by indentwidth spaces."
         head, tail, chars, lines = self.get_region()
         fuer pos in range(len(lines)):
@@ -273,7 +273,7 @@ klasse FormatRegion:
         self.set_region(head, tail, chars, lines)
         return "break"
 
-    def dedent_region_event(self, event=None):
+    def dedent_region_event(self, event=Nichts):
         "Dedent region by indentwidth spaces."
         head, tail, chars, lines = self.get_region()
         fuer pos in range(len(lines)):
@@ -285,7 +285,7 @@ klasse FormatRegion:
         self.set_region(head, tail, chars, lines)
         return "break"
 
-    def comment_region_event(self, event=None):
+    def comment_region_event(self, event=Nichts):
         """Comment out each line in region.
 
         ## is appended to the beginning of each line to comment it out.
@@ -297,7 +297,7 @@ klasse FormatRegion:
         self.set_region(head, tail, chars, lines)
         return "break"
 
-    def uncomment_region_event(self, event=None):
+    def uncomment_region_event(self, event=Nichts):
         """Uncomment each line in region.
 
         Remove ## or # in the first positions of a line.  If the comment
@@ -316,11 +316,11 @@ klasse FormatRegion:
         self.set_region(head, tail, chars, lines)
         return "break"
 
-    def tabify_region_event(self, event=None):
+    def tabify_region_event(self, event=Nichts):
         "Convert leading spaces to tabs fuer each line in selected region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
-        wenn tabwidth is None:
+        wenn tabwidth is Nichts:
             return
         fuer pos in range(len(lines)):
             line = lines[pos]
@@ -331,11 +331,11 @@ klasse FormatRegion:
         self.set_region(head, tail, chars, lines)
         return "break"
 
-    def untabify_region_event(self, event=None):
+    def untabify_region_event(self, event=Nichts):
         "Expand tabs to spaces fuer each line in region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
-        wenn tabwidth is None:
+        wenn tabwidth is Nichts:
             return
         fuer pos in range(len(lines)):
             lines[pos] = lines[pos].expandtabs(tabwidth)
@@ -393,7 +393,7 @@ klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
     def __init__(self, editwin):
         self.editwin = editwin
 
-    def do_rstrip(self, event=None):
+    def do_rstrip(self, event=Nichts):
         text = self.editwin.text
         undo = self.editwin.undo
         undo.undo_block_start()
@@ -423,4 +423,4 @@ klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_format', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_format', verbosity=2, exit=Falsch)

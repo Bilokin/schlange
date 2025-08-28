@@ -12,7 +12,7 @@ def format_selection(format_line):
     "Apply a formatting function to all of the selected lines."
 
     @wraps(format_line)
-    def apply(self, event=None):
+    def apply(self, event=Nichts):
         head, tail, chars, lines = self.formatter.get_region()
         fuer pos in range(len(lines) - 1):
             line = lines[pos]
@@ -70,4 +70,4 @@ ZzDummy.reload()
 
 wenn __name__ == "__main__":
     import unittest
-    unittest.main('idlelib.idle_test.test_zzdummy', verbosity=2, exit=False)
+    unittest.main('idlelib.idle_test.test_zzdummy', verbosity=2, exit=Falsch)

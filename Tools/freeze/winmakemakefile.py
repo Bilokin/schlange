@@ -29,7 +29,7 @@ int main( int argc, char **argv)
 
 subsystem_details = {
     # -s flag        : (C entry point template), (is it __main__?), (is it a DLL?)
-    'console'        : (None,                    1,                 0),
+    'console'        : (Nichts,                    1,                 0),
     'windows'        : (WINMAINTEMPLATE,         1,                 0),
     'service'        : (SERVICETEMPLATE,         0,                 0),
     'com_dll'        : ("",                      0,                 1),
@@ -39,7 +39,7 @@ def get_custom_entry_point(subsystem):
     try:
         return subsystem_details[subsystem][:2]
     except KeyError:
-        raise ValueError("The subsystem %s is not known" % subsystem) from None
+        raise ValueError("The subsystem %s is not known" % subsystem) from Nichts
 
 
 def makemakefile(outfp, vars, files, target):

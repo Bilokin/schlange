@@ -12,7 +12,7 @@ klasse SAXException(Exception):
     the exception; instead, you can simply read the information in
     it."""
 
-    def __init__(self, msg, exception=None):
+    def __init__(self, msg, exception=Nichts):
         """Creates an exception. The message is required, but the exception
         is optional."""
         self._msg = msg
@@ -24,7 +24,7 @@ klasse SAXException(Exception):
         return self._msg
 
     def getException(self):
-        "Return the embedded exception, or None wenn there was none."
+        "Return the embedded exception, or Nichts wenn there was none."
         return self._exception
 
     def __str__(self):
@@ -53,7 +53,7 @@ klasse SAXParseException(SAXException):
     the ability to wrap another exception."""
 
     def __init__(self, msg, exception, locator):
-        "Creates the exception. The exception parameter is allowed to be None."
+        "Creates the exception. The exception parameter is allowed to be Nichts."
         SAXException.__init__(self, msg, exception)
         self._locator = locator
 
@@ -85,13 +85,13 @@ klasse SAXParseException(SAXException):
     def __str__(self):
         "Create a string representation of the exception."
         sysid = self.getSystemId()
-        wenn sysid is None:
+        wenn sysid is Nichts:
             sysid = "<unknown>"
         linenum = self.getLineNumber()
-        wenn linenum is None:
+        wenn linenum is Nichts:
             linenum = "?"
         colnum = self.getColumnNumber()
-        wenn colnum is None:
+        wenn colnum is Nichts:
             colnum = "?"
         return "%s:%s:%s: %s" % (sysid, linenum, colnum, self._msg)
 

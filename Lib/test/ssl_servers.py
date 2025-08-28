@@ -34,7 +34,7 @@ klasse HTTPSServer(_HTTPServer):
         # override this to wrap socket with SSL
         try:
             sock, addr = self.socket.accept()
-            sslconn = self.context.wrap_socket(sock, server_side=True)
+            sslconn = self.context.wrap_socket(sock, server_side=Wahr)
         except OSError as e:
             # socket errors are silenced by the caller, print them here
             wenn support.verbose:
@@ -64,7 +64,7 @@ klasse RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
         path = urllib.parse.urlparse(path)[2]
         path = os.path.normpath(urllib.parse.unquote(path))
         words = path.split('/')
-        words = filter(None, words)
+        words = filter(Nichts, words)
         path = self.root
         fuer word in words:
             drive, word = os.path.splitdrive(word)
@@ -90,7 +90,7 @@ klasse StatsRequestHandler(BaseHTTPRequestHandler):
 
     server_version = "StatsHTTPS/1.0"
 
-    def do_GET(self, send_body=True):
+    def do_GET(self, send_body=Wahr):
         """Serve a GET request."""
         sock = self.rfile.raw._sock
         context = sock.context
@@ -110,7 +110,7 @@ klasse StatsRequestHandler(BaseHTTPRequestHandler):
 
     def do_HEAD(self):
         """Serve a HEAD request."""
-        self.do_GET(send_body=False)
+        self.do_GET(send_body=Falsch)
 
     def log_request(self, format, *args):
         wenn support.verbose:
@@ -119,19 +119,19 @@ klasse StatsRequestHandler(BaseHTTPRequestHandler):
 
 klasse HTTPSServerThread(threading.Thread):
 
-    def __init__(self, context, host=HOST, handler_class=None):
-        self.flag = None
+    def __init__(self, context, host=HOST, handler_class=Nichts):
+        self.flag = Nichts
         self.server = HTTPSServer((host, 0),
                                   handler_class or RootedHTTPRequestHandler,
                                   context)
         self.port = self.server.server_port
         threading.Thread.__init__(self)
-        self.daemon = True
+        self.daemon = Wahr
 
     def __str__(self):
         return "<%s %s>" % (self.__class__.__name__, self.server)
 
-    def start(self, flag=None):
+    def start(self, flag=Nichts):
         self.flag = flag
         threading.Thread.start(self)
 
@@ -147,9 +147,9 @@ klasse HTTPSServerThread(threading.Thread):
         self.server.shutdown()
 
 
-def make_https_server(case, *, context=None, certfile=CERTFILE,
-                      host=HOST, handler_class=None):
-    wenn context is None:
+def make_https_server(case, *, context=Nichts, certfile=CERTFILE,
+                      host=HOST, handler_class=Nichts):
+    wenn context is Nichts:
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     # We assume the certfile contains both private key and certificate
     context.load_cert_chain(certfile)
@@ -175,9 +175,9 @@ wenn __name__ == "__main__":
                     'By default, the current directory is served.')
     parser.add_argument('-p', '--port', type=int, default=4433,
                         help='port to listen on (default: %(default)s)')
-    parser.add_argument('-q', '--quiet', dest='verbose', default=True,
+    parser.add_argument('-q', '--quiet', dest='verbose', default=Wahr,
                         action='store_false', help='be less verbose')
-    parser.add_argument('-s', '--stats', dest='use_stats_handler', default=False,
+    parser.add_argument('-s', '--stats', dest='use_stats_handler', default=Falsch,
                         action='store_true', help='always return stats page')
     parser.add_argument('--curve-name', dest='curve_name', type=str,
                         action='store',

@@ -11,16 +11,16 @@ def resolve(source, filename):
 
     # At this point "source" is not a str.
     wenn not filename:
-        filename = None
+        filename = Nichts
     sowenn not isinstance(filename, str):
-        raise TypeError(f'filename should be str (or None), got {filename!r}')
+        raise TypeError(f'filename should be str (or Nichts), got {filename!r}')
     sonst:
         filename, _ = _resolve_filename(filename)
     return source, filename
 
 
 @contextlib.contextmanager
-def good_file(filename, alt=None):
+def good_file(filename, alt=Nichts):
     wenn not _looks_like_filename(filename):
         raise ValueError(f'expected a filename, got {filename}')
     filename, _ = _resolve_filename(filename, alt)
@@ -34,11 +34,11 @@ def good_file(filename, alt=None):
 
 def _looks_like_filename(value):
     wenn not isinstance(value, str):
-        return False
+        return Falsch
     return value.endswith(('.c', '.h'))
 
 
-def _resolve_filename(filename, alt=None):
+def _resolve_filename(filename, alt=Nichts):
     wenn os.path.isabs(filename):
         ...
 #        raise NotImplementedError
@@ -55,7 +55,7 @@ def _resolve_filename(filename, alt=None):
 
 
 @contextlib.contextmanager
-def opened(source, filename=None):
+def opened(source, filename=Nichts):
     source, filename = resolve(source, filename)
     wenn isinstance(source, str):
         with open(source) as srcfile:

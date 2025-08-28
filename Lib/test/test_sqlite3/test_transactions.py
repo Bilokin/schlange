@@ -98,8 +98,8 @@ klasse TransactionTests(unittest.TestCase):
     def test_toggle_auto_commit(self):
         self.cur1.execute("create table test(i)")
         self.cur1.execute("insert into test(i) values (5)")
-        self.con1.isolation_level = None
-        self.assertEqual(self.con1.isolation_level, None)
+        self.con1.isolation_level = Nichts
+        self.assertEqual(self.con1.isolation_level, Nichts)
         self.cur2.execute("select i from test")
         res = self.cur2.fetchall()
         self.assertEqual(len(res), 1)
@@ -298,7 +298,7 @@ klasse IsolationLevelFromInit(unittest.TestCase):
                              ["BEGIN EXCLUSIVE", self.INSERT, "COMMIT"])
 
     def test_isolation_level_none(self):
-        with memory_database(isolation_level=None) as cx:
+        with memory_database(isolation_level=Nichts) as cx:
             self._run_test(cx)
             self.assertEqual(self.traced, [self.INSERT])
 
@@ -347,7 +347,7 @@ klasse IsolationLevelPostInit(unittest.TestCase):
                          ["BEGIN EXCLUSIVE", self.QUERY, "COMMIT"])
 
     def test_isolation_level_none(self):
-        self.cx.isolation_level = None
+        self.cx.isolation_level = Nichts
         with self.cx:
             self.cx.execute(self.QUERY)
         self.assertEqual(self.traced, [self.QUERY])
@@ -358,7 +358,7 @@ klasse AutocommitAttribute(unittest.TestCase):
     legacy = sqlite.LEGACY_TRANSACTION_CONTROL
 
     @contextmanager
-    def check_stmt_trace(self, cx, expected, reset=True):
+    def check_stmt_trace(self, cx, expected, reset=Wahr):
         try:
             traced = []
             cx.set_trace_callback(lambda stmt: traced.append(stmt))
@@ -366,7 +366,7 @@ klasse AutocommitAttribute(unittest.TestCase):
         finally:
             self.assertEqual(traced, expected)
             wenn reset:
-                cx.set_trace_callback(None)
+                cx.set_trace_callback(Nichts)
 
     def test_autocommit_default(self):
         with memory_database() as cx:
@@ -375,8 +375,8 @@ klasse AutocommitAttribute(unittest.TestCase):
 
     def test_autocommit_setget(self):
         dataset = (
-            True,
-            False,
+            Wahr,
+            Falsch,
             sqlite.LEGACY_TRANSACTION_CONTROL,
         )
         fuer mode in dataset:
@@ -388,8 +388,8 @@ klasse AutocommitAttribute(unittest.TestCase):
                     self.assertEqual(cx.autocommit, mode)
 
     def test_autocommit_setget_invalid(self):
-        msg = "autocommit must be True, False, or.*LEGACY"
-        fuer mode in "a", 12, (), None:
+        msg = "autocommit must be Wahr, Falsch, or.*LEGACY"
+        fuer mode in "a", 12, (), Nichts:
             with self.subTest(mode=mode):
                 with self.assertRaisesRegex(ValueError, msg):
                     sqlite.connect(":memory:", autocommit=mode)
@@ -402,8 +402,8 @@ klasse AutocommitAttribute(unittest.TestCase):
             "ROLLBACK",
             "BEGIN",
         ]
-        with memory_database(autocommit=False) as cx:
-            self.assertTrue(cx.in_transaction)
+        with memory_database(autocommit=Falsch) as cx:
+            self.assertWahr(cx.in_transaction)
             with self.check_stmt_trace(cx, expected):
                 cx.execute("SELECT 1")
                 cx.commit()
@@ -411,70 +411,70 @@ klasse AutocommitAttribute(unittest.TestCase):
 
     def test_autocommit_disabled_implicit_rollback(self):
         expected = ["ROLLBACK"]
-        with memory_database(autocommit=False) as cx:
-            self.assertTrue(cx.in_transaction)
-            with self.check_stmt_trace(cx, expected, reset=False):
+        with memory_database(autocommit=Falsch) as cx:
+            self.assertWahr(cx.in_transaction)
+            with self.check_stmt_trace(cx, expected, reset=Falsch):
                 cx.close()
 
     def test_autocommit_enabled(self):
         expected = ["CREATE TABLE t(t)", "INSERT INTO t VALUES(1)"]
-        with memory_database(autocommit=True) as cx:
-            self.assertFalse(cx.in_transaction)
+        with memory_database(autocommit=Wahr) as cx:
+            self.assertFalsch(cx.in_transaction)
             with self.check_stmt_trace(cx, expected):
                 cx.execute("CREATE TABLE t(t)")
                 cx.execute("INSERT INTO t VALUES(1)")
-                self.assertFalse(cx.in_transaction)
+                self.assertFalsch(cx.in_transaction)
 
     def test_autocommit_enabled_txn_ctl(self):
         fuer op in "commit", "rollback":
             with self.subTest(op=op):
-                with memory_database(autocommit=True) as cx:
+                with memory_database(autocommit=Wahr) as cx:
                     meth = getattr(cx, op)
-                    self.assertFalse(cx.in_transaction)
+                    self.assertFalsch(cx.in_transaction)
                     with self.check_stmt_trace(cx, []):
                         meth()  # expect this to pass silently
-                        self.assertFalse(cx.in_transaction)
+                        self.assertFalsch(cx.in_transaction)
 
     def test_autocommit_disabled_then_enabled(self):
         expected = ["COMMIT"]
-        with memory_database(autocommit=False) as cx:
-            self.assertTrue(cx.in_transaction)
+        with memory_database(autocommit=Falsch) as cx:
+            self.assertWahr(cx.in_transaction)
             with self.check_stmt_trace(cx, expected):
-                cx.autocommit = True  # should commit
-                self.assertFalse(cx.in_transaction)
+                cx.autocommit = Wahr  # should commit
+                self.assertFalsch(cx.in_transaction)
 
     def test_autocommit_enabled_then_disabled(self):
         expected = ["BEGIN"]
-        with memory_database(autocommit=True) as cx:
-            self.assertFalse(cx.in_transaction)
+        with memory_database(autocommit=Wahr) as cx:
+            self.assertFalsch(cx.in_transaction)
             with self.check_stmt_trace(cx, expected):
-                cx.autocommit = False  # should begin
-                self.assertTrue(cx.in_transaction)
+                cx.autocommit = Falsch  # should begin
+                self.assertWahr(cx.in_transaction)
 
     def test_autocommit_explicit_then_disabled(self):
         expected = ["BEGIN DEFERRED"]
-        with memory_database(autocommit=True) as cx:
-            self.assertFalse(cx.in_transaction)
+        with memory_database(autocommit=Wahr) as cx:
+            self.assertFalsch(cx.in_transaction)
             with self.check_stmt_trace(cx, expected):
                 cx.execute("BEGIN DEFERRED")
-                cx.autocommit = False  # should now be a no-op
-                self.assertTrue(cx.in_transaction)
+                cx.autocommit = Falsch  # should now be a no-op
+                self.assertWahr(cx.in_transaction)
 
     def test_autocommit_enabled_ctx_mgr(self):
-        with memory_database(autocommit=True) as cx:
-            # The context manager is a no-op wenn autocommit=True
+        with memory_database(autocommit=Wahr) as cx:
+            # The context manager is a no-op wenn autocommit=Wahr
             with self.check_stmt_trace(cx, []):
                 with cx:
-                    self.assertFalse(cx.in_transaction)
-                self.assertFalse(cx.in_transaction)
+                    self.assertFalsch(cx.in_transaction)
+                self.assertFalsch(cx.in_transaction)
 
     def test_autocommit_disabled_ctx_mgr(self):
         expected = ["COMMIT", "BEGIN"]
-        with memory_database(autocommit=False) as cx:
+        with memory_database(autocommit=Falsch) as cx:
             with self.check_stmt_trace(cx, expected):
                 with cx:
-                    self.assertTrue(cx.in_transaction)
-                self.assertTrue(cx.in_transaction)
+                    self.assertWahr(cx.in_transaction)
+                self.assertWahr(cx.in_transaction)
 
     def test_autocommit_compat_ctx_mgr(self):
         expected = ["BEGIN ", "INSERT INTO T VALUES(1)", "COMMIT"]
@@ -482,43 +482,43 @@ klasse AutocommitAttribute(unittest.TestCase):
             cx.execute("create table t(t)")
             with self.check_stmt_trace(cx, expected):
                 with cx:
-                    self.assertFalse(cx.in_transaction)
+                    self.assertFalsch(cx.in_transaction)
                     cx.execute("INSERT INTO T VALUES(1)")
-                    self.assertTrue(cx.in_transaction)
-                self.assertFalse(cx.in_transaction)
+                    self.assertWahr(cx.in_transaction)
+                self.assertFalsch(cx.in_transaction)
 
     def test_autocommit_enabled_executescript(self):
         expected = ["BEGIN", "SELECT 1"]
-        with memory_database(autocommit=True) as cx:
+        with memory_database(autocommit=Wahr) as cx:
             with self.check_stmt_trace(cx, expected):
-                self.assertFalse(cx.in_transaction)
+                self.assertFalsch(cx.in_transaction)
                 cx.execute("BEGIN")
                 cx.executescript("SELECT 1")
-                self.assertTrue(cx.in_transaction)
+                self.assertWahr(cx.in_transaction)
 
     def test_autocommit_disabled_executescript(self):
         expected = ["SELECT 1"]
-        with memory_database(autocommit=False) as cx:
+        with memory_database(autocommit=Falsch) as cx:
             with self.check_stmt_trace(cx, expected):
-                self.assertTrue(cx.in_transaction)
+                self.assertWahr(cx.in_transaction)
                 cx.executescript("SELECT 1")
-                self.assertTrue(cx.in_transaction)
+                self.assertWahr(cx.in_transaction)
 
     def test_autocommit_compat_executescript(self):
         expected = ["BEGIN", "COMMIT", "SELECT 1"]
         with memory_database(autocommit=self.legacy) as cx:
             with self.check_stmt_trace(cx, expected):
-                self.assertFalse(cx.in_transaction)
+                self.assertFalsch(cx.in_transaction)
                 cx.execute("BEGIN")
                 cx.executescript("SELECT 1")
-                self.assertFalse(cx.in_transaction)
+                self.assertFalsch(cx.in_transaction)
 
     def test_autocommit_disabled_implicit_shutdown(self):
         # The implicit ROLLBACK should not call back into Python during
         # interpreter tear-down.
         code = """if 1:
             import sqlite3
-            cx = sqlite3.connect(":memory:", autocommit=False)
+            cx = sqlite3.connect(":memory:", autocommit=Falsch)
             cx.set_trace_callback(print)
         """
         assert_python_ok("-c", code, PYTHONIOENCODING="utf-8")

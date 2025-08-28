@@ -49,11 +49,11 @@ klasse TestSlots(TestCase):
 
         def writer():
             fuer _ in range(1_000):
-                # different code paths fuer True and False
-                spam_old.T_BOOL = True
-                spam_new.T_BOOL = True
-                spam_old.T_BOOL = False
-                spam_new.T_BOOL = False
+                # different code paths fuer Wahr and Falsch
+                spam_old.T_BOOL = Wahr
+                spam_new.T_BOOL = Wahr
+                spam_old.T_BOOL = Falsch
+                spam_new.T_BOOL = Falsch
 
         def reader():
             fuer _ in range(1_000):

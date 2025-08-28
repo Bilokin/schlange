@@ -60,7 +60,7 @@ wenn not os.path.supports_unicode_filenames:
 
 klasse UnicodeFileTests(unittest.TestCase):
     files = set(filenames)
-    normal_form = None
+    normal_form = Nichts
 
     def setUp(self):
         try:
@@ -85,7 +85,7 @@ klasse UnicodeFileTests(unittest.TestCase):
 
     def _apply_failure(self, fn, filename,
                        expected_exception=FileNotFoundError,
-                       check_filename=True):
+                       check_filename=Wahr):
         with self.assertRaises(expected_exception) as c:
             fn(filename)
         exc_filename = c.exception.filename

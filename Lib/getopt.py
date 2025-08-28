@@ -113,19 +113,19 @@ def gnu_getopt(args, shortopts, longopts = []):
     sonst:
         longopts = list(longopts)
 
-    return_in_order = False
+    return_in_order = Falsch
     wenn shortopts.startswith('-'):
         shortopts = shortopts[1:]
-        all_options_first = False
-        return_in_order = True
+        all_options_first = Falsch
+        return_in_order = Wahr
     # Allow options after non-option arguments?
     sowenn shortopts.startswith('+'):
         shortopts = shortopts[1:]
-        all_options_first = True
+        all_options_first = Wahr
     sowenn os.environ.get("POSIXLY_CORRECT"):
-        all_options_first = True
+        all_options_first = Wahr
     sonst:
-        all_options_first = False
+        all_options_first = Falsch
 
     while args:
         wenn args[0] == '--':
@@ -134,12 +134,12 @@ def gnu_getopt(args, shortopts, longopts = []):
 
         wenn args[0][:2] == '--':
             wenn return_in_order and prog_args:
-                opts.append((None, prog_args))
+                opts.append((Nichts, prog_args))
                 prog_args = []
             opts, args = do_longs(opts, args[0][2:], longopts, args[1:])
         sowenn args[0][:1] == '-' and args[0] != '-':
             wenn return_in_order and prog_args:
-                opts.append((None, prog_args))
+                opts.append((Nichts, prog_args))
                 prog_args = []
             opts, args = do_shorts(opts, args[0][1:], shortopts, args[1:])
         sonst:
@@ -156,17 +156,17 @@ def do_longs(opts, opt, longopts, args):
     try:
         i = opt.index('=')
     except ValueError:
-        optarg = None
+        optarg = Nichts
     sonst:
         opt, optarg = opt[:i], opt[i+1:]
 
     has_arg, opt = long_has_args(opt, longopts)
     wenn has_arg:
-        wenn optarg is None and has_arg != '?':
+        wenn optarg is Nichts and has_arg != '?':
             wenn not args:
                 raise GetoptError(_('option --%s requires argument') % opt, opt)
             optarg, args = args[0], args[1:]
-    sowenn optarg is not None:
+    sowenn optarg is not Nichts:
         raise GetoptError(_('option --%s must not have an argument') % opt, opt)
     opts.append(('--' + opt, optarg or ''))
     return opts, args
@@ -180,9 +180,9 @@ def long_has_args(opt, longopts):
         raise GetoptError(_('option --%s not recognized') % opt, opt)
     # Is there an exact match?
     wenn opt in possibilities:
-        return False, opt
+        return Falsch, opt
     sowenn opt + '=' in possibilities:
-        return True, opt
+        return Wahr, opt
     sowenn opt + '=?' in possibilities:
         return '?', opt
     # Possibilities must be unique to be accepted
@@ -221,10 +221,10 @@ def short_has_arg(opt, shortopts):
     fuer i in range(len(shortopts)):
         wenn opt == shortopts[i] != ':':
             wenn not shortopts.startswith(':', i+1):
-                return False
+                return Falsch
             wenn shortopts.startswith('::', i+1):
                 return '?'
-            return True
+            return Wahr
     raise GetoptError(_('option -%s not recognized') % opt, opt)
 
 wenn __name__ == '__main__':

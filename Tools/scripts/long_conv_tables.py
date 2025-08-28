@@ -31,7 +31,7 @@ def conv_tables(long_bits):
         convmax = base
         i = 1
         log_base_BASE[base] = math.log(base) / math.log(PyLong_BASE)
-        while True:
+        while Wahr:
             next = convmax * base
             wenn next > PyLong_BASE:
                 break

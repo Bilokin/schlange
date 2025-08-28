@@ -27,7 +27,7 @@ klasse SearchDialogTest(unittest.TestCase):
     def setUp(self):
         self.engine = searchengine.SearchEngine(self.root)
         self.dialog = search.SearchDialog(self.root, self.engine)
-        self.dialog.bell = lambda: None
+        self.dialog.bell = lambda: Nichts
         self.text = Text(self.root)
         self.text.insert('1.0', 'Hello World!')
 
@@ -36,25 +36,25 @@ klasse SearchDialogTest(unittest.TestCase):
         text = self.text
 
         self.engine.setpat('')
-        self.assertFalse(self.dialog.find_again(text))
-        self.dialog.bell = lambda: None
+        self.assertFalsch(self.dialog.find_again(text))
+        self.dialog.bell = lambda: Nichts
 
         self.engine.setpat('Hello')
-        self.assertTrue(self.dialog.find_again(text))
+        self.assertWahr(self.dialog.find_again(text))
 
         self.engine.setpat('Goodbye')
-        self.assertFalse(self.dialog.find_again(text))
+        self.assertFalsch(self.dialog.find_again(text))
 
         self.engine.setpat('World!')
-        self.assertTrue(self.dialog.find_again(text))
+        self.assertWahr(self.dialog.find_again(text))
 
         self.engine.setpat('Hello World!')
-        self.assertTrue(self.dialog.find_again(text))
+        self.assertWahr(self.dialog.find_again(text))
 
         # Regular expression
-        self.engine.revar = BooleanVar(self.root, True)
+        self.engine.revar = BooleanVar(self.root, Wahr)
         self.engine.setpat('W[aeiouy]r')
-        self.assertTrue(self.dialog.find_again(text))
+        self.assertWahr(self.dialog.find_again(text))
 
     def test_find_selection(self):
         # Select some text and make sure it's found
@@ -63,15 +63,15 @@ klasse SearchDialogTest(unittest.TestCase):
         self.text.insert('2.0', 'Hello World!')
 
         text.tag_add('sel', '1.0', '1.4')       # Select 'Hello'
-        self.assertTrue(self.dialog.find_selection(text))
+        self.assertWahr(self.dialog.find_selection(text))
 
         text.tag_remove('sel', '1.0', 'end')
         text.tag_add('sel', '1.6', '1.11')      # Select 'World!'
-        self.assertTrue(self.dialog.find_selection(text))
+        self.assertWahr(self.dialog.find_selection(text))
 
         text.tag_remove('sel', '1.0', 'end')
         text.tag_add('sel', '1.0', '1.11')      # Select 'Hello World!'
-        self.assertTrue(self.dialog.find_selection(text))
+        self.assertWahr(self.dialog.find_selection(text))
 
         # Remove additional line
         text.delete('2.0', 'end')

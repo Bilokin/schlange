@@ -51,7 +51,7 @@ testmeths = [
     "init",
     ]
 
-# These need to return something other than None
+# These need to return something other than Nichts
 #    "hash",
 #    "str",
 #    "repr",
@@ -97,27 +97,27 @@ def __float__(self, *args):
 
 @trackCall
 def __eq__(self, *args):
-    return True
+    return Wahr
 
 @trackCall
 def __ne__(self, *args):
-    return False
+    return Falsch
 
 @trackCall
 def __lt__(self, *args):
-    return False
+    return Falsch
 
 @trackCall
 def __le__(self, *args):
-    return True
+    return Wahr
 
 @trackCall
 def __gt__(self, *args):
-    return False
+    return Falsch
 
 @trackCall
 def __ge__(self, *args):
-    return True
+    return Wahr
 """
 
 # Synthesize all the other AllTests methods from the names in testmeths.
@@ -301,16 +301,16 @@ klasse ClassTests(unittest.TestCase):
 
         callLst[:] = []
         testme[:42]
-        self.assertCallStack([('__getitem__', (testme, slice(None, 42)))])
+        self.assertCallStack([('__getitem__', (testme, slice(Nichts, 42)))])
 
         callLst[:] = []
         testme[:42] = "The Answer"
-        self.assertCallStack([('__setitem__', (testme, slice(None, 42),
+        self.assertCallStack([('__setitem__', (testme, slice(Nichts, 42),
                                                "The Answer"))])
 
         callLst[:] = []
         del testme[:42]
-        self.assertCallStack([('__delitem__', (testme, slice(None, 42)))])
+        self.assertCallStack([('__delitem__', (testme, slice(Nichts, 42)))])
 
         callLst[:] = []
         testme[2:1024:10]
@@ -326,21 +326,21 @@ klasse ClassTests(unittest.TestCase):
 
         callLst[:] = []
         testme[:42, ..., :24:, 24, 100]
-        self.assertCallStack([('__getitem__', (testme, (slice(None, 42, None),
+        self.assertCallStack([('__getitem__', (testme, (slice(Nichts, 42, Nichts),
                                                         Ellipsis,
-                                                        slice(None, 24, None),
+                                                        slice(Nichts, 24, Nichts),
                                                         24, 100)))])
         callLst[:] = []
         testme[:42, ..., :24:, 24, 100] = "Strange"
-        self.assertCallStack([('__setitem__', (testme, (slice(None, 42, None),
+        self.assertCallStack([('__setitem__', (testme, (slice(Nichts, 42, Nichts),
                                                         Ellipsis,
-                                                        slice(None, 24, None),
+                                                        slice(Nichts, 24, Nichts),
                                                         24, 100), "Strange"))])
         callLst[:] = []
         del testme[:42, ..., :24:, 24, 100]
-        self.assertCallStack([('__delitem__', (testme, (slice(None, 42, None),
+        self.assertCallStack([('__delitem__', (testme, (slice(Nichts, 42, Nichts),
                                                         Ellipsis,
-                                                        slice(None, 24, None),
+                                                        slice(Nichts, 24, Nichts),
                                                         24, 100)))])
 
     def testUnaryOps(self):
@@ -459,7 +459,7 @@ klasse ClassTests(unittest.TestCase):
         a = A()
         self.assertEqual(_testlimitedcapi.object_hasattrstring(a, b"attr"), 1)
         self.assertEqual(_testlimitedcapi.object_hasattrstring(a, b"noattr"), 0)
-        self.assertIsNone(sys.exception())
+        self.assertIsNichts(sys.exception())
 
     def testDel(self):
         x = []
@@ -477,7 +477,7 @@ klasse ClassTests(unittest.TestCase):
         # return values of some method are type-checked
         klasse BadTypeClass:
             def __int__(self):
-                return None
+                return Nichts
             __float__ = __int__
             __complex__ = __int__
             __str__ = __int__
@@ -522,10 +522,10 @@ klasse ClassTests(unittest.TestCase):
         )
         fuer name in methods:
             with self.subTest(name):
-                self.assertTrue(callable(getattr(object, name, None)))
-                self.assertTrue(callable(getattr(o, name, None)))
-                self.assertTrue(callable(getattr(Custom, name, None)))
-                self.assertTrue(callable(getattr(c, name, None)))
+                self.assertWahr(callable(getattr(object, name, Nichts)))
+                self.assertWahr(callable(getattr(o, name, Nichts)))
+                self.assertWahr(callable(getattr(Custom, name, Nichts)))
+                self.assertWahr(callable(getattr(c, name, Nichts)))
 
         not_defined = [
             '__abs__', '__aenter__', '__aexit__', '__aiter__', '__anext__',
@@ -547,14 +547,14 @@ klasse ClassTests(unittest.TestCase):
         not_defined.extend(map("__i{}__".format, augment))
         fuer name in not_defined:
             with self.subTest(name):
-                self.assertFalse(hasattr(object, name))
-                self.assertFalse(hasattr(o, name))
-                self.assertFalse(hasattr(Custom, name))
-                self.assertFalse(hasattr(c, name))
+                self.assertFalsch(hasattr(object, name))
+                self.assertFalsch(hasattr(o, name))
+                self.assertFalsch(hasattr(Custom, name))
+                self.assertFalsch(hasattr(c, name))
 
         # __call__() is defined on the metaclass but not the class
-        self.assertFalse(hasattr(o, "__call__"))
-        self.assertFalse(hasattr(c, "__call__"))
+        self.assertFalsch(hasattr(o, "__call__"))
+        self.assertFalsch(hasattr(c, "__call__"))
 
     @support.skip_emscripten_stack_overflow()
     @support.skip_wasi_stack_overflow()
@@ -622,7 +622,7 @@ klasse ClassTests(unittest.TestCase):
             def g(self):
                 pass
             def __eq__(self, other):
-                return True
+                return Wahr
             def __hash__(self):
                 raise TypeError
         klasse B(A):
@@ -630,21 +630,21 @@ klasse ClassTests(unittest.TestCase):
 
         a1 = A(1)
         a2 = A(1)
-        self.assertTrue(a1.f == a1.f)
-        self.assertFalse(a1.f != a1.f)
-        self.assertFalse(a1.f == a2.f)
-        self.assertTrue(a1.f != a2.f)
-        self.assertFalse(a1.f == a1.g)
-        self.assertTrue(a1.f != a1.g)
+        self.assertWahr(a1.f == a1.f)
+        self.assertFalsch(a1.f != a1.f)
+        self.assertFalsch(a1.f == a2.f)
+        self.assertWahr(a1.f != a2.f)
+        self.assertFalsch(a1.f == a1.g)
+        self.assertWahr(a1.f != a1.g)
         self.assertNotOrderable(a1.f, a1.f)
         self.assertEqual(hash(a1.f), hash(a1.f))
 
-        self.assertFalse(A.f == a1.f)
-        self.assertTrue(A.f != a1.f)
-        self.assertFalse(A.f == A.g)
-        self.assertTrue(A.f != A.g)
-        self.assertTrue(B.f == A.f)
-        self.assertFalse(B.f != A.f)
+        self.assertFalsch(A.f == a1.f)
+        self.assertWahr(A.f != a1.f)
+        self.assertFalsch(A.f == A.g)
+        self.assertWahr(A.f != A.g)
+        self.assertWahr(B.f == A.f)
+        self.assertFalsch(B.f != A.f)
         self.assertNotOrderable(A.f, A.f)
         self.assertEqual(hash(B.f), hash(A.f))
 
@@ -678,7 +678,7 @@ klasse ClassTests(unittest.TestCase):
             pass
 
         with self.assertRaises(TypeError):
-            type.__setattr__(A, b'x', None)
+            type.__setattr__(A, b'x', Nichts)
 
     def testTypeAttributeAccessErrorMessages(self):
         klasse A:
@@ -699,7 +699,7 @@ klasse ClassTests(unittest.TestCase):
         klasse C:
             __slots__ = ("y",)
 
-            def __setattr__(self, name, value) -> None:
+            def __setattr__(self, name, value) -> Nichts:
                 wenn name == "z":
                     super().__setattr__("y", 1)
                 sonst:
@@ -882,26 +882,26 @@ klasse TestInlineValues(unittest.TestCase):
 
     def test_has_inline_values(self):
         c = Plain()
-        self.assertTrue(has_inline_values(c))
+        self.assertWahr(has_inline_values(c))
         del c.__dict__
-        self.assertFalse(has_inline_values(c))
+        self.assertFalsch(has_inline_values(c))
 
     def test_instances(self):
-        self.assertTrue(has_inline_values(Plain()))
-        self.assertTrue(has_inline_values(WithAttrs()))
+        self.assertWahr(has_inline_values(Plain()))
+        self.assertWahr(has_inline_values(WithAttrs()))
 
     def test_inspect_dict(self):
         fuer cls in (Plain, WithAttrs):
             c = cls()
             c.__dict__
-            self.assertTrue(has_inline_values(c))
+            self.assertWahr(has_inline_values(c))
 
     def test_update_dict(self):
         d = { "e": 5, "f": 6 }
         fuer cls in (Plain, WithAttrs):
             c = cls()
             c.__dict__.update(d)
-            self.assertTrue(has_inline_values(c))
+            self.assertWahr(has_inline_values(c))
 
     @staticmethod
     def set_100(obj):
@@ -915,20 +915,20 @@ klasse TestInlineValues(unittest.TestCase):
     def test_many_attributes(self):
         klasse C: pass
         c = C()
-        self.assertTrue(has_inline_values(c))
+        self.assertWahr(has_inline_values(c))
         self.set_100(c)
-        self.assertFalse(has_inline_values(c))
+        self.assertFalsch(has_inline_values(c))
         self.check_100(c)
         c = C()
-        self.assertTrue(has_inline_values(c))
+        self.assertWahr(has_inline_values(c))
 
     def test_many_attributes_with_dict(self):
         klasse C: pass
         c = C()
         d = c.__dict__
-        self.assertTrue(has_inline_values(c))
+        self.assertWahr(has_inline_values(c))
         self.set_100(c)
-        self.assertFalse(has_inline_values(c))
+        self.assertFalsch(has_inline_values(c))
         self.check_100(c)
 
     def test_bug_117750(self):
@@ -939,8 +939,8 @@ klasse TestInlineValues(unittest.TestCase):
 
         obj = C()
         self.assertEqual(obj.__dict__, {})
-        obj.foo = None # Aborted here
-        self.assertEqual(obj.__dict__, {"foo":None})
+        obj.foo = Nichts # Aborted here
+        self.assertEqual(obj.__dict__, {"foo":Nichts})
 
     def test_store_attr_deleted_dict(self):
         klasse Foo:
@@ -961,7 +961,7 @@ klasse TestInlineValues(unittest.TestCase):
 
         # Using a str subclass is a way to trigger the re-materialization
         klasse StrSubclass(str): pass
-        self.assertFalse(hasattr(f, StrSubclass("attr")))
+        self.assertFalsch(hasattr(f, StrSubclass("attr")))
 
         # Changing the __class__ also triggers the re-materialization
         klasse Bar: pass
@@ -1012,12 +1012,12 @@ klasse TestInlineValues(unittest.TestCase):
             except KeyError:
                 pass
             sonst:
-                assert False, "KeyError not raised"
+                assert Falsch, "KeyError not raised"
         """
         rc, out, err = script_helper.assert_python_ok("-c", code)
         self.assertEqual(rc, 0)
-        self.assertFalse(out, msg=out.decode('utf-8'))
-        self.assertFalse(err, msg=err.decode('utf-8'))
+        self.assertFalsch(out, msg=out.decode('utf-8'))
+        self.assertFalsch(err, msg=err.decode('utf-8'))
 
 wenn __name__ == '__main__':
     unittest.main()

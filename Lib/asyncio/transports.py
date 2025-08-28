@@ -11,17 +11,17 @@ klasse BaseTransport:
 
     __slots__ = ('_extra',)
 
-    def __init__(self, extra=None):
-        wenn extra is None:
+    def __init__(self, extra=Nichts):
+        wenn extra is Nichts:
             extra = {}
         self._extra = extra
 
-    def get_extra_info(self, name, default=None):
+    def get_extra_info(self, name, default=Nichts):
         """Get optional transport information."""
         return self._extra.get(name, default)
 
     def is_closing(self):
-        """Return True wenn the transport is closing or closed."""
+        """Return Wahr wenn the transport is closing or closed."""
         raise NotImplementedError
 
     def close(self):
@@ -30,7 +30,7 @@ klasse BaseTransport:
         Buffered data will be flushed asynchronously.  No more data
         will be received.  After all buffered data is flushed, the
         protocol's connection_lost() method will (eventually) be
-        called with None as its argument.
+        called with Nichts as its argument.
         """
         raise NotImplementedError
 
@@ -49,7 +49,7 @@ klasse ReadTransport(BaseTransport):
     __slots__ = ()
 
     def is_reading(self):
-        """Return True wenn the transport is receiving."""
+        """Return Wahr wenn the transport is receiving."""
         raise NotImplementedError
 
     def pause_reading(self):
@@ -74,7 +74,7 @@ klasse WriteTransport(BaseTransport):
 
     __slots__ = ()
 
-    def set_write_buffer_limits(self, high=None, low=None):
+    def set_write_buffer_limits(self, high=Nichts, low=Nichts):
         """Set the high- and low-water limits fuer write flow control.
 
         These two values control when to call the protocol's
@@ -132,7 +132,7 @@ klasse WriteTransport(BaseTransport):
         raise NotImplementedError
 
     def can_write_eof(self):
-        """Return True wenn this transport supports write_eof(), False wenn not."""
+        """Return Wahr wenn this transport supports write_eof(), Falsch wenn not."""
         raise NotImplementedError
 
     def abort(self):
@@ -140,7 +140,7 @@ klasse WriteTransport(BaseTransport):
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called with None as its argument.
+        called with Nichts as its argument.
         """
         raise NotImplementedError
 
@@ -174,13 +174,13 @@ klasse DatagramTransport(BaseTransport):
 
     __slots__ = ()
 
-    def sendto(self, data, addr=None):
+    def sendto(self, data, addr=Nichts):
         """Send data to the transport.
 
         This does not block; it buffers the data and arranges fuer it
         to be sent out asynchronously.
         addr is target socket address.
-        If addr is None use target address pointed on transport creation.
+        If addr is Nichts use target address pointed on transport creation.
         If data is an empty bytes object a zero-length datagram will be
         sent.
         """
@@ -191,7 +191,7 @@ klasse DatagramTransport(BaseTransport):
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called with None as its argument.
+        called with Nichts as its argument.
         """
         raise NotImplementedError
 
@@ -269,11 +269,11 @@ klasse _FlowControlMixin(Transport):
 
     __slots__ = ('_loop', '_protocol_paused', '_high_water', '_low_water')
 
-    def __init__(self, extra=None, loop=None):
+    def __init__(self, extra=Nichts, loop=Nichts):
         super().__init__(extra)
-        assert loop is not None
+        assert loop is not Nichts
         self._loop = loop
-        self._protocol_paused = False
+        self._protocol_paused = Falsch
         self._set_write_buffer_limits()
 
     def _maybe_pause_protocol(self):
@@ -281,7 +281,7 @@ klasse _FlowControlMixin(Transport):
         wenn size <= self._high_water:
             return
         wenn not self._protocol_paused:
-            self._protocol_paused = True
+            self._protocol_paused = Wahr
             try:
                 self._protocol.pause_writing()
             except (SystemExit, KeyboardInterrupt):
@@ -297,7 +297,7 @@ klasse _FlowControlMixin(Transport):
     def _maybe_resume_protocol(self):
         wenn (self._protocol_paused and
                 self.get_write_buffer_size() <= self._low_water):
-            self._protocol_paused = False
+            self._protocol_paused = Falsch
             try:
                 self._protocol.resume_writing()
             except (SystemExit, KeyboardInterrupt):
@@ -313,13 +313,13 @@ klasse _FlowControlMixin(Transport):
     def get_write_buffer_limits(self):
         return (self._low_water, self._high_water)
 
-    def _set_write_buffer_limits(self, high=None, low=None):
-        wenn high is None:
-            wenn low is None:
+    def _set_write_buffer_limits(self, high=Nichts, low=Nichts):
+        wenn high is Nichts:
+            wenn low is Nichts:
                 high = 64 * 1024
             sonst:
                 high = 4 * low
-        wenn low is None:
+        wenn low is Nichts:
             low = high // 4
 
         wenn not high >= low >= 0:
@@ -329,7 +329,7 @@ klasse _FlowControlMixin(Transport):
         self._high_water = high
         self._low_water = low
 
-    def set_write_buffer_limits(self, high=None, low=None):
+    def set_write_buffer_limits(self, high=Nichts, low=Nichts):
         self._set_write_buffer_limits(high=high, low=low)
         self._maybe_pause_protocol()
 

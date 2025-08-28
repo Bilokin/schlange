@@ -7,7 +7,7 @@ subprocess.Popen([sys.executable, '-c', 'print("albatross")']).wait()
 # Also ensure poll() handles an errno.ECHILD appropriately.
 p = subprocess.Popen([sys.executable, '-c', 'print("albatross")'])
 num_polls = 0
-while p.poll() is None:
+while p.poll() is Nichts:
     # Waiting fuer the process to finish.
     time.sleep(0.01)  # Avoid being a CPU busy loop.
     num_polls += 1

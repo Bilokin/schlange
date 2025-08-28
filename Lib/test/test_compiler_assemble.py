@@ -11,7 +11,7 @@ from test.support.bytecode_helper import AssemblerTestCase
 klasse IsolatedAssembleTests(AssemblerTestCase):
 
     def complete_metadata(self, metadata, filename="myfile.py"):
-        wenn metadata is None:
+        wenn metadata is Nichts:
             metadata = {}
         fuer key in ['name', 'qualname']:
             metadata.setdefault(key, key)
@@ -71,7 +71,7 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             ('BINARY_OP', 0, 1),   # '+'
             ('LOAD_CONST', 0, 1),  # 2
             ('BINARY_OP', 11, 1),   # '/'
-            ('RETURN_VALUE', None, 1),
+            ('RETURN_VALUE', Nichts, 1),
         ]
         expected = {(3, 4) : 3.5, (-100, 200) : 50, (10, 18) : 14}
         self.assemble_test(insts, metadata, expected)
@@ -92,7 +92,7 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             'name'     : 'mod_two',
             'qualname' : 'nested.mod_two',
             'cellvars' : {'x' : 0},
-            'consts': {None: 0, inner_code: 1, 2: 2},
+            'consts': {Nichts: 0, inner_code: 1, 2: 2},
             'argcount' : 1,
             'varnames' : {'x' : 0},
         }
@@ -102,13 +102,13 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             ('LOAD_CLOSURE', 0, 1),
             ('BUILD_TUPLE', 1, 1),
             ('LOAD_CONST', 1, 1),
-            ('MAKE_FUNCTION', None, 2),
+            ('MAKE_FUNCTION', Nichts, 2),
             ('SET_FUNCTION_ATTRIBUTE', 8, 2),
-            ('PUSH_NULL', None, 1),
+            ('PUSH_NULL', Nichts, 1),
             ('CALL', 0, 2),                     # (lambda: x)()
             ('LOAD_CONST', 2, 2),               # 2
             ('BINARY_OP', 6, 2),                # %
-            ('RETURN_VALUE', None, 2)
+            ('RETURN_VALUE', Nichts, 2)
         ]
 
         expected = {(0,): 0, (1,): 1, (2,): 0, (120,): 0, (121,): 1}
@@ -127,15 +127,15 @@ klasse IsolatedAssembleTests(AssemblerTestCase):
             ('RESUME', 0),
             ('SETUP_FINALLY', 4),
             ('LOAD_CONST', 0),
-            ('RETURN_VALUE', None),
+            ('RETURN_VALUE', Nichts),
             ('SETUP_CLEANUP', 10),
-            ('PUSH_EXC_INFO', None),
-            ('POP_TOP', None),
-            ('POP_EXCEPT', None),
+            ('PUSH_EXC_INFO', Nichts),
+            ('POP_TOP', Nichts),
+            ('POP_EXCEPT', Nichts),
             ('LOAD_CONST', 0),
-            ('RETURN_VALUE', None),
+            ('RETURN_VALUE', Nichts),
             ('COPY', 3),
-            ('POP_EXCEPT', None),
+            ('POP_EXCEPT', Nichts),
             ('RERAISE', 1),
         ]
         co = self.insts_to_code_object(insts, metadata)

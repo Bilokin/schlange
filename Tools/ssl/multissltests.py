@@ -161,11 +161,11 @@ parser.add_argument(
 
 
 klasse AbstractBuilder(object):
-    library = None
-    url_templates = None
-    src_template = None
-    build_template = None
-    depend_target = None
+    library = Nichts
+    url_templates = Nichts
+    src_template = Nichts
+    build_template = Nichts
+    depend_target = Nichts
     install_target = 'install'
     wenn hasattr(os, 'process_cpu_count'):
         jobs = os.process_cpu_count()
@@ -211,7 +211,7 @@ klasse AbstractBuilder(object):
     @property
     def short_version(self):
         """Short version fuer OpenSSL download URL"""
-        return None
+        return Nichts
 
     @property
     def openssl_cli(self):
@@ -249,13 +249,13 @@ klasse AbstractBuilder(object):
     def has_src(self):
         return os.path.isfile(self.src_file)
 
-    def _subprocess_call(self, cmd, env=None, **kwargs):
+    def _subprocess_call(self, cmd, env=Nichts, **kwargs):
         log.debug("Call '{}'".format(" ".join(cmd)))
         return subprocess.check_call(cmd, env=env, **kwargs)
 
-    def _subprocess_output(self, cmd, env=None, **kwargs):
+    def _subprocess_output(self, cmd, env=Nichts, **kwargs):
         log.debug("Call '{}'".format(" ".join(cmd)))
-        wenn env is None:
+        wenn env is Nichts:
             env = os.environ.copy()
             env["LD_LIBRARY_PATH"] = self.lib_dir
         out = subprocess.check_output(cmd, env=env, **kwargs)
@@ -266,7 +266,7 @@ klasse AbstractBuilder(object):
         src_dir = os.path.dirname(self.src_file)
         wenn not os.path.isdir(src_dir):
             os.makedirs(src_dir)
-        data = None
+        data = Nichts
         fuer url_template in self.url_templates:
             url = url_template.format(v=self.version, s=self.short_version)
             log.info("Downloading from {}".format(url))
@@ -281,7 +281,7 @@ klasse AbstractBuilder(object):
             sonst:
                 log.info("Successfully downloaded from {}".format(url))
                 break
-        wenn data is None:
+        wenn data is Nichts:
             raise ValueError("All download URLs have failed")
         log.info("Storing {}".format(self.src_file))
         with open(self.src_file, "wb") as f:
@@ -363,7 +363,7 @@ klasse AbstractBuilder(object):
         log.warning("Using build from {}".format(self.build_dir))
         # force a rebuild of all modules that use OpenSSL APIs
         fuer fname in self.module_files:
-            os.utime(fname, None)
+            os.utime(fname, Nichts)
         # remove all build artefacts
         fuer root, dirs, files in os.walk('build'):
             fuer filename in files:
@@ -391,7 +391,7 @@ klasse AbstractBuilder(object):
         wenn self.version not in version:
             raise ValueError(version)
 
-    def run_python_tests(self, tests, network=True):
+    def run_python_tests(self, tests, network=Wahr):
         wenn not tests:
             cmd = [
                 sys.executable,
@@ -406,7 +406,7 @@ klasse AbstractBuilder(object):
             cmd.extend(['-u', 'network', '-u', 'urlfetch'])
         cmd.extend(['-w', '-r'])
         cmd.extend(tests)
-        self._subprocess_call(cmd, stdout=None)
+        self._subprocess_call(cmd, stdout=Nichts)
 
 
 klasse BuildOpenSSL(AbstractBuilder):

@@ -16,14 +16,14 @@ klasse Test_TestProgram(unittest.TestCase):
         tests = [self]
         expectedPath = os.path.abspath(os.path.dirname(test.test_unittest.__file__))
 
-        self.wasRun = False
+        self.wasRun = Falsch
         def _find_tests(start_dir, pattern):
-            self.wasRun = True
+            self.wasRun = Wahr
             self.assertEqual(start_dir, expectedPath)
             return tests
         loader._find_tests = _find_tests
         suite = loader.discover('test.test_unittest')
-        self.assertTrue(self.wasRun)
+        self.assertWahr(self.wasRun)
         self.assertEqual(suite._tests, tests)
 
     # Horrible white box test
@@ -41,7 +41,7 @@ klasse Test_TestProgram(unittest.TestCase):
         oldParseArgs = unittest.TestProgram.parseArgs
         def restoreParseArgs():
             unittest.TestProgram.parseArgs = oldParseArgs
-        unittest.TestProgram.parseArgs = lambda *args: None
+        unittest.TestProgram.parseArgs = lambda *args: Nichts
         self.addCleanup(restoreParseArgs)
 
         def removeTest():
@@ -49,7 +49,7 @@ klasse Test_TestProgram(unittest.TestCase):
         unittest.TestProgram.test = test
         self.addCleanup(removeTest)
 
-        program = unittest.TestProgram(testRunner=runner, exit=False, verbosity=2)
+        program = unittest.TestProgram(testRunner=runner, exit=Falsch, verbosity=2)
 
         self.assertEqual(program.result, result)
         self.assertEqual(runner.test, test)
@@ -93,12 +93,12 @@ klasse Test_TestProgram(unittest.TestCase):
         klasse FakeRunner(object):
             def run(self, test):
                 self.test = test
-                return True
+                return Wahr
 
         old_argv = sys.argv
         sys.argv = ['faketest']
         runner = FakeRunner()
-        program = unittest.TestProgram(testRunner=runner, exit=False,
+        program = unittest.TestProgram(testRunner=runner, exit=Falsch,
                                        defaultTest='test.test_unittest',
                                        testLoader=self.TestLoader(self.FooBar))
         sys.argv = old_argv
@@ -108,13 +108,13 @@ klasse Test_TestProgram(unittest.TestCase):
         klasse FakeRunner(object):
             def run(self, test):
                 self.test = test
-                return True
+                return Wahr
 
         old_argv = sys.argv
         sys.argv = ['faketest']
         runner = FakeRunner()
         program = unittest.TestProgram(
-            testRunner=runner, exit=False,
+            testRunner=runner, exit=Falsch,
             defaultTest=['test.test_unittest', 'test.test_unittest2'],
             testLoader=self.TestLoader(self.FooBar))
         sys.argv = old_argv
@@ -123,7 +123,7 @@ klasse Test_TestProgram(unittest.TestCase):
 
     def test_NonExit(self):
         stream = BufferedWriter()
-        program = unittest.main(exit=False,
+        program = unittest.main(exit=Falsch,
                                 argv=["foobar"],
                                 testRunner=unittest.TextTestRunner(stream=stream),
                                 testLoader=self.TestLoader(self.FooBar))
@@ -142,7 +142,7 @@ klasse Test_TestProgram(unittest.TestCase):
             unittest.main(
                 argv=["foobar"],
                 testRunner=unittest.TextTestRunner(stream=stream),
-                exit=True,
+                exit=Wahr,
                 testLoader=self.TestLoader(self.FooBar))
         self.assertEqual(cm.exception.code, 1)
         out = stream.getvalue()
@@ -193,12 +193,12 @@ klasse Test_TestProgram(unittest.TestCase):
 
 
 klasse InitialisableProgram(unittest.TestProgram):
-    exit = False
-    result = None
+    exit = Falsch
+    result = Nichts
     verbosity = 1
-    defaultTest = None
-    tb_locals = False
-    testRunner = None
+    defaultTest = Nichts
+    tb_locals = Falsch
+    testRunner = Nichts
     testLoader = unittest.defaultTestLoader
     module = '__main__'
     progName = 'test'
@@ -209,8 +209,8 @@ klasse InitialisableProgram(unittest.TestProgram):
 RESULT = object()
 
 klasse FakeRunner(object):
-    initArgs = None
-    test = None
+    initArgs = Nichts
+    test = Nichts
     raiseError = 0
 
     def __init__(self, **kwargs):
@@ -229,9 +229,9 @@ klasse TestCommandLineArgs(unittest.TestCase):
 
     def setUp(self):
         self.program = InitialisableProgram()
-        self.program.createTests = lambda: None
-        FakeRunner.initArgs = None
-        FakeRunner.test = None
+        self.program.createTests = lambda: Nichts
+        FakeRunner.initArgs = Nichts
+        FakeRunner.test = Nichts
         FakeRunner.raiseError = 0
 
     def testVerbosity(self):
@@ -239,12 +239,12 @@ klasse TestCommandLineArgs(unittest.TestCase):
 
         fuer opt in '-q', '--quiet':
             program.verbosity = 1
-            program.parseArgs([None, opt])
+            program.parseArgs([Nichts, opt])
             self.assertEqual(program.verbosity, 0)
 
         fuer opt in '-v', '--verbose':
             program.verbosity = 1
-            program.parseArgs([None, opt])
+            program.parseArgs([Nichts, opt])
             self.assertEqual(program.verbosity, 2)
 
     def testBufferCatchFailfast(self):
@@ -252,37 +252,37 @@ klasse TestCommandLineArgs(unittest.TestCase):
         fuer arg, attr in (('buffer', 'buffer'), ('failfast', 'failfast'),
                       ('catch', 'catchbreak')):
 
-            setattr(program, attr, None)
-            program.parseArgs([None])
-            self.assertIs(getattr(program, attr), False)
+            setattr(program, attr, Nichts)
+            program.parseArgs([Nichts])
+            self.assertIs(getattr(program, attr), Falsch)
 
             false = []
             setattr(program, attr, false)
-            program.parseArgs([None])
+            program.parseArgs([Nichts])
             self.assertIs(getattr(program, attr), false)
 
             true = [42]
             setattr(program, attr, true)
-            program.parseArgs([None])
+            program.parseArgs([Nichts])
             self.assertIs(getattr(program, attr), true)
 
             short_opt = '-%s' % arg[0]
             long_opt = '--%s' % arg
             fuer opt in short_opt, long_opt:
-                setattr(program, attr, None)
-                program.parseArgs([None, opt])
-                self.assertIs(getattr(program, attr), True)
+                setattr(program, attr, Nichts)
+                program.parseArgs([Nichts, opt])
+                self.assertIs(getattr(program, attr), Wahr)
 
-                setattr(program, attr, False)
+                setattr(program, attr, Falsch)
                 with support.captured_stderr() as stderr, \
                     self.assertRaises(SystemExit) as cm:
-                    program.parseArgs([None, opt])
+                    program.parseArgs([Nichts, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
-                setattr(program, attr, True)
+                setattr(program, attr, Wahr)
                 with support.captured_stderr() as stderr, \
                     self.assertRaises(SystemExit) as cm:
-                    program.parseArgs([None, opt])
+                    program.parseArgs([Nichts, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
     def testWarning(self):
@@ -299,9 +299,9 @@ klasse TestCommandLineArgs(unittest.TestCase):
             # no warn options, w/ arg -> arg value
             self.assertEqual(FakeTP(warnings='ignore').warnings, 'ignore')
             sys.warnoptions[:] = ['somevalue']
-            # warn options, no arg -> None
+            # warn options, no arg -> Nichts
             # warn options, w/ arg -> arg value
-            self.assertEqual(FakeTP().warnings, None)
+            self.assertEqual(FakeTP().warnings, Nichts)
             self.assertEqual(FakeTP(warnings='ignore').warnings, 'ignore')
         finally:
             sys.warnoptions[:] = warnoptions
@@ -321,7 +321,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(FakeRunner.initArgs, {'verbosity': 'verbosity',
                                                 'failfast': 'failfast',
                                                 'buffer': 'buffer',
-                                                'tb_locals': False,
+                                                'tb_locals': Falsch,
                                                 'warnings': 'warnings',
                                                 'durations': '5'})
         self.assertEqual(FakeRunner.test, 'test')
@@ -331,12 +331,12 @@ klasse TestCommandLineArgs(unittest.TestCase):
         program = self.program
 
         program.testRunner = FakeRunner()
-        FakeRunner.initArgs = None
+        FakeRunner.initArgs = Nichts
 
         program.runTests()
 
         # A new FakeRunner should not have been instantiated
-        self.assertIsNone(FakeRunner.initArgs)
+        self.assertIsNichts(FakeRunner.initArgs)
 
         self.assertEqual(FakeRunner.test, 'test')
         self.assertIs(program.result, RESULT)
@@ -345,15 +345,15 @@ klasse TestCommandLineArgs(unittest.TestCase):
         program = self.program
 
         program.testRunner = FakeRunner
-        program.parseArgs([None, '--locals'])
-        self.assertEqual(True, program.tb_locals)
+        program.parseArgs([Nichts, '--locals'])
+        self.assertEqual(Wahr, program.tb_locals)
         program.runTests()
-        self.assertEqual(FakeRunner.initArgs, {'buffer': False,
-                                               'failfast': False,
-                                               'tb_locals': True,
+        self.assertEqual(FakeRunner.initArgs, {'buffer': Falsch,
+                                               'failfast': Falsch,
+                                               'tb_locals': Wahr,
                                                'verbosity': 1,
-                                               'warnings': None,
-                                               'durations': None})
+                                               'warnings': Nichts,
+                                               'durations': Nichts})
 
     def testRunTestsOldRunnerClass(self):
         program = self.program
@@ -383,21 +383,21 @@ klasse TestCommandLineArgs(unittest.TestCase):
             module.installHandler = original
         self.addCleanup(restore)
 
-        self.installed = False
+        self.installed = Falsch
         def fakeInstallHandler():
-            self.installed = True
+            self.installed = Wahr
         module.installHandler = fakeInstallHandler
 
         program = self.program
-        program.catchbreak = True
-        program.durations = None
+        program.catchbreak = Wahr
+        program.durations = Nichts
 
         program.testRunner = FakeRunner
 
         program.runTests()
-        self.assertTrue(self.installed)
+        self.assertWahr(self.installed)
 
-    def _patch_isfile(self, names, exists=True):
+    def _patch_isfile(self, names, exists=Wahr):
         def isfile(path):
             return path in names
         original = os.path.isfile
@@ -413,7 +413,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         argv = ['progname', 'foo.py', 'bar.Py', 'baz.PY', 'wing.txt']
         self._patch_isfile(argv)
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Nichts
         program.parseArgs(argv)
 
         # note that 'wing.txt' is not a Python file so the name should
@@ -427,7 +427,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         argv = ['progname', 'foo/bar/baz.py', 'green\\red.py']
         self._patch_isfile(argv)
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Nichts
         program.parseArgs(argv)
 
         expected = ['foo.bar.baz', 'green.red']
@@ -439,7 +439,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         argv = ['progname', 'foo/bar/baz.py', 'green\\red.py']
         self._patch_isfile([])
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Nichts
         program.parseArgs(argv)
 
         self.assertEqual(program.testNames, argv[1:])
@@ -452,7 +452,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         argv = ['progname', _join('foo/bar/baz.py'), _join('green\\red.py')]
         self._patch_isfile(argv)
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Nichts
         program.parseArgs(argv)
 
         expected = ['foo.bar.baz', 'green.red']
@@ -464,7 +464,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         argv = ['progname', f'{drive}/foo/bar/baz.py', f'{drive}/green/red.py']
         self._patch_isfile(argv)
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Nichts
         program.parseArgs(argv)
 
         self.assertEqual(program.testNames, argv[1:])
@@ -480,7 +480,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         program = self.program
         argv = ['progname', '-k', 'foo', '-k', 'bar', '-k', '*pat*']
 
-        program.createTests = lambda: None
+        program.createTests = lambda: Nichts
         program.parseArgs(argv)
 
         self.assertEqual(program.testNamePatterns, ['*foo*', '*bar*', '*pat*'])

@@ -26,7 +26,7 @@ import os, sys
 try:
     import win32api
 except ImportError:
-    win32api = None # User has already been warned
+    win32api = Nichts # User has already been warned
 
 klasse CExtension:
     """An abstraction of an extension implemented in C/C++
@@ -69,7 +69,7 @@ def checkextensions(unknown, extra_inis, prefix):
         fuer ini in extra_inis:
 #                       print "Looking for", mod, "in", win32api.GetFullPathName(ini),"...",
             defn = get_extension_defn( mod, ini, prefix )
-            wenn defn is not None:
+            wenn defn is not Nichts:
 #                               print "Yay - found it!"
                 ret.append( defn )
                 break
@@ -80,11 +80,11 @@ def checkextensions(unknown, extra_inis, prefix):
     return ret
 
 def get_extension_defn(moduleName, mapFileName, prefix):
-    wenn win32api is None: return None
+    wenn win32api is Nichts: return Nichts
     os.environ['PYTHONPREFIX'] = prefix
     dsp = win32api.GetProfileVal(moduleName, "dsp", "", mapFileName)
     wenn dsp=="":
-        return None
+        return Nichts
 
     # We allow environment variables in the file name
     dsp = win32api.ExpandEnvironmentStrings(dsp)
@@ -94,8 +94,8 @@ def get_extension_defn(moduleName, mapFileName, prefix):
         dsp = os.path.join( os.path.split(mapFileName)[0], dsp)
     # Parse it to extract the source files.
     sourceFiles = parse_dsp(dsp)
-    wenn sourceFiles is None:
-        return None
+    wenn sourceFiles is Nichts:
+        return Nichts
 
     module = CExtension(moduleName, sourceFiles)
     # Put the path to the DSP into the environment so entries can reference it.
@@ -134,7 +134,7 @@ def parse_dsp(dsp):
             lines = fp.readlines()
     except IOError as msg:
         sys.stderr.write("%s: %s\n" % (dsp, msg))
-        return None
+        return Nichts
     fuer line in lines:
         fields = line.strip().split("=", 2)
         wenn fields[0]=="SOURCE":

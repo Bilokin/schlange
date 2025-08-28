@@ -19,7 +19,7 @@ extsep = '.'
 sep = '/'
 pathsep = ':'
 defpath = '/bin:/usr/bin'
-altsep = None
+altsep = Nichts
 devnull = '/dev/null'
 
 import errno
@@ -123,7 +123,7 @@ def splitext(p, /):
     sonst:
         sep = '/'
         extsep = '.'
-    return genericpath._splitext(p, sep, None, extsep)
+    return genericpath._splitext(p, sep, Nichts, extsep)
 splitext.__doc__ = genericpath._splitext.__doc__
 
 # Split a pathname into a drive specification and the rest of the
@@ -194,11 +194,11 @@ def ismount(path):
         s1 = os.lstat(path)
     except (OSError, ValueError):
         # It doesn't exist -- so not a mount point. :-)
-        return False
+        return Falsch
     sonst:
         # A symlink can never be a mount point
         wenn stat.S_ISLNK(s1.st_mode):
-            return False
+            return Falsch
 
     path = os.fspath(path)
     wenn isinstance(path, bytes):
@@ -212,7 +212,7 @@ def ismount(path):
         try:
             s2 = os.lstat(parent)
         except OSError:
-            return False
+            return Falsch
 
     # path/.. on a different device as path or the same i-node as path
     return s1.st_dev != s2.st_dev or s1.st_ino == s2.st_ino
@@ -273,7 +273,7 @@ def expanduser(path):
             return path
         userhome = pwent.pw_dir
     # wenn no user home, return the path unchanged on VxWorks
-    wenn userhome is None and sys.platform == "vxworks":
+    wenn userhome is Nichts and sys.platform == "vxworks":
         return path
     wenn isinstance(path, bytes):
         userhome = os.fsencode(userhome)
@@ -285,8 +285,8 @@ def expanduser(path):
 # This expands the forms $variable and ${variable} only.
 # Non-existent variables are left unchanged.
 
-_varprog = None
-_varprogb = None
+_varprog = Nichts
+_varprogb = Nichts
 
 def expandvars(path):
     """Expand shell variables of form $var and ${var}.  Unknown variables
@@ -302,7 +302,7 @@ def expandvars(path):
         search = _varprogb.search
         start = b'{'
         end = b'}'
-        environ = getattr(os, 'environb', None)
+        environ = getattr(os, 'environb', Nichts)
     sonst:
         wenn '$' not in path:
             return path
@@ -314,7 +314,7 @@ def expandvars(path):
         end = '}'
         environ = os.environ
     i = 0
-    while True:
+    while Wahr:
         m = search(path, i)
         wenn not m:
             break
@@ -323,7 +323,7 @@ def expandvars(path):
         wenn name.startswith(start) and name.endswith(end):
             name = name[1:-1]
         try:
-            wenn environ is None:
+            wenn environ is Nichts:
                 value = os.fsencode(os.environ[os.fsdecode(name)])
             sonst:
                 value = environ[name]
@@ -389,7 +389,7 @@ def abspath(path):
 # Return a canonical path (i.e. the absolute location of a file on the
 # filesystem).
 
-def realpath(filename, /, *, strict=False):
+def realpath(filename, /, *, strict=Falsch):
     """Return the canonical path of the specified filename, eliminating any
 symbolic links encountered in the path."""
     filename = os.fspath(filename)
@@ -414,9 +414,9 @@ symbolic links encountered in the path."""
 
     lstat = os.lstat
     readlink = os.readlink
-    maxlinks = None
+    maxlinks = Nichts
 
-    # The stack of unresolved path parts. When popped, a special value of None
+    # The stack of unresolved path parts. When popped, a special value of Nichts
     # indicates that a symlink target has been resolved, and that the original
     # symlink path can be retrieved by popping again. The [::-1] slice is a
     # very fast way of spelling list(reversed(...)).
@@ -432,7 +432,7 @@ symbolic links encountered in the path."""
     trailing_sep = filename.endswith(sep)
 
     # Mapping from symlink paths to *fully resolved* symlink targets. If a
-    # symlink is encountered but not yet resolved, the value is None. This is
+    # symlink is encountered but not yet resolved, the value is Nichts. This is
     # used both to detect symlink loops and to speed up repeated traversals of
     # the same links.
     seen = {}
@@ -443,7 +443,7 @@ symbolic links encountered in the path."""
 
     while part_count:
         name = rest.pop()
-        wenn name is None:
+        wenn name is Nichts:
             # resolved symlink target
             seen[rest.pop()] = path
             continue
@@ -468,7 +468,7 @@ symbolic links encountered in the path."""
                                   newpath)
                 path = newpath
                 continue
-            sowenn maxlinks is not None:
+            sowenn maxlinks is not Nichts:
                 link_count += 1
                 wenn link_count > maxlinks:
                     wenn strict:
@@ -479,7 +479,7 @@ symbolic links encountered in the path."""
             sowenn newpath in seen:
                 # Already seen this path
                 path = seen[newpath]
-                wenn path is not None:
+                wenn path is not Nichts:
                     # use cached value
                     continue
                 # The symlink is not resolved, so we must have a symlink loop.
@@ -497,14 +497,14 @@ symbolic links encountered in the path."""
             wenn target.startswith(sep):
                 # Symlink target is absolute; reset resolved path.
                 path = sep
-            wenn maxlinks is None:
+            wenn maxlinks is Nichts:
                 # Mark this symlink as seen but not fully resolved.
-                seen[newpath] = None
+                seen[newpath] = Nichts
                 # Push the symlink path onto the stack, and signal its specialness
-                # by also pushing None. When these entries are popped, we'll
+                # by also pushing Nichts. When these entries are popped, we'll
                 # record the fully-resolved symlink target in the 'seen' mapping.
                 rest.append(newpath)
-                rest.append(None)
+                rest.append(Nichts)
             # Push the unresolved symlink target parts onto the stack.
             target_parts = target.split(sep)[::-1]
             rest.extend(target_parts)
@@ -518,7 +518,7 @@ symbolic links encountered in the path."""
 
 supports_unicode_filenames = (sys.platform == 'darwin')
 
-def relpath(path, start=None):
+def relpath(path, start=Nichts):
     """Return a relative version of a path"""
 
     path = os.fspath(path)
@@ -534,7 +534,7 @@ def relpath(path, start=None):
         sep = '/'
         pardir = '..'
 
-    wenn start is None:
+    wenn start is Nichts:
         start = curdir
     sonst:
         start = os.fspath(start)
@@ -582,7 +582,7 @@ def commonpath(paths):
         try:
             isabs, = {p.startswith(sep) fuer p in paths}
         except ValueError:
-            raise ValueError("Can't mix absolute and relative paths") from None
+            raise ValueError("Can't mix absolute and relative paths") from Nichts
 
         split_paths = [[c fuer c in s wenn c and c != curdir] fuer s in split_paths]
         s1 = min(split_paths)

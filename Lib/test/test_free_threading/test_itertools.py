@@ -4,7 +4,7 @@ from itertools import batched, chain, cycle
 from test.support import threading_helper
 
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 klasse ItertoolsThreading(unittest.TestCase):
 
@@ -15,7 +15,7 @@ klasse ItertoolsThreading(unittest.TestCase):
         barrier = Barrier(number_of_threads)
         def work(it):
             barrier.wait()
-            while True:
+            while Wahr:
                 try:
                     next(it)
                 except StopIteration:
@@ -70,7 +70,7 @@ klasse ItertoolsThreading(unittest.TestCase):
         barrier = Barrier(number_of_threads)
         def work(it):
             barrier.wait()
-            while True:
+            while Wahr:
                 try:
                     next(it)
                 except StopIteration:

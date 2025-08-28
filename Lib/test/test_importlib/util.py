@@ -19,8 +19,8 @@ _testsinglephase = import_helper.import_module("_testsinglephase")
 
 
 BUILTINS = types.SimpleNamespace()
-BUILTINS.good_name = None
-BUILTINS.bad_name = None
+BUILTINS.good_name = Nichts
+BUILTINS.bad_name = Nichts
 wenn 'errno' in sys.builtin_module_names:
     BUILTINS.good_name = 'errno'
 wenn 'importlib' not in sys.builtin_module_names:
@@ -33,13 +33,13 @@ wenn support.is_wasi:
     # a working implementation.
     def _extension_details():
         global EXTENSIONS
-        EXTENSIONS = None
+        EXTENSIONS = Nichts
 sonst:
     EXTENSIONS = types.SimpleNamespace()
-    EXTENSIONS.path = None
-    EXTENSIONS.ext = None
-    EXTENSIONS.filename = None
-    EXTENSIONS.file_path = None
+    EXTENSIONS.path = Nichts
+    EXTENSIONS.ext = Nichts
+    EXTENSIONS.filename = Nichts
+    EXTENSIONS.file_path = Nichts
     EXTENSIONS.name = '_testsinglephase'
 
     def _extension_details():
@@ -72,10 +72,10 @@ def import_importlib(module_name):
     return {'Frozen': frozen, 'Source': source}
 
 
-def specialize_class(cls, kind, base=None, **kwargs):
+def specialize_class(cls, kind, base=Nichts, **kwargs):
     # XXX Support passing in submodule names--load (and cache) them?
     # That would clean up the test modules a bit more.
-    wenn base is None:
+    wenn base is Nichts:
         base = unittest.TestCase
     sowenn not isinstance(base, type):
         base = base[kind]
@@ -91,17 +91,17 @@ def specialize_class(cls, kind, base=None, **kwargs):
     return specialized
 
 
-def split_frozen(cls, base=None, **kwargs):
+def split_frozen(cls, base=Nichts, **kwargs):
     frozen = specialize_class(cls, 'Frozen', base, **kwargs)
     source = specialize_class(cls, 'Source', base, **kwargs)
     return frozen, source
 
 
-def test_both(test_class, base=None, **kwargs):
+def test_both(test_class, base=Nichts, **kwargs):
     return split_frozen(test_class, base, **kwargs)
 
 
-CASE_INSENSITIVE_FS = True
+CASE_INSENSITIVE_FS = Wahr
 # Windows is the only OS that is *always* case-insensitive
 # (OS X *can* be case-sensitive).
 wenn sys.platform not in ('win32', 'cygwin'):
@@ -109,7 +109,7 @@ wenn sys.platform not in ('win32', 'cygwin'):
     wenn changed_name == __file__:
         changed_name = __file__.lower()
     wenn not os.path.exists(changed_name):
-        CASE_INSENSITIVE_FS = False
+        CASE_INSENSITIVE_FS = Falsch
 
 source_importlib = import_importlib('importlib')['Source']
 __import__ = {'Frozen': staticmethod(builtins.__import__),
@@ -166,9 +166,9 @@ def uncache(*names):
 
 
 @contextlib.contextmanager
-def temp_module(name, content='', *, pkg=False):
+def temp_module(name, content='', *, pkg=Falsch):
     conflicts = [n fuer n in sys.modules wenn n.partition('.')[0] == name]
-    with os_helper.temp_cwd(None) as cwd:
+    with os_helper.temp_cwd(Nichts) as cwd:
         with uncache(name, *conflicts):
             with import_helper.DirsOnSysPath(cwd):
                 invalidate_caches()
@@ -179,10 +179,10 @@ def temp_module(name, content='', *, pkg=False):
                     os.mkdir(name)
                 sonst:
                     modpath = location + '.py'
-                    wenn content is None:
+                    wenn content is Nichts:
                         # Make sure the module file gets created.
                         content = ''
-                wenn content is not None:
+                wenn content is not Nichts:
                     # not a namespace package
                     with open(modpath, 'w', encoding='utf-8') as modfile:
                         modfile.write(content)
@@ -232,7 +232,7 @@ klasse _ImporterMock:
             sonst:
                 import_name = name[:-len('.__init__')]
             wenn '.' not in name:
-                package = None
+                package = Nichts
             sowenn import_name == name:
                 package = name.rsplit('.', 1)[0]
             sonst:
@@ -257,21 +257,21 @@ klasse _ImporterMock:
         return self
 
     def __exit__(self, *exc_info):
-        self._uncache.__exit__(None, None, None)
+        self._uncache.__exit__(Nichts, Nichts, Nichts)
 
 
 klasse mock_spec(_ImporterMock):
 
     """Importer mock using PEP 451 APIs."""
 
-    def find_spec(self, fullname, path=None, parent=None):
+    def find_spec(self, fullname, path=Nichts, parent=Nichts):
         try:
             module = self.modules[fullname]
         except KeyError:
-            return None
+            return Nichts
         spec = util.spec_from_file_location(
                 fullname, module.__file__, loader=self,
-                submodule_search_locations=getattr(module, '__path__', None))
+                submodule_search_locations=getattr(module, '__path__', Nichts))
         return spec
 
     def create_module(self, spec):
@@ -288,13 +288,13 @@ klasse mock_spec(_ImporterMock):
 
 def writes_bytecode_files(fxn):
     """Decorator to protect sys.dont_write_bytecode from mutation and to skip
-    tests that require it to be set to False."""
+    tests that require it to be set to Falsch."""
     wenn sys.dont_write_bytecode:
         return unittest.skip("relies on writing bytecode")(fxn)
     @functools.wraps(fxn)
     def wrapper(*args, **kwargs):
         original = sys.dont_write_bytecode
-        sys.dont_write_bytecode = False
+        sys.dont_write_bytecode = Falsch
         try:
             to_return = fxn(*args, **kwargs)
         finally:
@@ -345,8 +345,8 @@ def create_modules(*names):
     source = 'attr = {0!r}'
     created_paths = []
     mapping = {}
-    state_manager = None
-    uncache_manager = None
+    state_manager = Nichts
+    uncache_manager = Nichts
     try:
         temp_dir = tempfile.mkdtemp()
         mapping['.root'] = temp_dir
@@ -377,10 +377,10 @@ def create_modules(*names):
         state_manager.__enter__()
         yield mapping
     finally:
-        wenn state_manager is not None:
-            state_manager.__exit__(None, None, None)
-        wenn uncache_manager is not None:
-            uncache_manager.__exit__(None, None, None)
+        wenn state_manager is not Nichts:
+            state_manager.__exit__(Nichts, Nichts, Nichts)
+        wenn uncache_manager is not Nichts:
+            uncache_manager.__exit__(Nichts, Nichts, Nichts)
         os_helper.rmtree(temp_dir)
 
 

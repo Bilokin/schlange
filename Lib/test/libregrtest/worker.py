@@ -20,14 +20,14 @@ NEED_TTY = {
 
 
 def create_worker_process(runtests: WorkerRunTests, output_fd: int,
-                          tmp_dir: StrPath | None = None) -> subprocess.Popen[str]:
+                          tmp_dir: StrPath | Nichts = Nichts) -> subprocess.Popen[str]:
     worker_json = runtests.as_json()
 
     cmd = runtests.create_python_cmd()
     cmd.extend(['-m', 'test.libregrtest.worker', worker_json])
 
     env = dict(os.environ)
-    wenn tmp_dir is not None:
+    wenn tmp_dir is not Nichts:
         env['TMPDIR'] = tmp_dir
         env['TEMP'] = tmp_dir
         env['TMP'] = tmp_dir
@@ -46,15 +46,15 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
         stdout=output_fd,
         # bpo-45410: Write stderr into stdout to keep messages order
         stderr=output_fd,
-        text=True,
-        close_fds=True,
+        text=Wahr,
+        close_fds=Wahr,
         cwd=work_dir,
     )
 
     # Don't use setsid() in tests using TTY
     test_name = runtests.tests[0]
     wenn USE_PROCESS_GROUP and test_name not in NEED_TTY:
-        kwargs['start_new_session'] = True
+        kwargs['start_new_session'] = Wahr
 
     # Include the test name in the TSAN log file name
     wenn 'TSAN_OPTIONS' in env:
@@ -85,9 +85,9 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
     wenn runtests.rerun:
         wenn match_tests:
             matching = "matching: " + ", ".join(pattern fuer pattern, result in match_tests wenn result)
-            print(f"Re-running {test_name} in verbose mode ({matching})", flush=True)
+            print(f"Re-running {test_name} in verbose mode ({matching})", flush=Wahr)
         sonst:
-            print(f"Re-running {test_name} in verbose mode", flush=True)
+            print(f"Re-running {test_name} in verbose mode", flush=Wahr)
 
     result = run_single_test(test_name, runtests)
     wenn runtests.coverage:
@@ -96,7 +96,7 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
         sowenn not Py_DEBUG:
             print(
                 "Gathering coverage in worker processes requires --with-pydebug",
-                flush=True,
+                flush=Wahr,
             )
         sonst:
             raise LookupError(
@@ -120,10 +120,10 @@ def main() -> NoReturn:
     worker_json = sys.argv[1]
 
     tmp_dir = get_temp_dir()
-    work_dir = get_work_dir(tmp_dir, worker=True)
+    work_dir = get_work_dir(tmp_dir, worker=Wahr)
 
     with exit_timeout():
-        with os_helper.temp_cwd(work_dir, quiet=True):
+        with os_helper.temp_cwd(work_dir, quiet=Wahr):
             worker_process(worker_json)
 
 

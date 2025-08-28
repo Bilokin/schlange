@@ -170,13 +170,13 @@ klasse IndentAndNewlineTest(unittest.TestCase):
             with self.subTest(label=test.label):
                 insert(text, test.text)
                 text.mark_set('insert', test.mark)
-                nl(event=None)
+                nl(event=Nichts)
                 eq(get('1.0', 'end'), test.expected)
 
         # Selected text.
         insert(text, '  def f1(self, a, b):\n    return a + b')
         text.tag_add('sel', '1.17', '1.end')
-        nl(None)
+        nl(Nichts)
         # Deletes selected text before adding new line.
         eq(get('1.0', 'end'), '  def f1(self, a,\n         \n    return a + b\n')
 
@@ -199,9 +199,9 @@ klasse IndentSearcherTest(unittest.TestCase):
         text = self.text
         searcher = (self.text)
         test_info = (# text, (block, indent))
-                     ("", (None, None)),
-                     ("[1,", (None, None)),  # TokenError
-                     ("if 1:\n", ('if 1:\n', None)),
+                     ("", (Nichts, Nichts)),
+                     ("[1,", (Nichts, Nichts)),  # TokenError
+                     ("if 1:\n", ('if 1:\n', Nichts)),
                      ("if 1:\n  2\n  3\n", ('if 1:\n', '  2\n')),
                      )
         fuer code, expected_pair in test_info:

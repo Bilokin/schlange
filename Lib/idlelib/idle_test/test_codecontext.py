@@ -31,7 +31,7 @@ klasse C1:
         sowenn a < b:
             return b
         sonst:
-            return None
+            return Nichts
 """
 
 
@@ -115,16 +115,16 @@ klasse CodeContextTest(unittest.TestCase):
         eq(cc.editwin, ed)
         eq(cc.text, ed.text)
         eq(cc.text['font'], ed.text['font'])
-        self.assertIsNone(cc.context)
-        eq(cc.info, [(0, -1, '', False)])
+        self.assertIsNichts(cc.context)
+        eq(cc.info, [(0, -1, '', Falsch)])
         eq(cc.topvisible, 1)
-        self.assertIsNone(self.cc.t1)
+        self.assertIsNichts(self.cc.t1)
 
     def test_del(self):
         self.cc.__del__()
 
     def test_del_with_timer(self):
-        timer = self.cc.t1 = self.text.after(10000, lambda: None)
+        timer = self.cc.t1 = self.text.after(10000, lambda: Nichts)
         self.cc.__del__()
         with self.assertRaises(TclError) as cm:
             self.root.tk.call('after', 'info', timer)
@@ -145,7 +145,7 @@ klasse CodeContextTest(unittest.TestCase):
 
         # Toggle on.
         toggle()
-        self.assertIsNotNone(cc.context)
+        self.assertIsNotNichts(cc.context)
         eq(cc.context['font'], self.text['font'])
         eq(cc.context['fg'], self.highlight_cfg['foreground'])
         eq(cc.context['bg'], self.highlight_cfg['background'])
@@ -155,9 +155,9 @@ klasse CodeContextTest(unittest.TestCase):
 
         # Toggle off.
         toggle()
-        self.assertIsNone(cc.context)
+        self.assertIsNichts(cc.context)
         eq(cc.editwin.label, 'Show Code Context')
-        self.assertIsNone(self.cc.t1)
+        self.assertIsNichts(self.cc.t1)
 
         # Scroll down and toggle back on.
         line11_context = '\n'.join(x[2] fuer x in cc.get_context(11)[0])
@@ -226,35 +226,35 @@ klasse CodeContextTest(unittest.TestCase):
             cc.toggle_code_context_event()
 
         # Invoke update_code_context without scrolling - nothing happens.
-        self.assertIsNone(cc.update_code_context())
-        eq(cc.info, [(0, -1, '', False)])
+        self.assertIsNichts(cc.update_code_context())
+        eq(cc.info, [(0, -1, '', Falsch)])
         eq(cc.topvisible, 1)
 
         # Scroll down to line 1.
         cc.text.yview(1)
         cc.update_code_context()
-        eq(cc.info, [(0, -1, '', False)])
+        eq(cc.info, [(0, -1, '', Falsch)])
         eq(cc.topvisible, 2)
         eq(cc.context.get('1.0', 'end-1c'), '')
 
         # Scroll down to line 2.
         cc.text.yview(2)
         cc.update_code_context()
-        eq(cc.info, [(0, -1, '', False), (2, 0, 'class C1:', 'class')])
+        eq(cc.info, [(0, -1, '', Falsch), (2, 0, 'class C1:', 'class')])
         eq(cc.topvisible, 3)
         eq(cc.context.get('1.0', 'end-1c'), 'class C1:')
 
         # Scroll down to line 3.  Since it's a comment, nothing changes.
         cc.text.yview(3)
         cc.update_code_context()
-        eq(cc.info, [(0, -1, '', False), (2, 0, 'class C1:', 'class')])
+        eq(cc.info, [(0, -1, '', Falsch), (2, 0, 'class C1:', 'class')])
         eq(cc.topvisible, 4)
         eq(cc.context.get('1.0', 'end-1c'), 'class C1:')
 
         # Scroll down to line 4.
         cc.text.yview(4)
         cc.update_code_context()
-        eq(cc.info, [(0, -1, '', False),
+        eq(cc.info, [(0, -1, '', Falsch),
                      (2, 0, 'class C1:', 'class'),
                      (4, 4, '    def __init__(self, a, b):', 'def')])
         eq(cc.topvisible, 5)
@@ -264,7 +264,7 @@ klasse CodeContextTest(unittest.TestCase):
         # Scroll down to line 11.  Last 'def' is removed.
         cc.text.yview(11)
         cc.update_code_context()
-        eq(cc.info, [(0, -1, '', False),
+        eq(cc.info, [(0, -1, '', Falsch),
                      (2, 0, 'class C1:', 'class'),
                      (7, 4, '    def compare(self):', 'def'),
                      (8, 8, '        wenn a > b:', 'if'),
@@ -278,7 +278,7 @@ klasse CodeContextTest(unittest.TestCase):
         # No scroll.  No update, even though context_depth changed.
         cc.update_code_context()
         cc.context_depth = 1
-        eq(cc.info, [(0, -1, '', False),
+        eq(cc.info, [(0, -1, '', Falsch),
                      (2, 0, 'class C1:', 'class'),
                      (7, 4, '    def compare(self):', 'def'),
                      (8, 8, '        wenn a > b:', 'if'),
@@ -292,7 +292,7 @@ klasse CodeContextTest(unittest.TestCase):
         # Scroll up.
         cc.text.yview(5)
         cc.update_code_context()
-        eq(cc.info, [(0, -1, '', False),
+        eq(cc.info, [(0, -1, '', Falsch),
                      (2, 0, 'class C1:', 'class'),
                      (4, 4, '    def __init__(self, a, b):', 'def')])
         eq(cc.topvisible, 6)
@@ -362,7 +362,7 @@ klasse CodeContextTest(unittest.TestCase):
         self.assertNotEqual(orig_font, test_font)
 
         # Ensure code context is not active.
-        wenn cc.context is not None:
+        wenn cc.context is not Nichts:
             cc.toggle_code_context_event()
 
         self.font_override = test_font
@@ -438,11 +438,11 @@ klasse HelperFunctionText(unittest.TestCase):
         lines = code_sample.splitlines()
 
         # Line 1 is not a BLOCKOPENER.
-        eq(gli(lines[0]), (codecontext.INFINITY, '', False))
+        eq(gli(lines[0]), (codecontext.INFINITY, '', Falsch))
         # Line 2 is a BLOCKOPENER without an indent.
         eq(gli(lines[1]), (0, 'class C1:', 'class'))
         # Line 3 is not a BLOCKOPENER and does not return the indent level.
-        eq(gli(lines[2]), (codecontext.INFINITY, '    # Class comment.', False))
+        eq(gli(lines[2]), (codecontext.INFINITY, '    # Class comment.', Falsch))
         # Line 4 is a BLOCKOPENER and is indented.
         eq(gli(lines[3]), (4, '    def __init__(self, a, b):', 'def'))
         # Line 8 is a different BLOCKOPENER and is indented.

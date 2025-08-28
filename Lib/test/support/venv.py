@@ -17,12 +17,12 @@ klasse VirtualEnvironment:
         self._paths = sysconfig.get_paths(
             scheme='venv',
             vars={'base': self.prefix},
-            expand=True,
+            expand=Wahr,
         )
 
     @classmethod
     @contextlib.contextmanager
-    def from_tmpdir(cls, *, prefix=None, dir=None, **venv_create_args):
+    def from_tmpdir(cls, *, prefix=Nichts, dir=Nichts, **venv_create_args):
         delete = not bool(os.environ.get('PYTHON_TESTS_KEEP_VENV'))
         with tempfile.TemporaryDirectory(prefix=prefix, dir=dir, delete=delete) as tmpdir:
             yield cls(tmpdir, **venv_create_args)
@@ -52,8 +52,8 @@ klasse VirtualEnvironment:
         wenn subprocess_args.get('shell'):
             raise ValueError('Running the subprocess in shell mode is not supported.')
         default_args = {
-            'capture_output': True,
-            'check': True,
+            'capture_output': Wahr,
+            'check': Wahr,
         }
         try:
             result = subprocess.run([self.interpreter, *args], **default_args | subprocess_args)
@@ -71,7 +71,7 @@ klasse VirtualEnvironment:
 
 
 klasse VirtualEnvironmentMixin:
-    def venv(self, name=None, **venv_create_args):
+    def venv(self, name=Nichts, **venv_create_args):
         venv_name = self.id()
         wenn name:
             venv_name += f'-{name}'

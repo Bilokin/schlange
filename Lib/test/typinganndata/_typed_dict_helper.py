@@ -4,7 +4,7 @@ This script uses future annotations to postpone a type that won't be available
 on the module inheriting from to `Foo`. The subclass in the other module should
 look something like this:
 
-    klasse Bar(_typed_dict_helper.Foo, total=False):
+    klasse Bar(_typed_dict_helper.Foo, total=Falsch):
         b: int
 
 In addition, it uses multiple levels of Annotated to test the interaction
@@ -26,5 +26,5 @@ T = TypeVar("T")
 klasse FooGeneric(TypedDict, Generic[T]):
     a: Optional[T]
 
-klasse VeryAnnotated(TypedDict, total=False):
+klasse VeryAnnotated(TypedDict, total=Falsch):
     a: Annotated[Annotated[Annotated[Required[int], "a"], "b"], "c"]

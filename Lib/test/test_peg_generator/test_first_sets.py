@@ -16,7 +16,7 @@ klasse TestFirstSets(unittest.TestCase):
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         return FirstSetCalculator(grammar.rules).calculate()
 
-    def test_alternatives(self) -> None:
+    def test_alternatives(self) -> Nichts:
         grammar = """
             start: expr NEWLINE? ENDMARKER
             expr: A | B
@@ -33,7 +33,7 @@ klasse TestFirstSets(unittest.TestCase):
             },
         )
 
-    def test_optionals(self) -> None:
+    def test_optionals(self) -> Nichts:
         grammar = """
             start: expr NEWLINE
             expr: ['a'] ['b'] 'c'
@@ -46,7 +46,7 @@ klasse TestFirstSets(unittest.TestCase):
             },
         )
 
-    def test_repeat_with_separator(self) -> None:
+    def test_repeat_with_separator(self) -> Nichts:
         grammar = """
         start: ','.thing+ NEWLINE
         thing: NUMBER
@@ -56,7 +56,7 @@ klasse TestFirstSets(unittest.TestCase):
             {"thing": {"NUMBER"}, "start": {"NUMBER"}},
         )
 
-    def test_optional_operator(self) -> None:
+    def test_optional_operator(self) -> Nichts:
         grammar = """
         start: sum NEWLINE
         sum: (term)? 'b'
@@ -71,7 +71,7 @@ klasse TestFirstSets(unittest.TestCase):
             },
         )
 
-    def test_optional_literal(self) -> None:
+    def test_optional_literal(self) -> Nichts:
         grammar = """
         start: sum NEWLINE
         sum: '+' ? term
@@ -86,7 +86,7 @@ klasse TestFirstSets(unittest.TestCase):
             },
         )
 
-    def test_optional_after(self) -> None:
+    def test_optional_after(self) -> Nichts:
         grammar = """
         start: term NEWLINE
         term: NUMBER ['+']
@@ -96,7 +96,7 @@ klasse TestFirstSets(unittest.TestCase):
             {"term": {"NUMBER"}, "start": {"NUMBER"}},
         )
 
-    def test_optional_before(self) -> None:
+    def test_optional_before(self) -> Nichts:
         grammar = """
         start: term NEWLINE
         term: ['+'] NUMBER
@@ -106,7 +106,7 @@ klasse TestFirstSets(unittest.TestCase):
             {"term": {"NUMBER", "'+'"}, "start": {"NUMBER", "'+'"}},
         )
 
-    def test_repeat_0(self) -> None:
+    def test_repeat_0(self) -> Nichts:
         grammar = """
         start: thing* "+" NEWLINE
         thing: NUMBER
@@ -116,7 +116,7 @@ klasse TestFirstSets(unittest.TestCase):
             {"thing": {"NUMBER"}, "start": {'"+"', "NUMBER"}},
         )
 
-    def test_repeat_0_with_group(self) -> None:
+    def test_repeat_0_with_group(self) -> Nichts:
         grammar = """
         start: ('+' '-')* term NEWLINE
         term: NUMBER
@@ -126,7 +126,7 @@ klasse TestFirstSets(unittest.TestCase):
             {"term": {"NUMBER"}, "start": {"'+'", "NUMBER"}},
         )
 
-    def test_repeat_1(self) -> None:
+    def test_repeat_1(self) -> Nichts:
         grammar = """
         start: thing+ '-' NEWLINE
         thing: NUMBER
@@ -136,7 +136,7 @@ klasse TestFirstSets(unittest.TestCase):
             {"thing": {"NUMBER"}, "start": {"NUMBER"}},
         )
 
-    def test_repeat_1_with_group(self) -> None:
+    def test_repeat_1_with_group(self) -> Nichts:
         grammar = """
         start: ('+' term)+ term NEWLINE
         term: NUMBER
@@ -145,7 +145,7 @@ klasse TestFirstSets(unittest.TestCase):
             self.calculate_first_sets(grammar), {"term": {"NUMBER"}, "start": {"'+'"}}
         )
 
-    def test_gather(self) -> None:
+    def test_gather(self) -> Nichts:
         grammar = """
         start: ','.thing+ NEWLINE
         thing: NUMBER
@@ -155,7 +155,7 @@ klasse TestFirstSets(unittest.TestCase):
             {"thing": {"NUMBER"}, "start": {"NUMBER"}},
         )
 
-    def test_positive_lookahead(self) -> None:
+    def test_positive_lookahead(self) -> Nichts:
         grammar = """
         start: expr NEWLINE
         expr: &'a' opt
@@ -170,7 +170,7 @@ klasse TestFirstSets(unittest.TestCase):
             },
         )
 
-    def test_negative_lookahead(self) -> None:
+    def test_negative_lookahead(self) -> Nichts:
         grammar = """
         start: expr NEWLINE
         expr: !'a' opt
@@ -185,7 +185,7 @@ klasse TestFirstSets(unittest.TestCase):
             },
         )
 
-    def test_left_recursion(self) -> None:
+    def test_left_recursion(self) -> Nichts:
         grammar = """
         start: expr NEWLINE
         expr: ('-' term | expr '+' term | term)
@@ -206,7 +206,7 @@ klasse TestFirstSets(unittest.TestCase):
             },
         )
 
-    def test_advance_left_recursion(self) -> None:
+    def test_advance_left_recursion(self) -> Nichts:
         grammar = """
         start: NUMBER | sign start
         sign: ['-']
@@ -216,7 +216,7 @@ klasse TestFirstSets(unittest.TestCase):
             {"sign": {"'-'", ""}, "start": {"'-'", "NUMBER"}},
         )
 
-    def test_mutual_left_recursion(self) -> None:
+    def test_mutual_left_recursion(self) -> Nichts:
         grammar = """
         start: foo 'E'
         foo: bar 'A' | 'B'
@@ -231,7 +231,7 @@ klasse TestFirstSets(unittest.TestCase):
             },
         )
 
-    def test_nasty_left_recursion(self) -> None:
+    def test_nasty_left_recursion(self) -> Nichts:
         # TODO: Validate this
         grammar = """
         start: target '='
@@ -243,7 +243,7 @@ klasse TestFirstSets(unittest.TestCase):
             {"maybe": set(), "target": {"NAME"}, "start": {"NAME"}},
         )
 
-    def test_nullable_rule(self) -> None:
+    def test_nullable_rule(self) -> Nichts:
         grammar = """
         start: sign thing $
         sign: ['-']
@@ -258,7 +258,7 @@ klasse TestFirstSets(unittest.TestCase):
             },
         )
 
-    def test_epsilon_production_in_start_rule(self) -> None:
+    def test_epsilon_production_in_start_rule(self) -> Nichts:
         grammar = """
         start: ['-'] $
         """
@@ -266,7 +266,7 @@ klasse TestFirstSets(unittest.TestCase):
             self.calculate_first_sets(grammar), {"start": {"ENDMARKER", "'-'"}}
         )
 
-    def test_multiple_nullable_rules(self) -> None:
+    def test_multiple_nullable_rules(self) -> Nichts:
         grammar = """
         start: sign thing other another $
         sign: ['-']

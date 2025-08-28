@@ -37,8 +37,8 @@ klasse HeaderWriteError(MessageError):
 klasse MessageDefect(ValueError):
     """Base klasse fuer a message defect."""
 
-    def __init__(self, line=None):
-        wenn line is not None:
+    def __init__(self, line=Nichts):
+        wenn line is not Nichts:
             super().__init__(line)
         self.line = line
 

@@ -53,7 +53,7 @@ klasse ScrollableTextFrame(Frame):
 
         # vertical scrollbar
         self.yscroll = AutoHideScrollbar(self, orient=VERTICAL,
-                                         takefocus=False,
+                                         takefocus=Falsch,
                                          command=text.yview)
         self.yscroll.grid(row=0, column=1, sticky=NS)
         text['yscrollcommand'] = self.yscroll.set
@@ -61,12 +61,12 @@ klasse ScrollableTextFrame(Frame):
         # horizontal scrollbar - only when wrap is set to NONE
         wenn wrap == NONE:
             self.xscroll = AutoHideScrollbar(self, orient=HORIZONTAL,
-                                             takefocus=False,
+                                             takefocus=Falsch,
                                              command=text.xview)
             self.xscroll.grid(row=1, column=0, sticky=EW)
             text['xscrollcommand'] = self.xscroll.set
         sonst:
-            self.xscroll = None
+            self.xscroll = Nichts
 
 
 klasse ViewFrame(Frame):
@@ -93,11 +93,11 @@ klasse ViewFrame(Frame):
         text.focus_set()
 
         self.button_ok = button_ok = Button(
-                self, text='Close', command=self.ok, takefocus=False)
-        self.textframe.pack(side='top', expand=True, fill='both')
+                self, text='Close', command=self.ok, takefocus=Falsch)
+        self.textframe.pack(side='top', expand=Wahr, fill='both')
         button_ok.pack(side='bottom')
 
-    def ok(self, event=None):
+    def ok(self, event=Nichts):
         """Dismiss text viewer dialog."""
         self.parent.destroy()
 
@@ -105,11 +105,11 @@ klasse ViewFrame(Frame):
 klasse ViewWindow(Toplevel):
     "A simple text viewer dialog fuer IDLE."
 
-    def __init__(self, parent, title, contents, modal=True, wrap=WORD,
-                 *, _htest=False, _utest=False):
+    def __init__(self, parent, title, contents, modal=Wahr, wrap=WORD,
+                 *, _htest=Falsch, _utest=Falsch):
         """Show the given text in a scrollable window with a 'close' button.
 
-        If modal is left True, users cannot interact with other windows
+        If modal is left Wahr, users cannot interact with other windows
         until the textview window is closed.
 
         parent - parent of this dialog
@@ -130,8 +130,8 @@ klasse ViewWindow(Toplevel):
         self.viewframe = ViewFrame(self, contents, wrap=wrap)
         self.protocol("WM_DELETE_WINDOW", self.ok)
         self.button_ok = button_ok = Button(self, text='Close',
-                                            command=self.ok, takefocus=False)
-        self.viewframe.pack(side='top', expand=True, fill='both')
+                                            command=self.ok, takefocus=Falsch)
+        self.viewframe.pack(side='top', expand=Wahr, fill='both')
 
         self.is_modal = modal
         wenn self.is_modal:
@@ -140,14 +140,14 @@ klasse ViewWindow(Toplevel):
             wenn not _utest:
                 self.wait_window()
 
-    def ok(self, event=None):
+    def ok(self, event=Nichts):
         """Dismiss text viewer dialog."""
         wenn self.is_modal:
             self.grab_release()
         self.destroy()
 
 
-def view_text(parent, title, contents, modal=True, wrap='word', _utest=False):
+def view_text(parent, title, contents, modal=Wahr, wrap='word', _utest=Falsch):
     """Create text viewer fuer given text.
 
     parent - parent of this dialog
@@ -161,8 +161,8 @@ def view_text(parent, title, contents, modal=True, wrap='word', _utest=False):
     return ViewWindow(parent, title, contents, modal, wrap=wrap, _utest=_utest)
 
 
-def view_file(parent, title, filename, encoding, modal=True, wrap='word',
-              _utest=False):
+def view_file(parent, title, filename, encoding, modal=Wahr, wrap='word',
+              _utest=Falsch):
     """Create text viewer fuer text in filename.
 
     Return error message wenn file cannot be read.  Otherwise calls view_text
@@ -182,12 +182,12 @@ def view_file(parent, title, filename, encoding, modal=True, wrap='word',
     sonst:
         return view_text(parent, title, contents, modal, wrap=wrap,
                          _utest=_utest)
-    return None
+    return Nichts
 
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_textview', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_textview', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(ViewWindow)

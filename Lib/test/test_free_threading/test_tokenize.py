@@ -12,11 +12,11 @@ from test.support import threading_helper
 klasse TestTokenize(unittest.TestCase):
     def test_tokenizer_iter(self):
         source = io.StringIO("for _ in a:\n  pass")
-        it = tokenize._tokenize.TokenizerIter(source.readline, extra_tokens=False)
+        it = tokenize._tokenize.TokenizerIter(source.readline, extra_tokens=Falsch)
 
         tokens = []
         def next_token(it):
-            while True:
+            while Wahr:
                 try:
                     r = next(it)
                     tokens.append(tokenize.TokenInfo._make(r))

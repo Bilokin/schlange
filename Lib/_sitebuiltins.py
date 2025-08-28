@@ -16,7 +16,7 @@ klasse Quitter(object):
         self.eof = eof
     def __repr__(self):
         return 'Use %s() or %s to exit' % (self.name, self.eof)
-    def __call__(self, code=None):
+    def __call__(self, code=Nichts):
         # Shells like IDLE catch the SystemExit, but listen when their
         # stdin wrapper is closed.
         try:
@@ -36,7 +36,7 @@ klasse _Printer(object):
         import os
         self.__name = name
         self.__data = data
-        self.__lines = None
+        self.__lines = Nichts
         self.__filenames = [os.path.join(dir, filename)
                             fuer dir in dirs
                             fuer filename in files]
@@ -44,7 +44,7 @@ klasse _Printer(object):
     def __setup(self):
         wenn self.__lines:
             return
-        data = None
+        data = Nichts
         fuer filename in self.__filenames:
             try:
                 with open(filename, encoding='utf-8') as fp:
@@ -76,11 +76,11 @@ klasse _Printer(object):
                 break
             sonst:
                 lineno += self.MAXLINES
-                key = None
-                while key is None:
+                key = Nichts
+                while key is Nichts:
                     key = input(prompt)
                     wenn key not in ('', 'q'):
-                        key = None
+                        key = Nichts
                 wenn key == 'q':
                     break
 

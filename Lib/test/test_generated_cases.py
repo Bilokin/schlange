@@ -77,9 +77,9 @@ klasse TestEffects(unittest.TestCase):
 
 
 klasse TestGeneratedCases(unittest.TestCase):
-    def setUp(self) -> None:
+    def setUp(self) -> Nichts:
         super().setUp()
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         self.temp_dir = tempfile.gettempdir()
         self.temp_input_filename = os.path.join(self.temp_dir, "input.txt")
@@ -88,7 +88,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         self.temp_pymetadata_filename = os.path.join(self.temp_dir, "pymetadata.txt")
         self.temp_executor_filename = os.path.join(self.temp_dir, "executor.txt")
 
-    def tearDown(self) -> None:
+    def tearDown(self) -> Nichts:
         fuer filename in [
             self.temp_input_filename,
             self.temp_output_filename,
@@ -111,7 +111,7 @@ klasse TestGeneratedCases(unittest.TestCase):
 
         with handle_stderr():
             tier1_generator.generate_tier1_from_files(
-                [self.temp_input_filename], self.temp_output_filename, False
+                [self.temp_input_filename], self.temp_output_filename, Falsch
             )
 
         with open(self.temp_output_filename) as temp_output:
@@ -285,12 +285,12 @@ klasse TestGeneratedCases(unittest.TestCase):
         input = """
         inst(OP1, (arg -- res)) {
             DEAD(arg);
-            res = Py_None;
+            res = Py_Nichts;
         }
         inst(OP3, (arg -- res)) {
             DEAD(arg);
             DEOPT_IF(xxx);
-            res = Py_None;
+            res = Py_Nichts;
         }
         family(OP1, INLINE_CACHE_ENTRIES_OP1) = { OP3 };
     """
@@ -307,7 +307,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             _PyStackRef arg;
             _PyStackRef res;
             arg = stack_pointer[-1];
-            res = Py_None;
+            res = Py_Nichts;
             stack_pointer[-1] = res;
             DISPATCH();
         }
@@ -331,7 +331,7 @@ klasse TestGeneratedCases(unittest.TestCase):
                 assert(_PyOpcode_Deopt[opcode] == (OP1));
                 JUMP_TO_PREDICTED(OP1);
             }
-            res = Py_None;
+            res = Py_Nichts;
             stack_pointer[-1] = res;
             DISPATCH();
         }
@@ -344,11 +344,11 @@ klasse TestGeneratedCases(unittest.TestCase):
             DEAD(arg);
             SYNC_SP();
             escaping_call();
-            res = Py_None;
+            res = Py_Nichts;
         }
         inst(B, (arg -- res)) {
             DEAD(arg);
-            res = Py_None;
+            res = Py_Nichts;
             SYNC_SP();
             escaping_call();
         }
@@ -370,7 +370,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             _PyFrame_SetStackPointer(frame, stack_pointer);
             escaping_call();
             stack_pointer = _PyFrame_GetStackPointer(frame);
-            res = Py_None;
+            res = Py_Nichts;
             stack_pointer[0] = res;
             stack_pointer += 1;
             assert(WITHIN_STACK_BOUNDS());
@@ -388,7 +388,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             _PyStackRef arg;
             _PyStackRef res;
             arg = stack_pointer[-1];
-            res = Py_None;
+            res = Py_Nichts;
             stack_pointer[-1] = res;
             _PyFrame_SetStackPointer(frame, stack_pointer);
             escaping_call();
@@ -1892,16 +1892,16 @@ klasse TestGeneratedCases(unittest.TestCase):
 
 
 klasse TestGeneratedAbstractCases(unittest.TestCase):
-    def setUp(self) -> None:
+    def setUp(self) -> Nichts:
         super().setUp()
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         self.temp_dir = tempfile.gettempdir()
         self.temp_input_filename = os.path.join(self.temp_dir, "input.txt")
         self.temp_input2_filename = os.path.join(self.temp_dir, "input2.txt")
         self.temp_output_filename = os.path.join(self.temp_dir, "output.txt")
 
-    def tearDown(self) -> None:
+    def tearDown(self) -> Nichts:
         fuer filename in [
             self.temp_input_filename,
             self.temp_input2_filename,
@@ -2226,10 +2226,10 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
 
     def test_pure_uop_body_copied_in(self):
         # Note: any non-escaping call works.
-        # In this case, we use PyStackRef_IsNone.
+        # In this case, we use PyStackRef_IsNichts.
         input = """
         pure op(OP, (foo -- res)) {
-            res = PyStackRef_IsNone(foo);
+            res = PyStackRef_IsNichts(foo);
         }
         """
         input2 = """
@@ -2250,7 +2250,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
                 _PyStackRef foo = sym_get_const_as_stackref(ctx, foo_sym);
                 _PyStackRef res_stackref;
                 /* Start of uop copied from bytecodes fuer constant evaluation */
-                res_stackref = PyStackRef_IsNone(foo);
+                res_stackref = PyStackRef_IsNichts(foo);
                 /* End of uop copied from bytecodes fuer constant evaluation */
                 res = sym_new_const_steal(ctx, PyStackRef_AsPyObjectSteal(res_stackref));
                 stack_pointer[-1] = res;
@@ -2265,7 +2265,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
 
     def test_pure_uop_body_copied_in_deopt(self):
         # Note: any non-escaping call works.
-        # In this case, we use PyStackRef_IsNone.
+        # In this case, we use PyStackRef_IsNichts.
         input = """
         pure op(OP, (foo -- res)) {
             DEOPT_IF(PyStackRef_IsNull(foo));
@@ -2309,7 +2309,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
 
     def test_pure_uop_body_copied_in_error_if(self):
         # Note: any non-escaping call works.
-        # In this case, we use PyStackRef_IsNone.
+        # In this case, we use PyStackRef_IsNichts.
         input = """
         pure op(OP, (foo -- res)) {
             ERROR_IF(PyStackRef_IsNull(foo));
@@ -2355,7 +2355,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         input = """
         pure op(OP, (foo -- res)) {
             wenn (foo) {
-                res = PyStackRef_IsNone(foo);
+                res = PyStackRef_IsNichts(foo);
             }
             sonst {
                 res = 1;
@@ -2381,7 +2381,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
                 _PyStackRef res_stackref;
                 /* Start of uop copied from bytecodes fuer constant evaluation */
                 wenn (foo) {
-                    res_stackref = PyStackRef_IsNone(foo);
+                    res_stackref = PyStackRef_IsNichts(foo);
                 }
                 sonst {
                     res_stackref = 1;
@@ -2449,7 +2449,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         input = """
         pure op(OP, (foo[2] -- res)) {
             wenn (foo) {
-                res = PyStackRef_IsNone(foo);
+                res = PyStackRef_IsNichts(foo);
             }
             sonst {
                 res = 1;

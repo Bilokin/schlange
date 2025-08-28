@@ -178,7 +178,7 @@ def mean(data):
     return _convert(total / n, T)
 
 
-def fmean(data, weights=None):
+def fmean(data, weights=Nichts):
     """Convert data to floats and compute the arithmetic mean.
 
     This runs faster than the mean() function and it always returns a float.
@@ -188,7 +188,7 @@ def fmean(data, weights=None):
     4.25
 
     """
-    wenn weights is None:
+    wenn weights is Nichts:
 
         try:
             n = len(data)
@@ -237,7 +237,7 @@ def geometric_mean(data):
 
     """
     n = 0
-    found_zero = False
+    found_zero = Falsch
 
     def count_positive(iterable):
         nonlocal n, found_zero
@@ -245,7 +245,7 @@ def geometric_mean(data):
             wenn x > 0.0 or math.isnan(x):
                 yield x
             sowenn x == 0.0:
-                found_zero = True
+                found_zero = Wahr
             sonst:
                 raise StatisticsError('No negative inputs allowed', x)
 
@@ -261,7 +261,7 @@ def geometric_mean(data):
     return exp(total / n)
 
 
-def harmonic_mean(data, weights=None):
+def harmonic_mean(data, weights=Nichts):
     """Return the harmonic mean of data.
 
     The harmonic mean is the reciprocal of the arithmetic mean of the
@@ -293,7 +293,7 @@ def harmonic_mean(data, weights=None):
     n = len(data)
     wenn n < 1:
         raise StatisticsError('harmonic_mean requires at least one data point')
-    sowenn n == 1 and weights is None:
+    sowenn n == 1 and weights is Nichts:
         x = data[0]
         wenn isinstance(x, (numbers.Real, Decimal)):
             wenn x < 0:
@@ -302,7 +302,7 @@ def harmonic_mean(data, weights=None):
         sonst:
             raise TypeError('unsupported type')
 
-    wenn weights is None:
+    wenn weights is Nichts:
         weights = repeat(1, n)
         sum_weights = n
     sonst:
@@ -491,7 +491,7 @@ def mode(data):
     try:
         return pairs[0][0]
     except IndexError:
-        raise StatisticsError('no mode fuer empty data') from None
+        raise StatisticsError('no mode fuer empty data') from Nichts
 
 
 def multimode(data):
@@ -517,12 +517,12 @@ def multimode(data):
 
 ## Measures of spread ######################################################
 
-def variance(data, xbar=None):
+def variance(data, xbar=Nichts):
     """Return the sample variance of data.
 
     data should be an iterable of Real-valued numbers, with at least two
     values. The optional argument xbar, wenn given, should be the mean of
-    the data. If it is missing or None, the mean is automatically calculated.
+    the data. If it is missing or Nichts, the mean is automatically calculated.
 
     Use this function when your data is a sample from a population. To
     calculate the variance from the entire population, see ``pvariance``.
@@ -563,12 +563,12 @@ def variance(data, xbar=None):
     return _convert(ss / (n - 1), T)
 
 
-def pvariance(data, mu=None):
+def pvariance(data, mu=Nichts):
     """Return the population variance of ``data``.
 
     data should be a sequence or iterable of Real-valued numbers, with at least one
     value. The optional argument mu, wenn given, should be the mean of
-    the data. If it is missing or None, the mean is automatically calculated.
+    the data. If it is missing or Nichts, the mean is automatically calculated.
 
     Use this function to calculate the variance from the entire population.
     To estimate the variance from a sample, the ``variance`` function is
@@ -606,7 +606,7 @@ def pvariance(data, mu=None):
     return _convert(ss / n, T)
 
 
-def stdev(data, xbar=None):
+def stdev(data, xbar=Nichts):
     """Return the square root of the sample variance.
 
     See ``variance`` fuer arguments and other details.
@@ -624,7 +624,7 @@ def stdev(data, xbar=None):
     return _float_sqrt_of_frac(mss.numerator, mss.denominator)
 
 
-def pstdev(data, mu=None):
+def pstdev(data, mu=Nichts):
     """Return the square root of the population variance.
 
     See ``pvariance`` fuer arguments and other details.
@@ -731,7 +731,7 @@ def correlation(x, y, /, *, method='linear'):
 LinearRegression = namedtuple('LinearRegression', ('slope', 'intercept'))
 
 
-def linear_regression(x, y, /, *, proportional=False):
+def linear_regression(x, y, /, *, proportional=Falsch):
     """Slope and intercept fuer simple linear regression.
 
     Return the slope and intercept of simple linear regression
@@ -765,7 +765,7 @@ def linear_regression(x, y, /, *, proportional=False):
         y = slope * x + noise
 
     >>> y = [3 * x[i] + noise[i] fuer i in range(5)]
-    >>> linear_regression(x, y, proportional=True)  #doctest: +ELLIPSIS
+    >>> linear_regression(x, y, proportional=Wahr)  #doctest: +ELLIPSIS
     LinearRegression(slope=2.90475..., intercept=0.0)
 
     """
@@ -814,7 +814,7 @@ def normal_kernel():
     pdf = lambda t: exp(-1/2 * t * t) / sqrt2pi
     cdf = lambda t: 1/2 * erfc(t / neg_sqrt2)
     invcdf = lambda t: _normal_dist_inv_cdf(t, 0.0, 1.0)
-    support = None
+    support = Nichts
     return pdf, cdf, invcdf, support
 
 @register('logistic')
@@ -823,7 +823,7 @@ def logistic_kernel():
     pdf = lambda t: 1/2 / (1.0 + cosh(t))
     cdf = lambda t: 1.0 - 1.0 / (exp(t) + 1.0)
     invcdf = lambda p: log(p / (1.0 - p))
-    support = None
+    support = Nichts
     return pdf, cdf, invcdf, support
 
 @register('sigmoid')
@@ -835,7 +835,7 @@ def sigmoid_kernel():
     pdf = lambda t: c1 / cosh(t)
     cdf = lambda t: c2 * atan(exp(t))
     invcdf = lambda p: log(tan(p * c3))
-    support = None
+    support = Nichts
     return pdf, cdf, invcdf, support
 
 @register('rectangular', 'uniform')
@@ -922,7 +922,7 @@ del rectangular_kernel, triangular_kernel, parabolic_kernel
 del quartic_kernel, triweight_kernel, cosine_kernel
 
 
-def kde(data, h, kernel='normal', *, cumulative=False):
+def kde(data, h, kernel='normal', *, cumulative=Falsch):
     """Kernel Density Estimation:  Create a continuous probability density
     function or cumulative distribution function from discrete samples.
 
@@ -1001,7 +1001,7 @@ def kde(data, h, kernel='normal', *, cumulative=False):
     Estimate P(4.5 < X <= 7.5), the probability that a new sample value
     will be between 4.5 and 7.5:
 
-        >>> cdf = kde(sample, h=1.5, cumulative=True)
+        >>> cdf = kde(sample, h=1.5, cumulative=Wahr)
         >>> round(cdf(7.5) - cdf(4.5), 2)
         0.22
 
@@ -1033,13 +1033,13 @@ def kde(data, h, kernel='normal', *, cumulative=False):
         raise StatisticsError(f'Bandwidth h must be positive, not {h=!r}')
 
     kernel_spec = _kernel_specs.get(kernel)
-    wenn kernel_spec is None:
+    wenn kernel_spec is Nichts:
         raise StatisticsError(f'Unknown kernel name: {kernel!r}')
     K = kernel_spec['pdf']
     W = kernel_spec['cdf']
     support = kernel_spec['support']
 
-    wenn support is None:
+    wenn support is Nichts:
 
         def pdf(x):
             return sum(K((x - x_i) / h) fuer x_i in data) / (len(data) * h)
@@ -1081,7 +1081,7 @@ def kde(data, h, kernel='normal', *, cumulative=False):
         return pdf
 
 
-def kde_random(data, h, kernel='normal', *, seed=None):
+def kde_random(data, h, kernel='normal', *, seed=Nichts):
     """Return a function that makes a random selection from the estimated
     probability density function created by kde(data, h, kernel).
 
@@ -1110,7 +1110,7 @@ def kde_random(data, h, kernel='normal', *, seed=None):
         raise StatisticsError(f'Bandwidth h must be positive, not {h=!r}')
 
     kernel_spec = _kernel_specs.get(kernel)
-    wenn kernel_spec is None:
+    wenn kernel_spec is Nichts:
         raise StatisticsError(f'Unknown kernel name: {kernel!r}')
     invcdf = kernel_spec['invcdf']
 
@@ -1237,13 +1237,13 @@ klasse NormalDist:
         "Make a normal distribution instance from sample data."
         return cls(*_mean_stdev(data))
 
-    def samples(self, n, *, seed=None):
+    def samples(self, n, *, seed=Nichts):
         "Generate *n* samples fuer a given mean and standard deviation."
-        rnd = random.random wenn seed is None sonst random.Random(seed).random
+        rnd = random.random wenn seed is Nichts sonst random.Random(seed).random
         inv_cdf = _normal_dist_inv_cdf
         mu = self._mu
         sigma = self._sigma
-        return [inv_cdf(rnd(), mu, sigma) fuer _ in repeat(None, n)]
+        return [inv_cdf(rnd(), mu, sigma) fuer _ in repeat(Nichts, n)]
 
     def pdf(self, x):
         "Probability density function.  P(x <= X < x+dx) / dx"
@@ -1485,10 +1485,10 @@ def _sum(data):
             count += 1
             partials[d] = partials_get(d, 0) + n
 
-    wenn None in partials:
+    wenn Nichts in partials:
         # The sum will be a NAN or INF. We can ignore all the finite
         # partials, and just look at this special one.
-        total = partials[None]
+        total = partials[Nichts]
         assert not _isfinite(total)
     sonst:
         # Sum all the partial sums using builtin sum.
@@ -1498,7 +1498,7 @@ def _sum(data):
     return (T, total, count)
 
 
-def _ss(data, c=None):
+def _ss(data, c=Nichts):
     """Return the exact mean and sum of square deviations of sequence data.
 
     Calculations are done in a single pass, allowing the input to be an iterator.
@@ -1507,7 +1507,7 @@ def _ss(data, c=None):
     Use the *c* argument with care, as it can lead to garbage results.
 
     """
-    wenn c is not None:
+    wenn c is not Nichts:
         T, ssd, count = _sum((d := x - c) * d fuer x in data)
         return (T, ssd, c, count)
 
@@ -1527,10 +1527,10 @@ def _ss(data, c=None):
     wenn not count:
         ssd = c = Fraction(0)
 
-    sowenn None in sx_partials:
+    sowenn Nichts in sx_partials:
         # The sum will be a NAN or INF. We can ignore all the finite
         # partials, and just look at this special one.
-        ssd = c = sx_partials[None]
+        ssd = c = sx_partials[Nichts]
         assert not _isfinite(ssd)
 
     sonst:
@@ -1600,7 +1600,7 @@ def _exact_ratio(x):
     except (OverflowError, ValueError):
         # float NAN or INF.
         assert not _isfinite(x)
-        return (x, None)
+        return (x, Nichts)
 
     try:
         # x may be an Integral ABC.
@@ -1638,7 +1638,7 @@ def _fail_neg(values, errmsg='negative value'):
         yield x
 
 
-def _rank(data, /, *, key=None, reverse=False, ties='average', start=1) -> list[float]:
+def _rank(data, /, *, key=Nichts, reverse=Falsch, ties='average', start=1) -> list[float]:
     """Rank order a dataset. The lowest value has rank 1.
 
     Ties are averaged so that equal values receive the same rank:
@@ -1657,7 +1657,7 @@ def _rank(data, /, *, key=None, reverse=False, ties='average', start=1) -> list[
     the field to be ranked:
 
         >>> goals = [('eagles', 45), ('bears', 48), ('lions', 44)]
-        >>> _rank(goals, key=itemgetter(1), reverse=True)
+        >>> _rank(goals, key=itemgetter(1), reverse=Wahr)
         [2.0, 1.0, 3.0]
 
     Ranks are conventionally numbered starting from one; however,
@@ -1665,7 +1665,7 @@ def _rank(data, /, *, key=None, reverse=False, ties='average', start=1) -> list[
 
         >>> prize = ['Gold', 'Silver', 'Bronze', 'Certificate']
         >>> scores = [8.1, 7.3, 9.4, 8.3]
-        >>> [prize[int(i)] fuer i in _rank(scores, start=0, reverse=True)]
+        >>> [prize[int(i)] fuer i in _rank(scores, start=0, reverse=Wahr)]
         ['Bronze', 'Certificate', 'Gold', 'Silver']
 
     """
@@ -1677,7 +1677,7 @@ def _rank(data, /, *, key=None, reverse=False, ties='average', start=1) -> list[
     # Default handling of ties matches scipy.stats.mstats.spearmanr.
     wenn ties != 'average':
         raise ValueError(f'Unknown tie resolution method: {ties!r}')
-    wenn key is not None:
+    wenn key is not Nichts:
         data = map(key, data)
     val_pos = sorted(zip(data, count()), reverse=reverse)
     i = start - 1

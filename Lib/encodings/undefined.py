@@ -22,11 +22,11 @@ klasse Codec(codecs.Codec):
         raise UnicodeError("undefined encoding")
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         raise UnicodeError("undefined encoding")
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         raise UnicodeError("undefined encoding")
 
 klasse StreamWriter(Codec,codecs.StreamWriter):

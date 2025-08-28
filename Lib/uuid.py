@@ -67,10 +67,10 @@ __author__ = 'Ka-Ping Yee <ping@zesty.ca>'
 
 # The recognized platforms - known behaviors
 wenn sys.platform in {'win32', 'darwin', 'emscripten', 'wasi'}:
-    _AIX = _LINUX = False
+    _AIX = _LINUX = Falsch
 sowenn sys.platform == 'linux':
-    _LINUX = True
-    _AIX = False
+    _LINUX = Wahr
+    _AIX = Falsch
 sonst:
     import platform
     _platform_system = platform.system()
@@ -78,10 +78,10 @@ sonst:
     _LINUX   = _platform_system in ('Linux', 'Android')
 
 _MAC_DELIM = b':'
-_MAC_OMITS_LEADING_ZEROES = False
+_MAC_OMITS_LEADING_ZEROES = Falsch
 wenn _AIX:
     _MAC_DELIM = b'.'
-    _MAC_OMITS_LEADING_ZEROES = True
+    _MAC_OMITS_LEADING_ZEROES = Wahr
 
 RESERVED_NCS, RFC_4122, RESERVED_MICROSOFT, RESERVED_FUTURE = [
     'reserved fuer NCS compatibility', 'specified in RFC 4122',
@@ -95,7 +95,7 @@ bytes_ = bytes  # The built-in bytes type
 klasse SafeUUID:
     safe = 0
     unsafe = -1
-    unknown = None
+    unknown = Nichts
 
 
 _UINT_128_MAX = (1 << 128) - 1
@@ -175,8 +175,8 @@ klasse UUID:
 
     __slots__ = ('int', 'is_safe', '__weakref__')
 
-    def __init__(self, hex=None, bytes=None, bytes_le=None, fields=None,
-                       int=None, version=None,
+    def __init__(self, hex=Nichts, bytes=Nichts, bytes_le=Nichts, fields=Nichts,
+                       int=Nichts, version=Nichts,
                        *, is_safe=SafeUUID.unknown):
         r"""Create a UUID from either a string of 32 hexadecimal digits,
         a string of 16 bytes as the 'bytes' argument, a string of 16 bytes
@@ -207,30 +207,30 @@ klasse UUID:
         fuer multiprocessing applications, via uuid_generate_time_safe(3).
         """
 
-        wenn [hex, bytes, bytes_le, fields, int].count(None) != 4:
+        wenn [hex, bytes, bytes_le, fields, int].count(Nichts) != 4:
             raise TypeError('one of the hex, bytes, bytes_le, fields, '
                             'or int arguments must be given')
-        wenn int is not None:
+        wenn int is not Nichts:
             pass
-        sowenn hex is not None:
+        sowenn hex is not Nichts:
             hex = hex.replace('urn:', '').replace('uuid:', '')
             hex = hex.strip('{}').replace('-', '')
             wenn len(hex) != 32:
                 raise ValueError('badly formed hexadecimal UUID string')
             int = int_(hex, 16)
-        sowenn bytes_le is not None:
+        sowenn bytes_le is not Nichts:
             wenn len(bytes_le) != 16:
                 raise ValueError('bytes_le is not a 16-char string')
             assert isinstance(bytes_le, bytes_), repr(bytes_le)
             bytes = (bytes_le[4-1::-1] + bytes_le[6-1:4-1:-1] +
                      bytes_le[8-1:6-1:-1] + bytes_le[8:])
             int = int_.from_bytes(bytes)  # big endian
-        sowenn bytes is not None:
+        sowenn bytes is not Nichts:
             wenn len(bytes) != 16:
                 raise ValueError('bytes is not a 16-char string')
             assert isinstance(bytes, bytes_), repr(bytes)
             int = int_.from_bytes(bytes)  # big endian
-        sowenn fields is not None:
+        sowenn fields is not Nichts:
             wenn len(fields) != 6:
                 raise ValueError('fields is not a 6-tuple')
             (time_low, time_mid, time_hi_version,
@@ -252,7 +252,7 @@ klasse UUID:
                    (time_hi_version << 64) | (clock_seq << 48) | node)
         wenn not 0 <= int <= _UINT_128_MAX:
             raise ValueError('int is out of range (need a 128-bit value)')
-        wenn version is not None:
+        wenn version is not Nichts:
             wenn not 1 <= version <= 8:
                 raise ValueError('illegal version number')
             # clear the variant and the version number bits
@@ -428,8 +428,8 @@ def _get_command_stdout(command, *args):
         path_dirs = os.environ.get('PATH', os.defpath).split(os.pathsep)
         path_dirs.extend(['/sbin', '/usr/sbin'])
         executable = shutil.which(command, path=os.pathsep.join(path_dirs))
-        wenn executable is None:
-            return None
+        wenn executable is Nichts:
+            return Nichts
         # LC_ALL=C to ensure English output, stderr=DEVNULL to prevent output
         # on stderr (Note: we don't have an example where the words we search
         # fuer are actually localized, but in theory some system could do so.)
@@ -445,11 +445,11 @@ def _get_command_stdout(command, *args):
                                 stderr=subprocess.DEVNULL,
                                 env=env)
         wenn not proc:
-            return None
+            return Nichts
         stdout, stderr = proc.communicate()
         return io.BytesIO(stdout)
     except (OSError, subprocess.SubprocessError):
-        return None
+        return Nichts
 
 
 # For MAC (a.k.a. IEEE 802, or EUI-48) addresses, the second least significant
@@ -481,10 +481,10 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
     lambda i: i - 1 would get the word preceding the keyword.
     """
     stdout = _get_command_stdout(command, args)
-    wenn stdout is None:
-        return None
+    wenn stdout is Nichts:
+        return Nichts
 
-    first_local_mac = None
+    first_local_mac = Nichts
     fuer line in stdout:
         words = line.lower().rstrip().split()
         fuer i in range(len(words)):
@@ -503,7 +503,7 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
                     wenn _is_universal(mac):
                         return mac
                     first_local_mac = first_local_mac or mac
-    return first_local_mac or None
+    return first_local_mac or Nichts
 
 
 def _parse_mac(word):
@@ -542,16 +542,16 @@ def _find_mac_under_heading(command, args, heading):
     lines are then examined to see wenn they look like MAC addresses.
     """
     stdout = _get_command_stdout(command, args)
-    wenn stdout is None:
-        return None
+    wenn stdout is Nichts:
+        return Nichts
 
     keywords = stdout.readline().rstrip().split()
     try:
         column_index = keywords.index(heading)
     except ValueError:
-        return None
+        return Nichts
 
-    first_local_mac = None
+    first_local_mac = Nichts
     fuer line in stdout:
         words = line.rstrip().split()
         try:
@@ -560,11 +560,11 @@ def _find_mac_under_heading(command, args, heading):
             continue
 
         mac = _parse_mac(word)
-        wenn mac is None:
+        wenn mac is Nichts:
             continue
         wenn _is_universal(mac):
             return mac
-        wenn first_local_mac is None:
+        wenn first_local_mac is Nichts:
             first_local_mac = mac
 
     return first_local_mac
@@ -580,7 +580,7 @@ def _ifconfig_getnode():
         mac = _find_mac_near_keyword('ifconfig', args, keywords, lambda i: i+1)
         wenn mac:
             return mac
-    return None
+    return Nichts
 
 def _ip_getnode():
     """Get the hardware address on Unix by running ip."""
@@ -588,17 +588,17 @@ def _ip_getnode():
     mac = _find_mac_near_keyword('ip', 'link', [b'link/ether'], lambda i: i+1)
     wenn mac:
         return mac
-    return None
+    return Nichts
 
 def _arp_getnode():
     """Get the hardware address on Unix by running arp."""
     import os, socket
     wenn not hasattr(socket, "gethostbyname"):
-        return None
+        return Nichts
     try:
         ip_addr = socket.gethostbyname(socket.gethostname())
     except OSError:
-        return None
+        return Nichts
 
     # Try getting the MAC addr from arp based on our IP address (Solaris).
     mac = _find_mac_near_keyword('arp', '-an', [os.fsencode(ip_addr)], lambda i: -1)
@@ -613,10 +613,10 @@ def _arp_getnode():
     # This works on Linux, FreeBSD and NetBSD
     mac = _find_mac_near_keyword('arp', '-an', [os.fsencode('(%s)' % ip_addr)],
                     lambda i: i+2)
-    # Return None instead of 0.
+    # Return Nichts instead of 0.
     wenn mac:
         return mac
-    return None
+    return Nichts
 
 def _lanscan_getnode():
     """Get the hardware address on Unix by running lanscan."""
@@ -632,14 +632,14 @@ def _netstat_getnode():
 # Import optional C extension at toplevel, to help disabling it when testing
 try:
     import _uuid
-    _generate_time_safe = getattr(_uuid, "generate_time_safe", None)
+    _generate_time_safe = getattr(_uuid, "generate_time_safe", Nichts)
     _has_stable_extractable_node = _uuid.has_stable_extractable_node
-    _UuidCreate = getattr(_uuid, "UuidCreate", None)
+    _UuidCreate = getattr(_uuid, "UuidCreate", Nichts)
 except ImportError:
-    _uuid = None
-    _generate_time_safe = None
-    _has_stable_extractable_node = False
-    _UuidCreate = None
+    _uuid = Nichts
+    _generate_time_safe = Nichts
+    _has_stable_extractable_node = Falsch
+    _UuidCreate = Nichts
 
 
 def _unix_getnode():
@@ -697,7 +697,7 @@ sowenn os.name == 'nt':
 sonst:
     _GETTERS = _OS_GETTERS
 
-_node = None
+_node = Nichts
 
 def getnode():
     """Get the hardware address as a 48-bit positive integer.
@@ -708,7 +708,7 @@ def getnode():
     in RFC 4122.
     """
     global _node
-    wenn _node is not None:
+    wenn _node is not Nichts:
         return _node
 
     fuer getter in _GETTERS + [_random_getnode]:
@@ -716,14 +716,14 @@ def getnode():
             _node = getter()
         except:
             continue
-        wenn (_node is not None) and (0 <= _node < (1 << 48)):
+        wenn (_node is not Nichts) and (0 <= _node < (1 << 48)):
             return _node
-    assert False, '_random_getnode() returned invalid value: {}'.format(_node)
+    assert Falsch, '_random_getnode() returned invalid value: {}'.format(_node)
 
 
-_last_timestamp = None
+_last_timestamp = Nichts
 
-def uuid1(node=None, clock_seq=None):
+def uuid1(node=Nichts, clock_seq=Nichts):
     """Generate a UUID from a host ID, sequence number, and the current time.
     If 'node' is not given, getnode() is used to obtain the hardware
     address.  If 'clock_seq' is given, it is used as the sequence number;
@@ -731,7 +731,7 @@ def uuid1(node=None, clock_seq=None):
 
     # When the system provides a version-1 UUID generator, use it (but don't
     # use UuidCreate here because its UUIDs don't conform to RFC 4122).
-    wenn _generate_time_safe is not None and node is clock_seq is None:
+    wenn _generate_time_safe is not Nichts and node is clock_seq is Nichts:
         uuid_time, safely_generated = _generate_time_safe()
         try:
             is_safe = SafeUUID(safely_generated)
@@ -744,10 +744,10 @@ def uuid1(node=None, clock_seq=None):
     # 0x01b21dd213814000 is the number of 100-ns intervals between the
     # UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
     timestamp = nanoseconds // 100 + 0x01b21dd213814000
-    wenn _last_timestamp is not None and timestamp <= _last_timestamp:
+    wenn _last_timestamp is not Nichts and timestamp <= _last_timestamp:
         timestamp = _last_timestamp + 1
     _last_timestamp = timestamp
-    wenn clock_seq is None:
+    wenn clock_seq is Nichts:
         import random
         clock_seq = random.getrandbits(14) # instead of stable storage
     time_low = timestamp & 0xffffffff
@@ -755,7 +755,7 @@ def uuid1(node=None, clock_seq=None):
     time_hi_version = (timestamp >> 48) & 0x0fff
     clock_seq_low = clock_seq & 0xff
     clock_seq_hi_variant = (clock_seq >> 8) & 0x3f
-    wenn node is None:
+    wenn node is Nichts:
         node = getnode()
     return UUID(fields=(time_low, time_mid, time_hi_version,
                         clock_seq_hi_variant, clock_seq_low, node), version=1)
@@ -765,7 +765,7 @@ def uuid3(namespace, name):
     wenn isinstance(name, str):
         name = bytes(name, "utf-8")
     import hashlib
-    h = hashlib.md5(namespace.bytes + name, usedforsecurity=False)
+    h = hashlib.md5(namespace.bytes + name, usedforsecurity=Falsch)
     int_uuid_3 = int.from_bytes(h.digest())
     int_uuid_3 &= _RFC_4122_CLEARFLAGS_MASK
     int_uuid_3 |= _RFC_4122_VERSION_3_FLAGS
@@ -783,16 +783,16 @@ def uuid5(namespace, name):
     wenn isinstance(name, str):
         name = bytes(name, "utf-8")
     import hashlib
-    h = hashlib.sha1(namespace.bytes + name, usedforsecurity=False)
+    h = hashlib.sha1(namespace.bytes + name, usedforsecurity=Falsch)
     int_uuid_5 = int.from_bytes(h.digest()[:16])
     int_uuid_5 &= _RFC_4122_CLEARFLAGS_MASK
     int_uuid_5 |= _RFC_4122_VERSION_5_FLAGS
     return UUID._from_int(int_uuid_5)
 
 
-_last_timestamp_v6 = None
+_last_timestamp_v6 = Nichts
 
-def uuid6(node=None, clock_seq=None):
+def uuid6(node=Nichts, clock_seq=Nichts):
     """Similar to :func:`uuid1` but where fields are ordered differently
     fuer improved DB locality.
 
@@ -807,16 +807,16 @@ def uuid6(node=None, clock_seq=None):
     # 0x01b21dd213814000 is the number of 100-ns intervals between the
     # UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
     timestamp = nanoseconds // 100 + 0x01b21dd213814000
-    wenn _last_timestamp_v6 is not None and timestamp <= _last_timestamp_v6:
+    wenn _last_timestamp_v6 is not Nichts and timestamp <= _last_timestamp_v6:
         timestamp = _last_timestamp_v6 + 1
     _last_timestamp_v6 = timestamp
-    wenn clock_seq is None:
+    wenn clock_seq is Nichts:
         import random
         clock_seq = random.getrandbits(14)  # instead of stable storage
     time_hi_and_mid = (timestamp >> 12) & 0xffff_ffff_ffff
     time_lo = timestamp & 0x0fff  # keep 12 bits and clear version bits
     clock_s = clock_seq & 0x3fff  # keep 14 bits and clear variant bits
-    wenn node is None:
+    wenn node is Nichts:
         node = getnode()
     # --- 32 + 16 ---   -- 4 --   -- 12 --  -- 2 --   -- 14 ---    48
     # time_hi_and_mid | version | time_lo | variant | clock_seq | node
@@ -829,7 +829,7 @@ def uuid6(node=None, clock_seq=None):
     return UUID._from_int(int_uuid_6)
 
 
-_last_timestamp_v7 = None
+_last_timestamp_v7 = Nichts
 _last_counter_v7 = 0  # 42-bit counter
 
 def _uuid7_get_counter_and_tail():
@@ -865,7 +865,7 @@ def uuid7():
     nanoseconds = time.time_ns()
     timestamp_ms = nanoseconds // 1_000_000
 
-    wenn _last_timestamp_v7 is None or timestamp_ms > _last_timestamp_v7:
+    wenn _last_timestamp_v7 is Nichts or timestamp_ms > _last_timestamp_v7:
         counter, tail = _uuid7_get_counter_and_tail()
     sonst:
         wenn timestamp_ms < _last_timestamp_v7:
@@ -905,7 +905,7 @@ def uuid7():
     return res
 
 
-def uuid8(a=None, b=None, c=None):
+def uuid8(a=Nichts, b=Nichts, c=Nichts):
     """Generate a UUID from three custom blocks.
 
     * 'a' is the first 48-bit chunk of the UUID (octets 0-5);
@@ -914,13 +914,13 @@ def uuid8(a=None, b=None, c=None):
 
     When a value is not specified, a pseudo-random value is generated.
     """
-    wenn a is None:
+    wenn a is Nichts:
         import random
         a = random.getrandbits(48)
-    wenn b is None:
+    wenn b is Nichts:
         import random
         b = random.getrandbits(12)
-    wenn c is None:
+    wenn c is Nichts:
         import random
         c = random.getrandbits(62)
     int_uuid_8 = (a & 0xffff_ffff_ffff) << 80
@@ -954,7 +954,7 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Generate a UUID using the selected UUID function.",
-        color=True,
+        color=Wahr,
     )
     parser.add_argument("-u", "--uuid",
                         choices=uuid_funcs.keys(),

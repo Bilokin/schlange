@@ -15,43 +15,43 @@ klasse Popen(object):
 
     def __init__(self, process_obj):
         util._flush_std_streams()
-        self.returncode = None
-        self.finalizer = None
+        self.returncode = Nichts
+        self.finalizer = Nichts
         self._launch(process_obj)
 
     def duplicate_for_child(self, fd):
         return fd
 
     def poll(self, flag=os.WNOHANG):
-        wenn self.returncode is None:
+        wenn self.returncode is Nichts:
             try:
                 pid, sts = os.waitpid(self.pid, flag)
             except OSError:
                 # Child process not yet created. See #1731717
                 # e.errno == errno.ECHILD == 10
-                return None
+                return Nichts
             wenn pid == self.pid:
                 self.returncode = os.waitstatus_to_exitcode(sts)
         return self.returncode
 
-    def wait(self, timeout=None):
-        wenn self.returncode is None:
-            wenn timeout is not None:
+    def wait(self, timeout=Nichts):
+        wenn self.returncode is Nichts:
+            wenn timeout is not Nichts:
                 from multiprocessing.connection import wait
                 wenn not wait([self.sentinel], timeout):
-                    return None
+                    return Nichts
             # This shouldn't block wenn wait() returned successfully.
             return self.poll(os.WNOHANG wenn timeout == 0.0 sonst 0)
         return self.returncode
 
     def _send_signal(self, sig):
-        wenn self.returncode is None:
+        wenn self.returncode is Nichts:
             try:
                 os.kill(self.pid, sig)
             except ProcessLookupError:
                 pass
             except OSError:
-                wenn self.wait(timeout=0.1) is None:
+                wenn self.wait(timeout=0.1) is Nichts:
                     raise
 
     def interrupt(self):
@@ -86,5 +86,5 @@ klasse Popen(object):
             self.sentinel = parent_r
 
     def close(self):
-        wenn self.finalizer is not None:
+        wenn self.finalizer is not Nichts:
             self.finalizer()

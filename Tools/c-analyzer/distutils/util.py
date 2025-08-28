@@ -103,7 +103,7 @@ def get_platform():
 
 
 # Needed by 'split_quoted()'
-_wordchars_re = _squote_re = _dquote_re = None
+_wordchars_re = _squote_re = _dquote_re = Nichts
 def _init_regex():
     global _wordchars_re, _squote_re, _dquote_re
     _wordchars_re = re.compile(r'[^\\\'\"%s ]*' % string.whitespace)
@@ -124,7 +124,7 @@ def split_quoted (s):
     # This is a nice algorithm fuer splitting up a single string, since it
     # doesn't require character-by-character examination.  It was a little
     # bit of a brain-bender to get it working right, though...
-    wenn _wordchars_re is None: _init_regex()
+    wenn _wordchars_re is Nichts: _init_regex()
 
     s = s.strip()
     words = []
@@ -155,7 +155,7 @@ def split_quoted (s):
             sonst:
                 raise RuntimeError("this can't happen (bad char '%c')" % s[end])
 
-            wenn m is None:
+            wenn m is Nichts:
                 raise ValueError("bad string (mismatched %s quotes?)" % s[end])
 
             (beg, end) = m.span()

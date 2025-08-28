@@ -84,8 +84,8 @@ klasse Test_TestSkipping(unittest.TestCase):
                          ['skip 1', 'skip 2', 'skip 3'])
 
     def test_skipping_decorators(self):
-        op_table = ((unittest.skipUnless, False, True),
-                    (unittest.skipIf, True, False))
+        op_table = ((unittest.skipUnless, Falsch, Wahr),
+                    (unittest.skipIf, Wahr, Falsch))
         fuer deco, do_skip, dont_skip in op_table:
             klasse Foo(unittest.TestCase):
                 def defaultTestResult(self):
@@ -109,7 +109,7 @@ klasse Test_TestSkipping(unittest.TestCase):
             self.assertEqual(events, expected)
             self.assertEqual(result.testsRun, 2)
             self.assertEqual(result.skipped, [(test_do_skip, "testing")])
-            self.assertTrue(result.wasSuccessful())
+            self.assertWahr(result.wasSuccessful())
 
             events = []
             result = test_do_skip.run()
@@ -225,16 +225,16 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertIs(test.run(result), result)
         self.assertEqual(events,
                          ['startTest', 'addExpectedFailure', 'stopTest'])
-        self.assertFalse(result.failures)
+        self.assertFalsch(result.failures)
         self.assertEqual(result.expectedFailures[0][0], test)
-        self.assertFalse(result.unexpectedSuccesses)
-        self.assertTrue(result.wasSuccessful())
+        self.assertFalsch(result.unexpectedSuccesses)
+        self.assertWahr(result.wasSuccessful())
 
     def test_expected_failure_with_wrapped_class(self):
         @unittest.expectedFailure
         klasse Foo(unittest.TestCase):
             def test_1(self):
-                self.assertTrue(False)
+                self.assertWahr(Falsch)
 
         events = []
         result = LoggingResult(events)
@@ -242,15 +242,15 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertIs(test.run(result), result)
         self.assertEqual(events,
                          ['startTest', 'addExpectedFailure', 'stopTest'])
-        self.assertFalse(result.failures)
+        self.assertFalsch(result.failures)
         self.assertEqual(result.expectedFailures[0][0], test)
-        self.assertFalse(result.unexpectedSuccesses)
-        self.assertTrue(result.wasSuccessful())
+        self.assertFalsch(result.unexpectedSuccesses)
+        self.assertWahr(result.wasSuccessful())
 
     def test_expected_failure_with_wrapped_subclass(self):
         klasse Foo(unittest.TestCase):
             def test_1(self):
-                self.assertTrue(False)
+                self.assertWahr(Falsch)
 
         @unittest.expectedFailure
         klasse Bar(Foo):
@@ -262,10 +262,10 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertIs(test.run(result), result)
         self.assertEqual(events,
                          ['startTest', 'addExpectedFailure', 'stopTest'])
-        self.assertFalse(result.failures)
+        self.assertFalsch(result.failures)
         self.assertEqual(result.expectedFailures[0][0], test)
-        self.assertFalse(result.unexpectedSuccesses)
-        self.assertTrue(result.wasSuccessful())
+        self.assertFalsch(result.unexpectedSuccesses)
+        self.assertWahr(result.wasSuccessful())
 
     def test_expected_failure_subtests(self):
         # A failure in any subtest counts as the expected failure of the
@@ -288,11 +288,11 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertEqual(events,
                          ['startTest', 'addSubTestSuccess',
                           'addExpectedFailure', 'stopTest'])
-        self.assertFalse(result.failures)
+        self.assertFalsch(result.failures)
         self.assertEqual(len(result.expectedFailures), 1)
         self.assertIs(result.expectedFailures[0][0], test)
-        self.assertFalse(result.unexpectedSuccesses)
-        self.assertTrue(result.wasSuccessful())
+        self.assertFalsch(result.unexpectedSuccesses)
+        self.assertWahr(result.wasSuccessful())
 
     @force_not_colorized
     def test_expected_failure_and_fail_in_cleanup(self):
@@ -310,9 +310,9 @@ klasse Test_TestSkipping(unittest.TestCase):
                          ['startTest', 'addFailure', 'stopTest'])
         self.assertEqual(len(result.failures), 1)
         self.assertIn('AssertionError: bad tearDown', result.failures[0][1])
-        self.assertFalse(result.expectedFailures)
-        self.assertFalse(result.unexpectedSuccesses)
-        self.assertFalse(result.wasSuccessful())
+        self.assertFalsch(result.expectedFailures)
+        self.assertFalsch(result.unexpectedSuccesses)
+        self.assertFalsch(result.wasSuccessful())
 
     def test_expected_failure_and_skip_in_cleanup(self):
         klasse Foo(unittest.TestCase):
@@ -327,11 +327,11 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertIs(test.run(result), result)
         self.assertEqual(events,
                          ['startTest', 'addSkip', 'stopTest'])
-        self.assertFalse(result.failures)
-        self.assertFalse(result.expectedFailures)
-        self.assertFalse(result.unexpectedSuccesses)
+        self.assertFalsch(result.failures)
+        self.assertFalsch(result.expectedFailures)
+        self.assertFalsch(result.unexpectedSuccesses)
         self.assertEqual(result.skipped, [(test, "skip")])
-        self.assertTrue(result.wasSuccessful())
+        self.assertWahr(result.wasSuccessful())
 
     def test_unexpected_success(self):
         klasse Foo(unittest.TestCase):
@@ -344,10 +344,10 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertIs(test.run(result), result)
         self.assertEqual(events,
                          ['startTest', 'addUnexpectedSuccess', 'stopTest'])
-        self.assertFalse(result.failures)
-        self.assertFalse(result.expectedFailures)
+        self.assertFalsch(result.failures)
+        self.assertFalsch(result.expectedFailures)
         self.assertEqual(result.unexpectedSuccesses, [test])
-        self.assertFalse(result.wasSuccessful())
+        self.assertFalsch(result.wasSuccessful())
 
     def test_unexpected_success_subtests(self):
         # Success in all subtests counts as the unexpected success of
@@ -369,10 +369,10 @@ klasse Test_TestSkipping(unittest.TestCase):
                          ['startTest',
                           'addSubTestSuccess', 'addSubTestSuccess',
                           'addUnexpectedSuccess', 'stopTest'])
-        self.assertFalse(result.failures)
-        self.assertFalse(result.expectedFailures)
+        self.assertFalsch(result.failures)
+        self.assertFalsch(result.expectedFailures)
         self.assertEqual(result.unexpectedSuccesses, [test])
-        self.assertFalse(result.wasSuccessful())
+        self.assertFalsch(result.wasSuccessful())
 
     @force_not_colorized
     def test_unexpected_success_and_fail_in_cleanup(self):
@@ -390,9 +390,9 @@ klasse Test_TestSkipping(unittest.TestCase):
                          ['startTest', 'addFailure', 'stopTest'])
         self.assertEqual(len(result.failures), 1)
         self.assertIn('AssertionError: bad tearDown', result.failures[0][1])
-        self.assertFalse(result.expectedFailures)
-        self.assertFalse(result.unexpectedSuccesses)
-        self.assertFalse(result.wasSuccessful())
+        self.assertFalsch(result.expectedFailures)
+        self.assertFalsch(result.unexpectedSuccesses)
+        self.assertFalsch(result.wasSuccessful())
 
     def test_unexpected_success_and_skip_in_cleanup(self):
         klasse Foo(unittest.TestCase):
@@ -407,20 +407,20 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertIs(test.run(result), result)
         self.assertEqual(events,
                          ['startTest', 'addSkip', 'stopTest'])
-        self.assertFalse(result.failures)
-        self.assertFalse(result.expectedFailures)
-        self.assertFalse(result.unexpectedSuccesses)
+        self.assertFalsch(result.failures)
+        self.assertFalsch(result.expectedFailures)
+        self.assertFalsch(result.unexpectedSuccesses)
         self.assertEqual(result.skipped, [(test, "skip")])
-        self.assertTrue(result.wasSuccessful())
+        self.assertWahr(result.wasSuccessful())
 
     def test_skip_doesnt_run_setup(self):
         klasse Foo(unittest.TestCase):
-            wasSetUp = False
-            wasTornDown = False
+            wasSetUp = Falsch
+            wasTornDown = Falsch
             def setUp(self):
-                Foo.wasSetUp = True
+                Foo.wasSetUp = Wahr
             def tornDown(self):
-                Foo.wasTornDown = True
+                Foo.wasTornDown = Wahr
             @unittest.skip('testing')
             def test_1(self):
                 pass
@@ -430,8 +430,8 @@ klasse Test_TestSkipping(unittest.TestCase):
         suite = unittest.TestSuite([test])
         self.assertIs(suite.run(result), result)
         self.assertEqual(result.skipped, [(test, "testing")])
-        self.assertFalse(Foo.wasSetUp)
-        self.assertFalse(Foo.wasTornDown)
+        self.assertFalsch(Foo.wasSetUp)
+        self.assertFalsch(Foo.wasTornDown)
 
     def test_decorated_skip(self):
         def decorator(func):

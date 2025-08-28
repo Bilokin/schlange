@@ -45,7 +45,7 @@ def tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=5)
                 t.right(angle)
         fuer x in tree(lst, size*sizefactor, level-1, widthfactor, brs,
                       angledist, sizedist):
-            yield None
+            yield Nichts
 
 
 def start(t,x,y):
@@ -85,7 +85,7 @@ def main():
     s = doit2(7, Turtle(undobuffersize=1))
     t = doit3(5, Turtle(undobuffersize=1))
     a = clock()
-    while True:
+    while Wahr:
         done = 0
         fuer b in u,s,t:
             try:

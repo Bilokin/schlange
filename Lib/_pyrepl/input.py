@@ -41,26 +41,26 @@ from collections import deque
 
 
 # types
-wenn False:
+wenn Falsch:
     from .types import EventTuple
 
 
 klasse InputTranslator(ABC):
     @abstractmethod
-    def push(self, evt: EventTuple) -> None:
+    def push(self, evt: EventTuple) -> Nichts:
         pass
 
     @abstractmethod
-    def get(self) -> EventTuple | None:
-        return None
+    def get(self) -> EventTuple | Nichts:
+        return Nichts
 
     @abstractmethod
     def empty(self) -> bool:
-        return True
+        return Wahr
 
 
 klasse KeymapTranslator(InputTranslator):
-    def __init__(self, keymap, verbose=False, invalid_cls=None, character_cls=None):
+    def __init__(self, keymap, verbose=Falsch, invalid_cls=Nichts, character_cls=Nichts):
         self.verbose = verbose
         from .keymap import compile_keymap, parse_keys
 
@@ -88,7 +88,7 @@ klasse KeymapTranslator(InputTranslator):
             self.stack.append(key)
             self.k = d
         sonst:
-            wenn d is None:
+            wenn d is Nichts:
                 wenn self.verbose:
                     print("invalid")
                 wenn self.stack or len(key) > 1 or unicodedata.category(key) == "C":
@@ -108,7 +108,7 @@ klasse KeymapTranslator(InputTranslator):
         wenn self.results:
             return self.results.popleft()
         sonst:
-            return None
+            return Nichts
 
     def empty(self) -> bool:
         return not self.results

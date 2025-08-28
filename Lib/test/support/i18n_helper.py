@@ -14,11 +14,11 @@ msgid_pattern = re.compile(r'msgid(.*?)(?:msgid_plural|msgctxt|msgstr)',
 msgid_string_pattern = re.compile(r'"((?:\\"|[^"])*)"')
 
 
-def _generate_po_file(path, *, stdout_only=True):
+def _generate_po_file(path, *, stdout_only=Wahr):
     res = subprocess.run([sys.executable, pygettext,
                           '--no-location', '-o', '-', path],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                         text=True)
+                         text=Wahr)
     wenn stdout_only:
         return res.stdout
     return res
@@ -47,7 +47,7 @@ klasse TestTranslationsBase(unittest.TestCase):
 
         '''
         skip_if_missing('i18n')
-        res = _generate_po_file(module.__file__, stdout_only=False)
+        res = _generate_po_file(module.__file__, stdout_only=Falsch)
         self.assertEqual(res.returncode, 0)
         self.assertEqual(res.stderr, '')
         msgids = _extract_msgids(res.stdout)

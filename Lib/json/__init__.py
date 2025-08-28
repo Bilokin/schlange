@@ -9,7 +9,7 @@ version of the externally maintained simplejson library.
 Encoding basic Python object hierarchies::
 
     >>> import json
-    >>> json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}])
+    >>> json.dumps(['foo', {'bar': ('baz', Nichts, 1.0, 2)}])
     '["foo", {"bar": ["baz", null, 1.0, 2]}]'
     >>> print(json.dumps("\"foo\bar"))
     "\"foo\bar"
@@ -17,7 +17,7 @@ Encoding basic Python object hierarchies::
     "\u1234"
     >>> print(json.dumps('\\'))
     "\\"
-    >>> print(json.dumps({"c": 0, "b": 0, "a": 0}, sort_keys=True))
+    >>> print(json.dumps({"c": 0, "b": 0, "a": 0}, sort_keys=Wahr))
     {"a": 0, "b": 0, "c": 0}
     >>> from io import StringIO
     >>> io = StringIO()
@@ -35,7 +35,7 @@ Compact encoding::
 Pretty printing::
 
     >>> import json
-    >>> print(json.dumps({'4': 5, '6': 7}, sort_keys=True, indent=4))
+    >>> print(json.dumps({'4': 5, '6': 7}, sort_keys=Wahr, indent=4))
     {
         "4": 5,
         "6": 7
@@ -44,15 +44,15 @@ Pretty printing::
 Decoding JSON::
 
     >>> import json
-    >>> obj = ['foo', {'bar': ['baz', None, 1.0, 2]}]
+    >>> obj = ['foo', {'bar': ['baz', Nichts, 1.0, 2]}]
     >>> json.loads('["foo", {"bar":["baz", null, 1.0, 2]}]') == obj
-    True
+    Wahr
     >>> json.loads('"\\"foo\\bar"') == '"foo\x08ar'
-    True
+    Wahr
     >>> from io import StringIO
     >>> io = StringIO('["streaming API"]')
     >>> json.load(io)[0] == 'streaming API'
-    True
+    Wahr
 
 Specializing JSON object decoding::
 
@@ -67,7 +67,7 @@ Specializing JSON object decoding::
     (1+2j)
     >>> from decimal import Decimal
     >>> json.loads('1.1', parse_float=Decimal) == Decimal('1.1')
-    True
+    Wahr
 
 Specializing JSON object encoding::
 
@@ -108,23 +108,23 @@ from .encoder import JSONEncoder
 import codecs
 
 _default_encoder = JSONEncoder(
-    skipkeys=False,
-    ensure_ascii=True,
-    check_circular=True,
-    allow_nan=True,
-    indent=None,
-    separators=None,
-    default=None,
+    skipkeys=Falsch,
+    ensure_ascii=Wahr,
+    check_circular=Wahr,
+    allow_nan=Wahr,
+    indent=Nichts,
+    separators=Nichts,
+    default=Nichts,
 )
 
-def dump(obj, fp, *, skipkeys=False, ensure_ascii=True, check_circular=True,
-        allow_nan=True, cls=None, indent=None, separators=None,
-        default=None, sort_keys=False, **kw):
+def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
+        allow_nan=Wahr, cls=Nichts, indent=Nichts, separators=Nichts,
+        default=Nichts, sort_keys=Falsch, **kw):
     """Serialize ``obj`` as a JSON formatted stream to ``fp`` (a
     ``.write()``-supporting file-like object).
 
     If ``skipkeys`` is true then ``dict`` keys that are not basic types
-    (``str``, ``int``, ``float``, ``bool``, ``None``) will be skipped
+    (``str``, ``int``, ``float``, ``bool``, ``Nichts``) will be skipped
     instead of raising a ``TypeError``.
 
     If ``ensure_ascii`` is false, then the strings written to ``fp`` can
@@ -142,18 +142,18 @@ def dump(obj, fp, *, skipkeys=False, ensure_ascii=True, check_circular=True,
 
     If ``indent`` is a non-negative integer, then JSON array elements and
     object members will be pretty-printed with that indent level. An indent
-    level of 0 will only insert newlines. ``None`` is the most compact
+    level of 0 will only insert newlines. ``Nichts`` is the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default is ``(', ', ': ')`` wenn *indent* is ``None`` and
+    tuple.  The default is ``(', ', ': ')`` wenn *indent* is ``Nichts`` and
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
     ``default(obj)`` is a function that should return a serializable version
     of obj or raise TypeError. The default simply raises TypeError.
 
-    If *sort_keys* is true (default: ``False``), then the output of
+    If *sort_keys* is true (default: ``Falsch``), then the output of
     dictionaries will be sorted by key.
 
     To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the
@@ -164,11 +164,11 @@ def dump(obj, fp, *, skipkeys=False, ensure_ascii=True, check_circular=True,
     # cached encoder
     wenn (not skipkeys and ensure_ascii and
         check_circular and allow_nan and
-        cls is None and indent is None and separators is None and
-        default is None and not sort_keys and not kw):
+        cls is Nichts and indent is Nichts and separators is Nichts and
+        default is Nichts and not sort_keys and not kw):
         iterable = _default_encoder.iterencode(obj)
     sonst:
-        wenn cls is None:
+        wenn cls is Nichts:
             cls = JSONEncoder
         iterable = cls(skipkeys=skipkeys, ensure_ascii=ensure_ascii,
             check_circular=check_circular, allow_nan=allow_nan, indent=indent,
@@ -180,13 +180,13 @@ def dump(obj, fp, *, skipkeys=False, ensure_ascii=True, check_circular=True,
         fp.write(chunk)
 
 
-def dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
-        allow_nan=True, cls=None, indent=None, separators=None,
-        default=None, sort_keys=False, **kw):
+def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
+        allow_nan=Wahr, cls=Nichts, indent=Nichts, separators=Nichts,
+        default=Nichts, sort_keys=Falsch, **kw):
     """Serialize ``obj`` to a JSON formatted ``str``.
 
     If ``skipkeys`` is true then ``dict`` keys that are not basic types
-    (``str``, ``int``, ``float``, ``bool``, ``None``) will be skipped
+    (``str``, ``int``, ``float``, ``bool``, ``Nichts``) will be skipped
     instead of raising a ``TypeError``.
 
     If ``ensure_ascii`` is false, then the return value can contain non-ASCII
@@ -204,18 +204,18 @@ def dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
 
     If ``indent`` is a non-negative integer, then JSON array elements and
     object members will be pretty-printed with that indent level. An indent
-    level of 0 will only insert newlines. ``None`` is the most compact
+    level of 0 will only insert newlines. ``Nichts`` is the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default is ``(', ', ': ')`` wenn *indent* is ``None`` and
+    tuple.  The default is ``(', ', ': ')`` wenn *indent* is ``Nichts`` and
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
     ``default(obj)`` is a function that should return a serializable version
     of obj or raise TypeError. The default simply raises TypeError.
 
-    If *sort_keys* is true (default: ``False``), then the output of
+    If *sort_keys* is true (default: ``Falsch``), then the output of
     dictionaries will be sorted by key.
 
     To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the
@@ -226,10 +226,10 @@ def dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
     # cached encoder
     wenn (not skipkeys and ensure_ascii and
         check_circular and allow_nan and
-        cls is None and indent is None and separators is None and
-        default is None and not sort_keys and not kw):
+        cls is Nichts and indent is Nichts and separators is Nichts and
+        default is Nichts and not sort_keys and not kw):
         return _default_encoder.encode(obj)
-    wenn cls is None:
+    wenn cls is Nichts:
         cls = JSONEncoder
     return cls(
         skipkeys=skipkeys, ensure_ascii=ensure_ascii,
@@ -238,7 +238,7 @@ def dumps(obj, *, skipkeys=False, ensure_ascii=True, check_circular=True,
         **kw).encode(obj)
 
 
-_default_decoder = JSONDecoder(object_hook=None, object_pairs_hook=None)
+_default_decoder = JSONDecoder(object_hook=Nichts, object_pairs_hook=Nichts)
 
 
 def detect_encoding(b):
@@ -271,8 +271,8 @@ def detect_encoding(b):
     return 'utf-8'
 
 
-def load(fp, *, cls=None, object_hook=None, parse_float=None,
-        parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
+def load(fp, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
+        parse_int=Nichts, parse_constant=Nichts, object_pairs_hook=Nichts, **kw):
     """Deserialize ``fp`` (a ``.read()``-supporting file-like object containing
     a JSON document) to a Python object.
 
@@ -296,8 +296,8 @@ def load(fp, *, cls=None, object_hook=None, parse_float=None,
         parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
 
 
-def loads(s, *, cls=None, object_hook=None, parse_float=None,
-        parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
+def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
+        parse_int=Nichts, parse_constant=Nichts, object_pairs_hook=Nichts, **kw):
     """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
     containing a JSON document) to a Python object.
 
@@ -340,20 +340,20 @@ def loads(s, *, cls=None, object_hook=None, parse_float=None,
                             f'not {s.__class__.__name__}')
         s = s.decode(detect_encoding(s), 'surrogatepass')
 
-    wenn (cls is None and object_hook is None and
-            parse_int is None and parse_float is None and
-            parse_constant is None and object_pairs_hook is None and not kw):
+    wenn (cls is Nichts and object_hook is Nichts and
+            parse_int is Nichts and parse_float is Nichts and
+            parse_constant is Nichts and object_pairs_hook is Nichts and not kw):
         return _default_decoder.decode(s)
-    wenn cls is None:
+    wenn cls is Nichts:
         cls = JSONDecoder
-    wenn object_hook is not None:
+    wenn object_hook is not Nichts:
         kw['object_hook'] = object_hook
-    wenn object_pairs_hook is not None:
+    wenn object_pairs_hook is not Nichts:
         kw['object_pairs_hook'] = object_pairs_hook
-    wenn parse_float is not None:
+    wenn parse_float is not Nichts:
         kw['parse_float'] = parse_float
-    wenn parse_int is not None:
+    wenn parse_int is not Nichts:
         kw['parse_int'] = parse_int
-    wenn parse_constant is not None:
+    wenn parse_constant is not Nichts:
         kw['parse_constant'] = parse_constant
     return cls(**kw).decode(s)

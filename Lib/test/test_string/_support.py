@@ -9,7 +9,7 @@ klasse TStringBaseCase:
 
         The *exp* argument must be a tuple of the form
         (value, expression, conversion, format_spec) where the final three
-        items may be omitted and are assumed to be '', None and '' respectively.
+        items may be omitted and are assumed to be '', Nichts and '' respectively.
         """
         wenn len(exp) == 4:
             actual = (i.value, i.expression, i.conversion, i.format_spec)
@@ -19,12 +19,12 @@ klasse TStringBaseCase:
             self.assertEqual(i.format_spec, "")
         sowenn len(exp) == 2:
             self.assertEqual((i.value, i.expression), exp)
-            self.assertEqual(i.conversion, None)
+            self.assertEqual(i.conversion, Nichts)
             self.assertEqual(i.format_spec, "")
         sowenn len(exp) == 1:
             self.assertEqual((i.value,), exp)
             self.assertEqual(i.expression, "")
-            self.assertEqual(i.conversion, None)
+            self.assertEqual(i.conversion, Nichts)
             self.assertEqual(i.format_spec, "")
 
     def assertTStringEqual(self, t, strings, interpolations):
@@ -39,7 +39,7 @@ klasse TStringBaseCase:
         self.assertEqual(t.strings, strings)
         self.assertEqual(len(t.interpolations), len(interpolations))
 
-        fuer i, exp in zip(t.interpolations, interpolations, strict=True):
+        fuer i, exp in zip(t.interpolations, interpolations, strict=Wahr):
             self.assertInterpolationEqual(i, exp)
 
 

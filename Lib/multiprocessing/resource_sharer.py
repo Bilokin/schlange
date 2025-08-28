@@ -64,15 +64,15 @@ klasse _ResourceSharer(object):
         self._key = 0
         self._cache = {}
         self._lock = threading.Lock()
-        self._listener = None
-        self._address = None
-        self._thread = None
+        self._listener = Nichts
+        self._address = Nichts
+        self._thread = Nichts
         util.register_after_fork(self, _ResourceSharer._afterfork)
 
     def register(self, send, close):
         '''Register resource, returning an identifier.'''
         with self._lock:
-            wenn self._address is None:
+            wenn self._address is Nichts:
                 self._start()
             self._key += 1
             self._cache[self._key] = (send, close)
@@ -87,23 +87,23 @@ klasse _ResourceSharer(object):
         c.send((key, os.getpid()))
         return c
 
-    def stop(self, timeout=None):
+    def stop(self, timeout=Nichts):
         '''Stop the background thread and clear registered resources.'''
         from .connection import Client
         with self._lock:
-            wenn self._address is not None:
+            wenn self._address is not Nichts:
                 c = Client(self._address,
                            authkey=process.current_process().authkey)
-                c.send(None)
+                c.send(Nichts)
                 c.close()
                 self._thread.join(timeout)
                 wenn self._thread.is_alive():
                     util.sub_warning('_ResourceSharer thread did '
                                      'not stop when asked')
                 self._listener.close()
-                self._thread = None
-                self._address = None
-                self._listener = None
+                self._thread = Nichts
+                self._address = Nichts
+                self._listener = Nichts
                 fuer key, (send, close) in self._cache.items():
                     close()
                 self._cache.clear()
@@ -113,20 +113,20 @@ klasse _ResourceSharer(object):
             close()
         self._cache.clear()
         self._lock._at_fork_reinit()
-        wenn self._listener is not None:
+        wenn self._listener is not Nichts:
             self._listener.close()
-        self._listener = None
-        self._address = None
-        self._thread = None
+        self._listener = Nichts
+        self._address = Nichts
+        self._thread = Nichts
 
     def _start(self):
         from .connection import Listener
-        assert self._listener is None, "Already have Listener"
+        assert self._listener is Nichts, "Already have Listener"
         util.debug('starting listener and thread fuer sending handles')
         self._listener = Listener(authkey=process.current_process().authkey, backlog=128)
         self._address = self._listener.address
         t = threading.Thread(target=self._serve)
-        t.daemon = True
+        t.daemon = Wahr
         t.start()
         self._thread = t
 
@@ -137,7 +137,7 @@ klasse _ResourceSharer(object):
             try:
                 with self._listener.accept() as conn:
                     msg = conn.recv()
-                    wenn msg is None:
+                    wenn msg is Nichts:
                         break
                     key, destination_pid = msg
                     send, close = self._cache.pop(key)

@@ -35,7 +35,7 @@ klasse TestSimpleInteract(unittest.TestCase):
             contextlib.redirect_stdout(f),
         ):
             more = console.push(code, filename="<stdin>", _symbol="single")  # type: ignore[call-arg]
-        self.assertFalse(more)
+        self.assertFalsch(more)
         showsyntaxerror.assert_not_called()
 
 
@@ -51,7 +51,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
             more = console.push(code, filename="<stdin>", _symbol="single")  # type: ignore[call-arg]
-        self.assertFalse(more)
+        self.assertFalsch(more)
         self.assertEqual(f.getvalue(), "1\n")
 
     @force_not_colorized
@@ -74,7 +74,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
             more = console.push(code, filename="<stdin>", _symbol="single")  # type: ignore[call-arg]
-        self.assertFalse(more)
+        self.assertFalsch(more)
         self.assertEqual(f.getvalue(), "")
 
     def test_runsource_compiles_and_runs_code(self):
@@ -90,7 +90,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
             result = console.runsource(source)
-        self.assertFalse(result)
+        self.assertFalsch(result)
 
     @force_not_colorized
     def test_runsource_returns_false_for_failed_compilation(self):
@@ -99,7 +99,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         f = io.StringIO()
         with contextlib.redirect_stderr(f):
             result = console.runsource(source)
-        self.assertFalse(result)
+        self.assertFalsch(result)
         self.assertIn('SyntaxError', f.getvalue())
 
     @force_not_colorized
@@ -109,7 +109,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         f = io.StringIO()
         with contextlib.redirect_stderr(f):
             result = console.runsource(source)
-        self.assertFalse(result)
+        self.assertFalsch(result)
         r = """
     def f(x, x): ...
              ^
@@ -137,7 +137,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         f = io.StringIO()
         with contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):
             result = console.runsource(source)
-        self.assertFalse(result)
+        self.assertFalsch(result)
         self.assertIn("source code string cannot contain null bytes", f.getvalue())
 
     def test_no_active_future(self):
@@ -149,7 +149,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
             result = console.runsource(source)
-        self.assertFalse(result)
+        self.assertFalsch(result)
         self.assertEqual(f.getvalue(), "{'x': <class 'int'>}\n")
 
     def test_future_annotations(self):
@@ -162,7 +162,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
             result = console.runsource(source)
-        self.assertFalse(result)
+        self.assertFalsch(result)
         self.assertEqual(f.getvalue(), "{'x': 'int'}\n")
 
     def test_future_barry_as_flufl(self):
@@ -171,8 +171,8 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         with contextlib.redirect_stdout(f):
             result = console.runsource("from __future__ import barry_as_FLUFL\n")
             result = console.runsource("""print("black" <> 'blue')\n""")
-        self.assertFalse(result)
-        self.assertEqual(f.getvalue(), "True\n")
+        self.assertFalsch(result)
+        self.assertEqual(f.getvalue(), "Wahr\n")
 
 
 klasse TestMoreLines(unittest.TestCase):
@@ -180,19 +180,19 @@ klasse TestMoreLines(unittest.TestCase):
         namespace = {}
         code = "if foo"
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertFalse(_more_lines(console, code))
+        self.assertFalsch(_more_lines(console, code))
 
     def test_empty_line(self):
         namespace = {}
         code = ""
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertFalse(_more_lines(console, code))
+        self.assertFalsch(_more_lines(console, code))
 
     def test_valid_single_statement(self):
         namespace = {}
         code = "foo = 1"
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertFalse(_more_lines(console, code))
+        self.assertFalsch(_more_lines(console, code))
 
     def test_multiline_single_assignment(self):
         namespace = {}
@@ -203,7 +203,7 @@ klasse TestMoreLines(unittest.TestCase):
             3,
         ]""")
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertFalse(_more_lines(console, code))
+        self.assertFalsch(_more_lines(console, code))
 
     def test_multiline_single_block(self):
         namespace = {}
@@ -213,13 +213,13 @@ klasse TestMoreLines(unittest.TestCase):
 
             return 1""")
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertTrue(_more_lines(console, code))
+        self.assertWahr(_more_lines(console, code))
 
     def test_multiple_statements_single_line(self):
         namespace = {}
         code = "foo = 1;bar = 2"
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertFalse(_more_lines(console, code))
+        self.assertFalsch(_more_lines(console, code))
 
     def test_multiple_statements(self):
         namespace = {}
@@ -228,7 +228,7 @@ klasse TestMoreLines(unittest.TestCase):
 
         foo = 1""")
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertTrue(_more_lines(console, code))
+        self.assertWahr(_more_lines(console, code))
 
     def test_multiple_blocks(self):
         namespace = {}
@@ -240,7 +240,7 @@ klasse TestMoreLines(unittest.TestCase):
             x: float
             y: float""")
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertTrue(_more_lines(console, code))
+        self.assertWahr(_more_lines(console, code))
 
     def test_multiple_blocks_empty_newline(self):
         namespace = {}
@@ -253,7 +253,7 @@ klasse TestMoreLines(unittest.TestCase):
             y: float
         """)
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertFalse(_more_lines(console, code))
+        self.assertFalsch(_more_lines(console, code))
 
     def test_multiple_blocks_indented_newline(self):
         namespace = {}
@@ -267,13 +267,13 @@ klasse TestMoreLines(unittest.TestCase):
             "    "
         )
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertFalse(_more_lines(console, code))
+        self.assertFalsch(_more_lines(console, code))
 
     def test_incomplete_statement(self):
         namespace = {}
         code = "if foo:"
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
-        self.assertTrue(_more_lines(console, code))
+        self.assertWahr(_more_lines(console, code))
 
 
 klasse TestWarnings(unittest.TestCase):
@@ -292,7 +292,7 @@ klasse TestWarnings(unittest.TestCase):
                 return 2
         """)
 
-        with warnings.catch_warnings(record=True) as caught:
+        with warnings.catch_warnings(record=Wahr) as caught:
             warnings.simplefilter("default")
             console.runsource(code)
 

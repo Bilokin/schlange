@@ -5,7 +5,7 @@ Query is the generic base klasse fuer a popup dialog.
 The user must either enter a valid answer or close the dialog.
 Entries are validated when <Return> is entered or [Ok] is clicked.
 Entries are ignored when [Cancel] or [X] are clicked.
-The 'return value' is .result set to either a valid answer or None.
+The 'return value' is .result set to either a valid answer or Nichts.
 
 Subclass SectionName gets a name fuer a new config file section.
 Configdialog uses it fuer new highlight theme and keybinding set names.
@@ -36,11 +36,11 @@ klasse Query(Toplevel):
     For this base class, accept any non-blank string.
     """
     def __init__(self, parent, title, message, *, text0='', used_names={},
-                 _htest=False, _utest=False):
+                 _htest=Falsch, _utest=Falsch):
         """Create modal popup, return when destroyed.
 
         Additional subclass init must be done before this unless
-        _utest=True is passed to suppress wait_window().
+        _utest=Wahr is passed to suppress wait_window().
 
         title - string, title of popup dialog
         message - string, informational message to display
@@ -79,7 +79,7 @@ klasse Query(Toplevel):
                     ((parent.winfo_height()/2 - self.winfo_reqheight()/2)
                     wenn not _htest sonst 150)
                 ) )
-        self.resizable(height=False, width=False)
+        self.resizable(height=Falsch, width=Falsch)
 
         wenn not _utest:
             self.deiconify()  # Unhide now that geometry set.
@@ -102,7 +102,7 @@ klasse Query(Toplevel):
         self.entryvar = StringVar(self, self.text0)
         self.entry = Entry(frame, width=30, textvariable=self.entryvar)
         self.error_font = Font(name='TkCaptionFont',
-                               exists=True, root=self.parent)
+                               exists=Wahr, root=self.parent)
         self.entry_error = Label(frame, text=' ', foreground='red',
                                  font=self.error_font)
         # Display or blank error by setting ['text'] =.
@@ -124,35 +124,35 @@ klasse Query(Toplevel):
 
     def create_extra(self): pass  # Override to add widgets.
 
-    def showerror(self, message, widget=None):
+    def showerror(self, message, widget=Nichts):
         #self.bell(displayof=self)
         (widget or self.entry_error)['text'] = 'ERROR: ' + message
 
     def entry_ok(self):  # Example: usually replace.
-        "Return non-blank entry or None."
+        "Return non-blank entry or Nichts."
         entry = self.entry.get().strip()
         wenn not entry:
             self.showerror('blank line.')
-            return None
+            return Nichts
         return entry
 
-    def ok(self, event=None):  # Do not replace.
+    def ok(self, event=Nichts):  # Do not replace.
         '''If entry is valid, bind it to 'result' and destroy tk widget.
 
         Otherwise leave dialog open fuer user to correct entry or cancel.
         '''
         self.entry_error['text'] = ''
         entry = self.entry_ok()
-        wenn entry is not None:
+        wenn entry is not Nichts:
             self.result = entry
             self.destroy()
         sonst:
             # [Ok] moves focus.  (<Return> does not.)  Move it back.
             self.entry.focus_set()
 
-    def cancel(self, event=None):  # Do not replace.
-        "Set dialog result to None and destroy tk widget."
-        self.result = None
+    def cancel(self, event=Nichts):  # Do not replace.
+        "Set dialog result to Nichts and destroy tk widget."
+        self.result = Nichts
         self.destroy()
 
     def destroy(self):
@@ -165,22 +165,22 @@ klasse SectionName(Query):
     # Used in ConfigDialog.GetNewKeysName, .GetNewThemeName (837)
 
     def __init__(self, parent, title, message, used_names,
-                 *, _htest=False, _utest=False):
+                 *, _htest=Falsch, _utest=Falsch):
         super().__init__(parent, title, message, used_names=used_names,
                          _htest=_htest, _utest=_utest)
 
     def entry_ok(self):
-        "Return sensible ConfigParser section name or None."
+        "Return sensible ConfigParser section name or Nichts."
         name = self.entry.get().strip()
         wenn not name:
             self.showerror('no name specified.')
-            return None
+            return Nichts
         sowenn len(name)>30:
             self.showerror('name is longer than 30 characters.')
-            return None
+            return Nichts
         sowenn name in self.used_names:
             self.showerror('name is already in use.')
-            return None
+            return Nichts
         return name
 
 
@@ -189,40 +189,40 @@ klasse ModuleName(Query):
     # Used in open_module (editor.EditorWindow until move to iobinding).
 
     def __init__(self, parent, title, message, text0,
-                 *, _htest=False, _utest=False):
+                 *, _htest=Falsch, _utest=Falsch):
         super().__init__(parent, title, message, text0=text0,
                        _htest=_htest, _utest=_utest)
 
     def entry_ok(self):
-        "Return entered module name as file path or None."
+        "Return entered module name as file path or Nichts."
         name = self.entry.get().strip()
         wenn not name:
             self.showerror('no name specified.')
-            return None
+            return Nichts
         # XXX Ought to insert current file's directory in front of path.
         try:
             spec = importlib.util.find_spec(name)
         except (ValueError, ImportError) as msg:
             self.showerror(str(msg))
-            return None
-        wenn spec is None:
+            return Nichts
+        wenn spec is Nichts:
             self.showerror("module not found.")
-            return None
+            return Nichts
         wenn not isinstance(spec.loader, importlib.abc.SourceLoader):
             self.showerror("not a source-based module.")
-            return None
+            return Nichts
         try:
             file_path = spec.loader.get_filename(name)
         except AttributeError:
             self.showerror("loader does not support get_filename.")
-            return None
+            return Nichts
         except ImportError:
             # Some special modules require this (e.g. os.path)
             try:
                 file_path = spec.loader.get_filename()
             except TypeError:
                 self.showerror("loader failed to get filename.")
-                return None
+                return Nichts
         return file_path
 
 
@@ -235,10 +235,10 @@ klasse Goto(Query):
             lineno = int(self.entry.get())
         except ValueError:
             self.showerror('not a base 10 integer.')
-            return None
+            return Nichts
         wenn lineno <= 0:
             self.showerror('not a positive integer.')
-            return None
+            return Nichts
         return lineno
 
 
@@ -247,7 +247,7 @@ klasse HelpSource(Query):
     # Used in ConfigDialog.HelpListItemAdd/Edit, (941/9)
 
     def __init__(self, parent, title, *, menuitem='', filepath='',
-                 used_names={}, _htest=False, _utest=False):
+                 used_names={}, _htest=Falsch, _utest=Falsch):
         """Get menu entry and url/local file fuer Additional Help.
 
         User enters a name fuer the Help resource and a web url or file
@@ -297,7 +297,7 @@ klasse HelpSource(Query):
         wenn path:
             dir, base = os.path.split(path)
         sonst:
-            base = None
+            base = Nichts
             wenn platform[:3] == 'win':
                 dir = os.path.join(os.path.dirname(executable), 'Doc')
                 wenn not os.path.isdir(dir):
@@ -315,24 +315,24 @@ klasse HelpSource(Query):
         path = self.path.get().strip()
         wenn not path: #no path specified
             self.showerror('no help file path specified.', self.path_error)
-            return None
+            return Nichts
         sowenn not path.startswith(('www.', 'http')):
             wenn path[:5] == 'file:':
                 path = path[5:]
             wenn not os.path.exists(path):
                 self.showerror('help file path does not exist.',
                                self.path_error)
-                return None
+                return Nichts
             wenn platform == 'darwin':  # fuer Mac Safari
                 path =  "file://" + path
         return path
 
     def entry_ok(self):
-        "Return apparently valid (name, path) or None"
+        "Return apparently valid (name, path) or Nichts"
         self.path_error['text'] = ''
         name = self.item_ok()
         path = self.path_ok()
-        return None wenn name is None or path is None sonst (name, path)
+        return Nichts wenn name is Nichts or path is Nichts sonst (name, path)
 
 klasse CustomRun(Query):
     """Get settings fuer custom run of module.
@@ -343,7 +343,7 @@ klasse CustomRun(Query):
     # Used in runscript.run_custom_event
 
     def __init__(self, parent, title, *, cli_args=[],
-                 _htest=False, _utest=False):
+                 _htest=Falsch, _utest=Falsch):
         """cli_args is a list of strings.
 
         The list is assigned to the default Entry StringVar.
@@ -357,9 +357,9 @@ klasse CustomRun(Query):
     def create_extra(self):
         "Add run mode on rows 10-12."
         frame = self.frame
-        self.restartvar = BooleanVar(self, value=True)
-        restart = Checkbutton(frame, variable=self.restartvar, onvalue=True,
-                              offvalue=False, text='Restart shell')
+        self.restartvar = BooleanVar(self, value=Wahr)
+        restart = Checkbutton(frame, variable=self.restartvar, onvalue=Wahr,
+                              offvalue=Falsch, text='Restart shell')
         self.args_error = Label(frame, text=' ', foreground='red',
                                 font=self.error_font)
 
@@ -368,25 +368,25 @@ klasse CustomRun(Query):
                              sticky='we')
 
     def cli_args_ok(self):
-        "Return command line arg list or None wenn error."
+        "Return command line arg list or Nichts wenn error."
         cli_string = self.entry.get().strip()
         try:
-            cli_args = shlex.split(cli_string, posix=True)
+            cli_args = shlex.split(cli_string, posix=Wahr)
         except ValueError as err:
             self.showerror(str(err))
-            return None
+            return Nichts
         return cli_args
 
     def entry_ok(self):
-        "Return apparently valid (cli_args, restart) or None."
+        "Return apparently valid (cli_args, restart) or Nichts."
         cli_args = self.cli_args_ok()
         restart = self.restartvar.get()
-        return None wenn cli_args is None sonst (cli_args, restart)
+        return Nichts wenn cli_args is Nichts sonst (cli_args, restart)
 
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_query', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_query', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(Query, HelpSource, CustomRun)

@@ -203,7 +203,7 @@ klasse WaveLowLevelTest(unittest.TestCase):
             with self.assertRaises(OSError):
                 wave.open(os.curdir, "wb")
             support.gc_collect()
-            self.assertIsNone(cm.unraisable)
+            self.assertIsNichts(cm.unraisable)
 
 
 wenn __name__ == '__main__':

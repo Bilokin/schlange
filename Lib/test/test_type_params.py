@@ -607,7 +607,7 @@ klasse TypeParamsLazyEvaluationTest(unittest.TestCase):
         self.assertIs(type_params[0].__default__, NoDefault)
 
         self.assertEqual(type_params[1].__name__, "U")
-        self.assertIs(type_params[1].__bound__, None)
+        self.assertIs(type_params[1].__bound__, Nichts)
         self.assertEqual(type_params[1].__constraints__, (Foo, Foo))
         self.assertIs(type_params[1].__default__, NoDefault)
 
@@ -619,7 +619,7 @@ klasse TypeParamsLazyEvaluationTest(unittest.TestCase):
         with self.assertRaises(NameError):
             type_params[0].__bound__
         self.assertEqual(type_params[0].__constraints__, ())
-        self.assertIs(type_params[1].__bound__, None)
+        self.assertIs(type_params[1].__bound__, Nichts)
         self.assertIs(type_params[0].__default__, NoDefault)
         self.assertIs(type_params[1].__default__, NoDefault)
         with self.assertRaises(NameError):
@@ -629,7 +629,7 @@ klasse TypeParamsLazyEvaluationTest(unittest.TestCase):
         self.assertEqual(type_params[0].__bound__, "defined")
         self.assertEqual(type_params[0].__constraints__, ())
 
-        self.assertIs(type_params[1].__bound__, None)
+        self.assertIs(type_params[1].__bound__, Nichts)
         self.assertEqual(type_params[1].__constraints__, ("defined",))
 
 
@@ -787,7 +787,7 @@ klasse DynamicClassTest(unittest.TestCase):
         ns['__type_params__'] = params
 
     def test_types_new_class_with_callback(self):
-        T = TypeVar('T', infer_variance=True)
+        T = TypeVar('T', infer_variance=Wahr)
         Klass = types.new_class('Klass', (Generic[T],), {},
                                 lambda ns: self._set_type_params(ns, (T,)))
 
@@ -797,7 +797,7 @@ klasse DynamicClassTest(unittest.TestCase):
         self.assertEqual(Klass.__parameters__, (T,))
 
     def test_types_new_class_no_callback(self):
-        T = TypeVar('T', infer_variance=True)
+        T = TypeVar('T', infer_variance=Wahr)
         Klass = types.new_class('Klass', (Generic[T],), {})
 
         self.assertEqual(Klass.__bases__, (Generic,))
@@ -939,7 +939,7 @@ klasse TypeParamsComplexCallsTest(unittest.TestCase):
 
     def test_complex_base(self):
         klasse Base:
-            def __init_subclass__(cls, **kwargs) -> None:
+            def __init_subclass__(cls, **kwargs) -> Nichts:
                 cls.kwargs = kwargs
 
         kwargs = {"c": 3}
@@ -1011,22 +1011,22 @@ klasse TypeParamsTypeVarTest(unittest.TestCase):
 
         self.assertIsInstance(a, TypeVar)
         self.assertEqual(a.__bound__, str)
-        self.assertTrue(a.__infer_variance__)
-        self.assertFalse(a.__covariant__)
-        self.assertFalse(a.__contravariant__)
+        self.assertWahr(a.__infer_variance__)
+        self.assertFalsch(a.__covariant__)
+        self.assertFalsch(a.__contravariant__)
 
         self.assertIsInstance(b, TypeVar)
         self.assertEqual(b.__bound__, str | int)
-        self.assertTrue(b.__infer_variance__)
-        self.assertFalse(b.__covariant__)
-        self.assertFalse(b.__contravariant__)
+        self.assertWahr(b.__infer_variance__)
+        self.assertFalsch(b.__covariant__)
+        self.assertFalsch(b.__contravariant__)
 
         self.assertIsInstance(c, TypeVar)
-        self.assertEqual(c.__bound__, None)
+        self.assertEqual(c.__bound__, Nichts)
         self.assertEqual(c.__constraints__, (int, str))
-        self.assertTrue(c.__infer_variance__)
-        self.assertFalse(c.__covariant__)
-        self.assertFalse(c.__contravariant__)
+        self.assertWahr(c.__infer_variance__)
+        self.assertFalsch(c.__covariant__)
+        self.assertFalsch(c.__contravariant__)
 
     def test_typevar_generator(self):
         def get_generator[A]():
@@ -1110,9 +1110,9 @@ klasse TypeParamsTypeVarParamSpecTest(unittest.TestCase):
 
         a = func1()
         self.assertIsInstance(a, ParamSpec)
-        self.assertTrue(a.__infer_variance__)
-        self.assertFalse(a.__covariant__)
-        self.assertFalse(a.__contravariant__)
+        self.assertWahr(a.__infer_variance__)
+        self.assertFalsch(a.__covariant__)
+        self.assertFalsch(a.__contravariant__)
 
 
 klasse TypeParamsTypeParamsDunder(unittest.TestCase):
@@ -1314,35 +1314,35 @@ klasse TypeParamsRuntimeTest(unittest.TestCase):
 klasse DefaultsTest(unittest.TestCase):
     def test_defaults_on_func(self):
         ns = run_code("""
-            def func[T=int, **U=float, *V=None]():
+            def func[T=int, **U=float, *V=Nichts]():
                 pass
         """)
 
         T, U, V = ns["func"].__type_params__
         self.assertIs(T.__default__, int)
         self.assertIs(U.__default__, float)
-        self.assertIs(V.__default__, None)
+        self.assertIs(V.__default__, Nichts)
 
     def test_defaults_on_class(self):
         ns = run_code("""
-            klasse C[T=int, **U=float, *V=None]:
+            klasse C[T=int, **U=float, *V=Nichts]:
                 pass
         """)
 
         T, U, V = ns["C"].__type_params__
         self.assertIs(T.__default__, int)
         self.assertIs(U.__default__, float)
-        self.assertIs(V.__default__, None)
+        self.assertIs(V.__default__, Nichts)
 
     def test_defaults_on_type_alias(self):
         ns = run_code("""
-            type Alias[T = int, **U = float, *V = None] = int
+            type Alias[T = int, **U = float, *V = Nichts] = int
         """)
 
         T, U, V = ns["Alias"].__type_params__
         self.assertIs(T.__default__, int)
         self.assertIs(U.__default__, float)
-        self.assertIs(V.__default__, None)
+        self.assertIs(V.__default__, Nichts)
 
     def test_starred_invalid(self):
         check_syntax_error(self, "type Alias[T = *int] = int")

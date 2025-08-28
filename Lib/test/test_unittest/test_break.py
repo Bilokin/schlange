@@ -12,28 +12,28 @@ from test import support
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
 klasse TestBreak(unittest.TestCase):
-    int_handler = None
+    int_handler = Nichts
     # This number was smart-guessed, previously tests were failing
     # after 7th run. So, we take `x * 2 + 1` to be sure.
     default_repeats = 15
 
     def setUp(self):
         self._default_handler = signal.getsignal(signal.SIGINT)
-        wenn self.int_handler is not None:
+        wenn self.int_handler is not Nichts:
             signal.signal(signal.SIGINT, self.int_handler)
 
     def tearDown(self):
         signal.signal(signal.SIGINT, self._default_handler)
         unittest.signals._results = weakref.WeakKeyDictionary()
-        unittest.signals._interrupt_handler = None
+        unittest.signals._interrupt_handler = Nichts
 
 
-    def withRepeats(self, test_function, repeats=None):
-        wenn not support.check_impl_detail(cpython=True):
+    def withRepeats(self, test_function, repeats=Nichts):
+        wenn not support.check_impl_detail(cpython=Wahr):
             # Override repeats count on non-cpython to execute only once.
             # Because this test only makes sense to be repeated on CPython.
             repeats = 1
-        sowenn repeats is None:
+        sowenn repeats is Nichts:
             repeats = self.default_repeats
 
         fuer repeat in range(repeats):
@@ -60,7 +60,7 @@ klasse TestBreak(unittest.TestCase):
         except KeyboardInterrupt:
             self.fail("KeyboardInterrupt not handled")
 
-        self.assertTrue(unittest.signals._interrupt_handler.called)
+        self.assertWahr(unittest.signals._interrupt_handler.called)
 
     def testRegisterResult(self):
         result = unittest.TestResult()
@@ -76,8 +76,8 @@ klasse TestBreak(unittest.TestCase):
         def test(result):
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-            result.breakCaught = True
-            self.assertTrue(result.shouldStop)
+            result.breakCaught = Wahr
+            self.assertWahr(result.shouldStop)
 
         def test_function():
             result = unittest.TestResult()
@@ -93,7 +93,7 @@ klasse TestBreak(unittest.TestCase):
                 test(result)
             except KeyboardInterrupt:
                 self.fail("KeyboardInterrupt not handled")
-            self.assertTrue(result.breakCaught)
+            self.assertWahr(result.breakCaught)
         self.withRepeats(test_function)
 
     def testSecondInterrupt(self):
@@ -105,8 +105,8 @@ klasse TestBreak(unittest.TestCase):
         def test(result):
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-            result.breakCaught = True
-            self.assertTrue(result.shouldStop)
+            result.breakCaught = Wahr
+            self.assertWahr(result.shouldStop)
             os.kill(pid, signal.SIGINT)
             self.fail("Second KeyboardInterrupt not raised")
 
@@ -117,7 +117,7 @@ klasse TestBreak(unittest.TestCase):
 
             with self.assertRaises(KeyboardInterrupt):
                 test(result)
-            self.assertTrue(result.breakCaught)
+            self.assertWahr(result.breakCaught)
         self.withRepeats(test_function)
 
 
@@ -140,9 +140,9 @@ klasse TestBreak(unittest.TestCase):
             except KeyboardInterrupt:
                 self.fail("KeyboardInterrupt not handled")
 
-            self.assertTrue(result.shouldStop)
-            self.assertTrue(result2.shouldStop)
-            self.assertFalse(result3.shouldStop)
+            self.assertWahr(result.shouldStop)
+            self.assertWahr(result2.shouldStop)
+            self.assertFalsch(result3.shouldStop)
         self.withRepeats(test_function)
 
 
@@ -189,7 +189,7 @@ klasse TestBreak(unittest.TestCase):
 
         # For non-reference counting implementations
         gc.collect();gc.collect()
-        self.assertIsNone(ref())
+        self.assertIsNichts(ref())
 
 
     def testRemoveResult(self):
@@ -197,10 +197,10 @@ klasse TestBreak(unittest.TestCase):
         unittest.registerResult(result)
 
         unittest.installHandler()
-        self.assertTrue(unittest.removeResult(result))
+        self.assertWahr(unittest.removeResult(result))
 
         # Should this raise an error instead?
-        self.assertFalse(unittest.removeResult(unittest.TestResult()))
+        self.assertFalsch(unittest.removeResult(unittest.TestResult()))
 
         try:
             pid = os.getpid()
@@ -208,7 +208,7 @@ klasse TestBreak(unittest.TestCase):
         except KeyboardInterrupt:
             pass
 
-        self.assertFalse(result.shouldStop)
+        self.assertFalsch(result.shouldStop)
 
     def testMainInstallsHandler(self):
         failfast = object()
@@ -228,25 +228,25 @@ klasse TestBreak(unittest.TestCase):
 
         klasse Program(unittest.TestProgram):
             def __init__(self, catchbreak):
-                self.exit = False
+                self.exit = Falsch
                 self.verbosity = verbosity
                 self.failfast = failfast
                 self.catchbreak = catchbreak
-                self.tb_locals = False
+                self.tb_locals = Falsch
                 self.testRunner = FakeRunner
                 self.test = test
-                self.result = None
-                self.durations = None
+                self.result = Nichts
+                self.durations = Nichts
 
-        p = Program(False)
+        p = Program(Falsch)
         p.runTests()
 
-        self.assertEqual(FakeRunner.initArgs, [((), {'buffer': None,
+        self.assertEqual(FakeRunner.initArgs, [((), {'buffer': Nichts,
                                                      'verbosity': verbosity,
                                                      'failfast': failfast,
-                                                     'tb_locals': False,
-                                                     'warnings': None,
-                                                     'durations': None})])
+                                                     'tb_locals': Falsch,
+                                                     'warnings': Nichts,
+                                                     'durations': Nichts})])
         self.assertEqual(FakeRunner.runArgs, [test])
         self.assertEqual(p.result, result)
 
@@ -254,15 +254,15 @@ klasse TestBreak(unittest.TestCase):
 
         FakeRunner.initArgs = []
         FakeRunner.runArgs = []
-        p = Program(True)
+        p = Program(Wahr)
         p.runTests()
 
-        self.assertEqual(FakeRunner.initArgs, [((), {'buffer': None,
+        self.assertEqual(FakeRunner.initArgs, [((), {'buffer': Nichts,
                                                      'verbosity': verbosity,
                                                      'failfast': failfast,
-                                                     'tb_locals': False,
-                                                     'warnings': None,
-                                                     'durations': None})])
+                                                     'tb_locals': Falsch,
+                                                     'warnings': Nichts,
+                                                     'durations': Nichts})])
         self.assertEqual(FakeRunner.runArgs, [test])
         self.assertEqual(p.result, result)
 

@@ -18,10 +18,10 @@ import types
 
 wenn os.name == "nt":
     import _winapi
-    _USE_POSIX = False
+    _USE_POSIX = Falsch
 sonst:
     import _posixshmem
-    _USE_POSIX = True
+    _USE_POSIX = Wahr
 
 from . import resource_tracker
 
@@ -64,32 +64,32 @@ klasse SharedMemory:
     unlink() method should be called to ensure proper cleanup."""
 
     # Defaults; enables close() and unlink() to run without errors.
-    _name = None
+    _name = Nichts
     _fd = -1
-    _mmap = None
-    _buf = None
+    _mmap = Nichts
+    _buf = Nichts
     _flags = os.O_RDWR
     _mode = 0o600
-    _prepend_leading_slash = True wenn _USE_POSIX sonst False
-    _track = True
+    _prepend_leading_slash = Wahr wenn _USE_POSIX sonst Falsch
+    _track = Wahr
 
-    def __init__(self, name=None, create=False, size=0, *, track=True):
+    def __init__(self, name=Nichts, create=Falsch, size=0, *, track=Wahr):
         wenn not size >= 0:
             raise ValueError("'size' must be a positive integer")
         wenn create:
             self._flags = _O_CREX | os.O_RDWR
             wenn size == 0:
                 raise ValueError("'size' must be a positive number different from zero")
-        wenn name is None and not self._flags & os.O_EXCL:
-            raise ValueError("'name' can only be None wenn create=True")
+        wenn name is Nichts and not self._flags & os.O_EXCL:
+            raise ValueError("'name' can only be Nichts wenn create=Wahr")
 
         self._track = track
         wenn _USE_POSIX:
 
             # POSIX Shared Memory
 
-            wenn name is None:
-                while True:
+            wenn name is Nichts:
+                while Wahr:
                     name = _make_filename()
                     try:
                         self._fd = _posixshmem.shm_open(
@@ -126,8 +126,8 @@ klasse SharedMemory:
             # Windows Named Shared Memory
 
             wenn create:
-                while True:
-                    temp_name = _make_filename() wenn name is None sonst name
+                while Wahr:
+                    temp_name = _make_filename() wenn name is Nichts sonst name
                     # Create and reserve shared memory block with this name
                     # until it can be attached to by mmap.
                     h_map = _winapi.CreateFileMapping(
@@ -141,7 +141,7 @@ klasse SharedMemory:
                     try:
                         last_error_code = _winapi.GetLastError()
                         wenn last_error_code == _winapi.ERROR_ALREADY_EXISTS:
-                            wenn name is not None:
+                            wenn name is not Nichts:
                                 raise FileExistsError(
                                     errno.EEXIST,
                                     os.strerror(errno.EEXIST),
@@ -162,7 +162,7 @@ klasse SharedMemory:
                 # block's size which is likely a multiple of mmap.PAGESIZE.
                 h_map = _winapi.OpenFileMapping(
                     _winapi.FILE_MAP_READ,
-                    False,
+                    Falsch,
                     name
                 )
                 try:
@@ -195,7 +195,7 @@ klasse SharedMemory:
             self.__class__,
             (
                 self.name,
-                False,
+                Falsch,
                 self.size,
             ),
         )
@@ -225,12 +225,12 @@ klasse SharedMemory:
     def close(self):
         """Closes access to the shared memory from this instance but does
         not destroy the shared memory block."""
-        wenn self._buf is not None:
+        wenn self._buf is not Nichts:
             self._buf.release()
-            self._buf = None
-        wenn self._mmap is not None:
+            self._buf = Nichts
+        wenn self._mmap is not Nichts:
             self._mmap.close()
-            self._mmap = None
+            self._mmap = Nichts
         wenn _USE_POSIX and self._fd >= 0:
             os.close(self._fd)
             self._fd = -1
@@ -281,14 +281,14 @@ klasse ShareableList:
         bool: "xxxxxxx?",
         str: "%ds",
         bytes: "%ds",
-        None.__class__: "xxxxxx?x",
+        Nichts.__class__: "xxxxxx?x",
     }
     _alignment = 8
     _back_transforms_mapping = {
         0: lambda value: value,                   # int, float, bool
         1: lambda value: value.rstrip(b'\x00').decode(_encoding),  # str
         2: lambda value: value.rstrip(b'\x00'),   # bytes
-        3: lambda _value: None,                   # None
+        3: lambda _value: Nichts,                   # Nichts
     }
 
     @staticmethod
@@ -296,7 +296,7 @@ klasse ShareableList:
         """Used in concert with _back_transforms_mapping to convert values
         into the appropriate Python objects when retrieving them from
         the list as well as when storing them."""
-        wenn not isinstance(value, (str, bytes, None.__class__)):
+        wenn not isinstance(value, (str, bytes, Nichts.__class__)):
             return 0
         sowenn isinstance(value, str):
             return 1
@@ -305,8 +305,8 @@ klasse ShareableList:
         sonst:
             return 3  # NoneType
 
-    def __init__(self, sequence=None, *, name=None):
-        wenn name is None or sequence is not None:
+    def __init__(self, sequence=Nichts, *, name=Nichts):
+        wenn name is Nichts or sequence is not Nichts:
             sequence = sequence or ()
             _formats = [
                 self._types_mapping[type(item)]
@@ -336,11 +336,11 @@ klasse ShareableList:
                 self._format_back_transform_codes
             )
 
-            self.shm = SharedMemory(name, create=True, size=requested_size)
+            self.shm = SharedMemory(name, create=Wahr, size=requested_size)
         sonst:
             self.shm = SharedMemory(name)
 
-        wenn sequence is not None:
+        wenn sequence is not Nichts:
             _enc = _encoding
             struct.pack_into(
                 "q" + self._format_size_metainfo,

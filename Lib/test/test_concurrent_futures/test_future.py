@@ -16,7 +16,7 @@ from .util import (
 
 klasse FutureTests(BaseTestCase):
     def test_done_callback_with_result(self):
-        callback_result = None
+        callback_result = Nichts
         def fn(callback_future):
             nonlocal callback_result
             callback_result = callback_future.result()
@@ -27,7 +27,7 @@ klasse FutureTests(BaseTestCase):
         self.assertEqual(5, callback_result)
 
     def test_done_callback_with_exception(self):
-        callback_exception = None
+        callback_exception = Nichts
         def fn(callback_future):
             nonlocal callback_exception
             callback_exception = callback_future.exception()
@@ -38,40 +38,40 @@ klasse FutureTests(BaseTestCase):
         self.assertEqual(('test',), callback_exception.args)
 
     def test_done_callback_with_cancel(self):
-        was_cancelled = None
+        was_cancelled = Nichts
         def fn(callback_future):
             nonlocal was_cancelled
             was_cancelled = callback_future.cancelled()
 
         f = Future()
         f.add_done_callback(fn)
-        self.assertTrue(f.cancel())
-        self.assertTrue(was_cancelled)
+        self.assertWahr(f.cancel())
+        self.assertWahr(was_cancelled)
 
     def test_done_callback_raises(self):
         with support.captured_stderr() as stderr:
-            raising_was_called = False
-            fn_was_called = False
+            raising_was_called = Falsch
+            fn_was_called = Falsch
 
             def raising_fn(callback_future):
                 nonlocal raising_was_called
-                raising_was_called = True
+                raising_was_called = Wahr
                 raise Exception('doh!')
 
             def fn(callback_future):
                 nonlocal fn_was_called
-                fn_was_called = True
+                fn_was_called = Wahr
 
             f = Future()
             f.add_done_callback(raising_fn)
             f.add_done_callback(fn)
             f.set_result(5)
-            self.assertTrue(raising_was_called)
-            self.assertTrue(fn_was_called)
+            self.assertWahr(raising_was_called)
+            self.assertWahr(fn_was_called)
             self.assertIn('Exception: doh!', stderr.getvalue())
 
     def test_done_callback_already_successful(self):
-        callback_result = None
+        callback_result = Nichts
         def fn(callback_future):
             nonlocal callback_result
             callback_result = callback_future.result()
@@ -82,7 +82,7 @@ klasse FutureTests(BaseTestCase):
         self.assertEqual(5, callback_result)
 
     def test_done_callback_already_failed(self):
-        callback_exception = None
+        callback_exception = Nichts
         def fn(callback_future):
             nonlocal callback_exception
             callback_exception = callback_future.exception()
@@ -93,15 +93,15 @@ klasse FutureTests(BaseTestCase):
         self.assertEqual(('test',), callback_exception.args)
 
     def test_done_callback_already_cancelled(self):
-        was_cancelled = None
+        was_cancelled = Nichts
         def fn(callback_future):
             nonlocal was_cancelled
             was_cancelled = callback_future.cancelled()
 
         f = Future()
-        self.assertTrue(f.cancel())
+        self.assertWahr(f.cancel())
         f.add_done_callback(fn)
-        self.assertTrue(was_cancelled)
+        self.assertWahr(was_cancelled)
 
     def test_done_callback_raises_already_succeeded(self):
         with support.captured_stderr() as stderr:
@@ -143,47 +143,47 @@ klasse FutureTests(BaseTestCase):
         f5 = create_future(state=FINISHED, exception=OSError())
         f6 = create_future(state=FINISHED, result=5)
 
-        self.assertTrue(f1.cancel())
+        self.assertWahr(f1.cancel())
         self.assertEqual(f1._state, CANCELLED)
 
-        self.assertFalse(f2.cancel())
+        self.assertFalsch(f2.cancel())
         self.assertEqual(f2._state, RUNNING)
 
-        self.assertTrue(f3.cancel())
+        self.assertWahr(f3.cancel())
         self.assertEqual(f3._state, CANCELLED)
 
-        self.assertTrue(f4.cancel())
+        self.assertWahr(f4.cancel())
         self.assertEqual(f4._state, CANCELLED_AND_NOTIFIED)
 
-        self.assertFalse(f5.cancel())
+        self.assertFalsch(f5.cancel())
         self.assertEqual(f5._state, FINISHED)
 
-        self.assertFalse(f6.cancel())
+        self.assertFalsch(f6.cancel())
         self.assertEqual(f6._state, FINISHED)
 
     def test_cancelled(self):
-        self.assertFalse(PENDING_FUTURE.cancelled())
-        self.assertFalse(RUNNING_FUTURE.cancelled())
-        self.assertTrue(CANCELLED_FUTURE.cancelled())
-        self.assertTrue(CANCELLED_AND_NOTIFIED_FUTURE.cancelled())
-        self.assertFalse(EXCEPTION_FUTURE.cancelled())
-        self.assertFalse(SUCCESSFUL_FUTURE.cancelled())
+        self.assertFalsch(PENDING_FUTURE.cancelled())
+        self.assertFalsch(RUNNING_FUTURE.cancelled())
+        self.assertWahr(CANCELLED_FUTURE.cancelled())
+        self.assertWahr(CANCELLED_AND_NOTIFIED_FUTURE.cancelled())
+        self.assertFalsch(EXCEPTION_FUTURE.cancelled())
+        self.assertFalsch(SUCCESSFUL_FUTURE.cancelled())
 
     def test_done(self):
-        self.assertFalse(PENDING_FUTURE.done())
-        self.assertFalse(RUNNING_FUTURE.done())
-        self.assertTrue(CANCELLED_FUTURE.done())
-        self.assertTrue(CANCELLED_AND_NOTIFIED_FUTURE.done())
-        self.assertTrue(EXCEPTION_FUTURE.done())
-        self.assertTrue(SUCCESSFUL_FUTURE.done())
+        self.assertFalsch(PENDING_FUTURE.done())
+        self.assertFalsch(RUNNING_FUTURE.done())
+        self.assertWahr(CANCELLED_FUTURE.done())
+        self.assertWahr(CANCELLED_AND_NOTIFIED_FUTURE.done())
+        self.assertWahr(EXCEPTION_FUTURE.done())
+        self.assertWahr(SUCCESSFUL_FUTURE.done())
 
     def test_running(self):
-        self.assertFalse(PENDING_FUTURE.running())
-        self.assertTrue(RUNNING_FUTURE.running())
-        self.assertFalse(CANCELLED_FUTURE.running())
-        self.assertFalse(CANCELLED_AND_NOTIFIED_FUTURE.running())
-        self.assertFalse(EXCEPTION_FUTURE.running())
-        self.assertFalse(SUCCESSFUL_FUTURE.running())
+        self.assertFalsch(PENDING_FUTURE.running())
+        self.assertWahr(RUNNING_FUTURE.running())
+        self.assertFalsch(CANCELLED_FUTURE.running())
+        self.assertFalsch(CANCELLED_AND_NOTIFIED_FUTURE.running())
+        self.assertFalsch(EXCEPTION_FUTURE.running())
+        self.assertFalsch(SUCCESSFUL_FUTURE.running())
 
     def test_result_with_timeout(self):
         self.assertRaises(futures.TimeoutError,
@@ -235,9 +235,9 @@ klasse FutureTests(BaseTestCase):
                           CANCELLED_FUTURE.exception, timeout=0)
         self.assertRaises(futures.CancelledError,
                           CANCELLED_AND_NOTIFIED_FUTURE.exception, timeout=0)
-        self.assertTrue(isinstance(EXCEPTION_FUTURE.exception(timeout=0),
+        self.assertWahr(isinstance(EXCEPTION_FUTURE.exception(timeout=0),
                                    OSError))
-        self.assertEqual(SUCCESSFUL_FUTURE.exception(timeout=0), None)
+        self.assertEqual(SUCCESSFUL_FUTURE.exception(timeout=0), Nichts)
 
     def test_exception_with_success(self):
         def notification():
@@ -252,7 +252,7 @@ klasse FutureTests(BaseTestCase):
         t = threading.Thread(target=notification)
         t.start()
 
-        self.assertTrue(isinstance(f1.exception(timeout=support.SHORT_TIMEOUT), OSError))
+        self.assertWahr(isinstance(f1.exception(timeout=support.SHORT_TIMEOUT), OSError))
         t.join()
 
     def test_multiple_set_result(self):
@@ -266,7 +266,7 @@ klasse FutureTests(BaseTestCase):
         ):
             f.set_result(2)
 
-        self.assertTrue(f.done())
+        self.assertWahr(f.done())
         self.assertEqual(f.result(), 1)
 
     def test_multiple_set_exception(self):
@@ -288,38 +288,38 @@ klasse FutureTests(BaseTestCase):
         # Test with a pending future
         f = Future()
         done, cancelled, result, exception = f._get_snapshot()
-        self.assertFalse(done)
-        self.assertFalse(cancelled)
-        self.assertIsNone(result)
-        self.assertIsNone(exception)
+        self.assertFalsch(done)
+        self.assertFalsch(cancelled)
+        self.assertIsNichts(result)
+        self.assertIsNichts(exception)
 
         # Test with a finished future (successful result)
         f = Future()
         f.set_result(42)
         done, cancelled, result, exception = f._get_snapshot()
-        self.assertTrue(done)
-        self.assertFalse(cancelled)
+        self.assertWahr(done)
+        self.assertFalsch(cancelled)
         self.assertEqual(result, 42)
-        self.assertIsNone(exception)
+        self.assertIsNichts(exception)
 
         # Test with a finished future (exception)
         f = Future()
         exc = ValueError("test error")
         f.set_exception(exc)
         done, cancelled, result, exception = f._get_snapshot()
-        self.assertTrue(done)
-        self.assertFalse(cancelled)
-        self.assertIsNone(result)
+        self.assertWahr(done)
+        self.assertFalsch(cancelled)
+        self.assertIsNichts(result)
         self.assertIs(exception, exc)
 
         # Test with a cancelled future
         f = Future()
         f.cancel()
         done, cancelled, result, exception = f._get_snapshot()
-        self.assertTrue(done)
-        self.assertTrue(cancelled)
-        self.assertIsNone(result)
-        self.assertIsNone(exception)
+        self.assertWahr(done)
+        self.assertWahr(cancelled)
+        self.assertIsNichts(result)
+        self.assertIsNichts(exception)
 
         # Test concurrent access (basic thread safety check)
         f = Future()
@@ -335,7 +335,7 @@ klasse FutureTests(BaseTestCase):
         with threading_helper.start_threads(threads):
             pass
         # All snapshots should be identical fuer a finished future
-        expected = (True, False, 100, None)
+        expected = (Wahr, Falsch, 100, Nichts)
         fuer result in results:
             self.assertEqual(result, expected)
 

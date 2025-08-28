@@ -412,7 +412,7 @@ klasse TestPlistlib(unittest.TestCase):
         except:
             pass
 
-    def _create(self, fmt=None):
+    def _create(self, fmt=Nichts):
         pl = dict(
             aString="Doodah",
             aList=["A", "B", 12, 32.5, [1, 2, 3]],
@@ -425,8 +425,8 @@ klasse TestPlistlib(unittest.TestCase):
             aDict=dict(
                 anotherString="<hello & 'hi' there!>",
                 aUnicodeValue='M\xe4ssig, Ma\xdf',
-                aTrueValue=True,
-                aFalseValue=False,
+                aWahrValue=Wahr,
+                aFalschValue=Falsch,
                 deeperDict=dict(a=17, b=32.5, c=[1, 2, "text"]),
             ),
             someData = b"<binary gunk>",
@@ -442,7 +442,7 @@ klasse TestPlistlib(unittest.TestCase):
     def test_create(self):
         pl = self._create()
         self.assertEqual(pl["aString"], "Doodah")
-        self.assertEqual(pl["aDict"]["aFalseValue"], False)
+        self.assertEqual(pl["aDict"]["aFalschValue"], Falsch)
 
     def test_io(self):
         pl = self._create()
@@ -583,7 +583,7 @@ klasse TestPlistlib(unittest.TestCase):
 
 
     def test_appleformattingfromliteral(self):
-        self.maxDiff = None
+        self.maxDiff = Nichts
         fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 pl = self._create(fmt=fmt)
@@ -612,7 +612,7 @@ klasse TestPlistlib(unittest.TestCase):
         pl['c'] = 3
 
         fuer fmt in ALL_FORMATS:
-            fuer sort_keys in (False, True):
+            fuer sort_keys in (Falsch, Wahr):
                 with self.subTest(fmt=fmt, sort_keys=sort_keys):
                     b = BytesIO()
 
@@ -633,7 +633,7 @@ klasse TestPlistlib(unittest.TestCase):
         pl['c'] = 3
 
         fuer fmt in ALL_FORMATS:
-            fuer sort_keys in (False, True):
+            fuer sort_keys in (Falsch, Wahr):
                 with self.subTest(fmt=fmt, sort_keys=sort_keys):
                     data = plistlib.dumps(pl, fmt=fmt, sort_keys=sort_keys)
                     pl2 = plistlib.loads(data, dict_type=collections.OrderedDict)
@@ -663,14 +663,14 @@ klasse TestPlistlib(unittest.TestCase):
         fuer fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(
-                    pl, fmt=fmt, skipkeys=True, sort_keys=False)
+                    pl, fmt=fmt, skipkeys=Wahr, sort_keys=Falsch)
 
                 pl2 = plistlib.loads(data)
                 self.assertEqual(pl2, {'snake': 'aWord'})
 
                 fp = BytesIO()
                 plistlib.dump(
-                    pl, fp, fmt=fmt, skipkeys=True, sort_keys=False)
+                    pl, fp, fmt=fmt, skipkeys=Wahr, sort_keys=Falsch)
                 data = fp.getvalue()
                 pl2 = plistlib.loads(fp.getvalue())
                 self.assertEqual(pl2, {'snake': 'aWord'})
@@ -854,7 +854,7 @@ klasse TestPlistlib(unittest.TestCase):
 
     def test_load_aware_datetime(self):
         dt = plistlib.loads(b"<plist><date>2023-12-10T08:03:30Z</date></plist>",
-                            aware_datetime=True)
+                            aware_datetime=Wahr)
         self.assertEqual(dt.tzinfo, datetime.UTC)
 
     @unittest.skipUnless("America/Los_Angeles" in zoneinfo.available_timezones(),
@@ -863,16 +863,16 @@ klasse TestPlistlib(unittest.TestCase):
         dt = datetime.datetime(2345, 6, 7, 8, 9, 10,
                                tzinfo=zoneinfo.ZoneInfo("America/Los_Angeles"))
         fuer fmt in ALL_FORMATS:
-            s = plistlib.dumps(dt, fmt=fmt, aware_datetime=True)
-            loaded_dt = plistlib.loads(s, fmt=fmt, aware_datetime=True)
+            s = plistlib.dumps(dt, fmt=fmt, aware_datetime=Wahr)
+            loaded_dt = plistlib.loads(s, fmt=fmt, aware_datetime=Wahr)
             self.assertEqual(loaded_dt.tzinfo, datetime.UTC)
             self.assertEqual(loaded_dt, dt)
 
     def test_dump_utc_aware_datetime(self):
         dt = datetime.datetime(2345, 6, 7, 8, 9, 10, tzinfo=datetime.UTC)
         fuer fmt in ALL_FORMATS:
-            s = plistlib.dumps(dt, fmt=fmt, aware_datetime=True)
-            loaded_dt = plistlib.loads(s, fmt=fmt, aware_datetime=True)
+            s = plistlib.dumps(dt, fmt=fmt, aware_datetime=Wahr)
+            loaded_dt = plistlib.loads(s, fmt=fmt, aware_datetime=Wahr)
             self.assertEqual(loaded_dt.tzinfo, datetime.UTC)
             self.assertEqual(loaded_dt, dt)
 
@@ -881,23 +881,23 @@ klasse TestPlistlib(unittest.TestCase):
     def test_dump_aware_datetime_without_aware_datetime_option(self):
         dt = datetime.datetime(2345, 6, 7, 8,
                                tzinfo=zoneinfo.ZoneInfo("America/Los_Angeles"))
-        s = plistlib.dumps(dt, fmt=plistlib.FMT_XML, aware_datetime=False)
+        s = plistlib.dumps(dt, fmt=plistlib.FMT_XML, aware_datetime=Falsch)
         self.assertIn(b"2345-06-07T08:00:00Z", s)
 
     def test_dump_utc_aware_datetime_without_aware_datetime_option(self):
         dt = datetime.datetime(2345, 6, 7, 8, tzinfo=datetime.UTC)
-        s = plistlib.dumps(dt, fmt=plistlib.FMT_XML, aware_datetime=False)
+        s = plistlib.dumps(dt, fmt=plistlib.FMT_XML, aware_datetime=Falsch)
         self.assertIn(b"2345-06-07T08:00:00Z", s)
 
     def test_dump_naive_datetime_with_aware_datetime_option(self):
         # Save a naive datetime with aware_datetime set to true.  This will lead
         # to having different time as compared to the current machine's
         # timezone, which is UTC.
-        dt = datetime.datetime(2003, 6, 7, 8, tzinfo=None)
+        dt = datetime.datetime(2003, 6, 7, 8, tzinfo=Nichts)
         fuer fmt in ALL_FORMATS:
-            s = plistlib.dumps(dt, fmt=fmt, aware_datetime=True)
-            parsed = plistlib.loads(s, aware_datetime=False)
-            expected = dt.astimezone(datetime.UTC).replace(tzinfo=None)
+            s = plistlib.dumps(dt, fmt=fmt, aware_datetime=Wahr)
+            parsed = plistlib.loads(s, aware_datetime=Falsch)
+            expected = dt.astimezone(datetime.UTC).replace(tzinfo=Nichts)
             self.assertEqual(parsed, expected)
 
 
@@ -932,7 +932,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
 
     def test_dump_duplicates(self):
         # Test effectiveness of saving duplicated objects
-        fuer x in (None, False, True, 12345, 123.45, 'abcde', 'абвгд', b'abcde',
+        fuer x in (Nichts, Falsch, Wahr, 12345, 123.45, 'abcde', 'абвгд', b'abcde',
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
                   bytearray(b'abcde'), [12, 345], (12, 345), {'12': 345}):
             with self.subTest(x=x):
@@ -940,7 +940,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
                 self.assertLess(len(data), 1100, repr(data))
 
     def test_identity(self):
-        fuer x in (None, False, True, 12345, 123.45, 'abcde', b'abcde',
+        fuer x in (Nichts, Falsch, Wahr, 12345, 123.45, 'abcde', b'abcde',
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
                   bytearray(b'abcde'), [12, 345], (12, 345), {'12': 345}):
             with self.subTest(x=x):
@@ -993,9 +993,9 @@ klasse TestBinaryPlistlib(unittest.TestCase):
                 self.assertEqual(plistlib.loads(data), d)
 
     def test_load_singletons(self):
-        self.assertIs(self.decode(b'\x00'), None)
-        self.assertIs(self.decode(b'\x08'), False)
-        self.assertIs(self.decode(b'\x09'), True)
+        self.assertIs(self.decode(b'\x00'), Nichts)
+        self.assertIs(self.decode(b'\x08'), Falsch)
+        self.assertIs(self.decode(b'\x09'), Wahr)
         self.assertEqual(self.decode(b'\x0f'), b'')
 
     def test_load_int(self):
@@ -1028,7 +1028,7 @@ klasse TestBinaryPlistlib(unittest.TestCase):
         data = (b'bplist003B\x04>\xd0d\x00\x00\x00\x08\x00\x00\x00\x00\x00\x00'
                 b'\x01\x01\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00'
                 b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x11')
-        self.assertEqual(plistlib.loads(data, aware_datetime=True),
+        self.assertEqual(plistlib.loads(data, aware_datetime=Wahr),
                          datetime.datetime(2345, 6, 7, 8, tzinfo=datetime.UTC))
 
     @unittest.skipUnless("America/Los_Angeles" in zoneinfo.available_timezones(),
@@ -1038,13 +1038,13 @@ klasse TestBinaryPlistlib(unittest.TestCase):
                                tzinfo=zoneinfo.ZoneInfo("America/Los_Angeles"))
         msg = "can't subtract offset-naive and offset-aware datetimes"
         with self.assertRaisesRegex(TypeError, msg):
-            plistlib.dumps(dt, fmt=plistlib.FMT_BINARY, aware_datetime=False)
+            plistlib.dumps(dt, fmt=plistlib.FMT_BINARY, aware_datetime=Falsch)
 
     def test_dump_utc_aware_datetime_without_aware_datetime_option(self):
         dt = datetime.datetime(2345, 6, 7, 8, tzinfo=datetime.UTC)
         msg = "can't subtract offset-naive and offset-aware datetimes"
         with self.assertRaisesRegex(TypeError, msg):
-            plistlib.dumps(dt, fmt=plistlib.FMT_BINARY, aware_datetime=False)
+            plistlib.dumps(dt, fmt=plistlib.FMT_BINARY, aware_datetime=Falsch)
 
 
 klasse TestKeyedArchive(unittest.TestCase):
@@ -1103,17 +1103,17 @@ klasse TestPlutil(unittest.TestCase):
         }
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(cls) -> Nichts:
         ## Generate plist file with plistlib and parse with plutil
         with open(cls.file_name,'wb') as f:
             plistlib.dump(cls.properties, f, fmt=plistlib.FMT_BINARY)
 
     @classmethod
-    def tearDownClass(cls) -> None:
+    def tearDownClass(cls) -> Nichts:
         os.remove(cls.file_name)
 
     def get_lint_status(self):
-        return subprocess.run(['plutil', "-lint", self.file_name], capture_output=True, text=True).stdout
+        return subprocess.run(['plutil', "-lint", self.file_name], capture_output=Wahr, text=Wahr).stdout
 
     def convert_to_json(self):
         """Convert binary file to json using plutil

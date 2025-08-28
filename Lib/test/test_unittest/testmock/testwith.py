@@ -32,7 +32,7 @@ klasse WithTest(unittest.TestCase):
     def test_with_statement_as(self):
         with patch('%s.something' % __name__) as mock_something:
             self.assertEqual(something, mock_something, "unpatched")
-            self.assertTrue(is_instance(mock_something, MagicMock),
+            self.assertWahr(is_instance(mock_something, MagicMock),
                             "patching wrong type")
         self.assertEqual(something, sentinel.Something)
 
@@ -47,7 +47,7 @@ klasse WithTest(unittest.TestCase):
 
 
     def test_with_statement_nested(self):
-        with catch_warnings(record=True):
+        with catch_warnings(record=Wahr):
             with patch('%s.something' % __name__) as mock_something, patch('%s.something_else' % __name__) as mock_something_else:
                 self.assertEqual(something, mock_something, "unpatched")
                 self.assertEqual(something_else, mock_something_else,
@@ -68,12 +68,12 @@ klasse WithTest(unittest.TestCase):
         mock = Mock()
         mock.__enter__ = Mock()
         mock.__exit__ = Mock()
-        mock.__exit__.return_value = False
+        mock.__exit__.return_value = Falsch
 
         with mock as m:
             self.assertEqual(m, mock.__enter__.return_value)
         mock.__enter__.assert_called_with()
-        mock.__exit__.assert_called_with(None, None, None)
+        mock.__exit__.assert_called_with(Nichts, Nichts, Nichts)
 
 
     def test_context_manager_with_magic_mock(self):
@@ -83,7 +83,7 @@ klasse WithTest(unittest.TestCase):
             with mock:
                 'foo' + 3
         mock.__enter__.assert_called_with()
-        self.assertTrue(mock.__exit__.called)
+        self.assertWahr(mock.__exit__.called)
 
 
     def test_with_statement_same_attribute(self):
@@ -143,7 +143,7 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_mock_open(self):
         mock = mock_open()
-        with patch('%s.open' % __name__, mock, create=True) as patched:
+        with patch('%s.open' % __name__, mock, create=Wahr) as patched:
             self.assertIs(patched, mock)
             open('foo')
 
@@ -153,18 +153,18 @@ klasse TestMockOpen(unittest.TestCase):
     def test_mock_open_context_manager(self):
         mock = mock_open()
         handle = mock.return_value
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             with open('foo') as f:
                 f.read()
 
         expected_calls = [call('foo'), call().__enter__(), call().read(),
-                          call().__exit__(None, None, None), call().close()]
+                          call().__exit__(Nichts, Nichts, Nichts), call().close()]
         self.assertEqual(mock.mock_calls, expected_calls)
         self.assertIs(f, handle)
 
     def test_mock_open_context_manager_multiple_times(self):
         mock = mock_open()
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             with open('foo') as f:
                 f.read()
             with open('bar') as f:
@@ -172,16 +172,16 @@ klasse TestMockOpen(unittest.TestCase):
 
         expected_calls = [
             call('foo'), call().__enter__(), call().read(),
-            call().__exit__(None, None, None), call().close(),
+            call().__exit__(Nichts, Nichts, Nichts), call().close(),
             call('bar'), call().__enter__(), call().read(),
-            call().__exit__(None, None, None), call().close()]
+            call().__exit__(Nichts, Nichts, Nichts), call().close()]
         self.assertEqual(mock.mock_calls, expected_calls)
 
     def test_explicit_mock(self):
         mock = MagicMock()
         mock_open(mock)
 
-        with patch('%s.open' % __name__, mock, create=True) as patched:
+        with patch('%s.open' % __name__, mock, create=Wahr) as patched:
             self.assertIs(patched, mock)
             open('foo')
 
@@ -190,7 +190,7 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_read_data(self):
         mock = mock_open(read_data='foo')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             result = h.read()
 
@@ -201,7 +201,7 @@ klasse TestMockOpen(unittest.TestCase):
         # Check that readline will return all the lines from the fake file
         # And that once fully consumed, readline will return an empty string.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             line1 = h.readline()
             line2 = h.readline()
@@ -213,7 +213,7 @@ klasse TestMockOpen(unittest.TestCase):
 
         # Check that we properly emulate a file that doesn't end in a newline
         mock = mock_open(read_data='foo')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             result = h.readline()
         self.assertEqual(result, 'foo')
@@ -223,7 +223,7 @@ klasse TestMockOpen(unittest.TestCase):
     def test_dunder_iter_data(self):
         # Check that dunder_iter will return all the lines from the fake file.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             lines = [l fuer l in h]
         self.assertEqual(lines[0], 'foo\n')
@@ -237,7 +237,7 @@ klasse TestMockOpen(unittest.TestCase):
         # Check that next will correctly return the next available
         # line and plays well with the dunder_iter part.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             line1 = next(h)
             line2 = next(h)
@@ -250,7 +250,7 @@ klasse TestMockOpen(unittest.TestCase):
     def test_readlines_data(self):
         # Test that emulating a file that ends in a newline character works
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             result = h.readlines()
         self.assertEqual(result, ['foo\n', 'bar\n', 'baz\n'])
@@ -258,7 +258,7 @@ klasse TestMockOpen(unittest.TestCase):
         # Test that files without a final newline will also be correctly
         # emulated
         mock = mock_open(read_data='foo\nbar\nbaz')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             result = h.readlines()
 
@@ -267,7 +267,7 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_read_bytes(self):
         mock = mock_open(read_data=b'\xc6')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             with open('abc', 'rb') as f:
                 result = f.read()
         self.assertEqual(result, b'\xc6')
@@ -275,7 +275,7 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_readline_bytes(self):
         m = mock_open(read_data=b'abc\ndef\nghi\n')
-        with patch('%s.open' % __name__, m, create=True):
+        with patch('%s.open' % __name__, m, create=Wahr):
             with open('abc', 'rb') as f:
                 line1 = f.readline()
                 line2 = f.readline()
@@ -287,7 +287,7 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_readlines_bytes(self):
         m = mock_open(read_data=b'abc\ndef\nghi\n')
-        with patch('%s.open' % __name__, m, create=True):
+        with patch('%s.open' % __name__, m, create=Wahr):
             with open('abc', 'rb') as f:
                 result = f.readlines()
         self.assertEqual(result, [b'abc\n', b'def\n', b'ghi\n'])
@@ -310,7 +310,7 @@ klasse TestMockOpen(unittest.TestCase):
         # Test that calling read, readline, and readlines pulls data
         # sequentially from the data we preload with
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             line1 = h.readline()
             rest = h.readlines()
@@ -318,7 +318,7 @@ klasse TestMockOpen(unittest.TestCase):
         self.assertEqual(rest, ['bar\n', 'baz\n'])
 
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=True):
+        with patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             line1 = h.readline()
             rest = h.read()

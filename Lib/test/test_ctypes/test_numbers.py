@@ -39,7 +39,7 @@ float_types = [c_double, c_float]
 
 unsigned_ranges = valid_ranges(*unsigned_types)
 signed_ranges = valid_ranges(*signed_types)
-bool_values = [True, False, 0, 1, -1, 5000, 'test', [], [1]]
+bool_values = [Wahr, Falsch, 0, 1, -1, 5000, 'test', [], [1]]
 
 klasse IntLike:
     def __int__(self):
@@ -91,7 +91,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
         # otherwise TypeError is raised
         fuer t in signed_types + unsigned_types + float_types:
             self.assertRaises(TypeError, t, "")
-            self.assertRaises(TypeError, t, None)
+            self.assertRaises(TypeError, t, Nichts)
 
     def test_from_param(self):
         # the from_param klasse method attribute always

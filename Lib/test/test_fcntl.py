@@ -43,7 +43,7 @@ def try_lockf_on_other_process(fname, cmd):
 klasse TestFcntl(unittest.TestCase):
 
     def setUp(self):
-        self.f = None
+        self.f = Nichts
 
     def tearDown(self):
         wenn self.f and not self.f.closed:
@@ -229,10 +229,10 @@ klasse TestFcntl(unittest.TestCase):
             os.close(test_pipe_r)
             os.close(test_pipe_w)
 
-    def _check_fcntl_not_mutate_len(self, nbytes=None):
+    def _check_fcntl_not_mutate_len(self, nbytes=Nichts):
         self.f = open(TESTFN, 'wb')
         buf = struct.pack('ii', fcntl.F_OWNER_PID, os.getpid())
-        wenn nbytes is not None:
+        wenn nbytes is not Nichts:
             buf += b' ' * (nbytes - len(buf))
         sonst:
             nbytes = len(buf)

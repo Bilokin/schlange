@@ -15,7 +15,7 @@ from turtle import *
 
 klasse Disc(Turtle):
     def __init__(self, n):
-        Turtle.__init__(self, shape="square", visible=False)
+        Turtle.__init__(self, shape="square", visible=Falsch)
         self.pu()
         self.shapesize(1.5, n*1.5, 2) # square-->rectangle
         self.fillcolor(n/6., 0, 1-n/6.)
@@ -42,7 +42,7 @@ def hanoi(n, from_, with_, to_):
         hanoi(n-1, with_, from_, to_)
 
 def play():
-    onkey(None,"space")
+    onkey(Nichts,"space")
     clear()
     try:
         hanoi(6, t1, t2, t3)

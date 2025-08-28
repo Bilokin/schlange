@@ -13,7 +13,7 @@ from email.mime.nonmultipart import MIMENonMultipart
 klasse MIMEMessage(MIMENonMultipart):
     """Class representing message/* MIME documents."""
 
-    def __init__(self, _msg, _subtype='rfc822', *, policy=None):
+    def __init__(self, _msg, _subtype='rfc822', *, policy=Nichts):
         """Create a message/* type MIME document.
 
         _msg is a message object and must be an instance of Message, or a

@@ -92,7 +92,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             # get() works as in the dict interface
             self.assertEqual(f.get(b'a'), self._dict[b'a'])
             self.assertEqual(f.get(b'xxx', b'foo'), b'foo')
-            self.assertIsNone(f.get(b'xxx'))
+            self.assertIsNichts(f.get(b'xxx'))
             with self.assertRaises(KeyError):
                 f[b'xxx']
 
@@ -246,26 +246,26 @@ klasse DumbDBMTestCase(unittest.TestCase):
             _delete_files()
             with self.assertRaises(FileNotFoundError):
                 dumbdbm.open(_fname, value)
-            self.assertFalse(os.path.exists(_fname + '.dat'))
-            self.assertFalse(os.path.exists(_fname + '.dir'))
-            self.assertFalse(os.path.exists(_fname + '.bak'))
+            self.assertFalsch(os.path.exists(_fname + '.dat'))
+            self.assertFalsch(os.path.exists(_fname + '.dir'))
+            self.assertFalsch(os.path.exists(_fname + '.bak'))
 
         fuer value in ('c', 'n'):
             _delete_files()
             with dumbdbm.open(_fname, value) as f:
-                self.assertTrue(os.path.exists(_fname + '.dat'))
-                self.assertTrue(os.path.exists(_fname + '.dir'))
-                self.assertFalse(os.path.exists(_fname + '.bak'))
-            self.assertFalse(os.path.exists(_fname + '.bak'))
+                self.assertWahr(os.path.exists(_fname + '.dat'))
+                self.assertWahr(os.path.exists(_fname + '.dir'))
+                self.assertFalsch(os.path.exists(_fname + '.bak'))
+            self.assertFalsch(os.path.exists(_fname + '.bak'))
 
         fuer value in ('c', 'n'):
             _delete_files()
             with dumbdbm.open(_fname, value) as f:
                 f['key'] = 'value'
-                self.assertTrue(os.path.exists(_fname + '.dat'))
-                self.assertTrue(os.path.exists(_fname + '.dir'))
-                self.assertFalse(os.path.exists(_fname + '.bak'))
-            self.assertTrue(os.path.exists(_fname + '.bak'))
+                self.assertWahr(os.path.exists(_fname + '.dat'))
+                self.assertWahr(os.path.exists(_fname + '.dir'))
+                self.assertFalsch(os.path.exists(_fname + '.bak'))
+            self.assertWahr(os.path.exists(_fname + '.bak'))
 
     def test_missing_index(self):
         with dumbdbm.open(_fname, 'n') as f:
@@ -274,22 +274,22 @@ klasse DumbDBMTestCase(unittest.TestCase):
         fuer value in ('r', 'w'):
             with self.assertRaises(FileNotFoundError):
                 dumbdbm.open(_fname, value)
-            self.assertFalse(os.path.exists(_fname + '.dir'))
-            self.assertFalse(os.path.exists(_fname + '.bak'))
+            self.assertFalsch(os.path.exists(_fname + '.dir'))
+            self.assertFalsch(os.path.exists(_fname + '.bak'))
 
         fuer value in ('c', 'n'):
             with dumbdbm.open(_fname, value) as f:
-                self.assertTrue(os.path.exists(_fname + '.dir'))
-                self.assertFalse(os.path.exists(_fname + '.bak'))
-            self.assertFalse(os.path.exists(_fname + '.bak'))
+                self.assertWahr(os.path.exists(_fname + '.dir'))
+                self.assertFalsch(os.path.exists(_fname + '.bak'))
+            self.assertFalsch(os.path.exists(_fname + '.bak'))
             os.unlink(_fname + '.dir')
 
         fuer value in ('c', 'n'):
             with dumbdbm.open(_fname, value) as f:
                 f['key'] = 'value'
-                self.assertTrue(os.path.exists(_fname + '.dir'))
-                self.assertFalse(os.path.exists(_fname + '.bak'))
-            self.assertTrue(os.path.exists(_fname + '.bak'))
+                self.assertWahr(os.path.exists(_fname + '.dir'))
+                self.assertFalsch(os.path.exists(_fname + '.bak'))
+            self.assertWahr(os.path.exists(_fname + '.bak'))
             os.unlink(_fname + '.dir')
             os.unlink(_fname + '.bak')
 
@@ -299,17 +299,17 @@ klasse DumbDBMTestCase(unittest.TestCase):
         os.unlink(_fname + '.dir')
         fuer value in ('c', 'n'):
             with dumbdbm.open(_fname, value) as f:
-                self.assertTrue(os.path.exists(_fname + '.dir'))
-                self.assertFalse(os.path.exists(_fname + '.bak'))
+                self.assertWahr(os.path.exists(_fname + '.dir'))
+                self.assertFalsch(os.path.exists(_fname + '.bak'))
                 f.sync()
-                self.assertTrue(os.path.exists(_fname + '.dir'))
-                self.assertFalse(os.path.exists(_fname + '.bak'))
+                self.assertWahr(os.path.exists(_fname + '.dir'))
+                self.assertFalsch(os.path.exists(_fname + '.bak'))
                 os.unlink(_fname + '.dir')
                 f.sync()
-                self.assertFalse(os.path.exists(_fname + '.dir'))
-                self.assertFalse(os.path.exists(_fname + '.bak'))
-            self.assertFalse(os.path.exists(_fname + '.dir'))
-            self.assertFalse(os.path.exists(_fname + '.bak'))
+                self.assertFalsch(os.path.exists(_fname + '.dir'))
+                self.assertFalsch(os.path.exists(_fname + '.bak'))
+            self.assertFalsch(os.path.exists(_fname + '.dir'))
+            self.assertFalsch(os.path.exists(_fname + '.bak'))
 
     def test_sync_nonempty_unmodified(self):
         with dumbdbm.open(_fname, 'n') as f:
@@ -318,21 +318,21 @@ klasse DumbDBMTestCase(unittest.TestCase):
         fuer value in ('c', 'n'):
             with dumbdbm.open(_fname, value) as f:
                 f['key'] = 'value'
-                self.assertTrue(os.path.exists(_fname + '.dir'))
-                self.assertFalse(os.path.exists(_fname + '.bak'))
+                self.assertWahr(os.path.exists(_fname + '.dir'))
+                self.assertFalsch(os.path.exists(_fname + '.bak'))
                 f.sync()
-                self.assertTrue(os.path.exists(_fname + '.dir'))
-                self.assertTrue(os.path.exists(_fname + '.bak'))
+                self.assertWahr(os.path.exists(_fname + '.dir'))
+                self.assertWahr(os.path.exists(_fname + '.bak'))
                 os.unlink(_fname + '.dir')
                 os.unlink(_fname + '.bak')
                 f.sync()
-                self.assertFalse(os.path.exists(_fname + '.dir'))
-                self.assertFalse(os.path.exists(_fname + '.bak'))
-            self.assertFalse(os.path.exists(_fname + '.dir'))
-            self.assertFalse(os.path.exists(_fname + '.bak'))
+                self.assertFalsch(os.path.exists(_fname + '.dir'))
+                self.assertFalsch(os.path.exists(_fname + '.bak'))
+            self.assertFalsch(os.path.exists(_fname + '.dir'))
+            self.assertFalsch(os.path.exists(_fname + '.bak'))
 
     def test_invalid_flag(self):
-        fuer flag in ('x', 'rf', None):
+        fuer flag in ('x', 'rf', Nichts):
             with self.assertRaisesRegex(ValueError,
                                         "Flag must be one of "
                                         "'r', 'w', 'c', or 'n'"):
@@ -361,11 +361,11 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.addCleanup(os_helper.unlink, filename + suffix)
         with dumbdbm.open(filename, 'c') as db:
             db[b'key'] = b'value'
-        self.assertTrue(os.path.exists(filename + '.dat'))
-        self.assertTrue(os.path.exists(filename + '.dir'))
+        self.assertWahr(os.path.exists(filename + '.dat'))
+        self.assertWahr(os.path.exists(filename + '.dir'))
         with dumbdbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), [b'key'])
-            self.assertTrue(b'key' in db)
+            self.assertWahr(b'key' in db)
             self.assertEqual(db[b'key'], b'value')
 
     def test_open_with_pathlib_path(self):

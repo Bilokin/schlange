@@ -9,7 +9,7 @@ from html.entities import html5 as _html5
 __all__ = ['escape', 'unescape']
 
 
-def escape(s, quote=True):
+def escape(s, quote=Wahr):
     """
     Replace special characters "&", "<" and ">" to HTML-safe sequences.
     If the optional flag quote is true (the default), the quotation mark

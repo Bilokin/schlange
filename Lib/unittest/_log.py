@@ -30,14 +30,14 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
 
     LOGGING_FORMAT = "%(levelname)s:%(name)s:%(message)s"
 
-    def __init__(self, test_case, logger_name, level, no_logs, formatter=None):
+    def __init__(self, test_case, logger_name, level, no_logs, formatter=Nichts):
         _BaseTestCaseContext.__init__(self, test_case)
         self.logger_name = logger_name
         wenn level:
             self.level = logging._nameToLevel.get(level, level)
         sonst:
             self.level = logging.INFO
-        self.msg = None
+        self.msg = Nichts
         self.no_logs = no_logs
         self.formatter = formatter
 
@@ -56,7 +56,7 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
         self.old_propagate = logger.propagate
         logger.handlers = [handler]
         logger.setLevel(self.level)
-        logger.propagate = False
+        logger.propagate = Falsch
         wenn self.no_logs:
             return
         return handler.watcher
@@ -66,9 +66,9 @@ klasse _AssertLogsContext(_BaseTestCaseContext):
         self.logger.propagate = self.old_propagate
         self.logger.setLevel(self.old_level)
 
-        wenn exc_type is not None:
+        wenn exc_type is not Nichts:
             # let unexpected exceptions pass through
-            return False
+            return Falsch
 
         wenn self.no_logs:
             # assertNoLogs

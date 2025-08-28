@@ -16,7 +16,7 @@ AUDIT_TESTS_PY = support.findfile("audit-tests.py")
 
 
 klasse AuditTest(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
 
     @support.requires_subprocess()
     def run_test_in_subprocess(self, *args):
@@ -38,7 +38,7 @@ klasse AuditTest(unittest.TestCase):
         wenn proc.returncode:
             self.fail(stderr)
 
-    def run_python(self, *args, expect_stderr=False):
+    def run_python(self, *args, expect_stderr=Falsch):
         events = []
         proc, stdout, stderr = self.run_test_in_subprocess(*args)
         wenn not expect_stderr or support.verbose:
@@ -118,7 +118,7 @@ klasse AuditTest(unittest.TestCase):
         self.assertEqual(events[0][0], "winreg.OpenKey")
         self.assertEqual(events[1][0], "winreg.OpenKey/result")
         expected = events[1][2]
-        self.assertTrue(expected)
+        self.assertWahr(expected)
         self.assertSequenceEqual(["winreg.EnumKey", " ", f"{expected} 0"], events[2])
         self.assertSequenceEqual(["winreg.EnumKey", " ", f"{expected} 10000"], events[3])
         self.assertSequenceEqual(["winreg.PyHKEY.Detach", " ", expected], events[4])
@@ -218,9 +218,9 @@ klasse AuditTest(unittest.TestCase):
             print(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
         expected = [
-            ("_thread.start_new_thread", "(<test_func>, (), None)"),
+            ("_thread.start_new_thread", "(<test_func>, (), Nichts)"),
             ("test.test_func", "()"),
-            ("_thread.start_joinable_thread", "(<test_func>, 1, None)"),
+            ("_thread.start_joinable_thread", "(<test_func>, 1, Nichts)"),
             ("test.test_func", "()"),
         ]
 
@@ -259,7 +259,7 @@ klasse AuditTest(unittest.TestCase):
             ('syslog.syslog', ' ', f'{syslog.LOG_INFO} test2'),
             ('syslog.openlog', ' ', f'audit-tests.py 0 {syslog.LOG_USER}'),
             ('syslog.openlog', ' ', f'audit-tests.py {syslog.LOG_NDELAY} {syslog.LOG_LOCAL0}'),
-            ('syslog.openlog', ' ', f'None 0 {syslog.LOG_USER}'),
+            ('syslog.openlog', ' ', f'Nichts 0 {syslog.LOG_USER}'),
             ('syslog.closelog', '', '')]
         )
 
@@ -285,7 +285,7 @@ klasse AuditTest(unittest.TestCase):
 
     def test_time_fail(self):
         returncode, events, stderr = self.run_python("test_time", "fail",
-                                                     expect_stderr=True)
+                                                     expect_stderr=Wahr)
         self.assertNotEqual(returncode, 0)
         self.assertIn('hook failed', stderr.splitlines()[-1])
 
@@ -297,7 +297,7 @@ klasse AuditTest(unittest.TestCase):
         wenn support.verbose:
             print(*events, sep='\n')
         actual = [(ev[0], ev[2]) fuer ev in events]
-        expected = [("sys.monitoring.register_callback", "(None,)")]
+        expected = [("sys.monitoring.register_callback", "(Nichts,)")]
 
         self.assertEqual(actual, expected)
 
@@ -326,8 +326,8 @@ klasse AuditTest(unittest.TestCase):
     @support.cpython_only
     def test_sys_remote_exec(self):
         returncode, events, stderr = self.run_python("test_sys_remote_exec")
-        self.assertTrue(any(["sys.remote_exec" in event fuer event in events]))
-        self.assertTrue(any(["cpython.remote_debugger_script" in event fuer event in events]))
+        self.assertWahr(any(["sys.remote_exec" in event fuer event in events]))
+        self.assertWahr(any(["cpython.remote_debugger_script" in event fuer event in events]))
         wenn returncode:
             self.fail(stderr)
 

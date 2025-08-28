@@ -41,18 +41,18 @@ klasse CycleError(ValueError):
 klasse TopologicalSorter:
     """Provides functionality to topologically sort a graph of hashable nodes"""
 
-    def __init__(self, graph=None):
+    def __init__(self, graph=Nichts):
         self._node2info = {}
-        self._ready_nodes = None
+        self._ready_nodes = Nichts
         self._npassedout = 0
         self._nfinished = 0
 
-        wenn graph is not None:
+        wenn graph is not Nichts:
             fuer node, predecessors in graph.items():
                 self.add(node, *predecessors)
 
     def _get_nodeinfo(self, node):
-        wenn (result := self._node2info.get(node)) is None:
+        wenn (result := self._node2info.get(node)) is Nichts:
             self._node2info[node] = result = _NodeInfo(node)
         return result
 
@@ -71,7 +71,7 @@ klasse TopologicalSorter:
 
         Raises ValueError wenn called after "prepare".
         """
-        wenn self._ready_nodes is not None:
+        wenn self._ready_nodes is not Nichts:
             raise ValueError("Nodes cannot be added after a call to prepare()")
 
         # Create the node -> predecessor edges
@@ -97,7 +97,7 @@ klasse TopologicalSorter:
         wenn self._npassedout > 0:
             raise ValueError("cannot prepare() after starting sort")
 
-        wenn self._ready_nodes is None:
+        wenn self._ready_nodes is Nichts:
             self._ready_nodes = [
                 i.node fuer i in self._node2info.values() wenn i.npredecessors == 0
             ]
@@ -119,7 +119,7 @@ klasse TopologicalSorter:
 
         Raises ValueError wenn called without calling "prepare" previously.
         """
-        wenn self._ready_nodes is None:
+        wenn self._ready_nodes is Nichts:
             raise ValueError("prepare() must be called first")
 
         # Get the nodes that are ready and mark them
@@ -136,7 +136,7 @@ klasse TopologicalSorter:
         return result
 
     def is_active(self):
-        """Return ``True`` wenn more progress can be made and ``False`` otherwise.
+        """Return ``Wahr`` wenn more progress can be made and ``Falsch`` otherwise.
 
         Progress can be made wenn cycles do not block the resolution and either there
         are still nodes ready that haven't yet been returned by "get_ready" or the
@@ -145,7 +145,7 @@ klasse TopologicalSorter:
 
         Raises ValueError wenn called without calling "prepare" previously.
         """
-        wenn self._ready_nodes is None:
+        wenn self._ready_nodes is Nichts:
             raise ValueError("prepare() must be called first")
         return self._nfinished < self._npassedout or bool(self._ready_nodes)
 
@@ -164,7 +164,7 @@ klasse TopologicalSorter:
         node has not yet been returned by "get_ready".
         """
 
-        wenn self._ready_nodes is None:
+        wenn self._ready_nodes is Nichts:
             raise ValueError("prepare() must be called first")
 
         n2i = self._node2info
@@ -172,7 +172,7 @@ klasse TopologicalSorter:
         fuer node in nodes:
 
             # Check wenn we know about this node (it was added previously using add()
-            wenn (nodeinfo := n2i.get(node)) is None:
+            wenn (nodeinfo := n2i.get(node)) is Nichts:
                 raise ValueError(f"node {node!r} was not added using add()")
 
             # If the node has not being returned (marked as ready) previously, inform the user.
@@ -185,7 +185,7 @@ klasse TopologicalSorter:
                 sowenn stat == _NODE_DONE:
                     raise ValueError(f"node {node!r} was already marked done")
                 sonst:
-                    assert False, f"node {node!r}: unknown status {stat}"
+                    assert Falsch, f"node {node!r}: unknown status {stat}"
 
             # Mark the node as processed
             nodeinfo.npredecessors = _NODE_DONE
@@ -210,7 +210,7 @@ klasse TopologicalSorter:
             wenn node in seen:
                 continue
 
-            while True:
+            while Wahr:
                 wenn node in seen:
                     # If we have seen already the node and is in the
                     # current stack we have found a cycle.
@@ -234,7 +234,7 @@ klasse TopologicalSorter:
                         itstack.pop()
                 sonst:
                     break
-        return None
+        return Nichts
 
     def static_order(self):
         """Returns an iterable of nodes in a topological order.

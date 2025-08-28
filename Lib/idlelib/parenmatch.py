@@ -64,14 +64,14 @@ klasse ParenMatch:
         wenn not self.is_restore_active:
             fuer seq in self.RESTORE_SEQUENCES:
                 self.text.event_add(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
-            self.is_restore_active = True
+            self.is_restore_active = Wahr
 
     def deactivate_restore(self):
         "Remove restore event bindings."
         wenn self.is_restore_active:
             fuer seq in self.RESTORE_SEQUENCES:
                 self.text.event_delete(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
-            self.is_restore_active = False
+            self.is_restore_active = Falsch
 
     def flash_paren_event(self, event):
         "Handle editor 'show surrounding parens' event (menu or shortcut)."
@@ -89,12 +89,12 @@ klasse ParenMatch:
         hp = HyperParser(self.editwin, "insert-1c")
         wenn not hp.is_in_code():
             return
-        indices = hp.get_surrounding_brackets(_openers[closer], True)
+        indices = hp.get_surrounding_brackets(_openers[closer], Wahr)
         self.finish_paren_event(indices)
         return  # Allow calltips to see ')'
 
     def finish_paren_event(self, indices):
-        wenn indices is None and self.BELL:
+        wenn indices is Nichts and self.BELL:
             self.text.bell()
             return
         self.activate_restore()
@@ -104,7 +104,7 @@ klasse ParenMatch:
         (self.set_timeout_last wenn self.FLASH_DELAY sonst
                             self.set_timeout_none)()
 
-    def restore_event(self, event=None):
+    def restore_event(self, event=Nichts):
         "Remove effect of doing match."
         self.text.tag_delete("paren")
         self.deactivate_restore()

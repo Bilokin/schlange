@@ -35,9 +35,9 @@ klasse StartupTests(TestBase):
                         print('### end subtest debug ###', end='')
                     sonst:
                         print('### end subtest debug ###')
-                self._debugged_in_subtest = False
+                self._debugged_in_subtest = Falsch
 
-    def debug(self, msg, *, header=None):
+    def debug(self, msg, *, header=Nichts):
         wenn header:
             self._debug(f'--- {header} ---')
             wenn msg:
@@ -50,16 +50,16 @@ klasse StartupTests(TestBase):
         sonst:
             self._debug(msg)
 
-    _debugged = False
-    _debugged_in_subtest = False
+    _debugged = Falsch
+    _debugged_in_subtest = Falsch
     def _debug(self, msg):
         wenn not self._debugged:
             print()
-            self._debugged = True
-        wenn self._subtest is not None:
-            wenn True:
+            self._debugged = Wahr
+        wenn self._subtest is not Nichts:
+            wenn Wahr:
                 wenn not self._debugged_in_subtest:
-                    self._debugged_in_subtest = True
+                    self._debugged_in_subtest = Wahr
                     print('### start subtest debug ###')
                 print(msg)
         sonst:
@@ -76,13 +76,13 @@ klasse StartupTests(TestBase):
         filename = os.path.join(*path)
         dirname = os.path.dirname(filename)
         wenn dirname:
-            os.makedirs(dirname, exist_ok=True)
+            os.makedirs(dirname, exist_ok=Wahr)
         with open(filename, 'w', encoding='utf-8') as outfile:
             outfile.write(dedent(text))
         return filename
 
     @support.requires_subprocess()
-    def run_python(self, argv, *, cwd=None):
+    def run_python(self, argv, *, cwd=Nichts):
         # This method is inspired by
         # EmbeddingTestsMixin.run_embedded_interpreter() in test_embed.py.
         import shlex
@@ -94,8 +94,8 @@ klasse StartupTests(TestBase):
             proc = subprocess.run(
                 argv,
                 cwd=cwd,
-                capture_output=True,
-                text=True,
+                capture_output=Wahr,
+                text=Wahr,
             )
         except Exception as exc:
             self.debug(f'# cmd: {shlex.join(argv)}')
@@ -124,13 +124,13 @@ klasse StartupTests(TestBase):
             orig = sys.path[0]
 
             interp = interpreters.create()
-            interp.exec(f"""if True:
+            interp.exec(f"""if Wahr:
                 import json
                 import sys
                 print(json.dumps({{
                     'main': {orig!r},
                     'sub': sys.path[0],
-                }}, indent=4), flush=True)
+                }}, indent=4), flush=Wahr)
                 """)
             '''
         # <tmp>/
@@ -169,12 +169,12 @@ klasse FinalizationTests(TestBase):
         # Make sure finalization finishes and the correct error code
         # is reported, even when subinterpreters get cleaned up at the end.
         import subprocess
-        argv = [sys.executable, '-c', '''if True:
+        argv = [sys.executable, '-c', '''if Wahr:
             from concurrent import interpreters
             interp = interpreters.create()
             raise Exception
             ''']
-        proc = subprocess.run(argv, capture_output=True, text=True)
+        proc = subprocess.run(argv, capture_output=Wahr, text=Wahr)
         self.assertIn('Traceback', proc.stderr)
         wenn proc.returncode == 0 and support.verbose:
             print()

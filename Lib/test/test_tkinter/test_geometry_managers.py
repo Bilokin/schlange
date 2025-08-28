@@ -17,7 +17,7 @@ EXPECTED_SCREEN_DISTANCE_OR_EMPTY_ERRMSG = '(bad|expected) screen distance (or "
 
 klasse PackTest(AbstractWidgetTest, unittest.TestCase):
 
-    test_keys = None
+    test_keys = Nichts
 
     def create2(self):
         pack = tkinter.Toplevel(self.root, name='pack')
@@ -49,7 +49,7 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
         pack, a, b, c, d = self.create2()
         def check(anchor, geom):
             a.pack_configure(side='top', ipadx=5, padx=10, ipady=15, pady=20,
-                             expand=True, anchor=anchor)
+                             expand=Wahr, anchor=anchor)
             self.root.update()
             self.assertEqual(a.winfo_geometry(), geom)
         check('n', '30x70+135+20')
@@ -93,12 +93,12 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
         check('20x40+0+80', '50x30+135+0', '80x80+220+75', '40x30+100+170')
         a.pack_configure(side='left', expand='yes')
         b.pack_configure(side='top', expand='on')
-        c.pack_configure(side='right', expand=True)
+        c.pack_configure(side='right', expand=Wahr)
         d.pack_configure(side='bottom', expand=1)
         check('20x40+40+80', '50x30+175+35', '80x80+180+110', '40x30+100+135')
         a.pack_configure(side='left', expand='yes', fill='both')
         b.pack_configure(side='top', expand='on', fill='both')
-        c.pack_configure(side='right', expand=True, fill='both')
+        c.pack_configure(side='right', expand=Wahr, fill='both')
         d.pack_configure(side='bottom', expand=1, fill='both')
         check('100x200+0+0', '200x100+100+0', '160x100+140+100', '40x100+100+100')
 
@@ -125,7 +125,7 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
             a.pack_forget()
             b.pack_forget()
             a.pack_configure(**kwargs)
-            b.pack_configure(expand=True, fill='both')
+            b.pack_configure(expand=Wahr, fill='both')
             self.root.update()
             self.assertEqual(a.winfo_geometry(), geom1)
             self.assertEqual(b.winfo_geometry(), geom2)
@@ -167,7 +167,7 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
             a.pack_forget()
             b.pack_forget()
             a.pack_configure(**kwargs)
-            b.pack_configure(expand=True, fill='both')
+            b.pack_configure(expand=Wahr, fill='both')
             self.root.update()
             self.assertEqual(a.winfo_geometry(), geom1)
             self.assertEqual(b.winfo_geometry(), geom2)
@@ -208,7 +208,7 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
         def check(side, geom1, geom2):
             a.pack_configure(side=side)
             self.assertEqual(a.pack_info()['side'], side)
-            b.pack_configure(expand=True, fill='both')
+            b.pack_configure(expand=Wahr, fill='both')
             self.root.update()
             self.assertEqual(a.winfo_geometry(), geom1)
             self.assertEqual(b.winfo_geometry(), geom2)
@@ -234,7 +234,7 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
         with self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % a):
             a.pack_info()
         a.pack_configure()
-        b.pack_configure(side='right', in_=a, anchor='s', expand=True, fill='x',
+        b.pack_configure(side='right', in_=a, anchor='s', expand=Wahr, fill='x',
                          ipadx=5, padx=10, ipady=2, pady=(5, 15))
         info = a.pack_info()
         self.assertIsInstance(info, dict)
@@ -263,11 +263,11 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
         pack, a, b, c, d = self.create2()
         pack.configure(width=300, height=200)
         a.pack_configure()
-        pack.pack_propagate(False)
+        pack.pack_propagate(Falsch)
         self.root.update()
         self.assertEqual(pack.winfo_reqwidth(), 300)
         self.assertEqual(pack.winfo_reqheight(), 200)
-        pack.pack_propagate(True)
+        pack.pack_propagate(Wahr)
         self.root.update()
         self.assertEqual(pack.winfo_reqwidth(), 20)
         self.assertEqual(pack.winfo_reqheight(), 40)
@@ -283,7 +283,7 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
 
 klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
 
-    test_keys = None
+    test_keys = Nichts
 
     def create2(self):
         t = tkinter.Toplevel(self.root, width=300, height=200, bd=0)
@@ -450,7 +450,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.root.update()
         foo.place_forget()
         self.root.update()
-        self.assertFalse(foo.winfo_ismapped())
+        self.assertFalsch(foo.winfo_ismapped())
         with self.assertRaises(TypeError):
             foo.place_forget(0)
 
@@ -488,7 +488,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
 
 klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
-    test_keys = None
+    test_keys = Nichts
 
     def tearDown(self):
         cols, rows = self.root.grid_size()
@@ -615,7 +615,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         with self.assertRaises(TypeError):
             self.root.grid_columnconfigure()
         self.assertEqual(self.root.grid_columnconfigure(0),
-                         {'minsize': 0, 'pad': 0, 'uniform': None, 'weight': 0})
+                         {'minsize': 0, 'pad': 0, 'uniform': Nichts, 'weight': 0})
         with self.assertRaisesRegex(TclError, 'bad option "-foo"'):
             self.root.grid_columnconfigure(0, 'foo')
         self.root.grid_columnconfigure((0, 3), weight=2)
@@ -671,7 +671,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         with self.assertRaises(TypeError):
             self.root.grid_rowconfigure()
         self.assertEqual(self.root.grid_rowconfigure(0),
-                         {'minsize': 0, 'pad': 0, 'uniform': None, 'weight': 0})
+                         {'minsize': 0, 'pad': 0, 'uniform': Nichts, 'weight': 0})
         with self.assertRaisesRegex(TclError, 'bad option "-foo"'):
             self.root.grid_rowconfigure(0, 'foo')
         self.root.grid_rowconfigure((0, 3), weight=2)
@@ -855,23 +855,23 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(t.grid_location(201, 101), (1, 1))
 
     def test_grid_propagate(self):
-        self.assertEqual(self.root.grid_propagate(), True)
+        self.assertEqual(self.root.grid_propagate(), Wahr)
         with self.assertRaises(TypeError):
-            self.root.grid_propagate(False, False)
-        self.root.grid_propagate(False)
-        self.assertFalse(self.root.grid_propagate())
+            self.root.grid_propagate(Falsch, Falsch)
+        self.root.grid_propagate(Falsch)
+        self.assertFalsch(self.root.grid_propagate())
         f = tkinter.Frame(self.root, width=100, height=100, bg='red')
         f.grid_configure(row=0, column=0)
         self.root.update()
         self.assertEqual(f.winfo_width(), 100)
         self.assertEqual(f.winfo_height(), 100)
-        f.grid_propagate(False)
+        f.grid_propagate(Falsch)
         g = tkinter.Frame(self.root, width=75, height=85, bg='green')
         g.grid_configure(in_=f, row=0, column=0)
         self.root.update()
         self.assertEqual(f.winfo_width(), 100)
         self.assertEqual(f.winfo_height(), 100)
-        f.grid_propagate(True)
+        f.grid_propagate(Wahr)
         self.root.update()
         self.assertEqual(f.winfo_width(), 75)
         self.assertEqual(f.winfo_height(), 85)

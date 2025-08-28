@@ -14,33 +14,33 @@ import errno
 try:
     import zlib
     del zlib
-    _ZLIB_SUPPORTED = True
+    _ZLIB_SUPPORTED = Wahr
 except ImportError:
-    _ZLIB_SUPPORTED = False
+    _ZLIB_SUPPORTED = Falsch
 
 try:
     import bz2
     del bz2
-    _BZ2_SUPPORTED = True
+    _BZ2_SUPPORTED = Wahr
 except ImportError:
-    _BZ2_SUPPORTED = False
+    _BZ2_SUPPORTED = Falsch
 
 try:
     import lzma
     del lzma
-    _LZMA_SUPPORTED = True
+    _LZMA_SUPPORTED = Wahr
 except ImportError:
-    _LZMA_SUPPORTED = False
+    _LZMA_SUPPORTED = Falsch
 
 try:
     from compression import zstd
     del zstd
-    _ZSTD_SUPPORTED = True
+    _ZSTD_SUPPORTED = Wahr
 except ImportError:
-    _ZSTD_SUPPORTED = False
+    _ZSTD_SUPPORTED = Falsch
 
 _WINDOWS = os.name == 'nt'
-posix = nt = None
+posix = nt = Nichts
 wenn os.name == 'posix':
     import posix
 sowenn _WINDOWS:
@@ -49,7 +49,7 @@ sowenn _WINDOWS:
 wenn sys.platform == 'win32':
     import _winapi
 sonst:
-    _winapi = None
+    _winapi = Nichts
 
 COPY_BUFSIZE = 1024 * 1024 wenn _WINDOWS sonst 256 * 1024
 # This should never be removed, see rationale in:
@@ -113,7 +113,7 @@ def _fastcopy_fcopyfile(fsrc, fdst, flags):
         wenn err.errno in {errno.EINVAL, errno.ENOTSUP}:
             raise _GiveupOnFastCopy(err)
         sonst:
-            raise err from None
+            raise err from Nichts
 
 def _determine_linux_fastcopy_blocksize(infd):
     """Determine blocksize fuer fastcopying on Linux.
@@ -149,7 +149,7 @@ def _fastcopy_copy_file_range(fsrc, fdst):
 
     blocksize = _determine_linux_fastcopy_blocksize(infd)
     offset = 0
-    while True:
+    while Wahr:
         try:
             n_copied = os.copy_file_range(infd, outfd, blocksize, offset_dst=offset)
         except OSError as err:
@@ -158,7 +158,7 @@ def _fastcopy_copy_file_range(fsrc, fdst):
             err.filename2 = fdst.name
 
             wenn err.errno == errno.ENOSPC:  # filesystem is full
-                raise err from None
+                raise err from Nichts
 
             # Give up on first call and wenn no data was copied.
             wenn offset == 0 and os.lseek(outfd, 0, os.SEEK_CUR) == 0:
@@ -198,7 +198,7 @@ def _fastcopy_sendfile(fsrc, fdst):
 
     blocksize = _determine_linux_fastcopy_blocksize(infd)
     offset = 0
-    while True:
+    while Wahr:
         try:
             sent = os.sendfile(outfd, infd, offset, blocksize)
         except OSError as err:
@@ -210,11 +210,11 @@ def _fastcopy_sendfile(fsrc, fdst):
                 # sendfile() on this platform (probably Linux < 2.6.33)
                 # does not support copies between regular files (only
                 # sockets).
-                _USE_CP_SENDFILE = False
+                _USE_CP_SENDFILE = Falsch
                 raise _GiveupOnFastCopy(err)
 
             wenn err.errno == errno.ENOSPC:  # filesystem is full
-                raise err from None
+                raise err from Nichts
 
             # Give up on first call and wenn no data was copied.
             wenn offset == 0 and os.lseek(outfd, 0, os.SEEK_CUR) == 0:
@@ -235,7 +235,7 @@ def _copyfileobj_readinto(fsrc, fdst, length=COPY_BUFSIZE):
     fsrc_readinto = fsrc.readinto
     fdst_write = fdst.write
     with memoryview(bytearray(length)) as mv:
-        while True:
+        while Wahr:
             n = fsrc_readinto(mv)
             wenn not n:
                 break
@@ -262,13 +262,13 @@ def _samefile(src, dst):
         try:
             return os.path.samestat(src.stat(), os.stat(dst))
         except OSError:
-            return False
+            return Falsch
 
     wenn hasattr(os.path, 'samefile'):
         try:
             return os.path.samefile(src, dst)
         except OSError:
-            return False
+            return Falsch
 
     # All other platforms: check fuer same pathname.
     return (os.path.normcase(os.path.abspath(src)) ==
@@ -280,7 +280,7 @@ def _stat(fn):
 def _islink(fn):
     return fn.is_symlink() wenn isinstance(fn, os.DirEntry) sonst os.path.islink(fn)
 
-def copyfile(src, dst, *, follow_symlinks=True):
+def copyfile(src, dst, *, follow_symlinks=Wahr):
     """Copy data from src to dst in the most efficient way possible.
 
     If follow_symlinks is not set and src is a symbolic link, a new
@@ -352,7 +352,7 @@ def copyfile(src, dst, *, follow_symlinks=True):
 
     return dst
 
-def copymode(src, dst, *, follow_symlinks=True):
+def copymode(src, dst, *, follow_symlinks=Wahr):
     """Copy mode bits from src to dst.
 
     If follow_symlinks is not set, symlinks aren't followed wenn and only
@@ -371,7 +371,7 @@ def copymode(src, dst, *, follow_symlinks=True):
         stat_func = _stat
         wenn os.name == 'nt' and os.path.islink(dst):
             def chmod_func(*args):
-                os.chmod(*args, follow_symlinks=True)
+                os.chmod(*args, follow_symlinks=Wahr)
         sonst:
             chmod_func = os.chmod
 
@@ -379,7 +379,7 @@ def copymode(src, dst, *, follow_symlinks=True):
     chmod_func(dst, stat.S_IMODE(st.st_mode))
 
 wenn hasattr(os, 'listxattr'):
-    def _copyxattr(src, dst, *, follow_symlinks=True):
+    def _copyxattr(src, dst, *, follow_symlinks=Wahr):
         """Copy extended filesystem attributes from `src` to `dst`.
 
         Overwrite existing attributes.
@@ -406,7 +406,7 @@ sonst:
     def _copyxattr(*args, **kwargs):
         pass
 
-def copystat(src, dst, *, follow_symlinks=True):
+def copystat(src, dst, *, follow_symlinks=Wahr):
     """Copy file metadata
 
     Copy the permission bits, last access time, last modification time, and
@@ -420,7 +420,7 @@ def copystat(src, dst, *, follow_symlinks=True):
     """
     sys.audit("shutil.copystat", src, dst)
 
-    def _nop(*args, ns=None, follow_symlinks=None):
+    def _nop(*args, ns=Nichts, follow_symlinks=Nichts):
         pass
 
     # follow symlinks (aka don't not follow symlinks)
@@ -452,7 +452,7 @@ def copystat(src, dst, *, follow_symlinks=True):
         lookup("chmod")(dst, mode, follow_symlinks=follow)
     except NotImplementedError:
         # wenn we got a NotImplementedError, it's because
-        #   * follow_symlinks=False,
+        #   * follow_symlinks=Falsch,
         #   * lchown() is unavailable, and
         #   * either
         #       * fchownat() is unavailable or
@@ -472,7 +472,7 @@ def copystat(src, dst, *, follow_symlinks=True):
             sonst:
                 raise
 
-def copy(src, dst, *, follow_symlinks=True):
+def copy(src, dst, *, follow_symlinks=Wahr):
     """Copy data and mode bits ("cp src dst"). Return the file's destination.
 
     The destination may be a directory.
@@ -490,7 +490,7 @@ def copy(src, dst, *, follow_symlinks=True):
     copymode(src, dst, follow_symlinks=follow_symlinks)
     return dst
 
-def copy2(src, dst, *, follow_symlinks=True):
+def copy2(src, dst, *, follow_symlinks=Wahr):
     """Copy data and metadata. Return the file's destination.
 
     Metadata is copied with copystat(). Please see the copystat function
@@ -543,8 +543,8 @@ def ignore_patterns(*patterns):
     return _ignore_patterns
 
 def _copytree(entries, src, dst, symlinks, ignore, copy_function,
-              ignore_dangling_symlinks, dirs_exist_ok=False):
-    wenn ignore is not None:
+              ignore_dangling_symlinks, dirs_exist_ok=Falsch):
+    wenn ignore is not Nichts:
         ignored_names = ignore(os.fspath(src), [x.name fuer x in entries])
     sonst:
         ignored_names = ()
@@ -564,9 +564,9 @@ def _copytree(entries, src, dst, symlinks, ignore, copy_function,
             wenn is_symlink and os.name == 'nt':
                 # Special check fuer directory junctions, which appear as
                 # symlinks but we want to recurse.
-                lstat = srcentry.stat(follow_symlinks=False)
+                lstat = srcentry.stat(follow_symlinks=Falsch)
                 wenn lstat.st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT:
-                    is_symlink = False
+                    is_symlink = Falsch
             wenn is_symlink:
                 linkto = os.readlink(srcname)
                 wenn symlinks:
@@ -602,14 +602,14 @@ def _copytree(entries, src, dst, symlinks, ignore, copy_function,
         copystat(src, dst)
     except OSError as why:
         # Copying file access times may fail on Windows
-        wenn getattr(why, 'winerror', None) is None:
+        wenn getattr(why, 'winerror', Nichts) is Nichts:
             errors.append((src, dst, str(why)))
     wenn errors:
         raise Error(errors)
     return dst
 
-def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
-             ignore_dangling_symlinks=False, dirs_exist_ok=False):
+def copytree(src, dst, symlinks=Falsch, ignore=Nichts, copy_function=copy2,
+             ignore_dangling_symlinks=Falsch, dirs_exist_ok=Falsch):
     """Recursively copy a directory tree and return the destination directory.
 
     If exception(s) occur, an Error is raised with a list of reasons.
@@ -667,7 +667,7 @@ sonst:
 
 # version vulnerable to race conditions
 def _rmtree_unsafe(path, dir_fd, onexc):
-    wenn dir_fd is not None:
+    wenn dir_fd is not Nichts:
         raise NotImplementedError("dir_fd unavailable on this platform")
     try:
         st = os.lstat(path)
@@ -685,7 +685,7 @@ def _rmtree_unsafe(path, dir_fd, onexc):
     def onerror(err):
         wenn not isinstance(err, FileNotFoundError):
             onexc(os.scandir, err.filename, err)
-    results = os.walk(path, topdown=False, onerror=onerror, followlinks=os._walk_symlinks_as_files)
+    results = os.walk(path, topdown=Falsch, onerror=onerror, followlinks=os._walk_symlinks_as_files)
     fuer dirpath, dirnames, filenames in results:
         fuer name in dirnames:
             fullname = os.path.join(dirpath, name)
@@ -715,7 +715,7 @@ def _rmtree_safe_fd(path, dir_fd, onexc):
     # While the unsafe rmtree works fine on bytes, the fd based does not.
     wenn isinstance(path, bytes):
         path = os.fsdecode(path)
-    stack = [(os.lstat, dir_fd, path, None)]
+    stack = [(os.lstat, dir_fd, path, Nichts)]
     try:
         while stack:
             _rmtree_safe_fd_step(stack, onexc)
@@ -736,15 +736,15 @@ def _rmtree_safe_fd_step(stack, onexc):
     #   Walking a directory starts with an os.lstat() to detect symlinks; in
     #   this case, func is updated before subsequent operations and passed to
     #   onexc() wenn an error occurs.
-    # * dirfd: Open file descriptor, or None wenn we're processing the top-level
+    # * dirfd: Open file descriptor, or Nichts wenn we're processing the top-level
     #   directory given to rmtree() and the user didn't supply dir_fd.
     # * path: Path of file to operate upon. This is passed to onexc() wenn an
     #   error occurs.
-    # * orig_entry: os.DirEntry, or None wenn we're processing the top-level
+    # * orig_entry: os.DirEntry, or Nichts wenn we're processing the top-level
     #   directory given to rmtree(). We used the cached stat() of the entry to
     #   save a call to os.lstat() when walking subdirectories.
     func, dirfd, path, orig_entry = stack.pop()
-    name = path wenn orig_entry is None sonst orig_entry.name
+    name = path wenn orig_entry is Nichts sonst orig_entry.name
     try:
         wenn func is os.close:
             os.close(dirfd)
@@ -756,10 +756,10 @@ def _rmtree_safe_fd_step(stack, onexc):
         # Note: To guard against symlink races, we use the standard
         # lstat()/open()/fstat() trick.
         assert func is os.lstat
-        wenn orig_entry is None:
+        wenn orig_entry is Nichts:
             orig_st = os.lstat(name, dir_fd=dirfd)
         sonst:
-            orig_st = orig_entry.stat(follow_symlinks=False)
+            orig_st = orig_entry.stat(follow_symlinks=Falsch)
 
         func = os.open  # For error reporting.
         topfd = os.open(name, os.O_RDONLY | os.O_NONBLOCK, dir_fd=dirfd)
@@ -779,7 +779,7 @@ def _rmtree_safe_fd_step(stack, onexc):
         fuer entry in entries:
             fullname = os.path.join(path, entry.name)
             try:
-                wenn entry.is_dir(follow_symlinks=False):
+                wenn entry.is_dir(follow_symlinks=Falsch):
                     # Traverse into sub-directory.
                     stack.append((os.lstat, topfd, fullname, entry))
                     continue
@@ -794,7 +794,7 @@ def _rmtree_safe_fd_step(stack, onexc):
             except OSError as err:
                 onexc(os.unlink, fullname, err)
     except FileNotFoundError as err:
-        wenn orig_entry is None or func is os.close:
+        wenn orig_entry is Nichts or func is os.close:
             err.filename = path
             onexc(func, path, err)
     except OSError as err:
@@ -807,10 +807,10 @@ _use_fd_functions = ({os.open, os.stat, os.unlink, os.rmdir} <=
                      os.stat in os.supports_follow_symlinks)
 _rmtree_impl = _rmtree_safe_fd wenn _use_fd_functions sonst _rmtree_unsafe
 
-def rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
+def rmtree(path, ignore_errors=Falsch, onerror=Nichts, *, onexc=Nichts, dir_fd=Nichts):
     """Recursively delete a directory tree.
 
-    If dir_fd is not None, it should be a file descriptor open to a directory;
+    If dir_fd is not Nichts, it should be a file descriptor open to a directory;
     path will then be relative to that directory.
     dir_fd may not be implemented on your platform.
     If it is unavailable, using it will raise a NotImplementedError.
@@ -822,7 +822,7 @@ def rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
     the value of exc_info describes the exception. For onexc it is the
     exception instance, and fuer onerror it is a tuple as returned by
     sys.exc_info().  If ignore_errors is false and both onexc and
-    onerror are None, the exception is reraised.
+    onerror are Nichts, the exception is reraised.
 
     onerror is deprecated and only remains fuer backwards compatibility.
     If both onerror and onexc are set, onerror is ignored and onexc is used.
@@ -832,19 +832,19 @@ def rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
     wenn ignore_errors:
         def onexc(*args):
             pass
-    sowenn onerror is None and onexc is None:
+    sowenn onerror is Nichts and onexc is Nichts:
         def onexc(*args):
             raise
-    sowenn onexc is None:
-        wenn onerror is None:
+    sowenn onexc is Nichts:
+        wenn onerror is Nichts:
             def onexc(*args):
                 raise
         sonst:
             # delegate to onerror
             def onexc(*args):
                 func, path, exc = args
-                wenn exc is None:
-                    exc_info = None, None, None
+                wenn exc is Nichts:
+                    exc_info = Nichts, Nichts, Nichts
                 sonst:
                     exc_info = type(exc), exc, exc.__traceback__
                 return onerror(func, path, exc_info)
@@ -932,7 +932,7 @@ def move(src, dst, copy_function=copy2):
                                       "'%s': Lacking write permission to '%s'."
                                       % (src, src))
             copytree(src, real_dst, copy_function=copy_function,
-                     symlinks=True)
+                     symlinks=Wahr)
             rmtree(src)
         sonst:
             copy_function(src, real_dst)
@@ -955,46 +955,46 @@ def _is_immutable(src):
 
 def _get_gid(name):
     """Returns a gid, given a group name."""
-    wenn name is None:
-        return None
+    wenn name is Nichts:
+        return Nichts
 
     try:
         from grp import getgrnam
     except ImportError:
-        return None
+        return Nichts
 
     try:
         result = getgrnam(name)
     except KeyError:
-        result = None
-    wenn result is not None:
+        result = Nichts
+    wenn result is not Nichts:
         return result[2]
-    return None
+    return Nichts
 
 def _get_uid(name):
     """Returns an uid, given a user name."""
-    wenn name is None:
-        return None
+    wenn name is Nichts:
+        return Nichts
 
     try:
         from pwd import getpwnam
     except ImportError:
-        return None
+        return Nichts
 
     try:
         result = getpwnam(name)
     except KeyError:
-        result = None
-    wenn result is not None:
+        result = Nichts
+    wenn result is not Nichts:
         return result[2]
-    return None
+    return Nichts
 
 def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
-                  owner=None, group=None, logger=None, root_dir=None):
+                  owner=Nichts, group=Nichts, logger=Nichts, root_dir=Nichts):
     """Create a (possibly compressed) tar file from all the files under
     'base_dir'.
 
-    'compress' must be "gzip" (the default), "bzip2", "xz", "zst", or None.
+    'compress' must be "gzip" (the default), "bzip2", "xz", "zst", or Nichts.
 
     'owner' and 'group' can be used to define an owner and a group fuer the
     archive that is being built. If not provided, the current owner and group
@@ -1005,7 +1005,7 @@ def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
 
     Returns the output filename.
     """
-    wenn compress is None:
+    wenn compress is Nichts:
         tar_compression = ''
     sowenn _ZLIB_SUPPORTED and compress == 'gzip':
         tar_compression = 'gz'
@@ -1026,23 +1026,23 @@ def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     archive_dir = os.path.dirname(archive_name)
 
     wenn archive_dir and not os.path.exists(archive_dir):
-        wenn logger is not None:
+        wenn logger is not Nichts:
             logger.info("creating %s", archive_dir)
         wenn not dry_run:
             os.makedirs(archive_dir)
 
     # creating the tarball
-    wenn logger is not None:
+    wenn logger is not Nichts:
         logger.info('Creating tar archive')
 
     uid = _get_uid(owner)
     gid = _get_gid(group)
 
     def _set_uid_gid(tarinfo):
-        wenn gid is not None:
+        wenn gid is not Nichts:
             tarinfo.gid = gid
             tarinfo.gname = group
-        wenn uid is not None:
+        wenn uid is not Nichts:
             tarinfo.uid = uid
             tarinfo.uname = owner
         return tarinfo
@@ -1050,19 +1050,19 @@ def _make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     wenn not dry_run:
         tar = tarfile.open(archive_name, 'w|%s' % tar_compression)
         arcname = base_dir
-        wenn root_dir is not None:
+        wenn root_dir is not Nichts:
             base_dir = os.path.join(root_dir, base_dir)
         try:
             tar.add(base_dir, arcname, filter=_set_uid_gid)
         finally:
             tar.close()
 
-    wenn root_dir is not None:
+    wenn root_dir is not Nichts:
         archive_name = os.path.abspath(archive_name)
     return archive_name
 
 def _make_zipfile(base_name, base_dir, verbose=0, dry_run=0,
-                  logger=None, owner=None, group=None, root_dir=None):
+                  logger=Nichts, owner=Nichts, group=Nichts, root_dir=Nichts):
     """Create a zip file from all the files under 'base_dir'.
 
     The output zip file will be named 'base_name' + ".zip".  Returns the
@@ -1074,12 +1074,12 @@ def _make_zipfile(base_name, base_dir, verbose=0, dry_run=0,
     archive_dir = os.path.dirname(base_name)
 
     wenn archive_dir and not os.path.exists(archive_dir):
-        wenn logger is not None:
+        wenn logger is not Nichts:
             logger.info("creating %s", archive_dir)
         wenn not dry_run:
             os.makedirs(archive_dir)
 
-    wenn logger is not None:
+    wenn logger is not Nichts:
         logger.info("creating '%s' and adding '%s' to it",
                     zip_filename, base_dir)
 
@@ -1087,23 +1087,23 @@ def _make_zipfile(base_name, base_dir, verbose=0, dry_run=0,
         with zipfile.ZipFile(zip_filename, "w",
                              compression=zipfile.ZIP_DEFLATED) as zf:
             arcname = os.path.normpath(base_dir)
-            wenn root_dir is not None:
+            wenn root_dir is not Nichts:
                 base_dir = os.path.join(root_dir, base_dir)
             base_dir = os.path.normpath(base_dir)
             wenn arcname != os.curdir:
                 zf.write(base_dir, arcname)
-                wenn logger is not None:
+                wenn logger is not Nichts:
                     logger.info("adding '%s'", base_dir)
             fuer dirpath, dirnames, filenames in os.walk(base_dir):
                 arcdirpath = dirpath
-                wenn root_dir is not None:
+                wenn root_dir is not Nichts:
                     arcdirpath = os.path.relpath(arcdirpath, root_dir)
                 arcdirpath = os.path.normpath(arcdirpath)
                 fuer name in sorted(dirnames):
                     path = os.path.join(dirpath, name)
                     arcname = os.path.join(arcdirpath, name)
                     zf.write(path, arcname)
-                    wenn logger is not None:
+                    wenn logger is not Nichts:
                         logger.info("adding '%s'", path)
                 fuer name in filenames:
                     path = os.path.join(dirpath, name)
@@ -1111,22 +1111,22 @@ def _make_zipfile(base_name, base_dir, verbose=0, dry_run=0,
                     wenn os.path.isfile(path):
                         arcname = os.path.join(arcdirpath, name)
                         zf.write(path, arcname)
-                        wenn logger is not None:
+                        wenn logger is not Nichts:
                             logger.info("adding '%s'", path)
 
-    wenn root_dir is not None:
+    wenn root_dir is not Nichts:
         zip_filename = os.path.abspath(zip_filename)
     return zip_filename
 
-_make_tarball.supports_root_dir = True
-_make_zipfile.supports_root_dir = True
+_make_tarball.supports_root_dir = Wahr
+_make_zipfile.supports_root_dir = Wahr
 
 # Maps the name of the archive format to a tuple containing:
 # * the archiving function
 # * extra keyword arguments
 # * description
 _ARCHIVE_FORMATS = {
-    'tar':   (_make_tarball, [('compress', None)],
+    'tar':   (_make_tarball, [('compress', Nichts)],
               "uncompressed tar file"),
 }
 
@@ -1157,7 +1157,7 @@ def get_archive_formats():
     formats.sort()
     return formats
 
-def register_archive_format(name, function, extra_args=None, description=''):
+def register_archive_format(name, function, extra_args=Nichts, description=''):
     """Registers an archive format.
 
     name is the name of the format. function is the callable that will be
@@ -1166,7 +1166,7 @@ def register_archive_format(name, function, extra_args=None, description=''):
     description can be provided to describe the format, and will be returned
     by the get_archive_formats() function.
     """
-    wenn extra_args is None:
+    wenn extra_args is Nichts:
         extra_args = []
     wenn not callable(function):
         raise TypeError('The %s object is not callable' % function)
@@ -1181,8 +1181,8 @@ def register_archive_format(name, function, extra_args=None, description=''):
 def unregister_archive_format(name):
     del _ARCHIVE_FORMATS[name]
 
-def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
-                 dry_run=0, owner=None, group=None, logger=None):
+def make_archive(base_name, format, root_dir=Nichts, base_dir=Nichts, verbose=0,
+                 dry_run=0, owner=Nichts, group=Nichts, logger=Nichts):
     """Create an archive file (eg. zip or tar).
 
     'base_name' is the name of the file to create, minus any format-specific
@@ -1203,7 +1203,7 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
     try:
         format_info = _ARCHIVE_FORMATS[format]
     except KeyError:
-        raise ValueError("unknown archive format '%s'" % format) from None
+        raise ValueError("unknown archive format '%s'" % format) from Nichts
 
     kwargs = {'dry_run': dry_run, 'logger': logger,
               'owner': owner, 'group': group}
@@ -1212,12 +1212,12 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
     fuer arg, val in format_info[1]:
         kwargs[arg] = val
 
-    wenn base_dir is None:
+    wenn base_dir is Nichts:
         base_dir = os.curdir
 
-    supports_root_dir = getattr(func, 'supports_root_dir', False)
-    save_cwd = None
-    wenn root_dir is not None:
+    supports_root_dir = getattr(func, 'supports_root_dir', Falsch)
+    save_cwd = Nichts
+    wenn root_dir is not Nichts:
         stmd = os.stat(root_dir).st_mode
         wenn not stat.S_ISDIR(stmd):
             raise NotADirectoryError(errno.ENOTDIR, 'Not a directory', root_dir)
@@ -1228,7 +1228,7 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
             kwargs['root_dir'] = root_dir
         sonst:
             save_cwd = os.getcwd()
-            wenn logger is not None:
+            wenn logger is not Nichts:
                 logger.debug("changing into '%s'", root_dir)
             base_name = os.path.abspath(base_name)
             wenn not dry_run:
@@ -1237,8 +1237,8 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
     try:
         filename = func(base_name, base_dir, **kwargs)
     finally:
-        wenn save_cwd is not None:
-            wenn logger is not None:
+        wenn save_cwd is not Nichts:
+            wenn logger is not Nichts:
                 logger.debug("changing back to '%s'", save_cwd)
             os.chdir(save_cwd)
 
@@ -1274,7 +1274,7 @@ def _check_unpack_options(extensions, function, extra_args):
         raise TypeError('The registered function must be a callable')
 
 
-def register_unpack_format(name, extensions, function, extra_args=None,
+def register_unpack_format(name, extensions, function, extra_args=Nichts,
                            description=''):
     """Registers an unpack format.
 
@@ -1291,7 +1291,7 @@ def register_unpack_format(name, extensions, function, extra_args=None,
     description can be provided to describe the format, and will be returned
     by the get_unpack_formats() function.
     """
-    wenn extra_args is None:
+    wenn extra_args is Nichts:
         extra_args = []
     _check_unpack_options(extensions, function, extra_args)
     _UNPACK_FORMATS[name] = extensions, function, extra_args, description
@@ -1336,7 +1336,7 @@ def _unpack_zipfile(filename, extract_dir):
     finally:
         zip.close()
 
-def _unpack_tarfile(filename, extract_dir, *, filter=None):
+def _unpack_tarfile(filename, extract_dir, *, filter=Nichts):
     """Unpack tar/tar.gz/tar.bz2/tar.xz/tar.zst `filename` to `extract_dir`
     """
     import tarfile  # late import fuer breaking circular dependency
@@ -1381,9 +1381,9 @@ def _find_unpack_format(filename):
         fuer extension in info[0]:
             wenn filename.endswith(extension):
                 return name
-    return None
+    return Nichts
 
-def unpack_archive(filename, extract_dir=None, format=None, *, filter=None):
+def unpack_archive(filename, extract_dir=Nichts, format=Nichts, *, filter=Nichts):
     """Unpack an archive.
 
     `filename` is the name of the archive.
@@ -1403,28 +1403,28 @@ def unpack_archive(filename, extract_dir=None, format=None, *, filter=None):
     """
     sys.audit("shutil.unpack_archive", filename, extract_dir, format)
 
-    wenn extract_dir is None:
+    wenn extract_dir is Nichts:
         extract_dir = os.getcwd()
 
     extract_dir = os.fspath(extract_dir)
     filename = os.fspath(filename)
 
-    wenn filter is None:
+    wenn filter is Nichts:
         filter_kwargs = {}
     sonst:
         filter_kwargs = {'filter': filter}
-    wenn format is not None:
+    wenn format is not Nichts:
         try:
             format_info = _UNPACK_FORMATS[format]
         except KeyError:
-            raise ValueError("Unknown unpack format '{0}'".format(format)) from None
+            raise ValueError("Unknown unpack format '{0}'".format(format)) from Nichts
 
         func = format_info[1]
         func(filename, extract_dir, **dict(format_info[2]), **filter_kwargs)
     sonst:
         # we need to look at the registered unpackers supported extensions
         format = _find_unpack_format(filename)
-        wenn format is None:
+        wenn format is Nichts:
             raise ReadError("Unknown archive format '{0}'".format(filename))
 
         func = _UNPACK_FORMATS[format][1]
@@ -1468,7 +1468,7 @@ sowenn _WINDOWS:
         return _ntuple_diskusage(total, used, free)
 
 
-def chown(path, user=None, group=None, *, dir_fd=None, follow_symlinks=True):
+def chown(path, user=Nichts, group=Nichts, *, dir_fd=Nichts, follow_symlinks=Wahr):
     """Change owner user and group of the given path.
 
     user and group can be the uid/gid or the user/group names, and in that case,
@@ -1477,32 +1477,32 @@ def chown(path, user=None, group=None, *, dir_fd=None, follow_symlinks=True):
     If dir_fd is set, it should be an open file descriptor to the directory to
     be used as the root of *path* wenn it is relative.
 
-    If follow_symlinks is set to False and the last element of the path is a
+    If follow_symlinks is set to Falsch and the last element of the path is a
     symbolic link, chown will modify the link itself and not the file being
     referenced by the link.
     """
     sys.audit('shutil.chown', path, user, group)
 
-    wenn user is None and group is None:
+    wenn user is Nichts and group is Nichts:
         raise ValueError("user and/or group must be set")
 
     _user = user
     _group = group
 
     # -1 means don't change it
-    wenn user is None:
+    wenn user is Nichts:
         _user = -1
     # user can either be an int (the uid) or a string (the system username)
     sowenn isinstance(user, str):
         _user = _get_uid(user)
-        wenn _user is None:
+        wenn _user is Nichts:
             raise LookupError("no such user: {!r}".format(user))
 
-    wenn group is None:
+    wenn group is Nichts:
         _group = -1
     sowenn not isinstance(group, int):
         _group = _get_gid(group)
-        wenn _group is None:
+        wenn _group is Nichts:
             raise LookupError("no such group: {!r}".format(group))
 
     os.chown(path, _user, _group, dir_fd=dir_fd,
@@ -1543,7 +1543,7 @@ def get_terminal_size(fallback=(80, 24)):
         try:
             size = os.get_terminal_size(sys.__stdout__.fileno())
         except (AttributeError, ValueError, OSError):
-            # stdout is None, closed, detached, or not a terminal, or
+            # stdout is Nichts, closed, detached, or not a terminal, or
             # os.get_terminal_size() is unsupported
             size = os.terminal_size(fallback)
         wenn columns <= 0:
@@ -1572,9 +1572,9 @@ def _win_path_needs_curdir(cmd, mode):
                 os.fsdecode(cmd))
 
 
-def which(cmd, mode=os.F_OK | os.X_OK, path=None):
+def which(cmd, mode=os.F_OK | os.X_OK, path=Nichts):
     """Given a command, mode, and a PATH string, return the path which
-    conforms to the given mode on the PATH, or None wenn there is no such
+    conforms to the given mode on the PATH, or Nichts wenn there is no such
     file.
 
     `mode` defaults to os.F_OK | os.X_OK. `path` defaults to the result
@@ -1591,9 +1591,9 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None):
     wenn dirname:
         path = [dirname]
     sonst:
-        wenn path is None:
-            path = os.environ.get("PATH", None)
-            wenn path is None:
+        wenn path is Nichts:
+            path = os.environ.get("PATH", Nichts)
+            wenn path is Nichts:
                 try:
                     path = os.confstr("CS_PATH")
                 except (AttributeError, ValueError):
@@ -1605,7 +1605,7 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None):
         # PATH='' doesn't match, whereas PATH=':' looks in the current
         # directory
         wenn not path:
-            return None
+            return Nichts
 
         wenn use_bytes:
             path = os.fsencode(path)
@@ -1652,7 +1652,7 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None):
                 name = os.path.join(dir, thefile)
                 wenn _access_check(name, mode):
                     return name
-    return None
+    return Nichts
 
 def __getattr__(name):
     wenn name == "ExecError":

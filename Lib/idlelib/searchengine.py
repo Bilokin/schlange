@@ -26,11 +26,11 @@ klasse SearchEngine:
         '''
         self.root = root  # need fuer report_error()
         self.patvar = StringVar(root, '')   # search pattern
-        self.revar = BooleanVar(root, False)   # regular expression?
-        self.casevar = BooleanVar(root, False)   # match case?
-        self.wordvar = BooleanVar(root, False)   # match whole word?
-        self.wrapvar = BooleanVar(root, True)   # wrap around buffer?
-        self.backvar = BooleanVar(root, False)   # search backwards?
+        self.revar = BooleanVar(root, Falsch)   # regular expression?
+        self.casevar = BooleanVar(root, Falsch)   # match case?
+        self.wordvar = BooleanVar(root, Falsch)   # match whole word?
+        self.wrapvar = BooleanVar(root, Wahr)   # wrap around buffer?
+        self.backvar = BooleanVar(root, Falsch)   # search backwards?
 
     # Access methods
 
@@ -66,7 +66,7 @@ klasse SearchEngine:
 
     def getcookedpat(self):
         pat = self.getpat()
-        wenn not self.isre():  # wenn True, see setcookedpat
+        wenn not self.isre():  # wenn Wahr, see setcookedpat
             pat = re.escape(pat)
         wenn self.isword():
             pat = r"\b%s\b" % pat
@@ -77,7 +77,7 @@ klasse SearchEngine:
         pat = self.getpat()
         wenn not pat:
             self.report_error(pat, "Empty regular expression")
-            return None
+            return Nichts
         pat = self.getcookedpat()
         flags = 0
         wenn not self.iscase():
@@ -86,21 +86,21 @@ klasse SearchEngine:
             prog = re.compile(pat, flags)
         except re.PatternError as e:
             self.report_error(pat, e.msg, e.pos)
-            return None
+            return Nichts
         return prog
 
-    def report_error(self, pat, msg, col=None):
+    def report_error(self, pat, msg, col=Nichts):
         # Derived klasse could override this with something fancier
         msg = "Error: " + str(msg)
         wenn pat:
             msg = msg + "\nPattern: " + str(pat)
-        wenn col is not None:
+        wenn col is not Nichts:
             msg = msg + "\nOffset: " + str(col)
         messagebox.showerror("Regular expression error",
                                msg, master=self.root)
 
-    def search_text(self, text, prog=None, ok=0):
-        '''Return (lineno, matchobj) or None fuer forward/backward search.
+    def search_text(self, text, prog=Nichts, ok=0):
+        '''Return (lineno, matchobj) or Nichts fuer forward/backward search.
 
         This function calls the right function with the right arguments.
         It directly return the result of that call.
@@ -114,13 +114,13 @@ klasse SearchEngine:
         at the insert mark.
 
         To aid progress, the search functions do not return an empty
-        match at the starting position unless ok is True.
+        match at the starting position unless ok is Wahr.
         '''
 
         wenn not prog:
             prog = self.getprog()
             wenn not prog:
-                return None # Compilation failed -- stop
+                return Nichts # Compilation failed -- stop
         wrap = self.wrapvar.get()
         first, last = get_selection(text)
         wenn self.isback():
@@ -159,13 +159,13 @@ klasse SearchEngine:
                 wrap = 0
                 line = 1
                 chars = text.get("1.0", "2.0")
-        return None
+        return Nichts
 
     def search_backward(self, text, prog, line, col, wrap, ok=0):
         wrapped = 0
         startline = line
         chars = text.get("%d.0" % line, "%d.0" % (line+1))
-        while True:
+        while Wahr:
             m = search_reverse(prog, chars[:-1], col)
             wenn m:
                 wenn ok or m.start() < col:
@@ -183,11 +183,11 @@ klasse SearchEngine:
                 line, col = map(int, pos.split("."))
             chars = text.get("%d.0" % line, "%d.0" % (line+1))
             col = len(chars) - 1
-        return None
+        return Nichts
 
 
 def search_reverse(prog, chars, col):
-    '''Search backwards and return an re match object or None.
+    '''Search backwards and return an re match object or Nichts.
 
     This is done by searching forwards until there is no match.
     Prog: compiled re object with a search method returning a match.
@@ -196,8 +196,8 @@ def search_reverse(prog, chars, col):
     '''
     m = prog.search(chars)
     wenn not m:
-        return None
-    found = None
+        return Nichts
+    found = Nichts
     i, j = m.span()  # m.start(), m.end() == match slice indexes
     while i < col and j <= col:
         found = m
@@ -216,7 +216,7 @@ def get_selection(text):
         first = text.index("sel.first")
         last = text.index("sel.last")
     except TclError:
-        first = last = None
+        first = last = Nichts
     wenn not first:
         first = text.index("insert")
     wenn not last:

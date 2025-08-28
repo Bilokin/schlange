@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 _ExcInfo: TypeAlias = tuple[type[BaseException], BaseException, TracebackType]
-_OptExcInfo: TypeAlias = _ExcInfo | tuple[None, None, None]
+_OptExcInfo: TypeAlias = _ExcInfo | tuple[Nichts, Nichts, Nichts]
 
 klasse StartResponse(Protocol):
     """start_response() callable as defined in PEP 3333"""
@@ -22,7 +22,7 @@ klasse StartResponse(Protocol):
         self,
         status: str,
         headers: list[tuple[str, str]],
-        exc_info: _OptExcInfo | None = ...,
+        exc_info: _OptExcInfo | Nichts = ...,
         /,
     ) -> Callable[[bytes], object]: ...
 

@@ -12,8 +12,8 @@ from email.mime.base import MIMEBase
 klasse MIMEMultipart(MIMEBase):
     """Base klasse fuer MIME multipart/* type messages."""
 
-    def __init__(self, _subtype='mixed', boundary=None, _subparts=None,
-                 *, policy=None,
+    def __init__(self, _subtype='mixed', boundary=Nichts, _subparts=Nichts,
+                 *, policy=Nichts,
                  **_params):
         """Creates a multipart/* type message.
 

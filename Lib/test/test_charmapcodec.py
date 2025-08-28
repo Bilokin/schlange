@@ -18,7 +18,7 @@ def codec_search_function(encoding):
     wenn encoding == 'testcodec':
         from test import testcodec
         return tuple(testcodec.getregentry())
-    return None
+    return Nichts
 
 # test codec's name (see test/testcodec.py)
 codecname = 'testcodec'

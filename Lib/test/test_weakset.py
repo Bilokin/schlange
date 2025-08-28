@@ -107,8 +107,8 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertEqual(len(i), len(self.items2))
 
     def test_isdisjoint(self):
-        self.assertTrue(self.s.isdisjoint(WeakSet(self.items2)))
-        self.assertTrue(not self.s.isdisjoint(WeakSet(self.letters)))
+        self.assertWahr(self.s.isdisjoint(WeakSet(self.items2)))
+        self.assertWahr(not self.s.isdisjoint(WeakSet(self.letters)))
 
     def test_and(self):
         i = self.s.intersection(self.items2)
@@ -146,27 +146,27 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertEqual(self.s ^ frozenset(self.items2), i)
 
     def test_sub_and_super(self):
-        self.assertTrue(self.ab_weakset <= self.abcde_weakset)
-        self.assertTrue(self.abcde_weakset <= self.abcde_weakset)
-        self.assertTrue(self.abcde_weakset >= self.ab_weakset)
-        self.assertFalse(self.abcde_weakset <= self.def_weakset)
-        self.assertFalse(self.abcde_weakset >= self.def_weakset)
-        self.assertTrue(set('a').issubset('abc'))
-        self.assertTrue(set('abc').issuperset('a'))
-        self.assertFalse(set('a').issubset('cbs'))
-        self.assertFalse(set('cbs').issuperset('a'))
+        self.assertWahr(self.ab_weakset <= self.abcde_weakset)
+        self.assertWahr(self.abcde_weakset <= self.abcde_weakset)
+        self.assertWahr(self.abcde_weakset >= self.ab_weakset)
+        self.assertFalsch(self.abcde_weakset <= self.def_weakset)
+        self.assertFalsch(self.abcde_weakset >= self.def_weakset)
+        self.assertWahr(set('a').issubset('abc'))
+        self.assertWahr(set('abc').issuperset('a'))
+        self.assertFalsch(set('a').issubset('cbs'))
+        self.assertFalsch(set('cbs').issuperset('a'))
 
     def test_lt(self):
-        self.assertTrue(self.ab_weakset < self.abcde_weakset)
-        self.assertFalse(self.abcde_weakset < self.def_weakset)
-        self.assertFalse(self.ab_weakset < self.ab_weakset)
-        self.assertFalse(WeakSet() < WeakSet())
+        self.assertWahr(self.ab_weakset < self.abcde_weakset)
+        self.assertFalsch(self.abcde_weakset < self.def_weakset)
+        self.assertFalsch(self.ab_weakset < self.ab_weakset)
+        self.assertFalsch(WeakSet() < WeakSet())
 
     def test_gt(self):
-        self.assertTrue(self.abcde_weakset > self.ab_weakset)
-        self.assertFalse(self.abcde_weakset > self.def_weakset)
-        self.assertFalse(self.ab_weakset > self.ab_weakset)
-        self.assertFalse(WeakSet() > WeakSet())
+        self.assertWahr(self.abcde_weakset > self.ab_weakset)
+        self.assertFalsch(self.abcde_weakset > self.def_weakset)
+        self.assertFalsch(self.ab_weakset > self.ab_weakset)
+        self.assertFalsch(WeakSet() > WeakSet())
 
     def test_gc(self):
         # Create a nest of cycles to exercise overall ref count check
@@ -226,9 +226,9 @@ klasse TestWeakSet(unittest.TestCase):
         self.assertRaises(TypeError, self.s.add, [])
         self.fs.add(Foo())
         support.gc_collect()  # For PyPy or other GCs.
-        self.assertTrue(len(self.fs) == 1)
+        self.assertWahr(len(self.fs) == 1)
         self.fs.add(self.obj)
-        self.assertTrue(len(self.fs) == 1)
+        self.assertWahr(len(self.fs) == 1)
 
     def test_remove(self):
         x = ustr('a')
@@ -252,7 +252,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_update(self):
         retval = self.s.update(self.items2)
-        self.assertEqual(retval, None)
+        self.assertEqual(retval, Nichts)
         fuer c in (self.items + self.items2):
             self.assertIn(c, self.s)
         self.assertRaises(TypeError, self.s.update, [[]])
@@ -269,7 +269,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_intersection_update(self):
         retval = self.s.intersection_update(self.items2)
-        self.assertEqual(retval, None)
+        self.assertEqual(retval, Nichts)
         fuer c in (self.items + self.items2):
             wenn c in self.items2 and c in self.items:
                 self.assertIn(c, self.s)
@@ -287,7 +287,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_difference_update(self):
         retval = self.s.difference_update(self.items2)
-        self.assertEqual(retval, None)
+        self.assertEqual(retval, Nichts)
         fuer c in (self.items + self.items2):
             wenn c in self.items and c not in self.items2:
                 self.assertIn(c, self.s)
@@ -306,7 +306,7 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_symmetric_difference_update(self):
         retval = self.s.symmetric_difference_update(self.items2)
-        self.assertEqual(retval, None)
+        self.assertEqual(retval, Nichts)
         fuer c in (self.items + self.items2):
             wenn (c in self.items) ^ (c in self.items2):
                 self.assertIn(c, self.s)
@@ -336,19 +336,19 @@ klasse TestWeakSet(unittest.TestCase):
 
     def test_eq(self):
         # issue 5964
-        self.assertTrue(self.s == self.s)
-        self.assertTrue(self.s == WeakSet(self.items))
-        self.assertFalse(self.s == set(self.items))
-        self.assertFalse(self.s == list(self.items))
-        self.assertFalse(self.s == tuple(self.items))
-        self.assertFalse(self.s == WeakSet([Foo]))
-        self.assertFalse(self.s == 1)
+        self.assertWahr(self.s == self.s)
+        self.assertWahr(self.s == WeakSet(self.items))
+        self.assertFalsch(self.s == set(self.items))
+        self.assertFalsch(self.s == list(self.items))
+        self.assertFalsch(self.s == tuple(self.items))
+        self.assertFalsch(self.s == WeakSet([Foo]))
+        self.assertFalsch(self.s == 1)
 
     def test_ne(self):
-        self.assertTrue(self.s != set(self.items))
+        self.assertWahr(self.s != set(self.items))
         s1 = WeakSet()
         s2 = WeakSet()
-        self.assertFalse(s1 != s2)
+        self.assertFalsch(s1 != s2)
 
     def test_weak_destroy_while_iterating(self):
         # Issue #7105: iterators shouldn't crash when a key is implicitly removed
@@ -385,7 +385,7 @@ klasse TestWeakSet(unittest.TestCase):
                 gc.collect()      # just in case
                 yield u
             finally:
-                it = None           # should commit all removals
+                it = Nichts           # should commit all removals
 
         with testcontext() as u:
             self.assertNotIn(u, s)

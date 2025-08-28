@@ -12,8 +12,8 @@ import pickle
 # most useful to set JUST_SHOW_HASH_RESULTS, to see all the results
 # instead of wrestling with test "failures".  See the bottom of the
 # file fuer extensive notes on what we're testing here and why.
-RUN_ALL_HASH_TESTS = False
-JUST_SHOW_HASH_RESULTS = False # wenn RUN_ALL_HASH_TESTS, just display
+RUN_ALL_HASH_TESTS = Falsch
+JUST_SHOW_HASH_RESULTS = Falsch # wenn RUN_ALL_HASH_TESTS, just display
 
 klasse TupleTest(seq_tests.CommonTest):
     type2test = tuple
@@ -30,7 +30,7 @@ klasse TupleTest(seq_tests.CommonTest):
         self.assertEqual(tuple(), ())
         t0_3 = (0, 1, 2, 3)
         t0_3_bis = tuple(t0_3)
-        self.assertTrue(t0_3 is t0_3_bis)
+        self.assertWahr(t0_3 is t0_3_bis)
         self.assertEqual(tuple([]), ())
         self.assertEqual(tuple([0, 1, 2, 3]), (0, 1, 2, 3))
         self.assertEqual(tuple(''), ())
@@ -52,7 +52,7 @@ klasse TupleTest(seq_tests.CommonTest):
             subclass(sequence=())
 
         klasse subclass_with_init(tuple):
-            def __init__(self, arg, newarg=None):
+            def __init__(self, arg, newarg=Nichts):
                 self.newarg = newarg
         u = subclass_with_init([1, 2], newarg=3)
         self.assertIs(type(u), subclass_with_init)
@@ -60,7 +60,7 @@ klasse TupleTest(seq_tests.CommonTest):
         self.assertEqual(u.newarg, 3)
 
         klasse subclass_with_new(tuple):
-            def __new__(cls, arg, newarg=None):
+            def __new__(cls, arg, newarg=Nichts):
                 self = super().__new__(cls, arg)
                 self.newarg = newarg
                 return self
@@ -71,8 +71,8 @@ klasse TupleTest(seq_tests.CommonTest):
 
     def test_truth(self):
         super().test_truth()
-        self.assertTrue(not ())
-        self.assertTrue((42, ))
+        self.assertWahr(not ())
+        self.assertWahr((42, ))
 
     def test_len(self):
         super().test_len()
@@ -85,14 +85,14 @@ klasse TupleTest(seq_tests.CommonTest):
         u = (0, 1)
         u2 = u
         u += (2, 3)
-        self.assertTrue(u is not u2)
+        self.assertWahr(u is not u2)
 
     def test_imul(self):
         super().test_imul()
         u = (0, 1)
         u2 = u
         u *= 3
-        self.assertTrue(u is not u2)
+        self.assertWahr(u is not u2)
 
     def test_tupleresizebug(self):
         # Check that a specific bug in _PyTuple_Resize() is squashed.
@@ -136,7 +136,7 @@ klasse TupleTest(seq_tests.CommonTest):
         # (number_of_collisions, pileup) values, and the test fails if
         # those aren't the values we get.  Also wenn specified, the test
         # fails wenn z > `zlimit`.
-        def tryone_inner(tag, nbins, hashes, expected=None, zlimit=None):
+        def tryone_inner(tag, nbins, hashes, expected=Nichts, zlimit=Nichts):
             from collections import Counter
 
             nballs = len(hashes)
@@ -147,13 +147,13 @@ klasse TupleTest(seq_tests.CommonTest):
             pileup = max(c.values()) - 1
             del c
             got = (collisions, pileup)
-            failed = False
+            failed = Falsch
             prefix = ""
-            wenn zlimit is not None and z > zlimit:
-                failed = True
+            wenn zlimit is not Nichts and z > zlimit:
+                failed = Wahr
                 prefix = f"FAIL z > {zlimit}; "
-            wenn expected is not None and got != expected:
-                failed = True
+            wenn expected is not Nichts and got != expected:
+                failed = Wahr
                 prefix += f"FAIL {got} != {expected}; "
             wenn failed or JUST_SHOW_HASH_RESULTS:
                 msg = f"{prefix}{tag}; pileup {pileup:,} mean {mean:.1f} "
@@ -165,8 +165,8 @@ klasse TupleTest(seq_tests.CommonTest):
                     self.fail(msg)
 
         def tryone(tag, xs,
-                   native32=None, native64=None, hi32=None, lo32=None,
-                   zlimit=None):
+                   native32=Nichts, native64=Nichts, hi32=Nichts, lo32=Nichts,
+                   zlimit=Nichts):
             NHASHBITS = support.NHASHBITS
             hashes = list(map(hash, xs))
             tryone_inner(tag + f"; {NHASHBITS}-bit hash codes",
@@ -294,13 +294,13 @@ klasse TupleTest(seq_tests.CommonTest):
         # Nested tuples can take several collections to untrack
         gc.collect()
         gc.collect()
-        self.assertFalse(gc.is_tracked(t), t)
+        self.assertFalsch(gc.is_tracked(t), t)
 
     def _tracked(self, t):
-        self.assertTrue(gc.is_tracked(t), t)
+        self.assertWahr(gc.is_tracked(t), t)
         gc.collect()
         gc.collect()
-        self.assertTrue(gc.is_tracked(t), t)
+        self.assertWahr(gc.is_tracked(t), t)
 
     @support.cpython_only
     def test_track_literals(self):
@@ -311,7 +311,7 @@ klasse TupleTest(seq_tests.CommonTest):
         self._not_tracked((1,))
         self._not_tracked((1, 2))
         self._not_tracked((1, 2, "a"))
-        self._not_tracked((1, 2, (None, True, False, ()), int))
+        self._not_tracked((1, 2, (Nichts, Wahr, Falsch, ()), int))
         self._not_tracked((object(),))
         self._not_tracked(((1, x), y, (2, 3)))
 
@@ -346,14 +346,14 @@ klasse TupleTest(seq_tests.CommonTest):
     @support.cpython_only
     def test_track_dynamic(self):
         # Test GC-optimization of dynamically constructed tuples.
-        self.check_track_dynamic(tuple, False)
+        self.check_track_dynamic(tuple, Falsch)
 
     @support.cpython_only
     def test_track_subtypes(self):
         # Tuple subtypes must always be tracked
         klasse MyTuple(tuple):
             pass
-        self.check_track_dynamic(MyTuple, True)
+        self.check_track_dynamic(MyTuple, Wahr)
 
     @support.cpython_only
     def test_bug7466(self):
@@ -438,7 +438,7 @@ klasse TupleTest(seq_tests.CommonTest):
 # platforms.  In fact, we normally don't bother to run them at all -
 # set RUN_ALL_HASH_TESTS to force it.
 #
-# When global JUST_SHOW_HASH_RESULTS is True, the tuple hash statistics
+# When global JUST_SHOW_HASH_RESULTS is Wahr, the tuple hash statistics
 # are just displayed to stdout.  A typical output line looks like:
 #
 # old tuple test; 32-bit upper hash codes; \

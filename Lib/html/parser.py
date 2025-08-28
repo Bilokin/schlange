@@ -119,7 +119,7 @@ klasse HTMLParser(_markupbase.ParserBase):
     data between tags is passed from the parser to the derived class
     by calling self.handle_data() with the data as argument (the data
     may be split up in arbitrary chunks).  If convert_charrefs is
-    True the character references are converted automatically to the
+    Wahr the character references are converted automatically to the
     corresponding Unicode character (and self.handle_data() is no
     longer split in chunks), otherwise they are passed by calling
     self.handle_entityref() or self.handle_charref() with the string
@@ -130,10 +130,10 @@ klasse HTMLParser(_markupbase.ParserBase):
     CDATA_CONTENT_ELEMENTS = ("script", "style")
     RCDATA_CONTENT_ELEMENTS = ("textarea", "title")
 
-    def __init__(self, *, convert_charrefs=True):
+    def __init__(self, *, convert_charrefs=Wahr):
         """Initialize and reset this instance.
 
-        If convert_charrefs is True (the default), all character references
+        If convert_charrefs is Wahr (the default), all character references
         are automatically converted to the corresponding Unicode characters.
         """
         super().__init__()
@@ -145,9 +145,9 @@ klasse HTMLParser(_markupbase.ParserBase):
         self.rawdata = ''
         self.lasttag = '???'
         self.interesting = interesting_normal
-        self.cdata_elem = None
-        self._support_cdata = True
-        self._escapable = True
+        self.cdata_elem = Nichts
+        self._support_cdata = Wahr
+        self._escapable = Wahr
         super().reset()
 
     def feed(self, data):
@@ -163,13 +163,13 @@ klasse HTMLParser(_markupbase.ParserBase):
         """Handle any buffered data."""
         self.goahead(1)
 
-    __starttag_text = None
+    __starttag_text = Nichts
 
     def get_starttag_text(self):
         """Return full source of start tag: '<...>'."""
         return self.__starttag_text
 
-    def set_cdata_mode(self, elem, *, escapable=False):
+    def set_cdata_mode(self, elem, *, escapable=Falsch):
         self.cdata_elem = elem.lower()
         self._escapable = escapable
         wenn escapable and not self.convert_charrefs:
@@ -181,10 +181,10 @@ klasse HTMLParser(_markupbase.ParserBase):
 
     def clear_cdata_mode(self):
         self.interesting = interesting_normal
-        self.cdata_elem = None
-        self._escapable = True
+        self.cdata_elem = Nichts
+        self._escapable = Wahr
 
-    def _set_support_cdata(self, flag=True):
+    def _set_support_cdata(self, flag=Wahr):
         """Enable or disable support of the CDATA sections.
         If enabled, "<[CDATA[" starts a CDATA section which ends with "]]>".
         If disabled, "<[CDATA[" starts a bogus comments which ends with ">".
@@ -209,7 +209,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                 j = rawdata.find('<', i)
                 wenn j < 0:
                     # wenn we can't find the next <, either we are at the end
-                    # or there's more text incoming.  If the latter is True,
+                    # or there's more text incoming.  If the latter is Wahr,
                     # we can't pass the text to handle_data in case we have
                     # a charref cut in half at end.  Try to determine if
                     # this is the case before proceeding by looking fuer an
@@ -365,7 +365,7 @@ klasse HTMLParser(_markupbase.ParserBase):
 
     # Internal -- parse comment, return length or -1 wenn not terminated
     # see https://html.spec.whatwg.org/multipage/parsing.html#comment-start-state
-    def parse_comment(self, i, report=True):
+    def parse_comment(self, i, report=Wahr):
         rawdata = self.rawdata
         assert rawdata.startswith('<!--', i), 'unexpected call to parse_comment()'
         match = commentclose.search(rawdata, i+4)
@@ -407,7 +407,7 @@ klasse HTMLParser(_markupbase.ParserBase):
     def parse_starttag(self, i):
         # See the HTML5 specs section "13.2.5.8 Tag name state"
         # https://html.spec.whatwg.org/multipage/parsing.html#tag-name-state
-        self.__starttag_text = None
+        self.__starttag_text = Nichts
         endpos = self.check_for_whole_start_tag(i)
         wenn endpos < 0:
             return endpos
@@ -426,7 +426,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                 break
             attrname, rest, attrvalue = m.group(1, 2, 3)
             wenn not rest:
-                attrvalue = None
+                attrvalue = Nichts
             sowenn attrvalue[:1] == '\'' == attrvalue[-1:] or \
                  attrvalue[:1] == '"' == attrvalue[-1:]:
                 attrvalue = attrvalue[1:-1]
@@ -447,7 +447,7 @@ klasse HTMLParser(_markupbase.ParserBase):
             wenn tag in self.CDATA_CONTENT_ELEMENTS:
                 self.set_cdata_mode(tag)
             sowenn tag in self.RCDATA_CONTENT_ELEMENTS:
-                self.set_cdata_mode(tag, escapable=True)
+                self.set_cdata_mode(tag, escapable=Wahr)
         return endpos
 
     # Internal -- check to see wenn we have a complete starttag; return end

@@ -20,7 +20,7 @@ klasse FixUpModuleTests:
         _bootstrap_external._fix_up_module(ns, name, path)
 
         expected = {"__spec__": spec, "__loader__": loader, "__file__": path,
-                    "__cached__": None}
+                    "__cached__": Nichts}
         self.assertEqual(ns, expected)
 
     def test_no_loader_no_spec_but_sourceless(self):
@@ -51,7 +51,7 @@ klasse FixUpModuleTests:
         ns = {}
         _bootstrap_external._fix_up_module(ns, name, path)
 
-        expected = {"__file__": path, "__cached__": None}
+        expected = {"__file__": path, "__cached__": Nichts}
 
         fuer key, val in expected.items():
             with self.subTest(f"{key}: {val}"):
@@ -87,11 +87,11 @@ klasse TestBlessMyLoader(unittest.TestCase):
         ## self.assertRaises(
         ##     AttributeError, _bootstrap_external._bless_my_loader,
         ##     bar.__dict__)
-        self.assertIsNone(_bootstrap_external._bless_my_loader(bar.__dict__))
+        self.assertIsNichts(_bootstrap_external._bless_my_loader(bar.__dict__))
 
     def test_gh86298_loader_is_none_and_no_spec(self):
         bar = ModuleType('bar')
-        bar.__loader__ = None
+        bar.__loader__ = Nichts
         del bar.__spec__
         # 2022-10-06(warsaw): For backward compatibility with the
         # implementation in _warnings.c, this can't raise an
@@ -100,28 +100,28 @@ klasse TestBlessMyLoader(unittest.TestCase):
         ## self.assertRaises(
         ##     AttributeError, _bootstrap_external._bless_my_loader,
         ##     bar.__dict__)
-        self.assertIsNone(_bootstrap_external._bless_my_loader(bar.__dict__))
+        self.assertIsNichts(_bootstrap_external._bless_my_loader(bar.__dict__))
 
     def test_gh86298_no_loader_and_spec_is_none(self):
         bar = ModuleType('bar')
         del bar.__loader__
-        bar.__spec__ = None
+        bar.__spec__ = Nichts
         self.assertRaises(
             ValueError,
             _bootstrap_external._bless_my_loader, bar.__dict__)
 
     def test_gh86298_loader_is_none_and_spec_is_none(self):
         bar = ModuleType('bar')
-        bar.__loader__ = None
-        bar.__spec__ = None
+        bar.__loader__ = Nichts
+        bar.__spec__ = Nichts
         self.assertRaises(
             ValueError,
             _bootstrap_external._bless_my_loader, bar.__dict__)
 
     def test_gh86298_loader_is_none_and_spec_loader_is_none(self):
         bar = ModuleType('bar')
-        bar.__loader__ = None
-        bar.__spec__ = SimpleNamespace(loader=None)
+        bar.__loader__ = Nichts
+        bar.__spec__ = SimpleNamespace(loader=Nichts)
         self.assertRaises(
             ValueError,
             _bootstrap_external._bless_my_loader, bar.__dict__)
@@ -138,7 +138,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
     def test_gh86298_spec_is_none(self):
         bar = ModuleType('bar')
         bar.__loader__ = object()
-        bar.__spec__ = None
+        bar.__spec__ = Nichts
         with warnings.catch_warnings():
             self.assertWarns(
                 DeprecationWarning,

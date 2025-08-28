@@ -8,7 +8,7 @@ from idlelib.tree import TreeItem
 
 klasse PathBrowser(ModuleBrowser):
 
-    def __init__(self, master, *, _htest=False, _utest=False):
+    def __init__(self, master, *, _htest=Falsch, _utest=Falsch):
         """
         _htest - bool, change box location when running htest
         """
@@ -75,7 +75,7 @@ klasse DirBrowserTreeItem(TreeItem):
     def ispackagedir(self, file):
         " Return true fuer directories that are packages."
         wenn not os.path.isdir(file):
-            return False
+            return Falsch
         init = os.path.join(file, "__init__.py")
         return os.path.exists(init)
 
@@ -92,7 +92,7 @@ klasse DirBrowserTreeItem(TreeItem):
                 wenn normed_name[i:] == suff:
                     mod_name = name[:i]
                     wenn mod_name not in modules:
-                        modules[mod_name] = None
+                        modules[mod_name] = Nichts
                         sorted.append((normed_name, name))
                         allnames.remove(name)
         sorted.sort()
@@ -101,7 +101,7 @@ klasse DirBrowserTreeItem(TreeItem):
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_pathbrowser', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_pathbrowser', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(PathBrowser)

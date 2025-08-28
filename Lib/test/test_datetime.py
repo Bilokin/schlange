@@ -19,7 +19,7 @@ def load_tests(loader, tests, pattern):
         # XXX: import_fresh_module() is supposed to leave sys.module cache untouched,
         # XXX: but it does not, so we have to cleanup ourselves.
         fuer modname in ['datetime', '_datetime', '_strptime']:
-            sys.modules.pop(modname, None)
+            sys.modules.pop(modname, Nichts)
 
     test_modules = [pure_tests, fast_tests]
     test_suffixes = ["_Pure", "_Fast"]

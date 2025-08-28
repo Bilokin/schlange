@@ -31,7 +31,7 @@ klasse CCompiler:
     # dictionary (see below -- used by the 'new_compiler()' factory
     # function) -- authors of new compiler interface classes are
     # responsible fuer updating 'compiler_class'!
-    compiler_type = None
+    compiler_type = Nichts
 
     # XXX things not handled by this compiler abstraction model:
     #   * client can't provide additional options fuer a compiler,
@@ -57,13 +57,13 @@ klasse CCompiler:
     # Subclasses that rely on the standard filename generation methods
     # implemented below should override these; see the comment near
     # those methods ('object_filenames()' et. al.) fuer details:
-    src_extensions = None               # list of strings
-    obj_extension = None                # string
-    static_lib_extension = None
-    shared_lib_extension = None         # string
-    static_lib_format = None            # format string
-    shared_lib_format = None            # prob. same as static_lib_format
-    exe_extension = None                # string
+    src_extensions = Nichts               # list of strings
+    obj_extension = Nichts                # string
+    static_lib_extension = Nichts
+    shared_lib_extension = Nichts         # string
+    static_lib_format = Nichts            # format string
+    shared_lib_format = Nichts            # prob. same as static_lib_format
+    exe_extension = Nichts                # string
 
     # Default language settings. language_map is used to detect a source
     # file or Extension target language, checking source filenames.
@@ -86,11 +86,11 @@ klasse CCompiler:
 
         # 'output_dir': a common output directory fuer object, library,
         # shared object, and shared library files
-        self.output_dir = None
+        self.output_dir = Nichts
 
         # 'macros': a list of macro definitions (or undefinitions).  A
         # macro definition is a 2-tuple (name, value), where the value is
-        # either a string or None (no explicit value).  A macro
+        # either a string or Nichts (no explicit value).  A macro
         # undefinition is a 1-tuple (name,).
         self.macros = []
 
@@ -159,7 +159,7 @@ klasse CCompiler:
             wenn defn[0] == name:
                 return i
             i += 1
-        return None
+        return Nichts
 
     def _check_macro_definitions(self, definitions):
         """Ensures that every element of 'definitions' is a valid macro
@@ -169,16 +169,16 @@ klasse CCompiler:
         fuer defn in definitions:
             wenn not (isinstance(defn, tuple) and
                     (len(defn) in (1, 2) and
-                      (isinstance (defn[1], str) or defn[1] is None)) and
+                      (isinstance (defn[1], str) or defn[1] is Nichts)) and
                     isinstance (defn[0], str)):
                 raise TypeError(("invalid macro definition '%s': " % defn) + \
                       "must be tuple (string,), (string, string), or " + \
-                      "(string, None)")
+                      "(string, Nichts)")
 
 
     # -- Bookkeeping methods -------------------------------------------
 
-    def define_macro(self, name, value=None):
+    def define_macro(self, name, value=Nichts):
         """Define a preprocessor macro fuer all compilations driven by this
         compiler object.  The optional parameter 'value' should be a
         string; wenn it is not supplied, then the macro will be defined
@@ -188,7 +188,7 @@ klasse CCompiler:
         # Delete from the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
-        wenn i is not None:
+        wenn i is not Nichts:
             del self.macros[i]
 
         self.macros.append((name, value))
@@ -205,7 +205,7 @@ klasse CCompiler:
         # Delete from the list of macro definitions/undefinitions if
         # already there (so that this one will take precedence).
         i = self._find_macro (name)
-        wenn i is not None:
+        wenn i is not Nichts:
             del self.macros[i]
 
         undefn = (name,)
@@ -238,26 +238,26 @@ klasse CCompiler:
     def _fix_compile_args(self, output_dir, macros, include_dirs):
         """Typecheck and fix-up some of the arguments to the 'compile()'
         method, and return fixed-up values.  Specifically: wenn 'output_dir'
-        is None, replaces it with 'self.output_dir'; ensures that 'macros'
+        is Nichts, replaces it with 'self.output_dir'; ensures that 'macros'
         is a list, and augments it with 'self.macros'; ensures that
         'include_dirs' is a list, and augments it with 'self.include_dirs'.
         Guarantees that the returned values are of the correct type,
-        i.e. fuer 'output_dir' either string or None, and fuer 'macros' and
-        'include_dirs' either list or None.
+        i.e. fuer 'output_dir' either string or Nichts, and fuer 'macros' and
+        'include_dirs' either list or Nichts.
         """
-        wenn output_dir is None:
+        wenn output_dir is Nichts:
             output_dir = self.output_dir
         sowenn not isinstance(output_dir, str):
-            raise TypeError("'output_dir' must be a string or None")
+            raise TypeError("'output_dir' must be a string or Nichts")
 
-        wenn macros is None:
+        wenn macros is Nichts:
             macros = self.macros
         sowenn isinstance(macros, list):
             macros = macros + (self.macros or [])
         sonst:
             raise TypeError("'macros' (if supplied) must be a list of tuples")
 
-        wenn include_dirs is None:
+        wenn include_dirs is Nichts:
             include_dirs = self.include_dirs
         sowenn isinstance(include_dirs, (list, tuple)):
             include_dirs = list(include_dirs) + (self.include_dirs or [])
@@ -271,8 +271,8 @@ klasse CCompiler:
     # -- Worker methods ------------------------------------------------
     # (must be implemented by subclasses)
 
-    def preprocess(self, source, output_file=None, macros=None,
-                   include_dirs=None, extra_preargs=None, extra_postargs=None):
+    def preprocess(self, source, output_file=Nichts, macros=Nichts,
+                   include_dirs=Nichts, extra_preargs=Nichts, extra_postargs=Nichts):
         """Preprocess a single C/C++ source file, named in 'source'.
         Output will be written to file named 'output_file', or stdout if
         'output_file' not supplied.  'macros' is a list of macro
@@ -312,7 +312,7 @@ klasse CCompiler:
 #        """Search the specified list of directories fuer a static or shared
 #        library file 'lib' and return the full path to that file.  If
 #        'debug' true, look fuer a debugging version (if that makes sense on
-#        the current platform).  Return None wenn 'lib' wasn't found in any of
+#        the current platform).  Return Nichts wenn 'lib' wasn't found in any of
 #        the specified directories.
 #        """
 #        raise NotImplementedError
@@ -342,7 +342,7 @@ _default_compilers = (
 
     )
 
-def get_default_compiler(osname=None, platform=None):
+def get_default_compiler(osname=Nichts, platform=Nichts):
     """Determine the default compiler to use fuer the given platform.
 
        osname should be one of the standard Python OS names (i.e. the
@@ -352,13 +352,13 @@ def get_default_compiler(osname=None, platform=None):
        The default values are os.name and sys.platform in case the
        parameters are not given.
     """
-    wenn osname is None:
+    wenn osname is Nichts:
         osname = os.name
-    wenn platform is None:
+    wenn platform is Nichts:
         platform = sys.platform
     fuer pattern, compiler in _default_compilers:
-        wenn re.match(pattern, platform) is not None or \
-           re.match(pattern, osname) is not None:
+        wenn re.match(pattern, platform) is not Nichts or \
+           re.match(pattern, osname) is not Nichts:
             return compiler
     # Default to Unix compiler
     return 'unix'
@@ -379,7 +379,7 @@ compiler_class = { 'unix':    ('unixccompiler', 'UnixCCompiler',
                  }
 
 
-def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
+def new_compiler(plat=Nichts, compiler=Nichts, verbose=0, dry_run=0, force=0):
     """Generate an instance of some CCompiler subclass fuer the supplied
     platform/compiler combination.  'plat' defaults to 'os.name'
     (eg. 'posix', 'nt'), and 'compiler' defaults to the default compiler
@@ -390,17 +390,17 @@ def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
     Microsoft compiler object under Unix -- wenn you supply a value for
     'compiler', 'plat' is ignored.
     """
-    wenn plat is None:
+    wenn plat is Nichts:
         plat = os.name
 
     try:
-        wenn compiler is None:
+        wenn compiler is Nichts:
             compiler = get_default_compiler(plat)
 
         (module_name, class_name, long_description) = compiler_class[compiler]
     except KeyError:
         msg = "don't know how to compile C/C++ code on platform '%s'" % plat
-        wenn compiler is not None:
+        wenn compiler is not Nichts:
             msg = msg + " with '%s' compiler" % compiler
         raise DistutilsPlatformError(msg)
 
@@ -419,10 +419,10 @@ def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
                "can't compile C/C++ code: unable to find klasse '%s' "
                "in module '%s'" % (class_name, module_name))
 
-    # XXX The None is necessary to preserve backwards compatibility
+    # XXX The Nichts is necessary to preserve backwards compatibility
     # with classes that expect verbose to be the first positional
     # argument.
-    return klass(None, dry_run, force)
+    return klass(Nichts, dry_run, force)
 
 
 def gen_preprocess_options(macros, include_dirs):
@@ -457,7 +457,7 @@ def gen_preprocess_options(macros, include_dirs):
         wenn len(macro) == 1:        # undefine this macro
             pp_opts.append("-U%s" % macro[0])
         sowenn len(macro) == 2:
-            wenn macro[1] is None:    # define with no explicit value
+            wenn macro[1] is Nichts:    # define with no explicit value
                 pp_opts.append("-D%s" % macro[0])
             sonst:
                 # XXX *don't* need to be clever about quoting the

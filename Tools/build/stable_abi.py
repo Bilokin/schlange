@@ -66,16 +66,16 @@ klasse Manifest:
             raise ValueError(f'duplicate ABI item {item.name}')
         self.contents[item.name] = item
 
-    def select(self, kinds, *, include_abi_only=True, ifdef=None):
+    def select(self, kinds, *, include_abi_only=Wahr, ifdef=Nichts):
         """Yield selected items of the manifest
 
         kinds: set of requested kinds, e.g. {'function', 'macro'}
-        include_abi_only: wenn True (default), include all items of the
+        include_abi_only: wenn Wahr (default), include all items of the
             stable ABI.
-            If False, include only items from the limited API
+            If Falsch, include only items from the limited API
             (i.e. items people should use today)
         ifdef: set of feature macros (e.g. {'HAVE_FORK', 'MS_WINDOWS'}).
-            If None (default), items are not filtered by this. (This is
+            If Nichts (default), items are not filtered by this. (This is
             different from the empty set, which filters out all such
             conditional items.)
         """
@@ -84,8 +84,8 @@ klasse Manifest:
                 continue
             wenn item.abi_only and not include_abi_only:
                 continue
-            wenn (ifdef is not None
-                    and item.ifdef is not None
+            wenn (ifdef is not Nichts
+                    and item.ifdef is not Nichts
                     and item.ifdef not in ifdef):
                 continue
             yield item
@@ -101,7 +101,7 @@ klasse Manifest:
                 value = getattr(item, field.name)
                 wenn value == field.default:
                     pass
-                sowenn value is True:
+                sowenn value is Wahr:
                     yield f"    {field.name} = true"
                 sowenn value:
                     yield f"    {field.name} = {value!r}"
@@ -126,23 +126,23 @@ klasse ABIItem:
 
     name: str
     kind: str
-    added: str = None
-    abi_only: bool = False
-    ifdef: str = None
+    added: str = Nichts
+    abi_only: bool = Falsch
+    ifdef: str = Nichts
 
 @itemclass('feature_macro')
-@dataclasses.dataclass(kw_only=True)
+@dataclasses.dataclass(kw_only=Wahr)
 klasse FeatureMacro(ABIItem):
     name: str
     doc: str
-    windows: bool = False
-    abi_only: bool = True
+    windows: bool = Falsch
+    abi_only: bool = Wahr
 
 @itemclass('struct')
-@dataclasses.dataclass(kw_only=True)
+@dataclasses.dataclass(kw_only=Wahr)
 klasse Struct(ABIItem):
     struct_abi_kind: str
-    members: list = None
+    members: list = Nichts
 
 
 def parse_manifest(file):
@@ -212,7 +212,7 @@ def gen_python3dll(manifest, args, outfile):
     fuer item in sorted(
             manifest.select(
                 {'function'},
-                include_abi_only=True,
+                include_abi_only=Wahr,
                 ifdef=windows_feature_macros),
             key=sort_key):
         write(f'EXPORT_FUNC({item.name})')
@@ -222,7 +222,7 @@ def gen_python3dll(manifest, args, outfile):
     fuer item in sorted(
             manifest.select(
                 {'data'},
-                include_abi_only=True,
+                include_abi_only=Wahr,
                 ifdef=windows_feature_macros),
             key=sort_key):
         write(f'EXPORT_DATA({item.name})')
@@ -249,11 +249,11 @@ def gen_doc_annotations(manifest, args, outfile):
         lineterminator='\n')
     writer.writeheader()
     kinds = set(ITEM_KIND_TO_DOC_ROLE)
-    fuer item in manifest.select(kinds, include_abi_only=False):
+    fuer item in manifest.select(kinds, include_abi_only=Falsch):
         wenn item.ifdef:
             ifdef_note = manifest.contents[item.ifdef].doc
         sonst:
-            ifdef_note = None
+            ifdef_note = Nichts
         row = {
             'role': ITEM_KIND_TO_DOC_ROLE[item.kind],
             'name': item.name,
@@ -325,7 +325,7 @@ def gen_ctypes_test(manifest, args, outfile):
     '''))
     items = manifest.select(
         {'function', 'data'},
-        include_abi_only=True,
+        include_abi_only=Wahr,
     )
     feature_macros = list(manifest.select({'feature_macro'}))
     optional_items = {m.name: [] fuer m in feature_macros}
@@ -360,9 +360,9 @@ def gen_testcapi_feature_macros(manifest, args, outfile):
     fuer macro in manifest.select({'feature_macro'}):
         name = macro.name
         write(f'#ifdef {name}')
-        write(f'    res = PyDict_SetItemString(result, "{name}", Py_True);')
+        write(f'    res = PyDict_SetItemString(result, "{name}", Py_Wahr);')
         write('#else')
-        write(f'    res = PyDict_SetItemString(result, "{name}", Py_False);')
+        write(f'    res = PyDict_SetItemString(result, "{name}", Py_Falsch);')
         write('#endif')
         write('if (res) {')
         write('    Py_DECREF(result); return NULL;')
@@ -373,7 +373,7 @@ def gen_testcapi_feature_macros(manifest, args, outfile):
 def generate_or_check(manifest, args, path, func):
     """Generate/check a file with a single generator
 
-    Return True wenn successful; False wenn a comparison failed.
+    Return Wahr wenn successful; Falsch wenn a comparison failed.
     """
 
     outfile = io.StringIO()
@@ -393,13 +393,13 @@ def generate_or_check(manifest, args, path, func):
             )
             fuer line in diff:
                 print(line)
-            return False
-    return True
+            return Falsch
+    return Wahr
 
 
 def do_unixy_check(manifest, args):
     """Check headers & library using "Unixy" tools (GCC/clang, binutils)"""
-    okay = True
+    okay = Wahr
 
     # Get all macros first: we'll need feature macros like HAVE_FORK and
     # MS_WINDOWS fuer everything else
@@ -416,7 +416,7 @@ def do_unixy_check(manifest, args):
         'with Py_LIMITED_API:')
 
     expected_symbols = {item.name fuer item in manifest.select(
-        {'function', 'data'}, include_abi_only=True, ifdef=feature_macros,
+        {'function', 'data'}, include_abi_only=Wahr, ifdef=feature_macros,
     )}
 
     # Check the static library (*.a)
@@ -425,18 +425,18 @@ def do_unixy_check(manifest, args):
         raise Exception("failed to get LIBRARY variable from sysconfig")
     wenn os.path.exists(LIBRARY):
         okay &= binutils_check_library(
-            manifest, LIBRARY, expected_symbols, dynamic=False)
+            manifest, LIBRARY, expected_symbols, dynamic=Falsch)
 
     # Check the dynamic library (*.so)
     LDLIBRARY = sysconfig.get_config_var("LDLIBRARY")
     wenn not LDLIBRARY:
         raise Exception("failed to get LDLIBRARY variable from sysconfig")
     okay &= binutils_check_library(
-            manifest, LDLIBRARY, expected_symbols, dynamic=False)
+            manifest, LDLIBRARY, expected_symbols, dynamic=Falsch)
 
     # Check definitions in the header files
     expected_defs = {item.name fuer item in manifest.select(
-        {'function', 'data'}, include_abi_only=False, ifdef=feature_macros,
+        {'function', 'data'}, include_abi_only=Falsch, ifdef=feature_macros,
     )}
     found_defs = gcc_get_limited_api_definitions(['Include/Python.h'])
     missing_defs = expected_defs - found_defs
@@ -464,11 +464,11 @@ def _report_unexpected_items(items, msg):
         print(msg, file=sys.stderr)
         fuer item in sorted(items):
             print(' -', item, file=sys.stderr)
-        return False
-    return True
+        return Falsch
+    return Wahr
 
 
-def binutils_get_exported_symbols(library, dynamic=False):
+def binutils_get_exported_symbols(library, dynamic=Falsch):
     """Retrieve exported symbols using the nm(1) tool from binutils"""
     # Only look at dynamic symbols
     args = ["nm", "--no-sort"]
@@ -515,8 +515,8 @@ def binutils_check_library(manifest, library, expected_symbols, dynamic):
             a prototype belonging to a symbol in the limited API has been
             deleted or is missing.
         """), file=sys.stderr)
-        return False
-    return True
+        return Falsch
+    return Wahr
 
 
 def gcc_get_limited_api_macros(headers):
@@ -626,9 +626,9 @@ def check_dump(manifest, filename):
         )
         fuer line in diff:
             print(line, file=sys.stderr)
-        return False
+        return Falsch
     sonst:
-        return True
+        return Wahr
 
 def main():
     parser = argparse.ArgumentParser(
@@ -686,12 +686,12 @@ def main():
     run_all_generators = args.generate_all
 
     wenn args.generate_all:
-        args.generate = True
+        args.generate = Wahr
 
     wenn args.all:
-        run_all_generators = True
+        run_all_generators = Wahr
         wenn UNIXY:
-            args.unixy_check = True
+            args.unixy_check = Wahr
 
     try:
         file = args.file.open('rb')
@@ -719,7 +719,7 @@ def main():
 
     fuer gen in generators:
         filename = getattr(args, gen.var_name)
-        wenn filename is None or (run_all_generators and filename is MISSING):
+        wenn filename is Nichts or (run_all_generators and filename is MISSING):
             filename = base_path / gen.default_path
         sowenn filename is MISSING:
             continue

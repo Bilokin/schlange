@@ -200,22 +200,22 @@ klasse TestQueueOps(TestBase):
     def test_empty(self):
         queue = queues.create()
         before = queue.empty()
-        queue.put(None)
+        queue.put(Nichts)
         during = queue.empty()
         queue.get()
         after = queue.empty()
 
-        self.assertIs(before, True)
-        self.assertIs(during, False)
-        self.assertIs(after, True)
+        self.assertIs(before, Wahr)
+        self.assertIs(during, Falsch)
+        self.assertIs(after, Wahr)
 
     def test_full(self):
         fuer maxsize in [1, 3, 11]:
             with self.subTest(f'maxsize={maxsize}'):
                 num_to_add = maxsize
-                expected = [False] * (num_to_add * 2 + 3)
-                expected[maxsize] = True
-                expected[maxsize + 1] = True
+                expected = [Falsch] * (num_to_add * 2 + 3)
+                expected[maxsize] = Wahr
+                expected[maxsize + 1] = Wahr
 
                 queue = queues.create(maxsize)
                 actual = []
@@ -223,10 +223,10 @@ klasse TestQueueOps(TestBase):
 
                 fuer _ in range(num_to_add):
                     actual.append(queue.full())
-                    queue.put_nowait(None)
+                    queue.put_nowait(Nichts)
                 actual.append(queue.full())
                 with self.assertRaises(queues.QueueFull):
-                    queue.put_nowait(None)
+                    queue.put_nowait(Nichts)
                 empty.append(queue.empty())
 
                 fuer _ in range(num_to_add):
@@ -239,13 +239,13 @@ klasse TestQueueOps(TestBase):
                 empty.append(queue.empty())
 
                 self.assertEqual(actual, expected)
-                self.assertEqual(empty, [True, False, True])
+                self.assertEqual(empty, [Wahr, Falsch, Wahr])
 
         # no max size
         fuer args in [(), (0,), (-1,), (-10,)]:
             with self.subTest(f'maxsize={args[0]}' wenn args sonst '<default>'):
                 num_to_add = 13
-                expected = [False] * (num_to_add * 2 + 3)
+                expected = [Falsch] * (num_to_add * 2 + 3)
 
                 queue = queues.create(*args)
                 actual = []
@@ -253,7 +253,7 @@ klasse TestQueueOps(TestBase):
 
                 fuer _ in range(num_to_add):
                     actual.append(queue.full())
-                    queue.put_nowait(None)
+                    queue.put_nowait(Nichts)
                 actual.append(queue.full())
                 empty.append(queue.empty())
 
@@ -267,7 +267,7 @@ klasse TestQueueOps(TestBase):
                 empty.append(queue.empty())
 
                 self.assertEqual(actual, expected)
-                self.assertEqual(empty, [True, False, True])
+                self.assertEqual(empty, [Wahr, Falsch, Wahr])
 
     def test_qsize(self):
         expected = [0, 1, 2, 3, 2, 3, 2, 1, 0, 1, 0]
@@ -275,16 +275,16 @@ klasse TestQueueOps(TestBase):
         queue = queues.create()
         fuer _ in range(3):
             actual.append(queue.qsize())
-            queue.put(None)
+            queue.put(Nichts)
         actual.append(queue.qsize())
         queue.get()
         actual.append(queue.qsize())
-        queue.put(None)
+        queue.put(Nichts)
         actual.append(queue.qsize())
         fuer _ in range(3):
             queue.get()
             actual.append(queue.qsize())
-        queue.put(None)
+        queue.put(Nichts)
         actual.append(queue.qsize())
         queue.get()
         actual.append(queue.qsize())
@@ -302,26 +302,26 @@ klasse TestQueueOps(TestBase):
 
     def test_put_timeout(self):
         queue = queues.create(2)
-        queue.put(None)
-        queue.put(None)
+        queue.put(Nichts)
+        queue.put(Nichts)
         with self.assertRaises(queues.QueueFull):
-            queue.put(None, timeout=0.1)
+            queue.put(Nichts, timeout=0.1)
         queue.get()
-        queue.put(None)
+        queue.put(Nichts)
 
     def test_put_nowait(self):
         queue = queues.create(2)
-        queue.put_nowait(None)
-        queue.put_nowait(None)
+        queue.put_nowait(Nichts)
+        queue.put_nowait(Nichts)
         with self.assertRaises(queues.QueueFull):
-            queue.put_nowait(None)
+            queue.put_nowait(Nichts)
         queue.get()
-        queue.put_nowait(None)
+        queue.put_nowait(Nichts)
 
     def test_put_full_fallback(self):
         fuer obj in [
-            None,
-            True,
+            Nichts,
+            Wahr,
             10,
             'spam',
             b'spam',
@@ -424,7 +424,7 @@ klasse TestQueueOps(TestBase):
                 self.assertNotEqual(id(obj2), int(out))
 
     def test_put_cleared_with_subinterpreter(self):
-        def common(queue, unbound=None, presize=0):
+        def common(queue, unbound=Nichts, presize=0):
             wenn not unbound:
                 extraargs = ''
             sowenn unbound is queues.UNBOUND:
@@ -631,7 +631,7 @@ klasse TestQueueOps(TestBase):
         queue2 = queues.create()
 
         def f():
-            while True:
+            while Wahr:
                 try:
                     obj = queue1.get(timeout=0.1)
                     break

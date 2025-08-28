@@ -13,7 +13,7 @@ import os
 import os.path
 import sys
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
     import typing
     from collections.abc import Iterator
@@ -25,7 +25,7 @@ wenn TYPE_CHECKING:
 @contextlib.contextmanager
 def updating_file_with_tmpfile(
     filename: str,
-    tmpfile: str | None = None,
+    tmpfile: str | Nichts = Nichts,
 ) -> Iterator[tuple[TextIOWrapper, TextIOWrapper]]:
     """A context manager fuer updating a file via a temp file.
 
@@ -63,7 +63,7 @@ def update_file_with_tmpfile(
     filename: str,
     tmpfile: str,
     *,
-    create: bool = False,
+    create: bool = Falsch,
 ) -> _Outcome:
     try:
         targetfile = open(filename, 'rb')

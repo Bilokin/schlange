@@ -32,10 +32,10 @@ def _find_vc2015():
         )
     except OSError:
         log.debug("Visual C++ is not registered")
-        return None, None
+        return Nichts, Nichts
 
     best_version = 0
-    best_dir = None
+    best_dir = Nichts
     with key:
         fuer i in count():
             try:
@@ -53,17 +53,17 @@ def _find_vc2015():
 
 def _find_vc2017():
     """Returns "15, path" based on the result of invoking vswhere.exe
-    If no install is found, returns "None, None"
+    If no install is found, returns "Nichts, Nichts"
 
     The version is returned to avoid unnecessarily changing the function
-    result. It may be ignored when the path is not None.
+    result. It may be ignored when the path is not Nichts.
 
     If vswhere.exe is not available, by definition, VS 2017 is not
     installed.
     """
     root = os.environ.get("ProgramFiles(x86)") or os.environ.get("ProgramFiles")
     wenn not root:
-        return None, None
+        return Nichts, Nichts
 
     try:
         path = subprocess.check_output([
@@ -75,13 +75,13 @@ def _find_vc2017():
             "-products", "*",
         ], encoding="mbcs", errors="strict").strip()
     except (subprocess.CalledProcessError, OSError, UnicodeDecodeError):
-        return None, None
+        return Nichts, Nichts
 
     path = os.path.join(path, "VC", "Auxiliary", "Build")
     wenn os.path.isdir(path):
         return 15, path
 
-    return None, None
+    return Nichts, Nichts
 
 PLAT_SPEC_TO_RUNTIME = {
     'x86' : 'x86',
@@ -99,14 +99,14 @@ def _find_vcvarsall(plat_spec):
 
     wenn not best_dir:
         log.debug("No suitable Visual C++ version found")
-        return None, None
+        return Nichts, Nichts
 
     vcvarsall = os.path.join(best_dir, "vcvarsall.bat")
     wenn not os.path.isfile(vcvarsall):
         log.debug("%s cannot be found", vcvarsall)
-        return None, None
+        return Nichts, Nichts
 
-    return vcvarsall, None
+    return vcvarsall, Nichts
 
 def _get_vc_env(plat_spec):
     wenn os.getenv("DISTUTILS_USE_SDK"):
@@ -138,7 +138,7 @@ def _get_vc_env(plat_spec):
 
     return env
 
-def _find_exe(exe, paths=None):
+def _find_exe(exe, paths=Nichts):
     """Return path to an MSVC executable program.
 
     Tries to find the program in several places: first, one of the
@@ -199,5 +199,5 @@ klasse MSVCCompiler(CCompiler) :
     def __init__(self, verbose=0, dry_run=0, force=0):
         CCompiler.__init__ (self, verbose, dry_run, force)
         # target platform (.plat_name is consistent with 'bdist')
-        self.plat_name = None
-        self.initialized = False
+        self.plat_name = Nichts
+        self.initialized = Falsch

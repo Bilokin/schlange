@@ -2,7 +2,7 @@ import unittest
 from threading import Barrier, Thread
 from test.support import threading_helper
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 klasse TestReversed(unittest.TestCase):
 
@@ -17,7 +17,7 @@ klasse TestReversed(unittest.TestCase):
         barrier = Barrier(number_of_threads)
         def work(r):
             barrier.wait()
-            while True:
+            while Wahr:
                 try:
                      l = r.__length_hint__()
                      next(r)

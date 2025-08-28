@@ -59,7 +59,7 @@ FLAGS = [
 ]
 
 
-def generate_flag_macros(out: CWriter) -> None:
+def generate_flag_macros(out: CWriter) -> Nichts:
     fuer i, flag in enumerate(FLAGS):
         out.emit(f"#define HAS_{flag}_FLAG ({1<<i})\n")
     fuer i, flag in enumerate(FLAGS):
@@ -69,7 +69,7 @@ def generate_flag_macros(out: CWriter) -> None:
     out.emit("\n")
 
 
-def generate_oparg_macros(out: CWriter) -> None:
+def generate_oparg_macros(out: CWriter) -> Nichts:
     fuer name, value in OPARG_KINDS.items():
         out.emit(f"#define {name} {value}\n")
     out.emit("\n")
@@ -77,7 +77,7 @@ def generate_oparg_macros(out: CWriter) -> None:
 
 def emit_stack_effect_function(
     out: CWriter, direction: str, data: list[tuple[str, str]]
-) -> None:
+) -> Nichts:
     out.emit(f"extern int _PyOpcode_num_{direction}(int opcode, int oparg);\n")
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit(f"int _PyOpcode_num_{direction}(int opcode, int oparg)  {{\n")
@@ -92,11 +92,11 @@ def emit_stack_effect_function(
     out.emit("#endif\n\n")
 
 
-def generate_stack_effect_functions(analysis: Analysis, out: CWriter) -> None:
+def generate_stack_effect_functions(analysis: Analysis, out: CWriter) -> Nichts:
     popped_data: list[tuple[str, str]] = []
     pushed_data: list[tuple[str, str]] = []
 
-    def add(inst: Instruction | PseudoInstruction) -> None:
+    def add(inst: Instruction | PseudoInstruction) -> Nichts:
         stack = get_stack_effect(inst)
         popped = (-stack.base_offset).to_c()
         pushed = (stack.logical_sp - stack.base_offset).to_c()
@@ -112,7 +112,7 @@ def generate_stack_effect_functions(analysis: Analysis, out: CWriter) -> None:
     emit_stack_effect_function(out, "pushed", sorted(pushed_data))
 
 
-def generate_is_pseudo(analysis: Analysis, out: CWriter) -> None:
+def generate_is_pseudo(analysis: Analysis, out: CWriter) -> Nichts:
     """Write the IS_PSEUDO_INSTR macro"""
     out.emit("\n\n#define IS_PSEUDO_INSTR(OP)  ( \\\n")
     fuer op in analysis.pseudos:
@@ -132,7 +132,7 @@ def get_format(inst: Instruction) -> str:
     return format
 
 
-def generate_instruction_formats(analysis: Analysis, out: CWriter) -> None:
+def generate_instruction_formats(analysis: Analysis, out: CWriter) -> Nichts:
     # Compute the set of all instruction formats.
     formats: set[str] = set()
     fuer inst in analysis.instructions.values():
@@ -146,14 +146,14 @@ def generate_instruction_formats(analysis: Analysis, out: CWriter) -> None:
     out.emit("};\n\n")
 
 
-def generate_deopt_table(analysis: Analysis, out: CWriter) -> None:
+def generate_deopt_table(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("extern const uint8_t _PyOpcode_Deopt[256];\n")
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit("const uint8_t _PyOpcode_Deopt[256] = {\n")
     deopts: list[tuple[str, str]] = []
     fuer inst in analysis.instructions.values():
         deopt = inst.name
-        wenn inst.family is not None:
+        wenn inst.family is not Nichts:
             deopt = inst.family.name
         deopts.append((inst.name, deopt))
     defined = set(analysis.opmap.values())
@@ -169,7 +169,7 @@ def generate_deopt_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("#endif // NEED_OPCODE_METADATA\n\n")
 
 
-def generate_cache_table(analysis: Analysis, out: CWriter) -> None:
+def generate_cache_table(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("extern const uint8_t _PyOpcode_Caches[256];\n")
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
     out.emit("const uint8_t _PyOpcode_Caches[256] = {\n")
@@ -184,7 +184,7 @@ def generate_cache_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("#endif\n\n")
 
 
-def generate_name_table(analysis: Analysis, out: CWriter) -> None:
+def generate_name_table(analysis: Analysis, out: CWriter) -> Nichts:
     table_size = 256 + len(analysis.pseudos)
     out.emit(f"extern const char *_PyOpcode_OpName[{table_size}];\n")
     out.emit("#ifdef NEED_OPCODE_METADATA\n")
@@ -196,7 +196,7 @@ def generate_name_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("#endif\n\n")
 
 
-def generate_metadata_table(analysis: Analysis, out: CWriter) -> None:
+def generate_metadata_table(analysis: Analysis, out: CWriter) -> Nichts:
     table_size = 256 + len(analysis.pseudos)
     out.emit("struct opcode_metadata {\n")
     out.emit("uint8_t valid_entry;\n")
@@ -226,7 +226,7 @@ def generate_metadata_table(analysis: Analysis, out: CWriter) -> None:
     out.emit("#endif\n\n")
 
 
-def generate_expansion_table(analysis: Analysis, out: CWriter) -> None:
+def generate_expansion_table(analysis: Analysis, out: CWriter) -> Nichts:
     expansions_table: dict[str, list[tuple[str, str, int]]] = {}
     fuer inst in sorted(analysis.instructions.values(), key=lambda t: t.name):
         offset: int = 0  # Cache effect offset
@@ -306,11 +306,11 @@ def is_viable_expansion(inst: Instruction) -> bool:
             wenn "replaced" in part.annotations:
                 continue
             wenn part.properties.tier == 1 or not part.is_viable():
-                return False
-    return True
+                return Falsch
+    return Wahr
 
 
-def generate_extra_cases(analysis: Analysis, out: CWriter) -> None:
+def generate_extra_cases(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("#define EXTRA_CASES \\\n")
     valid_opcodes = set(analysis.opmap.values())
     fuer op in range(256):
@@ -319,7 +319,7 @@ def generate_extra_cases(analysis: Analysis, out: CWriter) -> None:
     out.emit("        ;\n")
 
 
-def generate_pseudo_targets(analysis: Analysis, out: CWriter) -> None:
+def generate_pseudo_targets(analysis: Analysis, out: CWriter) -> Nichts:
     table_size = len(analysis.pseudos)
     max_targets = max(len(pseudo.targets) fuer pseudo in analysis.pseudos.values())
     out.emit("struct pseudo_targets {\n")
@@ -359,9 +359,9 @@ def generate_pseudo_targets(analysis: Analysis, out: CWriter) -> None:
 
 def generate_opcode_metadata(
     filenames: list[str], analysis: Analysis, outfile: TextIO
-) -> None:
+) -> Nichts:
     write_header(__file__, filenames, outfile)
-    out = CWriter(outfile, 0, False)
+    out = CWriter(outfile, 0, Falsch)
     with out.header_guard("Py_CORE_OPCODE_METADATA_H"):
         out.emit("#ifndef Py_BUILD_CORE\n")
         out.emit('#  error "this header requires Py_BUILD_CORE define"\n')

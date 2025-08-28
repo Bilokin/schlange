@@ -15,7 +15,7 @@ import warnings
 
 klasse TestLoader:
 
-    def __init__(self, path=None, is_package=None):
+    def __init__(self, path=Nichts, is_package=Nichts):
         self.path = path
         self.package = is_package
 
@@ -23,7 +23,7 @@ klasse TestLoader:
         return '<TestLoader object>'
 
     def __getattr__(self, name):
-        wenn name == 'get_filename' and self.path is not None:
+        wenn name == 'get_filename' and self.path is not Nichts:
             return self._get_filename
         wenn name == 'is_package':
             return self._is_package
@@ -36,7 +36,7 @@ klasse TestLoader:
         return self.package
 
     def create_module(self, spec):
-        return None
+        return Nichts
 
 
 klasse NewLoader(TestLoader):
@@ -57,78 +57,78 @@ klasse ModuleSpecTests:
         self.spec = self.machinery.ModuleSpec(self.name, self.loader)
         self.loc_spec = self.machinery.ModuleSpec(self.name, self.loader,
                                                   origin=self.path)
-        self.loc_spec._set_fileattr = True
+        self.loc_spec._set_fileattr = Wahr
 
     def test_default(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_default_no_loader(self):
-        spec = self.machinery.ModuleSpec(self.name, None)
+        spec = self.machinery.ModuleSpec(self.name, Nichts)
 
         self.assertEqual(spec.name, self.name)
-        self.assertIs(spec.loader, None)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.loader, Nichts)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_default_is_package_false(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader,
-                                         is_package=False)
+                                         is_package=Falsch)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_default_is_package_true(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader,
-                                         is_package=True)
+                                         is_package=Wahr)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
         self.assertEqual(spec.submodule_search_locations, [])
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_has_location_setter(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader,
                                          origin='somewhere')
-        self.assertFalse(spec.has_location)
-        spec.has_location = True
-        self.assertTrue(spec.has_location)
+        self.assertFalsch(spec.has_location)
+        spec.has_location = Wahr
+        self.assertWahr(spec.has_location)
 
     def test_equality(self):
         other = type(sys.implementation)(name=self.name,
                                          loader=self.loader,
-                                         origin=None,
-                                         submodule_search_locations=None,
-                                         has_location=False,
-                                         cached=None,
+                                         origin=Nichts,
+                                         submodule_search_locations=Nichts,
+                                         has_location=Falsch,
+                                         cached=Nichts,
                                          )
 
-        self.assertTrue(self.spec == other)
+        self.assertWahr(self.spec == other)
 
     def test_equality_location(self):
         other = type(sys.implementation)(name=self.name,
                                          loader=self.loader,
                                          origin=self.path,
-                                         submodule_search_locations=None,
-                                         has_location=True,
+                                         submodule_search_locations=Nichts,
+                                         has_location=Wahr,
                                          cached=self.cached,
                                          )
 
@@ -137,10 +137,10 @@ klasse ModuleSpecTests:
     def test_inequality(self):
         other = type(sys.implementation)(name='ham',
                                          loader=self.loader,
-                                         origin=None,
-                                         submodule_search_locations=None,
-                                         has_location=False,
-                                         cached=None,
+                                         origin=Nichts,
+                                         submodule_search_locations=Nichts,
+                                         has_location=Falsch,
+                                         cached=Nichts,
                                          )
 
         self.assertNotEqual(self.spec, other)
@@ -159,7 +159,7 @@ klasse ModuleSpecTests:
 
     def test_package_is_package(self):
         spec = self.machinery.ModuleSpec('spam.eggs', self.loader,
-                                         is_package=True)
+                                         is_package=Wahr)
 
         self.assertEqual(spec.parent, 'spam.eggs')
 
@@ -170,19 +170,19 @@ klasse ModuleSpecTests:
         self.spec.cached = 'there'
         after = self.spec.cached
 
-        self.assertIs(before, None)
+        self.assertIs(before, Nichts)
         self.assertEqual(after, 'there')
 
     def test_cached_no_origin(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader)
 
-        self.assertIs(spec.cached, None)
+        self.assertIs(spec.cached, Nichts)
 
     def test_cached_with_origin_not_location(self):
         spec = self.machinery.ModuleSpec(self.name, self.loader,
                                          origin=self.path)
 
-        self.assertIs(spec.cached, None)
+        self.assertIs(spec.cached, Nichts)
 
     def test_cached_source(self):
         expected = self.util.cache_from_source(self.path)
@@ -192,17 +192,17 @@ klasse ModuleSpecTests:
     def test_cached_source_unknown_suffix(self):
         self.loc_spec.origin = 'spam.spamspamspam'
 
-        self.assertIs(self.loc_spec.cached, None)
+        self.assertIs(self.loc_spec.cached, Nichts)
 
     def test_cached_source_missing_cache_tag(self):
         original = sys.implementation.cache_tag
-        sys.implementation.cache_tag = None
+        sys.implementation.cache_tag = Nichts
         try:
             cached = self.loc_spec.cached
         finally:
             sys.implementation.cache_tag = original
 
-        self.assertIs(cached, None)
+        self.assertIs(cached, Nichts)
 
     def test_cached_sourceless(self):
         self.loc_spec.origin = 'spam.pyc'
@@ -229,7 +229,7 @@ klasse ModuleSpecMethodsTests:
         self.spec = self.machinery.ModuleSpec(self.name, self.loader)
         self.loc_spec = self.machinery.ModuleSpec(self.name, self.loader,
                                                   origin=self.path)
-        self.loc_spec._set_fileattr = True
+        self.loc_spec._set_fileattr = Wahr
 
     # exec()
 
@@ -328,10 +328,10 @@ klasse ModuleSpecMethodsTests:
         self.spec.loader = NewLoader()
         with CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
-            loaded.available = False
+            loaded.available = Falsch
             reloaded = self.bootstrap._exec(self.spec, loaded)
 
-        self.assertFalse(loaded.available)
+        self.assertFalsch(loaded.available)
         self.assertIs(reloaded, loaded)
 
     def test_reload_init_module_attrs(self):
@@ -367,7 +367,7 @@ klasse FactoryTests:
         self.cached = self.util.cache_from_source(self.path)
         self.loader = TestLoader()
         self.fileloader = TestLoader(self.path)
-        self.pkgloader = TestLoader(self.path, True)
+        self.pkgloader = TestLoader(self.path, Wahr)
 
     # spec_from_loader()
 
@@ -376,11 +376,11 @@ klasse FactoryTests:
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_spec_from_loader_default_with_bad_is_package(self):
         klasse Loader:
@@ -391,11 +391,11 @@ klasse FactoryTests:
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_spec_from_loader_origin(self):
         origin = 'somewhere over the rainbow'
@@ -405,71 +405,71 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
         self.assertIs(spec.origin, origin)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_spec_from_loader_is_package_false(self):
         spec = self.util.spec_from_loader(self.name, self.loader,
-                                          is_package=False)
+                                          is_package=Falsch)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_spec_from_loader_is_package_true(self):
         spec = self.util.spec_from_loader(self.name, self.loader,
-                                          is_package=True)
+                                          is_package=Wahr)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
         self.assertEqual(spec.submodule_search_locations, [])
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_spec_from_loader_origin_and_is_package(self):
         origin = 'where the streets have no name'
         spec = self.util.spec_from_loader(self.name, self.loader,
-                                          origin=origin, is_package=True)
+                                          origin=origin, is_package=Wahr)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
         self.assertIs(spec.origin, origin)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Nichts)
         self.assertEqual(spec.submodule_search_locations, [])
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_spec_from_loader_is_package_with_loader_false(self):
-        loader = TestLoader(is_package=False)
+        loader = TestLoader(is_package=Falsch)
         spec = self.util.spec_from_loader(self.name, loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_spec_from_loader_is_package_with_loader_true(self):
-        loader = TestLoader(is_package=True)
+        loader = TestLoader(is_package=Wahr)
         spec = self.util.spec_from_loader(self.name, loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
-        self.assertIs(spec.origin, None)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.origin, Nichts)
+        self.assertIs(spec.loader_state, Nichts)
         self.assertEqual(spec.submodule_search_locations, [])
-        self.assertIs(spec.cached, None)
-        self.assertFalse(spec.has_location)
+        self.assertIs(spec.cached, Nichts)
+        self.assertFalsch(spec.has_location)
 
     def test_spec_from_loader_default_with_file_loader(self):
         spec = self.util.spec_from_loader(self.name, self.fileloader)
@@ -477,35 +477,35 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_loader_is_package_false_with_fileloader(self):
         spec = self.util.spec_from_loader(self.name, self.fileloader,
-                                          is_package=False)
+                                          is_package=Falsch)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_loader_is_package_true_with_fileloader(self):
         spec = self.util.spec_from_loader(self.name, self.fileloader,
-                                          is_package=True)
+                                          is_package=Wahr)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Nichts)
         location = cwd wenn (cwd := os.getcwd()) != '/' sonst ''
         self.assertEqual(spec.submodule_search_locations, [location])
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     # spec_from_file_location()
 
@@ -521,10 +521,10 @@ klasse FactoryTests:
         self.assertEqual(spec.loader.name, self.name)
         self.assertEqual(spec.loader.path, self.path)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_path_like_arg(self):
         spec = self.util.spec_from_file_location(self.name,
@@ -534,12 +534,12 @@ klasse FactoryTests:
     def test_spec_from_file_location_default_without_location(self):
         spec = self.util.spec_from_file_location(self.name)
 
-        self.assertIs(spec, None)
+        self.assertIs(spec, Nichts)
 
     def test_spec_from_file_location_default_bad_suffix(self):
         spec = self.util.spec_from_file_location(self.name, 'spam.eggs')
 
-        self.assertIs(spec, None)
+        self.assertIs(spec, Nichts)
 
     def test_spec_from_file_location_loader_no_location(self):
         spec = self.util.spec_from_file_location(self.name,
@@ -548,10 +548,10 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_loader_no_location_no_get_filename(self):
         spec = self.util.spec_from_file_location(self.name,
@@ -560,10 +560,10 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
         self.assertEqual(spec.origin, '<unknown>')
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertTrue(spec.has_location)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_loader_no_location_bad_get_filename(self):
         klasse Loader:
@@ -575,23 +575,23 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
         self.assertEqual(spec.origin, '<unknown>')
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
-        self.assertIs(spec.cached, None)
-        self.assertTrue(spec.has_location)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
+        self.assertIs(spec.cached, Nichts)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_smsl_none(self):
         spec = self.util.spec_from_file_location(self.name, self.path,
                                        loader=self.fileloader,
-                                       submodule_search_locations=None)
+                                       submodule_search_locations=Nichts)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_smsl_empty(self):
         spec = self.util.spec_from_file_location(self.name, self.path,
@@ -601,11 +601,11 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Nichts)
         location = cwd wenn (cwd := os.getcwd()) != '/' sonst ''
         self.assertEqual(spec.submodule_search_locations, [location])
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_smsl_not_empty(self):
         spec = self.util.spec_from_file_location(self.name, self.path,
@@ -615,10 +615,10 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Nichts)
         self.assertEqual(spec.submodule_search_locations, ['eggs'])
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_smsl_default(self):
         spec = self.util.spec_from_file_location(self.name, self.path,
@@ -627,16 +627,16 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.pkgloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
+        self.assertIs(spec.loader_state, Nichts)
         location = cwd wenn (cwd := os.getcwd()) != '/' sonst ''
         self.assertEqual(spec.submodule_search_locations, [location])
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_smsl_default_not_package(self):
         klasse Loader:
             def is_package(self, name):
-                return False
+                return Falsch
         loader = Loader()
         spec = self.util.spec_from_file_location(self.name, self.path,
                                                  loader=loader)
@@ -644,10 +644,10 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_smsl_default_no_is_package(self):
         spec = self.util.spec_from_file_location(self.name, self.path,
@@ -656,10 +656,10 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_smsl_default_bad_is_package(self):
         klasse Loader:
@@ -672,10 +672,10 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
     def test_spec_from_file_location_relative_path(self):
         spec = self.util.spec_from_file_location(self.name,
@@ -684,10 +684,10 @@ klasse FactoryTests:
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
         self.assertEqual(spec.origin, self.path)
-        self.assertIs(spec.loader_state, None)
-        self.assertIs(spec.submodule_search_locations, None)
+        self.assertIs(spec.loader_state, Nichts)
+        self.assertIs(spec.submodule_search_locations, Nichts)
         self.assertEqual(spec.cached, self.cached)
-        self.assertTrue(spec.has_location)
+        self.assertWahr(spec.has_location)
 
 (Frozen_FactoryTests,
  Source_FactoryTests

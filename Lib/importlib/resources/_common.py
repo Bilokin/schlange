@@ -49,7 +49,7 @@ def package_to_anchor(func):
 
 
 @package_to_anchor
-def files(anchor: Optional[Anchor] = None) -> Traversable:
+def files(anchor: Optional[Anchor] = Nichts) -> Traversable:
     """
     Get a Traversable resource fuer an anchor.
     """
@@ -66,9 +66,9 @@ def get_resource_reader(package: types.ModuleType) -> Optional[ResourceReader]:
     # zipimport.zipimporter does not support weak references, resulting in a
     # TypeError.  That seems terrible.
     spec = package.__spec__
-    reader = getattr(spec.loader, 'get_resource_reader', None)  # type: ignore[union-attr]
-    wenn reader is None:
-        return None
+    reader = getattr(spec.loader, 'get_resource_reader', Nichts)  # type: ignore[union-attr]
+    wenn reader is Nichts:
+        return Nichts
     return reader(spec.name)  # type: ignore[union-attr]
 
 
@@ -83,7 +83,7 @@ def _(cand: str) -> types.ModuleType:
 
 
 @resolve.register
-def _(cand: None) -> types.ModuleType:
+def _(cand: Nichts) -> types.ModuleType:
     return resolve(_infer_caller().f_globals['__name__'])
 
 
@@ -154,12 +154,12 @@ def _is_present_dir(path: Traversable) -> bool:
     Some Traversables implement ``is_dir()`` to raise an
     exception (i.e. ``FileNotFoundError``) when the
     directory doesn't exist. This function wraps that call
-    to always return a boolean and only return True
+    to always return a boolean and only return Wahr
     wenn there's a dir and it exists.
     """
     with contextlib.suppress(FileNotFoundError):
         return path.is_dir()
-    return False
+    return Falsch
 
 
 @functools.singledispatch

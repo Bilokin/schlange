@@ -59,7 +59,7 @@ klasse PstatsCollector(Collector):
 
     def _dump_stats(self, file):
         stats_with_marker = dict(self.stats)
-        stats_with_marker[("__sampled__",)] = True
+        stats_with_marker[("__sampled__",)] = Wahr
         with open(file, "wb") as f:
             marshal.dump(stats_with_marker, f)
 

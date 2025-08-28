@@ -6,7 +6,7 @@ from test.support import threading_helper
 from unittest.mock import patch, ThreadingMock
 
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 VERY_SHORT_TIMEOUT = 0.1
 
@@ -74,13 +74,13 @@ klasse TestThreadingMock(unittest.TestCase):
 
     def test_dynamic_child_mocks_inherit_timeout(self):
         mock1 = self._make_mock()
-        self.assertIs(mock1._mock_wait_timeout, None)
+        self.assertIs(mock1._mock_wait_timeout, Nichts)
         mock2 = self._make_mock(timeout=2)
         self.assertEqual(mock2._mock_wait_timeout, 2)
         mock3 = self._make_mock(timeout=3)
         self.assertEqual(mock3._mock_wait_timeout, 3)
 
-        self.assertIs(mock1.child._mock_wait_timeout, None)
+        self.assertIs(mock1.child._mock_wait_timeout, Nichts)
         self.assertEqual(mock2.child._mock_wait_timeout, 2)
         self.assertEqual(mock3.child._mock_wait_timeout, 3)
 

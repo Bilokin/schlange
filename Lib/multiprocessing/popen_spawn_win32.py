@@ -17,7 +17,7 @@ __all__ = ['Popen']
 
 # Exit code used by Popen.terminate()
 TERMINATE = 0x10000
-WINEXE = (sys.platform == 'win32' and getattr(sys, 'frozen', False))
+WINEXE = (sys.platform == 'win32' and getattr(sys, 'frozen', Falsch))
 WINSERVICE = sys.executable.lower().endswith("pythonservice.exe")
 
 
@@ -52,7 +52,7 @@ klasse Popen(object):
         # bpo-33929: Previously, the read end of pipe was "stolen" by the child
         # process, but it leaked a handle wenn the child process had been
         # terminated before it could steal the handle from the parent process.
-        rhandle, whandle = _winapi.CreatePipe(None, 0)
+        rhandle, whandle = _winapi.CreatePipe(Nichts, 0)
         wfd = msvcrt.open_osfhandle(whandle, 0)
         cmd = spawn.get_command_line(parent_pid=os.getpid(),
                                      pipe_handle=rhandle)
@@ -66,16 +66,16 @@ klasse Popen(object):
             env = os.environ.copy()
             env["__PYVENV_LAUNCHER__"] = sys.executable
         sonst:
-            env = None
+            env = Nichts
 
         cmd = ' '.join('"%s"' % x fuer x in cmd)
 
-        with open(wfd, 'wb', closefd=True) as to_child:
+        with open(wfd, 'wb', closefd=Wahr) as to_child:
             # start process
             try:
                 hp, ht, pid, tid = _winapi.CreateProcess(
                     python_exe, cmd,
-                    None, None, False, 0, env, None,
+                    Nichts, Nichts, Falsch, 0, env, Nichts,
                     STARTUPINFO(dwFlags=STARTF_FORCEOFFFEEDBACK))
                 _winapi.CloseHandle(ht)
             except:
@@ -84,7 +84,7 @@ klasse Popen(object):
 
             # set attributes of self
             self.pid = pid
-            self.returncode = None
+            self.returncode = Nichts
             self._handle = hp
             self.sentinel = int(hp)
             self.finalizer = util.Finalize(self, _close_handles,
@@ -96,17 +96,17 @@ klasse Popen(object):
                 reduction.dump(prep_data, to_child)
                 reduction.dump(process_obj, to_child)
             finally:
-                set_spawning_popen(None)
+                set_spawning_popen(Nichts)
 
     def duplicate_for_child(self, handle):
         assert self is get_spawning_popen()
         return reduction.duplicate(handle, self.sentinel)
 
-    def wait(self, timeout=None):
-        wenn self.returncode is not None:
+    def wait(self, timeout=Nichts):
+        wenn self.returncode is not Nichts:
             return self.returncode
 
-        wenn timeout is None:
+        wenn timeout is Nichts:
             msecs = _winapi.INFINITE
         sonst:
             msecs = max(0, int(timeout * 1000 + 0.5))
@@ -124,7 +124,7 @@ klasse Popen(object):
         return self.wait(timeout=0)
 
     def terminate(self):
-        wenn self.returncode is not None:
+        wenn self.returncode is not Nichts:
             return
 
         try:

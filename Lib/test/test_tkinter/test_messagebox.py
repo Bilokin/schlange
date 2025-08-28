@@ -18,14 +18,14 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
             raise ZeroDivisionError
 
         with swap_attr(Dialog, '_test_callback', test_callback):
-            ismapped = None
+            ismapped = Nichts
             self.assertRaises(ZeroDivisionError, showinfo, "Spam", "Egg Information")
-            self.assertEqual(ismapped, False)
+            self.assertEqual(ismapped, Falsch)
 
             root = tkinter.Tk()
-            ismapped = None
+            ismapped = Nichts
             self.assertRaises(ZeroDivisionError, showinfo, "Spam", "Egg Information")
-            self.assertEqual(ismapped, True)
+            self.assertEqual(ismapped, Wahr)
             root.destroy()
 
             tkinter.NoDefaultRoot()

@@ -71,9 +71,9 @@ xpath_tokenizer_re = re.compile(
     r"\s+"
     )
 
-def xpath_tokenizer(pattern, namespaces=None):
-    default_namespace = namespaces.get('') wenn namespaces sonst None
-    parsing_attribute = False
+def xpath_tokenizer(pattern, namespaces=Nichts):
+    default_namespace = namespaces.get('') wenn namespaces sonst Nichts
+    parsing_attribute = Falsch
     fuer token in xpath_tokenizer_re.findall(pattern):
         ttype, tag = token
         wenn tag and tag[0] != "{":
@@ -84,12 +84,12 @@ def xpath_tokenizer(pattern, namespaces=None):
                         raise KeyError
                     yield ttype, "{%s}%s" % (namespaces[prefix], uri)
                 except KeyError:
-                    raise SyntaxError("prefix %r not found in prefix map" % prefix) from None
+                    raise SyntaxError("prefix %r not found in prefix map" % prefix) from Nichts
             sowenn default_namespace and not parsing_attribute:
                 yield ttype, "{%s}%s" % (default_namespace, tag)
             sonst:
                 yield token
-            parsing_attribute = False
+            parsing_attribute = Falsch
         sonst:
             yield token
             parsing_attribute = ttype == '@'
@@ -97,7 +97,7 @@ def xpath_tokenizer(pattern, namespaces=None):
 
 def get_parent_map(context):
     parent_map = context.parent_map
-    wenn parent_map is None:
+    wenn parent_map is Nichts:
         context.parent_map = parent_map = {}
         fuer p in context.root.iter():
             fuer e in p:
@@ -129,7 +129,7 @@ def _prepare_tag(tag):
     sowenn tag[:3] == '{*}':
         # The tag in any (or no) namespace.
         suffix = tag[2:]  # '}name'
-        no_ns = slice(-len(suffix), None)
+        no_ns = slice(-len(suffix), Nichts)
         tag = tag[3:]
         def select(context, result):
             fuer elem in result:
@@ -139,7 +139,7 @@ def _prepare_tag(tag):
     sowenn tag[-2:] == '}*':
         # Any tag in the given namespace.
         ns = tag[:-1]
-        ns_only = slice(None, len(ns))
+        ns_only = slice(Nichts, len(ns))
         def select(context, result):
             fuer elem in result:
                 el_tag = elem.tag
@@ -220,7 +220,7 @@ def prepare_parent(next, token):
             wenn elem in parent_map:
                 parent = parent_map[elem]
                 wenn parent not in result_map:
-                    result_map[parent] = None
+                    result_map[parent] = Nichts
                     yield parent
     return select
 
@@ -250,7 +250,7 @@ def prepare_predicate(next, token):
         key = predicate[1]
         def select(context, result):
             fuer elem in result:
-                wenn elem.get(key) is not None:
+                wenn elem.get(key) is not Nichts:
                     yield elem
         return select
     wenn signature == "@-='" or signature == "@-!='":
@@ -263,7 +263,7 @@ def prepare_predicate(next, token):
                     yield elem
         def select_negated(context, result):
             fuer elem in result:
-                wenn (attr_value := elem.get(key)) is not None and attr_value != value:
+                wenn (attr_value := elem.get(key)) is not Nichts and attr_value != value:
                     yield elem
         return select_negated wenn '!=' in signature sonst select
     wenn signature == "-" and not re.match(r"\-?\d+$", predicate[0]):
@@ -271,7 +271,7 @@ def prepare_predicate(next, token):
         tag = predicate[0]
         def select(context, result):
             fuer elem in result:
-                wenn elem.find(tag) is not None:
+                wenn elem.find(tag) is not Nichts:
                     yield elem
         return select
     wenn signature == ".='" or signature == ".!='" or (
@@ -348,7 +348,7 @@ ops = {
 _cache = {}
 
 klasse _SelectorContext:
-    parent_map = None
+    parent_map = Nichts
     def __init__(self, root):
         self.root = root
 
@@ -357,7 +357,7 @@ klasse _SelectorContext:
 ##
 # Generate all matching objects.
 
-def iterfind(elem, path, namespaces=None):
+def iterfind(elem, path, namespaces=Nichts):
     # compile selector pattern
     wenn path[-1:] == "/":
         path = path + "*" # implicit all (FIXME: keep this?)
@@ -383,7 +383,7 @@ def iterfind(elem, path, namespaces=None):
             try:
                 selector.append(ops[token[0]](next, token))
             except StopIteration:
-                raise SyntaxError("invalid path") from None
+                raise SyntaxError("invalid path") from Nichts
             try:
                 token = next()
                 wenn token[0] == "/":
@@ -401,22 +401,22 @@ def iterfind(elem, path, namespaces=None):
 ##
 # Find first matching object.
 
-def find(elem, path, namespaces=None):
-    return next(iterfind(elem, path, namespaces), None)
+def find(elem, path, namespaces=Nichts):
+    return next(iterfind(elem, path, namespaces), Nichts)
 
 ##
 # Find all matching objects.
 
-def findall(elem, path, namespaces=None):
+def findall(elem, path, namespaces=Nichts):
     return list(iterfind(elem, path, namespaces))
 
 ##
 # Find text fuer first matching object.
 
-def findtext(elem, path, default=None, namespaces=None):
+def findtext(elem, path, default=Nichts, namespaces=Nichts):
     try:
         elem = next(iterfind(elem, path, namespaces))
-        wenn elem.text is None:
+        wenn elem.text is Nichts:
             return ""
         return elem.text
     except StopIteration:

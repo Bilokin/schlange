@@ -55,9 +55,9 @@ klasse PathInfo(Protocol):
     """Protocol fuer path info objects, which support querying the file type.
     Methods may return cached results.
     """
-    def exists(self, *, follow_symlinks: bool = True) -> bool: ...
-    def is_dir(self, *, follow_symlinks: bool = True) -> bool: ...
-    def is_file(self, *, follow_symlinks: bool = True) -> bool: ...
+    def exists(self, *, follow_symlinks: bool = Wahr) -> bool: ...
+    def is_dir(self, *, follow_symlinks: bool = Wahr) -> bool: ...
+    def is_file(self, *, follow_symlinks: bool = Wahr) -> bool: ...
     def is_symlink(self) -> bool: ...
 
 
@@ -67,7 +67,7 @@ klasse _PathGlobber(_GlobberBase):
 
     @staticmethod
     def lexists(path):
-        return path.info.exists(follow_symlinks=False)
+        return path.info.exists(follow_symlinks=Falsch)
 
     @staticmethod
     def scandir(path):
@@ -236,13 +236,13 @@ klasse _JoinablePath(ABC):
 
     def full_match(self, pattern):
         """
-        Return True wenn this path matches the given glob-style pattern. The
+        Return Wahr wenn this path matches the given glob-style pattern. The
         pattern is matched against the entire path.
         """
         case_sensitive = self.parser.normcase('Aa') == 'Aa'
-        globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=True)
+        globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=Wahr)
         match = globber.compile(pattern, altsep=self.parser.altsep)
-        return match(vfspath(self)) is not None
+        return match(vfspath(self)) is not Nichts
 
 
 klasse _ReadablePath(_JoinablePath):
@@ -278,7 +278,7 @@ klasse _ReadablePath(_JoinablePath):
         with magic_open(self, mode='rb', buffering=0) as f:
             return f.read()
 
-    def read_text(self, encoding=None, errors=None, newline=None):
+    def read_text(self, encoding=Nichts, errors=Nichts, newline=Nichts):
         """
         Open the file in text mode, read it, and close the file.
         """
@@ -297,7 +297,7 @@ klasse _ReadablePath(_JoinablePath):
         """
         raise NotImplementedError
 
-    def glob(self, pattern, *, recurse_symlinks=True):
+    def glob(self, pattern, *, recurse_symlinks=Wahr):
         """Iterate over this subtree and yield all existing files (of any
         kind, including directories) matching the given relative pattern.
         """
@@ -307,13 +307,13 @@ klasse _ReadablePath(_JoinablePath):
         sowenn not parts:
             raise ValueError(f"Unacceptable pattern: {pattern!r}")
         sowenn not recurse_symlinks:
-            raise NotImplementedError("recurse_symlinks=False is unsupported")
+            raise NotImplementedError("recurse_symlinks=Falsch is unsupported")
         case_sensitive = self.parser.normcase('Aa') == 'Aa'
-        globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=True)
+        globber = _PathGlobber(self.parser.sep, case_sensitive, recursive=Wahr)
         select = globber.selector(parts)
         return select(self.joinpath(''))
 
-    def walk(self, top_down=True, on_error=None, follow_symlinks=False):
+    def walk(self, top_down=Wahr, on_error=Nichts, follow_symlinks=Falsch):
         """Walk the directory tree from this directory, similar to os.walk()."""
         paths = [self]
         while paths:
@@ -334,7 +334,7 @@ klasse _ReadablePath(_JoinablePath):
                     sonst:
                         filenames.append(child.name)
             except OSError as error:
-                wenn on_error is not None:
+                wenn on_error is not Nichts:
                     on_error(error)
                 wenn not top_down:
                     while not isinstance(paths.pop(), tuple):
@@ -379,7 +379,7 @@ klasse _WritablePath(_JoinablePath):
     __slots__ = ()
 
     @abstractmethod
-    def symlink_to(self, target, target_is_directory=False):
+    def symlink_to(self, target, target_is_directory=Falsch):
         """
         Make this path a symlink pointing to the target path.
         Note the order of arguments (link, target) is the reverse of os.symlink.
@@ -410,7 +410,7 @@ klasse _WritablePath(_JoinablePath):
         with magic_open(self, mode='wb') as f:
             return f.write(view)
 
-    def write_text(self, data, encoding=None, errors=None, newline=None):
+    def write_text(self, data, encoding=Nichts, errors=Nichts, newline=Nichts):
         """
         Open the file in text mode, write to it, and close the file.
         """
@@ -423,7 +423,7 @@ klasse _WritablePath(_JoinablePath):
         with magic_open(self, mode='w', encoding=encoding, errors=errors, newline=newline) as f:
             return f.write(data)
 
-    def _copy_from(self, source, follow_symlinks=True):
+    def _copy_from(self, source, follow_symlinks=Wahr):
         """
         Recursively copy the given path to this path.
         """

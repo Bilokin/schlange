@@ -17,10 +17,10 @@ BOLD   = "bold"
 ITALIC = "italic"
 
 
-def nametofont(name, root=None):
+def nametofont(name, root=Nichts):
     """Given the name of a tk named font, returns a Font representation.
     """
-    return Font(name=name, exists=True, root=root)
+    return Font(name=name, exists=Wahr, root=root)
 
 
 klasse Font:
@@ -31,7 +31,7 @@ klasse Font:
     font -- font specifier (name, system font, or (family, size, style)-tuple)
     name -- name to use fuer this font configuration (defaults to a unique name)
     exists -- does a named font by this name already exist?
-       Creates a new named font wenn False, points to the existing font wenn True.
+       Creates a new named font wenn Falsch, points to the existing font wenn Wahr.
        Raises _tkinter.TclError wenn the assertion is false.
 
        the following are ignored wenn font is specified:
@@ -66,9 +66,9 @@ klasse Font:
             options[args[i][1:]] = args[i+1]
         return options
 
-    def __init__(self, root=None, font=None, name=None, exists=False,
+    def __init__(self, root=Nichts, font=Nichts, name=Nichts, exists=Falsch,
                  **options):
-        wenn root is None:
+        wenn root is Nichts:
             root = tkinter._get_default_root('use font')
         tk = getattr(root, 'tk', root)
         wenn font:
@@ -81,7 +81,7 @@ klasse Font:
         self.name = name
 
         wenn exists:
-            self.delete_font = False
+            self.delete_font = Falsch
             # confirm font exists
             wenn self.name not in tk.splitlist(tk.call("font", "names")):
                 raise tkinter._tkinter.TclError(
@@ -92,7 +92,7 @@ klasse Font:
         sonst:
             # create new font (raises TclError wenn the font exists)
             tk.call("font", "create", self.name, *font)
-            self.delete_font = True
+            self.delete_font = Wahr
         self._tk = tk
         self._split = tk.splitlist
         self._call  = tk.call
@@ -126,7 +126,7 @@ klasse Font:
         "Return a distinct copy of the current font"
         return Font(self._tk, **self.actual())
 
-    def actual(self, option=None, displayof=None):
+    def actual(self, option=Nichts, displayof=Nichts):
         "Return actual font attributes"
         args = ()
         wenn displayof:
@@ -153,7 +153,7 @@ klasse Font:
 
     configure = config
 
-    def measure(self, text, displayof=None):
+    def measure(self, text, displayof=Nichts):
         "Return text width"
         args = (text,)
         wenn displayof:
@@ -166,7 +166,7 @@ klasse Font:
         For best performance, create a dummy widget
         using this font before calling this method."""
         args = ()
-        displayof = kw.pop('displayof', None)
+        displayof = kw.pop('displayof', Nichts)
         wenn displayof:
             args = ('-displayof', displayof)
         wenn options:
@@ -181,9 +181,9 @@ klasse Font:
             return options
 
 
-def families(root=None, displayof=None):
+def families(root=Nichts, displayof=Nichts):
     "Get font families (as a tuple)"
-    wenn root is None:
+    wenn root is Nichts:
         root = tkinter._get_default_root('use font.families()')
     args = ()
     wenn displayof:
@@ -191,9 +191,9 @@ def families(root=None, displayof=None):
     return root.tk.splitlist(root.tk.call("font", "families", *args))
 
 
-def names(root=None):
+def names(root=Nichts):
     "Get names of defined fonts (as a tuple)"
-    wenn root is None:
+    wenn root is Nichts:
         root = tkinter._get_default_root('use font.names()')
     return root.tk.splitlist(root.tk.call("font", "names"))
 

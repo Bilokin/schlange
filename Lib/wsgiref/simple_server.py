@@ -43,7 +43,7 @@ klasse WSGIServer(HTTPServer):
 
     """BaseHTTPServer that implements the Python WSGI protocol"""
 
-    application = None
+    application = Nichts
 
     def server_bind(self):
         """Override server_bind to store the server name."""
@@ -86,7 +86,7 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
         env['QUERY_STRING'] = query
         env['REMOTE_ADDR'] = self.client_address[0]
 
-        wenn self.headers.get('content-type') is None:
+        wenn self.headers.get('content-type') is Nichts:
             env['CONTENT_TYPE'] = self.headers.get_content_type()
         sonst:
             env['CONTENT_TYPE'] = self.headers['content-type']
@@ -124,7 +124,7 @@ klasse WSGIRequestHandler(BaseHTTPRequestHandler):
 
         handler = ServerHandler(
             self.rfile, self.wfile, self.get_stderr(), self.get_environ(),
-            multithread=False,
+            multithread=Falsch,
         )
         handler.request_handler = self      # backpointer fuer logging
         handler.run(self.server.get_app())

@@ -56,15 +56,15 @@ def _get_preprocessor(filename, **kwargs):
 #######################################
 # the formats
 
-def fmt_raw(filename, item, *, showfwd=None):
+def fmt_raw(filename, item, *, showfwd=Nichts):
     yield str(tuple(item))
 
 
-def fmt_summary(filename, item, *, showfwd=None):
+def fmt_summary(filename, item, *, showfwd=Nichts):
     wenn item.filename != filename:
         yield f'> {item.filename}'
 
-    wenn showfwd is None:
+    wenn showfwd is Nichts:
         LINE = ' {lno:>5} {kind:10} {funcname:40} {fwd:1} {name:40} {data}'
     sonst:
         LINE = ' {lno:>5} {kind:10} {funcname:40} {name:40} {data}'
@@ -75,7 +75,7 @@ def fmt_summary(filename, item, *, showfwd=None):
     lno = fileinfo.lno wenn fileinfo and fileinfo.lno >= 0 sonst ''
     funcname = funcname or ' --'
     name = name or ' --'
-    isforward = False
+    isforward = Falsch
     wenn kind is KIND.FUNCTION:
         storage, inline, params, returntype, isforward = data.values()
         returntype = _format_vartype(returntype)
@@ -87,8 +87,8 @@ def fmt_summary(filename, item, *, showfwd=None):
     sowenn kind is KIND.VARIABLE:
         data = _format_vartype(data)
     sowenn kind is KIND.STRUCT or kind is KIND.UNION:
-        wenn data is None:
-            isforward = True
+        wenn data is Nichts:
+            isforward = Wahr
         sonst:
             fields = data
             data = f'({len(data)}) {{ '
@@ -100,8 +100,8 @@ def fmt_summary(filename, item, *, showfwd=None):
                 fields = fields[5:]
             data += ' }'
     sowenn kind is KIND.ENUM:
-        wenn data is None:
-            isforward = True
+        wenn data is Nichts:
+            isforward = Wahr
         sonst:
             names = [d wenn isinstance(d, str) sonst d.name
                      fuer d in data]
@@ -121,7 +121,7 @@ def fmt_summary(filename, item, *, showfwd=None):
         raise NotImplementedError(item)
     wenn isforward:
         fwd = '*'
-        wenn not showfwd and showfwd is not None:
+        wenn not showfwd and showfwd is not Nichts:
             return
     sowenn showfwd:
         return
@@ -129,7 +129,7 @@ def fmt_summary(filename, item, *, showfwd=None):
     yield LINE.format(**locals())
 
 
-def fmt_full(filename, item, *, showfwd=None):
+def fmt_full(filename, item, *, showfwd=Nichts):
     raise NotImplementedError
 
 
@@ -142,10 +142,10 @@ FORMATS = {
 
 def add_output_cli(parser):
     parser.add_argument('--format', dest='fmt', default='summary', choices=tuple(FORMATS))
-    parser.add_argument('--showfwd', action='store_true', default=None)
-    parser.add_argument('--no-showfwd', dest='showfwd', action='store_false', default=None)
+    parser.add_argument('--showfwd', action='store_true', default=Nichts)
+    parser.add_argument('--no-showfwd', dest='showfwd', action='store_false', default=Nichts)
 
-    def process_args(args, *, argv=None):
+    def process_args(args, *, argv=Nichts):
         pass
     return process_args
 
@@ -153,7 +153,7 @@ def add_output_cli(parser):
 #######################################
 # the commands
 
-def _cli_parse(parser, excluded=None, **prepr_kwargs):
+def _cli_parse(parser, excluded=Nichts, **prepr_kwargs):
     process_output = add_output_cli(parser)
     process_kinds = add_kind_filtering_cli(parser)
     process_preprocessor = add_preprocessor_cli(parser, **prepr_kwargs)
@@ -168,9 +168,9 @@ def _cli_parse(parser, excluded=None, **prepr_kwargs):
 
 def cmd_parse(filenames, *,
               fmt='summary',
-              showfwd=None,
-              iter_filenames=None,
-              relroot=None,
+              showfwd=Nichts,
+              iter_filenames=Nichts,
+              relroot=Nichts,
               **kwargs
               ):
     wenn 'get_file_preprocessor' not in kwargs:
@@ -181,7 +181,7 @@ def cmd_parse(filenames, *,
         raise ValueError(f'unsupported fmt {fmt!r}')
     fuer filename, relfile in main_for_filenames(filenames, iter_filenames, relroot):
         fuer item in _iter_parsed(filename, **kwargs):
-            item = item.fix_filename(relroot, fixroot=False, normalize=False)
+            item = item.fix_filename(relroot, fixroot=Falsch, normalize=Falsch)
             fuer line in do_fmt(relfile, item, showfwd=showfwd):
                 print(line)
 

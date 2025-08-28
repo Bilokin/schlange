@@ -123,7 +123,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         self.assertEqual(x.contents.value, 42)
         self.assertEqual(LPINT(c_int(42)).contents.value, 42)
 
-        self.assertEqual(LPINT.from_param(None), None)
+        self.assertEqual(LPINT.from_param(Nichts), Nichts)
 
         wenn c_int != c_long:
             self.assertRaises(TypeError, LPINT.from_param, pointer(c_long(42)))
@@ -175,11 +175,11 @@ klasse SimpleTypesTestCase(unittest.TestCase):
 
         klasse Adapter:
             def from_param(cls, obj):
-                return None
+                return Nichts
 
         func.argtypes = (Adapter(),)
-        self.assertEqual(func(None), None)
-        self.assertEqual(func(object()), None)
+        self.assertEqual(func(Nichts), Nichts)
+        self.assertEqual(func(object()), Nichts)
 
         klasse Adapter:
             def from_param(cls, obj):
@@ -226,7 +226,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
             WorseStruct().__setstate__({}, b'foo')
 
     def test_parameter_repr(self):
-        self.assertRegex(repr(c_bool.from_param(True)), r"^<cparam '\?' at 0x[A-Fa-f0-9]+>$")
+        self.assertRegex(repr(c_bool.from_param(Wahr)), r"^<cparam '\?' at 0x[A-Fa-f0-9]+>$")
         self.assertEqual(repr(c_char.from_param(97)), "<cparam 'c' ('a')>")
         self.assertRegex(repr(c_wchar.from_param('a')), r"^<cparam 'u' at 0x[A-Fa-f0-9]+>$")
         self.assertEqual(repr(c_byte.from_param(98)), "<cparam 'b' (98)>")

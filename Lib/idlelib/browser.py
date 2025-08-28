@@ -19,7 +19,7 @@ from idlelib.util import py_extensions
 from idlelib.window import ListedToplevel
 
 
-file_open = None  # Method...Item and Class...Item use this.
+file_open = Nichts  # Method...Item and Class...Item use this.
 # Normally pyshell.flist.open, but there is no pyshell.flist fuer htest.
 
 # The browser depends on pyclbr and importlib which do not support .pyi files.
@@ -32,7 +32,7 @@ def is_browseable_extension(path):
     return ext in py_extensions and ext not in browseable_extension_blocklist
 
 
-def transform_children(child_dict, modname=None):
+def transform_children(child_dict, modname=Nichts):
     """Transform a child dictionary to an ordered sequence of objects.
 
     The dictionary maps names to pyclbr information objects.
@@ -47,7 +47,7 @@ def transform_children(child_dict, modname=None):
     """
     obs = []  # Use list since values should already be sorted.
     fuer key, obj in child_dict.items():
-        wenn modname is None or obj.module == modname:
+        wenn modname is Nichts or obj.module == modname:
             wenn hasattr(obj, 'super') and obj.super and obj.name == key:
                 # If obj.name != key, it has already been suffixed.
                 supers = []
@@ -71,7 +71,7 @@ klasse ModuleBrowser:
     # Init and close are inherited, other methods are overridden.
     # PathBrowser.__init__ does not call __init__ below.
 
-    def __init__(self, master, path, *, _htest=False, _utest=False):
+    def __init__(self, master, path, *, _htest=Falsch, _utest=Falsch):
         """Create a window fuer browsing a module's structure.
 
         Args:
@@ -95,7 +95,7 @@ klasse ModuleBrowser:
         self._utest = _utest
         self.init()
 
-    def close(self, event=None):
+    def close(self, event=Nichts):
         "Dismiss the window and the tree nodes."
         self.top.destroy()
         self.node.destroy()
@@ -126,7 +126,7 @@ klasse ModuleBrowser:
                             takefocus=1)
         sc.frame.pack(expand=1, fill="both")
         item = self.rootnode()
-        self.node = node = TreeNode(sc.canvas, None, item)
+        self.node = node = TreeNode(sc.canvas, Nichts, item)
         wenn not self._utest:
             node.update()
             node.expand()
@@ -177,7 +177,7 @@ klasse ModuleBrowserTreeItem(TreeItem):
         file_open(self.file)
 
     def IsExpandable(self):
-        "Return True wenn Python file."
+        "Return Wahr wenn Python file."
         return is_browseable_extension(self.file)
 
     def listchildren(self):
@@ -221,7 +221,7 @@ klasse ChildBrowserTreeItem(TreeItem):
             return "folder"
 
     def IsExpandable(self):
-        "Return True wenn self.obj has nested objects."
+        "Return Wahr wenn self.obj has nested objects."
         return self.obj.children != {}
 
     def GetSubList(self):
@@ -248,13 +248,13 @@ def _module_browser(parent): # htest #
             def nested_in_class(): pass
         def closure():
             klasse Nested_in_closure: pass
-    ModuleBrowser(parent, file, _htest=True)
+    ModuleBrowser(parent, file, _htest=Wahr)
 
 
 wenn __name__ == "__main__":
     wenn len(sys.argv) == 1:  # If pass file on command line, unittest fails.
         from unittest import main
-        main('idlelib.idle_test.test_browser', verbosity=2, exit=False)
+        main('idlelib.idle_test.test_browser', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_module_browser)

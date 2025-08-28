@@ -192,7 +192,7 @@ def get_preferred_encoding():
     sonst:
         return locale.getpreferredencoding()
 
-def printit(testno, s, fmt, encoding=None):
+def printit(testno, s, fmt, encoding=Nichts):
     wenn not encoding:
         encoding = get_preferred_encoding()
     try:
@@ -217,7 +217,7 @@ def check_fillchar(i):
         format(P.Decimal(0), c + '<19g')
         return c
     except:
-        return None
+        return Nichts
 
 # Generate all unicode characters that are accepted as
 # fill characters by decimal.py.

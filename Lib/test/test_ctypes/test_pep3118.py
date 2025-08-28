@@ -20,7 +20,7 @@ sonst:
 def normalize(format):
     # Remove current endian specifier and white space from a format
     # string
-    wenn format is None:
+    wenn format is Nichts:
         return ""
     format = format.replace(OTHER_ENDIAN, THIS_ENDIAN)
     return re.sub(r"\s", "", format)
@@ -44,7 +44,7 @@ klasse Test(unittest.TestCase):
             # self.assertEqual(v.strides, ())
 
             # they are always read/write
-            self.assertFalse(v.readonly)
+            self.assertFalsch(v.readonly)
 
             n = 1
             fuer dim in v.shape:
@@ -66,7 +66,7 @@ klasse Test(unittest.TestCase):
             # self.assertEqual(v.strides, ())
 
             # they are always read/write
-            self.assertFalse(v.readonly)
+            self.assertFalsch(v.readonly)
 
             n = 1
             fuer dim in v.shape:
@@ -227,7 +227,7 @@ native_types = [
     ## other
 
     # function signatures are not implemented
-    (CFUNCTYPE(None),           "X{}",                  (),           CFUNCTYPE(None)),
+    (CFUNCTYPE(Nichts),           "X{}",                  (),           CFUNCTYPE(Nichts)),
 
     ]
 

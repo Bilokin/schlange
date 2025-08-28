@@ -25,7 +25,7 @@ STREAM_INFO = [("stdout", "I", 1), ("stderr", "W", 2)]
 
 # Test redirection of stdout and stderr to the Android log.
 klasse TestAndroidOutput(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
 
     def setUp(self):
         self.logcat_process = subprocess.Popen(
@@ -52,7 +52,7 @@ klasse TestAndroidOutput(unittest.TestCase):
             tag, message = "python.test", f"{self.id()} {time()}"
             android_log_write(
                 ANDROID_LOG_INFO, tag.encode("UTF-8"), message.encode("UTF-8"))
-            self.assert_log("I", tag, message, skip=True)
+            self.assert_log("I", tag, message, skip=Wahr)
         except:
             # If setUp throws an exception, tearDown is not automatically
             # called. Avoid leaving a dangling thread which would keep the
@@ -64,15 +64,15 @@ klasse TestAndroidOutput(unittest.TestCase):
         fuer line in expected:
             self.assert_log(level, tag, line, **kwargs)
 
-    def assert_log(self, level, tag, expected, *, skip=False):
+    def assert_log(self, level, tag, expected, *, skip=Falsch):
         deadline = time() + LOOPBACK_TIMEOUT
-        while True:
+        while Wahr:
             try:
                 line = self.logcat_queue.get(timeout=(deadline - time()))
             except queue.Empty:
                 raise self.failureException(
                     f"line not found: {expected!r}"
-                ) from None
+                ) from Nichts
             wenn match := re.fullmatch(fr"(.)/{tag}: (.*)", line):
                 try:
                     self.assertEqual(level, match[1])
@@ -88,15 +88,15 @@ klasse TestAndroidOutput(unittest.TestCase):
         self.logcat_thread.join(LOOPBACK_TIMEOUT)
 
         # Avoid an irrelevant warning about threading._dangling.
-        self.logcat_thread = None
+        self.logcat_thread = Nichts
 
     @contextmanager
     def unbuffered(self, stream):
-        stream.reconfigure(write_through=True)
+        stream.reconfigure(write_through=Wahr)
         try:
             yield
         finally:
-            stream.reconfigure(write_through=False)
+            stream.reconfigure(write_through=Falsch)
 
     # In --verbose3 mode, sys.stdout and sys.stderr are captured, so we can't
     # test them directly. Detect this mode and use some temporary streams with
@@ -128,19 +128,19 @@ klasse TestAndroidOutput(unittest.TestCase):
                 tag = f"python.{stream_name}"
                 self.assertEqual(f"<TextLogStream '{tag}'>", repr(stream))
 
-                self.assertIs(stream.writable(), True)
-                self.assertIs(stream.readable(), False)
+                self.assertIs(stream.writable(), Wahr)
+                self.assertIs(stream.readable(), Falsch)
                 self.assertEqual(stream.fileno(), fileno)
                 self.assertEqual("UTF-8", stream.encoding)
                 self.assertEqual("backslashreplace", stream.errors)
-                self.assertIs(stream.line_buffering, True)
-                self.assertIs(stream.write_through, False)
+                self.assertIs(stream.line_buffering, Wahr)
+                self.assertIs(stream.write_through, Falsch)
 
-                def write(s, lines=None, *, write_len=None):
-                    wenn write_len is None:
+                def write(s, lines=Nichts, *, write_len=Nichts):
+                    wenn write_len is Nichts:
                         write_len = len(s)
                     self.assertEqual(write_len, stream.write(s))
-                    wenn lines is None:
+                    wenn lines is Nichts:
                         lines = [s]
                     self.assert_logs(level, tag, lines)
 
@@ -187,8 +187,8 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 # Since this is a line-based logging system, line buffering
                 # cannot be turned off, i.e. a newline always causes a flush.
-                stream.reconfigure(line_buffering=False)
-                self.assertIs(stream.line_buffering, True)
+                stream.reconfigure(line_buffering=Falsch)
+                self.assertIs(stream.line_buffering, Wahr)
 
                 # However, buffering can be turned off completely wenn you want a
                 # flush after every write.
@@ -229,7 +229,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 write(CustomStr("custom\n"), ["custom"], write_len=7)
 
                 # Non-string classes are not accepted.
-                fuer obj in [b"", b"hello", None, 42]:
+                fuer obj in [b"", b"hello", Nichts, 42]:
                     with self.subTest(obj=obj):
                         with self.assertRaisesRegex(
                             TypeError,
@@ -276,15 +276,15 @@ klasse TestAndroidOutput(unittest.TestCase):
                 stream = getattr(sys, stream_name).buffer
                 tag = f"python.{stream_name}"
                 self.assertEqual(f"<BinaryLogStream '{tag}'>", repr(stream))
-                self.assertIs(stream.writable(), True)
-                self.assertIs(stream.readable(), False)
+                self.assertIs(stream.writable(), Wahr)
+                self.assertIs(stream.readable(), Falsch)
                 self.assertEqual(stream.fileno(), fileno)
 
-                def write(b, lines=None, *, write_len=None):
-                    wenn write_len is None:
+                def write(b, lines=Nichts, *, write_len=Nichts):
+                    wenn write_len is Nichts:
                         write_len = len(b)
                     self.assertEqual(write_len, stream.write(b))
-                    wenn lines is None:
+                    wenn lines is Nichts:
                         lines = [b.decode()]
                     self.assert_logs(level, tag, lines)
 
@@ -368,7 +368,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                 )
 
                 # Non-bytes-like classes are not accepted.
-                fuer obj in ["", "hello", None, 42]:
+                fuer obj in ["", "hello", Nichts, 42]:
                     with self.subTest(obj=obj):
                         with self.assertRaisesRegex(
                             TypeError,

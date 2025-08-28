@@ -63,7 +63,7 @@ klasse FormatTestsBase:
         value = self.key('language.version')
 
         self.assertLessEqual(set(value), set(allowed_characters))
-        self.assertTrue(sys.version.startswith(value))
+        self.assertWahr(sys.version.startswith(value))
 
     def test_language_version_info(self):
         value = self.key('language.version_info')
@@ -112,7 +112,7 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
 
     @needs_installed_python
     def test_location(self):
-        self.assertTrue(os.path.isfile(self.location))
+        self.assertWahr(os.path.isfile(self.location))
 
     # Override generic format tests with tests fuer our specific implemenation.
 
@@ -142,9 +142,9 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
         wenn sysconfig._installation_is_relocated():
             self.skipTest("Installation is relocated")
 
-        self.assertTrue(os.path.exists(os.path.join(value['headers'], 'Python.h')))
+        self.assertWahr(os.path.exists(os.path.join(value['headers'], 'Python.h')))
         version = sysconfig.get_config_var('VERSION')
-        self.assertTrue(os.path.exists(os.path.join(value['pkgconfig_path'], f'python-{version}.pc')))
+        self.assertWahr(os.path.exists(os.path.join(value['pkgconfig_path'], f'python-{version}.pc')))
 
 
 wenn __name__ == '__main__':

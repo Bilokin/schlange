@@ -19,7 +19,7 @@ klasse MockSys:
         stack = ExitStack()
         self.addCleanup(stack.close)
         self.infunc = stack.enter_context(mock.patch('code.input',
-                                          create=True))
+                                          create=Wahr))
         self.stdout = stack.enter_context(mock.patch('code.sys.stdout'))
         self.stderr = stack.enter_context(mock.patch('code.sys.stderr'))
         prepatch = mock.patch('code.sys', wraps=code.sys, spec=code.sys)
@@ -32,7 +32,7 @@ klasse MockSys:
 
 @force_not_colorized_test_class
 klasse TestInteractiveConsole(unittest.TestCase, MockSys):
-    maxDiff = None
+    maxDiff = Nichts
 
     def setUp(self):
         self.console = code.InteractiveConsole()
@@ -107,8 +107,8 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
             'SyntaxError: invalid syntax'])
         self.assertIs(self.sysmod.last_type, SyntaxError)
         self.assertIs(type(self.sysmod.last_value), SyntaxError)
-        self.assertIsNone(self.sysmod.last_traceback)
-        self.assertIsNone(self.sysmod.last_value.__traceback__)
+        self.assertIsNichts(self.sysmod.last_traceback)
+        self.assertIsNichts(self.sysmod.last_value.__traceback__)
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
 
     def test_indentation_error(self):
@@ -123,8 +123,8 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
             'IndentationError: unexpected indent'])
         self.assertIs(self.sysmod.last_type, IndentationError)
         self.assertIs(type(self.sysmod.last_value), IndentationError)
-        self.assertIsNone(self.sysmod.last_traceback)
-        self.assertIsNone(self.sysmod.last_value.__traceback__)
+        self.assertIsNichts(self.sysmod.last_traceback)
+        self.assertIsNichts(self.sysmod.last_value.__traceback__)
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
 
     def test_unicode_error(self):
@@ -136,8 +136,8 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.assertStartsWith(output, 'UnicodeEncodeError: ')
         self.assertIs(self.sysmod.last_type, UnicodeEncodeError)
         self.assertIs(type(self.sysmod.last_value), UnicodeEncodeError)
-        self.assertIsNone(self.sysmod.last_traceback)
-        self.assertIsNone(self.sysmod.last_value.__traceback__)
+        self.assertIsNichts(self.sysmod.last_traceback)
+        self.assertIsNichts(self.sysmod.last_value.__traceback__)
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
 
     def test_sysexcepthook(self):
@@ -177,8 +177,8 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
                                 self.sysmod.last_traceback)
         self.assertIs(self.sysmod.last_type, SyntaxError)
         self.assertIs(type(self.sysmod.last_value), SyntaxError)
-        self.assertIsNone(self.sysmod.last_traceback)
-        self.assertIsNone(self.sysmod.last_value.__traceback__)
+        self.assertIsNichts(self.sysmod.last_traceback)
+        self.assertIsNichts(self.sysmod.last_value.__traceback__)
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
         self.assertEqual(traceback.format_exception(self.sysmod.last_exc), [
             '  File "<console>", line 2\n',
@@ -197,8 +197,8 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
                                 self.sysmod.last_traceback)
         self.assertIs(self.sysmod.last_type, IndentationError)
         self.assertIs(type(self.sysmod.last_value), IndentationError)
-        self.assertIsNone(self.sysmod.last_traceback)
-        self.assertIsNone(self.sysmod.last_value.__traceback__)
+        self.assertIsNichts(self.sysmod.last_traceback)
+        self.assertIsNichts(self.sysmod.last_value.__traceback__)
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
         self.assertEqual(traceback.format_exception(self.sysmod.last_exc), [
             '  File "<console>", line 1\n',
@@ -298,7 +298,7 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.assertIs(self.sysmod.last_type, ValueError)
         self.assertIs(type(self.sysmod.last_value), ValueError)
         self.assertIs(self.sysmod.last_traceback, self.sysmod.last_value.__traceback__)
-        self.assertIsNotNone(self.sysmod.last_traceback)
+        self.assertIsNotNichts(self.sysmod.last_traceback)
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
 
     def test_context_tb(self):
@@ -321,14 +321,14 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         self.assertIs(self.sysmod.last_type, NameError)
         self.assertIs(type(self.sysmod.last_value), NameError)
         self.assertIs(self.sysmod.last_traceback, self.sysmod.last_value.__traceback__)
-        self.assertIsNotNone(self.sysmod.last_traceback)
+        self.assertIsNotNichts(self.sysmod.last_traceback)
         self.assertIs(self.sysmod.last_exc, self.sysmod.last_value)
 
 
 klasse TestInteractiveConsoleLocalExit(unittest.TestCase, MockSys):
 
     def setUp(self):
-        self.console = code.InteractiveConsole(local_exit=True)
+        self.console = code.InteractiveConsole(local_exit=Wahr)
         self.mock_sys()
 
     @unittest.skipIf(sys.flags.no_site, "exit() isn't defined unless there's a site module")

@@ -13,7 +13,7 @@ import os
 import sys
 import sysconfig
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
     from typing import Any
 
@@ -130,7 +130,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
     return data
 
 
-def make_paths_relative(data: dict[str, Any], config_path: str | None = None) -> None:
+def make_paths_relative(data: dict[str, Any], config_path: str | Nichts = Nichts) -> Nichts:
     # Make base_prefix relative to the config_path directory
     wenn config_path:
         data['base_prefix'] = os.path.relpath(data['base_prefix'], os.path.dirname(config_path))
@@ -160,8 +160,8 @@ def make_paths_relative(data: dict[str, Any], config_path: str | None = None) ->
         container[child] = new_path
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(exit_on_error=False)
+def main() -> Nichts:
+    parser = argparse.ArgumentParser(exit_on_error=Falsch)
     parser.add_argument('location')
     parser.add_argument(
         '--schema-version',
@@ -175,7 +175,7 @@ def main() -> None:
     )
     parser.add_argument(
         '--config-file-path',
-        default=None,
+        default=Nichts,
         help='If specified, ``base_prefix`` will be set as a relative path to the given config file path.',
     )
 

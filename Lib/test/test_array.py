@@ -27,7 +27,7 @@ klasse ArraySubclass(array.array):
     pass
 
 klasse ArraySubclassWithKwargs(array.array):
-    def __init__(self, typecode, newarg=None):
+    def __init__(self, typecode, newarg=Nichts):
         array.array.__init__(self)
 
 typecodes = 'uwbBhHiIlLfdqQ'
@@ -234,7 +234,7 @@ klasse BaseTest:
         a = array.array(self.typecode)
         self.assertEqual(a.typecode, self.typecode)
         self.assertGreaterEqual(a.itemsize, self.minitemsize)
-        self.assertRaises(TypeError, array.array, self.typecode, None)
+        self.assertRaises(TypeError, array.array, self.typecode, Nichts)
 
     def test_len(self):
         a = array.array(self.typecode)
@@ -438,8 +438,8 @@ klasse BaseTest:
         self.assertEqual(len(a), 1+len(self.example))
         self.assertEqual(a[0], a[1])
         self.assertRaises(TypeError, a.insert)
-        self.assertRaises(TypeError, a.insert, None)
-        self.assertRaises(TypeError, a.insert, 0, None)
+        self.assertRaises(TypeError, a.insert, Nichts)
+        self.assertRaises(TypeError, a.insert, 0, Nichts)
 
         a = array.array(self.typecode, self.example)
         a.insert(-1, self.example[0])
@@ -523,7 +523,7 @@ klasse BaseTest:
         self.assertRaises(TypeError, a.tolist, 42)
         self.assertRaises(TypeError, b.fromlist)
         self.assertRaises(TypeError, b.fromlist, 42)
-        self.assertRaises(TypeError, b.fromlist, [None])
+        self.assertRaises(TypeError, b.fromlist, [Nichts])
         b.fromlist(a.tolist())
         self.assertEqual(a, b)
 
@@ -558,39 +558,39 @@ klasse BaseTest:
 
     def test_cmp(self):
         a = array.array(self.typecode, self.example)
-        self.assertIs(a == 42, False)
-        self.assertIs(a != 42, True)
+        self.assertIs(a == 42, Falsch)
+        self.assertIs(a != 42, Wahr)
 
-        self.assertIs(a == a, True)
-        self.assertIs(a != a, False)
-        self.assertIs(a < a, False)
-        self.assertIs(a <= a, True)
-        self.assertIs(a > a, False)
-        self.assertIs(a >= a, True)
+        self.assertIs(a == a, Wahr)
+        self.assertIs(a != a, Falsch)
+        self.assertIs(a < a, Falsch)
+        self.assertIs(a <= a, Wahr)
+        self.assertIs(a > a, Falsch)
+        self.assertIs(a >= a, Wahr)
 
         al = array.array(self.typecode, self.smallerexample)
         ab = array.array(self.typecode, self.biggerexample)
 
-        self.assertIs(a == 2*a, False)
-        self.assertIs(a != 2*a, True)
-        self.assertIs(a < 2*a, True)
-        self.assertIs(a <= 2*a, True)
-        self.assertIs(a > 2*a, False)
-        self.assertIs(a >= 2*a, False)
+        self.assertIs(a == 2*a, Falsch)
+        self.assertIs(a != 2*a, Wahr)
+        self.assertIs(a < 2*a, Wahr)
+        self.assertIs(a <= 2*a, Wahr)
+        self.assertIs(a > 2*a, Falsch)
+        self.assertIs(a >= 2*a, Falsch)
 
-        self.assertIs(a == al, False)
-        self.assertIs(a != al, True)
-        self.assertIs(a < al, False)
-        self.assertIs(a <= al, False)
-        self.assertIs(a > al, True)
-        self.assertIs(a >= al, True)
+        self.assertIs(a == al, Falsch)
+        self.assertIs(a != al, Wahr)
+        self.assertIs(a < al, Falsch)
+        self.assertIs(a <= al, Falsch)
+        self.assertIs(a > al, Wahr)
+        self.assertIs(a >= al, Wahr)
 
-        self.assertIs(a == ab, False)
-        self.assertIs(a != ab, True)
-        self.assertIs(a < ab, True)
-        self.assertIs(a <= ab, True)
-        self.assertIs(a > ab, False)
-        self.assertIs(a >= ab, False)
+        self.assertIs(a == ab, Falsch)
+        self.assertIs(a != ab, Wahr)
+        self.assertIs(a < ab, Wahr)
+        self.assertIs(a <= ab, Wahr)
+        self.assertIs(a > ab, Falsch)
+        self.assertIs(a >= ab, Falsch)
 
     def test_add(self):
         a = array.array(self.typecode, self.example) \
@@ -726,8 +726,8 @@ klasse BaseTest:
         self.assertEntryEqual(a[0], a[-1])
 
         self.assertRaises(TypeError, a.__setitem__)
-        self.assertRaises(TypeError, a.__setitem__, None)
-        self.assertRaises(TypeError, a.__setitem__, 0, None)
+        self.assertRaises(TypeError, a.__setitem__, Nichts)
+        self.assertRaises(TypeError, a.__setitem__, 0, Nichts)
         self.assertRaises(
             IndexError,
             a.__setitem__,
@@ -769,7 +769,7 @@ klasse BaseTest:
         )
 
         self.assertRaises(TypeError, a.__delitem__)
-        self.assertRaises(TypeError, a.__delitem__, None)
+        self.assertRaises(TypeError, a.__delitem__, Nichts)
         self.assertRaises(IndexError, a.__delitem__, len(self.example))
         self.assertRaises(IndexError, a.__delitem__, -len(self.example)-1)
 
@@ -827,7 +827,7 @@ klasse BaseTest:
         # Test extended slicing by comparing with list slicing
         # (Assumes list conversion works correctly, too)
         a = array.array(self.typecode, self.example)
-        indices = (0, None, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
+        indices = (0, Nichts, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
         fuer start in indices:
             fuer stop in indices:
                 # Everything except the initial 0 (invalid step)
@@ -917,15 +917,15 @@ klasse BaseTest:
         )
 
         a = array.array(self.typecode, self.example)
-        self.assertRaises(TypeError, a.__setitem__, slice(0, 0), None)
-        self.assertRaises(TypeError, a.__setitem__, slice(0, 1), None)
+        self.assertRaises(TypeError, a.__setitem__, slice(0, 0), Nichts)
+        self.assertRaises(TypeError, a.__setitem__, slice(0, 1), Nichts)
 
         b = array.array(self.badtypecode())
         self.assertRaises(TypeError, a.__setitem__, slice(0, 0), b)
         self.assertRaises(TypeError, a.__setitem__, slice(0, 1), b)
 
     def test_extended_set_del_slice(self):
-        indices = (0, None, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
+        indices = (0, Nichts, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
         fuer start in indices:
             fuer stop in indices:
                 # Everything except the initial 0 (invalid step)
@@ -950,7 +950,7 @@ klasse BaseTest:
         self.assertRaises(TypeError, a.index)
         fuer x in example:
             self.assertEqual(a.index(x), example.index(x))
-        self.assertRaises(ValueError, a.index, None)
+        self.assertRaises(ValueError, a.index, Nichts)
         self.assertRaises(ValueError, a.index, self.outside)
 
         a = array.array('i', [-2, -1, 0, 0, 1, 2])
@@ -971,7 +971,7 @@ klasse BaseTest:
         fuer x in example:
             self.assertEqual(a.count(x), example.count(x))
         self.assertEqual(a.count(self.outside), 0)
-        self.assertEqual(a.count(None), 0)
+        self.assertEqual(a.count(Nichts), 0)
 
     def test_remove(self):
         fuer x in self.example:
@@ -985,7 +985,7 @@ klasse BaseTest:
         a = array.array(self.typecode, self.example)
         self.assertRaises(ValueError, a.remove, self.outside)
 
-        self.assertRaises(ValueError, a.remove, None)
+        self.assertRaises(ValueError, a.remove, Nichts)
 
     def test_pop(self):
         a = array.array(self.typecode)
@@ -993,7 +993,7 @@ klasse BaseTest:
 
         a = array.array(self.typecode, 2*self.example)
         self.assertRaises(TypeError, a.pop, 42, 42)
-        self.assertRaises(TypeError, a.pop, None)
+        self.assertRaises(TypeError, a.pop, Nichts)
         self.assertRaises(IndexError, a.pop, len(a))
         self.assertRaises(IndexError, a.pop, -len(a)-1)
 
@@ -1089,7 +1089,7 @@ klasse BaseTest:
         # pass through errors raised in next()
         def B():
             raise UnicodeError
-            yield None
+            yield Nichts
         self.assertRaises(UnicodeError, array.array, self.typecode, B())
 
     def test_coveritertraverse(self):
@@ -1141,7 +1141,7 @@ klasse BaseTest:
         s = array.array(self.typecode, self.example)
         p = weakref.proxy(s)
         self.assertEqual(p.tobytes(), s.tobytes())
-        s = None
+        s = Nichts
         support.gc_collect()  # For PyPy or other GCs.
         self.assertRaises(ReferenceError, len, p)
 
@@ -1316,8 +1316,8 @@ klasse NumberTest(BaseTest):
         a = array.array(self.typecode, range(10))
         self.assertEqual(list(a), list(range(10)))
         b = array.array(self.typecode, [20])
-        self.assertEqual(a[-1] in a, True)
-        self.assertEqual(b[0] not in a, True)
+        self.assertEqual(a[-1] in a, Wahr)
+        self.assertEqual(b[0] not in a, Wahr)
 
     def check_overflow(self, lower, upper):
         # method to be used by subclasses
@@ -1476,12 +1476,12 @@ klasse FPTest(NumberTest):
     def test_nan(self):
         a = array.array(self.typecode, [float('nan')])
         b = array.array(self.typecode, [float('nan')])
-        self.assertIs(a != b, True)
-        self.assertIs(a == b, False)
-        self.assertIs(a > b, False)
-        self.assertIs(a >= b, False)
-        self.assertIs(a < b, False)
-        self.assertIs(a <= b, False)
+        self.assertIs(a != b, Wahr)
+        self.assertIs(a == b, Falsch)
+        self.assertIs(a > b, Falsch)
+        self.assertIs(a >= b, Falsch)
+        self.assertIs(a < b, Falsch)
+        self.assertIs(a <= b, Falsch)
 
     def test_byteswap(self):
         a = array.array(self.typecode, self.example)

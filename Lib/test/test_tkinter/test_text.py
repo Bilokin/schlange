@@ -28,9 +28,9 @@ klasse TextTest(AbstractTkTest, unittest.TestCase):
         text = self.text
 
         # pattern and index are obligatory arguments.
-        self.assertRaises(tkinter.TclError, text.search, None, '1.0')
-        self.assertRaises(tkinter.TclError, text.search, 'a', None)
-        self.assertRaises(tkinter.TclError, text.search, None, None)
+        self.assertRaises(tkinter.TclError, text.search, Nichts, '1.0')
+        self.assertRaises(tkinter.TclError, text.search, 'a', Nichts)
+        self.assertRaises(tkinter.TclError, text.search, Nichts, Nichts)
 
         # Invalid text index.
         self.assertRaises(tkinter.TclError, text.search, '', 0)
@@ -52,47 +52,47 @@ klasse TextTest(AbstractTkTest, unittest.TestCase):
         options = ('chars', 'indices', 'lines',
                    'displaychars', 'displayindices', 'displaylines',
                    'xpixels', 'ypixels')
-        self.assertEqual(len(text.count('1.0', 'end', *options, return_ints=True)), 8)
+        self.assertEqual(len(text.count('1.0', 'end', *options, return_ints=Wahr)), 8)
         self.assertEqual(len(text.count('1.0', 'end', *options)), 8)
-        self.assertEqual(text.count('1.0', 'end', 'chars', 'lines', return_ints=True),
+        self.assertEqual(text.count('1.0', 'end', 'chars', 'lines', return_ints=Wahr),
                          (124, 4))
         self.assertEqual(text.count('1.3', '4.5', 'chars', 'lines'), (92, 3))
-        self.assertEqual(text.count('4.5', '1.3', 'chars', 'lines', return_ints=True),
+        self.assertEqual(text.count('4.5', '1.3', 'chars', 'lines', return_ints=Wahr),
                          (-92, -3))
         self.assertEqual(text.count('4.5', '1.3', 'chars', 'lines'), (-92, -3))
-        self.assertEqual(text.count('1.3', '1.3', 'chars', 'lines', return_ints=True),
+        self.assertEqual(text.count('1.3', '1.3', 'chars', 'lines', return_ints=Wahr),
                          (0, 0))
         self.assertEqual(text.count('1.3', '1.3', 'chars', 'lines'), (0, 0))
-        self.assertEqual(text.count('1.0', 'end', 'lines', return_ints=True), 4)
+        self.assertEqual(text.count('1.0', 'end', 'lines', return_ints=Wahr), 4)
         self.assertEqual(text.count('1.0', 'end', 'lines'), (4,))
-        self.assertEqual(text.count('end', '1.0', 'lines', return_ints=True), -4)
+        self.assertEqual(text.count('end', '1.0', 'lines', return_ints=Wahr), -4)
         self.assertEqual(text.count('end', '1.0', 'lines'), (-4,))
-        self.assertEqual(text.count('1.3', '1.5', 'lines', return_ints=True), 0)
-        self.assertEqual(text.count('1.3', '1.5', 'lines'), None)
-        self.assertEqual(text.count('1.3', '1.3', 'lines', return_ints=True), 0)
-        self.assertEqual(text.count('1.3', '1.3', 'lines'), None)
+        self.assertEqual(text.count('1.3', '1.5', 'lines', return_ints=Wahr), 0)
+        self.assertEqual(text.count('1.3', '1.5', 'lines'), Nichts)
+        self.assertEqual(text.count('1.3', '1.3', 'lines', return_ints=Wahr), 0)
+        self.assertEqual(text.count('1.3', '1.3', 'lines'), Nichts)
         # Count 'indices' by default.
-        self.assertEqual(text.count('1.0', 'end', return_ints=True), 124)
+        self.assertEqual(text.count('1.0', 'end', return_ints=Wahr), 124)
         self.assertEqual(text.count('1.0', 'end'), (124,))
-        self.assertEqual(text.count('1.0', 'end', 'indices', return_ints=True), 124)
+        self.assertEqual(text.count('1.0', 'end', 'indices', return_ints=Wahr), 124)
         self.assertEqual(text.count('1.0', 'end', 'indices'), (124,))
         self.assertRaises(tkinter.TclError, text.count, '1.0', 'end', 'spam')
         self.assertRaises(tkinter.TclError, text.count, '1.0', 'end', '-lines')
 
-        self.assertIsInstance(text.count('1.3', '1.5', 'ypixels', return_ints=True), int)
+        self.assertIsInstance(text.count('1.3', '1.5', 'ypixels', return_ints=Wahr), int)
         self.assertIsInstance(text.count('1.3', '1.5', 'ypixels'), tuple)
-        self.assertIsInstance(text.count('1.3', '1.5', 'update', 'ypixels', return_ints=True), int)
+        self.assertIsInstance(text.count('1.3', '1.5', 'update', 'ypixels', return_ints=Wahr), int)
         self.assertIsInstance(text.count('1.3', '1.5', 'update', 'ypixels'), int)
-        self.assertEqual(text.count('1.3', '1.3', 'update', 'ypixels', return_ints=True), 0)
-        self.assertEqual(text.count('1.3', '1.3', 'update', 'ypixels'), None)
-        self.assertEqual(text.count('1.3', '1.5', 'update', 'indices', return_ints=True), 2)
+        self.assertEqual(text.count('1.3', '1.3', 'update', 'ypixels', return_ints=Wahr), 0)
+        self.assertEqual(text.count('1.3', '1.3', 'update', 'ypixels'), Nichts)
+        self.assertEqual(text.count('1.3', '1.5', 'update', 'indices', return_ints=Wahr), 2)
         self.assertEqual(text.count('1.3', '1.5', 'update', 'indices'), 2)
-        self.assertEqual(text.count('1.3', '1.3', 'update', 'indices', return_ints=True), 0)
-        self.assertEqual(text.count('1.3', '1.3', 'update', 'indices'), None)
-        self.assertEqual(text.count('1.3', '1.5', 'update', return_ints=True), 2)
+        self.assertEqual(text.count('1.3', '1.3', 'update', 'indices', return_ints=Wahr), 0)
+        self.assertEqual(text.count('1.3', '1.3', 'update', 'indices'), Nichts)
+        self.assertEqual(text.count('1.3', '1.5', 'update', return_ints=Wahr), 2)
         self.assertEqual(text.count('1.3', '1.5', 'update'), (2,))
-        self.assertEqual(text.count('1.3', '1.3', 'update', return_ints=True), 0)
-        self.assertEqual(text.count('1.3', '1.3', 'update'), None)
+        self.assertEqual(text.count('1.3', '1.3', 'update', return_ints=Wahr), 0)
+        self.assertEqual(text.count('1.3', '1.3', 'update'), Nichts)
 
 
 wenn __name__ == "__main__":

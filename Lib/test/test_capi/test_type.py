@@ -12,7 +12,7 @@ klasse BuiltinStaticTypesTests(unittest.TestCase):
         int,
         str,
         dict,
-        type(None),
+        type(Nichts),
         bool,
         BaseException,
         Exception,
@@ -26,7 +26,7 @@ klasse BuiltinStaticTypesTests(unittest.TestCase):
         fuer typeobj in self.TYPES:
             with self.subTest(typeobj):
                 bases = _testcapi.type_get_tp_bases(typeobj)
-                self.assertIsNot(bases, None)
+                self.assertIsNot(bases, Nichts)
 
     def test_tp_mro_is_set(self):
         # PyTypeObject.tp_bases is documented as public API.
@@ -34,7 +34,7 @@ klasse BuiltinStaticTypesTests(unittest.TestCase):
         fuer typeobj in self.TYPES:
             with self.subTest(typeobj):
                 mro = _testcapi.type_get_tp_mro(typeobj)
-                self.assertIsNot(mro, None)
+                self.assertIsNot(mro, Nichts)
 
 
 klasse TypeTests(unittest.TestCase):
@@ -108,19 +108,19 @@ klasse TypeTests(unittest.TestCase):
         self.assertEqual(get_type_fullyqualname(MyType), 'my_qualname')
 
     def test_get_base_by_token(self):
-        def get_base_by_token(src, key, comparable=True):
+        def get_base_by_token(src, key, comparable=Wahr):
             def run(use_mro):
                 find_first = _testcapi.pytype_getbasebytoken
-                ret1, result = find_first(src, key, use_mro, True)
-                ret2, no_result = find_first(src, key, use_mro, False)
+                ret1, result = find_first(src, key, use_mro, Wahr)
+                ret2, no_result = find_first(src, key, use_mro, Falsch)
                 self.assertIn(ret1, (0, 1))
-                self.assertEqual(ret1, result is not None)
+                self.assertEqual(ret1, result is not Nichts)
                 self.assertEqual(ret1, ret2)
-                self.assertIsNone(no_result)
+                self.assertIsNichts(no_result)
                 return result
 
-            found_in_mro = run(True)
-            found_in_bases = run(False)
+            found_in_mro = run(Wahr)
+            found_in_bases = run(Falsch)
             wenn comparable:
                 self.assertIs(found_in_mro, found_in_bases)
                 return found_in_mro
@@ -133,10 +133,10 @@ klasse TypeTests(unittest.TestCase):
         self.assertEqual(Py_TP_USE_SPEC, 0)
 
         A1 = create_type('_testcapi.A1', Py_TP_USE_SPEC)
-        self.assertTrue(get_token(A1) != Py_TP_USE_SPEC)
+        self.assertWahr(get_token(A1) != Py_TP_USE_SPEC)
 
         B1 = create_type('_testcapi.B1', id(self))
-        self.assertTrue(get_token(B1) == id(self))
+        self.assertWahr(get_token(B1) == id(self))
 
         tokenA1 = get_token(A1)
         # find A1 from A1
@@ -147,7 +147,7 @@ klasse TypeTests(unittest.TestCase):
         STATIC = type(1)
         self.assertEqual(get_token(STATIC), 0)
         found = get_base_by_token(STATIC, tokenA1)
-        self.assertIs(found, None)
+        self.assertIs(found, Nichts)
 
         # no token in pure subtypes
         klasse A2(A1): pass
@@ -165,7 +165,7 @@ klasse TypeTests(unittest.TestCase):
 
         # share the token with A1
         C1 = create_type('_testcapi.C1', tokenA1)
-        self.assertTrue(get_token(C1) == tokenA1)
+        self.assertWahr(get_token(C1) == tokenA1)
 
         # find C1 first by shared token
         klasse Z(C1, A2): pass
@@ -173,11 +173,11 @@ klasse TypeTests(unittest.TestCase):
         self.assertIs(found, C1)
         # B1 not found
         found = get_base_by_token(Z, get_token(B1))
-        self.assertIs(found, None)
+        self.assertIs(found, Nichts)
 
         with self.assertRaises(TypeError):
             _testcapi.pytype_getbasebytoken(
-                'not a type', id(self), True, False)
+                'not a type', id(self), Wahr, Falsch)
 
     def test_get_module_by_def(self):
         heaptype = _testcapi.create_type_with_token('_testcapi.H', 0)

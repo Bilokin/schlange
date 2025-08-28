@@ -46,7 +46,7 @@ klasse IOBindingTest(unittest.TestCase):
         text = io.editwin.text
 
         # Make the editor temporarily look like Shell.
-        self.editwin.interp = None
+        self.editwin.interp = Nichts
         shelltext = '>>> wenn 1'
         self.editwin.get_prompt_text = Func(result=shelltext)
         eq(fix(), shelltext)  # Get... call and '\n' not added.
@@ -69,15 +69,15 @@ klasse FiletypesTest(unittest.TestCase):
     def test_python_source_files(self):
         fuer extension in util.py_extensions:
             with self.subTest(extension=extension):
-                self.assertTrue(
+                self.assertWahr(
                     _extension_in_filetypes(extension)
                 )
 
     def test_text_files(self):
-        self.assertTrue(_extension_in_filetypes('.txt'))
+        self.assertWahr(_extension_in_filetypes('.txt'))
 
     def test_all_files(self):
-        self.assertTrue(_extension_in_filetypes(''))
+        self.assertWahr(_extension_in_filetypes(''))
 
 
 wenn __name__ == '__main__':

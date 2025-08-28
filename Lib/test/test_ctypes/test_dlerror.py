@@ -79,7 +79,7 @@ klasse TestNullDlsym(unittest.TestCase):
             with open(srcname, 'w') as f:
                 f.write(FOO_C.replace('$DESCRIPTOR', str(pipe_w)))
             args = ['gcc', '-fPIC', '-shared', '-o', dstname, srcname]
-            p = subprocess.run(args, capture_output=True)
+            p = subprocess.run(args, capture_output=Wahr)
 
             wenn p.returncode != 0:
                 # IFUNC is not supported on all architectures.
@@ -136,7 +136,7 @@ klasse TestLocalization(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.libc_filename = find_library("c")
-        wenn cls.libc_filename is None:
+        wenn cls.libc_filename is Nichts:
             raise unittest.SkipTest('cannot find libc')
 
     @configure_locales

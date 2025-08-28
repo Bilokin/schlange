@@ -19,7 +19,7 @@ klasse PackageMetadata(Protocol):
 
     @overload
     def get(
-        self, name: str, failobj: None = None
+        self, name: str, failobj: Nichts = Nichts
     ) -> Optional[str]: ...  # pragma: no cover
 
     @overload
@@ -28,7 +28,7 @@ klasse PackageMetadata(Protocol):
     # overload per python/importlib_metadata#435
     @overload
     def get_all(
-        self, name: str, failobj: None = None
+        self, name: str, failobj: Nichts = Nichts
     ) -> Optional[List[Any]]: ...  # pragma: no cover
 
     @overload
@@ -60,7 +60,7 @@ klasse SimplePath(Protocol):
     @property
     def parent(self) -> SimplePath: ...  # pragma: no cover
 
-    def read_text(self, encoding=None) -> str: ...  # pragma: no cover
+    def read_text(self, encoding=Nichts) -> str: ...  # pragma: no cover
 
     def read_bytes(self) -> bytes: ...  # pragma: no cover
 

@@ -5,7 +5,7 @@ from test.test_json import PyTest, CTest
 klasse TestSeparators:
     def test_separators(self):
         h = [['blorpie'], ['whoops'], [], 'd-shtaeou', 'd-nthiouh', 'i-vhbjkhnth',
-             {'nifty': 87}, {'field': 'yes', 'morefield': False} ]
+             {'nifty': 87}, {'field': 'yes', 'morefield': Falsch} ]
 
         expect = textwrap.dedent("""\
         [
@@ -30,7 +30,7 @@ klasse TestSeparators:
 
 
         d1 = self.dumps(h)
-        d2 = self.dumps(h, indent=2, sort_keys=True, separators=(' ,', ' : '))
+        d2 = self.dumps(h, indent=2, sort_keys=Wahr, separators=(' ,', ' : '))
 
         h1 = self.loads(d1)
         h2 = self.loads(d2)

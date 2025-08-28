@@ -276,7 +276,7 @@ def dirname(p, /):
 try:
     from nt import _getvolumepathname
 except ImportError:
-    _getvolumepathname = None
+    _getvolumepathname = Nichts
 def ismount(path):
     """Test whether a path is a mount point (a drive root, the root of a
     share, or a mounted volume)"""
@@ -287,14 +287,14 @@ def ismount(path):
     wenn drive and drive[0] in seps:
         return not rest
     wenn root and not rest:
-        return True
+        return Wahr
 
     wenn _getvolumepathname:
         x = path.rstrip(seps)
         y =_getvolumepathname(path).rstrip(seps)
         return x.casefold() == y.casefold()
     sonst:
-        return False
+        return Falsch
 
 
 _reserved_chars = frozenset(
@@ -324,10 +324,10 @@ def _isreservedname(name):
     # ASCII control characters (0-31) are reserved.
     # Colon is reserved fuer file streams (e.g. "name:stream[:type]").
     wenn _reserved_chars.intersection(name):
-        return True
+        return Wahr
     # DOS device names are reserved (e.g. "nul" or "nul .txt"). The rules
     # are complex and vary across Windows versions. On the side of
-    # caution, return True fuer names that may not be reserved.
+    # caution, return Wahr fuer names that may not be reserved.
     return name.partition('.')[0].rstrip(' ').upper() in _reserved_names
 
 
@@ -415,7 +415,7 @@ def expandvars(path):
         brace = b'{'
         rbrace = b'}'
         dollar = b'$'
-        environ = getattr(os, 'environb', None)
+        environ = getattr(os, 'environb', Nichts)
     sonst:
         wenn '$' not in path and '%' not in path:
             return path
@@ -456,7 +456,7 @@ def expandvars(path):
                 sonst:
                     var = path[:index]
                     try:
-                        wenn environ is None:
+                        wenn environ is Nichts:
                             value = os.fsencode(os.environ[os.fsdecode(var)])
                         sonst:
                             value = environ[var]
@@ -478,7 +478,7 @@ def expandvars(path):
                 sonst:
                     var = path[:index]
                     try:
-                        wenn environ is None:
+                        wenn environ is Nichts:
                             value = os.fsencode(os.environ[os.fsdecode(var)])
                         sonst:
                             value = environ[var]
@@ -494,7 +494,7 @@ def expandvars(path):
                     index += 1
                     c = path[index:index + 1]
                 try:
-                    wenn environ is None:
+                    wenn environ is Nichts:
                         value = os.fsencode(os.environ[os.fsdecode(var)])
                     sonst:
                         value = environ[var]
@@ -601,7 +601,7 @@ try:
     from nt import _findfirstfile, _getfinalpathname, readlink as _nt_readlink
 except ImportError:
     # realpath is a no-op on systems without _getfinalpathname support.
-    def realpath(path, /, *, strict=False):
+    def realpath(path, /, *, strict=Falsch):
         return abspath(path)
 sonst:
     def _readlink_deep(path, ignored_error=OSError):
@@ -702,7 +702,7 @@ sonst:
                 tail = join(name, tail) wenn tail sonst name
         return tail
 
-    def realpath(path, /, *, strict=False):
+    def realpath(path, /, *, strict=Falsch):
         path = normpath(path)
         wenn isinstance(path, bytes):
             prefix = b'\\\\?\\'
@@ -744,7 +744,7 @@ sonst:
             # Non-strict mode returns the path as-is, since we've already
             # made it absolute.
             wenn strict:
-                raise OSError(str(ex)) from None
+                raise OSError(str(ex)) from Nichts
             path = normpath(path)
         except ignored_error as ex:
             wenn strict is ALL_BUT_LAST:
@@ -783,9 +783,9 @@ sonst:
 
 
 # All supported version have Unicode filename support.
-supports_unicode_filenames = True
+supports_unicode_filenames = Wahr
 
-def relpath(path, start=None):
+def relpath(path, start=Nichts):
     """Return a relative version of a path"""
     path = os.fspath(path)
     wenn not path:
@@ -800,7 +800,7 @@ def relpath(path, start=None):
         curdir = '.'
         pardir = '..'
 
-    wenn start is None:
+    wenn start is Nichts:
         start = curdir
     sonst:
         start = os.fspath(start)
@@ -915,7 +915,7 @@ try:
         try:
             return _path_isdevdrive(abspath(path))
         except OSError:
-            return False
+            return Falsch
 except ImportError:
     # Use genericpath.isdevdrive as imported above
     pass

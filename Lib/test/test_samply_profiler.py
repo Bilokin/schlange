@@ -14,7 +14,7 @@ from test.support.os_helper import temp_dir
 wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
-wenn support.check_sanitizer(address=True, memory=True, ub=True, function=True):
+wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
     # gh-109580: Skip the test because it does crash randomly wenn Python is
     # built with ASAN.
     raise unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
@@ -23,7 +23,7 @@ wenn support.check_sanitizer(address=True, memory=True, ub=True, function=True):
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
     wenn not perf_trampoline:
-        return False
+        return Falsch
     return int(perf_trampoline) == 1
 
 
@@ -35,7 +35,7 @@ def samply_command_works():
     try:
         cmd = ["samply", "--help"]
     except (subprocess.SubprocessError, OSError):
-        return False
+        return Falsch
 
     # Check that we can run a simple samply run
     with temp_dir() as script_dir:
@@ -53,15 +53,15 @@ def samply_command_works():
             )
             env = {**os.environ, "PYTHON_JIT": "0"}
             stdout = subprocess.check_output(
-                cmd, cwd=script_dir, text=True, stderr=subprocess.STDOUT, env=env
+                cmd, cwd=script_dir, text=Wahr, stderr=subprocess.STDOUT, env=env
             )
         except (subprocess.SubprocessError, OSError):
-            return False
+            return Falsch
 
         wenn "hello" not in stdout:
-            return False
+            return Falsch
 
-    return True
+    return Wahr
 
 
 def run_samply(cwd, *args, **env_vars):
@@ -137,7 +137,7 @@ klasse TestSamplyProfilerMixin:
                 """
             script = make_script(script_dir, "perftest", code)
             output = self.run_samply(
-                script_dir, script, activate_trampoline=False
+                script_dir, script, activate_trampoline=Falsch
             )
 
             self.assertNotIn(f"py::foo:{script}", output)
@@ -147,7 +147,7 @@ klasse TestSamplyProfilerMixin:
 
 @unittest.skipUnless(samply_command_works(), "samply command doesn't work")
 klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
-    def run_samply(self, script_dir, script, activate_trampoline=True):
+    def run_samply(self, script_dir, script, activate_trampoline=Wahr):
         wenn activate_trampoline:
             return run_samply(script_dir, sys.executable, "-Xperf", script)
         return run_samply(script_dir, sys.executable, script)
@@ -156,7 +156,7 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
         super().setUp()
         self.perf_files = set(pathlib.Path("/tmp/").glob("perf-*.map"))
 
-    def tearDown(self) -> None:
+    def tearDown(self) -> Nichts:
         super().tearDown()
         files_to_delete = (
             set(pathlib.Path("/tmp/").glob("perf-*.map")) - self.perf_files
@@ -207,7 +207,7 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
             env = {**os.environ, "PYTHON_JIT": "0"}
             with subprocess.Popen(
                 [sys.executable, "-Xperf", script],
-                universal_newlines=True,
+                universal_newlines=Wahr,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 env=env,
@@ -219,8 +219,8 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
         child_pid = int(stdout.strip())
         perf_file = pathlib.Path(f"/tmp/perf-{process.pid}.map")
         perf_child_file = pathlib.Path(f"/tmp/perf-{child_pid}.map")
-        self.assertTrue(perf_file.exists())
-        self.assertTrue(perf_child_file.exists())
+        self.assertWahr(perf_file.exists())
+        self.assertWahr(perf_child_file.exists())
 
         perf_file_contents = perf_file.read_text()
         self.assertIn(f"py::foo:{script}", perf_file_contents)

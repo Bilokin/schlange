@@ -54,7 +54,7 @@ def application_uri(environ):
     url += quote(environ.get('SCRIPT_NAME') or '/', encoding='latin1')
     return url
 
-def request_uri(environ, include_query=True):
+def request_uri(environ, include_query=Wahr):
     """Return the full request URI, optionally including the query string"""
     url = application_uri(environ)
     from urllib.parse import quote
@@ -70,7 +70,7 @@ def request_uri(environ, include_query=True):
 def shift_path_info(environ):
     """Shift a name from PATH_INFO to SCRIPT_NAME, returning it
 
-    If there are no remaining path segments in PATH_INFO, return None.
+    If there are no remaining path segments in PATH_INFO, return Nichts.
     Note: 'environ' is modified in-place; use a copy wenn you need to keep
     the original PATH_INFO or SCRIPT_NAME.
 
@@ -82,7 +82,7 @@ def shift_path_info(environ):
     """
     path_info = environ.get('PATH_INFO','')
     wenn not path_info:
-        return None
+        return Nichts
 
     path_parts = path_info.split('/')
     path_parts[1:-1] = [p fuer p in path_parts[1:-1] wenn p and p != '.']
@@ -105,7 +105,7 @@ def shift_path_info(environ):
     # above, we fix it here so that PATH_INFO gets normalized to
     # an empty string in the environ.
     wenn name=='.':
-        name = None
+        name = Nichts
     return name
 
 def setup_testing_defaults(environ):

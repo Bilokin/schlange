@@ -17,7 +17,7 @@ except ImportError:
     try:
         import curses as _curses
     except ImportError:
-        _curses = None
+        _curses = Nichts
 
 from _pyrepl import terminfo
 
@@ -35,7 +35,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        wenn _curses is None:
+        wenn _curses is Nichts:
             raise unittest.SkipTest(
                 "`curses` capability provided to regrtest but `_curses` not importable"
             )
@@ -48,10 +48,10 @@ klasse TestCursesCompatibility(unittest.TestCase):
         cls.infocmp("dumb")
 
     def setUp(self):
-        self.original_term = os.environ.get("TERM", None)
+        self.original_term = os.environ.get("TERM", Nichts)
 
     def tearDown(self):
-        wenn self.original_term is not None:
+        wenn self.original_term is not Nichts:
             os.environ["TERM"] = self.original_term
         sowenn "TERM" in os.environ:
             del os.environ["TERM"]
@@ -62,9 +62,9 @@ klasse TestCursesCompatibility(unittest.TestCase):
         try:
             result = subprocess.run(
                 ["infocmp", "-l1", term],
-                capture_output=True,
-                text=True,
-                check=True,
+                capture_output=Wahr,
+                text=Wahr,
+                check=Wahr,
             )
         except Exception:
             raise unittest.SkipTest("calling `infocmp` failed on the system")
@@ -97,31 +97,31 @@ klasse TestCursesCompatibility(unittest.TestCase):
                     import json
                     try:
                         _curses.setupterm({repr(term)}, 1)
-                        print(json.dumps({{"success": True}}))
+                        print(json.dumps({{"success": Wahr}}))
                     except Exception as e:
-                        print(json.dumps({{"success": False, "error": str(e)}}))
+                        print(json.dumps({{"success": Falsch, "error": str(e)}}))
                     """
                 )
 
                 result = subprocess.run(
                     [sys.executable, "-c", ncurses_code],
-                    capture_output=True,
-                    text=True,
+                    capture_output=Wahr,
+                    text=Wahr,
                 )
                 ncurses_data = json.loads(result.stdout)
                 std_success = ncurses_data["success"]
 
                 # Set up with PyREPL curses
                 try:
-                    terminfo.TermInfo(term, fallback=False)
-                    pyrepl_success = True
+                    terminfo.TermInfo(term, fallback=Falsch)
+                    pyrepl_success = Wahr
                 except Exception as e:
-                    pyrepl_success = False
+                    pyrepl_success = Falsch
                     pyrepl_error = e
 
                 # Both should succeed or both should fail
                 wenn std_success:
-                    self.assertTrue(
+                    self.assertWahr(
                         pyrepl_success,
                         f"Standard curses succeeded but PyREPL failed fuer {term}",
                     )
@@ -131,39 +131,39 @@ klasse TestCursesCompatibility(unittest.TestCase):
                     pass
 
     def test_setupterm_none(self):
-        """Test setupterm with None (uses TERM from environment)."""
+        """Test setupterm with Nichts (uses TERM from environment)."""
         # Test with current TERM
         ncurses_code = dedent(
             """
             import _curses
             import json
             try:
-                _curses.setupterm(None, 1)
-                print(json.dumps({"success": True}))
+                _curses.setupterm(Nichts, 1)
+                print(json.dumps({"success": Wahr}))
             except Exception as e:
-                print(json.dumps({"success": False, "error": str(e)}))
+                print(json.dumps({"success": Falsch, "error": str(e)}))
             """
         )
 
         result = subprocess.run(
             [sys.executable, "-c", ncurses_code],
-            capture_output=True,
-            text=True,
+            capture_output=Wahr,
+            text=Wahr,
         )
         ncurses_data = json.loads(result.stdout)
         std_success = ncurses_data["success"]
 
         try:
-            terminfo.TermInfo(None, fallback=False)
-            pyrepl_success = True
+            terminfo.TermInfo(Nichts, fallback=Falsch)
+            pyrepl_success = Wahr
         except Exception:
-            pyrepl_success = False
+            pyrepl_success = Falsch
 
         # Both should have same result
         wenn std_success:
-            self.assertTrue(
+            self.assertWahr(
                 pyrepl_success,
-                "Standard curses succeeded but PyREPL failed fuer None",
+                "Standard curses succeeded but PyREPL failed fuer Nichts",
             )
 
     def test_tigetstr_common_capabilities(self):
@@ -183,8 +183,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
             fuer cap in {repr(all_caps)}:
                 try:
                     val = _curses.tigetstr(cap)
-                    wenn val is None:
-                        results[cap] = None
+                    wenn val is Nichts:
+                        results[cap] = Nichts
                     sowenn val == -1:
                         results[cap] = -1
                     sonst:
@@ -197,8 +197,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         result = subprocess.run(
             [sys.executable, "-c", ncurses_code],
-            capture_output=True,
-            text=True,
+            capture_output=Wahr,
+            text=Wahr,
         )
         self.assertEqual(
             result.returncode, 0, f"Failed to run ncurses: {result.stderr}"
@@ -206,7 +206,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         ncurses_data = json.loads(result.stdout)
 
-        ti = terminfo.TermInfo(term, fallback=False)
+        ti = terminfo.TermInfo(term, fallback=Falsch)
 
         # Test every single capability
         fuer cap in all_caps:
@@ -242,16 +242,16 @@ klasse TestCursesCompatibility(unittest.TestCase):
             # Test with string input
             try:
                 std_str_result = _curses.tigetstr({repr(cap)})
-                std_accepts_str = True
-                wenn std_str_result is None:
-                    std_str_val = None
+                std_accepts_str = Wahr
+                wenn std_str_result is Nichts:
+                    std_str_val = Nichts
                 sowenn std_str_result == -1:
                     std_str_val = -1
                 sonst:
                     std_str_val = list(std_str_result)
             except TypeError:
-                std_accepts_str = False
-                std_str_val = None
+                std_accepts_str = Falsch
+                std_str_val = Nichts
 
             print(json.dumps({{
                 "accepts_str": std_accepts_str,
@@ -262,20 +262,20 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         result = subprocess.run(
             [sys.executable, "-c", ncurses_code],
-            capture_output=True,
-            text=True,
+            capture_output=Wahr,
+            text=Wahr,
         )
         ncurses_data = json.loads(result.stdout)
 
         # PyREPL setup
-        ti = terminfo.TermInfo(term, fallback=False)
+        ti = terminfo.TermInfo(term, fallback=Falsch)
 
         # PyREPL behavior with string
         try:
             pyrepl_str_result = ti.get(cap)
-            pyrepl_accepts_str = True
+            pyrepl_accepts_str = Wahr
         except TypeError:
-            pyrepl_accepts_str = False
+            pyrepl_accepts_str = Falsch
 
         # PyREPL should also only accept strings fuer compatibility
         with self.assertRaises(TypeError):
@@ -287,14 +287,14 @@ klasse TestCursesCompatibility(unittest.TestCase):
             ncurses_data["accepts_str"],
             "PyREPL and standard curses should have same string handling",
         )
-        self.assertTrue(
+        self.assertWahr(
             pyrepl_accepts_str, "PyREPL should accept string input"
         )
 
     def test_tparm_basic(self):
         """Test basic tparm functionality."""
         term = "xterm"
-        ti = terminfo.TermInfo(term, fallback=False)
+        ti = terminfo.TermInfo(term, fallback=Falsch)
 
         # Test cursor positioning (cup)
         cup = ti.get("cup")
@@ -331,8 +331,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
             result = subprocess.run(
                 [sys.executable, "-c", ncurses_code],
-                capture_output=True,
-                text=True,
+                capture_output=Wahr,
+                text=Wahr,
             )
             self.assertEqual(
                 result.returncode, 0, f"Failed to run ncurses: {result.stderr}"
@@ -370,7 +370,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
     def test_tparm_multiple_params(self):
         """Test tparm with capabilities using multiple parameters."""
         term = "xterm"
-        ti = terminfo.TermInfo(term, fallback=False)
+        ti = terminfo.TermInfo(term, fallback=Falsch)
 
         # Test capabilities that take parameters
         param_caps = {
@@ -422,8 +422,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         result = subprocess.run(
             [sys.executable, "-c", ncurses_code],
-            capture_output=True,
-            text=True,
+            capture_output=Wahr,
+            text=Wahr,
         )
         self.assertEqual(
             result.returncode, 0, f"Failed to run ncurses: {result.stderr}"
@@ -454,7 +454,7 @@ klasse TestCursesCompatibility(unittest.TestCase):
                         )
 
     def test_tparm_null_handling(self):
-        """Test tparm with None/null input."""
+        """Test tparm with Nichts/null input."""
         term = "xterm"
 
         ncurses_code = dedent(
@@ -463,14 +463,14 @@ klasse TestCursesCompatibility(unittest.TestCase):
             import json
             _curses.setupterm({repr(term)}, 1)
 
-            # Test with None
+            # Test with Nichts
             try:
-                _curses.tparm(None)
-                raises_typeerror = False
+                _curses.tparm(Nichts)
+                raises_typeerror = Falsch
             except TypeError:
-                raises_typeerror = True
+                raises_typeerror = Wahr
             except Exception as e:
-                raises_typeerror = False
+                raises_typeerror = Falsch
                 error_type = type(e).__name__
 
             print(json.dumps({{"raises_typeerror": raises_typeerror}}))
@@ -479,22 +479,22 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         result = subprocess.run(
             [sys.executable, "-c", ncurses_code],
-            capture_output=True,
-            text=True,
+            capture_output=Wahr,
+            text=Wahr,
         )
         ncurses_data = json.loads(result.stdout)
 
         # PyREPL setup
-        ti = terminfo.TermInfo(term, fallback=False)
+        ti = terminfo.TermInfo(term, fallback=Falsch)
 
-        # Test with None - both should raise TypeError
+        # Test with Nichts - both should raise TypeError
         wenn ncurses_data["raises_typeerror"]:
             with self.assertRaises(TypeError):
-                terminfo.tparm(None)
+                terminfo.tparm(Nichts)
         sonst:
             # If ncurses doesn't raise TypeError, PyREPL shouldn't either
             try:
-                terminfo.tparm(None)
+                terminfo.tparm(Nichts)
             except TypeError:
                 self.fail("PyREPL raised TypeError but ncurses did not")
 
@@ -524,8 +524,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
                         fuer cap in {repr(all_caps)}:
                             try:
                                 val = _curses.tigetstr(cap)
-                                wenn val is None:
-                                    results[cap] = None
+                                wenn val is Nichts:
+                                    results[cap] = Nichts
                                 sowenn val == -1:
                                     results[cap] = -1
                                 sonst:
@@ -542,8 +542,8 @@ klasse TestCursesCompatibility(unittest.TestCase):
                 # Get ncurses results
                 result = subprocess.run(
                     [sys.executable, "-c", ncurses_code],
-                    capture_output=True,
-                    text=True,
+                    capture_output=Wahr,
+                    text=Wahr,
                 )
                 wenn result.returncode != 0:
                     self.fail(
@@ -560,10 +560,10 @@ klasse TestCursesCompatibility(unittest.TestCase):
                 wenn "error" in ncurses_data and len(ncurses_data) == 1:
                     # ncurses failed to setup this terminal
                     # PyREPL should still work with fallback
-                    ti = terminfo.TermInfo(term, fallback=True)
+                    ti = terminfo.TermInfo(term, fallback=Wahr)
                     continue
 
-                ti = terminfo.TermInfo(term, fallback=False)
+                ti = terminfo.TermInfo(term, fallback=Falsch)
 
                 # Compare all capabilities
                 fuer cap in all_caps:
@@ -599,18 +599,18 @@ klasse TestCursesCompatibility(unittest.TestCase):
             import json
             try:
                 _curses.setupterm({repr(fake_term)}, 1)
-                print(json.dumps({{"success": True}}))
+                print(json.dumps({{"success": Wahr}}))
             except _curses.error:
-                print(json.dumps({{"success": False, "error": "curses.error"}}))
+                print(json.dumps({{"success": Falsch, "error": "curses.error"}}))
             except Exception as e:
-                print(json.dumps({{"success": False, "error": str(e)}}))
+                print(json.dumps({{"success": Falsch, "error": str(e)}}))
             """
         )
 
         result = subprocess.run(
             [sys.executable, "-c", ncurses_code],
-            capture_output=True,
-            text=True,
+            capture_output=Wahr,
+            text=Wahr,
         )
         ncurses_data = json.loads(result.stdout)
 
@@ -622,18 +622,18 @@ klasse TestCursesCompatibility(unittest.TestCase):
 
         # PyREPL should succeed with fallback
         try:
-            ti = terminfo.TermInfo(fake_term, fallback=True)
-            pyrepl_ok = True
+            ti = terminfo.TermInfo(fake_term, fallback=Wahr)
+            pyrepl_ok = Wahr
         except Exception:
-            pyrepl_ok = False
+            pyrepl_ok = Falsch
 
-        self.assertTrue(
+        self.assertWahr(
             pyrepl_ok, "PyREPL should fall back fuer unknown terminals"
         )
 
         # Should still be able to get basic capabilities
         bel = ti.get("bel")
-        self.assertIsNotNone(
+        self.assertIsNotNichts(
             bel, "PyREPL should provide basic capabilities after fallback"
         )
 

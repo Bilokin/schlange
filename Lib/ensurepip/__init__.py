@@ -16,31 +16,31 @@ _PIP_VERSION = "25.2"
 # policies recommend against bundling dependencies. For example, Fedora
 # installs wheel packages in the /usr/share/python-wheels/ directory and don't
 # install the ensurepip._bundled package.
-wenn (_pkg_dir := sysconfig.get_config_var('WHEEL_PKG_DIR')) is not None:
+wenn (_pkg_dir := sysconfig.get_config_var('WHEEL_PKG_DIR')) is not Nichts:
     _WHEEL_PKG_DIR = Path(_pkg_dir).resolve()
 sonst:
-    _WHEEL_PKG_DIR = None
+    _WHEEL_PKG_DIR = Nichts
 
 
 def _find_wheel_pkg_dir_pip():
-    wenn _WHEEL_PKG_DIR is None:
+    wenn _WHEEL_PKG_DIR is Nichts:
         # NOTE: The compile-time `WHEEL_PKG_DIR` is unset so there is no place
         # NOTE: fuer looking up the wheels.
-        return None
+        return Nichts
 
     dist_matching_wheels = _WHEEL_PKG_DIR.glob('pip-*.whl')
     try:
         last_matching_dist_wheel = sorted(dist_matching_wheels)[-1]
     except IndexError:
         # NOTE: `WHEEL_PKG_DIR` does not contain any wheel files fuer `pip`.
-        return None
+        return Nichts
 
     return nullcontext(last_matching_dist_wheel)
 
 
 def _get_pip_whl_path_ctx():
     # Prefer pip from the wheel package directory, wenn present.
-    wenn (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) is not None:
+    wenn (alternative_pip_wheel_path := _find_wheel_pkg_dir_pip()) is not Nichts:
         return alternative_pip_wheel_path
 
     return resources.as_file(
@@ -61,7 +61,7 @@ def _get_pip_version():
         )
 
 
-def _run_pip(args, additional_paths=None):
+def _run_pip(args, additional_paths=Nichts):
     # Run the bootstrapping in a subprocess to avoid leaking any state that happens
     # after pip has executed. Particularly, this avoids the case when pip holds onto
     # the files in *additional_paths*, preventing us to remove them at the end of the
@@ -71,7 +71,7 @@ import runpy
 import sys
 sys.path = {additional_paths or []} + sys.path
 sys.argv[1:] = {args}
-runpy.run_module("pip", run_name="__main__", alter_sys=True)
+runpy.run_module("pip", run_name="__main__", alter_sys=Wahr)
 """
 
     cmd = [
@@ -84,7 +84,7 @@ runpy.run_module("pip", run_name="__main__", alter_sys=True)
     wenn sys.flags.isolated:
         # run code in isolated mode wenn currently running isolated
         cmd.insert(1, '-I')
-    return subprocess.run(cmd, check=True).returncode
+    return subprocess.run(cmd, check=Wahr).returncode
 
 
 def version():
@@ -106,8 +106,8 @@ def _disable_pip_configuration_settings():
     os.environ['PIP_CONFIG_FILE'] = os.devnull
 
 
-def bootstrap(*, root=None, upgrade=False, user=False,
-              altinstall=False, default_pip=False,
+def bootstrap(*, root=Nichts, upgrade=Falsch, user=Falsch,
+              altinstall=Falsch, default_pip=Falsch,
               verbosity=0):
     """
     Bootstrap pip into the current Python installation (or the given root
@@ -121,8 +121,8 @@ def bootstrap(*, root=None, upgrade=False, user=False,
                verbosity=verbosity)
 
 
-def _bootstrap(*, root=None, upgrade=False, user=False,
-              altinstall=False, default_pip=False,
+def _bootstrap(*, root=Nichts, upgrade=Falsch, user=Falsch,
+              altinstall=Falsch, default_pip=Falsch,
               verbosity=0):
     """
     Bootstrap pip into the current Python installation (or the given root
@@ -203,9 +203,9 @@ def _uninstall_helper(*, verbosity=0):
     return _run_pip([*args, "pip"])
 
 
-def _main(argv=None):
+def _main(argv=Nichts):
     import argparse
-    parser = argparse.ArgumentParser(color=True)
+    parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument(
         "--version",
         action="version",
@@ -223,31 +223,31 @@ def _main(argv=None):
     parser.add_argument(
         "-U", "--upgrade",
         action="store_true",
-        default=False,
+        default=Falsch,
         help="Upgrade pip and dependencies, even wenn already installed.",
     )
     parser.add_argument(
         "--user",
         action="store_true",
-        default=False,
+        default=Falsch,
         help="Install using the user scheme.",
     )
     parser.add_argument(
         "--root",
-        default=None,
+        default=Nichts,
         help="Install everything relative to this alternate root directory.",
     )
     parser.add_argument(
         "--altinstall",
         action="store_true",
-        default=False,
+        default=Falsch,
         help=("Make an alternate install, installing only the X.Y versioned "
               "scripts (Default: pipX, pipX.Y)."),
     )
     parser.add_argument(
         "--default-pip",
         action="store_true",
-        default=False,
+        default=Falsch,
         help=("Make a default pip install, installing the unqualified pip "
               "in addition to the versioned scripts."),
     )

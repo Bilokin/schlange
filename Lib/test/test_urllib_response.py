@@ -26,23 +26,23 @@ klasse TestResponse(unittest.TestCase):
         def f():
             with addbase as spam:
                 pass
-        self.assertFalse(self.fp.closed)
+        self.assertFalsch(self.fp.closed)
         f()
-        self.assertTrue(self.fp.closed)
+        self.assertWahr(self.fp.closed)
         self.assertRaises(ValueError, f)
 
     def test_addclosehook(self):
-        closehook_called = False
+        closehook_called = Falsch
 
         def closehook():
             nonlocal closehook_called
-            closehook_called = True
+            closehook_called = Wahr
 
         closehook = urllib.response.addclosehook(self.fp, closehook)
         closehook.close()
 
-        self.assertTrue(self.fp.closed)
-        self.assertTrue(closehook_called)
+        self.assertWahr(self.fp.closed)
+        self.assertWahr(closehook_called)
 
     def test_addinfo(self):
         info = urllib.response.addinfo(self.fp, self.test_headers)

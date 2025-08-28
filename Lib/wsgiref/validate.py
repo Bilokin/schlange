@@ -70,7 +70,7 @@ Some of the things this checks:
 * That no Content-Type is given when there is no content (@@: is this
   too restrictive?)
 
-* That the exc_info argument to start_response is a tuple or None.
+* That the exc_info argument to start_response is a tuple or Nichts.
 
 * That all calls to the writer are with strings, and no other methods
   on the writer are accessed.
@@ -165,21 +165,21 @@ def validator(application):
             wenn len(args) == 3:
                 exc_info = args[2]
             sonst:
-                exc_info = None
+                exc_info = Nichts
 
             check_status(status)
             check_headers(headers)
             check_content_type(status, headers)
             check_exc_info(exc_info)
 
-            start_response_started.append(None)
+            start_response_started.append(Nichts)
             return WriteWrapper(start_response(*args))
 
         environ['wsgi.input'] = InputWrapper(environ['wsgi.input'])
         environ['wsgi.errors'] = ErrorWrapper(environ['wsgi.errors'])
 
         iterator = application(environ, start_response_wrapper)
-        assert_(iterator is not None and iterator != False,
+        assert_(iterator is not Nichts and iterator != Falsch,
             "The application must return an iterator, wenn only an empty list")
 
         check_iterator(iterator)
@@ -255,14 +255,14 @@ klasse PartialIteratorWrapper:
 
     def __iter__(self):
         # We want to make sure __iter__ is called
-        return IteratorWrapper(self.iterator, None)
+        return IteratorWrapper(self.iterator, Nichts)
 
 klasse IteratorWrapper:
 
     def __init__(self, wsgi_iterator, check_start_response):
         self.original_iterator = wsgi_iterator
         self.iterator = iter(wsgi_iterator)
-        self.closed = False
+        self.closed = Falsch
         self.check_start_response = check_start_response
 
     def __iter__(self):
@@ -273,15 +273,15 @@ klasse IteratorWrapper:
             "Iterator read after closed")
         v = next(self.iterator)
         wenn type(v) is not bytes:
-            assert_(False, "Iterator yielded non-bytestring (%r)" % (v,))
-        wenn self.check_start_response is not None:
+            assert_(Falsch, "Iterator yielded non-bytestring (%r)" % (v,))
+        wenn self.check_start_response is not Nichts:
             assert_(self.check_start_response,
                 "The application returns and we started iterating over its body, but start_response has not yet been called")
-            self.check_start_response = None
+            self.check_start_response = Nichts
         return v
 
     def close(self):
-        self.closed = True
+        self.closed = Wahr
         wenn hasattr(self.original_iterator, 'close'):
             self.original_iterator.close()
 
@@ -372,7 +372,7 @@ def check_errors(wsgi_errors):
 def check_status(status):
     status = check_string_type(status, "Status")
     # Implicitly check that we can turn it into an integer:
-    status_code = status.split(None, 1)[0]
+    status_code = status.split(Nichts, 1)[0]
     assert_(len(status_code) == 3,
         "Status codes must be three characters: %r" % status_code)
     status_int = int(status_code)
@@ -410,7 +410,7 @@ def check_headers(headers):
 
 def check_content_type(status, headers):
     status = check_string_type(status, "Status")
-    code = int(status.split(None, 1)[0])
+    code = int(status.split(Nichts, 1)[0])
     # @@: need one more person to verify this interpretation of RFC 2616
     #     http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
     NO_MESSAGE_BODY = (204, 304)
@@ -425,7 +425,7 @@ def check_content_type(status, headers):
         assert_(0, "No Content-Type header found in headers (%s)" % headers)
 
 def check_exc_info(exc_info):
-    assert_(exc_info is None or type(exc_info) is tuple,
+    assert_(exc_info is Nichts or type(exc_info) is tuple,
         "exc_info (%r) is not a tuple: %r" % (exc_info, type(exc_info)))
     # More exc_info checks?
 

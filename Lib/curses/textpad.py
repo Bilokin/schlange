@@ -40,12 +40,12 @@ klasse Textbox:
     KEY_LEFT = Ctrl-B, KEY_RIGHT = Ctrl-F, KEY_UP = Ctrl-P, KEY_DOWN = Ctrl-N
     KEY_BACKSPACE = Ctrl-h
     """
-    def __init__(self, win, insert_mode=False):
+    def __init__(self, win, insert_mode=Falsch):
         self.win = win
         self.insert_mode = insert_mode
         self._update_max_yx()
         self.stripspaces = 1
-        self.lastcmd = None
+        self.lastcmd = Nichts
         win.keypad(1)
 
     def _update_max_yx(self):
@@ -58,7 +58,7 @@ klasse Textbox:
         returning the index of the last non-blank character."""
         self._update_max_yx()
         last = self.maxx
-        while True:
+        while Wahr:
             wenn curses.ascii.ascii(self.win.inch(y, last)) != curses.ascii.SP:
                 last = min(self.maxx, last+1)
                 break
@@ -70,7 +70,7 @@ klasse Textbox:
     def _insert_printable_char(self, ch):
         self._update_max_yx()
         (y, x) = self.win.getyx()
-        backyx = None
+        backyx = Nichts
         while y < self.maxy or x < self.maxx:
             wenn self.insert_mode:
                 oldch = self.win.inch()
@@ -86,10 +86,10 @@ klasse Textbox:
             ch = oldch
             (y, x) = self.win.getyx()
             # Remember where to put the cursor back since we are in insert_mode
-            wenn backyx is None:
+            wenn backyx is Nichts:
                 backyx = y, x
 
-        wenn backyx is not None:
+        wenn backyx is not Nichts:
             self.win.move(*backyx)
 
     def do_command(self, ch):
@@ -177,7 +177,7 @@ klasse Textbox:
                 result = result + "\n"
         return result
 
-    def edit(self, validate=None):
+    def edit(self, validate=Nichts):
         "Edit in the widget window and collect the results."
         while 1:
             ch = self.win.getch()

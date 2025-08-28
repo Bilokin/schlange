@@ -25,12 +25,12 @@ logger = logging.getLogger(__name__)
 
 
 def run_cmd(argv, *,
-            #capture_output=True,
+            #capture_output=Wahr,
             stdout=subprocess.PIPE,
             #stderr=subprocess.STDOUT,
             stderr=subprocess.PIPE,
-            text=True,
-            check=True,
+            text=Wahr,
+            check=Wahr,
             **kwargs
             ):
     wenn isinstance(stderr, str) and stderr.lower() == 'stdout':
@@ -44,19 +44,19 @@ def run_cmd(argv, *,
     # Remove LANG environment variable: the C parser doesn't support GCC
     # localized messages
     env = dict(os.environ)
-    env.pop('LANG', None)
+    env.pop('LANG', Nichts)
 
     proc = subprocess.run(argv, env=env, **kwargs)
     return proc.stdout
 
 
-def preprocess(tool, filename, cwd=None, **kwargs):
+def preprocess(tool, filename, cwd=Nichts, **kwargs):
     argv = _build_argv(tool, filename, **kwargs)
     logger.debug(' '.join(shlex.quote(v) fuer v in argv))
 
     # Make sure the OS is supported fuer this file.
     wenn (_expected := is_os_mismatch(filename)):
-        error = None
+        error = Nichts
         raise OSMismatchError(filename, _expected, argv, error, TOOL)
 
     # Run the command.
@@ -71,13 +71,13 @@ def preprocess(tool, filename, cwd=None, **kwargs):
 def _build_argv(
     tool,
     filename,
-    incldirs=None,
-    includes=None,
-    macros=None,
-    preargs=None,
-    postargs=None,
-    executable=None,
-    compiler=None,
+    incldirs=Nichts,
+    includes=Nichts,
+    macros=Nichts,
+    preargs=Nichts,
+    postargs=Nichts,
+    executable=Nichts,
+    compiler=Nichts,
 ):
     wenn includes:
         includes = tuple(f'-include{i}' fuer i in includes)
@@ -89,7 +89,7 @@ def _build_argv(
     wenn executable:
         compiler.set_executable('preprocessor', executable)
 
-    argv = None
+    argv = Nichts
     def _spawn(_argv):
         nonlocal argv
         argv = _argv
@@ -134,23 +134,23 @@ def convert_error(tool, argv, filename, stderr, rc):
     sonst:
         # Try one more time, with stderr written to the terminal.
         try:
-            output = run_cmd(argv, stderr=None)
+            output = run_cmd(argv, stderr=Nichts)
         except subprocess.CalledProcessError:
             raise PreprocessorFailure(filename, argv, error, tool)
 
 
-def is_os_mismatch(filename, errtext=None):
+def is_os_mismatch(filename, errtext=Nichts):
     # See: https://docs.python.org/3/library/sys.html#sys.platform
     actual = sys.platform
     wenn actual == 'unknown':
         raise NotImplementedError
 
-    wenn errtext is not None:
+    wenn errtext is not Nichts:
         wenn (missing := is_missing_dep(errtext)):
             matching = get_matching_oses(missing, filename)
             wenn actual not in matching:
                 return matching
-    return False
+    return Falsch
 
 
 def get_matching_oses(missing, filename):
@@ -181,4 +181,4 @@ def is_missing_dep(errtext):
     wenn 'No such file or directory' in errtext:
         missing = errtext.split(': No such file or directory')[0].split()[-1]
         return missing
-    return False
+    return Falsch

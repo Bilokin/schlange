@@ -13,7 +13,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         t = t"Hello, {name}"
         self.assertEqual(repr(t),
             "Template(strings=('Hello, ', ''), "
-            "interpolations=(Interpolation('Python', 'name', None, ''),))"
+            "interpolations=(Interpolation('Python', 'name', Nichts, ''),))"
         )
 
     def test_interpolation_basics(self):
@@ -84,7 +84,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         value = 3.14159
         t = t"Pi: {value:.2f}"
         self.assertTStringEqual(
-            t, ("Pi: ", ""), [(value, "value", None, ".2f")]
+            t, ("Pi: ", ""), [(value, "value", Nichts, ".2f")]
         )
         self.assertEqual(fstring(t), "Pi: 3.14")
 
@@ -123,7 +123,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         # Test debug specifier with format (conversion default to !r)
         t = t"Value: {value=:.2f}"
         self.assertTStringEqual(
-            t, ("Value: value=", ""), [(value, "value", None, ".2f")]
+            t, ("Value: value=", ""), [(value, "value", Nichts, ".2f")]
         )
         self.assertEqual(fstring(t), "Value: value=42.00")
 
@@ -190,10 +190,10 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         self.assertEqual(t_interp.value.strings, ("", ""))
         self.assertEqual(t_interp.value.interpolations[0].value, name)
         self.assertEqual(t_interp.value.interpolations[0].expression, "name")
-        self.assertEqual(t_interp.value.interpolations[0].conversion, None)
+        self.assertEqual(t_interp.value.interpolations[0].conversion, Nichts)
         self.assertEqual(t_interp.value.interpolations[0].format_spec, "")
         self.assertEqual(t_interp.expression, "inner")
-        self.assertEqual(t_interp.conversion, None)
+        self.assertEqual(t_interp.conversion, Nichts)
         self.assertEqual(t_interp.format_spec, "")
 
     def test_syntax_errors(self):

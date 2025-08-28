@@ -68,7 +68,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
     def test_copying___code__(self):
         def test(): pass
-        self.assertEqual(test(), None)
+        self.assertEqual(test(), Nichts)
         test.__code__ = self.b.__code__
         self.assertEqual(test(), 3) # self.b always returns 3, arbitrarily
 
@@ -126,7 +126,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
             def func3(s): pass
             func4 = type(func3)(func3.__code__, {})
         """)
-        safe_builtins = {'None': None}
+        safe_builtins = {'Nichts': Nichts}
         ns = {'type': type, '__builtins__': safe_builtins}
         exec(code, ns)
         self.assertIs(ns['func3'].__builtins__, safe_builtins)
@@ -267,16 +267,16 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
                       "not be possible")
 
     def test_blank_func_defaults(self):
-        self.assertEqual(self.b.__defaults__, None)
+        self.assertEqual(self.b.__defaults__, Nichts)
         del self.b.__defaults__
-        self.assertEqual(self.b.__defaults__, None)
+        self.assertEqual(self.b.__defaults__, Nichts)
 
     def test_func_default_args(self):
         def first_func(a, b):
             return a+b
         def second_func(a=1, b=2):
             return a+b
-        self.assertEqual(first_func.__defaults__, None)
+        self.assertEqual(first_func.__defaults__, Nichts)
         self.assertEqual(second_func.__defaults__, (1, 2))
         first_func.__defaults__ = (1, 2)
         self.assertEqual(first_func.__defaults__, (1, 2))
@@ -284,7 +284,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(first_func(3), 5)
         self.assertEqual(first_func(3, 5), 8)
         del second_func.__defaults__
-        self.assertEqual(second_func.__defaults__, None)
+        self.assertEqual(second_func.__defaults__, Nichts)
         try:
             second_func()
         except TypeError:
@@ -356,7 +356,7 @@ klasse ArbitraryFunctionAttrTest(FuncAttrsTest):
 
 klasse FunctionDictsTest(FuncAttrsTest):
     def test_setting_dict_to_invalid(self):
-        self.cannot_set_attr(self.b, '__dict__', None, TypeError)
+        self.cannot_set_attr(self.b, '__dict__', Nichts, TypeError)
         from collections import UserDict
         d = UserDict({'known_attr': 7})
         self.cannot_set_attr(self.fi.a.__func__, '__dict__', d, TypeError)
@@ -397,7 +397,7 @@ klasse FunctionDictsTest(FuncAttrsTest):
 
 klasse FunctionDocstringTest(FuncAttrsTest):
     def test_set_docstring_attr(self):
-        self.assertEqual(self.b.__doc__, None)
+        self.assertEqual(self.b.__doc__, Nichts)
         docstr = "A test method that does nothing"
         self.b.__doc__ = docstr
         self.F.a.__doc__ = docstr
@@ -408,7 +408,7 @@ klasse FunctionDocstringTest(FuncAttrsTest):
     def test_delete_docstring(self):
         self.b.__doc__ = "The docstring"
         del self.b.__doc__
-        self.assertEqual(self.b.__doc__, None)
+        self.assertEqual(self.b.__doc__, Nichts)
 
 
 def cell(value):
@@ -418,13 +418,13 @@ def cell(value):
     a = value
     return f.__closure__[0]
 
-def empty_cell(empty=True):
+def empty_cell(empty=Wahr):
     """Create an empty cell."""
     def f():
         print(a)
-    # the intent of the following line is simply "if False:";  it's
+    # the intent of the following line is simply "if Falsch:";  it's
     # spelt this way to avoid the danger that a future optimization
-    # might simply remove an "if False:" code block.
+    # might simply remove an "if Falsch:" code block.
     wenn not empty:
         a = 1729
     return f.__closure__[0]
@@ -436,11 +436,11 @@ klasse CellTest(unittest.TestCase):
         # their presence should not be interpreted as providing any
         # guarantees about the semantics (or even existence) of cell
         # comparisons in future versions of CPython.
-        self.assertTrue(cell(2) < cell(3))
-        self.assertTrue(empty_cell() < cell('saturday'))
-        self.assertTrue(empty_cell() == empty_cell())
-        self.assertTrue(cell(-36) == cell(-36.0))
-        self.assertTrue(cell(True) > empty_cell())
+        self.assertWahr(cell(2) < cell(3))
+        self.assertWahr(empty_cell() < cell('saturday'))
+        self.assertWahr(empty_cell() == empty_cell())
+        self.assertWahr(cell(-36) == cell(-36.0))
+        self.assertWahr(cell(Wahr) > empty_cell())
 
 
 klasse StaticMethodAttrsTest(unittest.TestCase):
@@ -449,10 +449,10 @@ klasse StaticMethodAttrsTest(unittest.TestCase):
             pass
 
         c = classmethod(f)
-        self.assertTrue(c.__func__ is f)
+        self.assertWahr(c.__func__ is f)
 
         s = staticmethod(f)
-        self.assertTrue(s.__func__ is f)
+        self.assertWahr(s.__func__ is f)
 
 
 klasse BuiltinFunctionPropertiesTest(unittest.TestCase):
@@ -494,8 +494,8 @@ klasse BuiltinFunctionPropertiesTest(unittest.TestCase):
         self.assertIs(float.__getformat__.__self__, float)
 
         # builtin staticmethod:
-        self.assertIsNone(str.maketrans.__self__)
-        self.assertIsNone(bytes.maketrans.__self__)
+        self.assertIsNichts(str.maketrans.__self__)
+        self.assertIsNichts(bytes.maketrans.__self__)
 
         # builtin bound instance method:
         l = [1, 2, 3]
@@ -504,7 +504,7 @@ klasse BuiltinFunctionPropertiesTest(unittest.TestCase):
         d = {'foo': 'bar'}
         self.assertEqual(d.pop.__self__, d)
 
-        self.assertIsNone(None.__repr__.__self__)
+        self.assertIsNichts(Nichts.__repr__.__self__)
 
 
 wenn __name__ == "__main__":

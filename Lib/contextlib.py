@@ -29,7 +29,7 @@ klasse AbstractContextManager(abc.ABC):
     @abc.abstractmethod
     def __exit__(self, exc_type, exc_value, traceback):
         """Raise any exception triggered within the runtime context."""
-        return None
+        return Nichts
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -53,7 +53,7 @@ klasse AbstractAsyncContextManager(abc.ABC):
     @abc.abstractmethod
     async def __aexit__(self, exc_type, exc_value, traceback):
         """Raise any exception triggered within the runtime context."""
-        return None
+        return Nichts
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -109,8 +109,8 @@ klasse _GeneratorContextManagerBase:
         self.gen = func(*args, **kwds)
         self.func, self.args, self.kwds = func, args, kwds
         # Issue 19330: ensure context manager instances have good docstrings
-        doc = getattr(func, "__doc__", None)
-        wenn doc is None:
+        doc = getattr(func, "__doc__", Nichts)
+        wenn doc is Nichts:
             doc = type(self).__doc__
         self.__doc__ = doc
         # Unfortunately, this still doesn't provide good help output when
@@ -140,21 +140,21 @@ klasse _GeneratorContextManager(
         try:
             return next(self.gen)
         except StopIteration:
-            raise RuntimeError("generator didn't yield") from None
+            raise RuntimeError("generator didn't yield") from Nichts
 
     def __exit__(self, typ, value, traceback):
-        wenn typ is None:
+        wenn typ is Nichts:
             try:
                 next(self.gen)
             except StopIteration:
-                return False
+                return Falsch
             sonst:
                 try:
                     raise RuntimeError("generator didn't stop")
                 finally:
                     self.gen.close()
         sonst:
-            wenn value is None:
+            wenn value is Nichts:
                 # Need to force instantiation so we can reliably
                 # tell wenn we get the same exception back
                 value = typ()
@@ -169,7 +169,7 @@ klasse _GeneratorContextManager(
                 # Don't re-raise the passed in exception. (issue27122)
                 wenn exc is value:
                     exc.__traceback__ = traceback
-                    return False
+                    return Falsch
                 # Avoid suppressing wenn a StopIteration exception
                 # was passed to throw() and later wrapped into a RuntimeError
                 # (see PEP 479 fuer sync generators; async generators also
@@ -181,7 +181,7 @@ klasse _GeneratorContextManager(
                     and exc.__cause__ is value
                 ):
                     value.__traceback__ = traceback
-                    return False
+                    return Falsch
                 raise
             except BaseException as exc:
                 # only re-raise wenn it's *not* the exception that was
@@ -193,7 +193,7 @@ klasse _GeneratorContextManager(
                 wenn exc is not value:
                     raise
                 exc.__traceback__ = traceback
-                return False
+                return Falsch
             try:
                 raise RuntimeError("generator didn't stop after throw()")
             finally:
@@ -213,21 +213,21 @@ klasse _AsyncGeneratorContextManager(
         try:
             return await anext(self.gen)
         except StopAsyncIteration:
-            raise RuntimeError("generator didn't yield") from None
+            raise RuntimeError("generator didn't yield") from Nichts
 
     async def __aexit__(self, typ, value, traceback):
-        wenn typ is None:
+        wenn typ is Nichts:
             try:
                 await anext(self.gen)
             except StopAsyncIteration:
-                return False
+                return Falsch
             sonst:
                 try:
                     raise RuntimeError("generator didn't stop")
                 finally:
                     await self.gen.aclose()
         sonst:
-            wenn value is None:
+            wenn value is Nichts:
                 # Need to force instantiation so we can reliably
                 # tell wenn we get the same exception back
                 value = typ()
@@ -242,7 +242,7 @@ klasse _AsyncGeneratorContextManager(
                 # Don't re-raise the passed in exception. (issue27122)
                 wenn exc is value:
                     exc.__traceback__ = traceback
-                    return False
+                    return Falsch
                 # Avoid suppressing wenn a Stop(Async)Iteration exception
                 # was passed to athrow() and later wrapped into a RuntimeError
                 # (see PEP 479 fuer sync generators; async generators also
@@ -254,7 +254,7 @@ klasse _AsyncGeneratorContextManager(
                     and exc.__cause__ is value
                 ):
                     value.__traceback__ = traceback
-                    return False
+                    return Falsch
                 raise
             except BaseException as exc:
                 # only re-raise wenn it's *not* the exception that was
@@ -266,7 +266,7 @@ klasse _AsyncGeneratorContextManager(
                 wenn exc is not value:
                     raise
                 exc.__traceback__ = traceback
-                return False
+                return Falsch
             try:
                 raise RuntimeError("generator didn't stop after athrow()")
             finally:
@@ -392,7 +392,7 @@ klasse aclosing(AbstractAsyncContextManager):
 
 klasse _RedirectStream(AbstractContextManager):
 
-    _stream = None
+    _stream = Nichts
 
     def __init__(self, new_target):
         self._new_target = new_target
@@ -457,16 +457,16 @@ klasse suppress(AbstractContextManager):
         # exactly reproduce the limitations of the CPython interpreter.
         #
         # See http://bugs.python.org/issue12029 fuer more details
-        wenn exctype is None:
+        wenn exctype is Nichts:
             return
         wenn issubclass(exctype, self._exceptions):
-            return True
+            return Wahr
         wenn issubclass(exctype, BaseExceptionGroup):
             match, rest = excinst.split(self._exceptions)
-            wenn rest is None:
-                return True
+            wenn rest is Nichts:
+                return Wahr
             raise rest
-        return False
+        return Falsch
 
 
 klasse _BaseExitStack:
@@ -526,7 +526,7 @@ klasse _BaseExitStack:
             _exit = cls.__exit__
         except AttributeError:
             raise TypeError(f"'{cls.__module__}.{cls.__qualname__}' object does "
-                            f"not support the context manager protocol") from None
+                            f"not support the context manager protocol") from Nichts
         result = _enter(cm)
         self._push_cm_exit(cm, _exit)
         return result
@@ -547,9 +547,9 @@ klasse _BaseExitStack:
     def _push_cm_exit(self, cm, cm_exit):
         """Helper to correctly register callbacks to __exit__ methods."""
         _exit_wrapper = self._create_exit_wrapper(cm, cm_exit)
-        self._push_exit_callback(_exit_wrapper, True)
+        self._push_exit_callback(_exit_wrapper, Wahr)
 
-    def _push_exit_callback(self, callback, is_sync=True):
+    def _push_exit_callback(self, callback, is_sync=Wahr):
         self._exit_callbacks.append((is_sync, callback))
 
 
@@ -570,7 +570,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
 
     def __exit__(self, *exc_details):
         exc = exc_details[1]
-        received_exc = exc is not None
+        received_exc = exc is not Nichts
 
         # We manipulate the exception state so it behaves as though
         # we were actually nesting multiple with statements
@@ -579,7 +579,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
             # Context may not be correct, so find the end of the chain
             while 1:
                 exc_context = new_exc.__context__
-                wenn exc_context is None or exc_context is old_exc:
+                wenn exc_context is Nichts or exc_context is old_exc:
                     # Context is already set correctly (see issue 20317)
                     return
                 wenn exc_context is frame_exc:
@@ -591,24 +591,24 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
 
         # Callbacks are invoked in LIFO order to match the behaviour of
         # nested context managers
-        suppressed_exc = False
-        pending_raise = False
+        suppressed_exc = Falsch
+        pending_raise = Falsch
         while self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
             assert is_sync
             try:
-                wenn exc is None:
-                    exc_details = None, None, None
+                wenn exc is Nichts:
+                    exc_details = Nichts, Nichts, Nichts
                 sonst:
                     exc_details = type(exc), exc, exc.__traceback__
                 wenn cb(*exc_details):
-                    suppressed_exc = True
-                    pending_raise = False
-                    exc = None
+                    suppressed_exc = Wahr
+                    pending_raise = Falsch
+                    exc = Nichts
             except BaseException as new_exc:
                 # simulate the stack of exceptions by setting the context
                 _fix_exception_context(new_exc, exc)
-                pending_raise = True
+                pending_raise = Wahr
                 exc = new_exc
 
         wenn pending_raise:
@@ -624,7 +624,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
 
     def close(self):
         """Immediately unwind the context stack."""
-        self.__exit__(None, None, None)
+        self.__exit__(Nichts, Nichts, Nichts)
 
 
 # Inspired by discussions on https://bugs.python.org/issue29302
@@ -664,7 +664,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         except AttributeError:
             raise TypeError(f"'{cls.__module__}.{cls.__qualname__}' object does "
                             f"not support the asynchronous context manager protocol"
-                           ) from None
+                           ) from Nichts
         result = await _enter(cm)
         self._push_async_cm_exit(cm, _exit)
         return result
@@ -682,7 +682,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
             exit_method = _cb_type.__aexit__
         except AttributeError:
             # Not an async context manager, so assume it's a coroutine function
-            self._push_exit_callback(exit, False)
+            self._push_exit_callback(exit, Falsch)
         sonst:
             self._push_async_cm_exit(exit, exit_method)
         return exit  # Allow use as a decorator
@@ -697,25 +697,25 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         # We changed the signature, so using @wraps is not appropriate, but
         # setting __wrapped__ may still help with introspection.
         _exit_wrapper.__wrapped__ = callback
-        self._push_exit_callback(_exit_wrapper, False)
+        self._push_exit_callback(_exit_wrapper, Falsch)
         return callback  # Allow use as a decorator
 
     async def aclose(self):
         """Immediately unwind the context stack."""
-        await self.__aexit__(None, None, None)
+        await self.__aexit__(Nichts, Nichts, Nichts)
 
     def _push_async_cm_exit(self, cm, cm_exit):
         """Helper to correctly register coroutine function to __aexit__
         method."""
         _exit_wrapper = self._create_async_exit_wrapper(cm, cm_exit)
-        self._push_exit_callback(_exit_wrapper, False)
+        self._push_exit_callback(_exit_wrapper, Falsch)
 
     async def __aenter__(self):
         return self
 
     async def __aexit__(self, *exc_details):
         exc = exc_details[1]
-        received_exc = exc is not None
+        received_exc = exc is not Nichts
 
         # We manipulate the exception state so it behaves as though
         # we were actually nesting multiple with statements
@@ -724,7 +724,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
             # Context may not be correct, so find the end of the chain
             while 1:
                 exc_context = new_exc.__context__
-                wenn exc_context is None or exc_context is old_exc:
+                wenn exc_context is Nichts or exc_context is old_exc:
                     # Context is already set correctly (see issue 20317)
                     return
                 wenn exc_context is frame_exc:
@@ -736,13 +736,13 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
 
         # Callbacks are invoked in LIFO order to match the behaviour of
         # nested context managers
-        suppressed_exc = False
-        pending_raise = False
+        suppressed_exc = Falsch
+        pending_raise = Falsch
         while self._exit_callbacks:
             is_sync, cb = self._exit_callbacks.pop()
             try:
-                wenn exc is None:
-                    exc_details = None, None, None
+                wenn exc is Nichts:
+                    exc_details = Nichts, Nichts, Nichts
                 sonst:
                     exc_details = type(exc), exc, exc.__traceback__
                 wenn is_sync:
@@ -751,13 +751,13 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
                     cb_suppress = await cb(*exc_details)
 
                 wenn cb_suppress:
-                    suppressed_exc = True
-                    pending_raise = False
-                    exc = None
+                    suppressed_exc = Wahr
+                    pending_raise = Falsch
+                    exc = Nichts
             except BaseException as new_exc:
                 # simulate the stack of exceptions by setting the context
                 _fix_exception_context(new_exc, exc)
-                pending_raise = True
+                pending_raise = Wahr
                 exc = new_exc
 
         wenn pending_raise:
@@ -780,10 +780,10 @@ klasse nullcontext(AbstractContextManager, AbstractAsyncContextManager):
 
     cm = optional_cm wenn condition sonst nullcontext()
     with cm:
-        # Perform operation, using optional_cm wenn condition is True
+        # Perform operation, using optional_cm wenn condition is Wahr
     """
 
-    def __init__(self, enter_result=None):
+    def __init__(self, enter_result=Nichts):
         self.enter_result = enter_result
 
     def __enter__(self):

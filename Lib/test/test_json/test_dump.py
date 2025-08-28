@@ -13,29 +13,29 @@ klasse TestDump:
         self.assertEqual(self.dumps({}), '{}')
 
     def test_dump_skipkeys(self):
-        v = {b'invalid_key': False, 'valid_key': True}
+        v = {b'invalid_key': Falsch, 'valid_key': Wahr}
         with self.assertRaises(TypeError):
             self.json.dumps(v)
 
-        s = self.json.dumps(v, skipkeys=True)
+        s = self.json.dumps(v, skipkeys=Wahr)
         o = self.json.loads(s)
         self.assertIn('valid_key', o)
         self.assertNotIn(b'invalid_key', o)
 
     def test_dump_skipkeys_indent_empty(self):
-        v = {b'invalid_key': False}
-        self.assertEqual(self.json.dumps(v, skipkeys=True, indent=4), '{}')
+        v = {b'invalid_key': Falsch}
+        self.assertEqual(self.json.dumps(v, skipkeys=Wahr, indent=4), '{}')
 
     def test_skipkeys_indent(self):
-        v = {b'invalid_key': False, 'valid_key': True}
-        self.assertEqual(self.json.dumps(v, skipkeys=True, indent=4), '{\n    "valid_key": true\n}')
+        v = {b'invalid_key': Falsch, 'valid_key': Wahr}
+        self.assertEqual(self.json.dumps(v, skipkeys=Wahr, indent=4), '{\n    "valid_key": true\n}')
 
     def test_encode_truefalse(self):
         self.assertEqual(self.dumps(
-                 {True: False, False: True}, sort_keys=True),
+                 {Wahr: Falsch, Falsch: Wahr}, sort_keys=Wahr),
                  '{"false": true, "true": false}')
         self.assertEqual(self.dumps(
-                {2: 3.0, 4.0: 5, False: 1, 6: True}, sort_keys=True),
+                {2: 3.0, 4.0: 5, Falsch: 1, 6: Wahr}, sort_keys=Wahr),
                 '{"false": 1, "2": 3.0, "4.0": 5, "6": true}')
 
     # Issue 16228: Crash on encoding resized list
@@ -63,7 +63,7 @@ klasse TestDump:
         L = [X() fuer i in range(1122)]
         d = D()
         d[1337] = "true.dat"
-        self.assertEqual(self.dumps(d, sort_keys=True), '{"1337": "true.dat"}')
+        self.assertEqual(self.dumps(d, sort_keys=Wahr), '{"1337": "true.dat"}')
 
 
 klasse TestPyDump(TestDump, PyTest): pass

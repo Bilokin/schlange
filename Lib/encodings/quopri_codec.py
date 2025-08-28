@@ -11,7 +11,7 @@ def quopri_encode(input, errors='strict'):
     assert errors == 'strict'
     f = BytesIO(input)
     g = BytesIO()
-    quopri.encode(f, g, quotetabs=True)
+    quopri.encode(f, g, quotetabs=Wahr)
     return (g.getvalue(), len(input))
 
 def quopri_decode(input, errors='strict'):
@@ -28,11 +28,11 @@ klasse Codec(codecs.Codec):
         return quopri_decode(input, errors)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return quopri_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         return quopri_decode(input, self.errors)[0]
 
 klasse StreamWriter(Codec, codecs.StreamWriter):
@@ -52,5 +52,5 @@ def getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamwriter=StreamWriter,
         streamreader=StreamReader,
-        _is_text_encoding=False,
+        _is_text_encoding=Falsch,
     )

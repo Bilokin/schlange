@@ -154,18 +154,18 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         """
         See issue 3312.
         """
-        self.assertRaises(TypeError, sqlite.register_adapter, {}, None)
+        self.assertRaises(TypeError, sqlite.register_adapter, {}, Nichts)
 
     def test_set_isolation_level(self):
         # See issue 27881.
         klasse CustomStr(str):
             def upper(self):
-                return None
+                return Nichts
             def __del__(self):
                 con.isolation_level = ""
 
         con = self.con
-        con.isolation_level = None
+        con.isolation_level = Nichts
         fuer level in "", "DEFERRED", "IMMEDIATE", "EXCLUSIVE":
             with self.subTest(level=level):
                 con.isolation_level = level
@@ -174,7 +174,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                 con.isolation_level = CustomStr(level)
 
         # setting isolation_level failure should not alter previous state
-        con.isolation_level = None
+        con.isolation_level = Nichts
         con.isolation_level = "DEFERRED"
         pairs = [
             (1, TypeError), (b'', TypeError), ("abc", ValueError),
@@ -228,9 +228,9 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         2.5.3 introduced a regression so that these could no longer
         be created.
         """
-        with memory_database(isolation_level=None) as con:
-            self.assertIsNone(con.isolation_level)
-            self.assertFalse(con.in_transaction)
+        with memory_database(isolation_level=Nichts) as con:
+            self.assertIsNichts(con.isolation_level)
+            self.assertFalsch(con.in_transaction)
 
     def test_pragma_autocommit(self):
         """
@@ -306,7 +306,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_invalid_isolation_level_type(self):
         # isolation level is a string, not an integer
-        regex = "isolation_level must be str or None"
+        regex = "isolation_level must be str or Nichts"
         with self.assertRaisesRegex(TypeError, regex):
             memory_database(isolation_level=123).__enter__()
 
@@ -406,7 +406,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             method(printer_instance.log)
             method(printer_instance.log)
             self.con.execute("select 1")  # trigger seg fault
-            method(None)
+            method(Nichts)
 
     def test_return_empty_bytestring(self):
         cur = self.con.execute("select X''")
@@ -496,7 +496,7 @@ klasse RecursiveUseOfCursors(unittest.TestCase):
                                    self.cur.fetchall)
 
     def test_recursive_cursor_iter(self):
-        conv = lambda x, l=[]: self.cur.fetchone() wenn l sonst l.append(None)
+        conv = lambda x, l=[]: self.cur.fetchone() wenn l sonst l.append(Nichts)
         with patch.dict(sqlite.converters, {"ITER": conv}):
             self.cur.execute('select x as "x [ITER]", x from test')
             self.assertRaisesRegex(sqlite.ProgrammingError, self.msg,

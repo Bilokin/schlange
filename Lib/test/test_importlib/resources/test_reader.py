@@ -50,10 +50,10 @@ klasse MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
         )
 
     def test_is_dir(self):
-        self.assertEqual(MultiplexedPath(self.folder).is_dir(), True)
+        self.assertEqual(MultiplexedPath(self.folder).is_dir(), Wahr)
 
     def test_is_file(self):
-        self.assertEqual(MultiplexedPath(self.folder).is_file(), False)
+        self.assertEqual(MultiplexedPath(self.folder).is_file(), Falsch)
 
     def test_open_file(self):
         path = MultiplexedPath(self.folder)

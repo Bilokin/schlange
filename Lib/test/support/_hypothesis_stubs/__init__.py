@@ -36,7 +36,7 @@ def given(*_args, **_kwargs):
                 "specified examples"
             )(f)
 
-        test_function._given = True
+        test_function._given = Wahr
         return test_function
 
     return decorator
@@ -53,7 +53,7 @@ def example(*args, **kwargs):
 
         base_func._examples.append((args, kwargs))
 
-        wenn getattr(f, "_given", False):
+        wenn getattr(f, "_given", Falsch):
             # If the given decorator is below all the example decorators,
             # it would be erroneously skipped, so we need to re-wrap the new
             # base function.
@@ -67,11 +67,11 @@ def example(*args, **kwargs):
 def assume(condition):
     wenn not condition:
         raise unittest.SkipTest("Unsatisfied assumption")
-    return True
+    return Wahr
 
 
 def reject():
-    assume(False)
+    assume(Falsch)
 
 
 def register_random(*args, **kwargs):

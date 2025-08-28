@@ -327,7 +327,7 @@ def _siftup_max(heap, pos):
     heap[pos] = newitem
     _siftdown_max(heap, startpos, pos)
 
-def merge(*iterables, key=None, reverse=False):
+def merge(*iterables, key=Nichts, reverse=Falsch):
     '''Merge multiple sorted inputs into a single sorted output.
 
     Similar to sorted(itertools.chain(*iterables)) but returns a generator,
@@ -337,7 +337,7 @@ def merge(*iterables, key=None, reverse=False):
     >>> list(merge([1,3,5,7], [0,2,4,8], [5,10,15,20], [], [25]))
     [0, 1, 2, 3, 4, 5, 5, 7, 8, 10, 15, 20, 25]
 
-    If *key* is not None, applies a key function to each element to determine
+    If *key* is not Nichts, applies a key function to each element to determine
     its sort order.
 
     >>> list(merge(['dog', 'horse'], ['cat', 'fish', 'kangaroo'], key=len))
@@ -359,7 +359,7 @@ def merge(*iterables, key=None, reverse=False):
         _heapreplace = heapreplace
         direction = 1
 
-    wenn key is None:
+    wenn key is Nichts:
         fuer order, it in enumerate(map(iter, iterables)):
             try:
                 next = it.__next__
@@ -369,7 +369,7 @@ def merge(*iterables, key=None, reverse=False):
         _heapify(h)
         while len(h) > 1:
             try:
-                while True:
+                while Wahr:
                     value, order, next = s = h[0]
                     yield value
                     s[0] = next()           # raises StopIteration when exhausted
@@ -393,7 +393,7 @@ def merge(*iterables, key=None, reverse=False):
     _heapify(h)
     while len(h) > 1:
         try:
-            while True:
+            while Wahr:
                 key_value, order, value, next = s = h[0]
                 yield value
                 value = next()
@@ -474,7 +474,7 @@ def merge(*iterables, key=None, reverse=False):
 # See the more detailed comparison of approach at:
 # http://code.activestate.com/recipes/577573-compare-algorithms-for-heapqsmallest
 
-def nsmallest(n, iterable, key=None):
+def nsmallest(n, iterable, key=Nichts):
     """Find the n smallest elements in a dataset.
 
     Equivalent to:  sorted(iterable, key=key)[:n]
@@ -497,7 +497,7 @@ def nsmallest(n, iterable, key=None):
             return sorted(iterable, key=key)[:n]
 
     # When key is none, use simpler decoration
-    wenn key is None:
+    wenn key is Nichts:
         it = iter(iterable)
         # put the range(n) first so that zip() doesn't
         # consume one too many elements from the iterator
@@ -534,10 +534,10 @@ def nsmallest(n, iterable, key=None):
     result.sort()
     return [elem fuer (k, order, elem) in result]
 
-def nlargest(n, iterable, key=None):
+def nlargest(n, iterable, key=Nichts):
     """Find the n largest elements in a dataset.
 
-    Equivalent to:  sorted(iterable, key=key, reverse=True)[:n]
+    Equivalent to:  sorted(iterable, key=key, reverse=Wahr)[:n]
     """
 
     # Short-cut fuer n==1 is to use max()
@@ -554,10 +554,10 @@ def nlargest(n, iterable, key=None):
         pass
     sonst:
         wenn n >= size:
-            return sorted(iterable, key=key, reverse=True)[:n]
+            return sorted(iterable, key=key, reverse=Wahr)[:n]
 
     # When key is none, use simpler decoration
-    wenn key is None:
+    wenn key is Nichts:
         it = iter(iterable)
         result = [(elem, i) fuer i, elem in zip(range(0, -n, -1), it)]
         wenn not result:
@@ -571,7 +571,7 @@ def nlargest(n, iterable, key=None):
                 _heapreplace(result, (elem, order))
                 top, _order = result[0]
                 order -= 1
-        result.sort(reverse=True)
+        result.sort(reverse=Wahr)
         return [elem fuer (elem, order) in result]
 
     # General case, slowest method
@@ -589,7 +589,7 @@ def nlargest(n, iterable, key=None):
             _heapreplace(result, (k, order, elem))
             top, _order, _elem = result[0]
             order -= 1
-    result.sort(reverse=True)
+    result.sort(reverse=Wahr)
     return [elem fuer (k, order, elem) in result]
 
 # If available, use C implementation

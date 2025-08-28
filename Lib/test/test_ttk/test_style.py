@@ -108,7 +108,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
             'nonexistingname')
 
         curr_theme = self.style.theme_use()
-        new_theme = None
+        new_theme = Nichts
         fuer theme in self.style.theme_names():
             wenn theme != curr_theme:
                 new_theme = theme
@@ -118,8 +118,8 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
             # just one theme available, can't go on with tests
             return
 
-        self.assertFalse(curr_theme == new_theme)
-        self.assertFalse(new_theme != self.style.theme_use())
+        self.assertFalsch(curr_theme == new_theme)
+        self.assertFalsch(new_theme != self.style.theme_use())
 
         self.style.theme_use(curr_theme)
 
@@ -142,7 +142,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                         # Fails on the Windows 7 buildbot
                         continue
                     newname = f'C.{name}'
-                    self.assertEqual(style.configure(newname), None)
+                    self.assertEqual(style.configure(newname), Nichts)
                     style.configure(newname, **default)
                     self.assertEqual(style.configure(newname), default)
                     fuer key, value in default.items():
@@ -217,7 +217,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
         style.layout('TestLabel1', [('block', {'sticky': 'news'})])
         a = ttk.Label(self.root, style='TestLabel1')
-        a.pack(expand=True, fill='both')
+        a.pack(expand=Wahr, fill='both')
         self.assertEqual(a.winfo_reqwidth(), 12)
         self.assertEqual(a.winfo_reqheight(), 10)
 
@@ -235,7 +235,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
         style.layout('TestButton', [('TestButton.button', {'sticky': 'news'})])
         b = ttk.Button(self.root, style='TestButton')
-        b.pack(expand=True, fill='both')
+        b.pack(expand=Wahr, fill='both')
         self.assertEqual(b.winfo_reqwidth(), 16)
         self.assertEqual(b.winfo_reqheight(), 16)
 
@@ -271,7 +271,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
         style.layout('CloseButton',
                      [('CloseButton.smallclose', {'sticky': 'news'})])
         b = ttk.Button(self.root, style='CloseButton')
-        b.pack(expand=True, fill='both')
+        b.pack(expand=Wahr, fill='both')
         self.assertEqual(b.winfo_reqwidth(), 13)
         self.assertEqual(b.winfo_reqheight(), 13)
 
@@ -289,7 +289,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
         style.layout('Explorer.Pin',
                      [('Explorer.Pin.pin', {'sticky': 'news'})])
         pin = ttk.Checkbutton(self.root, style='Explorer.Pin')
-        pin.pack(expand=True, fill='both')
+        pin.pack(expand=Wahr, fill='both')
         self.assertEqual(pin.winfo_reqwidth(), 16)
         self.assertEqual(pin.winfo_reqheight(), 16)
 
@@ -304,7 +304,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
         style.layout('Explorer.CloseButton',
                      [('Explorer.CloseButton.headerclose', {'sticky': 'news'})])
         b = ttk.Button(self.root, style='Explorer.CloseButton')
-        b.pack(expand=True, fill='both')
+        b.pack(expand=Wahr, fill='both')
         self.assertEqual(b.winfo_reqwidth(), 16)
         self.assertEqual(b.winfo_reqheight(), 16)
 
@@ -402,7 +402,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
             ])
 
         b = ttk.Label(self.root, style='TestWidget')
-        b.pack(expand=True, fill='both')
+        b.pack(expand=Wahr, fill='both')
         self.assertEqual(b.winfo_reqwidth(), 134)
         self.assertEqual(b.winfo_reqheight(), 100)
 
@@ -435,7 +435,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                          [('Explorer.Pin.pin', {'sticky': 'nswe'})])
 
         pin = ttk.Checkbutton(self.root, style='Explorer.Pin')
-        pin.pack(expand=True, fill='both')
+        pin.pack(expand=Wahr, fill='both')
         self.assertEqual(pin.winfo_reqwidth(), 16)
         self.assertEqual(pin.winfo_reqheight(), 16)
 

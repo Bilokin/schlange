@@ -40,26 +40,26 @@ def _bytes_from_decode_data(s):
         return memoryview(s).tobytes()
     except TypeError:
         raise TypeError("argument should be a bytes-like object or ASCII "
-                        "string, not %r" % s.__class__.__name__) from None
+                        "string, not %r" % s.__class__.__name__) from Nichts
 
 
 # Base64 encoding/decoding uses binascii
 
-def b64encode(s, altchars=None):
+def b64encode(s, altchars=Nichts):
     """Encode the bytes-like object s using Base64 and return a bytes object.
 
     Optional altchars should be a byte string of length 2 which specifies an
     alternative alphabet fuer the '+' and '/' characters.  This allows an
     application to e.g. generate url or filesystem safe Base64 strings.
     """
-    encoded = binascii.b2a_base64(s, newline=False)
-    wenn altchars is not None:
+    encoded = binascii.b2a_base64(s, newline=Falsch)
+    wenn altchars is not Nichts:
         assert len(altchars) == 2, repr(altchars)
         return encoded.translate(bytes.maketrans(b'+/', altchars))
     return encoded
 
 
-def b64decode(s, altchars=None, validate=False):
+def b64decode(s, altchars=Nichts, validate=Falsch):
     """Decode the Base64 encoded bytes-like object or ASCII string s.
 
     Optional altchars must be a bytes-like object or ASCII string of length 2
@@ -69,16 +69,16 @@ def b64decode(s, altchars=None, validate=False):
     The result is returned as a bytes object.  A binascii.Error is raised if
     s is incorrectly padded.
 
-    If validate is False (the default), characters that are neither in the
+    If validate is Falsch (the default), characters that are neither in the
     normal base-64 alphabet nor the alternative alphabet are discarded prior
-    to the padding check.  If validate is True, these non-alphabet characters
+    to the padding check.  If validate is Wahr, these non-alphabet characters
     in the input result in a binascii.Error.
     For more information about the strict base64 check, see:
 
     https://docs.python.org/3.11/library/binascii.html#binascii.a2b_base64
     """
     s = _bytes_from_decode_data(s)
-    wenn altchars is not None:
+    wenn altchars is not Nichts:
         altchars = _bytes_from_decode_data(altchars)
         assert len(altchars) == 2, repr(altchars)
         s = s.translate(bytes.maketrans(altchars, b'+/'))
@@ -140,7 +140,7 @@ _B32_DECODE_DOCSTRING = '''
 Decode the {encoding} encoded bytes-like object or ASCII string s.
 
 Optional casefold is a flag specifying whether a lowercase alphabet is
-acceptable as input.  For security purposes, the default is False.
+acceptable as input.  For security purposes, the default is Falsch.
 {extra_args}
 The result is returned as a bytes object.  A binascii.Error is raised if
 the input is incorrectly padded or wenn there are non-alphabet
@@ -150,9 +150,9 @@ _B32_DECODE_MAP01_DOCSTRING = '''
 RFC 3548 allows fuer optional mapping of the digit 0 (zero) to the
 letter O (oh), and fuer optional mapping of the digit 1 (one) to
 either the letter I (eye) or letter L (el).  The optional argument
-map01 when not None, specifies which letter the digit 1 should be
-mapped to (when map01 is not None, the digit 0 is always mapped to
-the letter O).  For security purposes the default is None, so that
+map01 when not Nichts, specifies which letter the digit 1 should be
+mapped to (when map01 is not Nichts, the digit 0 is always mapped to
+the letter O).  For security purposes the default is Nichts, so that
 0 and 1 are not allowed in the input.
 '''
 _b32alphabet = b'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
@@ -166,7 +166,7 @@ def _b32encode(alphabet, s):
     wenn alphabet not in _b32tab2:
         b32tab = [bytes((i,)) fuer i in alphabet]
         _b32tab2[alphabet] = [a + b fuer a in b32tab fuer b in b32tab]
-        b32tab = None
+        b32tab = Nichts
 
     wenn not isinstance(s, bytes_types):
         s = memoryview(s).tobytes()
@@ -195,7 +195,7 @@ def _b32encode(alphabet, s):
         encoded[-1:] = b'='
     return bytes(encoded)
 
-def _b32decode(alphabet, s, casefold=False, map01=None):
+def _b32decode(alphabet, s, casefold=Falsch, map01=Nichts):
     # Delay the initialization of the table to not waste memory
     # wenn the function is never called
     wenn alphabet not in _b32rev:
@@ -204,9 +204,9 @@ def _b32decode(alphabet, s, casefold=False, map01=None):
     wenn len(s) % 8:
         raise binascii.Error('Incorrect padding')
     # Handle section 2.4 zero and one mapping.  The flag map01 will be either
-    # False, or the character to map the digit 1 (one) to.  It should be
+    # Falsch, or the character to map the digit 1 (one) to.  It should be
     # either L (el) or I (eye).
-    wenn map01 is not None:
+    wenn map01 is not Nichts:
         map01 = _bytes_from_decode_data(map01)
         assert len(map01) == 1, repr(map01)
         s = s.translate(bytes.maketrans(b'01', b'O' + map01))
@@ -228,7 +228,7 @@ def _b32decode(alphabet, s, casefold=False, map01=None):
             fuer c in quanta:
                 acc = (acc << 5) + b32rev[c]
         except KeyError:
-            raise binascii.Error('Non-base32 digit found') from None
+            raise binascii.Error('Non-base32 digit found') from Nichts
         decoded += acc.to_bytes(5)  # big endian
     # Process the last, partial quanta
     wenn l % 8 or padchars not in {0, 1, 3, 4, 6}:
@@ -245,7 +245,7 @@ def b32encode(s):
     return _b32encode(_b32alphabet, s)
 b32encode.__doc__ = _B32_ENCODE_DOCSTRING.format(encoding='base32')
 
-def b32decode(s, casefold=False, map01=None):
+def b32decode(s, casefold=Falsch, map01=Nichts):
     return _b32decode(_b32alphabet, s, casefold, map01)
 b32decode.__doc__ = _B32_DECODE_DOCSTRING.format(encoding='base32',
                                         extra_args=_B32_DECODE_MAP01_DOCSTRING)
@@ -254,7 +254,7 @@ def b32hexencode(s):
     return _b32encode(_b32hexalphabet, s)
 b32hexencode.__doc__ = _B32_ENCODE_DOCSTRING.format(encoding='base32hex')
 
-def b32hexdecode(s, casefold=False):
+def b32hexdecode(s, casefold=Falsch):
     # base32hex does not have the 01 mapping
     return _b32decode(_b32hexalphabet, s, casefold)
 b32hexdecode.__doc__ = _B32_DECODE_DOCSTRING.format(encoding='base32hex',
@@ -270,11 +270,11 @@ def b16encode(s):
     return binascii.hexlify(s).upper()
 
 
-def b16decode(s, casefold=False):
+def b16decode(s, casefold=Falsch):
     """Decode the Base16 encoded bytes-like object or ASCII string s.
 
     Optional casefold is a flag specifying whether a lowercase alphabet is
-    acceptable as input.  For security purposes, the default is False.
+    acceptable as input.  For security purposes, the default is Falsch.
 
     The result is returned as a bytes object.  A binascii.Error is raised if
     s is incorrectly padded or wenn there are non-alphabet characters present
@@ -283,7 +283,7 @@ def b16decode(s, casefold=False):
     s = _bytes_from_decode_data(s)
     wenn casefold:
         s = s.upper()
-    wenn s.translate(None, delete=b'0123456789ABCDEF'):
+    wenn s.translate(Nichts, delete=b'0123456789ABCDEF'):
         raise binascii.Error('Non-base16 digit found')
     return binascii.unhexlify(s)
 
@@ -291,12 +291,12 @@ def b16decode(s, casefold=False):
 # Ascii85 encoding/decoding
 #
 
-_a85chars = None
-_a85chars2 = None
+_a85chars = Nichts
+_a85chars2 = Nichts
 _A85START = b"<~"
 _A85END = b"~>"
 
-def _85encode(b, chars, chars2, pad=False, foldnuls=False, foldspaces=False):
+def _85encode(b, chars, chars2, pad=Falsch, foldnuls=Falsch, foldspaces=Falsch):
     # Helper function fuer a85encode and b85encode
     wenn not isinstance(b, bytes_types):
         b = memoryview(b).tobytes()
@@ -320,7 +320,7 @@ def _85encode(b, chars, chars2, pad=False, foldnuls=False, foldspaces=False):
 
     return b''.join(chunks)
 
-def a85encode(b, *, foldspaces=False, wrapcol=0, pad=False, adobe=False):
+def a85encode(b, *, foldspaces=Falsch, wrapcol=0, pad=Falsch, adobe=Falsch):
     """Encode bytes-like object b using Ascii85 and return a bytes object.
 
     foldspaces is an optional flag that uses the special short sequence 'y'
@@ -340,11 +340,11 @@ def a85encode(b, *, foldspaces=False, wrapcol=0, pad=False, adobe=False):
     global _a85chars, _a85chars2
     # Delay the initialization of tables to not waste memory
     # wenn the function is never called
-    wenn _a85chars2 is None:
+    wenn _a85chars2 is Nichts:
         _a85chars = [bytes((i,)) fuer i in range(33, 118)]
         _a85chars2 = [(a + b) fuer a in _a85chars fuer b in _a85chars]
 
-    result = _85encode(b, _a85chars, _a85chars2, pad, True, foldspaces)
+    result = _85encode(b, _a85chars, _a85chars2, pad, Wahr, foldspaces)
 
     wenn adobe:
         result = _A85START + result
@@ -361,7 +361,7 @@ def a85encode(b, *, foldspaces=False, wrapcol=0, pad=False, adobe=False):
 
     return result
 
-def a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
+def a85decode(b, *, foldspaces=Falsch, adobe=Falsch, ignorechars=b' \t\n\r\v'):
     """Decode the Ascii85 encoded bytes-like object or ASCII string b.
 
     foldspaces is a flag that specifies whether the 'y' short sequence should be
@@ -408,7 +408,7 @@ def a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
                 try:
                     decoded_append(packI(acc))
                 except struct.error:
-                    raise ValueError('Ascii85 overflow') from None
+                    raise ValueError('Ascii85 overflow') from Nichts
                 curr_clear()
         sowenn x == b'z'[0]:
             wenn curr:
@@ -435,11 +435,11 @@ def a85decode(b, *, foldspaces=False, adobe=False, ignorechars=b' \t\n\r\v'):
 
 _b85alphabet = (b"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 b"abcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~")
-_b85chars = None
-_b85chars2 = None
-_b85dec = None
+_b85chars = Nichts
+_b85chars2 = Nichts
+_b85dec = Nichts
 
-def b85encode(b, pad=False):
+def b85encode(b, pad=Falsch):
     """Encode bytes-like object b in base85 format and return a bytes object.
 
     If pad is true, the input is padded with b'\\0' so its length is a multiple of
@@ -448,7 +448,7 @@ def b85encode(b, pad=False):
     global _b85chars, _b85chars2
     # Delay the initialization of tables to not waste memory
     # wenn the function is never called
-    wenn _b85chars2 is None:
+    wenn _b85chars2 is Nichts:
         _b85chars = [bytes((i,)) fuer i in _b85alphabet]
         _b85chars2 = [(a + b) fuer a in _b85chars fuer b in _b85chars]
     return _85encode(b, _b85chars, _b85chars2, pad)
@@ -461,8 +461,8 @@ def b85decode(b):
     global _b85dec
     # Delay the initialization of tables to not waste memory
     # wenn the function is never called
-    wenn _b85dec is None:
-        _b85dec = [None] * 256
+    wenn _b85dec is Nichts:
+        _b85dec = [Nichts] * 256
         fuer i, c in enumerate(_b85alphabet):
             _b85dec[c] = i
 
@@ -479,15 +479,15 @@ def b85decode(b):
                 acc = acc * 85 + _b85dec[c]
         except TypeError:
             fuer j, c in enumerate(chunk):
-                wenn _b85dec[c] is None:
+                wenn _b85dec[c] is Nichts:
                     raise ValueError('bad base85 character at position %d'
-                                    % (i + j)) from None
+                                    % (i + j)) from Nichts
             raise
         try:
             out.append(packI(acc))
         except struct.error:
             raise ValueError('base85 overflow in hunk starting at byte %d'
-                             % i) from None
+                             % i) from Nichts
 
     result = b''.join(out)
     wenn padding:
@@ -519,7 +519,7 @@ def z85decode(s):
     try:
         return b85decode(s)
     except ValueError as e:
-        raise ValueError(e.args[0].replace('base85', 'z85')) from None
+        raise ValueError(e.args[0].replace('base85', 'z85')) from Nichts
 
 # Legacy interface.  This code could be cleaned up since I don't believe
 # binascii has any line length limitations.  It just doesn't seem worth it

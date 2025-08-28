@@ -11,9 +11,9 @@ klasse FutureTest(unittest.TestCase):
         # Verify that all_feature_names appears correct.
         given_feature_names = features[:]
         fuer name in dir(__future__):
-            obj = getattr(__future__, name, None)
-            wenn obj is not None and isinstance(obj, __future__._Feature):
-                self.assertTrue(
+            obj = getattr(__future__, name, Nichts)
+            wenn obj is not Nichts and isinstance(obj, __future__._Feature):
+                self.assertWahr(
                     name in given_feature_names,
                     "%r should have been in all_feature_names" % name
                 )
@@ -28,7 +28,7 @@ klasse FutureTest(unittest.TestCase):
             optional = value.getOptionalRelease()
             mandatory = value.getMandatoryRelease()
 
-            a = self.assertTrue
+            a = self.assertWahr
             e = self.assertEqual
             def check(t, name):
                 a(isinstance(t, tuple), "%s isn't tuple" % name)
@@ -44,10 +44,10 @@ klasse FutureTest(unittest.TestCase):
                 a(isinstance(serial, int), "%s serial isn't int" % name)
 
             check(optional, "optional")
-            wenn mandatory is not None:
+            wenn mandatory is not Nichts:
                 check(mandatory, "mandatory")
                 a(optional < mandatory,
-                       "optional not less than mandatory, and mandatory not None")
+                       "optional not less than mandatory, and mandatory not Nichts")
 
             a(hasattr(value, "compiler_flag"),
                    "feature is missing a .compiler_flag attr")

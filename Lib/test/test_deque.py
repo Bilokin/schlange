@@ -68,7 +68,7 @@ klasse TestBasic(unittest.TestCase):
         d = deque(range(200), maxlen=10)
         d.append(d)
         self.assertEqual(repr(d)[-30:], ', 198, 199, [...]], maxlen=10)')
-        d = deque(range(10), maxlen=None)
+        d = deque(range(10), maxlen=Nichts)
         self.assertEqual(repr(d), 'deque([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])')
 
     def test_maxlen_zero(self):
@@ -87,8 +87,8 @@ klasse TestBasic(unittest.TestCase):
         self.assertEqual(list(it), [])
 
     def test_maxlen_attribute(self):
-        self.assertEqual(deque().maxlen, None)
-        self.assertEqual(deque('abc').maxlen, None)
+        self.assertEqual(deque().maxlen, Nichts)
+        self.assertEqual(deque('abc').maxlen, Nichts)
         self.assertEqual(deque('abc', maxlen=4).maxlen, 4)
         self.assertEqual(deque('abc', maxlen=2).maxlen, 2)
         self.assertEqual(deque('abc', maxlen=0).maxlen, 0)
@@ -114,7 +114,7 @@ klasse TestBasic(unittest.TestCase):
         klasse MutatingCompare:
             def __eq__(self, other):
                 self.d.pop()
-                return True
+                return Wahr
         m = MutatingCompare()
         d = deque([1, 2, 3, m, 4, 5])
         m.d = d
@@ -122,12 +122,12 @@ klasse TestBasic(unittest.TestCase):
 
         # test issue11004
         # block advance failed after rotation aligned elements on right side of block
-        d = deque([None]*16)
+        d = deque([Nichts]*16)
         fuer i in range(len(d)):
             d.rotate(-1)
         d.rotate(1)
         self.assertEqual(d.count(1), 0)
-        self.assertEqual(d.count(None), 16)
+        self.assertEqual(d.count(Nichts), 16)
 
     def test_comparisons(self):
         d = deque('xabc')
@@ -151,12 +151,12 @@ klasse TestBasic(unittest.TestCase):
 
         d = deque(range(n))
         fuer i in range(n):
-            self.assertTrue(i in d)
-        self.assertTrue((n+1) not in d)
+            self.assertWahr(i in d)
+        self.assertWahr((n+1) not in d)
 
         # Test detection of mutation during iteration
         d = deque(range(n))
-        d[n//2] = MutateCmp(d, False)
+        d[n//2] = MutateCmp(d, Falsch)
         with self.assertRaises(RuntimeError):
             n in d
 
@@ -261,7 +261,7 @@ klasse TestBasic(unittest.TestCase):
 
             # Test detection of mutation during iteration
             d = deque(range(n))
-            d[n//2] = MutateCmp(d, False)
+            d[n//2] = MutateCmp(d, Falsch)
             with self.assertRaises(RuntimeError):
                 d.index(n)
 
@@ -314,7 +314,7 @@ klasse TestBasic(unittest.TestCase):
         data = 'ABC'
         d = deque(data, maxlen=len(data))
         with self.assertRaises(IndexError):
-            d.insert(2, None)
+            d.insert(2, Nichts)
 
         elements = 'ABCDEFGHI'
         fuer i in range(-len(elements), len(elements)):
@@ -330,13 +330,13 @@ klasse TestBasic(unittest.TestCase):
             d = deque()
             d *= n
             self.assertEqual(d, deque())
-            self.assertIsNone(d.maxlen)
+            self.assertIsNichts(d.maxlen)
 
         fuer n in (-10, -1, 0, 1, 2, 10, 1000):
             d = deque('a')
             d *= n
             self.assertEqual(d, deque('a' * n))
-            self.assertIsNone(d.maxlen)
+            self.assertIsNichts(d.maxlen)
 
         fuer n in (-10, -1, 0, 1, 2, 10, 499, 500, 501, 1000):
             d = deque('a', 500)
@@ -348,7 +348,7 @@ klasse TestBasic(unittest.TestCase):
             d = deque('abcdef')
             d *= n
             self.assertEqual(d, deque('abcdef' * n))
-            self.assertIsNone(d.maxlen)
+            self.assertIsNichts(d.maxlen)
 
         fuer n in (-10, -1, 0, 1, 2, 10, 499, 500, 501, 1000):
             d = deque('abcdef', 500)
@@ -415,7 +415,7 @@ klasse TestBasic(unittest.TestCase):
             d = deque(data[:i])
             r = d.reverse()
             self.assertEqual(list(d), list(reversed(data[:i])))
-            self.assertIs(r, None)
+            self.assertIs(r, Nichts)
             d.reverse()
             self.assertEqual(list(d), data[:i])
         self.assertRaises(TypeError, d.reverse, 1)          # Arity is zero
@@ -518,10 +518,10 @@ klasse TestBasic(unittest.TestCase):
         self.assertRaises(RuntimeError, d.remove, 'c')
         fuer x, y in zip(d, e):
             # verify that original order and values are retained.
-            self.assertTrue(x is y)
+            self.assertWahr(x is y)
 
         # Handle evil mutator
-        fuer match in (True, False):
+        fuer match in (Wahr, Falsch):
             d = deque(['ab'])
             d.extend([MutateCmp(d, match), 'c'])
             self.assertRaises(IndexError, d.remove, 'c')
@@ -697,7 +697,7 @@ klasse TestBasic(unittest.TestCase):
                 e = d.copy()
                 self.assertEqual(d, e)
                 self.assertEqual(d.maxlen, e.maxlen)
-                self.assertTrue(all(x is y fuer x, y in zip(d, e)))
+                self.assertWahr(all(x is y fuer x, y in zip(d, e)))
 
     def test_copy_method(self):
         mut = [10]
@@ -740,7 +740,7 @@ klasse TestBasic(unittest.TestCase):
             obj.x = iter(container)
             del obj, container
             gc.collect()
-            self.assertTrue(ref() is None, "Cycle was not collected")
+            self.assertWahr(ref() is Nichts, "Cycle was not collected")
 
     check_sizeof = support.check_sizeof
 
@@ -865,7 +865,7 @@ klasse TestSubclass(unittest.TestCase):
         d = deque('gallahad')
         p = weakref.proxy(d)
         self.assertEqual(str(p), str(d))
-        d = None
+        d = Nichts
         support.gc_collect()  # For PyPy or other GCs.
         self.assertRaises(ReferenceError, str, p)
 
@@ -875,7 +875,7 @@ klasse TestSubclass(unittest.TestCase):
                 return iter([])
         d1 = X([1,2,3])
         d2 = X([4,5,6])
-        d1 == d2   # not clear wenn this is supposed to be True or False,
+        d1 == d2   # not clear wenn this is supposed to be Wahr or Falsch,
                    # but it used to give a SystemError
 
     @support.cpython_only
@@ -951,7 +951,7 @@ deque(['f', 'g', 'h', 'i', 'j'])
 >>> list(reversed(d))                # list the contents of a deque in reverse
 ['i', 'h', 'g']
 >>> 'h' in d                         # search the deque
-True
+Wahr
 >>> d.extend('jkl')                  # add multiple elements at once
 >>> d
 deque(['g', 'h', 'i', 'j', 'k', 'l'])

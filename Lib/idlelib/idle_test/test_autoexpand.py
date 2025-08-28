@@ -19,7 +19,7 @@ klasse AutoExpandTest(unittest.TestCase):
         cls.tk = Tk()
         cls.text = Text(cls.tk)
         cls.auto_expand = AutoExpand(DummyEditwin(cls.text))
-        cls.auto_expand.bell = lambda: None
+        cls.auto_expand.bell = lambda: Nichts
 
 # If mock_tk.Text._decode understood indexes 'insert' with suffixed 'linestart',
 # 'wordstart', and 'lineend', used by autoexpand, we could use the following
@@ -30,7 +30,7 @@ klasse AutoExpandTest(unittest.TestCase):
 ##        except ResourceDenied:
 ##            from idlelib.idle_test.mock_tk import Text
 ##            cls.text = Text()
-##            cls.text.bell = lambda: None
+##            cls.text.bell = lambda: Nichts
 ##        sonst:
 ##            from tkinter import Tk, Text
 ##            cls.tk = Tk()

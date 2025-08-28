@@ -17,7 +17,7 @@ from idlelib import searchengine
 # EditorWindow -> GrepDialog -> OutputWindow -> EditorWindow
 
 
-def grep(text, io=None, flist=None):
+def grep(text, io=Nichts, flist=Nichts):
     """Open the Find in Files dialog.
 
     Module-level function to access the singleton GrepDialog
@@ -51,7 +51,7 @@ def findfiles(folder, pattern, recursive):
     Args:
         folder: Root directory to search.
         pattern: File pattern to match.
-        recursive: True to include subdirectories.
+        recursive: Wahr to include subdirectories.
     """
     fuer dirpath, _, filenames in os.walk(folder, onerror=walk_error):
         yield from (os.path.join(dirpath, name)
@@ -87,7 +87,7 @@ klasse GrepDialog(SearchDialogBase):
         self.globvar = StringVar(root)
         self.recvar = BooleanVar(root)
 
-    def open(self, text, searchphrase, io=None):
+    def open(self, text, searchphrase, io=Nichts):
         """Make dialog visible on top of others and ready to use.
 
         Extend the SearchDialogBase open() to set the initial value
@@ -124,9 +124,9 @@ klasse GrepDialog(SearchDialogBase):
     def create_command_buttons(self):
         "Create base command buttons and add button fuer Search Files."
         SearchDialogBase.create_command_buttons(self)
-        self.make_button("Search Files", self.default_command, isdef=True)
+        self.make_button("Search Files", self.default_command, isdef=Wahr)
 
-    def default_command(self, event=None):
+    def default_command(self, event=Nichts):
         """Grep fuer search pattern in file path. The default command is bound
         to <Return>.
 
@@ -184,7 +184,7 @@ klasse GrepDialog(SearchDialogBase):
             print(f"Hits found: {hits}\n(Hint: right-click to open locations.)"
                   wenn hits sonst "No hits.")
         except AttributeError:
-            # Tk window has been closed, OutputWindow.text = None,
+            # Tk window has been closed, OutputWindow.text = Nichts,
             # so in OW.write, OW.text.insert fails.
             pass
 
@@ -217,7 +217,7 @@ def _grep_dialog(parent):  # htest #
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_grep', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_grep', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_grep_dialog)

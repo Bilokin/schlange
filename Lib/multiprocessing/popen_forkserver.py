@@ -46,7 +46,7 @@ klasse Popen(popen_fork.Popen):
             reduction.dump(prep_data, buf)
             reduction.dump(process_obj, buf)
         finally:
-            set_spawning_popen(None)
+            set_spawning_popen(Nichts)
 
         self.sentinel, w = forkserver.connect_to_new_process(self._fds)
         # Keep a duplicate of the data pipe's write end as a sentinel of the
@@ -54,16 +54,16 @@ klasse Popen(popen_fork.Popen):
         _parent_w = os.dup(w)
         self.finalizer = util.Finalize(self, util.close_fds,
                                        (_parent_w, self.sentinel))
-        with open(w, 'wb', closefd=True) as f:
+        with open(w, 'wb', closefd=Wahr) as f:
             f.write(buf.getbuffer())
         self.pid = forkserver.read_signed(self.sentinel)
 
     def poll(self, flag=os.WNOHANG):
-        wenn self.returncode is None:
+        wenn self.returncode is Nichts:
             from multiprocessing.connection import wait
-            timeout = 0 wenn flag == os.WNOHANG sonst None
+            timeout = 0 wenn flag == os.WNOHANG sonst Nichts
             wenn not wait([self.sentinel], timeout):
-                return None
+                return Nichts
             try:
                 self.returncode = forkserver.read_signed(self.sentinel)
             except (OSError, EOFError):

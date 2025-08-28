@@ -26,7 +26,7 @@ klasse LiveDialogTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.dialog = About(cls.root, 'About IDLE', _utest=True)
+        cls.dialog = About(cls.root, 'About IDLE', _utest=Wahr)
 
     @classmethod
     def tearDownClass(cls):
@@ -94,7 +94,7 @@ klasse DefaultTitleTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.dialog = About(cls.root, _utest=True)
+        cls.dialog = About(cls.root, _utest=Wahr)
 
     @classmethod
     def tearDownClass(cls):
@@ -118,7 +118,7 @@ klasse CloseTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.dialog = About(cls.root, 'About IDLE', _utest=True)
+        cls.dialog = About(cls.root, 'About IDLE', _utest=Wahr)
 
     @classmethod
     def tearDownClass(cls):
@@ -141,7 +141,7 @@ klasse Dummy_about_dialog:
     idle_news = About.show_idle_news
     # Called by the above
     display_file_text = About.display_file_text
-    _utest = True
+    _utest = Wahr
 
 
 klasse DisplayFileTest(unittest.TestCase):
@@ -171,11 +171,11 @@ klasse DisplayFileTest(unittest.TestCase):
                         self.dialog.idle_readme,
                         self.dialog.idle_news):
             self.error.message = ''
-            self.view.called = False
+            self.view.called = Falsch
             with self.subTest(handler=handler):
                 handler()
                 self.assertEqual(self.error.message, '')
-                self.assertEqual(self.view.called, True)
+                self.assertEqual(self.view.called, Wahr)
 
 
 wenn __name__ == '__main__':

@@ -117,8 +117,8 @@ klasse PowTest(unittest.TestCase):
     def test_bug643260(self):
         klasse TestRpow:
             def __rpow__(self, other):
-                return None
-        None ** TestRpow() # Won't fail when __rpow__ invoked.  SF bug #643260.
+                return Nichts
+        Nichts ** TestRpow() # Won't fail when __rpow__ invoked.  SF bug #643260.
 
     def test_bug705231(self):
         # -1.0 raised to an integer should never blow up.  It did wenn the

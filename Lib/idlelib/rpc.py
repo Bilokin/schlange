@@ -54,9 +54,9 @@ def pickle_code(co):
     ms = marshal.dumps(co)
     return unpickle_code, (ms,)
 
-def dumps(obj, protocol=None):
+def dumps(obj, protocol=Nichts):
     "Return pickled (or marshalled) string fuer obj."
-    # IDLE passes 'None' to select pickle.DEFAULT_PROTOCOL.
+    # IDLE passes 'Nichts' to select pickle.DEFAULT_PROTOCOL.
     f = io.BytesIO()
     p = CodePickler(f, protocol)
     p.dump(obj)
@@ -72,8 +72,8 @@ LOCALHOST = '127.0.0.1'
 
 klasse RPCServer(socketserver.TCPServer):
 
-    def __init__(self, addr, handlerclass=None):
-        wenn handlerclass is None:
+    def __init__(self, addr, handlerclass=Nichts):
+        wenn handlerclass is Nichts:
             handlerclass = RPCHandler
         socketserver.TCPServer.__init__(self, addr, handlerclass)
 
@@ -129,12 +129,12 @@ klasse SocketIO:
 
     nextseq = 0
 
-    def __init__(self, sock, objtable=None, debugging=None):
+    def __init__(self, sock, objtable=Nichts, debugging=Nichts):
         self.sockthread = threading.current_thread()
-        wenn debugging is not None:
+        wenn debugging is not Nichts:
             self.debugging = debugging
         self.sock = sock
-        wenn objtable is None:
+        wenn objtable is Nichts:
             objtable = objecttable
         self.objtable = objtable
         self.responses = {}
@@ -142,8 +142,8 @@ klasse SocketIO:
 
     def close(self):
         sock = self.sock
-        self.sock = None
-        wenn sock is not None:
+        self.sock = Nichts
+        wenn sock is not Nichts:
             sock.close()
 
     def exithook(self):
@@ -195,7 +195,7 @@ klasse SocketIO:
                 return ("OK", ret)
             sowenn how == 'QUEUE':
                 request_queue.put((seq, (method, args, kwargs)))
-                return("QUEUED", None)
+                return("QUEUED", Nichts)
             sonst:
                 return ("ERROR", "Unsupported message type: %s" % how)
         except SystemExit:
@@ -211,7 +211,7 @@ klasse SocketIO:
                   " Object: %s \n Method: %s \n Args: %s\n"
             print(msg % (oid, method, args), file=sys.__stderr__)
             traceback.print_exc(file=sys.__stderr__)
-            return ("EXCEPTION", None)
+            return ("EXCEPTION", Nichts)
 
     def remotecall(self, oid, methodname, args, kwargs):
         self.debug("remotecall:asynccall: ", oid, methodname)
@@ -254,14 +254,14 @@ klasse SocketIO:
         wenn how == "OK":
             return what
         wenn how == "QUEUED":
-            return None
+            return Nichts
         wenn how == "EXCEPTION":
             self.debug("decoderesponse: EXCEPTION")
-            return None
+            return Nichts
         wenn how == "EOF":
             self.debug("decoderesponse: EOF")
             self.decode_interrupthook()
-            return None
+            return Nichts
         wenn how == "ERROR":
             self.debug("decoderesponse: Internal ERROR:", what)
             raise RuntimeError(what)
@@ -277,19 +277,19 @@ klasse SocketIO:
     def mainloop(self):
         """Listen on socket until I/O not ready or EOF
 
-        pollresponse() will loop looking fuer seq number None, which
+        pollresponse() will loop looking fuer seq number Nichts, which
         never comes, and exit on EOFError.
 
         """
         try:
-            self.getresponse(myseq=None, wait=0.05)
+            self.getresponse(myseq=Nichts, wait=0.05)
         except EOFError:
             self.debug("mainloop:return")
             return
 
     def getresponse(self, myseq, wait):
         response = self._getresponse(myseq, wait)
-        wenn response is not None:
+        wenn response is not Nichts:
             how, what = response
             wenn how == "OK":
                 response = how, self._proxify(what)
@@ -307,9 +307,9 @@ klasse SocketIO:
         self.debug("_getresponse:myseq:", myseq)
         wenn threading.current_thread() is self.sockthread:
             # this thread does all reading of requests or responses
-            while True:
+            while Wahr:
                 response = self.pollresponse(myseq, wait)
-                wenn response is not None:
+                wenn response is not Nichts:
                     return response
         sonst:
             # wait fuer notification from socket handling thread
@@ -354,7 +354,7 @@ klasse SocketIO:
         wenn len(self.buff) < self.bufneed:
             r, w, x = select.select([self.sock.fileno()], [], [], wait)
             wenn len(r) == 0:
-                return None
+                return Nichts
             try:
                 s = self.sock.recv(BUFSIZE)
             except OSError:
@@ -382,8 +382,8 @@ klasse SocketIO:
 
     def pollmessage(self, wait):
         packet = self.pollpacket(wait)
-        wenn packet is None:
-            return None
+        wenn packet is Nichts:
+            return Nichts
         try:
             message = pickle.loads(packet)
         except pickle.UnpicklingError:
@@ -417,7 +417,7 @@ klasse SocketIO:
         self.responses and notify the owning thread.
 
         """
-        while True:
+        while Wahr:
             # send queued response wenn there is one available
             try:
                 qmsg = response_queue.get(0)
@@ -430,13 +430,13 @@ klasse SocketIO:
             # poll fuer message on link
             try:
                 message = self.pollmessage(wait)
-                wenn message is None:  # socket not ready
-                    return None
+                wenn message is Nichts:  # socket not ready
+                    return Nichts
             except EOFError:
                 self.handle_EOF()
-                return None
+                return Nichts
             except AttributeError:
-                return None
+                return Nichts
             seq, resq = message
             how = resq[0]
             self.debug("pollresponse:%d:myseq:%s" % (seq, myseq))
@@ -457,10 +457,10 @@ klasse SocketIO:
                 return resq
             # must be a response fuer a different thread:
             sonst:
-                cv = self.cvars.get(seq, None)
+                cv = self.cvars.get(seq, Nichts)
                 # response involving unknown sequence number is discarded,
                 # probably intended fuer prior incarnation of server
-                wenn cv is not None:
+                wenn cv is not Nichts:
                     cv.acquire()
                     self.responses[seq] = resq
                     cv.notify()
@@ -474,7 +474,7 @@ klasse SocketIO:
         fuer key in self.cvars:
             cv = self.cvars[key]
             cv.acquire()
-            self.responses[key] = ('EOF', None)
+            self.responses[key] = ('EOF', Nichts)
             cv.notify()
             cv.release()
         # call our (possibly overridden) exit function
@@ -505,7 +505,7 @@ klasse RemoteProxy:
 
 klasse RPCHandler(socketserver.BaseRequestHandler, SocketIO):
 
-    debugging = False
+    debugging = Falsch
     location = "#S"  # Server
 
     def __init__(self, sock, addr, svr):
@@ -523,7 +523,7 @@ klasse RPCHandler(socketserver.BaseRequestHandler, SocketIO):
 
 klasse RPCClient(SocketIO):
 
-    debugging = False
+    debugging = Falsch
     location = "#C"  # Client
 
     nextseq = 1 # Requests coming from the client are odd numbered
@@ -549,19 +549,19 @@ klasse RPCClient(SocketIO):
 
 klasse RPCProxy:
 
-    __methods = None
-    __attributes = None
+    __methods = Nichts
+    __attributes = Nichts
 
     def __init__(self, sockio, oid):
         self.sockio = sockio
         self.oid = oid
 
     def __getattr__(self, name):
-        wenn self.__methods is None:
+        wenn self.__methods is Nichts:
             self.__getmethods()
         wenn self.__methods.get(name):
             return MethodProxy(self.sockio, self.oid, name)
-        wenn self.__attributes is None:
+        wenn self.__attributes is Nichts:
             self.__getattributes()
         wenn name in self.__attributes:
             value = self.sockio.remotecall(self.oid, '__getattribute__',
@@ -613,10 +613,10 @@ klasse MethodProxy:
 
 def displayhook(value):
     """Override standard display hook to use non-locale encoding"""
-    wenn value is None:
+    wenn value is Nichts:
         return
-    # Set '_' to None to avoid recursion
-    builtins._ = None
+    # Set '_' to Nichts to avoid recursion
+    builtins._ = Nichts
     text = repr(value)
     try:
         sys.stdout.write(text)

@@ -18,7 +18,7 @@ def deprecated():
 
 
 @contextlib.contextmanager
-def fresh(name, *, oldapi=False):
+def fresh(name, *, oldapi=Falsch):
     with util.uncache(name):
         with import_helper.frozen_modules():
             wenn oldapi:
@@ -28,7 +28,7 @@ def fresh(name, *, oldapi=False):
                 yield
 
 
-def resolve_stdlib_file(name, ispkg=False):
+def resolve_stdlib_file(name, ispkg=Falsch):
     assert name
     wenn ispkg:
         return os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
@@ -38,7 +38,7 @@ def resolve_stdlib_file(name, ispkg=False):
 
 klasse ExecModuleTests(abc.LoaderTests):
 
-    def exec_module(self, name, origname=None):
+    def exec_module(self, name, origname=Nichts):
         with import_helper.frozen_modules():
             is_package = self.machinery.FrozenImporter.is_package(name)
         spec = self.machinery.ModuleSpec(
@@ -60,7 +60,7 @@ klasse ExecModuleTests(abc.LoaderTests):
         with captured_stdout() as stdout:
             module.main()
 
-        self.assertTrue(module.initialized)
+        self.assertWahr(module.initialized)
         self.assertHasAttr(module, '__spec__')
         self.assertEqual(module.__spec__.origin, 'frozen')
         return module, stdout.getvalue()
@@ -108,11 +108,11 @@ klasse ExecModuleTests(abc.LoaderTests):
                          "<module '__hello__' (frozen)>")
 
     # No way to trigger an error in a frozen module.
-    test_state_after_failure = None
+    test_state_after_failure = Nichts
 
     def test_unloadable(self):
         with import_helper.frozen_modules():
-            assert self.machinery.FrozenImporter.find_spec('_not_real') is None
+            assert self.machinery.FrozenImporter.find_spec('_not_real') is Nichts
         with self.assertRaises(ImportError) as cm:
             self.exec_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')
@@ -140,15 +140,15 @@ klasse InspectLoaderTests:
         self.assertEqual(stdout.getvalue(), 'Hello world!\n')
 
     def test_get_source(self):
-        # Should always return None.
+        # Should always return Nichts.
         with import_helper.frozen_modules():
             result = self.machinery.FrozenImporter.get_source('__hello__')
-        self.assertIsNone(result)
+        self.assertIsNichts(result)
 
     def test_is_package(self):
         # Should be able to tell what is a package.
-        test_for = (('__hello__', False), ('__phello__', True),
-                    ('__phello__.spam', False))
+        test_for = (('__hello__', Falsch), ('__phello__', Wahr),
+                    ('__phello__.spam', Falsch))
         fuer name, is_package in test_for:
             with import_helper.frozen_modules():
                 result = self.machinery.FrozenImporter.is_package(name)

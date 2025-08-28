@@ -57,7 +57,7 @@ klasse TextWrapper:
         compound words.
       drop_whitespace (default: true)
         Drop leading and trailing whitespace from lines.
-      max_lines (default: None)
+      max_lines (default: Nichts)
         Truncate wrapped lines.
       placeholder (default: ' [...]')
         Append to the last line of truncated text.
@@ -113,15 +113,15 @@ klasse TextWrapper:
                  width=70,
                  initial_indent="",
                  subsequent_indent="",
-                 expand_tabs=True,
-                 replace_whitespace=True,
-                 fix_sentence_endings=False,
-                 break_long_words=True,
-                 drop_whitespace=True,
-                 break_on_hyphens=True,
+                 expand_tabs=Wahr,
+                 replace_whitespace=Wahr,
+                 fix_sentence_endings=Falsch,
+                 break_long_words=Wahr,
+                 drop_whitespace=Wahr,
+                 break_on_hyphens=Wahr,
                  tabsize=8,
                  *,
-                 max_lines=None,
+                 max_lines=Nichts,
                  placeholder=' [...]'):
         self.width = width
         self.initial_indent = initial_indent
@@ -164,12 +164,12 @@ klasse TextWrapper:
         breaks into the following chunks:
           'Look,', ' ', 'goof-', 'ball', ' ', '--', ' ',
           'use', ' ', 'the', ' ', '-b', ' ', 'option!'
-        wenn break_on_hyphens is True, or in:
+        wenn break_on_hyphens is Wahr, or in:
           'Look,', ' ', 'goof-ball', ' ', '--', ' ',
           'use', ' ', 'the', ' ', '-b', ' ', option!'
         otherwise.
         """
-        wenn self.break_on_hyphens is True:
+        wenn self.break_on_hyphens is Wahr:
             chunks = self.wordsep_re.split(text)
         sonst:
             chunks = self.wordsep_simple_re.split(text)
@@ -251,7 +251,7 @@ klasse TextWrapper:
         lines = []
         wenn self.width <= 0:
             raise ValueError("invalid width %r (must be > 0)" % self.width)
-        wenn self.max_lines is not None:
+        wenn self.max_lines is not Nichts:
             wenn self.max_lines > 1:
                 indent = self.subsequent_indent
             sonst:
@@ -308,7 +308,7 @@ klasse TextWrapper:
                 del cur_line[-1]
 
             wenn cur_line:
-                wenn (self.max_lines is None or
+                wenn (self.max_lines is Nichts or
                     len(lines) + 1 < self.max_lines or
                     (not chunks or
                      self.drop_whitespace and
@@ -430,7 +430,7 @@ def dedent(text):
         lines = text.split('\n')
     except (AttributeError, TypeError):
         msg = f'expected str object, not {type(text).__qualname__!r}'
-        raise TypeError(msg) from None
+        raise TypeError(msg) from Nichts
 
     # Get length of leading whitespace, inspired by ``os.path.commonprefix()``.
     non_blank_lines = [l fuer l in lines wenn l and not l.isspace()]
@@ -444,25 +444,25 @@ def dedent(text):
     return '\n'.join([l[margin:] wenn not l.isspace() sonst '' fuer l in lines])
 
 
-def indent(text, prefix, predicate=None):
+def indent(text, prefix, predicate=Nichts):
     """Adds 'prefix' to the beginning of selected lines in 'text'.
 
     If 'predicate' is provided, 'prefix' will only be added to the lines
-    where 'predicate(line)' is True. If 'predicate' is not provided,
+    where 'predicate(line)' is Wahr. If 'predicate' is not provided,
     it will default to adding 'prefix' to all non-empty lines that do not
     consist solely of whitespace characters.
     """
     prefixed_lines = []
-    wenn predicate is None:
-        # str.splitlines(keepends=True) doesn't produce the empty string,
+    wenn predicate is Nichts:
+        # str.splitlines(keepends=Wahr) doesn't produce the empty string,
         # so we need to use `str.isspace()` rather than a truth test.
         # Inlining the predicate leads to a ~30% performance improvement.
-        fuer line in text.splitlines(True):
+        fuer line in text.splitlines(Wahr):
             wenn not line.isspace():
                 prefixed_lines.append(prefix)
             prefixed_lines.append(line)
     sonst:
-        fuer line in text.splitlines(True):
+        fuer line in text.splitlines(Wahr):
             wenn predicate(line):
                 prefixed_lines.append(prefix)
             prefixed_lines.append(line)

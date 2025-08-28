@@ -32,8 +32,8 @@ Generate Plist example:
         aDict = dict(
             anotherString = "<hello & hi there!>",
             aThirdString = "M\xe4ssig, Ma\xdf",
-            aTrueValue = True,
-            aFalseValue = False,
+            aWahrValue = Wahr,
+            aFalschValue = Falsch,
         ),
         someData = b"<binary gunk>",
         someMoreData = b"<lots of binary gunk>" * 10,
@@ -146,7 +146,7 @@ def _date_from_string(s, aware_datetime):
     lst = []
     fuer key in order:
         val = gd[key]
-        wenn val is None:
+        wenn val is Nichts:
             break
         lst.append(int(val))
     wenn aware_datetime:
@@ -164,7 +164,7 @@ def _date_to_string(d, aware_datetime):
 
 def _escape(text):
     m = _controlCharPat.search(text)
-    wenn m is not None:
+    wenn m is not Nichts:
         raise ValueError("strings can't contain control characters; "
                          "use bytes instead")
     text = text.replace("\r\n", "\n")       # convert DOS line endings
@@ -175,10 +175,10 @@ def _escape(text):
     return text
 
 klasse _PlistParser:
-    def __init__(self, dict_type, aware_datetime=False):
+    def __init__(self, dict_type, aware_datetime=Falsch):
         self.stack = []
-        self.current_key = None
-        self.root = None
+        self.current_key = Nichts
+        self.root = Nichts
         self._dict_type = dict_type
         self._aware_datetime = aware_datetime
 
@@ -199,25 +199,25 @@ klasse _PlistParser:
 
     def handle_begin_element(self, element, attrs):
         self.data = []
-        handler = getattr(self, "begin_" + element, None)
-        wenn handler is not None:
+        handler = getattr(self, "begin_" + element, Nichts)
+        wenn handler is not Nichts:
             handler(attrs)
 
     def handle_end_element(self, element):
-        handler = getattr(self, "end_" + element, None)
-        wenn handler is not None:
+        handler = getattr(self, "end_" + element, Nichts)
+        wenn handler is not Nichts:
             handler()
 
     def handle_data(self, data):
         self.data.append(data)
 
     def add_object(self, value):
-        wenn self.current_key is not None:
+        wenn self.current_key is not Nichts:
             wenn not isinstance(self.stack[-1], dict):
                 raise ValueError("unexpected element at line %d" %
                                  self.parser.CurrentLineNumber)
             self.stack[-1][self.current_key] = value
-            self.current_key = None
+            self.current_key = Nichts
         sowenn not self.stack:
             # this is the root object
             self.root = value
@@ -260,10 +260,10 @@ klasse _PlistParser:
         self.stack.pop()
 
     def end_true(self):
-        self.add_object(True)
+        self.add_object(Wahr)
 
     def end_false(self):
-        self.add_object(False)
+        self.add_object(Falsch)
 
     def end_integer(self):
         raw = self.get_data()
@@ -304,8 +304,8 @@ klasse _DumbXMLWriter:
         self._indent_level -= 1
         self.writeln("</%s>" % element)
 
-    def simple_element(self, element, value=None):
-        wenn value is not None:
+    def simple_element(self, element, value=Nichts):
+        wenn value is not Nichts:
             value = _escape(value)
             self.writeln("<%s>%s</%s>" % (element, value, element))
 
@@ -327,7 +327,7 @@ klasse _DumbXMLWriter:
 klasse _PlistWriter(_DumbXMLWriter):
     def __init__(
             self, file, indent_level=0, indent=b"\t", writeHeader=1,
-            sort_keys=True, skipkeys=False, aware_datetime=False):
+            sort_keys=Wahr, skipkeys=Falsch, aware_datetime=Falsch):
 
         wenn writeHeader:
             file.write(PLISTHEADER)
@@ -345,10 +345,10 @@ klasse _PlistWriter(_DumbXMLWriter):
         wenn isinstance(value, str):
             self.simple_element("string", value)
 
-        sowenn value is True:
+        sowenn value is Wahr:
             self.simple_element("true")
 
-        sowenn value is False:
+        sowenn value is Falsch:
             self.simple_element("false")
 
         sowenn isinstance(value, int):
@@ -425,7 +425,7 @@ def _is_fmt_xml(header):
 
     fuer pfx in prefixes:
         wenn header.startswith(pfx):
-            return True
+            return Wahr
 
     # Also check fuer alternative XML encodings, this is slightly
     # overkill because the Apple tools (and plistlib) will not
@@ -444,9 +444,9 @@ def _is_fmt_xml(header):
         fuer start in prefixes:
             prefix = bom + start.decode('ascii').encode(encoding)
             wenn header[:len(prefix)] == prefix:
-                return True
+                return Wahr
 
-    return False
+    return Falsch
 
 #
 # Binary Plist
@@ -469,7 +469,7 @@ klasse _BinaryPlistParser:
 
     see also: http://opensource.apple.com/source/CF/CF-744.18/CFBinaryPList.c
     """
-    def __init__(self, dict_type, aware_datetime=False):
+    def __init__(self, dict_type, aware_datetime=Falsch):
         self._dict_type = dict_type
         self._aware_datime = aware_datetime
 
@@ -537,13 +537,13 @@ klasse _BinaryPlistParser:
         tokenH, tokenL = token & 0xF0, token & 0x0F
 
         wenn token == 0x00:
-            result = None
+            result = Nichts
 
         sowenn token == 0x08:
-            result = False
+            result = Falsch
 
         sowenn token == 0x09:
-            result = True
+            result = Wahr
 
         # The referenced source code also mentions URL (0x0c, 0x0d) and
         # UUID (0x0e), but neither can be generated using the Cocoa libraries.
@@ -642,7 +642,7 @@ def _count_to_size(count):
 _scalars = (str, int, float, datetime.datetime, bytes)
 
 klasse _BinaryPlistWriter (object):
-    def __init__(self, fp, sort_keys, skipkeys, aware_datetime=False):
+    def __init__(self, fp, sort_keys, skipkeys, aware_datetime=Falsch):
         self._fp = fp
         self._sort_keys = sort_keys
         self._skipkeys = skipkeys
@@ -760,13 +760,13 @@ klasse _BinaryPlistWriter (object):
     def _write_object(self, value):
         ref = self._getrefnum(value)
         self._object_offsets[ref] = self._fp.tell()
-        wenn value is None:
+        wenn value is Nichts:
             self._fp.write(b'\x00')
 
-        sowenn value is False:
+        sowenn value is Falsch:
             self._fp.write(b'\x08')
 
-        sowenn value is True:
+        sowenn value is Wahr:
             self._fp.write(b'\x09')
 
         sowenn isinstance(value, int):
@@ -774,7 +774,7 @@ klasse _BinaryPlistWriter (object):
                 try:
                     self._fp.write(struct.pack('>Bq', 0x13, value))
                 except struct.error:
-                    raise OverflowError(value) from None
+                    raise OverflowError(value) from Nichts
             sowenn value < 1 << 8:
                 self._fp.write(struct.pack('>BB', 0x10, value))
             sowenn value < 1 << 16:
@@ -784,7 +784,7 @@ klasse _BinaryPlistWriter (object):
             sowenn value < 1 << 63:
                 self._fp.write(struct.pack('>BQ', 0x13, value))
             sowenn value < 1 << 64:
-                self._fp.write(b'\x14' + value.to_bytes(16, 'big', signed=True))
+                self._fp.write(b'\x14' + value.to_bytes(16, 'big', signed=Wahr))
             sonst:
                 raise OverflowError(value)
 
@@ -881,11 +881,11 @@ _FORMATS={
 }
 
 
-def load(fp, *, fmt=None, dict_type=dict, aware_datetime=False):
+def load(fp, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
     """Read a .plist file. 'fp' should be a readable and binary file object.
     Return the unpacked root object (which usually is a dictionary).
     """
-    wenn fmt is None:
+    wenn fmt is Nichts:
         header = fp.read(32)
         fp.seek(0)
         fuer info in _FORMATS.values():
@@ -903,7 +903,7 @@ def load(fp, *, fmt=None, dict_type=dict, aware_datetime=False):
     return p.parse(fp)
 
 
-def loads(value, *, fmt=None, dict_type=dict, aware_datetime=False):
+def loads(value, *, fmt=Nichts, dict_type=dict, aware_datetime=Falsch):
     """Read a .plist file from a bytes object.
     Return the unpacked root object (which usually is a dictionary).
     """
@@ -916,8 +916,8 @@ def loads(value, *, fmt=None, dict_type=dict, aware_datetime=False):
     return load(fp, fmt=fmt, dict_type=dict_type, aware_datetime=aware_datetime)
 
 
-def dump(value, fp, *, fmt=FMT_XML, sort_keys=True, skipkeys=False,
-         aware_datetime=False):
+def dump(value, fp, *, fmt=FMT_XML, sort_keys=Wahr, skipkeys=Falsch,
+         aware_datetime=Falsch):
     """Write 'value' to a .plist file. 'fp' should be a writable,
     binary file object.
     """
@@ -929,8 +929,8 @@ def dump(value, fp, *, fmt=FMT_XML, sort_keys=True, skipkeys=False,
     writer.write(value)
 
 
-def dumps(value, *, fmt=FMT_XML, skipkeys=False, sort_keys=True,
-          aware_datetime=False):
+def dumps(value, *, fmt=FMT_XML, skipkeys=Falsch, sort_keys=Wahr,
+          aware_datetime=Falsch):
     """Return a bytes object with the contents fuer a .plist file.
     """
     fp = BytesIO()

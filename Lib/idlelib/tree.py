@@ -56,7 +56,7 @@ def listicons(icondir=ICONDIR):
             column = 0
     root.images = images
 
-def wheel_event(event, widget=None):
+def wheel_event(event, widget=Nichts):
     """Handle scrollwheel event.
 
     For wheel up, event.delta = 120*n on Windows, -1*n on darwin,
@@ -76,7 +76,7 @@ def wheel_event(event, widget=None):
     up = {EventType.MouseWheel: event.delta > 0,
           EventType.ButtonPress: event.num == 4}
     lines = -5 wenn up[event.type] sonst 5
-    widget = event.widget wenn widget is None sonst widget
+    widget = event.widget wenn widget is Nichts sonst widget
     widget.yview(SCROLL, lines, 'units')
     return 'break'
 
@@ -90,16 +90,16 @@ klasse TreeNode:
         self.parent = parent
         self.item = item
         self.state = 'collapsed'
-        self.selected = False
+        self.selected = Falsch
         self.children = []
-        self.x = self.y = None
+        self.x = self.y = Nichts
         self.iconimages = {} # cache of PhotoImage instances fuer icons
 
     def destroy(self):
         fuer c in self.children[:]:
             self.children.remove(c)
             c.destroy()
-        self.parent = None
+        self.parent = Nichts
 
     def geticonimage(self, name):
         try:
@@ -113,19 +113,19 @@ klasse TreeNode:
         self.iconimages[name] = image
         return image
 
-    def select(self, event=None):
+    def select(self, event=Nichts):
         wenn self.selected:
             return
         self.deselectall()
-        self.selected = True
+        self.selected = Wahr
         self.canvas.delete(self.image_id)
         self.drawicon()
         self.drawtext()
 
-    def deselect(self, event=None):
+    def deselect(self, event=Nichts):
         wenn not self.selected:
             return
-        self.selected = False
+        self.selected = Falsch
         self.canvas.delete(self.image_id)
         self.drawicon()
         self.drawtext()
@@ -142,7 +142,7 @@ klasse TreeNode:
         fuer child in self.children:
             child.deselecttree()
 
-    def flip(self, event=None):
+    def flip(self, event=Nichts):
         wenn self.state == 'expanded':
             self.collapse()
         sonst:
@@ -150,7 +150,7 @@ klasse TreeNode:
         self.item.OnDoubleClick()
         return "break"
 
-    def expand(self, event=None):
+    def expand(self, event=Nichts):
         wenn not self.item._IsExpandable():
             return
         wenn self.state != 'expanded':
@@ -158,7 +158,7 @@ klasse TreeNode:
             self.update()
             self.view()
 
-    def collapse(self, event=None):
+    def collapse(self, event=Nichts):
         wenn self.state != 'collapsed':
             self.state = 'collapsed'
             self.update()
@@ -233,7 +233,7 @@ klasse TreeNode:
                 id = self.canvas.create_image(x+9, cylast+7, image=image)
                 # XXX This leaks bindings until canvas is deleted:
                 self.canvas.tag_bind(id, "<1>", callback)
-                self.canvas.tag_bind(id, "<Double-1>", lambda x: None)
+                self.canvas.tag_bind(id, "<Double-1>", lambda x: Nichts)
         id = self.canvas.create_line(x+9, y+10, x+9, cylast+7,
             ##stipple="gray50",     # XXX Seems broken in Tk 8.0.x
             fill="gray50")
@@ -296,13 +296,13 @@ klasse TreeNode:
             coords = self.canvas.bbox(id)
             TreeNode.dy = max(20, coords[3] - coords[1] - 3)
 
-    def select_or_edit(self, event=None):
+    def select_or_edit(self, event=Nichts):
         wenn self.selected and self.item.IsEditable():
             self.edit(event)
         sonst:
             self.select(event)
 
-    def edit(self, event=None):
+    def edit(self, event=Nichts):
         self.entry = Entry(self.label, bd=0, highlightthickness=1, width=0)
         self.entry.insert(0, self.label['text'])
         self.entry.selection_range(0, END)
@@ -311,7 +311,7 @@ klasse TreeNode:
         self.entry.bind("<Return>", self.edit_finish)
         self.entry.bind("<Escape>", self.edit_cancel)
 
-    def edit_finish(self, event=None):
+    def edit_finish(self, event=Nichts):
         try:
             entry = self.entry
             del self.entry
@@ -326,7 +326,7 @@ klasse TreeNode:
         self.drawtext()
         self.canvas.focus_set()
 
-    def edit_cancel(self, event=None):
+    def edit_cancel(self, event=Nichts):
         try:
             entry = self.entry
             del self.entry
@@ -355,11 +355,11 @@ klasse TreeItem:
     def GetLabelText(self):
         """Return label text string to display in front of text (if any)."""
 
-    expandable = None
+    expandable = Nichts
 
     def _IsExpandable(self):
         """Do not override!  Called by TreeNode."""
-        wenn self.expandable is None:
+        wenn self.expandable is Nichts:
             self.expandable = self.IsExpandable()
         return self.expandable
 
@@ -497,13 +497,13 @@ def _tree_widget(parent):  # htest #
     sc = ScrolledCanvas(top, bg="white", highlightthickness=0, takefocus=1)
     sc.frame.pack(expand=1, fill="both", side=LEFT)
     item = FileTreeItem(ICONDIR)
-    node = TreeNode(sc.canvas, None, item)
+    node = TreeNode(sc.canvas, Nichts, item)
     node.expand()
 
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_tree', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_tree', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_tree_widget)

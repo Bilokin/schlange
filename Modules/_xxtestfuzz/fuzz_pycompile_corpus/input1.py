@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-def test() -> None:
+def test() -> Nichts:
     x: list[int] = []
     x: dict[int, str] = {}
     x: set[bytes] = {}

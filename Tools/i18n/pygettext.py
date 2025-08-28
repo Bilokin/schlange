@@ -253,7 +253,7 @@ def getFilesForName(name):
             spec = importlib.util.find_spec(name)
             name = spec.origin
         except ImportError:
-            name = None
+            name = Nichts
         wenn not name:
             return []
 
@@ -337,9 +337,9 @@ def parse_spec(spec):
     result = {}
     fuer arg in args.split(','):
         arg = arg.strip()
-        is_context = False
+        is_context = Falsch
         wenn arg.endswith('c'):
-            is_context = True
+            is_context = Wahr
             arg = arg[:-1]
 
         try:
@@ -410,7 +410,7 @@ def process_keywords(keywords, *, no_default_keywords):
     return custom_keywords
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=Wahr)
 klasse Location:
     filename: str
     lineno: int
@@ -422,15 +422,15 @@ klasse Location:
 @dataclass
 klasse Message:
     msgid: str
-    msgid_plural: str | None
-    msgctxt: str | None
+    msgid_plural: str | Nichts
+    msgctxt: str | Nichts
     locations: set[Location] = field(default_factory=set)
-    is_docstring: bool = False
+    is_docstring: bool = Falsch
     comments: list[str] = field(default_factory=list)
 
-    def add_location(self, filename, lineno, msgid_plural=None, *,
-                     is_docstring=False, comments=None):
-        wenn self.msgid_plural is None:
+    def add_location(self, filename, lineno, msgid_plural=Nichts, *,
+                     is_docstring=Falsch, comments=Nichts):
+        wenn self.msgid_plural is Nichts:
             self.msgid_plural = msgid_plural
         self.locations.add(Location(filename, lineno))
         self.is_docstring |= is_docstring
@@ -456,7 +456,7 @@ klasse GettextVisitor(ast.NodeVisitor):
     def __init__(self, options):
         super().__init__()
         self.options = options
-        self.filename = None
+        self.filename = Nichts
         self.messages = {}
         self.comments = {}
 
@@ -487,9 +487,9 @@ klasse GettextVisitor(ast.NodeVisitor):
             return
 
         docstring = ast.get_docstring(node)
-        wenn docstring is not None:
+        wenn docstring is not Nichts:
             lineno = node.body[0].lineno  # The first statement is the docstring
-            self._add_message(lineno, docstring, is_docstring=True)
+            self._add_message(lineno, docstring, is_docstring=Wahr)
 
     def _extract_message(self, node):
         func_name = self._get_func_name(node)
@@ -497,7 +497,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         specs = self.options.keywords.get(func_name, [])
         fuer spec in specs:
             err = self._extract_message_with_spec(node, spec)
-            wenn err is None:
+            wenn err is Nichts:
                 return
             errors.append(err)
 
@@ -513,14 +513,14 @@ klasse GettextVisitor(ast.NodeVisitor):
             print(f'*** {self.filename}:{node.lineno}: '
                   f'No keywords matched gettext call "{func_name}":',
                   file=sys.stderr)
-            fuer spec, err in zip(specs, errors, strict=True):
+            fuer spec, err in zip(specs, errors, strict=Wahr):
                 unparsed = unparse_spec(func_name, spec)
                 print(f'\tkeyword="{unparsed}": {err}', file=sys.stderr)
 
     def _extract_message_with_spec(self, node, spec):
         """Extract a gettext call with the given spec.
 
-        Return None wenn the gettext call was successfully extracted,
+        Return Nichts wenn the gettext call was successfully extracted,
         otherwise return an error message.
         """
         max_index = max(spec.values())
@@ -562,7 +562,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         # the line above the gettext call.
         while lineno >= 1:
             comment = self.comments.get(lineno)
-            wenn comment is None:
+            wenn comment is Nichts:
                 break
             comments.append(comment)
             lineno -= 1
@@ -571,8 +571,8 @@ klasse GettextVisitor(ast.NodeVisitor):
         # return all comments starting from that comment.
         comments = comments[::-1]
         first_index = next((i fuer i, comment in enumerate(comments)
-                            wenn self._is_translator_comment(comment)), None)
-        wenn first_index is None:
+                            wenn self._is_translator_comment(comment)), Nichts)
+        wenn first_index is Nichts:
             return []
         return comments[first_index:]
 
@@ -580,8 +580,8 @@ klasse GettextVisitor(ast.NodeVisitor):
         return comment.startswith(self.options.comment_tags)
 
     def _add_message(
-            self, lineno, msgid, msgid_plural=None, msgctxt=None, *,
-            is_docstring=False, comments=None):
+            self, lineno, msgid, msgid_plural=Nichts, msgctxt=Nichts, *,
+            is_docstring=Falsch, comments=Nichts):
         wenn msgid in self.options.toexclude:
             return
 
@@ -609,8 +609,8 @@ klasse GettextVisitor(ast.NodeVisitor):
             )
 
     @staticmethod
-    def _key_for(msgid, msgctxt=None):
-        wenn msgctxt is not None:
+    def _key_for(msgid, msgctxt=Nichts):
+        wenn msgctxt is not Nichts:
             return (msgctxt, msgid)
         return msgid
 
@@ -621,7 +621,7 @@ klasse GettextVisitor(ast.NodeVisitor):
             case ast.Attribute(attr=attr):
                 return attr
             case _:
-                return None
+                return Nichts
 
     def _is_string_const(self, node):
         return isinstance(node, ast.Constant) and isinstance(node.value, str)
@@ -672,10 +672,10 @@ def write_pot_file(messages, options, fp):
             # comment stating so.  This is to aid translators who may wish
             # to skip translating some unimportant docstrings.
             print('#, docstring', file=fp)
-        wenn msg.msgctxt is not None:
+        wenn msg.msgctxt is not Nichts:
             print('msgctxt', normalize(msg.msgctxt, encoding), file=fp)
         print('msgid', normalize(msg.msgid, encoding), file=fp)
-        wenn msg.msgid_plural is not None:
+        wenn msg.msgid_plural is not Nichts:
             print('msgid_plural', normalize(msg.msgid_plural, encoding), file=fp)
             print('msgstr[0] ""', file=fp)
             print('msgstr[1] ""\n', file=fp)
@@ -721,7 +721,7 @@ def main():
     locations = {'gnu' : options.GNU,
                  'solaris' : options.SOLARIS,
                  }
-    no_default_keywords = False
+    no_default_keywords = Falsch
     # parse options
     fuer opt, arg in opts:
         wenn opt in ('-h', '--help'):
@@ -741,14 +741,14 @@ def main():
         sowenn opt in ('-k', '--keyword'):
             options.keywords.append(arg)
         sowenn opt in ('-K', '--no-default-keywords'):
-            no_default_keywords = True
+            no_default_keywords = Wahr
         sowenn opt in ('-n', '--add-location'):
             options.writelocations = 1
         sowenn opt in ('--no-location',):
             options.writelocations = 0
         sowenn opt in ('-S', '--style'):
             options.locationstyle = locations.get(arg.lower())
-            wenn options.locationstyle is None:
+            wenn options.locationstyle is Nichts:
                 usage(1, f'Invalid value fuer --style: {arg}')
         sowenn opt in ('-o', '--output'):
             options.outfile = arg

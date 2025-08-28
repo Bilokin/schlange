@@ -13,8 +13,8 @@ from email.mime.nonmultipart import MIMENonMultipart
 klasse MIMEAudio(MIMENonMultipart):
     """Class fuer generating audio/* MIME documents."""
 
-    def __init__(self, _audiodata, _subtype=None,
-                 _encoder=encoders.encode_base64, *, policy=None, **_params):
+    def __init__(self, _audiodata, _subtype=Nichts,
+                 _encoder=encoders.encode_base64, *, policy=Nichts, **_params):
         """Create an audio/* type MIME document.
 
         _audiodata contains the bytes fuer the raw audio data.  If this data
@@ -35,9 +35,9 @@ klasse MIMEAudio(MIMENonMultipart):
         constructor, which turns them into parameters on the Content-Type
         header.
         """
-        wenn _subtype is None:
+        wenn _subtype is Nichts:
             _subtype = _what(_audiodata)
-        wenn _subtype is None:
+        wenn _subtype is Nichts:
             raise TypeError('Could not find audio MIME subtype')
         MIMENonMultipart.__init__(self, 'audio', _subtype, policy=policy,
                                   **_params)
@@ -62,7 +62,7 @@ def _what(data):
         wenn res := testfn(data):
             return res
     sonst:
-        return None
+        return Nichts
 
 
 def rule(rulefunc):
@@ -73,11 +73,11 @@ def rule(rulefunc):
 @rule
 def _aiff(h):
     wenn not h.startswith(b'FORM'):
-        return None
+        return Nichts
     wenn h[8:12] in {b'AIFC', b'AIFF'}:
         return 'x-aiff'
     sonst:
-        return None
+        return Nichts
 
 
 @rule
@@ -85,13 +85,13 @@ def _au(h):
     wenn h.startswith(b'.snd'):
         return 'basic'
     sonst:
-        return None
+        return Nichts
 
 
 @rule
 def _wav(h):
     # 'RIFF' <len> 'WAVE' 'fmt ' <len>
     wenn not h.startswith(b'RIFF') or h[8:12] != b'WAVE' or h[12:16] != b'fmt ':
-        return None
+        return Nichts
     sonst:
         return "x-wav"

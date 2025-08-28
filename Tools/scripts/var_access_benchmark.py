@@ -7,7 +7,7 @@
 
 from collections import deque, namedtuple
 
-trials = [None] * 500
+trials = [Nichts] * 500
 steps_per_trial = 25
 
 klasse A(object):

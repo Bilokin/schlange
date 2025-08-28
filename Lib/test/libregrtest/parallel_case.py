@@ -22,15 +22,15 @@ klasse ParallelTestCase(TestCase):
         barrier.wait()
         test_case.run(result)
 
-    def run(self, result=None):
-        wenn result is None:
+    def run(self, result=Nichts):
+        wenn result is Nichts:
             result = test_case.defaultTestResult()
-            startTestRun = getattr(result, 'startTestRun', None)
-            stopTestRun = getattr(result, 'stopTestRun', None)
-            wenn startTestRun is not None:
+            startTestRun = getattr(result, 'startTestRun', Nichts)
+            stopTestRun = getattr(result, 'stopTestRun', Nichts)
+            wenn startTestRun is not Nichts:
                 startTestRun()
         sonst:
-            stopTestRun = None
+            stopTestRun = Nichts
 
         # Called at the beginning of each test. See TestCase.run.
         result.startTest(self)
@@ -44,7 +44,7 @@ klasse ParallelTestCase(TestCase):
             thread = threading.Thread(target=self.run_worker,
                                       args=(case, r, barrier),
                                       name=f"{str(self.test_case)}-{i}",
-                                      daemon=True)
+                                      daemon=Wahr)
             threads.append(thread)
 
         fuer thread in threads:
@@ -61,7 +61,7 @@ klasse ParallelTestCase(TestCase):
         # we no longer have the original exception, just the string format.
         fuer r in results:
             wenn len(r.errors) > 0 or len(r.failures) > 0:
-                result._mirrorOutput = True
+                result._mirrorOutput = Wahr
             result.errors.extend(r.errors)
             result.failures.extend(r.failures)
             result.skipped.extend(r.skipped)
@@ -74,5 +74,5 @@ klasse ParallelTestCase(TestCase):
 
         # Test has finished running
         result.stopTest(self)
-        wenn stopTestRun is not None:
+        wenn stopTestRun is not Nichts:
             stopTestRun()

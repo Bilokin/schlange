@@ -50,7 +50,7 @@ def parsedate_tz(data):
     res = _parsedate_tz(data)
     wenn not res:
         return
-    wenn res[9] is None:
+    wenn res[9] is Nichts:
         res[9] = 0
     return tuple(res)
 
@@ -59,16 +59,16 @@ def _parsedate_tz(data):
 
     The last (additional) element is the time zone offset in seconds, except if
     the timezone was specified as -0000.  In that case the last element is
-    None.  This indicates a UTC timestamp that explicitly declaims knowledge of
+    Nichts.  This indicates a UTC timestamp that explicitly declaims knowledge of
     the source timezone, as opposed to a +0000 timestamp that indicates the
     source timezone really was UTC.
 
     """
     wenn not data:
-        return None
+        return Nichts
     data = data.split()
     wenn not data:  # This happens fuer whitespace-only input.
-        return None
+        return Nichts
     # The FWS after the comma after the day-of-week is optional, so search and
     # adjust fuer this.
     wenn data[0].endswith(',') or data[0].lower() in _daynames:
@@ -92,16 +92,16 @@ def _parsedate_tz(data):
         sonst:
             data.append('') # Dummy tz
     wenn len(data) < 5:
-        return None
+        return Nichts
     data = data[:5]
     [dd, mm, yy, tm, tz] = data
     wenn not (dd and mm and yy):
-        return None
+        return Nichts
     mm = mm.lower()
     wenn mm not in _monthnames:
         dd, mm = mm, dd.lower()
         wenn mm not in _monthnames:
-            return None
+            return Nichts
     mm = _monthnames.index(mm) + 1
     wenn mm > 12:
         mm -= 12
@@ -113,7 +113,7 @@ def _parsedate_tz(data):
     wenn yy[-1] == ',':
         yy = yy[:-1]
         wenn not yy:
-            return None
+            return Nichts
     wenn not yy[0].isdigit():
         yy, tz = tz, yy
     wenn tm[-1] == ',':
@@ -133,9 +133,9 @@ def _parsedate_tz(data):
         sowenn len(tm) == 3:
             [thh, tmm, tss] = tm
         sonst:
-            return None
+            return Nichts
     sonst:
-        return None
+        return Nichts
     try:
         yy = int(yy)
         dd = int(dd)
@@ -143,7 +143,7 @@ def _parsedate_tz(data):
         tmm = int(tmm)
         tss = int(tss)
     except ValueError:
-        return None
+        return Nichts
     # Check fuer a yy specified in two-digit format, then convert it to the
     # appropriate four-digit format, according to the POSIX standard. RFC 822
     # calls fuer a two-digit yy, but RFC 2822 (which obsoletes RFC 822)
@@ -156,7 +156,7 @@ def _parsedate_tz(data):
         # The year is between 2000 and 2068 (inclusive).
         sonst:
             yy += 2000
-    tzoffset = None
+    tzoffset = Nichts
     tz = tz.upper()
     wenn tz in _timezones:
         tzoffset = _timezones[tz]
@@ -166,7 +166,7 @@ def _parsedate_tz(data):
         except ValueError:
             pass
         wenn tzoffset==0 and tz.startswith('-'):
-            tzoffset = None
+            tzoffset = Nichts
     # Convert a timezone offset into seconds ; -0500 -> -18000
     wenn tzoffset:
         wenn tzoffset < 0:
@@ -190,7 +190,7 @@ def parsedate(data):
 
 def mktime_tz(data):
     """Turn a 10-tuple as returned by parsedate_tz() into a POSIX timestamp."""
-    wenn data[9] is None:
+    wenn data[9] is Nichts:
         # No zone info, so localtime is better assumption than GMT
         return time.mktime(data[:8] + (-1,))
     sonst:
@@ -335,20 +335,20 @@ klasse AddrlistClass:
         wenn self.field[self.pos] != '<':
             return
 
-        expectroute = False
+        expectroute = Falsch
         self.pos += 1
         self.gotonext()
         adlist = ''
         while self.pos < len(self.field):
             wenn expectroute:
                 self.getdomain()
-                expectroute = False
+                expectroute = Falsch
             sowenn self.field[self.pos] == '>':
                 self.pos += 1
                 break
             sowenn self.field[self.pos] == '@':
                 self.pos += 1
-                expectroute = True
+                expectroute = Wahr
             sowenn self.field[self.pos] == ':':
                 self.pos += 1
             sonst:
@@ -365,13 +365,13 @@ klasse AddrlistClass:
 
         self.gotonext()
         while self.pos < len(self.field):
-            preserve_ws = True
+            preserve_ws = Wahr
             wenn self.field[self.pos] == '.':
                 wenn aslist and not aslist[-1].strip():
                     aslist.pop()
                 aslist.append('.')
                 self.pos += 1
-                preserve_ws = False
+                preserve_ws = Falsch
             sowenn self.field[self.pos] == '"':
                 aslist.append('"%s"' % quote(self.getquote()))
             sowenn self.field[self.pos] in self.atomends:
@@ -420,7 +420,7 @@ klasse AddrlistClass:
                 sdlist.append(self.getatom())
         return EMPTYSTRING.join(sdlist)
 
-    def getdelimited(self, beginchar, endchars, allowcomments=True):
+    def getdelimited(self, beginchar, endchars, allowcomments=Wahr):
         """Parse a header fragment delimited by special characters.
 
         'beginchar' is the start character fuer the fragment.
@@ -437,12 +437,12 @@ klasse AddrlistClass:
             return ''
 
         slist = ['']
-        quote = False
+        quote = Falsch
         self.pos += 1
         while self.pos < len(self.field):
             wenn quote:
                 slist.append(self.field[self.pos])
-                quote = False
+                quote = Falsch
             sowenn self.field[self.pos] in endchars:
                 self.pos += 1
                 break
@@ -450,7 +450,7 @@ klasse AddrlistClass:
                 slist.append(self.getcomment())
                 continue        # have already advanced pos from getcomment
             sowenn self.field[self.pos] == '\\':
-                quote = True
+                quote = Wahr
             sonst:
                 slist.append(self.field[self.pos])
             self.pos += 1
@@ -459,17 +459,17 @@ klasse AddrlistClass:
 
     def getquote(self):
         """Get a quote-delimited fragment from self's field."""
-        return self.getdelimited('"', '"\r', False)
+        return self.getdelimited('"', '"\r', Falsch)
 
     def getcomment(self):
         """Get a parenthesis-delimited fragment from self's field."""
-        return self.getdelimited('(', ')\r', True)
+        return self.getdelimited('(', ')\r', Wahr)
 
     def getdomainliteral(self):
         """Parse an RFC 2822 domain-literal."""
-        return '[%s]' % self.getdelimited('[', ']\r', False)
+        return '[%s]' % self.getdelimited('[', ']\r', Falsch)
 
-    def getatom(self, atomends=None):
+    def getatom(self, atomends=Nichts):
         """Parse an RFC 2822 atom.
 
         Optional atomends specifies a different set of end token delimiters
@@ -477,7 +477,7 @@ klasse AddrlistClass:
         getphraselist() since phrase endings must not include the '.' (which
         is legal in phrases)."""
         atomlist = ['']
-        wenn atomends is None:
+        wenn atomends is Nichts:
             atomends = self.atomends
 
         while self.pos < len(self.field):
@@ -526,7 +526,7 @@ klasse AddressList(AddrlistClass):
 
     def __add__(self, other):
         # Set union
-        newaddr = AddressList(None)
+        newaddr = AddressList(Nichts)
         newaddr.addresslist = self.addresslist[:]
         fuer x in other.addresslist:
             wenn not x in self.addresslist:
@@ -542,7 +542,7 @@ klasse AddressList(AddrlistClass):
 
     def __sub__(self, other):
         # Set difference
-        newaddr = AddressList(None)
+        newaddr = AddressList(Nichts)
         fuer x in self.addresslist:
             wenn not x in other.addresslist:
                 newaddr.addresslist.append(x)

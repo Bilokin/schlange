@@ -202,7 +202,7 @@ klasse TestFunctions(unittest.TestCase):
 
         def writer():
             os.write(wfd, b'abc')
-            self.assertTrue(write_suspended.wait(support.SHORT_TIMEOUT))
+            self.assertWahr(write_suspended.wait(support.SHORT_TIMEOUT))
             os.write(wfd, b'def')
             write_finished.set()
 
@@ -213,11 +213,11 @@ klasse TestFunctions(unittest.TestCase):
                     termios.tcflow(wfd, termios.TCOOFF)
                 finally:
                     write_suspended.set()
-                self.assertFalse(write_finished.wait(0.5),
+                self.assertFalsch(write_finished.wait(0.5),
                                  'output was not suspended')
             finally:
                 termios.tcflow(wfd, termios.TCOON)
-            self.assertTrue(write_finished.wait(support.SHORT_TIMEOUT),
+            self.assertWahr(write_finished.wait(support.SHORT_TIMEOUT),
                             'output was not resumed')
             self.assertEqual(os.read(rfd, 1024), b'def')
 

@@ -8,7 +8,7 @@ d0 = {}
 d1 = {"one": 1}
 d2 = {"one": 1, "two": 2}
 d3 = {"one": 1, "two": 3, "three": 5}
-d4 = {"one": None, "two": None}
+d4 = {"one": Nichts, "two": Nichts}
 d5 = {"one": 1, "two": 1}
 
 klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
@@ -40,7 +40,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(collections.UserDict().fromkeys('one two'.split()), d4)
         self.assertEqual(collections.UserDict.fromkeys('one two'.split(), 1), d5)
         self.assertEqual(collections.UserDict().fromkeys('one two'.split(), 1), d5)
-        self.assertTrue(u1.fromkeys('one two'.split()) is not u1)
+        self.assertWahr(u1.fromkeys('one two'.split()) is not u1)
         self.assertIsInstance(u1.fromkeys('one two'.split()), collections.UserDict)
         self.assertIsInstance(u2.fromkeys('one two'.split()), collections.UserDict)
 
@@ -147,8 +147,8 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
                              [(kw, 42)])
         self.assertEqual(list(collections.UserDict({}, dict=42).items()),
                          [('dict', 42)])
-        self.assertEqual(list(collections.UserDict({}, dict=None).items()),
-                         [('dict', None)])
+        self.assertEqual(list(collections.UserDict({}, dict=Nichts).items()),
+                         [('dict', Nichts)])
         self.assertEqual(list(collections.UserDict(dict={'a': 42}).items()),
                          [('dict', {'a': 42})])
         self.assertRaises(TypeError, collections.UserDict, 42)
@@ -194,7 +194,7 @@ klasse UserDictTest(mapping_tests.TestHashMappingProtocol):
         klasse F(collections.UserDict):
             def __init__(self):
                 # An instance variable __missing__ should have no effect
-                self.__missing__ = lambda key: None
+                self.__missing__ = lambda key: Nichts
                 collections.UserDict.__init__(self)
         f = F()
         try:

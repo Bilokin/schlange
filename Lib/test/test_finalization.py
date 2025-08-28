@@ -39,7 +39,7 @@ klasse NonGCSimpleBase:
     tp_del_calls = []
     errors = []
 
-    _cleaning = False
+    _cleaning = Falsch
 
     __slots__ = ()
 
@@ -61,13 +61,13 @@ klasse NonGCSimpleBase:
         with support.disable_gc():
             cls.del_calls.clear()
             cls.tp_del_calls.clear()
-            NonGCSimpleBase._cleaning = False
+            NonGCSimpleBase._cleaning = Falsch
             try:
                 yield
                 wenn cls.errors:
                     raise cls.errors[0]
             finally:
-                NonGCSimpleBase._cleaning = True
+                NonGCSimpleBase._cleaning = Wahr
                 cls._cleanup()
 
     def check_sanity(self):
@@ -137,7 +137,7 @@ klasse TestBase:
         gc.garbage[:] = []
 
     def tearDown(self):
-        # None of the tests here should put anything in gc.garbage
+        # Nichts of the tests here should put anything in gc.garbage
         try:
             self.assertEqual(gc.garbage, [])
         finally:
@@ -174,7 +174,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIsNone(wr())
+            self.assertIsNichts(wr())
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -188,18 +188,18 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(ids)
-            self.assertIsNotNone(wr())
+            self.assertIsNotNichts(wr())
             self.clear_survivors()
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-        self.assertIsNone(wr())
+        self.assertIsNichts(wr())
 
     @support.cpython_only
     def test_non_gc(self):
         with SimpleBase.test():
             s = NonGC()
-            self.assertFalse(gc.is_tracked(s))
+            self.assertFalsch(gc.is_tracked(s))
             ids = [id(s)]
             del s
             gc.collect()
@@ -213,7 +213,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
     def test_non_gc_resurrect(self):
         with SimpleBase.test():
             s = NonGCResurrector()
-            self.assertFalse(gc.is_tracked(s))
+            self.assertFalsch(gc.is_tracked(s))
             ids = [id(s)]
             del s
             gc.collect()
@@ -247,7 +247,7 @@ klasse SuicidalSelfCycle(SelfCycleBase, Simple):
         """
         Explicitly break the reference cycle.
         """
-        self.ref = None
+        self.ref = Nichts
 
 
 klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
@@ -265,7 +265,7 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIsNone(wr())
+            self.assertIsNichts(wr())
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
@@ -276,24 +276,24 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             s = SelfCycleResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
-            wrc = weakref.ref(s, lambda x: None)
+            wrc = weakref.ref(s, lambda x: Nichts)
             del s
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors(ids)
-            # This used to be None because weakrefs were cleared before
+            # This used to be Nichts because weakrefs were cleared before
             # calling finalizers.  Now they are cleared after.
-            self.assertIsNotNone(wr())
+            self.assertIsNotNichts(wr())
             # A weakref with a callback is still cleared before calling
             # finalizers.
-            self.assertIsNone(wrc())
+            self.assertIsNichts(wrc())
             # When trying to destroy the object a second time, __del__
             # isn't called anymore (and the object isn't resurrected).
             self.clear_survivors()
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIsNone(wr())
+            self.assertIsNichts(wr())
 
     def test_simple_suicide(self):
         # Test the GC is able to deal with an object that kills its last
@@ -306,34 +306,34 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIsNone(wr())
+            self.assertIsNichts(wr())
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertIsNone(wr())
+            self.assertIsNichts(wr())
 
 
 klasse ChainedBase:
 
     def chain(self, left):
-        self.suicided = False
+        self.suicided = Falsch
         self.left = left
         left.right = self
 
     def check_sanity(self):
         super().check_sanity()
         wenn self.suicided:
-            assert self.left is None
-            assert self.right is None
+            assert self.left is Nichts
+            assert self.right is Nichts
         sonst:
             left = self.left
             wenn left.suicided:
-                assert left.right is None
+                assert left.right is Nichts
             sonst:
                 assert left.right is self
             right = self.right
             wenn right.suicided:
-                assert right.left is None
+                assert right.left is Nichts
             sonst:
                 assert right.left is self
 
@@ -349,9 +349,9 @@ klasse SuicidalChained(ChainedBase, Simple):
         """
         Explicitly break the reference cycle.
         """
-        self.suicided = True
-        self.left = None
-        self.right = None
+        self.suicided = Wahr
+        self.left = Nichts
+        self.right = Nichts
 
 
 klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
@@ -377,7 +377,7 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_survivors([])
-            self.assertEqual([wr() fuer wr in wrs], [None] * N)
+            self.assertEqual([wr() fuer wr in wrs], [Nichts] * N)
             gc.collect()
             self.assert_del_calls(ids)
 
@@ -397,13 +397,13 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
             self.assert_del_calls(ids)
             self.assert_survivors(survivor_ids)
             fuer wr in wrs:
-                # These values used to be None because weakrefs were cleared
+                # These values used to be Nichts because weakrefs were cleared
                 # before calling finalizers.  Now they are cleared after.
-                self.assertIsNotNone(wr())
+                self.assertIsNotNichts(wr())
             fuer wr in wrcs:
                 # Weakrefs with callbacks are still cleared before calling
                 # finalizers.
-                self.assertIsNone(wr())
+                self.assertIsNichts(wr())
             self.clear_survivors()
             gc.collect()
             self.assert_del_calls(ids)
@@ -505,7 +505,7 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
             self.assert_del_calls(ids)
             self.assert_tp_del_calls(ids)
             self.assert_survivors([])
-            self.assertIsNone(wr())
+            self.assertIsNichts(wr())
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_tp_del_calls(ids)
@@ -521,13 +521,13 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
             self.assert_tp_del_calls(ids)
             self.assert_survivors(ids)
             # weakrefs are cleared before tp_del is called.
-            self.assertIsNone(wr())
+            self.assertIsNichts(wr())
             self.clear_survivors()
             gc.collect()
             self.assert_del_calls(ids)
             self.assert_tp_del_calls(ids * 2)
             self.assert_survivors(ids)
-        self.assertIsNone(wr())
+        self.assertIsNichts(wr())
 
     def test_legacy_self_cycle(self):
         # Self-cycles with legacy finalizers end up in gc.garbage.
@@ -541,11 +541,11 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
             self.assert_tp_del_calls([])
             self.assert_survivors([])
             self.assert_garbage(ids)
-            self.assertIsNotNone(wr())
+            self.assertIsNotNichts(wr())
             # Break the cycle to allow collection
-            gc.garbage[0].ref = None
+            gc.garbage[0].ref = Nichts
         self.assert_garbage([])
-        self.assertIsNone(wr())
+        self.assertIsNichts(wr())
 
 
 wenn __name__ == "__main__":

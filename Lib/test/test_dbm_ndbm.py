@@ -29,7 +29,7 @@ klasse DbmTestCase(unittest.TestCase):
         self.assertEqual(self.d[b'bytes'], b'data')
         # get() and setdefault() work as in the dict interface
         self.assertEqual(self.d.get(b'a'), b'b')
-        self.assertIsNone(self.d.get(b'xxx'))
+        self.assertIsNichts(self.d.get(b'xxx'))
         self.assertEqual(self.d.get(b'xxx', b'foo'), b'foo')
         with self.assertRaises(KeyError):
             self.d['xxx']
@@ -76,7 +76,7 @@ klasse DbmTestCase(unittest.TestCase):
             db[b'bytes key \xbd'] = b'bytes value \xbd'
         with dbm.ndbm.open(self.filename, 'r') as db:
             self.assertEqual(list(db.keys()), [b'bytes key \xbd'])
-            self.assertTrue(b'bytes key \xbd' in db)
+            self.assertWahr(b'bytes key \xbd' in db)
             self.assertEqual(db[b'bytes key \xbd'], b'bytes value \xbd')
 
     def test_unicode(self):
@@ -84,8 +84,8 @@ klasse DbmTestCase(unittest.TestCase):
             db['Unicode key \U0001f40d'] = 'Unicode value \U0001f40d'
         with dbm.ndbm.open(self.filename, 'r') as db:
             self.assertEqual(list(db.keys()), ['Unicode key \U0001f40d'.encode()])
-            self.assertTrue('Unicode key \U0001f40d'.encode() in db)
-            self.assertTrue('Unicode key \U0001f40d' in db)
+            self.assertWahr('Unicode key \U0001f40d'.encode() in db)
+            self.assertWahr('Unicode key \U0001f40d' in db)
             self.assertEqual(db['Unicode key \U0001f40d'.encode()],
                              'Unicode value \U0001f40d'.encode())
             self.assertEqual(db['Unicode key \U0001f40d'],
@@ -110,11 +110,11 @@ klasse DbmTestCase(unittest.TestCase):
             self.addCleanup(os_helper.unlink, filename + suffix)
         with dbm.ndbm.open(filename, 'c') as db:
             db[b'key'] = b'value'
-        self.assertTrue(any(os.path.exists(filename + suffix)
+        self.assertWahr(any(os.path.exists(filename + suffix)
                             fuer suffix in ['', '.pag', '.dir', '.db']))
         with dbm.ndbm.open(filename, 'r') as db:
             self.assertEqual(list(db.keys()), [b'key'])
-            self.assertTrue(b'key' in db)
+            self.assertWahr(b'key' in db)
             self.assertEqual(db[b'key'], b'value')
 
     def test_nonexisting_file(self):
@@ -135,12 +135,12 @@ klasse DbmTestCase(unittest.TestCase):
 
     def test_bool_empty(self):
         with dbm.ndbm.open(self.filename, 'c') as db:
-            self.assertFalse(bool(db))
+            self.assertFalsch(bool(db))
 
     def test_bool_not_empty(self):
         with dbm.ndbm.open(self.filename, 'c') as db:
             db['a'] = 'b'
-            self.assertTrue(bool(db))
+            self.assertWahr(bool(db))
 
     def test_bool_on_closed_db_raises(self):
         with dbm.ndbm.open(self.filename, 'c') as db:

@@ -278,9 +278,9 @@ klasse ReprTests(unittest.TestCase):
             {
                 'object': (),
                 'tests': (
-                    (dict(indent=None), '()'),
-                    (dict(indent=False), '()'),
-                    (dict(indent=True), '()'),
+                    (dict(indent=Nichts), '()'),
+                    (dict(indent=Falsch), '()'),
+                    (dict(indent=Wahr), '()'),
                     (dict(indent=0), '()'),
                     (dict(indent=1), '()'),
                     (dict(indent=4), '()'),
@@ -293,9 +293,9 @@ klasse ReprTests(unittest.TestCase):
             {
                 'object': '',
                 'tests': (
-                    (dict(indent=None), "''"),
-                    (dict(indent=False), "''"),
-                    (dict(indent=True), "''"),
+                    (dict(indent=Nichts), "''"),
+                    (dict(indent=Falsch), "''"),
+                    (dict(indent=Wahr), "''"),
                     (dict(indent=0), "''"),
                     (dict(indent=1), "''"),
                     (dict(indent=4), "''"),
@@ -306,25 +306,25 @@ klasse ReprTests(unittest.TestCase):
                 ),
             },
             {
-                'object': [1, 'spam', {'eggs': True, 'ham': []}],
+                'object': [1, 'spam', {'eggs': Wahr, 'ham': []}],
                 'tests': (
-                    (dict(indent=None), '''\
-                        [1, 'spam', {'eggs': True, 'ham': []}]'''),
-                    (dict(indent=False), '''\
+                    (dict(indent=Nichts), '''\
+                        [1, 'spam', {'eggs': Wahr, 'ham': []}]'''),
+                    (dict(indent=Falsch), '''\
                         [
                         1,
                         'spam',
                         {
-                        'eggs': True,
+                        'eggs': Wahr,
                         'ham': [],
                         },
                         ]'''),
-                    (dict(indent=True), '''\
+                    (dict(indent=Wahr), '''\
                         [
                          1,
                          'spam',
                          {
-                          'eggs': True,
+                          'eggs': Wahr,
                           'ham': [],
                          },
                         ]'''),
@@ -333,7 +333,7 @@ klasse ReprTests(unittest.TestCase):
                         1,
                         'spam',
                         {
-                        'eggs': True,
+                        'eggs': Wahr,
                         'ham': [],
                         },
                         ]'''),
@@ -342,7 +342,7 @@ klasse ReprTests(unittest.TestCase):
                          1,
                          'spam',
                          {
-                          'eggs': True,
+                          'eggs': Wahr,
                           'ham': [],
                          },
                         ]'''),
@@ -351,7 +351,7 @@ klasse ReprTests(unittest.TestCase):
                             1,
                             'spam',
                             {
-                                'eggs': True,
+                                'eggs': Wahr,
                                 'ham': [],
                             },
                         ]'''),
@@ -360,7 +360,7 @@ klasse ReprTests(unittest.TestCase):
                             1,
                             'spam',
                             {
-                                'eggs': True,
+                                'eggs': Wahr,
                                 'ham': [],
                             },
                         ]'''),
@@ -369,7 +369,7 @@ klasse ReprTests(unittest.TestCase):
                         1,
                         'spam',
                         {
-                        'eggs': True,
+                        'eggs': Wahr,
                         'ham': [],
                         },
                         ]'''),
@@ -378,7 +378,7 @@ klasse ReprTests(unittest.TestCase):
                         -->1,
                         -->'spam',
                         -->{
-                        -->-->'eggs': True,
+                        -->-->'eggs': Wahr,
                         -->-->'ham': [],
                         -->},
                         ]'''),
@@ -387,7 +387,7 @@ klasse ReprTests(unittest.TestCase):
                         ....1,
                         ....'spam',
                         ....{
-                        ........'eggs': True,
+                        ........'eggs': Wahr,
                         ........'ham': [],
                         ....},
                         ]'''),
@@ -402,9 +402,9 @@ klasse ReprTests(unittest.TestCase):
                     ],
                 },
                 'tests': (
-                    (dict(indent=None), '''\
+                    (dict(indent=Nichts), '''\
                         {1: 'two', b'three': [(4.5, 6.25), [{8, 9}, frozenset({10, 11})]]}'''),
-                    (dict(indent=False), '''\
+                    (dict(indent=Falsch), '''\
                         {
                         1: 'two',
                         b'three': [
@@ -424,7 +424,7 @@ klasse ReprTests(unittest.TestCase):
                         ],
                         ],
                         }'''),
-                    (dict(indent=True), '''\
+                    (dict(indent=Wahr), '''\
                         {
                          1: 'two',
                          b'three': [
@@ -587,15 +587,15 @@ klasse ReprTests(unittest.TestCase):
                         self.assertEqual(resulting_repr, expected_repr)
 
     def test_invalid_indent(self):
-        test_object = [1, 'spam', {'eggs': True, 'ham': []}]
+        test_object = [1, 'spam', {'eggs': Wahr, 'ham': []}]
         test_cases = [
             (-1, (ValueError, '[Nn]egative|[Pp]ositive')),
             (-4, (ValueError, '[Nn]egative|[Pp]ositive')),
-            ((), (TypeError, None)),
-            ([], (TypeError, None)),
-            ((4,), (TypeError, None)),
-            ([4,], (TypeError, None)),
-            (object(), (TypeError, None)),
+            ((), (TypeError, Nichts)),
+            ([], (TypeError, Nichts)),
+            ((4,), (TypeError, Nichts)),
+            ([4,], (TypeError, Nichts)),
+            (object(), (TypeError, Nichts)),
         ]
         fuer indent, (expected_error, expected_msg) in test_cases:
             with self.subTest(indent=indent):
@@ -660,10 +660,10 @@ klasse LongReprTest(unittest.TestCase):
         self.pkgname = os.path.join(self.longname)
         self.subpkgname = os.path.join(self.longname, self.longname)
         # Make the package and subpackage
-        shutil.rmtree(self.pkgname, ignore_errors=True)
+        shutil.rmtree(self.pkgname, ignore_errors=Wahr)
         os.mkdir(self.pkgname)
         create_empty_file(os.path.join(self.pkgname, '__init__.py'))
-        shutil.rmtree(self.subpkgname, ignore_errors=True)
+        shutil.rmtree(self.subpkgname, ignore_errors=Wahr)
         os.mkdir(self.subpkgname)
         create_empty_file(os.path.join(self.subpkgname, '__init__.py'))
         # Remember where we are
@@ -707,7 +707,7 @@ klasse LongReprTest(unittest.TestCase):
             print("cached_path_len =", cached_path_len)
 
     def test_module(self):
-        self.maxDiff = None
+        self.maxDiff = Nichts
         self._check_path_limitations(self.pkgname)
         create_empty_file(os.path.join(self.subpkgname, self.pkgname + '.py'))
         importlib.invalidate_caches()

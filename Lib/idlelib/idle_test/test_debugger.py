@@ -40,7 +40,7 @@ klasse IdbTest(unittest.TestCase):
         # Create test and code objects to simulate a debug session.
         code_obj = compile(TEST_CODE, 'idlelib/file.py', mode='exec')
         frame1 = MockFrame(code_obj, 1)
-        frame1.f_back = None
+        frame1.f_back = Nichts
         frame2 = MockFrame(code_obj, 2)
         frame2.f_back = frame1
         cls.frame = frame2
@@ -58,7 +58,7 @@ klasse IdbTest(unittest.TestCase):
 
     def test_user_exception(self):
         # Test that .user_exception() creates a string message fuer a frame.
-        exc_info = (type(ValueError), ValueError(), None)
+        exc_info = (type(ValueError), ValueError(), Nichts)
         self.gui.interaction = Mock()
         self.idb.user_exception(self.frame, exc_info)
         self.gui.interaction.assert_called_once_with(
@@ -72,21 +72,21 @@ klasse FunctionTest(unittest.TestCase):
         rpc_obj = compile(TEST_CODE,'rpc.py', mode='exec')
         rpc_frame = MockFrame(rpc_obj, 2)
         rpc_frame.f_back = rpc_frame
-        self.assertTrue(debugger._in_rpc_code(rpc_frame))
+        self.assertWahr(debugger._in_rpc_code(rpc_frame))
         self.assertEqual(debugger._frame2message(rpc_frame),
                          'rpc.py:2: <module>()')
 
         code_obj = compile(TEST_CODE, 'idlelib/debugger.py', mode='exec')
         code_frame = MockFrame(code_obj, 1)
-        code_frame.f_back = None
-        self.assertFalse(debugger._in_rpc_code(code_frame))
+        code_frame.f_back = Nichts
+        self.assertFalsch(debugger._in_rpc_code(code_frame))
         self.assertEqual(debugger._frame2message(code_frame),
                          'debugger.py:1: <module>()')
 
         code_frame.f_back = code_frame
-        self.assertFalse(debugger._in_rpc_code(code_frame))
+        self.assertFalsch(debugger._in_rpc_code(code_frame))
         code_frame.f_back = rpc_frame
-        self.assertTrue(debugger._in_rpc_code(code_frame))
+        self.assertWahr(debugger._in_rpc_code(code_frame))
 
 
 klasse DebuggerTest(unittest.TestCase):
@@ -163,7 +163,7 @@ klasse DebuggerTest(unittest.TestCase):
         self.debugger.frame = test_frame
 
         self.debugger.flist = Mock()
-        with patch('idlelib.debugger.os.path.exists', return_value=True):
+        with patch('idlelib.debugger.os.path.exists', return_value=Wahr):
             self.debugger.sync_source_line()
         self.debugger.flist.gotofileline.assert_called_once_with('test_sync.py', 1)
 
@@ -214,17 +214,17 @@ klasse DebuggerGuiTest(unittest.TestCase):
         self.assertEqual(self.debugger.stackviewer.gui, self.debugger)
 
     def test_show_stack_with_frame(self):
-        test_frame = MockFrame(None, None)
+        test_frame = MockFrame(Nichts, Nichts)
         self.debugger.frame = test_frame
 
         # Reset the stackviewer to force it to be recreated.
-        self.debugger.stackviewer = None
+        self.debugger.stackviewer = Nichts
         self.idb.get_stack.return_value = ([], 0)
         self.debugger.show_stack()
 
         # Check that the newly created stackviewer has the test gui as a field.
         self.assertEqual(self.debugger.stackviewer.gui, self.debugger)
-        self.idb.get_stack.assert_called_once_with(test_frame, None)
+        self.idb.get_stack.assert_called_once_with(test_frame, Nichts)
 
 
 klasse StackViewerTest(unittest.TestCase):
@@ -247,13 +247,13 @@ klasse StackViewerTest(unittest.TestCase):
             (MockFrame(self.code, 2), 2)
         ]
         # Create a stackviewer and load the test stack.
-        self.sv = debugger.StackViewer(self.root, None, None)
+        self.sv = debugger.StackViewer(self.root, Nichts, Nichts)
         self.sv.load_stack(self.stack)
 
     def test_init(self):
         # Test creation of StackViewer.
-        gui = None
-        flist = None
+        gui = Nichts
+        flist = Nichts
         master_window = self.root
         sv = debugger.StackViewer(master_window, flist, gui)
         self.assertHasAttr(sv, 'stack')
@@ -262,7 +262,7 @@ klasse StackViewerTest(unittest.TestCase):
         # Test the .load_stack() method against a fixed test stack.
         # Check the test stack is assigned and the list contains the repr of them.
         self.assertEqual(self.sv.stack, self.stack)
-        self.assertTrue('?.<module>(), line 1:' in self.sv.get(0))
+        self.assertWahr('?.<module>(), line 1:' in self.sv.get(0))
         self.assertEqual(self.sv.get(1), '?.<module>(), line 2: ')
 
     def test_show_source(self):
@@ -270,7 +270,7 @@ klasse StackViewerTest(unittest.TestCase):
         # Patch out the file list to monitor it
         self.sv.flist = Mock()
         # Patch out isfile to pretend file exists.
-        with patch('idlelib.debugger.os.path.isfile', return_value=True) as isfile:
+        with patch('idlelib.debugger.os.path.isfile', return_value=Wahr) as isfile:
             self.sv.show_source(1)
             isfile.assert_called_once_with('test_stackviewer.py')
             self.sv.flist.open.assert_called_once_with('test_stackviewer.py')

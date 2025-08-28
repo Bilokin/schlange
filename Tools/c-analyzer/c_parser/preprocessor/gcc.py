@@ -67,11 +67,11 @@ POST_ARGS = (
 
 
 def preprocess(filename,
-               incldirs=None,
-               includes=None,
-               macros=None,
-               samefiles=None,
-               cwd=None,
+               incldirs=Nichts,
+               includes=Nichts,
+               macros=Nichts,
+               samefiles=Nichts,
+               cwd=Nichts,
                ):
     wenn not cwd or not os.path.isabs(cwd):
         cwd = os.path.abspath(cwd or '.')
@@ -99,7 +99,7 @@ def preprocess(filename,
     return _iter_lines(text, filename, samefiles, cwd)
 
 
-def _iter_lines(text, reqfile, samefiles, cwd, raw=False):
+def _iter_lines(text, reqfile, samefiles, cwd, raw=Falsch):
     lines = iter(text.splitlines())
 
     # The first line is special.
@@ -120,7 +120,7 @@ def _iter_lines(text, reqfile, samefiles, cwd, raw=False):
     # Do all the CLI-provided includes.
     filter_reqfile = (lambda f: _filter_reqfile(f, reqfile, samefiles))
     make_info = (lambda lno: _common.FileInfo(reqfile, lno))
-    last = None
+    last = Nichts
     fuer line in lines:
         assert last != reqfile, (last,)
         lno, included, flags = _parse_marker_line(line, reqfile)
@@ -187,7 +187,7 @@ def _iter_top_include_lines(lines, topfile, cwd,
         sowenn not files:
             raise NotImplementedError((line,))
         sowenn filter_reqfile(files[-1]):
-            assert lno is not None, (line, files[-1])
+            assert lno is not Nichts, (line, files[-1])
             wenn (m := PREPROC_DIRECTIVE_RE.match(line)):
                 name, = m.groups()
                 wenn name != 'pragma':
@@ -200,15 +200,15 @@ def _iter_top_include_lines(lines, topfile, cwd,
                     make_info(lno),
                     'source',
                     line or '',
-                    None,
+                    Nichts,
                 )
             lno += 1
 
 
-def _parse_marker_line(line, reqfile=None):
+def _parse_marker_line(line, reqfile=Nichts):
     m = LINE_MARKER_RE.match(line)
     wenn not m:
-        return None, None, None
+        return Nichts, Nichts, Nichts
     lno, origfile, flags = m.groups()
     lno = int(lno)
     assert origfile not in META_FILES, (line,)
@@ -237,7 +237,7 @@ def _strip_directives(line, partial=0):
     # We assume there are no string literals with parens in directive bodies.
     while partial > 0:
         wenn not (m := re.match(r'[^{}]*([()])', line)):
-            return None, partial
+            return Nichts, partial
         delim, = m.groups()
         partial += 1 wenn delim == '(' sonst -1  # opened/closed
         line = line[m.end():]
@@ -260,12 +260,12 @@ def _strip_directives(line, partial=0):
 
 def _filter_reqfile(current, reqfile, samefiles):
     wenn current == reqfile:
-        return True
+        return Wahr
     wenn current == '<stdin>':
-        return True
+        return Wahr
     wenn current in samefiles:
-        return True
-    return False
+        return Wahr
+    return Falsch
 
 
 def _normpath(filename, cwd):

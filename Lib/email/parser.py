@@ -14,7 +14,7 @@ from email._policybase import compat32
 
 
 klasse Parser:
-    def __init__(self, _class=None, *, policy=compat32):
+    def __init__(self, _class=Nichts, *, policy=compat32):
         """Parser of RFC 2822 and MIME email messages.
 
         Creates an in-memory object tree representing the email message, which
@@ -38,12 +38,12 @@ klasse Parser:
         self._class = _class
         self.policy = policy
 
-    def parse(self, fp, headersonly=False):
+    def parse(self, fp, headersonly=Falsch):
         """Create a message structure from the data in a file.
 
         Reads all the data from the file and returns the root of the message
         structure.  Optional headersonly is a flag specifying whether to stop
-        parsing after reading the headers or not.  The default is False,
+        parsing after reading the headers or not.  The default is Falsch,
         meaning it parses the entire contents of the file.
         """
         feedparser = FeedParser(self._class, policy=self.policy)
@@ -53,23 +53,23 @@ klasse Parser:
             feedparser.feed(data)
         return feedparser.close()
 
-    def parsestr(self, text, headersonly=False):
+    def parsestr(self, text, headersonly=Falsch):
         """Create a message structure from a string.
 
         Returns the root of the message structure.  Optional headersonly is a
         flag specifying whether to stop parsing after reading the headers or
-        not.  The default is False, meaning it parses the entire contents of
+        not.  The default is Falsch, meaning it parses the entire contents of
         the file.
         """
         return self.parse(StringIO(text), headersonly=headersonly)
 
 
 klasse HeaderParser(Parser):
-    def parse(self, fp, headersonly=True):
-        return Parser.parse(self, fp, True)
+    def parse(self, fp, headersonly=Wahr):
+        return Parser.parse(self, fp, Wahr)
 
-    def parsestr(self, text, headersonly=True):
-        return Parser.parsestr(self, text, True)
+    def parsestr(self, text, headersonly=Wahr):
+        return Parser.parsestr(self, text, Wahr)
 
 
 klasse BytesParser:
@@ -92,12 +92,12 @@ klasse BytesParser:
         """
         self.parser = Parser(*args, **kw)
 
-    def parse(self, fp, headersonly=False):
+    def parse(self, fp, headersonly=Falsch):
         """Create a message structure from the data in a binary file.
 
         Reads all the data from the file and returns the root of the message
         structure.  Optional headersonly is a flag specifying whether to stop
-        parsing after reading the headers or not.  The default is False,
+        parsing after reading the headers or not.  The default is Falsch,
         meaning it parses the entire contents of the file.
         """
         fp = TextIOWrapper(fp, encoding='ascii', errors='surrogateescape')
@@ -107,12 +107,12 @@ klasse BytesParser:
             fp.detach()
 
 
-    def parsebytes(self, text, headersonly=False):
+    def parsebytes(self, text, headersonly=Falsch):
         """Create a message structure from a byte string.
 
         Returns the root of the message structure.  Optional headersonly is a
         flag specifying whether to stop parsing after reading the headers or
-        not.  The default is False, meaning it parses the entire contents of
+        not.  The default is Falsch, meaning it parses the entire contents of
         the file.
         """
         text = text.decode('ASCII', errors='surrogateescape')
@@ -120,8 +120,8 @@ klasse BytesParser:
 
 
 klasse BytesHeaderParser(BytesParser):
-    def parse(self, fp, headersonly=True):
-        return BytesParser.parse(self, fp, headersonly=True)
+    def parse(self, fp, headersonly=Wahr):
+        return BytesParser.parse(self, fp, headersonly=Wahr)
 
-    def parsebytes(self, text, headersonly=True):
-        return BytesParser.parsebytes(self, text, headersonly=True)
+    def parsebytes(self, text, headersonly=Wahr):
+        return BytesParser.parsebytes(self, text, headersonly=Wahr)

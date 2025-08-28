@@ -26,8 +26,8 @@ klasse call_function_TestCase(unittest.TestCase):
         hdll = kernel32.LoadLibraryA(b"kernel32")
         funcaddr = kernel32.GetProcAddress(hdll, b"GetModuleHandleA")
 
-        self.assertEqual(_ctypes.call_function(funcaddr, (None,)),
-                         kernel32.GetModuleHandleA(None))
+        self.assertEqual(_ctypes.call_function(funcaddr, (Nichts,)),
+                         kernel32.GetModuleHandleA(Nichts))
 
 
 klasse CallbackTracbackTestCase(unittest.TestCase):
@@ -43,17 +43,17 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
     # raised in a callback function, the interpreter exits.
 
     @contextlib.contextmanager
-    def expect_unraisable(self, exc_type, exc_msg=None):
+    def expect_unraisable(self, exc_type, exc_msg=Nichts):
         with support.catch_unraisable_exception() as cm:
             yield
 
             self.assertIsInstance(cm.unraisable.exc_value, exc_type)
-            wenn exc_msg is not None:
+            wenn exc_msg is not Nichts:
                 self.assertEqual(str(cm.unraisable.exc_value), exc_msg)
             self.assertEqual(cm.unraisable.err_msg,
                              f"Exception ignored while calling ctypes "
                              f"callback function {callback_func!r}")
-            self.assertIsNone(cm.unraisable.object)
+            self.assertIsNichts(cm.unraisable.object)
 
     def test_ValueError(self):
         cb = CFUNCTYPE(c_int, c_int)(callback_func)

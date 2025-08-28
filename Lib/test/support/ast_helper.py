@@ -27,7 +27,7 @@ klasse ASTTestMixin:
                         traverse_compare(value1, value2)
             sowenn isinstance(a, list):
                 try:
-                    fuer node1, node2 in zip(a, b, strict=True):
+                    fuer node1, node2 in zip(a, b, strict=Wahr):
                         traverse_compare(node1, node2)
                 except ValueError:
                     # Attempt a "pretty" error ala assertSequenceEqual()
@@ -40,7 +40,7 @@ klasse ASTTestMixin:
                         what = "Second"
                         diff = len2 - len1
                     msg = f"{what} list contains {diff} additional elements."
-                    raise self.failureException(msg) from None
+                    raise self.failureException(msg) from Nichts
             sowenn a != b:
                 self.fail(f"{a!r} != {b!r}")
         traverse_compare(ast1, ast2)

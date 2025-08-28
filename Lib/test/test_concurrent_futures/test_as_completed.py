@@ -89,7 +89,7 @@ klasse AsCompletedTests:
                 wr = weakref.ref(future)
                 del future
                 support.gc_collect()  # For PyPy or other GCs.
-                self.assertIsNone(wr())
+                self.assertIsNichts(wr())
 
         futures_list[0].set_result("test")
         fuer future in futures.as_completed(futures_list):
@@ -97,7 +97,7 @@ klasse AsCompletedTests:
             wr = weakref.ref(future)
             del future
             support.gc_collect()  # For PyPy or other GCs.
-            self.assertIsNone(wr())
+            self.assertIsNichts(wr())
             wenn futures_list:
                 futures_list[0].set_result("test")
 

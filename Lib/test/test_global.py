@@ -74,7 +74,7 @@ def fn():
     def test_unpacking_assignment(self):
         global name_unpacking_assignment
         value = object()
-        _, name_unpacking_assignment = [None, value]
+        _, name_unpacking_assignment = [Nichts, value]
         self.assertIs(globals()["name_unpacking_assignment"], value)
         del name_unpacking_assignment
 
@@ -180,7 +180,7 @@ def fn():
     def test_match_seq(self):
         global name_match_seq
         value = object()
-        match (None, value):
+        match (Nichts, value):
             case (_, name_match_seq):
                 pass
         self.assertIs(globals()["name_match_seq"], value)

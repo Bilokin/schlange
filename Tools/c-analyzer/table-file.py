@@ -19,7 +19,7 @@ def iter_clean_lines(lines):
 def parse_table_lines(lines):
     lines = iter_clean_lines(lines)
 
-    group = None
+    group = Nichts
     prev = ''
     fuer line, rawline in lines:
         wenn line.startswith('## '):
@@ -28,21 +28,21 @@ def parse_table_lines(lines):
                 assert prev, (line, rawline)
                 kind, after, _ = group
                 assert kind and kind != 'section-group', (group, line, rawline)
-                assert after is not None, (group, line, rawline)
+                assert after is not Nichts, (group, line, rawline)
             sonst:
                 assert not prev, (prev, line, rawline)
-                kind, after = group = ('section-group', None)
+                kind, after = group = ('section-group', Nichts)
             title = line[3:].lstrip()
             assert title, (line, rawline)
-            wenn after is not None:
+            wenn after is not Nichts:
                 try:
                     line, rawline = next(lines)
                 except StopIteration:
-                    line = None
+                    line = Nichts
                 wenn line != after:
                     raise NotImplementedError((group, line, rawline))
             yield kind, title
-            group = None
+            group = Nichts
         sowenn group:
             raise NotImplementedError((group, line, rawline))
         sowenn line.startswith('##---'):
@@ -57,19 +57,19 @@ def parse_table_lines(lines):
 
 
 def iter_sections(lines):
-    header = None
+    header = Nichts
     section = []
     fuer kind, value in parse_table_lines(lines):
         wenn kind == 'row':
             wenn not section:
-                wenn header is None:
+                wenn header is Nichts:
                     header = value
                     continue
                 raise NotImplementedError(repr(value))
             yield tuple(section), value
         sonst:
-            wenn header is None:
-                header = False
+            wenn header is Nichts:
+                header = Falsch
             start = KINDS.index(kind)
             section[start:] = [value]
 
@@ -132,7 +132,7 @@ def cmd_count_by_section(lines):
 #############################
 # the script
 
-def parse_args(argv=None, prog=None):
+def parse_args(argv=Nichts, prog=Nichts):
     import argparse
     parser = argparse.ArgumentParser(prog=prog)
     parser.add_argument('filename')

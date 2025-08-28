@@ -25,7 +25,7 @@ klasse CopyTestBase:
         target = self.target_root / 'copyA'
         result = source.copy(target)
         self.assertEqual(result, target)
-        self.assertTrue(self.target_ground.isfile(target))
+        self.assertWahr(self.target_ground.isfile(target))
         self.assertEqual(self.source_ground.readbytes(source),
                          self.target_ground.readbytes(result))
 
@@ -35,7 +35,7 @@ klasse CopyTestBase:
         self.source_ground.create_file(source, b'')
         result = source.copy(target)
         self.assertEqual(result, target)
-        self.assertTrue(self.target_ground.isfile(target))
+        self.assertWahr(self.target_ground.isfile(target))
         self.assertEqual(self.target_ground.readbytes(result), b'')
 
     def test_copy_file_to_existing_file(self):
@@ -47,7 +47,7 @@ klasse CopyTestBase:
                 stack.enter_context(self.assertWarns(UserWarning))
             result = source.copy(target)
         self.assertEqual(result, target)
-        self.assertTrue(self.target_ground.isfile(target))
+        self.assertWahr(self.target_ground.isfile(target))
         self.assertEqual(self.source_ground.readbytes(source),
                          self.target_ground.readbytes(result))
 
@@ -62,18 +62,18 @@ klasse CopyTestBase:
     def test_copy_file_to_itself(self):
         source = self.source_root / 'fileA'
         self.assertRaises(OSError, source.copy, source)
-        self.assertRaises(OSError, source.copy, source, follow_symlinks=False)
+        self.assertRaises(OSError, source.copy, source, follow_symlinks=Falsch)
 
     def test_copy_dir(self):
         source = self.source_root / 'dirC'
         target = self.target_root / 'copyC'
         result = source.copy(target)
         self.assertEqual(result, target)
-        self.assertTrue(self.target_ground.isdir(target))
-        self.assertTrue(self.target_ground.isfile(target / 'fileC'))
+        self.assertWahr(self.target_ground.isdir(target))
+        self.assertWahr(self.target_ground.isfile(target / 'fileC'))
         self.assertEqual(self.target_ground.readtext(target / 'fileC'), 'this is file C\n')
-        self.assertTrue(self.target_ground.isdir(target / 'dirD'))
-        self.assertTrue(self.target_ground.isfile(target / 'dirD' / 'fileD'))
+        self.assertWahr(self.target_ground.isdir(target / 'dirD'))
+        self.assertWahr(self.target_ground.isfile(target / 'dirD' / 'fileD'))
         self.assertEqual(self.target_ground.readtext(target / 'dirD' / 'fileD'), 'this is file D\n')
 
     def test_copy_dir_follow_symlinks_true(self):
@@ -85,13 +85,13 @@ klasse CopyTestBase:
         self.source_ground.create_symlink(source / 'linkD', 'dirD')
         result = source.copy(target)
         self.assertEqual(result, target)
-        self.assertTrue(self.target_ground.isdir(target))
-        self.assertFalse(self.target_ground.islink(target / 'linkC'))
-        self.assertTrue(self.target_ground.isfile(target / 'linkC'))
+        self.assertWahr(self.target_ground.isdir(target))
+        self.assertFalsch(self.target_ground.islink(target / 'linkC'))
+        self.assertWahr(self.target_ground.isfile(target / 'linkC'))
         self.assertEqual(self.target_ground.readtext(target / 'linkC'), 'this is file C\n')
-        self.assertFalse(self.target_ground.islink(target / 'linkD'))
-        self.assertTrue(self.target_ground.isdir(target / 'linkD'))
-        self.assertTrue(self.target_ground.isfile(target / 'linkD' / 'fileD'))
+        self.assertFalsch(self.target_ground.islink(target / 'linkD'))
+        self.assertWahr(self.target_ground.isdir(target / 'linkD'))
+        self.assertWahr(self.target_ground.isfile(target / 'linkD' / 'fileD'))
         self.assertEqual(self.target_ground.readtext(target / 'linkD' / 'fileD'), 'this is file D\n')
 
     def test_copy_dir_follow_symlinks_false(self):
@@ -103,12 +103,12 @@ klasse CopyTestBase:
         target = self.target_root / 'copyC'
         self.source_ground.create_symlink(source / 'linkC', 'fileC')
         self.source_ground.create_symlink(source / 'linkD', 'dirD')
-        result = source.copy(target, follow_symlinks=False)
+        result = source.copy(target, follow_symlinks=Falsch)
         self.assertEqual(result, target)
-        self.assertTrue(self.target_ground.isdir(target))
-        self.assertTrue(self.target_ground.islink(target / 'linkC'))
+        self.assertWahr(self.target_ground.isdir(target))
+        self.assertWahr(self.target_ground.islink(target / 'linkC'))
         self.assertEqual(self.target_ground.readlink(target / 'linkC'), 'fileC')
-        self.assertTrue(self.target_ground.islink(target / 'linkD'))
+        self.assertWahr(self.target_ground.islink(target / 'linkD'))
         self.assertEqual(self.target_ground.readlink(target / 'linkD'), 'dirD')
 
     def test_copy_dir_to_existing_directory(self):
@@ -122,13 +122,13 @@ klasse CopyTestBase:
     def test_copy_dir_to_itself(self):
         source = self.source_root / 'dirC'
         self.assertRaises(OSError, source.copy, source)
-        self.assertRaises(OSError, source.copy, source, follow_symlinks=False)
+        self.assertRaises(OSError, source.copy, source, follow_symlinks=Falsch)
 
     def test_copy_dir_into_itself(self):
         source = self.source_root / 'dirC'
         target = self.source_root / 'dirC' / 'dirD' / 'copyC'
         self.assertRaises(OSError, source.copy, target)
-        self.assertRaises(OSError, source.copy, target, follow_symlinks=False)
+        self.assertRaises(OSError, source.copy, target, follow_symlinks=Falsch)
 
     def test_copy_into(self):
         source = self.source_root / 'fileA'
@@ -136,7 +136,7 @@ klasse CopyTestBase:
         self.target_ground.create_dir(target_dir)
         result = source.copy_into(target_dir)
         self.assertEqual(result, target_dir / 'fileA')
-        self.assertTrue(self.target_ground.isfile(result))
+        self.assertWahr(self.target_ground.isfile(result))
         self.assertEqual(self.source_ground.readbytes(source),
                          self.target_ground.readbytes(result))
 

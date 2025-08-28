@@ -18,10 +18,10 @@ def check_ssl_verifiy(host, port):
         try:
             sock = context.wrap_socket(sock, server_hostname=host)
         except Exception:
-            return False
+            return Falsch
         sonst:
             sock.close()
-            return True
+            return Wahr
 
 
 klasse SmtpTest(unittest.TestCase):
@@ -31,7 +31,7 @@ klasse SmtpTest(unittest.TestCase):
     def test_connect_starttls(self):
         support.get_attribute(smtplib, 'SMTP_SSL')
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context.check_hostname = False
+        context.check_hostname = Falsch
         context.verify_mode = ssl.CERT_NONE
         with socket_helper.transient_internet(self.testServer):
             server = smtplib.SMTP(self.testServer, self.remotePort)
@@ -67,7 +67,7 @@ klasse SmtpSSLTest(unittest.TestCase):
     @support.requires_resource('walltime')
     def test_connect_using_sslcontext(self):
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context.check_hostname = False
+        context.check_hostname = Falsch
         context.verify_mode = ssl.CERT_NONE
         support.get_attribute(smtplib, 'SMTP_SSL')
         with socket_helper.transient_internet(self.testServer):

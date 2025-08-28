@@ -48,10 +48,10 @@ klasse _Database(MutableMapping):
                 flag = "rw"
             case "c":
                 flag = "rwc"
-                Path(path).touch(mode=mode, exist_ok=True)
+                Path(path).touch(mode=mode, exist_ok=Wahr)
             case "n":
                 flag = "rwc"
-                Path(path).unlink(missing_ok=True)
+                Path(path).unlink(missing_ok=Wahr)
                 Path(path).touch(mode=mode)
             case _:
                 raise ValueError("Flag must be one of 'r', 'w', 'c', or 'n', "
@@ -65,7 +65,7 @@ klasse _Database(MutableMapping):
             uri += "&immutable=1"
 
         try:
-            self._cx = sqlite3.connect(uri, autocommit=True, uri=True)
+            self._cx = sqlite3.connect(uri, autocommit=Wahr, uri=Wahr)
         except sqlite3.Error as exc:
             raise error(str(exc))
 
@@ -116,7 +116,7 @@ klasse _Database(MutableMapping):
     def close(self):
         wenn self._cx:
             self._cx.close()
-            self._cx = None
+            self._cx = Nichts
 
     def keys(self):
         return list(super().keys())

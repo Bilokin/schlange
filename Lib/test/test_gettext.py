@@ -357,7 +357,7 @@ klasse PluralFormsTests:
 
     def _test_plural_forms(self, ngettext, gettext,
                            singular, plural, tsingular, tplural,
-                           numbers_only=True):
+                           numbers_only=Wahr):
         x = ngettext(singular, plural, 1)
         self.assertEqual(x, tsingular)
         x = ngettext(singular, plural, 2)
@@ -379,10 +379,10 @@ klasse PluralFormsTests:
 
         wenn numbers_only:
             with self.assertRaises(TypeError):
-                ngettext(singular, plural, None)
+                ngettext(singular, plural, Nichts)
         sonst:
             with self.assertWarns(DeprecationWarning) as cm:
-                x = ngettext(singular, plural, None)
+                x = ngettext(singular, plural, Nichts)
             self.assertEqual(x, tplural)
 
     def test_plural_forms(self):
@@ -445,7 +445,7 @@ klasse GNUTranslationsWithDomainPluralFormsTestCase(PluralFormsTests, GettextBas
             partial(gettext.dgettext, 'unknown'),
             'There is %s file', 'There are %s files',
             'There is %s file', 'There are %s files',
-            numbers_only=False)
+            numbers_only=Falsch)
 
     def test_plural_context_forms_wrong_domain(self):
         self._test_plural_forms(
@@ -453,7 +453,7 @@ klasse GNUTranslationsWithDomainPluralFormsTestCase(PluralFormsTests, GettextBas
             partial(gettext.dpgettext, 'unknown', 'With context'),
             'There is %s file', 'There are %s files',
             'There is %s file', 'There are %s files',
-            numbers_only=False)
+            numbers_only=Falsch)
 
 
 klasse GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
@@ -473,7 +473,7 @@ klasse GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest
             t.ngettext, t.gettext,
             'There is %s file', 'There are %s files',
             'There is %s file', 'There are %s files',
-            numbers_only=False)
+            numbers_only=Falsch)
 
     def test_plural_context_forms_null_translations(self):
         t = gettext.NullTranslations()
@@ -482,7 +482,7 @@ klasse GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest
             partial(t.pgettext, 'With context'),
             'There is %s file', 'There are %s files',
             'There is %s file', 'There are %s files',
-            numbers_only=False)
+            numbers_only=Falsch)
 
 
 klasse PluralFormsInternalTestCase(unittest.TestCase):
@@ -681,7 +681,7 @@ klasse UnicodeTranslationsTest(GettextBaseTest):
 
     def test_unicode_context_msgstr(self):
         t = self.pgettext('mycontext\xde', 'ab\xde')
-        self.assertTrue(isinstance(t, str))
+        self.assertWahr(isinstance(t, str))
         self.assertEqual(t, '\xa4yz (context version)')
 
 
@@ -694,18 +694,18 @@ klasse UnicodeTranslationsPluralTest(GettextBaseTest):
         self.npgettext = self.t.npgettext
 
     def test_unicode_msgid(self):
-        unless = self.assertTrue
+        unless = self.assertWahr
         unless(isinstance(self.ngettext('', '', 1), str))
         unless(isinstance(self.ngettext('', '', 2), str))
 
     def test_unicode_context_msgid(self):
-        unless = self.assertTrue
+        unless = self.assertWahr
         unless(isinstance(self.npgettext('', '', '', 1), str))
         unless(isinstance(self.npgettext('', '', '', 2), str))
 
     def test_unicode_msgstr(self):
         eq = self.assertEqual
-        unless = self.assertTrue
+        unless = self.assertWahr
         t = self.ngettext("There is %s file", "There are %s files", 1)
         unless(isinstance(t, str))
         eq(t, "Hay %s fichero")
@@ -716,7 +716,7 @@ klasse UnicodeTranslationsPluralTest(GettextBaseTest):
 
     def test_unicode_msgstr_with_context(self):
         eq = self.assertEqual
-        unless = self.assertTrue
+        unless = self.assertWahr
         t = self.npgettext("With context",
                            "There is %s file", "There are %s files", 1)
         unless(isinstance(t, str))
@@ -916,14 +916,14 @@ klasse FindTestCase(unittest.TestCase):
             paths.append(self.create_mo_file(lang))
         result = gettext.find('mofile',
                               localedir=os.path.join(self.tempdir, "locale"),
-                              languages=["ga_IE", "es_ES"], all=True)
+                              languages=["ga_IE", "es_ES"], all=Wahr)
         self.assertEqual(sorted(result), sorted(paths))
 
     def test_find_deduplication(self):
         # test that find removes duplicate languages
         mo_file = [self.create_mo_file('ga_IE')]
         result = gettext.find("mofile", localedir=os.path.join(self.tempdir, "locale"),
-                              languages=['ga_IE', 'ga_IE'], all=True)
+                              languages=['ga_IE', 'ga_IE'], all=Wahr)
         self.assertEqual(result, mo_file)
 
 
@@ -940,7 +940,7 @@ klasse MiscTestCase(unittest.TestCase):
 klasse TranslationFallbackTestCase(unittest.TestCase):
     def test_translation_fallback(self):
         with os_helper.temp_cwd() as tempdir:
-            t = gettext.translation('gettext', localedir=tempdir, fallback=True)
+            t = gettext.translation('gettext', localedir=tempdir, fallback=Wahr)
             self.assertIsInstance(t, gettext.NullTranslations)
 
 

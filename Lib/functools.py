@@ -188,7 +188,7 @@ _convert = {
 def total_ordering(cls):
     """Class decorator that fills in missing ordering methods"""
     # Find user-defined comparisons (not those inherited from object).
-    roots = {op fuer op in _convert wenn getattr(cls, op, None) is not getattr(object, op, None)}
+    roots = {op fuer op in _convert wenn getattr(cls, op, Nichts) is not getattr(object, op, Nichts)}
     wenn not roots:
         raise ValueError('must define at least one ordering operation: < > <= >=')
     root = max(roots)       # prefer __lt__ to __le__ to __gt__ to __ge__
@@ -219,7 +219,7 @@ def cmp_to_key(mycmp):
             return mycmp(self.obj, other.obj) <= 0
         def __ge__(self, other):
             return mycmp(self.obj, other.obj) >= 0
-        __hash__ = None
+        __hash__ = Nichts
     return K
 
 try:
@@ -255,7 +255,7 @@ def reduce(function, sequence, initial=_initial_missing):
             value = next(it)
         except StopIteration:
             raise TypeError(
-                "reduce() of empty iterable with no initial value") from None
+                "reduce() of empty iterable with no initial value") from Nichts
     sonst:
         value = initial
 
@@ -275,14 +275,14 @@ klasse _PlaceholderType:
 
     Used as a placeholder fuer partial arguments.
     """
-    __instance = None
+    __instance = Nichts
     __slots__ = ()
 
     def __init_subclass__(cls, *args, **kwargs):
         raise TypeError(f"type '{cls.__name__}' is not an acceptable base type")
 
     def __new__(cls):
-        wenn cls.__instance is None:
+        wenn cls.__instance is Nichts:
             cls.__instance = object.__new__(cls)
         return cls.__instance
 
@@ -296,7 +296,7 @@ Placeholder = _PlaceholderType()
 
 def _partial_prepare_merger(args):
     wenn not args:
-        return 0, None
+        return 0, Nichts
     nargs = len(args)
     order = []
     j = nargs
@@ -307,7 +307,7 @@ def _partial_prepare_merger(args):
         sonst:
             order.append(i)
     phcount = j - nargs
-    merger = itemgetter(*order) wenn phcount sonst None
+    merger = itemgetter(*order) wenn phcount sonst Nichts
     return phcount, merger
 
 def _partial_new(cls, func, /, *args, **keywords):
@@ -392,14 +392,14 @@ klasse partial:
         keywords = {**self.keywords, **keywords}
         return self.func(*pto_args, *args, **keywords)
 
-    def __get__(self, obj, objtype=None):
-        wenn obj is None:
+    def __get__(self, obj, objtype=Nichts):
+        wenn obj is Nichts:
             return self
         return MethodType(self, obj)
 
     def __reduce__(self):
         return type(self), (self.func,), (self.func, self.args,
-               self.keywords or None, self.__dict__ or None)
+               self.keywords or Nichts, self.__dict__ or Nichts)
 
     def __setstate__(self, state):
         wenn not isinstance(state, tuple):
@@ -408,8 +408,8 @@ klasse partial:
             raise TypeError(f"expected 4 items in state, got {len(state)}")
         func, args, kwds, namespace = state
         wenn (not callable(func) or not isinstance(args, tuple) or
-           (kwds is not None and not isinstance(kwds, dict)) or
-           (namespace is not None and not isinstance(namespace, dict))):
+           (kwds is not Nichts and not isinstance(kwds, dict)) or
+           (namespace is not Nichts and not isinstance(namespace, dict))):
             raise TypeError("invalid partial state")
 
         wenn args and args[-1] is Placeholder:
@@ -417,11 +417,11 @@ klasse partial:
         phcount, merger = _partial_prepare_merger(args)
 
         args = tuple(args) # just in case it's a subclass
-        wenn kwds is None:
+        wenn kwds is Nichts:
             kwds = {}
         sowenn type(kwds) is not dict: # XXX does it need to be *exactly* dict?
             kwds = dict(kwds)
-        wenn namespace is None:
+        wenn namespace is Nichts:
             namespace = {}
 
         self.__dict__ = namespace
@@ -469,10 +469,10 @@ klasse partialmethod:
         _method.__partialmethod__ = self
         return _method
 
-    def __get__(self, obj, cls=None):
-        get = getattr(self.func, "__get__", None)
-        result = None
-        wenn get is not None:
+    def __get__(self, obj, cls=Nichts):
+        get = getattr(self.func, "__get__", Nichts)
+        result = Nichts
+        wenn get is not Nichts:
             new_func = get(obj, cls)
             wenn new_func is not self.func:
                 # Assume __get__ returning something new indicates the
@@ -482,7 +482,7 @@ klasse partialmethod:
                     result.__self__ = new_func.__self__
                 except AttributeError:
                     pass
-        wenn result is None:
+        wenn result is Nichts:
             # If the underlying descriptor didn't do anything, treat this
             # like an instance method
             result = self._make_unbound_method().__get__(obj, cls)
@@ -490,7 +490,7 @@ klasse partialmethod:
 
     @property
     def __isabstractmethod__(self):
-        return getattr(self.func, "__isabstractmethod__", False)
+        return getattr(self.func, "__isabstractmethod__", Falsch)
 
     __class_getitem__ = classmethod(GenericAlias)
 
@@ -503,10 +503,10 @@ def _unwrap_partial(func):
     return func
 
 def _unwrap_partialmethod(func):
-    prev = None
+    prev = Nichts
     while func is not prev:
         prev = func
-        while isinstance(getattr(func, "__partialmethod__", None), partialmethod):
+        while isinstance(getattr(func, "__partialmethod__", Nichts), partialmethod):
             func = func.__partialmethod__
         while isinstance(func, partialmethod):
             func = getattr(func, 'func')
@@ -550,13 +550,13 @@ def _make_key(args, kwds, typed,
         return key[0]
     return key
 
-def lru_cache(maxsize=128, typed=False):
+def lru_cache(maxsize=128, typed=Falsch):
     """Least-recently-used cache decorator.
 
-    If *maxsize* is set to None, the LRU features are disabled and the cache
+    If *maxsize* is set to Nichts, the LRU features are disabled and the cache
     can grow without bound.
 
-    If *typed* is True, arguments of different types will be cached separately.
+    If *typed* is Wahr, arguments of different types will be cached separately.
     For example, f(decimal.Decimal("3.0")) and f(3.0) will be treated as
     distinct calls with distinct results. Some types such as str and int may
     be cached separately even when typed is false.
@@ -588,9 +588,9 @@ def lru_cache(maxsize=128, typed=False):
         wrapper.cache_parameters = lambda : {'maxsize': maxsize, 'typed': typed}
         return update_wrapper(wrapper, user_function)
 
-    sowenn maxsize is not None:
+    sowenn maxsize is not Nichts:
         raise TypeError(
-            'Expected first argument to be an integer, a callable, or None')
+            'Expected first argument to be an integer, a callable, or Nichts')
 
     def decorating_function(user_function):
         wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)
@@ -607,12 +607,12 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
     cache = {}
     hits = misses = 0
-    full = False
-    cache_get = cache.get    # bound method to lookup a key or return None
+    full = Falsch
+    cache_get = cache.get    # bound method to lookup a key or return Nichts
     cache_len = cache.__len__  # get cache size without calling len()
     lock = RLock()           # because linkedlist updates aren't threadsafe
     root = []                # root of the circular doubly linked list
-    root[:] = [root, root, None, None]     # initialize by pointing to self
+    root[:] = [root, root, Nichts, Nichts]     # initialize by pointing to self
 
     wenn maxsize == 0:
 
@@ -624,7 +624,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
             result = user_function(*args, **kwds)
             return result
 
-    sowenn maxsize is None:
+    sowenn maxsize is Nichts:
 
         def wrapper(*args, **kwds):
             # Simple caching without ordering or size limit
@@ -650,7 +650,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
             with lock:
                 link = cache_get(key)
-                wenn link is not None:
+                wenn link is not Nichts:
                     # Move the link to the front of the circular queue
                     link_prev, link_next, _key, result = link
                     link_prev[NEXT] = link_next
@@ -688,7 +688,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                     root = oldroot[NEXT]
                     oldkey = root[KEY]
                     oldresult = root[RESULT]
-                    root[KEY] = root[RESULT] = None
+                    root[KEY] = root[RESULT] = Nichts
 
                     # Now update the cache dictionary.
                     del cache[oldkey]
@@ -721,9 +721,9 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
         with lock:
             cache.clear()
-            root[:] = [root, root, None, None]
+            root[:] = [root, root, Nichts, Nichts]
             hits = misses = 0
-            full = False
+            full = Falsch
 
     wrapper.cache_info = cache_info
     wrapper.cache_clear = cache_clear
@@ -741,7 +741,7 @@ except ImportError:
 
 def cache(user_function, /):
     'Simple lightweight unbounded cache.  Sometimes called "memoize".'
-    return lru_cache(maxsize=None)(user_function)
+    return lru_cache(maxsize=Nichts)(user_function)
 
 
 ################################################################################
@@ -755,7 +755,7 @@ def _c3_merge(sequences):
 
     """
     result = []
-    while True:
+    while Wahr:
         sequences = [s fuer s in sequences wenn s]   # purge empty sequences
         wenn not sequences:
             return result
@@ -763,11 +763,11 @@ def _c3_merge(sequences):
             candidate = s1[0]
             fuer s2 in sequences:
                 wenn candidate in s2[1:]:
-                    candidate = None
+                    candidate = Nichts
                     break      # reject the current head, it appears later
             sonst:
                 break
-        wenn candidate is None:
+        wenn candidate is Nichts:
             raise RuntimeError("Inconsistent hierarchy")
         result.append(candidate)
         # remove the chosen candidate
@@ -775,7 +775,7 @@ def _c3_merge(sequences):
             wenn seq[0] == candidate:
                 del seq[0]
 
-def _c3_mro(cls, abcs=None):
+def _c3_mro(cls, abcs=Nichts):
     """Computes the method resolution order using extended C3 linearization.
 
     If no *abcs* are given, the algorithm works exactly like the built-in C3
@@ -784,8 +784,8 @@ def _c3_mro(cls, abcs=None):
     If given, *abcs* is a list of abstract base classes that should be inserted
     into the resulting MRO. Unrelated ABCs are ignored and don't end up in the
     result. The algorithm inserts ABCs where their functionality is introduced,
-    i.e. issubclass(cls, abc) returns True fuer the klasse itself but returns
-    False fuer all its direct base classes. Implicit ABCs fuer a given class
+    i.e. issubclass(cls, abc) returns Wahr fuer the klasse itself but returns
+    Falsch fuer all its direct base classes. Implicit ABCs fuer a given class
     (either registered or inferred from the presence of a special method like
     __len__) are inserted directly after the last ABC explicitly listed in the
     MRO of said class. If two implicit ABCs end up next to each other in the
@@ -839,8 +839,8 @@ def _compose_mro(cls, types):
     def is_strict_base(typ):
         fuer other in types:
             wenn typ != other and typ in other.__mro__:
-                return True
-        return False
+                return Wahr
+        return Falsch
     types = [n fuer n in types wenn not is_strict_base(n)]
     # Subclasses of the ABCs in *types* which are also implemented by
     # *cls* can be used to stabilize ABC ordering.
@@ -855,7 +855,7 @@ def _compose_mro(cls, types):
             mro.append(typ)
             continue
         # Favor subclasses with the biggest number of useful bases
-        found.sort(key=len, reverse=True)
+        found.sort(key=len, reverse=Wahr)
         fuer sub in found:
             fuer subcls in sub:
                 wenn subcls not in mro:
@@ -869,13 +869,13 @@ def _find_impl(cls, registry):
     resolution order is used to find a more generic implementation.
 
     Note: wenn *registry* does not contain an implementation fuer the base
-    *object* type, this function may return None.
+    *object* type, this function may return Nichts.
 
     """
     mro = _compose_mro(cls, registry.keys())
-    match = None
+    match = Nichts
     fuer t in mro:
-        wenn match is not None:
+        wenn match is not Nichts:
             # If *match* is an implicit ABC but there is another unrelated,
             # equally matching implicit ABC, refuse the temptation to guess.
             wenn (t in registry and t not in cls.__mro__
@@ -904,7 +904,7 @@ def singledispatch(func):
 
     registry = {}
     dispatch_cache = weakref.WeakKeyDictionary()
-    cache_token = None
+    cache_token = Nichts
 
     def dispatch(cls):
         """generic_func.dispatch(cls) -> <function implementation>
@@ -914,7 +914,7 @@ def singledispatch(func):
 
         """
         nonlocal cache_token
-        wenn cache_token is not None:
+        wenn cache_token is not Nichts:
             current_token = get_cache_token()
             wenn cache_token != current_token:
                 dispatch_cache.clear()
@@ -931,11 +931,11 @@ def singledispatch(func):
 
     def _is_valid_dispatch_type(cls):
         wenn isinstance(cls, type):
-            return True
+            return Wahr
         return (isinstance(cls, UnionType) and
                 all(isinstance(arg, type) fuer arg in cls.__args__))
 
-    def register(cls, func=None):
+    def register(cls, func=Nichts):
         """generic_func.register(cls, func) -> func
 
         Registers a new implementation fuer the given *cls* on a *generic_func*.
@@ -943,16 +943,16 @@ def singledispatch(func):
         """
         nonlocal cache_token
         wenn _is_valid_dispatch_type(cls):
-            wenn func is None:
+            wenn func is Nichts:
                 return lambda f: register(cls, f)
         sonst:
-            wenn func is not None:
+            wenn func is not Nichts:
                 raise TypeError(
                     f"Invalid first argument to `register()`. "
                     f"{cls!r} is not a klasse or union type."
                 )
-            ann = getattr(cls, '__annotate__', None)
-            wenn ann is None:
+            ann = getattr(cls, '__annotate__', Nichts)
+            wenn ann is Nichts:
                 raise TypeError(
                     f"Invalid first argument to `register()`: {cls!r}. "
                     f"Use either `@register(some_class)` or plain `@register` "
@@ -986,7 +986,7 @@ def singledispatch(func):
                 registry[arg] = func
         sonst:
             registry[cls] = func
-        wenn cache_token is None and hasattr(cls, '__abstractmethods__'):
+        wenn cache_token is Nichts and hasattr(cls, '__abstractmethods__'):
             cache_token = get_cache_token()
         dispatch_cache.clear()
         return func
@@ -1022,19 +1022,19 @@ klasse singledispatchmethod:
         self.dispatcher = singledispatch(func)
         self.func = func
 
-    def register(self, cls, method=None):
+    def register(self, cls, method=Nichts):
         """generic_method.register(cls, func) -> func
 
         Registers a new implementation fuer the given *cls* on a *generic_method*.
         """
         return self.dispatcher.register(cls, func=method)
 
-    def __get__(self, obj, cls=None):
+    def __get__(self, obj, cls=Nichts):
         return _singledispatchmethod_get(self, obj, cls)
 
     @property
     def __isabstractmethod__(self):
-        return getattr(self.func, '__isabstractmethod__', False)
+        return getattr(self.func, '__isabstractmethod__', Falsch)
 
     def __repr__(self):
         try:
@@ -1072,7 +1072,7 @@ klasse _singledispatchmethod_get:
                 name = self.__name__
             except AttributeError:
                 name = '?'
-        wenn self._obj is not None:
+        wenn self._obj is not Nichts:
             return f'<bound single dispatch method {name} of {self._obj!r}>'
         sonst:
             return f'<single dispatch method {name}>'
@@ -1111,12 +1111,12 @@ _NOT_FOUND = object()
 klasse cached_property:
     def __init__(self, func):
         self.func = func
-        self.attrname = None
+        self.attrname = Nichts
         self.__doc__ = func.__doc__
         self.__module__ = func.__module__
 
     def __set_name__(self, owner, name):
-        wenn self.attrname is None:
+        wenn self.attrname is Nichts:
             self.attrname = name
         sowenn name != self.attrname:
             raise TypeError(
@@ -1124,10 +1124,10 @@ klasse cached_property:
                 f"({self.attrname!r} and {name!r})."
             )
 
-    def __get__(self, instance, owner=None):
-        wenn instance is None:
+    def __get__(self, instance, owner=Nichts):
+        wenn instance is Nichts:
             return self
-        wenn self.attrname is None:
+        wenn self.attrname is Nichts:
             raise TypeError(
                 "Cannot use cached_property instance without calling __set_name__ on it.")
         try:
@@ -1137,7 +1137,7 @@ klasse cached_property:
                 f"No '__dict__' attribute on {type(instance).__name__!r} "
                 f"instance to cache {self.attrname!r} property."
             )
-            raise TypeError(msg) from None
+            raise TypeError(msg) from Nichts
         val = cache.get(self.attrname, _NOT_FOUND)
         wenn val is _NOT_FOUND:
             val = self.func(instance)
@@ -1148,7 +1148,7 @@ klasse cached_property:
                     f"The '__dict__' attribute on {type(instance).__name__!r} instance "
                     f"does not support item assignment fuer caching {self.attrname!r} property."
                 )
-                raise TypeError(msg) from None
+                raise TypeError(msg) from Nichts
         return val
 
     __class_getitem__ = classmethod(GenericAlias)

@@ -40,13 +40,13 @@ item to d[key] in a way that will affect the persistent mapping, use:
         d[key] = data
 
 To avoid the problem with mutable entries, you may pass the keyword
-argument writeback=True in the call to shelve.open.  When you use:
-        d = shelve.open(filename, writeback=True)
+argument writeback=Wahr in the call to shelve.open.  When you use:
+        d = shelve.open(filename, writeback=Wahr)
 then d keeps a cache of all entries you access, and writes them all back
 to the persistent mapping when you call d.close().  This ensures that
 such usage as d[key].append(anitem) works as intended.
 
-However, using keyword argument writeback=True may consume vast amount
+However, using keyword argument writeback=Wahr may consume vast amount
 of memory fuer the cache, and it may make d.close() very slow, wenn you
 access many of d's entries after opening it in this way: d has no way to
 check which of the entries you access are mutable and/or which ones you
@@ -86,20 +86,20 @@ klasse Shelf(collections.abc.MutableMapping):
     See the module's __doc__ string fuer an overview of the interface.
     """
 
-    def __init__(self, dict, protocol=None, writeback=False,
-                 keyencoding="utf-8", *, serializer=None, deserializer=None):
+    def __init__(self, dict, protocol=Nichts, writeback=Falsch,
+                 keyencoding="utf-8", *, serializer=Nichts, deserializer=Nichts):
         self.dict = dict
-        wenn protocol is None:
+        wenn protocol is Nichts:
             protocol = DEFAULT_PROTOCOL
         self._protocol = protocol
         self.writeback = writeback
         self.cache = {}
         self.keyencoding = keyencoding
 
-        wenn serializer is None and deserializer is None:
+        wenn serializer is Nichts and deserializer is Nichts:
             self.serializer = dumps
             self.deserializer = loads
-        sowenn (serializer is None) ^ (deserializer is None):
+        sowenn (serializer is Nichts) ^ (deserializer is Nichts):
             raise ShelveError("serializer and deserializer must be "
                               "defined together")
         sonst:
@@ -116,7 +116,7 @@ klasse Shelf(collections.abc.MutableMapping):
     def __contains__(self, key):
         return key.encode(self.keyencoding) in self.dict
 
-    def get(self, key, default=None):
+    def get(self, key, default=Nichts):
         wenn key.encode(self.keyencoding) in self.dict:
             return self[key]
         return default
@@ -151,7 +151,7 @@ klasse Shelf(collections.abc.MutableMapping):
         self.close()
 
     def close(self):
-        wenn self.dict is None:
+        wenn self.dict is Nichts:
             return
         try:
             self.sync()
@@ -165,7 +165,7 @@ klasse Shelf(collections.abc.MutableMapping):
             try:
                 self.dict = _ClosedDict()
             except:
-                self.dict = None
+                self.dict = Nichts
 
     def __del__(self):
         wenn not hasattr(self, 'writeback'):
@@ -176,10 +176,10 @@ klasse Shelf(collections.abc.MutableMapping):
 
     def sync(self):
         wenn self.writeback and self.cache:
-            self.writeback = False
+            self.writeback = Falsch
             fuer key, entry in self.cache.items():
                 self[key] = entry
-            self.writeback = True
+            self.writeback = Wahr
             self.cache = {}
         wenn hasattr(self.dict, 'sync'):
             self.dict.sync()
@@ -203,8 +203,8 @@ klasse BsdDbShelf(Shelf):
     See the module's __doc__ string fuer an overview of the interface.
     """
 
-    def __init__(self, dict, protocol=None, writeback=False,
-                 keyencoding="utf-8", *, serializer=None, deserializer=None):
+    def __init__(self, dict, protocol=Nichts, writeback=Falsch,
+                 keyencoding="utf-8", *, serializer=Nichts, deserializer=Nichts):
         Shelf.__init__(self, dict, protocol, writeback, keyencoding,
                        serializer=serializer, deserializer=deserializer)
 
@@ -236,8 +236,8 @@ klasse DbfilenameShelf(Shelf):
     See the module's __doc__ string fuer an overview of the interface.
     """
 
-    def __init__(self, filename, flag='c', protocol=None, writeback=False, *,
-                 serializer=None, deserializer=None):
+    def __init__(self, filename, flag='c', protocol=Nichts, writeback=Falsch, *,
+                 serializer=Nichts, deserializer=Nichts):
         import dbm
         Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback,
                        serializer=serializer, deserializer=deserializer)
@@ -249,8 +249,8 @@ klasse DbfilenameShelf(Shelf):
         self.cache.clear()
         self.dict.clear()
 
-def open(filename, flag='c', protocol=None, writeback=False, *,
-         serializer=None, deserializer=None):
+def open(filename, flag='c', protocol=Nichts, writeback=Falsch, *,
+         serializer=Nichts, deserializer=Nichts):
     """Open a persistent dictionary fuer reading and writing.
 
     The filename parameter is the base filename fuer the underlying

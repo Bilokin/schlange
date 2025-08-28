@@ -38,13 +38,13 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
             # cannot open console because it's not a real console
             pass
         sonst:
-            self.assertTrue(f.readable())
-            self.assertFalse(f.writable())
+            self.assertWahr(f.readable())
+            self.assertFalsch(f.writable())
             self.assertEqual(0, f.fileno())
             f.close()   # multiple close should not crash
             f.close()
             with self.assertWarns(RuntimeWarning):
-                with ConIO(False):
+                with ConIO(Falsch):
                     pass
 
         try:
@@ -53,13 +53,13 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
             # cannot open console because it's not a real console
             pass
         sonst:
-            self.assertFalse(f.readable())
-            self.assertTrue(f.writable())
+            self.assertFalsch(f.readable())
+            self.assertWahr(f.writable())
             self.assertEqual(1, f.fileno())
             f.close()
             f.close()
             with self.assertWarns(RuntimeWarning):
-                with ConIO(False):
+                with ConIO(Falsch):
                     pass
 
         try:
@@ -68,8 +68,8 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
             # cannot open console because it's not a real console
             pass
         sonst:
-            self.assertFalse(f.readable())
-            self.assertTrue(f.writable())
+            self.assertFalsch(f.readable())
+            self.assertWahr(f.writable())
             self.assertEqual(2, f.fileno())
             f.close()
             f.close()
@@ -78,23 +78,23 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         self.assertRaises(ValueError, ConIO, sys.executable)
 
         f = ConIO("CON")
-        self.assertTrue(f.readable())
-        self.assertFalse(f.writable())
-        self.assertIsNotNone(f.fileno())
+        self.assertWahr(f.readable())
+        self.assertFalsch(f.writable())
+        self.assertIsNotNichts(f.fileno())
         f.close()   # multiple close should not crash
         f.close()
 
         f = ConIO('CONIN$')
-        self.assertTrue(f.readable())
-        self.assertFalse(f.writable())
-        self.assertIsNotNone(f.fileno())
+        self.assertWahr(f.readable())
+        self.assertFalsch(f.writable())
+        self.assertIsNotNichts(f.fileno())
         f.close()
         f.close()
 
         f = ConIO('CONOUT$', 'w')
-        self.assertFalse(f.readable())
-        self.assertTrue(f.writable())
-        self.assertIsNotNone(f.fileno())
+        self.assertFalsch(f.readable())
+        self.assertWahr(f.writable())
+        self.assertIsNotNichts(f.fileno())
         f.close()
         f.close()
 
@@ -189,7 +189,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         self.assertStdinRoundTrip('A͏B ﬖ̳AA̝')
 
     # bpo-38325
-    @unittest.skipIf(True, "Handling Non-BMP characters is broken")
+    @unittest.skipIf(Wahr, "Handling Non-BMP characters is broken")
     def test_input_nonbmp(self):
         # Non-BMP
         self.assertStdinRoundTrip('\U00100000\U0010ffff\U0010fffd')
@@ -212,7 +212,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
                 self.assertEqual(actual, expected, 'stdin.read({})'.format(read_count))
 
     # bpo-38325
-    @unittest.skipIf(True, "Handling Non-BMP characters is broken")
+    @unittest.skipIf(Wahr, "Handling Non-BMP characters is broken")
     def test_partial_surrogate_reads(self):
         # Test that reading less than 1 full character works when stdin
         # contains surrogate pairs that cannot be decoded to UTF-8 without

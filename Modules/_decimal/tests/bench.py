@@ -86,14 +86,14 @@ def test_calc_pi():
     print("# ======================================================================\n")
 
     to_benchmark = [pi_float, pi_decimal]
-    wenn C is not None:
+    wenn C is not Nichts:
         to_benchmark.insert(1, pi_cdecimal)
 
     fuer prec in [9, 19]:
         print("\nPrecision: %d decimal digits\n" % prec)
         fuer func in to_benchmark:
             start = time.time()
-            wenn C is not None:
+            wenn C is not Nichts:
                 C.getcontext().prec = prec
             P.getcontext().prec = prec
             fuer i in range(10000):
@@ -108,7 +108,7 @@ def test_factorial():
     print("#                               Factorial")
     print("# ======================================================================\n")
 
-    wenn C is not None:
+    wenn C is not Nichts:
         c = C.getcontext()
         c.prec = C.MAX_PREC
         c.Emax = C.MAX_EMAX
@@ -118,7 +118,7 @@ def test_factorial():
 
         print("n = %d\n" % n)
 
-        wenn C is not None:
+        wenn C is not Nichts:
             # C version of decimal
             start_calc = time.time()
             x = factorial(C.Decimal(n), 0)
@@ -142,7 +142,7 @@ def test_factorial():
         print("calculation time: %fs" % (end_calc-start_calc))
         print("conversion time: %fs\n\n" % (end_conv-start_conv))
 
-        wenn C is not None:
+        wenn C is not Nichts:
             assert(sx == sy)
 
 wenn __name__ == "__main__":

@@ -141,7 +141,7 @@ klasse TestForwardRefFormat(unittest.TestCase):
         arg1, arg2 = typing.get_args(union)
         self.assertIs(arg1, str)
         self.assertEqual(
-            arg2, support.EqualToForwardRef("undefined", is_class=True, owner=UnionForwardrefs)
+            arg2, support.EqualToForwardRef("undefined", is_class=Wahr, owner=UnionForwardrefs)
         )
 
 
@@ -156,7 +156,7 @@ klasse TestStringFormat(unittest.TestCase):
         self.assertEqual(anno, {"arg": "x"})
 
     def test_closure_undefined(self):
-        wenn False:
+        wenn Falsch:
             x = 0
 
         def inner(arg: x):
@@ -308,7 +308,7 @@ klasse TestStringFormat(unittest.TestCase):
         interp = templ.interpolations[0]
         self.assertEqual(interp.value, support.EqualToForwardRef("a", owner=g))
         self.assertEqual(interp.expression, "a")
-        self.assertIsNone(interp.conversion)
+        self.assertIsNichts(interp.conversion)
         self.assertEqual(interp.format_spec, "")
 
     def test_getitem(self):
@@ -347,8 +347,8 @@ klasse TestStringFormat(unittest.TestCase):
             b: 1.0,
             c: "hello",
             d: b"hello",
-            e: True,
-            f: None,
+            e: Wahr,
+            f: Nichts,
             g: ...,
             h: 1j,
         ):
@@ -362,8 +362,8 @@ klasse TestStringFormat(unittest.TestCase):
                 "b": "1.0",
                 "c": 'hello',
                 "d": "b'hello'",
-                "e": "True",
-                "f": "None",
+                "e": "Wahr",
+                "f": "Nichts",
                 "g": "...",
                 "h": "1j",
             },
@@ -548,8 +548,8 @@ klasse TestGetAnnotations(unittest.TestCase):
             pass
 
         with self.assertRaises(ValueError):
-            get_annotations(foo, format=Format.FORWARDREF, eval_str=True)
-            get_annotations(foo, format=Format.STRING, eval_str=True)
+            get_annotations(foo, format=Format.FORWARDREF, eval_str=Wahr)
+            get_annotations(foo, format=Format.STRING, eval_str=Wahr)
 
     def test_stock_annotations(self):
         def foo(a: int, b: str):
@@ -577,11 +577,11 @@ klasse TestGetAnnotations(unittest.TestCase):
                 )
 
         self.assertEqual(
-            get_annotations(foo, eval_str=True, locals=locals()),
+            get_annotations(foo, eval_str=Wahr, locals=locals()),
             {"a": foo, "b": str},
         )
         self.assertEqual(
-            get_annotations(foo, eval_str=True, globals=locals()),
+            get_annotations(foo, eval_str=Wahr, globals=locals()),
             {"a": foo, "b": str},
         )
 
@@ -590,11 +590,11 @@ klasse TestGetAnnotations(unittest.TestCase):
 
         fuer kwargs in [
             {},
-            {"eval_str": False},
+            {"eval_str": Falsch},
             {"format": Format.VALUE},
             {"format": Format.FORWARDREF},
-            {"format": Format.VALUE, "eval_str": False},
-            {"format": Format.FORWARDREF, "eval_str": False},
+            {"format": Format.VALUE, "eval_str": Falsch},
+            {"format": Format.FORWARDREF, "eval_str": Falsch},
         ]:
             with self.subTest(**kwargs):
                 self.assertEqual(get_annotations(isa, **kwargs), {"a": int, "b": str})
@@ -624,8 +624,8 @@ klasse TestGetAnnotations(unittest.TestCase):
                 )
 
         fuer kwargs in [
-            {"eval_str": True},
-            {"format": Format.VALUE, "eval_str": True},
+            {"eval_str": Wahr},
+            {"format": Format.VALUE, "eval_str": Wahr},
         ]:
             with self.subTest(**kwargs):
                 self.assertEqual(get_annotations(isa, **kwargs), {"a": int, "b": str})
@@ -704,11 +704,11 @@ klasse TestGetAnnotations(unittest.TestCase):
             {"a": "int", "b": "str", "return": "MyClass"},
         )
         self.assertEqual(
-            get_annotations(wrapped, eval_str=True),
+            get_annotations(wrapped, eval_str=Wahr),
             {"a": int, "b": str, "return": isa.MyClass},
         )
         self.assertEqual(
-            get_annotations(wrapped, eval_str=False),
+            get_annotations(wrapped, eval_str=Falsch),
             {"a": int, "b": str, "return": isa.MyClass},
         )
 
@@ -716,13 +716,13 @@ klasse TestGetAnnotations(unittest.TestCase):
         isa = inspect_stringized_annotations
         fuer kwargs in [
             {},
-            {"eval_str": False},
+            {"eval_str": Falsch},
             {"format": Format.VALUE},
             {"format": Format.FORWARDREF},
             {"format": Format.STRING},
-            {"format": Format.VALUE, "eval_str": False},
-            {"format": Format.FORWARDREF, "eval_str": False},
-            {"format": Format.STRING, "eval_str": False},
+            {"format": Format.VALUE, "eval_str": Falsch},
+            {"format": Format.FORWARDREF, "eval_str": Falsch},
+            {"format": Format.STRING, "eval_str": Falsch},
         ]:
             with self.subTest(**kwargs):
                 self.assertEqual(
@@ -752,8 +752,8 @@ klasse TestGetAnnotations(unittest.TestCase):
                 )
 
         fuer kwargs in [
-            {"eval_str": True},
-            {"format": Format.VALUE, "eval_str": True},
+            {"eval_str": Wahr},
+            {"format": Format.VALUE, "eval_str": Wahr},
         ]:
             with self.subTest(**kwargs):
                 self.assertEqual(get_annotations(isa, **kwargs), {"a": int, "b": str})
@@ -782,8 +782,8 @@ klasse TestGetAnnotations(unittest.TestCase):
     def test_stringized_annotations_in_empty_module(self):
         isa2 = inspect_stringized_annotations_2
         self.assertEqual(get_annotations(isa2), {})
-        self.assertEqual(get_annotations(isa2, eval_str=True), {})
-        self.assertEqual(get_annotations(isa2, eval_str=False), {})
+        self.assertEqual(get_annotations(isa2, eval_str=Wahr), {})
+        self.assertEqual(get_annotations(isa2, eval_str=Falsch), {})
 
     def test_stringized_annotations_on_wrapper(self):
         isa = inspect_stringized_annotations
@@ -795,11 +795,11 @@ klasse TestGetAnnotations(unittest.TestCase):
             {"a": "int", "b": "str", "return": "MyClass"},
         )
         self.assertEqual(
-            get_annotations(wrapped, eval_str=True),
+            get_annotations(wrapped, eval_str=Wahr),
             {"a": int, "b": str, "return": isa.MyClass},
         )
         self.assertEqual(
-            get_annotations(wrapped, eval_str=False),
+            get_annotations(wrapped, eval_str=Falsch),
             {"a": "int", "b": "str", "return": "MyClass"},
         )
 
@@ -811,12 +811,12 @@ klasse TestGetAnnotations(unittest.TestCase):
             {"x": "mytype"},
         )
         self.assertEqual(
-            get_annotations(isa.MyClassWithLocalAnnotations, eval_str=True),
+            get_annotations(isa.MyClassWithLocalAnnotations, eval_str=Wahr),
             {"x": int},
         )
 
     def test_stringized_annotation_permutations(self):
-        def define_class(name, has_future, has_annos, base_text, extra_names=None):
+        def define_class(name, has_future, has_annos, base_text, extra_names=Nichts):
             lines = []
             wenn has_future:
                 lines.append("from __future__ import annotations")
@@ -840,12 +840,12 @@ klasse TestGetAnnotations(unittest.TestCase):
                 self.assertEqual(get_annotations(cls), {})
 
         fuer meta_future, base_future, child_future, meta_has_annos, base_has_annos, child_has_annos in itertools.product(
-            (False, True),
-            (False, True),
-            (False, True),
-            (False, True),
-            (False, True),
-            (False, True),
+            (Falsch, Wahr),
+            (Falsch, Wahr),
+            (Falsch, Wahr),
+            (Falsch, Wahr),
+            (Falsch, Wahr),
+            (Falsch, Wahr),
         ):
             with self.subTest(
                 meta_future=meta_future,
@@ -916,7 +916,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             with (
                 self.subTest(format=format),
                 self.assertRaisesRegex(
-                    ValueError, r".*__annotations__ is neither a dict nor None"
+                    ValueError, r".*__annotations__ is neither a dict nor Nichts"
                 ),
             ):
                 get_annotations(wa, format=format)
@@ -993,7 +993,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         fuer format in Format:
             wenn format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
-            fuer obj in (None, 1, object(), CustomClass()):
+            fuer obj in (Nichts, 1, object(), CustomClass()):
                 with self.subTest(format=format, obj=obj):
                     with self.assertRaises(TypeError):
                         get_annotations(obj, format=format)
@@ -1005,7 +1005,7 @@ klasse TestGetAnnotations(unittest.TestCase):
 
     def test_pep695_generic_class_with_future_annotations(self):
         ann_module695 = inspect_stringized_annotations_pep695
-        A_annotations = get_annotations(ann_module695.A, eval_str=True)
+        A_annotations = get_annotations(ann_module695.A, eval_str=Wahr)
         A_type_params = ann_module695.A.__type_params__
         self.assertIs(A_annotations["x"], A_type_params[0])
         self.assertEqual(A_annotations["y"].__args__[0], Unpack[A_type_params[1]])
@@ -1013,7 +1013,7 @@ klasse TestGetAnnotations(unittest.TestCase):
 
     def test_pep695_generic_class_with_future_annotations_and_local_shadowing(self):
         B_annotations = get_annotations(
-            inspect_stringized_annotations_pep695.B, eval_str=True
+            inspect_stringized_annotations_pep695.B, eval_str=Wahr
         )
         self.assertEqual(B_annotations, {"x": int, "y": str, "z": bytes})
 
@@ -1021,7 +1021,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         self,
     ):
         ann_module695 = inspect_stringized_annotations_pep695
-        C_annotations = get_annotations(ann_module695.C, eval_str=True)
+        C_annotations = get_annotations(ann_module695.C, eval_str=Wahr)
         self.assertEqual(
             set(C_annotations.values()), set(ann_module695.C.__type_params__)
         )
@@ -1029,7 +1029,7 @@ klasse TestGetAnnotations(unittest.TestCase):
     def test_pep_695_generic_function_with_future_annotations(self):
         ann_module695 = inspect_stringized_annotations_pep695
         generic_func_annotations = get_annotations(
-            ann_module695.generic_function, eval_str=True
+            ann_module695.generic_function, eval_str=Wahr
         )
         func_t_params = ann_module695.generic_function.__type_params__
         self.assertEqual(
@@ -1047,7 +1047,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             set(
                 get_annotations(
                     inspect_stringized_annotations_pep695.generic_function_2,
-                    eval_str=True,
+                    eval_str=Wahr,
                 ).values()
             ),
             set(
@@ -1058,7 +1058,7 @@ klasse TestGetAnnotations(unittest.TestCase):
     def test_pep_695_generic_method_with_future_annotations(self):
         ann_module695 = inspect_stringized_annotations_pep695
         generic_method_annotations = get_annotations(
-            ann_module695.D.generic_method, eval_str=True
+            ann_module695.D.generic_method, eval_str=Wahr
         )
         params = {
             param.__name__: param
@@ -1066,7 +1066,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         }
         self.assertEqual(
             generic_method_annotations,
-            {"x": params["Foo"], "y": params["Bar"], "return": None},
+            {"x": params["Foo"], "y": params["Bar"], "return": Nichts},
         )
 
     def test_pep_695_generic_method_with_future_annotations_name_clash_with_global_vars(
@@ -1076,7 +1076,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             set(
                 get_annotations(
                     inspect_stringized_annotations_pep695.D.generic_method_2,
-                    eval_str=True,
+                    eval_str=Wahr,
                 ).values()
             ),
             set(
@@ -1088,7 +1088,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         self,
     ):
         self.assertEqual(
-            get_annotations(inspect_stringized_annotations_pep695.E, eval_str=True),
+            get_annotations(inspect_stringized_annotations_pep695.E, eval_str=Wahr),
             {"x": str},
         )
 
@@ -1181,7 +1181,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             anno,
             {
                 "attriberr": support.EqualToForwardRef(
-                    "obj.missing", is_class=True, owner=RaisesAttributeError
+                    "obj.missing", is_class=Wahr, owner=RaisesAttributeError
                 )
             },
         )
@@ -1221,7 +1221,7 @@ klasse MetaclassTests(unittest.TestCase):
         self.assertEqual(Meta.__annotate__(Format.VALUE), {"a": int})
 
         self.assertEqual(get_annotations(X), {})
-        self.assertIs(X.__annotate__, None)
+        self.assertIs(X.__annotate__, Nichts)
 
         self.assertEqual(get_annotations(Y), {"b": float})
         self.assertEqual(Y.__annotate__(Format.VALUE), {"b": float})
@@ -1237,10 +1237,10 @@ klasse MetaclassTests(unittest.TestCase):
             pass
 
         self.assertEqual(get_annotations(Meta), {})
-        self.assertIs(Meta.__annotate__, None)
+        self.assertIs(Meta.__annotate__, Nichts)
 
         self.assertEqual(get_annotations(Y), {})
-        self.assertIs(Y.__annotate__, None)
+        self.assertIs(Y.__annotate__, Nichts)
 
         self.assertEqual(get_annotations(X), {"a": str})
         self.assertEqual(X.__annotate__(Format.VALUE), {"a": str})
@@ -1281,13 +1281,13 @@ klasse MetaclassTests(unittest.TestCase):
                 fuer c in classes:
                     with self.subTest(c=c):
                         self.assertEqual(get_annotations(c), c.expected_annotations)
-                        annotate_func = getattr(c, "__annotate__", None)
+                        annotate_func = getattr(c, "__annotate__", Nichts)
                         wenn c.expected_annotations:
                             self.assertEqual(
                                 annotate_func(Format.VALUE), c.expected_annotations
                             )
                         sonst:
-                            self.assertIs(annotate_func, None)
+                            self.assertIs(annotate_func, Nichts)
 
 
 klasse TestGetAnnotateFromClassNamespace(unittest.TestCase):
@@ -1298,20 +1298,20 @@ klasse TestGetAnnotateFromClassNamespace(unittest.TestCase):
                 expected = ns["expected_annotate"]
                 with self.subTest(name=name):
                     wenn expected:
-                        self.assertIsNotNone(annotate)
+                        self.assertIsNotNichts(annotate)
                     sonst:
-                        self.assertIsNone(annotate)
+                        self.assertIsNichts(annotate)
                 return super().__new__(mcls, name, bases, ns)
 
         klasse HasAnnotations(metaclass=Meta):
-            expected_annotate = True
+            expected_annotate = Wahr
             a: int
 
         klasse NoAnnotations(metaclass=Meta):
-            expected_annotate = False
+            expected_annotate = Falsch
 
         klasse CustomAnnotate(metaclass=Meta):
-            expected_annotate = True
+            expected_annotate = Wahr
             def __annotate__(format):
                 return {}
 
@@ -1319,7 +1319,7 @@ klasse TestGetAnnotateFromClassNamespace(unittest.TestCase):
             from __future__ import annotations
 
             klasse HasFutureAnnotations(metaclass=Meta):
-                expected_annotate = False
+                expected_annotate = Falsch
                 a: int
         """
         exec(textwrap.dedent(code), {"Meta": Meta})
@@ -1345,7 +1345,7 @@ klasse TestTypeRepr(unittest.TestCase):
         self.assertEqual(type_repr(type_repr), "annotationlib.type_repr")
         self.assertEqual(type_repr(times_three), f"{__name__}.times_three")
         self.assertEqual(type_repr(...), "...")
-        self.assertEqual(type_repr(None), "None")
+        self.assertEqual(type_repr(Nichts), "Nichts")
         self.assertEqual(type_repr(1), "1")
         self.assertEqual(type_repr("1"), "'1'")
         self.assertEqual(type_repr(Format.VALUE), repr(Format.VALUE))
@@ -1603,7 +1603,7 @@ klasse TestForwardRefClass(unittest.TestCase):
         )
 
     def test_evaluate_with_type_params_and_scope_conflict(self):
-        fuer is_class in (False, True):
+        fuer is_class in (Falsch, Wahr):
             with self.subTest(is_class=is_class):
                 fwdref1 = ForwardRef("TypeParamsAlias1", owner=TypeParamsSample, is_class=is_class)
                 fwdref2 = ForwardRef("TypeParamsAlias2", owner=TypeParamsSample, is_class=is_class)

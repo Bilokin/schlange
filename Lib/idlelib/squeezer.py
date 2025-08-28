@@ -121,7 +121,7 @@ klasse ExpandingButton(tk.Button):
         self.selection_handle(  # X windows only.
             lambda offset, length: s[int(offset):int(offset) + int(length)])
 
-        self.is_dangerous = None
+        self.is_dangerous = Nichts
         self.after_idle(self.set_is_dangerous)
 
     def set_is_dangerous(self):
@@ -135,7 +135,7 @@ klasse ExpandingButton(tk.Button):
             )
         )
 
-    def expand(self, event=None):
+    def expand(self, event=Nichts):
         """expand event handler
 
         This inserts the original text in place of the button in the Text
@@ -144,7 +144,7 @@ klasse ExpandingButton(tk.Button):
         If the original text is dangerously long, i.e. expanding it could
         cause a performance degradation, ask the user fuer confirmation.
         """
-        wenn self.is_dangerous is None:
+        wenn self.is_dangerous is Nichts:
             self.set_is_dangerous()
         wenn self.is_dangerous:
             confirm = messagebox.askokcancel(
@@ -166,7 +166,7 @@ klasse ExpandingButton(tk.Button):
         self.editwin.on_squeezed_expand(index, self.s, self.tags)
         self.squeezer.expandingbuttons.remove(self)
 
-    def copy(self, event=None):
+    def copy(self, event=Nichts):
         """copy event handler
 
         Copy the original text to the clipboard.
@@ -174,13 +174,13 @@ klasse ExpandingButton(tk.Button):
         self.clipboard_clear()
         self.clipboard_append(self.s)
 
-    def view(self, event=None):
+    def view(self, event=Nichts):
         """view event handler
 
         View the original text in a separate text viewer window.
         """
         view_text(self.text, "Squeezed Output Viewer", self.s,
-                  modal=False, wrap='none')
+                  modal=Falsch, wrap='none')
 
     rmenu_specs = (
         # Item structure: (label, method_name).
@@ -340,6 +340,6 @@ Squeezer.reload()
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_squeezer', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_squeezer', verbosity=2, exit=Falsch)
 
     # Add htest.

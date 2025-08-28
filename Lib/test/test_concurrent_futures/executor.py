@@ -29,12 +29,12 @@ def raiser(exception, msg='std'):
     raise exception(msg)
 
 
-klasse FalseyBoolException(Exception):
+klasse FalschyBoolException(Exception):
     def __bool__(self):
-        return False
+        return Falsch
 
 
-klasse FalseyLenException(Exception):
+klasse FalschyLenException(Exception):
     def __len__(self):
         return 0
 
@@ -93,14 +93,14 @@ klasse ExecutorTest:
 
         # gh-110097: On heavily loaded systems, the launch of the worker may
         # take longer than the specified timeout.
-        self.assertIn(results, ([None, None], [None], []))
+        self.assertIn(results, ([Nichts, Nichts], [Nichts], []))
 
     def test_map_buffersize_type_validation(self):
         fuer buffersize in ("foo", 2.0):
             with self.subTest(buffersize=buffersize):
                 with self.assertRaisesRegex(
                     TypeError,
-                    "buffersize must be an integer or None",
+                    "buffersize must be an integer or Nichts",
                 ):
                     self.executor.map(str, range(4), buffersize=buffersize)
 
@@ -109,7 +109,7 @@ klasse ExecutorTest:
             with self.subTest(buffersize=buffersize):
                 with self.assertRaisesRegex(
                     ValueError,
-                    "buffersize must be None or > 0",
+                    "buffersize must be Nichts or > 0",
                 ):
                     self.executor.map(str, range(4), buffersize=buffersize)
 
@@ -132,9 +132,9 @@ klasse ExecutorTest:
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_map_buffersize_on_infinite_iterable(self):
         res = self.executor.map(str, itertools.count(), buffersize=2)
-        self.assertEqual(next(res, None), "0")
-        self.assertEqual(next(res, None), "1")
-        self.assertEqual(next(res, None), "2")
+        self.assertEqual(next(res, Nichts), "0")
+        self.assertEqual(next(res, Nichts), "1")
+        self.assertEqual(next(res, Nichts), "2")
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_map_buffersize_on_multiple_infinite_iterables(self):
@@ -144,24 +144,24 @@ klasse ExecutorTest:
             itertools.count(),
             buffersize=2
         )
-        self.assertEqual(next(res, None), 0)
-        self.assertEqual(next(res, None), 2)
-        self.assertEqual(next(res, None), 4)
+        self.assertEqual(next(res, Nichts), 0)
+        self.assertEqual(next(res, Nichts), 2)
+        self.assertEqual(next(res, Nichts), 4)
 
     def test_map_buffersize_on_empty_iterable(self):
         res = self.executor.map(str, [], buffersize=2)
-        self.assertIsNone(next(res, None))
+        self.assertIsNichts(next(res, Nichts))
 
     def test_map_buffersize_without_iterable(self):
         res = self.executor.map(str, buffersize=2)
-        self.assertIsNone(next(res, None))
+        self.assertIsNichts(next(res, Nichts))
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_map_buffersize_when_buffer_is_full(self):
         ints = iter(range(4))
         buffersize = 2
         self.executor.map(str, ints, buffersize=buffersize)
-        self.executor.shutdown(wait=True)  # wait fuer tasks to complete
+        self.executor.shutdown(wait=Wahr)  # wait fuer tasks to complete
         self.assertEqual(
             next(ints),
             buffersize,
@@ -204,14 +204,14 @@ klasse ExecutorTest:
             # refcount of the queued object. For that reason, we alternate
             # between running the GC and waiting fuer the event.
             wait_time = 0
-            collected = False
+            collected = Falsch
             while not collected and wait_time <= support.SHORT_TIMEOUT:
                 support.gc_collect()
                 collected = my_object_collected.wait(timeout=1.0)
                 wait_time += 1.0
         sonst:
             collected = my_object_collected.wait(timeout=support.SHORT_TIMEOUT)
-        self.assertTrue(collected,
+        self.assertWahr(collected,
                         "Stale reference not collected within timeout.")
 
     def test_max_workers_negative(self):
@@ -231,19 +231,19 @@ klasse ExecutorTest:
             support.gc_collect()  # For PyPy or other GCs.
 
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                wenn wr() is None:
+                wenn wr() is Nichts:
                     break
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_swallows_falsey_exceptions(self):
         # see gh-132063: Prevent exceptions that evaluate as falsey
         # from being ignored.
-        # Recall: `x` is falsey wenn `len(x)` returns 0 or `bool(x)` returns False.
+        # Recall: `x` is falsey wenn `len(x)` returns 0 or `bool(x)` returns Falsch.
 
         msg = 'boolbool'
-        with self.assertRaisesRegex(FalseyBoolException, msg):
-            self.executor.submit(raiser, FalseyBoolException, msg).result()
+        with self.assertRaisesRegex(FalschyBoolException, msg):
+            self.executor.submit(raiser, FalschyBoolException, msg).result()
 
         msg = 'lenlen'
-        with self.assertRaisesRegex(FalseyLenException, msg):
-            self.executor.submit(raiser, FalseyLenException, msg).result()
+        with self.assertRaisesRegex(FalschyLenException, msg):
+            self.executor.submit(raiser, FalschyLenException, msg).result()

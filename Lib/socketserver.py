@@ -198,14 +198,14 @@ klasse BaseServer:
 
     """
 
-    timeout = None
+    timeout = Nichts
 
     def __init__(self, server_address, RequestHandlerClass):
         """Constructor.  May be extended, do not override."""
         self.server_address = server_address
         self.RequestHandlerClass = RequestHandlerClass
         self.__is_shut_down = threading.Event()
-        self.__shutdown_request = False
+        self.__shutdown_request = Falsch
 
     def server_activate(self):
         """Called by constructor to activate the server.
@@ -241,7 +241,7 @@ klasse BaseServer:
 
                     self.service_actions()
         finally:
-            self.__shutdown_request = False
+            self.__shutdown_request = Falsch
             self.__is_shut_down.set()
 
     def shutdown(self):
@@ -251,7 +251,7 @@ klasse BaseServer:
         serve_forever() is running in another thread, or it will
         deadlock.
         """
-        self.__shutdown_request = True
+        self.__shutdown_request = Wahr
         self.__is_shut_down.wait()
 
     def service_actions(self):
@@ -281,11 +281,11 @@ klasse BaseServer:
         # Support people who used socket.settimeout() to escape
         # handle_request before self.timeout was available.
         timeout = self.socket.gettimeout()
-        wenn timeout is None:
+        wenn timeout is Nichts:
             timeout = self.timeout
-        sowenn self.timeout is not None:
+        sowenn self.timeout is not Nichts:
             timeout = min(timeout, self.timeout)
-        wenn timeout is not None:
+        wenn timeout is not Nichts:
             deadline = time() + timeout
 
         # Wait until a request arrives or the timeout expires - the loop is
@@ -293,11 +293,11 @@ klasse BaseServer:
         with _ServerSelector() as selector:
             selector.register(self, selectors.EVENT_READ)
 
-            while True:
+            while Wahr:
                 wenn selector.select(timeout):
                     return self._handle_request_noblock()
                 sonst:
-                    wenn timeout is not None:
+                    wenn timeout is not Nichts:
                         timeout = deadline - time()
                         wenn timeout < 0:
                             return self.handle_timeout()
@@ -335,10 +335,10 @@ klasse BaseServer:
     def verify_request(self, request, client_address):
         """Verify the request.  May be overridden.
 
-        Return True wenn we should proceed with this request.
+        Return Wahr wenn we should proceed with this request.
 
         """
-        return True
+        return Wahr
 
     def process_request(self, request, client_address):
         """Call finish_request.
@@ -397,7 +397,7 @@ klasse TCPServer(BaseServer):
 
     Methods fuer the caller:
 
-    - __init__(server_address, RequestHandlerClass, bind_and_activate=True)
+    - __init__(server_address, RequestHandlerClass, bind_and_activate=Wahr)
     - serve_forever(poll_interval=0.5)
     - shutdown()
     - handle_request()  # wenn you don't use serve_forever()
@@ -443,11 +443,11 @@ klasse TCPServer(BaseServer):
 
     request_queue_size = getattr(socket, "SOMAXCONN", 5)
 
-    allow_reuse_address = False
+    allow_reuse_address = Falsch
 
-    allow_reuse_port = False
+    allow_reuse_port = Falsch
 
-    def __init__(self, server_address, RequestHandlerClass, bind_and_activate=True):
+    def __init__(self, server_address, RequestHandlerClass, bind_and_activate=Wahr):
         """Constructor.  May be extended, do not override."""
         BaseServer.__init__(self, server_address, RequestHandlerClass)
         self.socket = socket.socket(self.address_family,
@@ -529,9 +529,9 @@ klasse UDPServer(TCPServer):
 
     """UDP server class."""
 
-    allow_reuse_address = False
+    allow_reuse_address = Falsch
 
-    allow_reuse_port = False
+    allow_reuse_port = Falsch
 
     socket_type = socket.SOCK_DGRAM
 
@@ -558,14 +558,14 @@ wenn hasattr(os, "fork"):
         """Mix-in klasse to handle each request in a new process."""
 
         timeout = 300
-        active_children = None
+        active_children = Nichts
         max_children = 40
         # If true, server_close() waits until all child processes complete.
-        block_on_close = True
+        block_on_close = Wahr
 
-        def collect_children(self, *, blocking=False):
+        def collect_children(self, *, blocking=Falsch):
             """Internal routine to wait fuer children that have exited."""
-            wenn self.active_children is None:
+            wenn self.active_children is Nichts:
                 return
 
             # If we're above the max number of children, wait and reap them until
@@ -617,7 +617,7 @@ wenn hasattr(os, "fork"):
             pid = os.fork()
             wenn pid:
                 # Parent process
-                wenn self.active_children is None:
+                wenn self.active_children is Nichts:
                     self.active_children = set()
                 self.active_children.add(pid)
                 self.close_request(request)
@@ -680,9 +680,9 @@ klasse ThreadingMixIn:
 
     # Decides how threads will act upon termination of the
     # main process
-    daemon_threads = False
+    daemon_threads = Falsch
     # If true, server_close() waits until all non-daemonic threads terminate.
-    block_on_close = True
+    block_on_close = Wahr
     # Threads object
     # used by server_close() to wait fuer all threads completion.
     _threads = _NoThreads()
@@ -799,20 +799,20 @@ klasse StreamRequestHandler(BaseRequestHandler):
     rbufsize = -1
     wbufsize = 0
 
-    # A timeout to apply to the request socket, wenn not None.
-    timeout = None
+    # A timeout to apply to the request socket, wenn not Nichts.
+    timeout = Nichts
 
-    # Disable nagle algorithm fuer this socket, wenn True.
+    # Disable nagle algorithm fuer this socket, wenn Wahr.
     # Use only when wbufsize != 0, to avoid small packets.
-    disable_nagle_algorithm = False
+    disable_nagle_algorithm = Falsch
 
     def setup(self):
         self.connection = self.request
-        wenn self.timeout is not None:
+        wenn self.timeout is not Nichts:
             self.connection.settimeout(self.timeout)
         wenn self.disable_nagle_algorithm:
             self.connection.setsockopt(socket.IPPROTO_TCP,
-                                       socket.TCP_NODELAY, True)
+                                       socket.TCP_NODELAY, Wahr)
         self.rfile = self.connection.makefile('rb', self.rbufsize)
         wenn self.wbufsize == 0:
             self.wfile = _SocketWriter(self.connection)
@@ -839,7 +839,7 @@ klasse _SocketWriter(BufferedIOBase):
         self._sock = sock
 
     def writable(self):
-        return True
+        return Wahr
 
     def write(self, b):
         self._sock.sendall(b)

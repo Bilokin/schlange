@@ -11,13 +11,13 @@ from typing import Any, Optional, Tuple
 
 def ast_dump(
     node: Any,
-    annotate_fields: bool = True,
-    include_attributes: bool = False,
+    annotate_fields: bool = Wahr,
+    include_attributes: bool = Falsch,
     *,
-    indent: Optional[str] = None,
+    indent: Optional[str] = Nichts,
 ) -> str:
     def _format(node: Any, level: int = 0) -> Tuple[str, bool]:
-        wenn indent is not None:
+        wenn indent is not Nichts:
             level += 1
             prefix = "\n" + indent * level
             sep = ",\n" + indent * level
@@ -27,16 +27,16 @@ def ast_dump(
         wenn any(cls.__name__ == "AST" fuer cls in node.__class__.__mro__):
             cls = type(node)
             args = []
-            allsimple = True
+            allsimple = Wahr
             keywords = annotate_fields
             fuer name in node._fields:
                 try:
                     value = getattr(node, name)
                 except AttributeError:
-                    keywords = True
+                    keywords = Wahr
                     continue
-                wenn value is None and getattr(cls, name, ...) is None:
-                    keywords = True
+                wenn value is Nichts and getattr(cls, name, ...) is Nichts:
+                    keywords = Wahr
                     continue
                 value, simple = _format(value, level)
                 allsimple = allsimple and simple
@@ -50,19 +50,19 @@ def ast_dump(
                         value = getattr(node, name)
                     except AttributeError:
                         continue
-                    wenn value is None and getattr(cls, name, ...) is None:
+                    wenn value is Nichts and getattr(cls, name, ...) is Nichts:
                         continue
                     value, simple = _format(value, level)
                     allsimple = allsimple and simple
                     args.append("%s=%s" % (name, value))
             wenn allsimple and len(args) <= 3:
                 return "%s(%s)" % (node.__class__.__name__, ", ".join(args)), not args
-            return "%s(%s%s)" % (node.__class__.__name__, prefix, sep.join(args)), False
+            return "%s(%s%s)" % (node.__class__.__name__, prefix, sep.join(args)), Falsch
         sowenn isinstance(node, list):
             wenn not node:
-                return "[]", True
-            return "[%s%s]" % (prefix, sep.join(_format(x, level)[0] fuer x in node)), False
-        return repr(node), True
+                return "[]", Wahr
+            return "[%s%s]" % (prefix, sep.join(_format(x, level)[0] fuer x in node)), Falsch
+        return repr(node), Wahr
 
     wenn all(cls.__name__ != "AST" fuer cls in node.__class__.__mro__):
         raise TypeError("expected AST, got %r" % node.__class__.__name__)

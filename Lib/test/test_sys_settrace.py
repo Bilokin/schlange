@@ -16,7 +16,7 @@ import warnings
 try:
     import _testinternalcapi
 except ImportError:
-    _testinternalcapi = None
+    _testinternalcapi = Nichts
 
 klasse tracecontext:
     """Context manager that traces its enter and exit."""
@@ -113,7 +113,7 @@ def arigo_example2():
         x = 1
     sonst:
         pass
-    return None
+    return Nichts
 
 arigo_example2.events = [(0, 'call'),
                         (1, 'line'),
@@ -228,10 +228,10 @@ settrace_and_raise.events = [(2, 'exception'),
 # This test is interesting because of the sonst: pass
 # part of the code.  The code generate fuer the true
 # part of the wenn contains a jump past the sonst branch.
-# The compiler then generates an implicit "return None"
+# The compiler then generates an implicit "return Nichts"
 # Internally, the compiler visits the pass statement
 # and stores its line number fuer use on the next instruction.
-# The next instruction is the implicit return None.
+# The next instruction is the implicit return Nichts.
 def ireturn_example():
     a = 5
     b = 5
@@ -297,7 +297,7 @@ tighterloop_example.events = [(0, 'call'),
 
 def generator_function():
     try:
-        yield True
+        yield Wahr
         "continued"
     finally:
         "finally"
@@ -324,22 +324,22 @@ generator_example.events = ([(0, 'call'),
 
 
 def lineno_matches_lasti(frame):
-    last_line = None
+    last_line = Nichts
     fuer start, end, line in frame.f_code.co_lines():
         wenn start <= frame.f_lasti < end:
             last_line = line
     return last_line == frame.f_lineno
 
 klasse Tracer:
-    def __init__(self, trace_line_events=None, trace_opcode_events=None):
+    def __init__(self, trace_line_events=Nichts, trace_opcode_events=Nichts):
         self.trace_line_events = trace_line_events
         self.trace_opcode_events = trace_opcode_events
         self.events = []
 
     def _reconfigure_frame(self, frame):
-        wenn self.trace_line_events is not None:
+        wenn self.trace_line_events is not Nichts:
             frame.f_trace_lines = self.trace_line_events
-        wenn self.trace_opcode_events is not None:
+        wenn self.trace_opcode_events is not Nichts:
             frame.f_trace_opcodes = self.trace_opcode_events
 
     def trace(self, frame, event, arg):
@@ -374,7 +374,7 @@ klasse TraceTestCase(unittest.TestCase):
         return Tracer()
 
     def compare_events(self, line_offset, events, expected_events):
-        events = [(l - line_offset wenn l is not None sonst None, e) fuer (l, e) in events]
+        events = [(l - line_offset wenn l is not Nichts sonst Nichts, e) fuer (l, e) in events]
         wenn events != expected_events:
             self.fail(
                 "events did not match expectation:\n" +
@@ -385,7 +385,7 @@ klasse TraceTestCase(unittest.TestCase):
         tracer = self.make_tracer()
         sys.settrace(tracer.trace)
         func()
-        sys.settrace(None)
+        sys.settrace(Nichts)
         self.compare_events(func.__code__.co_firstlineno,
                             tracer.events, events)
 
@@ -395,13 +395,13 @@ klasse TraceTestCase(unittest.TestCase):
     def run_test2(self, func):
         tracer = self.make_tracer()
         func(tracer.trace)
-        sys.settrace(None)
+        sys.settrace(Nichts)
         self.compare_events(func.__code__.co_firstlineno,
                             tracer.events, func.events)
 
     def test_set_and_retrieve_none(self):
-        sys.settrace(None)
-        assert sys.gettrace() is None
+        sys.settrace(Nichts)
+        assert sys.gettrace() is Nichts
 
     def test_set_and_retrieve_func(self):
         def fn(*args):
@@ -411,7 +411,7 @@ klasse TraceTestCase(unittest.TestCase):
         try:
             assert sys.gettrace() is fn
         finally:
-            sys.settrace(None)
+            sys.settrace(Nichts)
 
     def test_01_basic(self):
         self.run_test(basic)
@@ -452,14 +452,14 @@ klasse TraceTestCase(unittest.TestCase):
         tracer = self.make_tracer()
         sys.settrace(tracer.traceWithGenexp)
         generator_example()
-        sys.settrace(None)
+        sys.settrace(Nichts)
         self.compare_events(generator_example.__code__.co_firstlineno,
                             tracer.events, generator_example.events)
 
     def test_14_onliner_if(self):
         def onliners():
-            wenn True: x=False
-            sonst: x=True
+            wenn Wahr: x=Falsch
+            sonst: x=Wahr
             return 0
         self.run_and_compare(
             onliners,
@@ -509,9 +509,9 @@ klasse TraceTestCase(unittest.TestCase):
              (257, 'return')])
 
     def test_17_none_f_trace(self):
-        # Issue 20041: fix TypeError when f_trace is set to None.
+        # Issue 20041: fix TypeError when f_trace is set to Nichts.
         def func():
-            sys._getframe().f_trace = None
+            sys._getframe().f_trace = Nichts
             lineno = 2
         self.run_and_compare(func,
             [(0, 'call'),
@@ -585,9 +585,9 @@ klasse TraceTestCase(unittest.TestCase):
             x = doit_async()
             try:
                 sys.settrace(tracer)
-                x.send(None)
+                x.send(Nichts)
             finally:
-                sys.settrace(None)
+                sys.settrace(Nichts)
 
         tracer = self.make_tracer()
         events = [
@@ -651,11 +651,11 @@ klasse TraceTestCase(unittest.TestCase):
         coro = f()
         try:
             sys.settrace(tracer.trace)
-            coro.send(None)
+            coro.send(Nichts)
         except Exception:
             pass
         finally:
-            sys.settrace(None)
+            sys.settrace(Nichts)
 
         events = [
             (0, 'call'),
@@ -727,7 +727,7 @@ klasse TraceTestCase(unittest.TestCase):
                 4
             sonst:
                 6
-                wenn False:
+                wenn Falsch:
                     8
                 sonst:
                     10
@@ -946,7 +946,7 @@ klasse TraceTestCase(unittest.TestCase):
     def test_finally_with_conditional(self):
 
         # See gh-105658
-        condition = True
+        condition = Wahr
         def func():
             try:
                 try:
@@ -1063,14 +1063,14 @@ klasse TraceTestCase(unittest.TestCase):
                 wenn B:
                     wenn C:
                         wenn D:
-                            return False
+                            return Falsch
                 sonst:
-                    return False
+                    return Falsch
             sowenn E and F:
-                return True
+                return Wahr
 
-        A = B = True
-        C = False
+        A = B = Wahr
+        C = Falsch
 
         self.run_and_compare(func,
             [(0, 'call'),
@@ -1111,7 +1111,7 @@ klasse TraceTestCase(unittest.TestCase):
 
         def func():
             with C():
-                wenn False:
+                wenn Falsch:
                     pass
 
         self.run_and_compare(func,
@@ -1131,7 +1131,7 @@ klasse TraceTestCase(unittest.TestCase):
 
         def func():
             try:
-                wenn False:
+                wenn Falsch:
                     pass
             except Exception:
                 X
@@ -1381,7 +1381,7 @@ klasse TraceTestCase(unittest.TestCase):
                 4
             sonst:
                 6
-                wenn False:
+                wenn Falsch:
                     8
                 sonst:
                     10
@@ -1670,7 +1670,7 @@ klasse TraceTestCase(unittest.TestCase):
 
         events = []
         # Turning on and off tracing must be on same line to avoid unwanted LINE events.
-        _testcapi.settrace_to_record(events); func(); sys.settrace(None)
+        _testcapi.settrace_to_record(events); func(); sys.settrace(Nichts)
         start_line = func.__code__.co_firstlineno
         events = [
             (line-start_line, EVENT_NAMES[what])
@@ -1704,11 +1704,11 @@ klasse TraceTestCase(unittest.TestCase):
         self.run_and_compare(func, EXPECTED_EVENTS)
 
     def test_settrace_error(self):
-        raised = False
+        raised = Falsch
         def error_once(frame, event, arg):
             nonlocal raised
             wenn not raised:
-                raised = True
+                raised = Wahr
                 raise Exception
             return error
 
@@ -1730,7 +1730,7 @@ klasse TraceTestCase(unittest.TestCase):
         sonst:
             self.fail("No exception raised")
         finally:
-            sys.settrace(None)
+            sys.settrace(Nichts)
 
     @support.cpython_only
     def test_testcapi_settrace_error(self):
@@ -1755,7 +1755,7 @@ klasse TraceTestCase(unittest.TestCase):
         sonst:
             self.fail("No exception raised")
         finally:
-            sys.settrace(None)
+            sys.settrace(Nichts)
 
     def test_very_large_function(self):
         # There is a separate code path when the number of lines > (1 << 15).
@@ -1797,7 +1797,7 @@ klasse SkipLineEventsTraceTestCase(TraceTestCase):
 
     @staticmethod
     def make_tracer():
-        return Tracer(trace_line_events=False)
+        return Tracer(trace_line_events=Falsch)
 
 
 @support.cpython_only
@@ -1813,7 +1813,7 @@ klasse TraceOpcodesTestCase(TraceTestCase):
 
     @staticmethod
     def make_tracer():
-        return Tracer(trace_opcode_events=True)
+        return Tracer(trace_opcode_events=Wahr)
 
     @requires_subprocess()
     def test_trace_opcodes_after_settrace(self):
@@ -1830,13 +1830,13 @@ klasse TraceOpcodesTestCase(TraceTestCase):
 
             sys.settrace(opcode_trace_func)
             sys._getframe().f_trace = opcode_trace_func
-            sys._getframe().f_trace_opcodes = True
+            sys._getframe().f_trace_opcodes = Wahr
             a = 1
         """)
 
         # We can't use context manager because Windows can't execute a file while
         # it's being written
-        tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.py')
+        tmp = tempfile.NamedTemporaryFile(delete=Falsch, suffix='.py')
         tmp.write(code.encode('utf-8'))
         tmp.close()
         try:
@@ -1946,7 +1946,7 @@ klasse RaisingTraceFuncTestCase(unittest.TestCase):
         def trace(frame, event, arg):
             wenn event == "line":
                 raise exception
-            frame.f_trace_opcodes = True
+            frame.f_trace_opcodes = Wahr
             return trace
         def f():
             pass
@@ -1964,13 +1964,13 @@ klasse JumpTracer:
     """Defines a trace function that jumps from one place to another."""
 
     def __init__(self, function, jumpFrom, jumpTo, event='line',
-                 decorated=False):
+                 decorated=Falsch):
         self.code = function.__code__
         self.jumpFrom = jumpFrom
         self.jumpTo = jumpTo
         self.event = event
-        self.firstLine = None wenn decorated sonst self.code.co_firstlineno
-        self.done = False
+        self.firstLine = Nichts wenn decorated sonst self.code.co_firstlineno
+        self.done = Falsch
 
     def trace(self, frame, event, arg):
         wenn self.done:
@@ -1980,22 +1980,22 @@ klasse JumpTracer:
         # 'function' is decorated and the decorator may be written using
         # multiple physical lines when it is too long. Use the first line
         # trace event in 'function' to find the first line of 'function'.
-        wenn (self.firstLine is None and frame.f_code == self.code and
+        wenn (self.firstLine is Nichts and frame.f_code == self.code and
                 event == 'line'):
             self.firstLine = frame.f_lineno - 1
-        wenn (event == self.event and self.firstLine is not None and
+        wenn (event == self.event and self.firstLine is not Nichts and
                 frame.f_lineno == self.firstLine + self.jumpFrom):
             f = frame
-            while f is not None and f.f_code != self.code:
+            while f is not Nichts and f.f_code != self.code:
                 f = f.f_back
-            wenn f is not None:
+            wenn f is not Nichts:
                 # Cope with non-integer self.jumpTo (because of
                 # no_jump_to_non_integers below).
                 try:
                     frame.f_lineno = self.firstLine + self.jumpTo
                 except TypeError:
                     frame.f_lineno = self.jumpTo
-                self.done = True
+                self.done = Wahr
         return self.trace
 
 # This verifies the line-numbers-must-be-integers rule.
@@ -2022,11 +2022,11 @@ def no_jump_without_trace_function():
 
 
 klasse JumpTestCase(unittest.TestCase):
-    unbound_locals = r"assigning None to [0-9]+ unbound local"
+    unbound_locals = r"assigning Nichts to [0-9]+ unbound local"
 
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
-        sys.settrace(None)
+        sys.settrace(Nichts)
 
     def compare_jump_output(self, expected, received):
         wenn received != expected:
@@ -2034,8 +2034,8 @@ klasse JumpTestCase(unittest.TestCase):
                        "Expected: " + repr(expected) + "\n" +
                        "Received: " + repr(received))
 
-    def run_test(self, func, jumpFrom, jumpTo, expected, error=None,
-                 event='line', decorated=False, warning=None):
+    def run_test(self, func, jumpFrom, jumpTo, expected, error=Nichts,
+                 event='line', decorated=Falsch, warning=Nichts):
         wrapped = func
         while hasattr(wrapped, '__wrapped__'):
             wrapped = wrapped.__wrapped__
@@ -2045,20 +2045,20 @@ klasse JumpTestCase(unittest.TestCase):
         output = []
 
         with contextlib.ExitStack() as stack:
-            wenn error is not None:
+            wenn error is not Nichts:
                 stack.enter_context(self.assertRaisesRegex(*error))
-            wenn warning is not None:
+            wenn warning is not Nichts:
                 stack.enter_context(self.assertWarnsRegex(*warning))
             sonst:
                 stack.enter_context(warnings.catch_warnings())
                 warnings.simplefilter('error')
             func(output)
 
-        sys.settrace(None)
+        sys.settrace(Nichts)
         self.compare_jump_output(expected, output)
 
-    def run_async_test(self, func, jumpFrom, jumpTo, expected, error=None,
-                 event='line', decorated=False, warning=None):
+    def run_async_test(self, func, jumpFrom, jumpTo, expected, error=Nichts,
+                 event='line', decorated=Falsch, warning=Nichts):
         wrapped = func
         while hasattr(wrapped, '__wrapped__'):
             wrapped = wrapped.__wrapped__
@@ -2068,16 +2068,16 @@ klasse JumpTestCase(unittest.TestCase):
         output = []
 
         with contextlib.ExitStack() as stack:
-            wenn error is not None:
+            wenn error is not Nichts:
                 stack.enter_context(self.assertRaisesRegex(*error))
-            wenn warning is not None:
+            wenn warning is not Nichts:
                 stack.enter_context(self.assertWarnsRegex(*warning))
             run_no_yield_async_fn(func, output)
 
-        sys.settrace(None)
+        sys.settrace(Nichts)
         self.compare_jump_output(expected, output)
 
-    def jump_test(jumpFrom, jumpTo, expected, error=None, event='line', warning=None):
+    def jump_test(jumpFrom, jumpTo, expected, error=Nichts, event='line', warning=Nichts):
         """Decorator that creates a test that makes a jump
         from one place to another in the following code.
         """
@@ -2085,11 +2085,11 @@ klasse JumpTestCase(unittest.TestCase):
             @wraps(func)
             def test(self):
                 self.run_test(func, jumpFrom, jumpTo, expected,
-                              error=error, event=event, decorated=True, warning=warning)
+                              error=error, event=event, decorated=Wahr, warning=warning)
             return test
         return decorator
 
-    def async_jump_test(jumpFrom, jumpTo, expected, error=None, event='line', warning=None):
+    def async_jump_test(jumpFrom, jumpTo, expected, error=Nichts, event='line', warning=Nichts):
         """Decorator that creates a test that makes a jump
         from one place to another in the following asynchronous code.
         """
@@ -2097,7 +2097,7 @@ klasse JumpTestCase(unittest.TestCase):
             @wraps(func)
             def test(self):
                 self.run_async_test(func, jumpFrom, jumpTo, expected,
-                              error=error, event=event, decorated=True, warning=warning)
+                              error=error, event=event, decorated=Wahr, warning=warning)
             return test
         return decorator
 
@@ -2116,16 +2116,16 @@ klasse JumpTestCase(unittest.TestCase):
 
     @jump_test(1, 4, [5], warning=(RuntimeWarning, unbound_locals))
     def test_jump_is_none_forwards(output):
-        x = None
-        wenn x is None:
+        x = Nichts
+        wenn x is Nichts:
             output.append(3)
         sonst:
             output.append(5)
 
     @jump_test(6, 5, [3, 5, 6])
     def test_jump_is_none_backwards(output):
-        x = None
-        wenn x is None:
+        x = Nichts
+        wenn x is Nichts:
             output.append(3)
         sonst:
             output.append(5)
@@ -2133,16 +2133,16 @@ klasse JumpTestCase(unittest.TestCase):
 
     @jump_test(2, 4, [5])
     def test_jump_is_not_none_forwards(output):
-        x = None
-        wenn x is not None:
+        x = Nichts
+        wenn x is not Nichts:
             output.append(3)
         sonst:
             output.append(5)
 
     @jump_test(6, 5, [5, 5, 6])
     def test_jump_is_not_none_backwards(output):
-        x = None
-        wenn x is not None:
+        x = Nichts
+        wenn x is not Nichts:
             output.append(3)
         sonst:
             output.append(5)
@@ -2239,7 +2239,7 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(3, 4, [1], (ValueError, 'after'))
     def test_no_jump_infinite_while_loop(output):
         output.append(1)
-        while True:
+        while Wahr:
             output.append(3)
         output.append(4)
 
@@ -2476,7 +2476,7 @@ klasse JumpTestCase(unittest.TestCase):
     @jump_test(5, 8, [1, 3, 8, 10, 11, 13])
     def test_jump_over_break_in_try_finally_block(output):
         output.append(1)
-        while True:
+        while Wahr:
             output.append(3)
             try:
                 output.append(5)
@@ -2785,10 +2785,10 @@ klasse JumpTestCase(unittest.TestCase):
         output.append(8)
 
     def test_no_jump_to_non_integers(self):
-        self.run_test(no_jump_to_non_integers, 2, "Spam", [True])
+        self.run_test(no_jump_to_non_integers, 2, "Spam", [Wahr])
 
     def test_no_jump_without_trace_function(self):
-        # Must set sys.settrace(None) in setUp(), sonst condition is not
+        # Must set sys.settrace(Nichts) in setUp(), sonst condition is not
         # triggered.
         no_jump_without_trace_function()
 
@@ -2822,7 +2822,7 @@ output.append(4)
         sys.settrace(tracer.trace)
         namespace = {"output": []}
         exec(code, namespace)
-        sys.settrace(None)
+        sys.settrace(Nichts)
         self.compare_jump_output([2, 3, 2, 3, 4], namespace["output"])
 
     @jump_test(2, 3, [1], event='call', error=(ValueError, "can't jump from"
@@ -2870,7 +2870,7 @@ output.append(4)
 
     @jump_test(8, 2, [2, 7, 2], warning=(RuntimeWarning, unbound_locals))
     def test_jump_backward_over_listcomp_v2(output):
-        flag = False
+        flag = Falsch
         output.append(2)
         wenn flag:
             return
@@ -2893,7 +2893,7 @@ output.append(4)
 
     @async_jump_test(8, 2, [2, 7, 2], warning=(RuntimeWarning, unbound_locals))
     async def test_jump_backward_over_async_listcomp_v2(output):
-        flag = False
+        flag = Falsch
         output.append(2)
         wenn flag:
             return
@@ -3001,7 +3001,7 @@ klasse TestExtendedArgs(unittest.TestCase):
 
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
-        sys.settrace(None)
+        sys.settrace(Nichts)
 
     def count_traces(self, func):
         # warmup
@@ -3015,7 +3015,7 @@ klasse TestExtendedArgs(unittest.TestCase):
 
         sys.settrace(trace)
         func()
-        sys.settrace(None)
+        sys.settrace(Nichts)
 
         return counts
 
@@ -3046,7 +3046,7 @@ klasse TestEdgeCases(unittest.TestCase):
 
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
-        sys.settrace(None)
+        sys.settrace(Nichts)
 
     def test_reentrancy(self):
         def foo(*args):
@@ -3084,7 +3084,7 @@ klasse TestLinesAfterTraceStarted(TraceTestCase):
         sys.settrace(tracer.trace)
         line = 4
         line = 5
-        sys.settrace(None)
+        sys.settrace(Nichts)
         self.compare_events(
             TestLinesAfterTraceStarted.test_events.__code__.co_firstlineno,
             tracer.events, [
@@ -3132,7 +3132,7 @@ klasse TestSetLocalTrace(TraceTestCase):
         sys._getframe().f_trace = tracefunc
         func()
         self.assertEqual(events, EXPECTED_EVENTS)
-        sys.settrace(None)
+        sys.settrace(Nichts)
 
 
 wenn __name__ == "__main__":

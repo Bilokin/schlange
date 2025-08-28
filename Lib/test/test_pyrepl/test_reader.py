@@ -43,8 +43,8 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             reader.ps2 = ">>> "
             reader.ps3 = "... "
             reader.ps4 = ""
-            reader.can_colorize = False
-            reader.paste_mode = False
+            reader.can_colorize = Falsch
+            reader.paste_mode = Falsch
             return reader
 
         events = code_to_events("if some_condition:\nsome_function()")
@@ -88,7 +88,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
                f"  {3*"樂"}\\\n"
                 "樂樂"
             ),
-            clean=True,
+            clean=Wahr,
         )
         # fmt: on
 
@@ -206,7 +206,7 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             ],
         )
 
-        no_paste_reader = functools.partial(prepare_reader, paste_mode=False)
+        no_paste_reader = functools.partial(prepare_reader, paste_mode=Falsch)
         reader, _ = handle_all_events(events, prepare_reader=no_paste_reader)
 
         expected = (
@@ -217,8 +217,8 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             "    \n"
             "    "  # HistoricalReader will trim trailing whitespace
         )
-        self.assert_screen_equal(reader, expected, clean=True)
-        self.assertTrue(reader.finished)
+        self.assert_screen_equal(reader, expected, clean=Wahr)
+        self.assertWahr(reader.finished)
 
     def test_input_hook_is_called_if_set(self):
         input_hook = MagicMock()
@@ -257,15 +257,15 @@ klasse TestReader(ScreenEqualMixin, TestCase):
             # we're not using handle_all_events() here to be able to
             # follow the KeyboardInterrupt sequence of events. Normally this
             # happens in simple_interact.run_multiline_interactive_console.
-            while True:
+            while Wahr:
                 reader.handle1()
         except KeyboardInterrupt:
             # at this point the completions are still visible
-            self.assertTrue(len(reader.screen) > 2)
+            self.assertWahr(len(reader.screen) > 2)
             reader.refresh()
             # after the refresh, they are gone
             self.assertEqual(len(reader.screen), 2)
-            self.assert_screen_equal(reader, code, clean=True)
+            self.assert_screen_equal(reader, code, clean=Wahr)
         sonst:
             self.fail("KeyboardInterrupt not raised.")
 
@@ -364,7 +364,7 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
         code = dedent(
             """\
             import re, sys
-            def funct(case: str = sys.platform) -> None:
+            def funct(case: str = sys.platform) -> Nichts:
                 match = re.search(
                     "(me)",
                     '''
@@ -383,7 +383,7 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
         expected = dedent(
             """\
             {k}import{z} re{o},{z} sys
-            {a}{k}def{z} {d}funct{z}{o}({z}case{o}:{z} {b}str{z} {o}={z} sys{o}.{z}platform{o}){z} {o}->{z} {k}None{z}{o}:{z}
+            {a}{k}def{z} {d}funct{z}{o}({z}case{o}:{z} {b}str{z} {o}={z} sys{o}.{z}platform{o}){z} {o}->{z} {k}Nichts{z}{o}:{z}
                 match {o}={z} re{o}.{z}search{o}({z}
                     {s}"(me)"{z}{o},{z}
                     {s}'''{z}
@@ -402,7 +402,7 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
         expected_sync = expected.format(a="", **colors)
         events = code_to_events(code)
         reader, _ = handle_all_events(events)
-        self.assert_screen_equal(reader, code, clean=True)
+        self.assert_screen_equal(reader, code, clean=Wahr)
         self.assert_screen_equal(reader, expected_sync)
         self.assertEqual(reader.pos, 396)
         self.assertEqual(reader.cxy, (0, 15))
@@ -432,7 +432,7 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
         ).format(**colors)
         events = code_to_events(code)
         reader, _ = handle_all_events(events)
-        self.assert_screen_equal(reader, code, clean=True)
+        self.assert_screen_equal(reader, code, clean=Wahr)
         self.assert_screen_equal(reader, expected)
 
     def test_syntax_highlighting_incomplete_string_another_line(self):
@@ -450,7 +450,7 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
         ).format(**colors)
         events = code_to_events(code)
         reader, _ = handle_all_events(events)
-        self.assert_screen_equal(reader, code, clean=True)
+        self.assert_screen_equal(reader, code, clean=Wahr)
         self.assert_screen_equal(reader, expected)
 
     def test_syntax_highlighting_incomplete_multiline_string(self):
@@ -470,7 +470,7 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
         ).format(**colors)
         events = code_to_events(code)
         reader, _ = handle_all_events(events)
-        self.assert_screen_equal(reader, code, clean=True)
+        self.assert_screen_equal(reader, code, clean=Wahr)
         self.assert_screen_equal(reader, expected)
 
     def test_syntax_highlighting_incomplete_fstring(self):
@@ -496,7 +496,7 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
         ).format(OB="{", CB="}", **colors)
         events = code_to_events(code)
         reader, _ = handle_all_events(events)
-        self.assert_screen_equal(reader, code, clean=True)
+        self.assert_screen_equal(reader, code, clean=Wahr)
         self.assert_screen_equal(reader, expected)
 
     def test_syntax_highlighting_indentation_error(self):
@@ -516,7 +516,7 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
         ).format(**colors)
         events = code_to_events(code)
         reader, _ = handle_all_events(events)
-        self.assert_screen_equal(reader, code, clean=True)
+        self.assert_screen_equal(reader, code, clean=Wahr)
         self.assert_screen_equal(reader, expected)
 
     def test_syntax_highlighting_literal_brace_in_fstring_or_tstring(self):
@@ -546,13 +546,13 @@ klasse TestReaderInColor(ScreenEqualMixin, TestCase):
         ).format(**colors).replace("<", "{").replace(">", "}")
         events = code_to_events(code)
         reader, _ = handle_all_events(events)
-        self.assert_screen_equal(reader, code, clean=True)
-        self.maxDiff=None
+        self.assert_screen_equal(reader, code, clean=Wahr)
+        self.maxDiff=Nichts
         self.assert_screen_equal(reader, expected)
 
     def test_control_characters(self):
         code = 'flag = "🏳️‍🌈"'
         events = code_to_events(code)
         reader, _ = handle_all_events(events)
-        self.assert_screen_equal(reader, 'flag = "🏳️\\u200d🌈"', clean=True)
+        self.assert_screen_equal(reader, 'flag = "🏳️\\u200d🌈"', clean=Wahr)
         self.assert_screen_equal(reader, 'flag {o}={z} {s}"🏳️\\u200d🌈"{z}'.format(**colors))

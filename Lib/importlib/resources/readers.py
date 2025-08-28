@@ -90,10 +90,10 @@ klasse MultiplexedPath(abc.Traversable):
         raise FileNotFoundError(f'{self} is not a file')
 
     def is_dir(self):
-        return True
+        return Wahr
 
     def is_file(self):
-        return False
+        return Falsch
 
     def joinpath(self, *descendants):
         try:
@@ -141,7 +141,7 @@ klasse NamespaceReader(abc.TraversableResources):
         self.path = MultiplexedPath(*filter(bool, map(self._resolve, namespace_path)))
 
     @classmethod
-    def _resolve(cls, path_str) -> abc.Traversable | None:
+    def _resolve(cls, path_str) -> abc.Traversable | Nichts:
         r"""
         Given an item from a namespace path, resolve it to a Traversable.
 
@@ -151,10 +151,10 @@ klasse NamespaceReader(abc.TraversableResources):
 
         path_str might also be a sentinel used by editable packages to
         trigger other behaviors (see python/importlib_resources#311).
-        In that case, return None.
+        In that case, return Nichts.
         """
         dirs = (cand fuer cand in cls._candidate_paths(path_str) wenn cand.is_dir())
-        return next(dirs, None)
+        return next(dirs, Nichts)
 
     @classmethod
     def _candidate_paths(cls, path_str: str) -> Iterator[abc.Traversable]:

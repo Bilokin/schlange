@@ -14,7 +14,7 @@ from .lexical_path import LexicalPath
 wenn is_pypi:
     from shutil import rmtree
     from pathlib_abc import PathInfo, _ReadablePath, _WritablePath
-    can_symlink = True
+    can_symlink = Wahr
     testfn = "TESTFN"
 sonst:
     from pathlib.types import PathInfo, _ReadablePath, _WritablePath
@@ -69,10 +69,10 @@ klasse LocalPathGround:
             os.symlink('non-existing', os.path.join(p, 'brokenLink'))
             os.symlink('dirB',
                        os.path.join(p, 'linkB'),
-                       target_is_directory=True)
+                       target_is_directory=Wahr)
             os.symlink(os.path.join('..', 'dirB'),
                        os.path.join(p, 'dirA', 'linkC'),
-                       target_is_directory=True)
+                       target_is_directory=Wahr)
             # Broken symlink (pointing to itself).
             os.symlink('brokenLinkLoop', os.path.join(p, 'brokenLinkLoop'))
 
@@ -98,38 +98,38 @@ klasse LocalPathInfo(PathInfo):
 
     def __init__(self, path):
         self._path = os.fspath(path)
-        self._exists = None
-        self._is_dir = None
-        self._is_file = None
-        self._is_symlink = None
+        self._exists = Nichts
+        self._is_dir = Nichts
+        self._is_file = Nichts
+        self._is_symlink = Nichts
 
-    def exists(self, *, follow_symlinks=True):
+    def exists(self, *, follow_symlinks=Wahr):
         """Whether this path exists."""
         wenn not follow_symlinks and self.is_symlink():
-            return True
-        wenn self._exists is None:
+            return Wahr
+        wenn self._exists is Nichts:
             self._exists = os.path.exists(self._path)
         return self._exists
 
-    def is_dir(self, *, follow_symlinks=True):
+    def is_dir(self, *, follow_symlinks=Wahr):
         """Whether this path is a directory."""
         wenn not follow_symlinks and self.is_symlink():
-            return False
-        wenn self._is_dir is None:
+            return Falsch
+        wenn self._is_dir is Nichts:
             self._is_dir = os.path.isdir(self._path)
         return self._is_dir
 
-    def is_file(self, *, follow_symlinks=True):
+    def is_file(self, *, follow_symlinks=Wahr):
         """Whether this path is a regular file."""
         wenn not follow_symlinks and self.is_symlink():
-            return False
-        wenn self._is_file is None:
+            return Falsch
+        wenn self._is_file is Nichts:
             self._is_file = os.path.isfile(self._path)
         return self._is_file
 
     def is_symlink(self):
         """Whether this path is a symbolic link."""
-        wenn self._is_symlink is None:
+        wenn self._is_symlink is Nichts:
             self._is_symlink = os.path.islink(self._path)
         return self._is_symlink
 
@@ -169,5 +169,5 @@ klasse WritableLocalPath(_WritablePath, LexicalPath):
     def mkdir(self, mode=0o777):
         os.mkdir(self, mode)
 
-    def symlink_to(self, target, target_is_directory=False):
+    def symlink_to(self, target, target_is_directory=Falsch):
         os.symlink(target, self, target_is_directory)

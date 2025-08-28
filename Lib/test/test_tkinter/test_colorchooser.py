@@ -31,8 +31,8 @@ klasse ChooserTest(AbstractTkTest, unittest.TestCase):
 
     def test_fixresult(self):
         cc = self.cc
-        self.assertEqual(cc._fixresult(self.root, ()), (None, None))
-        self.assertEqual(cc._fixresult(self.root, ''), (None, None))
+        self.assertEqual(cc._fixresult(self.root, ()), (Nichts, Nichts))
+        self.assertEqual(cc._fixresult(self.root, ''), (Nichts, Nichts))
         self.assertEqual(cc._fixresult(self.root, 'chocolate'),
                          ((210, 105, 30), 'chocolate'))
         self.assertEqual(cc._fixresult(self.root, '#4a3c8c'),
@@ -49,15 +49,15 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
             raise ZeroDivisionError
 
         with swap_attr(Dialog, '_test_callback', test_callback):
-            ismapped = None
+            ismapped = Nichts
             self.assertRaises(ZeroDivisionError, askcolor)
             #askcolor()
-            self.assertEqual(ismapped, False)
+            self.assertEqual(ismapped, Falsch)
 
             root = tkinter.Tk()
-            ismapped = None
+            ismapped = Nichts
             self.assertRaises(ZeroDivisionError, askcolor)
-            self.assertEqual(ismapped, True)
+            self.assertEqual(ismapped, Wahr)
             root.destroy()
 
             tkinter.NoDefaultRoot()

@@ -162,12 +162,12 @@ klasse FunctionalAPIBase(util.DiskSetup):
 
     def test_is_resource(self):
         is_resource = resources.is_resource
-        self.assertTrue(is_resource(self.anchor01, 'utf-8.file'))
-        self.assertFalse(is_resource(self.anchor01, 'no_such_file'))
-        self.assertFalse(is_resource(self.anchor01))
-        self.assertFalse(is_resource(self.anchor01, 'subdirectory'))
+        self.assertWahr(is_resource(self.anchor01, 'utf-8.file'))
+        self.assertFalsch(is_resource(self.anchor01, 'no_such_file'))
+        self.assertFalsch(is_resource(self.anchor01))
+        self.assertFalsch(is_resource(self.anchor01, 'subdirectory'))
         fuer path_parts in self._gen_resourcetxt_path_parts():
-            self.assertTrue(is_resource(self.anchor02, *path_parts))
+            self.assertWahr(is_resource(self.anchor02, *path_parts))
 
     def test_contents(self):
         with warnings_helper.check_warnings((".*contents.*", DeprecationWarning)):
@@ -207,9 +207,9 @@ klasse FunctionalAPIBase(util.DiskSetup):
             resources.contents,
         ):
             with self.subTest(func=func):
-                # Rejecting None anchor
+                # Rejecting Nichts anchor
                 with self.assertRaises(TypeError):
-                    func(None)
+                    func(Nichts)
                 # Rejecting invalid anchor type
                 with self.assertRaises((TypeError, AttributeError)):
                     func(1234)

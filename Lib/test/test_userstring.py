@@ -26,13 +26,13 @@ klasse UserStringTest(
             realresult
         )
 
-    def checkraises(self, exc, obj, methodname, *args, expected_msg=None):
+    def checkraises(self, exc, obj, methodname, *args, expected_msg=Nichts):
         obj = self.fixtype(obj)
         # we don't fix the arguments, because UserString can't cope with it
         with self.assertRaises(exc) as cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
-        wenn expected_msg is not None:
+        wenn expected_msg is not Nichts:
             self.assertEqual(str(cm.exception), expected_msg)
 
     def checkcall(self, object, methodname, *args):
@@ -60,11 +60,11 @@ klasse UserStringTest(
         self.checkraises(UnicodeError, '\ud800', 'encode')
 
     def test_encode_explicit_none_args(self):
-        self.checkequal(b'hello', 'hello', 'encode', None, None)
+        self.checkequal(b'hello', 'hello', 'encode', Nichts, Nichts)
         # Check that encoding defaults to utf-8
-        self.checkequal(b'\xf0\xa3\x91\x96', '\U00023456', 'encode', None, None)
+        self.checkequal(b'\xf0\xa3\x91\x96', '\U00023456', 'encode', Nichts, Nichts)
         # Check that errors defaults to 'strict'
-        self.checkraises(UnicodeError, '\ud800', 'encode', None, None)
+        self.checkraises(UnicodeError, '\ud800', 'encode', Nichts, Nichts)
 
 
 wenn __name__ == "__main__":

@@ -44,7 +44,7 @@ klasse AutoFileTests:
         p.write(bytes(range(10)))
         self.assertEqual(self.f.tell(), p.tell())
         self.f.close()
-        self.f = None
+        self.f = Nichts
         gc_collect()  # For PyPy or other GCs.
         self.assertRaises(ReferenceError, getattr, p, 'tell')
 
@@ -67,7 +67,7 @@ klasse AutoFileTests:
         f = self.f
 
         self.assertEqual(f.mode, "wb")
-        self.assertEqual(f.closed, False)
+        self.assertEqual(f.closed, Falsch)
 
         # verify the attributes are readonly
         fuer attr in 'mode', 'closed':
@@ -151,28 +151,28 @@ klasse AutoFileTests:
 
     def testWritelinesError(self):
         self.assertRaises(TypeError, self.f.writelines, [1, 2, 3])
-        self.assertRaises(TypeError, self.f.writelines, None)
+        self.assertRaises(TypeError, self.f.writelines, Nichts)
         self.assertRaises(TypeError, self.f.writelines, "abc")
 
     def test_none_args(self):
         self.f.write(b"hi\nbye\nabc")
         self.f.close()
         self.f = self.FileIO(TESTFN, 'r')
-        self.assertEqual(self.f.read(None), b"hi\nbye\nabc")
+        self.assertEqual(self.f.read(Nichts), b"hi\nbye\nabc")
         self.f.seek(0)
-        self.assertEqual(self.f.readline(None), b"hi\n")
-        self.assertEqual(self.f.readlines(None), [b"bye\n", b"abc"])
+        self.assertEqual(self.f.readline(Nichts), b"hi\n")
+        self.assertEqual(self.f.readlines(Nichts), [b"bye\n", b"abc"])
 
     def test_reject(self):
         self.assertRaises(TypeError, self.f.write, "Hello!")
 
     def testRepr(self):
         self.assertEqual(repr(self.f),
-                         "<%s.FileIO name=%r mode=%r closefd=True>" %
+                         "<%s.FileIO name=%r mode=%r closefd=Wahr>" %
                          (self.modulename, self.f.name, self.f.mode))
         del self.f.name
         self.assertEqual(repr(self.f),
-                         "<%s.FileIO fd=%r mode=%r closefd=True>" %
+                         "<%s.FileIO fd=%r mode=%r closefd=Wahr>" %
                          (self.modulename, self.f.fileno(), self.f.mode))
         self.f.close()
         self.assertEqual(repr(self.f),
@@ -191,9 +191,9 @@ klasse AutoFileTests:
     def testReprNoCloseFD(self):
         fd = os.open(TESTFN, os.O_RDONLY)
         try:
-            with self.FileIO(fd, 'r', closefd=False) as f:
+            with self.FileIO(fd, 'r', closefd=Falsch) as f:
                 self.assertEqual(repr(f),
-                                 "<%s.FileIO name=%r mode=%r closefd=False>" %
+                                 "<%s.FileIO name=%r mode=%r closefd=Falsch>" %
                                  (self.modulename, f.name, f.mode))
         finally:
             os.close(fd)
@@ -207,17 +207,17 @@ klasse AutoFileTests:
 
     def testErrors(self):
         f = self.f
-        self.assertFalse(f.isatty())
-        self.assertFalse(f.closed)
+        self.assertFalsch(f.isatty())
+        self.assertFalsch(f.closed)
         #self.assertEqual(f.name, TESTFN)
         self.assertRaises(ValueError, f.read, 10) # Open fuer reading
         f.close()
-        self.assertTrue(f.closed)
+        self.assertWahr(f.closed)
         f = self.FileIO(TESTFN, 'r')
         self.assertRaises(TypeError, f.readinto, "")
-        self.assertFalse(f.closed)
+        self.assertFalsch(f.closed)
         f.close()
-        self.assertTrue(f.closed)
+        self.assertWahr(f.closed)
 
     def testMethods(self):
         methods = ['fileno', 'isatty', 'seekable', 'readable', 'writable',
@@ -225,7 +225,7 @@ klasse AutoFileTests:
                    'tell', 'truncate', 'flush']
 
         self.f.close()
-        self.assertTrue(self.f.closed)
+        self.assertWahr(self.f.closed)
 
         fuer methodname in methods:
             method = getattr(self.f, methodname)
@@ -335,7 +335,7 @@ klasse AutoFileTests:
 
     @ClosedFD
     def testErrnoOnClosedIsatty(self, f):
-        self.assertEqual(f.isatty(), False)
+        self.assertEqual(f.isatty(), Falsch)
 
     def ReopenForRead(self):
         try:
@@ -376,7 +376,7 @@ klasse AutoFileTests:
 
 
         def check_readall(name, code, prelude="", cleanup="",
-                          extra_checks=None):
+                          extra_checks=Nichts):
             with self.subTest(name=name):
                 syscalls = strace_helper.get_events(code, _strace_flags,
                                                       prelude=prelude,
@@ -513,22 +513,22 @@ klasse OtherFileTests:
     def testAbles(self):
         try:
             f = self.FileIO(TESTFN, "w")
-            self.assertEqual(f.readable(), False)
-            self.assertEqual(f.writable(), True)
-            self.assertEqual(f.seekable(), True)
+            self.assertEqual(f.readable(), Falsch)
+            self.assertEqual(f.writable(), Wahr)
+            self.assertEqual(f.seekable(), Wahr)
             f.close()
 
             f = self.FileIO(TESTFN, "r")
-            self.assertEqual(f.readable(), True)
-            self.assertEqual(f.writable(), False)
-            self.assertEqual(f.seekable(), True)
+            self.assertEqual(f.readable(), Wahr)
+            self.assertEqual(f.writable(), Falsch)
+            self.assertEqual(f.seekable(), Wahr)
             f.close()
 
             f = self.FileIO(TESTFN, "a+")
-            self.assertEqual(f.readable(), True)
-            self.assertEqual(f.writable(), True)
-            self.assertEqual(f.seekable(), True)
-            self.assertEqual(f.isatty(), False)
+            self.assertEqual(f.readable(), Wahr)
+            self.assertEqual(f.writable(), Wahr)
+            self.assertEqual(f.seekable(), Wahr)
+            self.assertEqual(f.isatty(), Falsch)
             f.close()
 
             wenn sys.platform != "win32":
@@ -540,14 +540,14 @@ klasse OtherFileTests:
                     # OS'es that don't support /dev/tty.
                     pass
                 sonst:
-                    self.assertEqual(f.readable(), False)
-                    self.assertEqual(f.writable(), True)
+                    self.assertEqual(f.readable(), Falsch)
+                    self.assertEqual(f.writable(), Wahr)
                     wenn sys.platform != "darwin" and \
                        'bsd' not in sys.platform and \
                        not sys.platform.startswith(('sunos', 'aix')):
                         # Somehow /dev/tty appears seekable on some BSDs
-                        self.assertEqual(f.seekable(), False)
-                    self.assertEqual(f.isatty(), True)
+                        self.assertEqual(f.seekable(), Falsch)
+                    self.assertEqual(f.isatty(), Wahr)
                     f.close()
         finally:
             os.unlink(TESTFN)
@@ -626,10 +626,10 @@ klasse OtherFileTests:
             self.assertRaises(OSError, msvcrt.get_osfhandle, make_bad_fd())
 
     def testBooleanFd(self):
-        fuer fd in False, True:
+        fuer fd in Falsch, Wahr:
             with self.assertWarnsRegex(RuntimeWarning,
                     'bool is used as a file descriptor') as cm:
-                f = self.FileIO(fd, closefd=False)
+                f = self.FileIO(fd, closefd=Falsch)
             f.close()
             self.assertEqual(cm.filename, __file__)
 
@@ -712,7 +712,7 @@ klasse OtherFileTests:
         self.assertRaises(TypeError, self.FileIO, "1", 0, 0)
 
     def testWarnings(self):
-        with check_warnings(quiet=True) as w:
+        with check_warnings(quiet=Wahr) as w:
             self.assertEqual(w.warnings, [])
             self.assertRaises(TypeError, self.FileIO, [])
             self.assertEqual(w.warnings, [])
@@ -763,7 +763,7 @@ klasse PyOtherFileTests(OtherFileTests, unittest.TestCase):
         # open("rb")
         with self.FileIO(__file__, "rb") as f:
             expected = f.read()
-        with check_warnings(quiet=True) as w:
+        with check_warnings(quiet=Wahr) as w:
             # Always test _open_code_with_warning
             with _pyio._open_code_with_warning(__file__) as f:
                 actual = f.read()

@@ -10,7 +10,7 @@ from . import result
 from .case import _SubTest
 from .signals import registerResult
 
-__unittest = True
+__unittest = Wahr
 
 
 klasse _WritelnDecorator(object):
@@ -23,7 +23,7 @@ klasse _WritelnDecorator(object):
             raise AttributeError(attr)
         return getattr(self.stream, attr)
 
-    def writeln(self, arg=None):
+    def writeln(self, arg=Nichts):
         wenn arg:
             self.write(arg)
         self.write('\n')  # text-mode streams translate to \r\n wenn needed
@@ -37,7 +37,7 @@ klasse TextTestResult(result.TestResult):
     separator1 = '=' * 70
     separator2 = '-' * 70
 
-    def __init__(self, stream, descriptions, verbosity, *, durations=None):
+    def __init__(self, stream, descriptions, verbosity, *, durations=Nichts):
         """Construct a TextTestResult. Subclasses should accept **kwargs
         to ensure compatibility as the interface changes."""
         super(TextTestResult, self).__init__(stream, descriptions, verbosity)
@@ -46,7 +46,7 @@ klasse TextTestResult(result.TestResult):
         self.dots = verbosity == 1
         self.descriptions = descriptions
         self._theme = get_theme(tty_file=stream).unittest
-        self._newline = True
+        self._newline = Wahr
         self.durations = durations
 
     def getDescription(self, test):
@@ -62,7 +62,7 @@ klasse TextTestResult(result.TestResult):
             self.stream.write(self.getDescription(test))
             self.stream.write(" ... ")
             self.stream.flush()
-            self._newline = False
+            self._newline = Falsch
 
     def _write_status(self, test, status):
         is_subtest = isinstance(test, _SubTest)
@@ -75,10 +75,10 @@ klasse TextTestResult(result.TestResult):
             self.stream.write(" ... ")
         self.stream.writeln(status)
         self.stream.flush()
-        self._newline = True
+        self._newline = Wahr
 
     def addSubTest(self, test, subtest, err):
-        wenn err is not None:
+        wenn err is not Nichts:
             t = self._theme
             wenn self.showAll:
                 wenn issubclass(err[0], subtest.failureException):
@@ -186,15 +186,15 @@ klasse TextTestRunner(object):
     """
     resultclass = TextTestResult
 
-    def __init__(self, stream=None, descriptions=True, verbosity=1,
-                 failfast=False, buffer=False, resultclass=None, warnings=None,
-                 *, tb_locals=False, durations=None):
+    def __init__(self, stream=Nichts, descriptions=Wahr, verbosity=1,
+                 failfast=Falsch, buffer=Falsch, resultclass=Nichts, warnings=Nichts,
+                 *, tb_locals=Falsch, durations=Nichts):
         """Construct a TextTestRunner.
 
         Subclasses should accept **kwargs to ensure compatibility as the
         interface changes.
         """
-        wenn stream is None:
+        wenn stream is Nichts:
             stream = sys.stderr
         self.stream = _WritelnDecorator(stream)
         self.descriptions = descriptions
@@ -204,7 +204,7 @@ klasse TextTestRunner(object):
         self.tb_locals = tb_locals
         self.durations = durations
         self.warnings = warnings
-        wenn resultclass is not None:
+        wenn resultclass is not Nichts:
             self.resultclass = resultclass
 
     def _makeResult(self):
@@ -220,16 +220,16 @@ klasse TextTestRunner(object):
         wenn not result.collectedDurations:
             return
         ls = sorted(result.collectedDurations, key=lambda x: x[1],
-                    reverse=True)
+                    reverse=Wahr)
         wenn self.durations > 0:
             ls = ls[:self.durations]
         self.stream.writeln("Slowest test durations")
         wenn hasattr(result, 'separator2'):
             self.stream.writeln(result.separator2)
-        hidden = False
+        hidden = Falsch
         fuer test, elapsed in ls:
             wenn self.verbosity < 2 and elapsed < 0.001:
-                hidden = True
+                hidden = Wahr
                 continue
             self.stream.writeln("%-10s %s" % ("%.3fs" % elapsed, test))
         wenn hidden:
@@ -250,19 +250,19 @@ klasse TextTestRunner(object):
                 # wenn self.warnings is set, use it to filter all the warnings
                 warnings.simplefilter(self.warnings)
             start_time = time.perf_counter()
-            startTestRun = getattr(result, 'startTestRun', None)
-            wenn startTestRun is not None:
+            startTestRun = getattr(result, 'startTestRun', Nichts)
+            wenn startTestRun is not Nichts:
                 startTestRun()
             try:
                 test(result)
             finally:
-                stopTestRun = getattr(result, 'stopTestRun', None)
-                wenn stopTestRun is not None:
+                stopTestRun = getattr(result, 'stopTestRun', Nichts)
+                wenn stopTestRun is not Nichts:
                     stopTestRun()
             stop_time = time.perf_counter()
         time_taken = stop_time - start_time
         result.printErrors()
-        wenn self.durations is not None:
+        wenn self.durations is not Nichts:
             self._printDurations(result)
 
         wenn hasattr(result, 'separator2'):

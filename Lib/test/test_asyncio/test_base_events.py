@@ -29,7 +29,7 @@ klasse CustomError(Exception):
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 def mock_socket_module():
@@ -92,12 +92,12 @@ klasse BaseEventTests(test_utils.TestCase):
             base_events._ipaddr_info('1.2.3.4', 1, UNSPEC, DGRAM, 0))
 
         # No socket type.
-        self.assertIsNone(
+        self.assertIsNichts(
             base_events._ipaddr_info('1.2.3.4', 1, UNSPEC, 0, 0))
 
         wenn socket_helper.IPV6_ENABLED:
             # IPv4 address with family IPv6.
-            self.assertIsNone(
+            self.assertIsNichts(
                 base_events._ipaddr_info('1.2.3.4', 1, INET6, STREAM, TCP))
 
             self.assertEqual(
@@ -109,11 +109,11 @@ klasse BaseEventTests(test_utils.TestCase):
                 base_events._ipaddr_info('::3', 1, UNSPEC, STREAM, TCP))
 
             # IPv6 address with family IPv4.
-            self.assertIsNone(
+            self.assertIsNichts(
                 base_events._ipaddr_info('::3', 1, INET, STREAM, TCP))
 
             # IPv6 address with zone index.
-            self.assertIsNone(
+            self.assertIsNichts(
                 base_events._ipaddr_info('::3%lo0', 1, INET6, STREAM, TCP))
 
     def test_port_parameter_types(self):
@@ -124,7 +124,7 @@ klasse BaseEventTests(test_utils.TestCase):
 
         self.assertEqual(
             (INET, STREAM, TCP, '', ('1.2.3.4', 0)),
-            base_events._ipaddr_info('1.2.3.4', None, INET, STREAM, TCP))
+            base_events._ipaddr_info('1.2.3.4', Nichts, INET, STREAM, TCP))
 
         self.assertEqual(
             (INET, STREAM, TCP, '', ('1.2.3.4', 0)),
@@ -145,13 +145,13 @@ klasse BaseEventTests(test_utils.TestCase):
     @patch_socket
     def test_ipaddr_info_no_inet_pton(self, m_socket):
         del m_socket.inet_pton
-        self.assertIsNone(base_events._ipaddr_info('1.2.3.4', 1,
+        self.assertIsNichts(base_events._ipaddr_info('1.2.3.4', 1,
                                                    socket.AF_INET,
                                                    socket.SOCK_STREAM,
                                                    socket.IPPROTO_TCP))
 
     def test_interleave_addrinfos(self):
-        self.maxDiff = None
+        self.maxDiff = Nichts
         SIX_A = (socket.AF_INET6, 0, 0, '', ('2001:db8::1', 1))
         SIX_B = (socket.AF_INET6, 0, 0, '', ('2001:db8::2', 2))
         SIX_C = (socket.AF_INET6, 0, 0, '', ('2001:db8::3', 3))
@@ -206,12 +206,12 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             self.loop._make_write_pipe_transport, m, m)
         gen = self.loop._make_subprocess_transport(m, m, m, m, m, m, m)
         with self.assertRaises(NotImplementedError):
-            gen.send(None)
+            gen.send(Nichts)
 
     def test_close(self):
-        self.assertFalse(self.loop.is_closed())
+        self.assertFalsch(self.loop.is_closed())
         self.loop.close()
-        self.assertTrue(self.loop.is_closed())
+        self.assertWahr(self.loop.is_closed())
 
         # it should be possible to call close() more than once
         self.loop.close()
@@ -223,19 +223,19 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.assertRaises(RuntimeError, self.loop.run_until_complete, f)
 
     def test__add_callback_handle(self):
-        h = asyncio.Handle(lambda: False, (), self.loop, None)
+        h = asyncio.Handle(lambda: Falsch, (), self.loop, Nichts)
 
         self.loop._add_callback(h)
-        self.assertFalse(self.loop._scheduled)
+        self.assertFalsch(self.loop._scheduled)
         self.assertIn(h, self.loop._ready)
 
     def test__add_callback_cancelled_handle(self):
-        h = asyncio.Handle(lambda: False, (), self.loop, None)
+        h = asyncio.Handle(lambda: Falsch, (), self.loop, Nichts)
         h.cancel()
 
         self.loop._add_callback(h)
-        self.assertFalse(self.loop._scheduled)
-        self.assertFalse(self.loop._ready)
+        self.assertFalsch(self.loop._scheduled)
+        self.assertFalsch(self.loop._ready)
 
     def test_set_default_executor(self):
         klasse DummyExecutor(concurrent.futures.ThreadPoolExecutor):
@@ -257,13 +257,13 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         with self.assertRaisesRegex(TypeError, msg):
             self.loop.set_default_executor(executor)
 
-        self.assertIsNone(self.loop._default_executor)
+        self.assertIsNichts(self.loop._default_executor)
 
     def test_shutdown_default_executor_timeout(self):
         event = threading.Event()
 
         klasse DummyExecutor(concurrent.futures.ThreadPoolExecutor):
-            def shutdown(self, wait=True, *, cancel_futures=False):
+            def shutdown(self, wait=Wahr, *, cancel_futures=Falsch):
                 wenn wait:
                     event.wait()
 
@@ -290,7 +290,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.assertIn(h, self.loop._ready)
 
     def test_call_soon_non_callable(self):
-        self.loop.set_debug(True)
+        self.loop.set_debug(Wahr)
         with self.assertRaisesRegex(TypeError, 'a callable object'):
             self.loop.call_soon(1)
 
@@ -302,8 +302,8 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.assertIsInstance(h, asyncio.TimerHandle)
         self.assertIn(h, self.loop._scheduled)
         self.assertNotIn(h, self.loop._ready)
-        with self.assertRaises(TypeError, msg="delay must not be None"):
-            self.loop.call_later(None, cb)
+        with self.assertRaises(TypeError, msg="delay must not be Nichts"):
+            self.loop.call_later(Nichts, cb)
 
     def test_call_later_negative_delays(self):
         calls = []
@@ -332,8 +332,8 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         # 50 ms: maximum granularity of the event loop
         self.assertGreaterEqual(dt, delay - test_utils.CLOCK_RES)
-        with self.assertRaises(TypeError, msg="when cannot be None"):
-            self.loop.call_at(None, cb)
+        with self.assertRaises(TypeError, msg="when cannot be Nichts"):
+            self.loop.call_at(Nichts, cb)
 
     def check_thread(self, loop, debug):
         def cb():
@@ -366,16 +366,16 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                         asyncio.set_event_loop(loop2)
                         self.check_thread(loop, debug)
                     finally:
-                        asyncio.set_event_loop(None)
+                        asyncio.set_event_loop(Nichts)
                         loop2.close()
                 sonst:
                     self.check_thread(loop, debug)
             except Exception as exc:
                 loop.call_soon_threadsafe(fut.set_exception, exc)
             sonst:
-                loop.call_soon_threadsafe(fut.set_result, None)
+                loop.call_soon_threadsafe(fut.set_result, Nichts)
 
-        def test_thread(loop, debug, create_loop=False):
+        def test_thread(loop, debug, create_loop=Falsch):
             event = threading.Event()
             fut = loop.create_future()
             loop.call_soon(event.set)
@@ -389,23 +389,23 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop._write_to_self = mock.Mock()
 
         # raise RuntimeError wenn the thread has no event loop
-        test_thread(self.loop, True)
+        test_thread(self.loop, Wahr)
 
         # check disabled wenn debug mode is disabled
-        test_thread(self.loop, False)
+        test_thread(self.loop, Falsch)
 
         # raise RuntimeError wenn the event loop of the thread is not the called
         # event loop
-        test_thread(self.loop, True, create_loop=True)
+        test_thread(self.loop, Wahr, create_loop=Wahr)
 
         # check disabled wenn debug mode is disabled
-        test_thread(self.loop, False, create_loop=True)
+        test_thread(self.loop, Falsch, create_loop=Wahr)
 
     def test__run_once(self):
-        h1 = asyncio.TimerHandle(time.monotonic() + 5.0, lambda: True, (),
-                                 self.loop, None)
-        h2 = asyncio.TimerHandle(time.monotonic() + 10.0, lambda: True, (),
-                                 self.loop, None)
+        h1 = asyncio.TimerHandle(time.monotonic() + 5.0, lambda: Wahr, (),
+                                 self.loop, Nichts)
+        h2 = asyncio.TimerHandle(time.monotonic() + 10.0, lambda: Wahr, (),
+                                 self.loop, Nichts)
 
         h1.cancel()
 
@@ -415,39 +415,39 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop._run_once()
 
         t = self.loop._selector.select.call_args[0][0]
-        self.assertTrue(9.5 < t < 10.5, t)
+        self.assertWahr(9.5 < t < 10.5, t)
         self.assertEqual([h2], self.loop._scheduled)
-        self.assertTrue(self.loop._process_events.called)
+        self.assertWahr(self.loop._process_events.called)
 
     def test_set_debug(self):
-        self.loop.set_debug(True)
-        self.assertTrue(self.loop.get_debug())
-        self.loop.set_debug(False)
-        self.assertFalse(self.loop.get_debug())
+        self.loop.set_debug(Wahr)
+        self.assertWahr(self.loop.get_debug())
+        self.loop.set_debug(Falsch)
+        self.assertFalsch(self.loop.get_debug())
 
     def test__run_once_schedule_handle(self):
-        handle = None
-        processed = False
+        handle = Nichts
+        processed = Falsch
 
         def cb(loop):
             nonlocal processed, handle
-            processed = True
-            handle = loop.call_soon(lambda: True)
+            processed = Wahr
+            handle = loop.call_soon(lambda: Wahr)
 
         h = asyncio.TimerHandle(time.monotonic() - 1, cb, (self.loop,),
-                                self.loop, None)
+                                self.loop, Nichts)
 
         self.loop._process_events = mock.Mock()
         self.loop._scheduled.append(h)
         self.loop._run_once()
 
-        self.assertTrue(processed)
+        self.assertWahr(processed)
         self.assertEqual([handle], list(self.loop._ready))
 
     def test__run_once_cancelled_event_cleanup(self):
         self.loop._process_events = mock.Mock()
 
-        self.assertTrue(
+        self.assertWahr(
             0 < base_events._MIN_CANCELLED_TIMER_HANDLES_FRACTION < 1.0)
 
         def cb():
@@ -518,7 +518,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.assertEqual(len(self.loop._scheduled), not_cancelled_count)
 
         # Ensure only uncancelled events remain scheduled
-        self.assertTrue(all([not x._cancelled fuer x in self.loop._scheduled]))
+        self.assertWahr(all([not x._cancelled fuer x in self.loop._scheduled]))
 
     def test_run_until_complete_type_error(self):
         self.assertRaises(TypeError,
@@ -571,10 +571,10 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         # universal_newlines, shell, bufsize must not be set
         self.assertRaises(TypeError,
         self.loop.run_until_complete, self.loop.subprocess_exec,
-            asyncio.SubprocessProtocol, *args, universal_newlines=True)
+            asyncio.SubprocessProtocol, *args, universal_newlines=Wahr)
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_exec,
-            asyncio.SubprocessProtocol, *args, shell=True)
+            asyncio.SubprocessProtocol, *args, shell=Wahr)
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_exec,
             asyncio.SubprocessProtocol, *args, bufsize=4096)
@@ -591,10 +591,10 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         # universal_newlines, shell, bufsize must not be set
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_shell,
-            asyncio.SubprocessProtocol, 'exit 0', universal_newlines=True)
+            asyncio.SubprocessProtocol, 'exit 0', universal_newlines=Wahr)
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_shell,
-            asyncio.SubprocessProtocol, 'exit 0', shell=True)
+            asyncio.SubprocessProtocol, 'exit 0', shell=Wahr)
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_shell,
             asyncio.SubprocessProtocol, 'exit 0', bufsize=4096)
@@ -603,7 +603,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop._process_events = mock.Mock()
 
         def zero_error(fut):
-            fut.set_result(True)
+            fut.set_result(Wahr)
             1/0
 
         # Test call_soon (events.Handle)
@@ -638,7 +638,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             fut = asyncio.ensure_future(zero_error_coro(), loop=self.loop)
             fut.add_done_callback(lambda *args: self.loop.stop())
             self.loop.run_forever()
-            fut = None # Trigger Future.__del__ or futures._TracebackLogger
+            fut = Nichts # Trigger Future.__del__ or futures._TracebackLogger
             support.gc_collect()
             # Future.__del__ in logs error with an actual exception context
             log.error.assert_called_with(
@@ -646,7 +646,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                 exc_info=(ZeroDivisionError, MOCK_ANY, MOCK_ANY))
 
     def test_set_exc_handler_invalid(self):
-        with self.assertRaisesRegex(TypeError, 'A callable object or None'):
+        with self.assertRaisesRegex(TypeError, 'A callable object or Nichts'):
             self.loop.set_exception_handler('spam')
 
     def test_set_exc_handler_custom(self):
@@ -658,10 +658,10 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             self.loop._run_once()
             return handle
 
-        self.loop.set_debug(True)
+        self.loop.set_debug(Wahr)
         self.loop._process_events = mock.Mock()
 
-        self.assertIsNone(self.loop.get_exception_handler())
+        self.assertIsNichts(self.loop.get_exception_handler())
         mock_handler = mock.Mock()
         self.loop.set_exception_handler(mock_handler)
         self.assertIs(self.loop.get_exception_handler(), mock_handler)
@@ -675,7 +675,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         })
         mock_handler.reset_mock()
 
-        self.loop.set_exception_handler(None)
+        self.loop.set_exception_handler(Nichts)
         with mock.patch('asyncio.base_events.logger') as log:
             run_loop()
             log.error.assert_called_with(
@@ -683,7 +683,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                                 'Exception in callback.*zero'),
                         exc_info=(ZeroDivisionError, MOCK_ANY, MOCK_ANY))
 
-        self.assertFalse(mock_handler.called)
+        self.assertFalsch(mock_handler.called)
 
     def test_set_exc_handler_broken(self):
         def run_loop():
@@ -707,7 +707,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
                 exc_info=(AttributeError, MOCK_ANY, MOCK_ANY))
 
     def test_default_exc_handler_broken(self):
-        _context = None
+        _context = Nichts
 
         klasse Loop(base_events.BaseEventLoop):
 
@@ -734,19 +734,19 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             run_loop()
             log.error.assert_called_with(
                 'Exception in default exception handler',
-                exc_info=True)
+                exc_info=Wahr)
 
         def custom_handler(loop, context):
             raise ValueError('ham')
 
-        _context = None
+        _context = Nichts
         loop.set_exception_handler(custom_handler)
         with mock.patch('asyncio.base_events.logger') as log:
             run_loop()
             log.error.assert_called_with(
                 test_utils.MockPattern('Exception in default exception.*'
                                        'while handling.*in custom'),
-                exc_info=True)
+                exc_info=Wahr)
 
             # Check that original context was passed to default
             # exception handler.
@@ -756,11 +756,11 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
     def test_set_task_factory_invalid(self):
         with self.assertRaisesRegex(
-            TypeError, 'task factory must be a callable or None'):
+            TypeError, 'task factory must be a callable or Nichts'):
 
             self.loop.set_task_factory(1)
 
-        self.assertIsNone(self.loop.get_task_factory())
+        self.assertIsNichts(self.loop.get_task_factory())
 
     def test_set_task_factory(self):
         self.loop._process_events = mock.Mock()
@@ -773,20 +773,20 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         factory = lambda loop, coro: MyTask(coro, loop=loop)
 
-        self.assertIsNone(self.loop.get_task_factory())
+        self.assertIsNichts(self.loop.get_task_factory())
         self.loop.set_task_factory(factory)
         self.assertIs(self.loop.get_task_factory(), factory)
 
         task = self.loop.create_task(coro())
-        self.assertTrue(isinstance(task, MyTask))
+        self.assertWahr(isinstance(task, MyTask))
         self.loop.run_until_complete(task)
 
-        self.loop.set_task_factory(None)
-        self.assertIsNone(self.loop.get_task_factory())
+        self.loop.set_task_factory(Nichts)
+        self.assertIsNichts(self.loop.get_task_factory())
 
         task = self.loop.create_task(coro())
-        self.assertTrue(isinstance(task, asyncio.Task))
-        self.assertFalse(isinstance(task, MyTask))
+        self.assertWahr(isinstance(task, asyncio.Task))
+        self.assertFalsch(isinstance(task, MyTask))
         self.loop.run_until_complete(task)
 
     def test_env_var_debug(self):
@@ -798,26 +798,26 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         # Test with -E to not fail wenn the unit test was run with
         # PYTHONASYNCIODEBUG set to a non-empty string
         sts, stdout, stderr = assert_python_ok('-E', '-c', code)
-        self.assertEqual(stdout.rstrip(), b'False')
+        self.assertEqual(stdout.rstrip(), b'Falsch')
 
         sts, stdout, stderr = assert_python_ok('-c', code,
                                                PYTHONASYNCIODEBUG='',
                                                PYTHONDEVMODE='')
-        self.assertEqual(stdout.rstrip(), b'False')
+        self.assertEqual(stdout.rstrip(), b'Falsch')
 
         sts, stdout, stderr = assert_python_ok('-c', code,
                                                PYTHONASYNCIODEBUG='1',
                                                PYTHONDEVMODE='')
-        self.assertEqual(stdout.rstrip(), b'True')
+        self.assertEqual(stdout.rstrip(), b'Wahr')
 
         sts, stdout, stderr = assert_python_ok('-E', '-c', code,
                                                PYTHONASYNCIODEBUG='1')
-        self.assertEqual(stdout.rstrip(), b'False')
+        self.assertEqual(stdout.rstrip(), b'Falsch')
 
         # -X dev
         sts, stdout, stderr = assert_python_ok('-E', '-X', 'dev',
                                                '-c', code)
-        self.assertEqual(stdout.rstrip(), b'True')
+        self.assertEqual(stdout.rstrip(), b'Wahr')
 
     def test_create_task(self):
         klasse MyTask(asyncio.Task):
@@ -838,7 +838,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.assertIsInstance(task, MyTask)
 
         # make warnings quiet
-        task._log_destroy_pending = False
+        task._log_destroy_pending = Falsch
         coro.close()
 
     def test_create_task_error_closes_coro(self):
@@ -846,7 +846,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             pass
         loop = asyncio.new_event_loop()
         loop.close()
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=Wahr) as w:
             with self.assertRaises(RuntimeError):
                 asyncio.ensure_future(test(), loop=loop)
             self.assertEqual(len(w), 0)
@@ -897,7 +897,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         self.loop.close()
         support.gc_collect()
 
-        self.assertFalse(self.loop.call_exception_handler.called)
+        self.assertFalsch(self.loop.call_exception_handler.called)
 
     def test_run_until_complete_baseexception(self):
         # Python issue #22429: run_until_complete() must not schedule a pending
@@ -912,18 +912,18 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         def func():
             self.loop.stop()
-            func.called = True
-        func.called = False
+            func.called = Wahr
+        func.called = Falsch
         self.loop.call_soon(self.loop.call_soon, func)
         self.loop.run_forever()
-        self.assertTrue(func.called)
+        self.assertWahr(func.called)
 
     def test_single_selecter_event_callback_after_stopping(self):
         # Python issue #25593: A stopped event loop may cause event callbacks
         # to run more than once.
         event_sentinel = object()
         callcount = 0
-        doer = None
+        doer = Nichts
 
         def proc_events(event_list):
             nonlocal doer
@@ -989,7 +989,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
         # Confirm the loop has been started
         self.assertEqual(asyncio.get_running_loop(), self.loop)
-        self.assertTrue(self.loop.is_running())
+        self.assertWahr(self.loop.is_running())
 
         # Our custom "event loop" just iterates 10 times before exiting.
         fuer i in range(10):
@@ -1001,7 +1001,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         # Confirm the loop has been cleaned up
         with self.assertRaises(RuntimeError):
             asyncio.get_running_loop()
-        self.assertFalse(self.loop.is_running())
+        self.assertFalsch(self.loop.is_running())
 
         # Confirm the loop actually did run, processing events 10 times,
         # and invoking the callback once.
@@ -1014,17 +1014,17 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         # Used in async generator finalization tests.
         # Depends on implementation details of garbage collector. Changes
         # in gc may break this function.
-        status = {'started': False,
-                  'stopped': False,
-                  'finalized': False}
+        status = {'started': Falsch,
+                  'stopped': Falsch,
+                  'finalized': Falsch}
 
         async def agen():
-            status['started'] = True
+            status['started'] = Wahr
             try:
                 fuer item in ['ZERO', 'ONE', 'TWO', 'THREE', 'FOUR']:
                     yield item
             finally:
-                status['finalized'] = True
+                status['finalized'] = Wahr
 
         ag = agen()
         ai = ag.__aiter__()
@@ -1035,7 +1035,7 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             except StopAsyncIteration:
                 return
             wenn item == 'THREE':
-                status['stopped'] = True
+                status['stopped'] = Wahr
                 return
             asyncio.create_task(iter_one())
 
@@ -1050,12 +1050,12 @@ klasse BaseEventLoopTests(test_utils.TestCase):
             status = self.loop.run_until_complete(self.leave_unfinalized_asyncgen())
             while not status['stopped']:
                 test_utils.run_briefly(self.loop)
-            self.assertTrue(status['started'])
-            self.assertTrue(status['stopped'])
-            self.assertFalse(status['finalized'])
+            self.assertWahr(status['started'])
+            self.assertWahr(status['stopped'])
+            self.assertFalsch(status['finalized'])
             support.gc_collect()
             test_utils.run_briefly(self.loop)
-            self.assertTrue(status['finalized'])
+            self.assertWahr(status['finalized'])
 
     def test_asyncgen_finalization_by_gc_in_other_thread(self):
         # Python issue 34769: If garbage collector runs in another
@@ -1063,18 +1063,18 @@ klasse BaseEventLoopTests(test_utils.TestCase):
         # mode.
         self.loop._process_events = mock.Mock()
         self.loop._write_to_self = mock.Mock()
-        self.loop.set_debug(True)
+        self.loop.set_debug(Wahr)
         with support.disable_gc():
             status = self.loop.run_until_complete(self.leave_unfinalized_asyncgen())
             while not status['stopped']:
                 test_utils.run_briefly(self.loop)
-            self.assertTrue(status['started'])
-            self.assertTrue(status['stopped'])
-            self.assertFalse(status['finalized'])
+            self.assertWahr(status['started'])
+            self.assertWahr(status['stopped'])
+            self.assertFalsch(status['finalized'])
             self.loop.run_until_complete(
-                self.loop.run_in_executor(None, support.gc_collect))
+                self.loop.run_in_executor(Nichts, support.gc_collect))
             test_utils.run_briefly(self.loop)
-            self.assertTrue(status['finalized'])
+            self.assertWahr(status['finalized'])
 
     @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'no IPv6 support')
     @patch_socket
@@ -1143,9 +1143,9 @@ klasse BaseEventLoopTests(test_utils.TestCase):
 
 
 klasse MyProto(asyncio.Protocol):
-    done = None
+    done = Nichts
 
-    def __init__(self, create_future=False):
+    def __init__(self, create_future=Falsch):
         self.state = 'INITIAL'
         self.nbytes = 0
         wenn create_future:
@@ -1173,13 +1173,13 @@ klasse MyProto(asyncio.Protocol):
         self._assert_state('CONNECTED', 'EOF')
         self.state = 'CLOSED'
         wenn self.done:
-            self.done.set_result(None)
+            self.done.set_result(Nichts)
 
 
 klasse MyDatagramProto(asyncio.DatagramProtocol):
-    done = None
+    done = Nichts
 
-    def __init__(self, create_future=False, loop=None):
+    def __init__(self, create_future=Falsch, loop=Nichts):
         self.state = 'INITIAL'
         self.nbytes = 0
         wenn create_future:
@@ -1205,7 +1205,7 @@ klasse MyDatagramProto(asyncio.DatagramProtocol):
         self._assert_state('INITIALIZED')
         self.state = 'CLOSED'
         wenn self.done:
-            self.done.set_result(None)
+            self.done.set_result(Nichts)
 
 
 klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
@@ -1253,7 +1253,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertEqual(str(cm.exception), 'Multiple exceptions: err1, err2')
 
         idx = -1
-        coro = self.loop.create_connection(MyProto, 'example.com', 80, all_errors=True)
+        coro = self.loop.create_connection(MyProto, 'example.com', 80, all_errors=Wahr)
         with self.assertRaises(ExceptionGroup) as cm:
             self.loop.run_until_complete(coro)
 
@@ -1280,7 +1280,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             coro = self.loop.create_connection(MyProto, '127.0.0.1', 80)
             with self.assertRaises(asyncio.TimeoutError):
                 self.loop.run_until_complete(coro)
-            self.assertTrue(sock.close.called)
+            self.assertWahr(sock.close.called)
 
     @patch_socket
     def test_create_connection_happy_eyeballs_empty_exceptions(self, m_socket):
@@ -1300,9 +1300,9 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         # This simulates the scenario where Happy Eyeballs algorithm
         # cancels all attempts but doesn't properly collect exceptions
         with mock.patch('asyncio.staggered.staggered_race') as mock_staggered:
-            # Return (None, []) - no winner, empty exceptions list
+            # Return (Nichts, []) - no winner, empty exceptions list
             async def mock_race(coro_fns, delay, loop):
-                return None, []
+                return Nichts, []
             mock_staggered.side_effect = mock_race
 
             coro = self.loop.create_connection(
@@ -1347,7 +1347,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         sock = socket.socket(
             socket.AF_INET, socket.SOCK_STREAM | socket.SOCK_NONBLOCK)
         with sock:
-            coro = self.loop.create_server(lambda: None, sock=sock)
+            coro = self.loop.create_server(lambda: Nichts, sock=sock)
             srv = self.loop.run_until_complete(coro)
             srv.close()
             self.loop.run_until_complete(srv.wait_closed())
@@ -1355,7 +1355,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @unittest.skipUnless(socket_helper.IPV6_ENABLED, 'no IPv6 support')
     def test_create_server_ipv6(self):
         async def main():
-            srv = await asyncio.start_server(lambda: None, '::1', 0)
+            srv = await asyncio.start_server(lambda: Nichts, '::1', 0)
             try:
                 self.assertGreater(len(srv.sockets), 0)
             finally:
@@ -1410,7 +1410,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(
             OSError, self.loop.run_until_complete, coro)
 
-        coro = self.loop.create_connection(MyProto, 'example.com', 80, all_errors=True)
+        coro = self.loop.create_connection(MyProto, 'example.com', 80, all_errors=Wahr)
         with self.assertRaises(ExceptionGroup) as cm:
             self.loop.run_until_complete(coro)
 
@@ -1439,7 +1439,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(
             CustomError, self.loop.run_until_complete, coro)
 
-        coro = self.loop.create_connection(MyProto, 'example.com', 80, all_errors=True)
+        coro = self.loop.create_connection(MyProto, 'example.com', 80, all_errors=Wahr)
         self.assertRaises(
             CustomError, self.loop.run_until_complete, coro)
 
@@ -1461,7 +1461,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             self.loop.run_until_complete(coro)
 
         coro = self.loop.create_connection(
-            MyProto, 'example.com', 80, family=socket.AF_INET, all_errors=True)
+            MyProto, 'example.com', 80, family=socket.AF_INET, all_errors=Wahr)
         with self.assertRaises(ExceptionGroup) as cm:
             self.loop.run_until_complete(coro)
 
@@ -1493,16 +1493,16 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
         coro = self.loop.create_connection(
             MyProto, 'example.com', 80, family=socket.AF_INET,
-            local_addr=(None, 8080))
+            local_addr=(Nichts, 8080))
         with self.assertRaises(OSError) as cm:
             self.loop.run_until_complete(coro)
 
         self.assertStartsWith(str(cm.exception), 'Multiple exceptions: ')
-        self.assertTrue(m_socket.socket.return_value.close.called)
+        self.assertWahr(m_socket.socket.return_value.close.called)
 
         coro = self.loop.create_connection(
             MyProto, 'example.com', 80, family=socket.AF_INET,
-            local_addr=(None, 8080), all_errors=True)
+            local_addr=(Nichts, 8080), all_errors=Wahr)
         with self.assertRaises(ExceptionGroup) as cm:
             self.loop.run_until_complete(coro)
 
@@ -1576,11 +1576,11 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     @patch_socket
     def test_create_connection_ip_addr(self, m_socket):
-        self._test_create_connection_ip_addr(m_socket, True)
+        self._test_create_connection_ip_addr(m_socket, Wahr)
 
     @patch_socket
     def test_create_connection_no_inet_pton(self, m_socket):
-        self._test_create_connection_ip_addr(m_socket, False)
+        self._test_create_connection_ip_addr(m_socket, Falsch)
 
     @patch_socket
     @unittest.skipIf(
@@ -1629,7 +1629,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
         coro = self.loop.create_connection(
             MyProto, 'example.com', 80, family=socket.AF_INET,
-            local_addr=(None, 8080))
+            local_addr=(Nichts, 8080))
         self.assertRaises(
             OSError, self.loop.run_until_complete, coro)
 
@@ -1660,11 +1660,11 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.loop.getaddrinfo.side_effect = mock_getaddrinfo
         self.loop.sock_connect = mock.Mock()
         self.loop.sock_connect.return_value = self.loop.create_future()
-        self.loop.sock_connect.return_value.set_result(None)
+        self.loop.sock_connect.return_value.set_result(Nichts)
         self.loop._make_ssl_transport = mock.Mock()
 
         klasse _SelectorTransportMock:
-            _sock = None
+            _sock = Nichts
 
             def get_extra_info(self, key):
                 return mock.Mock()
@@ -1674,7 +1674,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
         def mock_make_ssl_transport(sock, protocol, sslcontext, waiter,
                                     **kwds):
-            waiter.set_result(None)
+            waiter.set_result(Nichts)
             transport = _SelectorTransportMock()
             transport._sock = sock
             return transport
@@ -1686,21 +1686,21 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         # First try the default server_hostname.
         self.loop._make_ssl_transport.reset_mock()
         coro = self.loop.create_connection(
-                MyProto, 'python.org', 80, ssl=True,
+                MyProto, 'python.org', 80, ssl=Wahr,
                 ssl_handshake_timeout=handshake_timeout,
                 ssl_shutdown_timeout=shutdown_timeout)
         transport, _ = self.loop.run_until_complete(coro)
         transport.close()
         self.loop._make_ssl_transport.assert_called_with(
             ANY, ANY, ANY, ANY,
-            server_side=False,
+            server_side=Falsch,
             server_hostname='python.org',
             ssl_handshake_timeout=handshake_timeout,
             ssl_shutdown_timeout=shutdown_timeout)
         # Next try an explicit server_hostname.
         self.loop._make_ssl_transport.reset_mock()
         coro = self.loop.create_connection(
-                MyProto, 'python.org', 80, ssl=True,
+                MyProto, 'python.org', 80, ssl=Wahr,
                 server_hostname='perl.com',
                 ssl_handshake_timeout=handshake_timeout,
                 ssl_shutdown_timeout=shutdown_timeout)
@@ -1708,14 +1708,14 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         transport.close()
         self.loop._make_ssl_transport.assert_called_with(
             ANY, ANY, ANY, ANY,
-            server_side=False,
+            server_side=Falsch,
             server_hostname='perl.com',
             ssl_handshake_timeout=handshake_timeout,
             ssl_shutdown_timeout=shutdown_timeout)
         # Finally try an explicit empty server_hostname.
         self.loop._make_ssl_transport.reset_mock()
         coro = self.loop.create_connection(
-                MyProto, 'python.org', 80, ssl=True,
+                MyProto, 'python.org', 80, ssl=Wahr,
                 server_hostname='',
                 ssl_handshake_timeout=handshake_timeout,
                 ssl_shutdown_timeout=shutdown_timeout)
@@ -1723,13 +1723,13 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         transport.close()
         self.loop._make_ssl_transport.assert_called_with(
                 ANY, ANY, ANY, ANY,
-                server_side=False,
+                server_side=Falsch,
                 server_hostname='',
                 ssl_handshake_timeout=handshake_timeout,
                 ssl_shutdown_timeout=shutdown_timeout)
 
     def test_create_connection_no_ssl_server_hostname_errors(self):
-        # When not using ssl, server_hostname must be None.
+        # When not using ssl, server_hostname must be Nichts.
         coro = self.loop.create_connection(MyProto, 'python.org', 80,
                                            server_hostname='')
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
@@ -1738,14 +1738,14 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
 
     def test_create_connection_ssl_server_hostname_errors(self):
-        # When using ssl, server_hostname may be None wenn host is non-empty.
-        coro = self.loop.create_connection(MyProto, '', 80, ssl=True)
+        # When using ssl, server_hostname may be Nichts wenn host is non-empty.
+        coro = self.loop.create_connection(MyProto, '', 80, ssl=Wahr)
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
-        coro = self.loop.create_connection(MyProto, None, 80, ssl=True)
+        coro = self.loop.create_connection(MyProto, Nichts, 80, ssl=Wahr)
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
         sock = socket.socket()
-        coro = self.loop.create_connection(MyProto, None, None,
-                                           ssl=True, sock=sock)
+        coro = self.loop.create_connection(MyProto, Nichts, Nichts,
+                                           ssl=Wahr, sock=sock)
         self.addCleanup(sock.close)
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
 
@@ -1758,7 +1758,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             self.loop.run_until_complete(coro)
 
     def test_create_server_empty_host(self):
-        # wenn host is empty string use None instead
+        # wenn host is empty string use Nichts instead
         host = object()
 
         async def getaddrinfo(*args, **kw):
@@ -1772,7 +1772,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.loop.getaddrinfo = getaddrinfo_task
         fut = self.loop.create_server(MyProto, '', 0)
         self.assertRaises(OSError, self.loop.run_until_complete, fut)
-        self.assertIsNone(host)
+        self.assertIsNichts(host)
 
     def test_create_server_host_port_sock(self):
         fut = self.loop.create_server(
@@ -1786,7 +1786,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     def test_create_server_no_getaddrinfo(self):
         getaddrinfo = self.loop.getaddrinfo = mock.Mock()
         getaddrinfo.return_value = self.loop.create_future()
-        getaddrinfo.return_value.set_result(None)
+        getaddrinfo.return_value.set_result(Nichts)
 
         f = self.loop.create_server(MyProto, 'python.org', 0)
         self.assertRaises(OSError, self.loop.run_until_complete, f)
@@ -1798,7 +1798,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         m_socket.socket.return_value = mock.Mock()
 
         f = self.loop.create_server(
-            MyProto, '0.0.0.0', 0, reuse_port=True)
+            MyProto, '0.0.0.0', 0, reuse_port=Wahr)
 
         self.assertRaises(ValueError, self.loop.run_until_complete, f)
 
@@ -1809,7 +1809,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         m_socket.SO_REUSEPORT = -1
 
         f = self.loop.create_server(
-            MyProto, '0.0.0.0', 0, reuse_port=True)
+            MyProto, '0.0.0.0', 0, reuse_port=Wahr)
 
         self.assertRaises(ValueError, self.loop.run_until_complete, f)
 
@@ -1826,7 +1826,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
         fut = self.loop.create_server(MyProto, '0.0.0.0', 0)
         self.assertRaises(OSError, self.loop.run_until_complete, fut)
-        self.assertTrue(m_sock.close.called)
+        self.assertWahr(m_sock.close.called)
 
     @patch_socket
     def test_create_datagram_endpoint_no_addrinfo(self, m_socket):
@@ -1857,17 +1857,17 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             OSError, self.loop.run_until_complete, coro)
 
     def test_create_datagram_endpoint_allow_broadcast(self):
-        protocol = MyDatagramProto(create_future=True, loop=self.loop)
+        protocol = MyDatagramProto(create_future=Wahr, loop=self.loop)
         self.loop.sock_connect = sock_connect = mock.Mock()
         sock_connect.return_value = []
 
         coro = self.loop.create_datagram_endpoint(
             lambda: protocol,
             remote_addr=('127.0.0.1', 0),
-            allow_broadcast=True)
+            allow_broadcast=Wahr)
 
         transport, _ = self.loop.run_until_complete(coro)
-        self.assertFalse(sock_connect.called)
+        self.assertFalsch(sock_connect.called)
 
         transport.close()
         self.loop.run_until_complete(protocol.done)
@@ -1904,7 +1904,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             asyncio.DatagramProtocol, family=socket.AF_INET)
         self.assertRaises(
             OSError, self.loop.run_until_complete, coro)
-        self.assertTrue(
+        self.assertWahr(
             m_socket.socket.return_value.close.called)
 
     def test_create_datagram_endpoint_noaddr_nofamily(self):
@@ -1925,13 +1925,13 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             MyDatagramProto,
             local_addr=('127.0.0.1', 0), family=socket.AF_INET)
         self.assertRaises(Err, self.loop.run_until_complete, fut)
-        self.assertTrue(m_sock.close.called)
+        self.assertWahr(m_sock.close.called)
 
     def test_create_datagram_endpoint_sock(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind(('127.0.0.1', 0))
         fut = self.loop.create_datagram_endpoint(
-            lambda: MyDatagramProto(create_future=True, loop=self.loop),
+            lambda: MyDatagramProto(create_future=Wahr, loop=self.loop),
             sock=sock)
         transport, protocol = self.loop.run_until_complete(fut)
         transport.close()
@@ -1941,7 +1941,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @unittest.skipUnless(hasattr(socket, 'AF_UNIX'), 'No UNIX Sockets')
     def test_create_datagram_endpoint_sock_unix(self):
         fut = self.loop.create_datagram_endpoint(
-            lambda: MyDatagramProto(create_future=True, loop=self.loop),
+            lambda: MyDatagramProto(create_future=Wahr, loop=self.loop),
             family=socket.AF_UNIX)
         transport, protocol = self.loop.run_until_complete(fut)
         self.assertEqual(transport._sock.family, socket.AF_UNIX)
@@ -1957,7 +1957,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             sock.close()
 
             coro = self.loop.create_datagram_endpoint(
-                lambda: MyDatagramProto(create_future=True, loop=self.loop),
+                lambda: MyDatagramProto(create_future=Wahr, loop=self.loop),
                 path, family=socket.AF_UNIX)
             transport, protocol = self.loop.run_until_complete(coro)
             transport.close()
@@ -1988,11 +1988,11 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertRaises(ValueError, self.loop.run_until_complete, fut)
 
         fut = self.loop.create_datagram_endpoint(
-            MyDatagramProto, reuse_port=True, sock=FakeSock())
+            MyDatagramProto, reuse_port=Wahr, sock=FakeSock())
         self.assertRaises(ValueError, self.loop.run_until_complete, fut)
 
         fut = self.loop.create_datagram_endpoint(
-            MyDatagramProto, allow_broadcast=True, sock=FakeSock())
+            MyDatagramProto, allow_broadcast=Wahr, sock=FakeSock())
         self.assertRaises(ValueError, self.loop.run_until_complete, fut)
 
     @unittest.skipIf(sys.platform == 'vxworks',
@@ -2002,7 +2002,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         # SO_REUSEPORT is not available on all platforms.
 
         coro = self.loop.create_datagram_endpoint(
-            lambda: MyDatagramProto(create_future=True, loop=self.loop),
+            lambda: MyDatagramProto(create_future=Wahr, loop=self.loop),
             local_addr=('127.0.0.1', 0))
         transport, protocol = self.loop.run_until_complete(coro)
         sock = transport.get_extra_info('socket')
@@ -2010,10 +2010,10 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         reuseport_supported = hasattr(socket, 'SO_REUSEPORT')
 
         wenn reuseport_supported:
-            self.assertFalse(
+            self.assertFalsch(
                 sock.getsockopt(
                     socket.SOL_SOCKET, socket.SO_REUSEPORT))
-        self.assertFalse(
+        self.assertFalsch(
             sock.getsockopt(
                 socket.SOL_SOCKET, socket.SO_BROADCAST))
 
@@ -2022,21 +2022,21 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.assertEqual('CLOSED', protocol.state)
 
         coro = self.loop.create_datagram_endpoint(
-            lambda: MyDatagramProto(create_future=True, loop=self.loop),
+            lambda: MyDatagramProto(create_future=Wahr, loop=self.loop),
             local_addr=('127.0.0.1', 0),
             reuse_port=reuseport_supported,
-            allow_broadcast=True)
+            allow_broadcast=Wahr)
         transport, protocol = self.loop.run_until_complete(coro)
         sock = transport.get_extra_info('socket')
 
-        self.assertFalse(
+        self.assertFalsch(
             sock.getsockopt(
                 socket.SOL_SOCKET, socket.SO_REUSEADDR))
         wenn reuseport_supported:
-            self.assertTrue(
+            self.assertWahr(
                 sock.getsockopt(
                     socket.SOL_SOCKET, socket.SO_REUSEPORT))
-        self.assertTrue(
+        self.assertWahr(
             sock.getsockopt(
                 socket.SOL_SOCKET, socket.SO_BROADCAST))
 
@@ -2052,7 +2052,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         coro = self.loop.create_datagram_endpoint(
             lambda: MyDatagramProto(loop=self.loop),
             local_addr=('127.0.0.1', 0),
-            reuse_port=True)
+            reuse_port=Wahr)
 
         self.assertRaises(ValueError, self.loop.run_until_complete, coro)
 
@@ -2086,7 +2086,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         sock.accept.side_effect = BlockingIOError()
 
         self.loop._accept_connection(MyProto, sock)
-        self.assertFalse(sock.close.called)
+        self.assertFalsch(sock.close.called)
 
     @mock.patch('asyncio.base_events.logger')
     def test_accept_connection_exception(self, m_log):
@@ -2097,20 +2097,20 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
         self.loop.call_later = mock.Mock()
 
         self.loop._accept_connection(MyProto, sock)
-        self.assertTrue(m_log.error.called)
-        self.assertFalse(sock.close.called)
+        self.assertWahr(m_log.error.called)
+        self.assertFalsch(sock.close.called)
         self.loop._remove_reader.assert_called_with(10)
         self.loop.call_later.assert_called_with(
             constants.ACCEPT_RETRY_DELAY,
             # self.loop._start_serving
             mock.ANY,
-            MyProto, sock, None, None, mock.ANY, mock.ANY, mock.ANY)
+            MyProto, sock, Nichts, Nichts, mock.ANY, mock.ANY, mock.ANY)
 
     def test_call_coroutine(self):
         async def simple_coroutine():
             pass
 
-        self.loop.set_debug(True)
+        self.loop.set_debug(Wahr)
         coro_func = simple_coroutine
         coro_obj = coro_func()
         self.addCleanup(coro_obj.close)
@@ -2125,7 +2125,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
                 self.loop.call_at(self.loop.time() + 60, func)
             with self.assertRaises(TypeError):
                 self.loop.run_until_complete(
-                    self.loop.run_in_executor(None, func))
+                    self.loop.run_in_executor(Nichts, func))
 
     @mock.patch('asyncio.base_events.logger')
     def test_log_slow_callbacks(self, m_logger):
@@ -2136,7 +2136,7 @@ klasse BaseEventLoopWithSelectorTests(test_utils.TestCase):
             loop.stop()
 
         asyncio.set_event_loop(self.loop)
-        self.loop.set_debug(True)
+        self.loop.set_debug(Wahr)
         self.loop.slow_callback_duration = 0.0
 
         # slow callback
@@ -2180,23 +2180,23 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
     klasse MyProto(asyncio.Protocol):
 
         def __init__(self, loop):
-            self.started = False
-            self.closed = False
+            self.started = Falsch
+            self.closed = Falsch
             self.data = bytearray()
             self.fut = loop.create_future()
-            self.transport = None
+            self.transport = Nichts
 
         def connection_made(self, transport):
-            self.started = True
+            self.started = Wahr
             self.transport = transport
 
         def data_received(self, data):
             self.data.extend(data)
 
         def connection_lost(self, exc):
-            self.closed = True
-            self.fut.set_result(None)
-            self.transport = None
+            self.closed = Wahr
+            self.fut.set_result(Nichts)
+            self.transport = Nichts
 
         async def wait_closed(self):
             await self.fut
@@ -2224,7 +2224,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         self.addCleanup(self.file.close)
         super().setUp()
 
-    def make_socket(self, blocking=False):
+    def make_socket(self, blocking=Falsch):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.setblocking(blocking)
         self.addCleanup(sock.close)
@@ -2255,7 +2255,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         def cleanup():
             server.close()
             sock.close()
-            wenn proto.transport is not None:
+            wenn proto.transport is not Nichts:
                 proto.transport.close()
                 self.run_loop(proto.wait_closed())
             self.run_loop(server.wait_closed())
@@ -2270,7 +2270,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "sendfile is not available"):
             self.run_loop(self.loop._sock_sendfile_native(sock, self.file,
-                                                          0, None))
+                                                          0, Nichts))
 
         self.assertEqual(proto.data, b'')
         self.assertEqual(self.file.tell(), 0)
@@ -2281,7 +2281,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "sendfile is not available"):
             self.run_loop(self.loop.sock_sendfile(sock, self.file,
-                                                  fallback=False))
+                                                  fallback=Falsch))
 
         self.assertEqual(self.file.tell(), 0)
         self.assertEqual(proto.data, b'')
@@ -2310,8 +2310,8 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
         self.assertEqual(proto.data, self.DATA[1000:3000])
 
     def test_blocking_socket(self):
-        self.loop.set_debug(True)
-        sock = self.make_socket(blocking=True)
+        self.loop.set_debug(Wahr)
+        sock = self.make_socket(blocking=Wahr)
         with self.assertRaisesRegex(ValueError, "must be non-blocking"):
             self.run_loop(self.loop.sock_sendfile(sock, self.file))
 
@@ -2323,7 +2323,7 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
 
     def test_nonstream_socket(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         self.addCleanup(sock.close)
         with self.assertRaisesRegex(ValueError, "only SOCK_STREAM type"):
             self.run_loop(self.loop.sock_sendfile(sock, self.file))
@@ -2356,12 +2356,12 @@ klasse BaseLoopSockSendfileTests(test_utils.TestCase):
 klasse TestSelectorUtils(test_utils.TestCase):
     def check_set_nodelay(self, sock):
         opt = sock.getsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY)
-        self.assertFalse(opt)
+        self.assertFalsch(opt)
 
         base_events._set_nodelay(sock)
 
         opt = sock.getsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY)
-        self.assertTrue(opt)
+        self.assertWahr(opt)
 
     @unittest.skipUnless(hasattr(socket, 'TCP_NODELAY'),
                          'need socket.TCP_NODELAY')
@@ -2374,7 +2374,7 @@ klasse TestSelectorUtils(test_utils.TestCase):
         sock = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM,
                              proto=socket.IPPROTO_TCP)
         with sock:
-            sock.setblocking(False)
+            sock.setblocking(Falsch)
             self.check_set_nodelay(sock)
 
 

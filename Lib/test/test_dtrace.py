@@ -45,11 +45,11 @@ def normalize_trace_output(output):
 
 
 klasse TraceBackend:
-    EXTENSION = None
-    COMMAND = None
+    EXTENSION = Nichts
+    COMMAND = Nichts
     COMMAND_ARGS = []
 
-    def run_case(self, name, optimize_python=None):
+    def run_case(self, name, optimize_python=Nichts):
         actual_output = normalize_trace_output(self.trace_python(
             script_file=abspath(name + self.EXTENSION),
             python_file=abspath(name + ".py"),
@@ -60,21 +60,21 @@ klasse TraceBackend:
 
         return (expected_output, actual_output)
 
-    def generate_trace_command(self, script_file, subcommand=None):
+    def generate_trace_command(self, script_file, subcommand=Nichts):
         command = self.COMMAND + [script_file]
         wenn subcommand:
             command += ["-c", subcommand]
         return command
 
-    def trace(self, script_file, subcommand=None):
+    def trace(self, script_file, subcommand=Nichts):
         command = self.generate_trace_command(script_file, subcommand)
         stdout, _ = subprocess.Popen(command,
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.STDOUT,
-                                     universal_newlines=True).communicate()
+                                     universal_newlines=Wahr).communicate()
         return stdout
 
-    def trace_python(self, script_file, python_file, optimize_python=None):
+    def trace_python(self, script_file, python_file, optimize_python=Nichts):
         python_flags = []
         wenn optimize_python:
             python_flags.extend(["-O"] * optimize_python)
@@ -105,10 +105,10 @@ klasse SystemTapBackend(TraceBackend):
 
 klasse TraceTests:
     # unittest.TestCase options
-    maxDiff = None
+    maxDiff = Nichts
 
     # TraceTests options
-    backend = None
+    backend = Nichts
     optimize_python = 0
 
     @classmethod
@@ -193,7 +193,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
                 cmd,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                universal_newlines=True,
+                universal_newlines=Wahr,
             )
             with proc:
                 version, stderr = proc.communicate()
@@ -210,7 +210,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
         # Regex to parse:
         # 'GNU readelf (GNU Binutils) 2.40.0\n' -> 2.40
         match = re.search(r"^(?:GNU) readelf.*?\b(\d+)\.(\d+)", version)
-        wenn match is None:
+        wenn match is Nichts:
             raise unittest.SkipTest(f"Unable to parse readelf version: {version}")
 
         return int(match.group(1)), int(match.group(2))
@@ -221,7 +221,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
             command,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            universal_newlines=True,
+            universal_newlines=Wahr,
         ).communicate()
         return stdout
 

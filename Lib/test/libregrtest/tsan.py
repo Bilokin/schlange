@@ -40,10 +40,10 @@ TSAN_PARALLEL_TESTS = [
 ]
 
 
-def setup_tsan_tests(cmdline_args) -> None:
+def setup_tsan_tests(cmdline_args) -> Nichts:
     wenn not cmdline_args:
         cmdline_args[:] = TSAN_TESTS[:]
 
-def setup_tsan_parallel_tests(cmdline_args) -> None:
+def setup_tsan_parallel_tests(cmdline_args) -> Nichts:
     wenn not cmdline_args:
         cmdline_args[:] = TSAN_PARALLEL_TESTS[:]

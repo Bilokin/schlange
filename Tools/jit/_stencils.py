@@ -126,22 +126,22 @@ klasse Hole:
     # Patch with this base value:
     value: HoleValue
     # ...plus the address of this symbol:
-    symbol: str | None
+    symbol: str | Nichts
     # ...plus this addend:
     addend: int
-    need_state: bool = False
-    func: str = dataclasses.field(init=False)
+    need_state: bool = Falsch
+    func: str = dataclasses.field(init=Falsch)
     # Convenience method:
     replace = dataclasses.replace
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         self.func = _PATCH_FUNCS[self.kind]
 
     def fold(
         self,
         other: typing.Self,
         body: bytes | bytearray,
-    ) -> typing.Self | None:
+    ) -> typing.Self | Nichts:
         """Combine two holes into a single hole, wenn possible."""
         instruction_a = int.from_bytes(
             body[self.offset : self.offset + 4], byteorder=sys.byteorder
@@ -167,7 +167,7 @@ klasse Hole:
             folded = self.replace()
             folded.func = "patch_aarch64_33rx"
             return folded
-        return None
+        return Nichts
 
     def as_c(self, where: str) -> str:
         """Dump this hole as a call to a patch_* function."""
@@ -194,11 +194,11 @@ klasse Stencil:
     Analogous to a section or segment in an object file.
     """
 
-    body: bytearray = dataclasses.field(default_factory=bytearray, init=False)
-    holes: list[Hole] = dataclasses.field(default_factory=list, init=False)
-    disassembly: list[str] = dataclasses.field(default_factory=list, init=False)
+    body: bytearray = dataclasses.field(default_factory=bytearray, init=Falsch)
+    holes: list[Hole] = dataclasses.field(default_factory=list, init=Falsch)
+    disassembly: list[str] = dataclasses.field(default_factory=list, init=Falsch)
 
-    def pad(self, alignment: int) -> None:
+    def pad(self, alignment: int) -> Nichts:
         """Pad the stencil to the given alignment."""
         offset = len(self.body)
         padding = -offset % alignment
@@ -215,15 +215,15 @@ klasse StencilGroup:
     Analogous to an entire object file.
     """
 
-    code: Stencil = dataclasses.field(default_factory=Stencil, init=False)
-    data: Stencil = dataclasses.field(default_factory=Stencil, init=False)
+    code: Stencil = dataclasses.field(default_factory=Stencil, init=Falsch)
+    data: Stencil = dataclasses.field(default_factory=Stencil, init=Falsch)
     symbols: dict[int | str, tuple[HoleValue, int]] = dataclasses.field(
-        default_factory=dict, init=False
+        default_factory=dict, init=Falsch
     )
-    _got: dict[str, int] = dataclasses.field(default_factory=dict, init=False)
-    _trampolines: set[int] = dataclasses.field(default_factory=set, init=False)
+    _got: dict[str, int] = dataclasses.field(default_factory=dict, init=Falsch)
+    _trampolines: set[int] = dataclasses.field(default_factory=set, init=Falsch)
 
-    def process_relocations(self, known_symbols: dict[str, int]) -> None:
+    def process_relocations(self, known_symbols: dict[str, int]) -> Nichts:
         """Fix up all GOT and internal relocations fuer this stencil group."""
         fuer hole in self.code.holes.copy():
             wenn (
@@ -233,8 +233,8 @@ klasse StencilGroup:
                 and hole.symbol not in self.symbols
             ):
                 hole.func = "patch_aarch64_trampoline"
-                hole.need_state = True
-                assert hole.symbol is not None
+                hole.need_state = Wahr
+                assert hole.symbol is not Nichts
                 wenn hole.symbol in known_symbols:
                     ordinal = known_symbols[hole.symbol]
                 sonst:
@@ -242,19 +242,19 @@ klasse StencilGroup:
                     known_symbols[hole.symbol] = ordinal
                 self._trampolines.add(ordinal)
                 hole.addend = ordinal
-                hole.symbol = None
+                hole.symbol = Nichts
         self.data.pad(8)
         fuer stencil in [self.code, self.data]:
             fuer hole in stencil.holes:
                 wenn hole.value is HoleValue.GOT:
-                    assert hole.symbol is not None
+                    assert hole.symbol is not Nichts
                     hole.value = HoleValue.DATA
                     hole.addend += self._global_offset_table_lookup(hole.symbol)
-                    hole.symbol = None
+                    hole.symbol = Nichts
                 sowenn hole.symbol in self.symbols:
                     hole.value, addend = self.symbols[hole.symbol]
                     hole.addend += addend
-                    hole.symbol = None
+                    hole.symbol = Nichts
                 sowenn (
                     hole.kind in {"IMAGE_REL_AMD64_REL32"}
                     and hole.value is HoleValue.ZERO
@@ -269,12 +269,12 @@ klasse StencilGroup:
     def _global_offset_table_lookup(self, symbol: str) -> int:
         return len(self.data.body) + self._got.setdefault(symbol, 8 * len(self._got))
 
-    def _emit_global_offset_table(self) -> None:
+    def _emit_global_offset_table(self) -> Nichts:
         got = len(self.data.body)
         fuer s, offset in self._got.items():
             wenn s in self.symbols:
                 value, addend = self.symbols[s]
-                symbol = None
+                symbol = Nichts
             sonst:
                 value, symbol = symbol_to_value(s)
                 addend = 0
@@ -285,7 +285,7 @@ klasse StencilGroup:
             wenn value_part and not symbol and not addend:
                 addend_part = ""
             sonst:
-                signed = "+" wenn symbol is not None sonst ""
+                signed = "+" wenn symbol is not Nichts sonst ""
                 addend_part = f"&{symbol}" wenn symbol sonst ""
                 addend_part += f"{_signed(addend):{signed}#x}"
                 wenn value_part:
@@ -311,7 +311,7 @@ klasse StencilGroup:
         return f"{{emit_{opname}, {len(self.code.body)}, {len(self.data.body)}, {self._get_trampoline_mask()}}}"
 
 
-def symbol_to_value(symbol: str) -> tuple[HoleValue, str | None]:
+def symbol_to_value(symbol: str) -> tuple[HoleValue, str | Nichts]:
     """
     Convert a symbol name to a HoleValue and a symbol name.
 
@@ -320,7 +320,7 @@ def symbol_to_value(symbol: str) -> tuple[HoleValue, str | None]:
     """
     wenn symbol.startswith("_JIT_"):
         try:
-            return HoleValue[symbol.removeprefix("_JIT_")], None
+            return HoleValue[symbol.removeprefix("_JIT_")], Nichts
         except KeyError:
             pass
     return HoleValue.ZERO, symbol

@@ -19,10 +19,10 @@ import winreg
 
 
 PY_EXE = "py.exe"
-DEBUG_BUILD = False
+DEBUG_BUILD = Falsch
 wenn sys.executable.casefold().endswith("_d.exe".casefold()):
     PY_EXE = "py_d.exe"
-    DEBUG_BUILD = True
+    DEBUG_BUILD = Wahr
 
 # Registry data to create. On removal, everything beneath top-level names will
 # be deleted.
@@ -33,21 +33,21 @@ TEST_DATA = {
         "3.100": {
             "DisplayName": "X.Y version",
             "InstallPath": {
-                None: sys.prefix,
+                Nichts: sys.prefix,
                 "ExecutablePath": "X.Y.exe",
             }
         },
         "3.100-32": {
             "DisplayName": "X.Y-32 version",
             "InstallPath": {
-                None: sys.prefix,
+                Nichts: sys.prefix,
                 "ExecutablePath": "X.Y-32.exe",
             }
         },
         "3.100-arm64": {
             "DisplayName": "X.Y-arm64 version",
             "InstallPath": {
-                None: sys.prefix,
+                Nichts: sys.prefix,
                 "ExecutablePath": "X.Y-arm64.exe",
                 "ExecutableArguments": "-X fake_arg_for_test",
             }
@@ -55,7 +55,7 @@ TEST_DATA = {
         "ignored": {
             "DisplayName": "Ignored because no ExecutablePath",
             "InstallPath": {
-                None: sys.prefix,
+                Nichts: sys.prefix,
             }
         },
     },
@@ -64,7 +64,7 @@ TEST_DATA = {
         "3.100": {
             "DisplayName": "Single Interpreter",
             "InstallPath": {
-                None: sys.prefix,
+                Nichts: sys.prefix,
                 "ExecutablePath": sys.executable,
             }
         }
@@ -104,8 +104,8 @@ def create_registry_data(root, data):
                 fuer k, v in value.items():
                     _create_registry_data(hkey, k, v)
         sowenn isinstance(value, str):
-            # For strings, we set values. 'key' may be None in this case
-            winreg.SetValueEx(root, key, None, winreg.REG_SZ, value)
+            # For strings, we set values. 'key' may be Nichts in this case
+            winreg.SetValueEx(root, key, Nichts, winreg.REG_SZ, value)
         sonst:
             raise TypeError("don't know how to create data fuer '{}'".format(value))
 
@@ -140,38 +140,38 @@ def is_installed(tag):
     ]:
         try:
             winreg.CloseKey(winreg.OpenKey(root, key, access=winreg.KEY_READ | flag))
-            return True
+            return Wahr
         except OSError:
             pass
-    return False
+    return Falsch
 
 
 klasse PreservePyIni:
     def __init__(self, path, content):
         self.path = Path(path)
         self.content = content
-        self._preserved = None
+        self._preserved = Nichts
 
     def __enter__(self):
         try:
             self._preserved = self.path.read_bytes()
         except FileNotFoundError:
-            self._preserved = None
+            self._preserved = Nichts
         self.path.write_text(self.content, encoding="utf-16")
 
     def __exit__(self, *exc_info):
-        wenn self._preserved is None:
+        wenn self._preserved is Nichts:
             self.path.unlink()
         sonst:
             self.path.write_bytes(self._preserved)
 
 
 klasse RunPyMixin:
-    py_exe = None
+    py_exe = Nichts
 
     @classmethod
     def find_py(cls):
-        py_exe = None
+        py_exe = Nichts
         wenn sysconfig.is_python_build():
             py_exe = Path(sys.executable).parent / PY_EXE
         sonst:
@@ -181,7 +181,7 @@ klasse RunPyMixin:
                     wenn py_exe.is_file():
                         break
             sonst:
-                py_exe = None
+                py_exe = Nichts
 
         # Test launch and check version, to exclude installs of older
         # releases when running outside of a source tree
@@ -200,9 +200,9 @@ klasse RunPyMixin:
                     p.stdout.read()
                     p.wait(10)
                 wenn not sys.version.startswith(version):
-                    py_exe = None
+                    py_exe = Nichts
             except OSError:
-                py_exe = None
+                py_exe = Nichts
 
         wenn not py_exe:
             raise unittest.SkipTest(
@@ -215,7 +215,7 @@ klasse RunPyMixin:
             self.py_exe = self.find_py()
         return self.py_exe
 
-    def run_py(self, args, env=None, allow_fail=False, expect_returncode=0, argv=None):
+    def run_py(self, args, env=Nichts, allow_fail=Falsch, expect_returncode=0, argv=Nichts):
         wenn not self.py_exe:
             self.py_exe = self.find_py()
 
@@ -283,7 +283,7 @@ klasse RunPyMixin:
     @contextlib.contextmanager
     def fake_venv(self):
         venv = Path.cwd() / "Scripts"
-        venv.mkdir(exist_ok=True, parents=True)
+        venv.mkdir(exist_ok=Wahr, parents=Wahr)
         venv_exe = (venv / ("python_d.exe" wenn DEBUG_BUILD sonst "python.exe"))
         venv_exe.touch()
         try:
@@ -316,14 +316,14 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
 
     def test_help_option(self):
         data = self.run_py(["-h"])
-        self.assertEqual("True", data["SearchInfo.help"])
+        self.assertEqual("Wahr", data["SearchInfo.help"])
 
     def test_list_option(self):
         fuer opt, v1, v2 in [
-            ("-0", "True", "False"),
-            ("-0p", "False", "True"),
-            ("--list", "True", "False"),
-            ("--list-paths", "False", "True"),
+            ("-0", "Wahr", "Falsch"),
+            ("-0p", "Falsch", "Wahr"),
+            ("--list", "Wahr", "Falsch"),
+            ("--list-paths", "Falsch", "Wahr"),
         ]:
             with self.subTest(opt):
                 data = self.run_py([opt])
@@ -344,7 +344,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             fuer tag in tags:
                 arg = f"-V:{company}/{tag}"
                 expect[arg] = company_data[tag]["DisplayName"]
-            expect.pop(f"-V:{company}/ignored", None)
+            expect.pop(f"-V:{company}/ignored", Nichts)
 
         actual = {k: v fuer k, v in found.items() wenn k in expect}
         try:
@@ -376,9 +376,9 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
                     except KeyError:
                         pass
                 except KeyError:
-                    expect[arg] = str(Path(install[None]) / Path(sys.executable).name)
+                    expect[arg] = str(Path(install[Nichts]) / Path(sys.executable).name)
 
-            expect.pop(f"-V:{company}/ignored", None)
+            expect.pop(f"-V:{company}/ignored", Nichts)
 
         actual = {k: v fuer k, v in found.items() wenn k in expect}
         try:
@@ -432,14 +432,14 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
     def test_filter_with_single_install(self):
         company = "PythonTestSuite1"
         data = self.run_py(
-            ["-V:Nonexistent"],
+            ["-V:Nichtsxistent"],
             env={"PYLAUNCHER_LIMIT_TO_COMPANY": company},
             expect_returncode=103,
         )
 
     def test_search_major_3(self):
         try:
-            data = self.run_py(["-3"], allow_fail=True)
+            data = self.run_py(["-3"], allow_fail=Wahr)
         except subprocess.CalledProcessError:
             raise unittest.SkipTest("requires at least one Python 3.x install")
         self.assertEqual("PythonCore", data["env.company"])
@@ -447,7 +447,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
 
     def test_search_major_3_32(self):
         try:
-            data = self.run_py(["-3-32"], allow_fail=True)
+            data = self.run_py(["-3-32"], allow_fail=Wahr)
         except subprocess.CalledProcessError:
             wenn not any(is_installed(f"3.{i}-32") fuer i in range(5, 11)):
                 raise unittest.SkipTest("requires at least one 32-bit Python 3.x install")
@@ -458,7 +458,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
 
     def test_search_major_2(self):
         try:
-            data = self.run_py(["-2"], allow_fail=True)
+            data = self.run_py(["-2"], allow_fail=Wahr)
         except subprocess.CalledProcessError:
             wenn not is_installed("2.7"):
                 raise unittest.SkipTest("requires at least one Python 2.x install")
@@ -515,7 +515,7 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
 
     def test_py_default_in_list(self):
         data = self.run_py(["-0"], env=TEST_PY_ENV)
-        default = None
+        default = Nichts
         fuer line in data["stdout"].splitlines():
             m = re.match(r"\s*-V:(.+?)\s+?\*\s+(.+)$", line)
             wenn m:
@@ -552,10 +552,10 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
             data2 = self.run_py(["-V:PythonTestSuite/3"], env={**env, "PY_PYTHON": "PythonTestSuite/3"})
         # Compare stdout, because stderr goes via ascii
         self.assertEqual(data1["stdout"].strip(), quote(venv_exe))
-        self.assertEqual(data1["SearchInfo.lowPriorityTag"], "True")
+        self.assertEqual(data1["SearchInfo.lowPriorityTag"], "Wahr")
         # Ensure passing the argument doesn't trigger the same behaviour
         self.assertNotEqual(data2["stdout"].strip(), quote(venv_exe))
-        self.assertNotEqual(data2["SearchInfo.lowPriorityTag"], "True")
+        self.assertNotEqual(data2["SearchInfo.lowPriorityTag"], "Wahr")
 
     def test_py_shebang(self):
         with self.py_ini(TEST_PY_DEFAULTS):
@@ -649,9 +649,9 @@ klasse TestLauncher(unittest.TestCase, RunPyMixin):
     def test_py_handle_64_in_ini(self):
         with self.py_ini("\n".join(["[defaults]", "python=3.999-64"])):
             # Expect this to fail, but should get oldStyleTag flipped on
-            data = self.run_py([], allow_fail=True, expect_returncode=103)
+            data = self.run_py([], allow_fail=Wahr, expect_returncode=103)
         self.assertEqual("3.999-64", data["SearchInfo.tag"])
-        self.assertEqual("True", data["SearchInfo.oldStyleTag"])
+        self.assertEqual("Wahr", data["SearchInfo.oldStyleTag"])
 
     def test_search_path(self):
         exe = Path("arbitrary-exe-name.exe").absolute()

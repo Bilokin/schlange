@@ -7,7 +7,7 @@ import time
 
 from test.support import threading_helper, Py_GIL_DISABLED
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 
 def random_sleep():

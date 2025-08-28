@@ -68,7 +68,7 @@ klasse SlicesTestCase(unittest.TestCase):
 
         dll = CDLL(_ctypes_test.__file__)
         dll.my_strdup.restype = POINTER(c_char)
-        dll.my_free.restype = None
+        dll.my_free.restype = Nichts
         res = dll.my_strdup(s)
         self.assertEqual(res[:len(s)], s)
         self.assertEqual(res[:3], s[:3])
@@ -106,7 +106,7 @@ klasse SlicesTestCase(unittest.TestCase):
         klasse allocated_c_char_p(c_char_p):
             pass
 
-        dll.my_free.restype = None
+        dll.my_free.restype = Nichts
         def errcheck(result, func, args):
             retval = result.value
             dll.my_free(result)
@@ -138,7 +138,7 @@ klasse SlicesTestCase(unittest.TestCase):
         dll = CDLL(_ctypes_test.__file__)
         dll.my_wcsdup.restype = POINTER(c_wchar)
         dll.my_wcsdup.argtypes = POINTER(c_wchar),
-        dll.my_free.restype = None
+        dll.my_free.restype = Nichts
         res = dll.my_wcsdup(s[:-1])
         self.assertEqual(res[:len(s)], s)
         self.assertEqual(res[:len(s):], s)

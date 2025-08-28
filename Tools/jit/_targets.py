@@ -46,9 +46,9 @@ klasse _Target(typing.Generic[_S, _R]):
     optimizer: type[_optimizers.Optimizer] = _optimizers.Optimizer
     label_prefix: typing.ClassVar[str]
     symbol_prefix: typing.ClassVar[str]
-    stable: bool = False
-    debug: bool = False
-    verbose: bool = False
+    stable: bool = Falsch
+    debug: bool = Falsch
+    verbose: bool = Falsch
     cflags: str = ""
     known_symbols: dict[str, int] = dataclasses.field(default_factory=dict)
     pyconfig_dir: pathlib.Path = pathlib.Path.cwd().resolve()
@@ -79,7 +79,7 @@ klasse _Target(typing.Generic[_S, _R]):
         group = _stencils.StencilGroup()
         args = ["--disassemble", "--reloc", f"{path}"]
         output = await _llvm.maybe_run("llvm-objdump", args, echo=self.verbose)
-        wenn output is not None:
+        wenn output is not Nichts:
             # Make sure that full paths don't leak out (for reproducibility):
             long, short = str(path), str(path.name)
             group.code.disassembly.extend(
@@ -101,8 +101,8 @@ klasse _Target(typing.Generic[_S, _R]):
         output = output.replace("PrivateExtern\n", "\n")
         output = output.replace("Extern\n", "\n")
         # ...and also COFF:
-        output = output[output.index("[", 1, None) :]
-        output = output[: output.rindex("]", None, -1) + 1]
+        output = output[output.index("[", 1, Nichts) :]
+        output = output[: output.rindex("]", Nichts, -1) + 1]
         sections: list[dict[typing.Literal["Section"], _S]] = json.loads(output)
         fuer wrapped_section in sections:
             self._handle_section(wrapped_section["Section"], group)
@@ -112,7 +112,7 @@ klasse _Target(typing.Generic[_S, _R]):
             group.data.disassembly.append(line)
         return group
 
-    def _handle_section(self, section: _S, group: _stencils.StencilGroup) -> None:
+    def _handle_section(self, section: _S, group: _stencils.StencilGroup) -> Nichts:
         raise NotImplementedError(type(self))
 
     def _handle_relocation(
@@ -213,11 +213,11 @@ klasse _Target(typing.Generic[_S, _R]):
         self,
         *,
         comment: str = "",
-        force: bool = False,
+        force: bool = Falsch,
         jit_stencils: pathlib.Path,
-    ) -> None:
+    ) -> Nichts:
         """Build jit_stencils.h in the given directory."""
-        jit_stencils.parent.mkdir(parents=True, exist_ok=True)
+        jit_stencils.parent.mkdir(parents=Wahr, exist_ok=Wahr)
         wenn not self.stable:
             warning = f"JIT support fuer {self.triple} is still experimental!"
             request = "Please report any issues you encounter.".center(len(warning))
@@ -247,7 +247,7 @@ klasse _Target(typing.Generic[_S, _R]):
                 wenn not jit_stencils.is_file():
                     raise
         finally:
-            jit_stencils_new.unlink(missing_ok=True)
+            jit_stencils_new.unlink(missing_ok=Wahr)
 
 
 klasse _COFF(
@@ -255,7 +255,7 @@ klasse _COFF(
 ):  # pylint: disable = too-few-public-methods
     def _handle_section(
         self, section: _schema.COFFSection, group: _stencils.StencilGroup
-    ) -> None:
+    ) -> Nichts:
         flags = {flag["Name"] fuer flag in section["Characteristics"]["Flags"]}
         wenn "SectionData" in section:
             section_data_bytes = section["SectionData"]["Bytes"]
@@ -285,7 +285,7 @@ klasse _COFF(
             hole = self._handle_relocation(base, relocation, stencil.body)
             stencil.holes.append(hole)
 
-    def _unwrap_dllimport(self, name: str) -> tuple[_stencils.HoleValue, str | None]:
+    def _unwrap_dllimport(self, name: str) -> tuple[_stencils.HoleValue, str | Nichts]:
         wenn name.startswith("__imp_"):
             name = name.removeprefix("__imp_")
             name = name.removeprefix(self.symbol_prefix)
@@ -318,7 +318,7 @@ klasse _COFF(
                 offset += base
                 value, symbol = self._unwrap_dllimport(s)
                 addend = (
-                    int.from_bytes(raw[offset : offset + 4], "little", signed=True) - 4
+                    int.from_bytes(raw[offset : offset + 4], "little", signed=Wahr) - 4
                 )
             case {
                 "Offset": offset,
@@ -358,14 +358,14 @@ klasse _ELF(
 
     def _handle_section(
         self, section: _schema.ELFSection, group: _stencils.StencilGroup
-    ) -> None:
+    ) -> Nichts:
         section_type = section["Type"]["Name"]
         flags = {flag["Name"] fuer flag in section["Flags"]["Flags"]}
         wenn section_type == "SHT_RELA":
             assert "SHF_INFO_LINK" in flags, flags
             assert not section["Symbols"]
             maybe_symbol = group.symbols.get(section["Info"])
-            wenn maybe_symbol is None:
+            wenn maybe_symbol is Nichts:
                 # These are relocations fuer a section we're not emitting. Skip:
                 return
             value, base = maybe_symbol
@@ -412,7 +412,7 @@ klasse _ELF(
         relocation: _schema.ELFRelocation,
         raw: bytes | bytearray,
     ) -> _stencils.Hole:
-        symbol: str | None
+        symbol: str | Nichts
         match relocation:
             case {
                 "Addend": addend,
@@ -451,7 +451,7 @@ klasse _MachO(
 
     def _handle_section(
         self, section: _schema.MachOSection, group: _stencils.StencilGroup
-    ) -> None:
+    ) -> Nichts:
         assert section["Address"] >= len(group.code.body)
         assert "SectionData" in section
         flags = {flag["Name"] fuer flag in section["Attributes"]["Flags"]}
@@ -494,7 +494,7 @@ klasse _MachO(
         relocation: _schema.MachORelocation,
         raw: bytes | bytearray,
     ) -> _stencils.Hole:
-        symbol: str | None
+        symbol: str | Nichts
         match relocation:
             case {
                 "Offset": offset,
@@ -517,7 +517,7 @@ klasse _MachO(
                 s = s.removeprefix(self.symbol_prefix)
                 value, symbol = _stencils.HoleValue.GOT, s
                 addend = (
-                    int.from_bytes(raw[offset : offset + 4], "little", signed=True) - 4
+                    int.from_bytes(raw[offset : offset + 4], "little", signed=Wahr) - 4
                 )
             case {
                 "Offset": offset,
@@ -532,7 +532,7 @@ klasse _MachO(
                 s = s.removeprefix(self.symbol_prefix)
                 value, symbol = _stencils.symbol_to_value(s)
                 addend = (
-                    int.from_bytes(raw[offset : offset + 4], "little", signed=True) - 4
+                    int.from_bytes(raw[offset : offset + 4], "little", signed=Wahr) - 4
                 )
             case {
                 "Offset": offset,

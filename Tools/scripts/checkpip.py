@@ -10,17 +10,17 @@ import sys
 
 
 def main():
-    outofdate = False
+    outofdate = Falsch
 
     fuer project, version in ensurepip._PROJECTS:
         data = json.loads(urllib.request.urlopen(
             "https://pypi.org/pypi/{}/json".format(project),
-            cadefault=True,
+            cadefault=Wahr,
         ).read().decode("utf8"))
         upstream_version = data["info"]["version"]
 
         wenn version != upstream_version:
-            outofdate = True
+            outofdate = Wahr
             print("The latest version of {} on PyPI is {}, but ensurepip "
                   "has {}".format(project, upstream_version, version))
 

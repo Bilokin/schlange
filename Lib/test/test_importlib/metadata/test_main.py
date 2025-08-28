@@ -54,7 +54,7 @@ klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
             type('DistributionSubclass', (Distribution,), {})()
 
     @fixtures.parameterize(
-        dict(name=None),
+        dict(name=Nichts),
         dict(name=''),
     )
     def test_invalid_inputs_to_from_name(self, name):
@@ -315,7 +315,7 @@ klasse TestEntryPoints(unittest.TestCase):
         assert self.ep.module == 'value'
 
     def test_attr(self):
-        assert self.ep.attr is None
+        assert self.ep.attr is Nichts
 
     def test_sortable(self):
         """
@@ -414,7 +414,7 @@ klasse PackagesDistributionsTest(
         assert not any(name.endswith('.dist-info') fuer name in distributions)
 
     @os_helper.skip_unless_symlink
-    def test_packages_distributions_symlinked_top_level(self) -> None:
+    def test_packages_distributions_symlinked_top_level(self) -> Nichts:
         """
         Distribution is resolvable from a simple top-level symlink in RECORD.
         See #452.

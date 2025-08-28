@@ -13,7 +13,7 @@ import textwrap
 try:
     import _testcapi
 except ImportError:
-    _testcapi = None
+    _testcapi = Nichts
 
 klasse HelperMixin:
     def helper(self, sample, *extra):
@@ -50,7 +50,7 @@ klasse IntTestCase(unittest.TestCase, HelperMixin):
         minint64 = -maxint64-1
         fuer base in maxint64, minint64, -maxint64, -(minint64 >> 1):
             while base:
-                s = b'I' + int.to_bytes(base, 8, 'little', signed=True)
+                s = b'I' + int.to_bytes(base, 8, 'little', signed=Wahr)
                 got = marshal.loads(s)
                 self.assertEqual(base, got)
                 wenn base == -1:  # a fixed-point fuer shifting right 1
@@ -68,7 +68,7 @@ klasse IntTestCase(unittest.TestCase, HelperMixin):
         self.assertEqual(got, -0x7f6e5d4c3b2a1909)
 
     def test_bool(self):
-        fuer b in (True, False):
+        fuer b in (Wahr, Falsch):
             self.helper(b)
 
 klasse FloatTestCase(unittest.TestCase, HelperMixin):
@@ -137,34 +137,34 @@ klasse CodeTestCase(unittest.TestCase):
 
     def test_no_allow_code(self):
         data = {'a': [({0},)]}
-        dump = marshal.dumps(data, allow_code=False)
-        self.assertEqual(marshal.loads(dump, allow_code=False), data)
+        dump = marshal.dumps(data, allow_code=Falsch)
+        self.assertEqual(marshal.loads(dump, allow_code=Falsch), data)
 
         f = io.BytesIO()
-        marshal.dump(data, f, allow_code=False)
+        marshal.dump(data, f, allow_code=Falsch)
         f.seek(0)
-        self.assertEqual(marshal.load(f, allow_code=False), data)
+        self.assertEqual(marshal.load(f, allow_code=Falsch), data)
 
         co = ExceptionTestCase.test_exceptions.__code__
         data = {'a': [({co, 0},)]}
-        dump = marshal.dumps(data, allow_code=True)
-        self.assertEqual(marshal.loads(dump, allow_code=True), data)
+        dump = marshal.dumps(data, allow_code=Wahr)
+        self.assertEqual(marshal.loads(dump, allow_code=Wahr), data)
         with self.assertRaises(ValueError):
-            marshal.dumps(data, allow_code=False)
+            marshal.dumps(data, allow_code=Falsch)
         with self.assertRaises(ValueError):
-            marshal.loads(dump, allow_code=False)
+            marshal.loads(dump, allow_code=Falsch)
 
-        marshal.dump(data, io.BytesIO(), allow_code=True)
-        self.assertEqual(marshal.load(io.BytesIO(dump), allow_code=True), data)
+        marshal.dump(data, io.BytesIO(), allow_code=Wahr)
+        self.assertEqual(marshal.load(io.BytesIO(dump), allow_code=Wahr), data)
         with self.assertRaises(ValueError):
-            marshal.dump(data, io.BytesIO(), allow_code=False)
+            marshal.dump(data, io.BytesIO(), allow_code=Falsch)
         with self.assertRaises(ValueError):
-            marshal.load(io.BytesIO(dump), allow_code=False)
+            marshal.load(io.BytesIO(dump), allow_code=Falsch)
 
     @requires_debug_ranges()
     def test_minimal_linetable_with_no_debug_ranges(self):
         # Make sure when demarshalling objects with `-X no_debug_ranges`
-        # that the columns are None.
+        # that the columns are Nichts.
         co = ExceptionTestCase.test_exceptions.__code__
         code = textwrap.dedent("""
         import sys
@@ -172,8 +172,8 @@ klasse CodeTestCase(unittest.TestCase):
         with open(sys.argv[1], 'rb') as f:
             co = marshal.load(f)
             positions = list(co.co_positions())
-            assert positions[0][2] is None
-            assert positions[0][3] is None
+            assert positions[0][2] is Nichts
+            assert positions[0][3] is Nichts
         """)
 
         try:
@@ -201,7 +201,7 @@ klasse ContainerTestCase(unittest.TestCase, HelperMixin):
          'ashortlong': 2,
          'alist': ['.zyx.41'],
          'atuple': ('.zyx.41',)*10,
-         'aboolean': False,
+         'aboolean': Falsch,
          'aunicode': "Andr\xe8 Previn"
          }
 
@@ -267,14 +267,14 @@ klasse BugsTestCase(unittest.TestCase):
 
     def test_loads_recursion(self):
         def run_tests(N, check):
-            # (((...None...),),)
+            # (((...Nichts...),),)
             check(b')\x01' * N + b'N')
             check(b'(\x01\x00\x00\x00' * N + b'N')
-            # [[[...None...]]]
+            # [[[...Nichts...]]]
             check(b'[\x01\x00\x00\x00' * N + b'N')
-            # {None: {None: {None: ...None...}}}
+            # {Nichts: {Nichts: {Nichts: ...Nichts...}}}
             check(b'{N' * N + b'N' + b'0' * N)
-            # frozenset([frozenset([frozenset([...None...])])])
+            # frozenset([frozenset([frozenset([...Nichts...])])])
             check(b'>\x01\x00\x00\x00' * N + b'N')
         # Check that the generated marshal data is valid and marshal.loads()
         # works fuer moderately deep nesting
@@ -368,7 +368,7 @@ klasse BugsTestCase(unittest.TestCase):
         klasse BadReader(io.BytesIO):
             def readinto(self, buf):
                 n = super().readinto(buf)
-                wenn n is not None and n > 4:
+                wenn n is not Nichts and n > 4:
                     n += 10**6
                 return n
         fuer value in (1.0, 1j, b'0123456789', '0123456789'):
@@ -376,7 +376,7 @@ klasse BugsTestCase(unittest.TestCase):
                               BadReader(marshal.dumps(value)))
 
     def test_eof(self):
-        data = marshal.dumps(("hello", "dolly", None))
+        data = marshal.dumps(("hello", "dolly", Nichts))
         fuer i in range(len(data)):
             self.assertRaises(EOFError, marshal.loads, data[0: i])
 
@@ -420,35 +420,35 @@ klasse LargeValuesTestCase(unittest.TestCase):
     def check_unmarshallable(self, data):
         self.assertRaises(ValueError, marshal.dump, data, NullWriter())
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=Falsch)
     def test_bytes(self, size):
         self.check_unmarshallable(b'x' * size)
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=Falsch)
     def test_str(self, size):
         self.check_unmarshallable('x' * size)
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=pointer_size + 1, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=pointer_size + 1, dry_run=Falsch)
     def test_tuple(self, size):
-        self.check_unmarshallable((None,) * size)
+        self.check_unmarshallable((Nichts,) * size)
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=pointer_size + 1, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=pointer_size + 1, dry_run=Falsch)
     def test_list(self, size):
-        self.check_unmarshallable([None] * size)
+        self.check_unmarshallable([Nichts] * size)
 
     @support.bigmemtest(size=LARGE_SIZE,
             memuse=pointer_size*12 + sys.getsizeof(LARGE_SIZE-1),
-            dry_run=False)
+            dry_run=Falsch)
     def test_set(self, size):
         self.check_unmarshallable(set(range(size)))
 
     @support.bigmemtest(size=LARGE_SIZE,
             memuse=pointer_size*12 + sys.getsizeof(LARGE_SIZE-1),
-            dry_run=False)
+            dry_run=Falsch)
     def test_frozenset(self, size):
         self.check_unmarshallable(frozenset(range(size)))
 
-    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=False)
+    @support.bigmemtest(size=LARGE_SIZE, memuse=2, dry_run=Falsch)
     def test_bytearray(self, size):
         self.check_unmarshallable(bytearray(size))
 
@@ -469,7 +469,7 @@ def CollectObjectIDs(ids, obj):
 klasse InstancingTestCase(unittest.TestCase, HelperMixin):
     keys = (123, 1.2345, 'abc', (123, 'abc'), frozenset({123, 'abc'}))
 
-    def helper3(self, rsample, recursive=False, simple=False):
+    def helper3(self, rsample, recursive=Falsch, simple=Falsch):
         #we have two instances
         sample = (rsample, rsample)
 
@@ -498,7 +498,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
     def testInt(self):
         intobj = 123321
         self.helper(intobj)
-        self.helper3(intobj, simple=True)
+        self.helper3(intobj, simple=Wahr)
 
     def testFloat(self):
         floatobj = 1.2345
@@ -557,10 +557,10 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
         obj = 1.2345
         d = {"hello": obj, "goodbye": obj, obj: "hello"}
         d["self"] = d
-        self.helper3(d, recursive=True)
+        self.helper3(d, recursive=Wahr)
         l = [obj, obj]
         l.append(l)
-        self.helper3(l, recursive=True)
+        self.helper3(l, recursive=Wahr)
 
 klasse CompatibilityTestCase(unittest.TestCase):
     def _test(self, version):
@@ -604,7 +604,7 @@ klasse InterningTestCase(unittest.TestCase, HelperMixin):
 klasse SliceTestCase(unittest.TestCase, HelperMixin):
     def test_slice(self):
         fuer obj in (
-            slice(None), slice(1), slice(1, 2), slice(1, 2, 3),
+            slice(Nichts), slice(1), slice(1, 2), slice(1, 2, 3),
             slice({'set'}, ('tuple', {'with': 'dict'}, ), self.helper.__code__)
         ):
             with self.subTest(obj=str(obj)):

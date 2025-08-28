@@ -26,7 +26,7 @@ from test.support.pty_helper import run_pty, FakeInput
 from test.support.script_helper import kill_python
 from unittest.mock import patch
 
-SKIP_CORO_TESTS = False
+SKIP_CORO_TESTS = Falsch
 
 
 klasse PdbTestInput(object):
@@ -38,7 +38,7 @@ klasse PdbTestInput(object):
     def __enter__(self):
         self.real_stdin = sys.stdin
         sys.stdin = FakeInput(self.input)
-        self.orig_trace = sys.gettrace() wenn hasattr(sys, 'gettrace') sonst None
+        self.orig_trace = sys.gettrace() wenn hasattr(sys, 'gettrace') sonst Nichts
 
     def __exit__(self, *exc):
         sys.stdin = self.real_stdin
@@ -50,7 +50,7 @@ def test_pdb_displayhook():
     """This tests the custom displayhook fuer pdb.
 
     >>> def test_function(foo, bar):
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([
     ...     'foo',
@@ -58,9 +58,9 @@ def test_pdb_displayhook():
     ...     'for i in range(5): print(i)',
     ...     'continue',
     ... ]):
-    ...     test_function(1, None)
+    ...     test_function(1, Nichts)
     > <doctest test.test_pdb.test_pdb_displayhook[0]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) foo
     1
     (Pdb) bar
@@ -88,16 +88,16 @@ def test_pdb_basic_commands():
     ...     print('...')
     ...     return foo.upper()
 
-    >>> def test_function3(arg=None, *, kwonly=None):
+    >>> def test_function3(arg=Nichts, *, kwonly=Nichts):
     ...     pass
 
     >>> def test_function4(a, b, c, /):
     ...     pass
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     ret = test_function_2('baz')
-    ...     test_function3(kwonly=True)
+    ...     test_function3(kwonly=Wahr)
     ...     test_function4(1, 2, 3)
     ...     print(ret)
 
@@ -128,7 +128,7 @@ def test_pdb_basic_commands():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_basic_commands[3]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_basic_commands[3]>(3)test_function()
     -> ret = test_function_2('baz')
@@ -200,17 +200,17 @@ def test_pdb_basic_commands():
     'BAZ'
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_basic_commands[3]>(4)test_function()
-    -> test_function3(kwonly=True)
+    -> test_function3(kwonly=Wahr)
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_basic_commands[1]>(1)test_function3()
-    -> def test_function3(arg=None, *, kwonly=None):
+    -> def test_function3(arg=Nichts, *, kwonly=Nichts):
     (Pdb) args
-    arg = None
-    kwonly = True
+    arg = Nichts
+    kwonly = Wahr
     (Pdb) return
     --Return--
-    > <doctest test.test_pdb.test_pdb_basic_commands[1]>(2)test_function3()->None
+    > <doctest test.test_pdb.test_pdb_basic_commands[1]>(2)test_function3()->Nichts
     -> pass
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_basic_commands[3]>(5)test_function()
@@ -231,7 +231,7 @@ def test_pdb_breakpoint_commands():
     """Test basic commands related to breakpoints.
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     print(1)
     ...     print(2)
     ...     print(3)
@@ -277,7 +277,7 @@ def test_pdb_breakpoint_commands():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) break 3
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:3
     (Pdb) break 4, +
@@ -362,7 +362,7 @@ def test_pdb_breakpoint_commands():
 def test_pdb_breakpoint_ignore_and_condition():
     """
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     fuer i in range(5):
     ...         print(i)
 
@@ -377,7 +377,7 @@ def test_pdb_breakpoint_ignore_and_condition():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_breakpoint_ignore_and_condition[0]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) break 4
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_breakpoint_ignore_and_condition[0]>:4
     (Pdb) ignore 1 2
@@ -413,7 +413,7 @@ def test_pdb_breakpoint_on_annotated_function_def():
     ...     return 0
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     pass
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
@@ -424,7 +424,7 @@ def test_pdb_breakpoint_on_annotated_function_def():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_breakpoint_on_annotated_function_def[3]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) break foo
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_breakpoint_on_annotated_function_def[0]>:2
     (Pdb) break bar
@@ -438,7 +438,7 @@ def test_pdb_commands():
     """Test the commands command of pdb.
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     print(1)
     ...     print(2)
     ...     print(3)
@@ -458,7 +458,7 @@ def test_pdb_commands():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_commands[0]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) b 3
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_commands[0]>:3
     (Pdb) commands
@@ -486,7 +486,7 @@ def test_pdb_breakpoint_with_filename():
     >>> def test_function():
     ...     # inspect_fodder2 is a great module as the line number is stable
     ...     from test.test_inspect import inspect_fodder2 as mod2
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     mod2.func88()
     ...     mod2.func114()
 
@@ -499,7 +499,7 @@ def test_pdb_breakpoint_with_filename():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_breakpoint_with_filename[0]>(4)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) break test.test_inspect.inspect_fodder2:90
     Breakpoint 1 at ...inspect_fodder2.py:90
     (Pdb) continue
@@ -517,7 +517,7 @@ def test_pdb_breakpoint_on_disabled_line():
     """New breakpoint on once disabled line should work
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     fuer i in range(3):
     ...         j = i * 2
     ...         print(j)
@@ -533,7 +533,7 @@ def test_pdb_breakpoint_on_disabled_line():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_breakpoint_on_disabled_line[0]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) break 5
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_breakpoint_on_disabled_line[0]>:5
     (Pdb) c
@@ -627,7 +627,7 @@ def test_pdb_break_anywhere():
     ...     def inner():
     ...         import pdb
     ...         import sys
-    ...         p = pdb.Pdb(nosigint=True, readrc=False)
+    ...         p = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...         p.set_trace()
     ...         frame = sys._getframe()
     ...         print(p.break_anywhere(frame))  # inner
@@ -651,9 +651,9 @@ def test_pdb_break_anywhere():
     (Pdb) b 3
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_break_anywhere[0]>:3
     (Pdb) c
-    True
-    False
-    False
+    Wahr
+    Falsch
+    Falsch
     """
 
 def test_pdb_pp_repr_exc():
@@ -665,7 +665,7 @@ def test_pdb_pp_repr_exc():
     >>> obj = BadRepr()
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'p obj',
@@ -674,7 +674,7 @@ def test_pdb_pp_repr_exc():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_pp_repr_exc[2]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) p obj
     *** Exception: repr_exc
     (Pdb) pp obj
@@ -687,7 +687,7 @@ def test_pdb_empty_line():
 
     >>> def test_function():
     ...     x = 1
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     y = 2
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
@@ -699,7 +699,7 @@ def test_pdb_empty_line():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_empty_line[0]>(3)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) p x
     1
     (Pdb)
@@ -740,7 +740,7 @@ def test_list_commands():
     ...     return foo
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     ret = test_function_2('baz')
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
@@ -761,13 +761,13 @@ def test_list_commands():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_list_commands[1]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_list_commands[1]>(3)test_function()
     -> ret = test_function_2('baz')
     (Pdb) list
       1         def test_function():
-      2             import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+      2             import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
       3  ->         ret = test_function_2('baz')
     [EOF]
     (Pdb) step
@@ -831,7 +831,7 @@ def test_pdb_whatis_command():
     ...        pass
 
     >>> def test_function():
-    ...   import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...   import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...    'whatis myvar',
@@ -844,7 +844,7 @@ def test_pdb_whatis_command():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_whatis_command[3]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) whatis myvar
     <class 'tuple'>
     (Pdb) whatis myfunc
@@ -865,7 +865,7 @@ def test_pdb_display_command():
 
     >>> def test_function():
     ...     a = 0
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     a = 1
     ...     a = 2
     ...     a = 3
@@ -889,7 +889,7 @@ def test_pdb_display_command():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_display_command[0]>(3)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) s
     > <doctest test.test_pdb.test_pdb_display_command[0]>(4)test_function()
     -> a = 1
@@ -914,7 +914,7 @@ def test_pdb_display_command():
     display a: 2
     (Pdb) undisplay
     (Pdb) display a < 1
-    display a < 1: False
+    display a < 1: Falsch
     (Pdb) n
     > <doctest test.test_pdb.test_pdb_display_command[0]>(7)test_function()
     -> a = 4
@@ -935,7 +935,7 @@ def test_pdb_alias_command():
 
     >>> def test_function():
     ...     o = A()
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     o.method()
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS
@@ -959,7 +959,7 @@ def test_pdb_alias_command():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_alias_command[1]>(3)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) s
     > <doctest test.test_pdb.test_pdb_alias_command[1]>(4)test_function()
     -> o.method()
@@ -1000,7 +1000,7 @@ def test_pdb_where_command():
     """Test where command
 
     >>> def g():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> def f():
     ...     g()
@@ -1022,7 +1022,7 @@ def test_pdb_where_command():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_where_command[0]>(2)g()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) w
     ...
       <doctest test.test_pdb.test_pdb_where_command[3]>(13)<module>()
@@ -1032,7 +1032,7 @@ def test_pdb_where_command():
       <doctest test.test_pdb.test_pdb_where_command[1]>(2)f()
     -> g()
     > <doctest test.test_pdb.test_pdb_where_command[0]>(2)g()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) where
     ...
       <doctest test.test_pdb.test_pdb_where_command[3]>(13)<module>()
@@ -1042,10 +1042,10 @@ def test_pdb_where_command():
       <doctest test.test_pdb.test_pdb_where_command[1]>(2)f()
     -> g()
     > <doctest test.test_pdb.test_pdb_where_command[0]>(2)g()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) w 1
     > <doctest test.test_pdb.test_pdb_where_command[0]>(2)g()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) w invalid
     *** Invalid count (invalid)
     (Pdb) u
@@ -1060,7 +1060,7 @@ def test_pdb_where_command():
     > <doctest test.test_pdb.test_pdb_where_command[1]>(2)f()
     -> g()
       <doctest test.test_pdb.test_pdb_where_command[0]>(2)g()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) w 0
     > <doctest test.test_pdb.test_pdb_where_command[1]>(2)f()
     -> g()
@@ -1073,7 +1073,7 @@ def test_pdb_where_command():
     > <doctest test.test_pdb.test_pdb_where_command[1]>(2)f()
     -> g()
       <doctest test.test_pdb.test_pdb_where_command[0]>(2)g()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) w -100
     ...
       <doctest test.test_pdb.test_pdb_where_command[3]>(13)<module>()
@@ -1083,7 +1083,7 @@ def test_pdb_where_command():
     > <doctest test.test_pdb.test_pdb_where_command[1]>(2)f()
     -> g()
       <doctest test.test_pdb.test_pdb_where_command[0]>(2)g()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) continue
     """
 
@@ -1091,7 +1091,7 @@ def test_pdb_restart_command():
     """Test restart command
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False, mode='inline').set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch, mode='inline').set_trace()
     ...     x = 1
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS
@@ -1100,7 +1100,7 @@ def test_pdb_restart_command():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_restart_command[0]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False, mode='inline').set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch, mode='inline').set_trace()
     (Pdb) restart
     *** run/restart command is disabled when pdb is running in inline mode.
     Use the command line interface to enable restarting your program
@@ -1113,14 +1113,14 @@ def test_pdb_commands_with_set_trace():
 
     >>> def test_function():
     ...     x = 1
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace(commands=['p x', 'c'])
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace(commands=['p x', 'c'])
 
     >>> test_function()
     1
     """
 
 
-# skip this test wenn sys.flags.no_site = True;
+# skip this test wenn sys.flags.no_site = Wahr;
 # exit() isn't defined unless there's a site module.
 wenn not sys.flags.no_site:
     def test_pdb_interact_command():
@@ -1132,7 +1132,7 @@ wenn not sys.flags.no_site:
         >>> def test_function():
         ...     x = 1
         ...     lst_local = []
-        ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
         >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
         ...     'interact',
@@ -1140,7 +1140,7 @@ wenn not sys.flags.no_site:
         ...     'g',
         ...     'x = 2',
         ...     'g = 3',
-        ...     'dict_g["a"] = True',
+        ...     'dict_g["a"] = Wahr',
         ...     'lst_local.append(x)',
         ...     'exit()',
         ...     'p x',
@@ -1151,7 +1151,7 @@ wenn not sys.flags.no_site:
         ... ]):
         ...    test_function()
         > <doctest test.test_pdb.test_pdb_interact_command[2]>(4)test_function()
-        -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         (Pdb) interact
         *pdb interact start*
         ... x
@@ -1160,7 +1160,7 @@ wenn not sys.flags.no_site:
         0
         ... x = 2
         ... g = 3
-        ... dict_g["a"] = True
+        ... dict_g["a"] = Wahr
         ... lst_local.append(x)
         ... exit()
         *exit from pdb interact command*
@@ -1169,7 +1169,7 @@ wenn not sys.flags.no_site:
         (Pdb) p g
         0
         (Pdb) p dict_g
-        {'a': True}
+        {'a': Wahr}
         (Pdb) p lst_local
         [2]
         (Pdb) continue
@@ -1179,7 +1179,7 @@ def test_convenience_variables():
     """Test convenience variables
 
     >>> def util_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     try:
     ...         raise Exception('test')
     ...     except Exception:
@@ -1214,7 +1214,7 @@ def test_convenience_variables():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_convenience_variables[0]>(2)util_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_convenience_variables[0]>(3)util_function()
     -> try:
@@ -1284,7 +1284,7 @@ def test_post_mortem_chained():
 
     >>> def test_function():
     ...     import pdb;
-    ...     instance = pdb.Pdb(nosigint=True, readrc=False)
+    ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         test_function_reraise()
     ...     except Exception as e:
@@ -1351,7 +1351,7 @@ def test_post_mortem_chained():
 def test_post_mortem_cause_no_context():
     """Test post mortem traceback debugging of chained exception
 
-    >>> def make_exc_with_stack(type_, *content, from_=None):
+    >>> def make_exc_with_stack(type_, *content, from_=Nichts):
     ...     try:
     ...         raise type_(*content) from from_
     ...     except Exception as out:
@@ -1366,7 +1366,7 @@ def test_post_mortem_cause_no_context():
 
     >>> def test_function():
     ...     import pdb;
-    ...     instance = pdb.Pdb(nosigint=True, readrc=False)
+    ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
     ...     except Exception as e:
@@ -1420,7 +1420,7 @@ def test_post_mortem_context_of_the_cause():
 
     >>> def test_function():
     ...     import pdb;
-    ...     instance = pdb.Pdb(nosigint=True, readrc=False)
+    ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
     ...     except Exception as e:
@@ -1481,7 +1481,7 @@ def test_post_mortem_context_of_the_cause():
 def test_post_mortem_from_none():
     """Test post mortem traceback debugging of chained exception
 
-    In particular that cause from None (which sets __suppress_context__ to True)
+    In particular that cause from Nichts (which sets __suppress_context__ to Wahr)
     does not show context.
 
 
@@ -1489,11 +1489,11 @@ def test_post_mortem_from_none():
     ...     try:
     ...         raise TypeError('Context of the cause')
     ...     except Exception as e1:
-    ...         raise ValueError("With Cause, and cause has context") from None
+    ...         raise ValueError("With Cause, and cause has context") from Nichts
 
     >>> def test_function():
     ...     import pdb;
-    ...     instance = pdb.Pdb(nosigint=True, readrc=False)
+    ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
     ...     except Exception as e:
@@ -1508,7 +1508,7 @@ def test_post_mortem_from_none():
     ...    except ValueError:
     ...        print('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem_from_none[0]>(5)main()
-    -> raise ValueError("With Cause, and cause has context") from None
+    -> raise ValueError("With Cause, and cause has context") from Nichts
     (Pdb) exceptions
     > 0 ValueError('With Cause, and cause has context')
     (Pdb) exit
@@ -1526,7 +1526,7 @@ def test_post_mortem_from_no_stack():
 
     >>> def test_function():
     ...     import pdb;
-    ...     instance = pdb.Pdb(nosigint=True, readrc=False)
+    ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
     ...     except Exception as e:
@@ -1558,7 +1558,7 @@ def test_post_mortem_single_no_stack():
 
     >>> def test_function():
     ...     import pdb;
-    ...     instance = pdb.Pdb(nosigint=True, readrc=False)
+    ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     import sys
     ...     sys.last_exc = Exception()
     ...     pdb._post_mortem(sys.last_exc, instance)
@@ -1578,7 +1578,7 @@ def test_post_mortem_complex():
 
     Test with simple and complex cycles, exception groups,...
 
-    >>> def make_ex_with_stack(type_, *content, from_=None):
+    >>> def make_ex_with_stack(type_, *content, from_=Nichts):
     ...     try:
     ...         raise type_(*content) from from_
     ...     except Exception as out:
@@ -1633,7 +1633,7 @@ def test_post_mortem_complex():
 
     >>> def test_function():
     ...     import pdb;
-    ...     instance = pdb.Pdb(nosigint=True, readrc=False)
+    ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
     ...     except Exception as e:
@@ -1684,7 +1684,7 @@ def test_post_mortem():
     ...         print('Exception!')
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     test_function_2()
     ...     print('Not reached.')
 
@@ -1702,7 +1702,7 @@ def test_post_mortem():
     ...    except ZeroDivisionError:
     ...        print('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem[1]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_post_mortem[1]>(3)test_function()
     -> test_function_2()
@@ -1721,7 +1721,7 @@ def test_post_mortem():
     -> 1/0
     (Pdb) list
       1         def test_function():
-      2             import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+      2             import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
       3  ->         test_function_2()
       4             print('Not reached.')
     [EOF]
@@ -1751,7 +1751,7 @@ def test_pdb_return_to_different_file():
     ...        return 'A'
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     pprint.pprint(A())
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
@@ -1765,7 +1765,7 @@ def test_pdb_return_to_different_file():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_return_to_different_file[2]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) b A.__repr__
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_return_to_different_file[1]>:3
     (Pdb) continue
@@ -1796,7 +1796,7 @@ def test_pdb_skip_modules():
 
     >>> def skip_module():
     ...     import string
-    ...     import pdb; pdb.Pdb(skip=['stri*'], nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(skip=['stri*'], nosigint=Wahr, readrc=Falsch).set_trace()
     ...     string.capwords('FOO')
 
     >>> with PdbTestInput([
@@ -1806,13 +1806,13 @@ def test_pdb_skip_modules():
     ... ]):
     ...     skip_module()
     > <doctest test.test_pdb.test_pdb_skip_modules[0]>(3)skip_module()
-    -> import pdb; pdb.Pdb(skip=['stri*'], nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(skip=['stri*'], nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_skip_modules[0]>(4)skip_module()
     -> string.capwords('FOO')
     (Pdb) step
     --Return--
-    > <doctest test.test_pdb.test_pdb_skip_modules[0]>(4)skip_module()->None
+    > <doctest test.test_pdb.test_pdb_skip_modules[0]>(4)skip_module()->Nichts
     -> string.capwords('FOO')
     (Pdb) continue
     """
@@ -1821,7 +1821,7 @@ def test_pdb_invalid_arg():
     """This tests pdb commands that have invalid arguments
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'a = 3',
@@ -1833,7 +1833,7 @@ def test_pdb_invalid_arg():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_invalid_arg[0]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) a = 3
     *** Invalid argument: = 3
           Usage: a(rgs)
@@ -1855,7 +1855,7 @@ def test_pdb_invalid_arg():
 
 # Module fuer testing skipping of module that makes a callback
 mod = types.ModuleType('module_to_skip')
-exec('def foo_pony(callback): x = 1; callback(); return None', mod.__dict__)
+exec('def foo_pony(callback): x = 1; callback(); return Nichts', mod.__dict__)
 
 
 def test_pdb_skip_modules_with_callback():
@@ -1863,8 +1863,8 @@ def test_pdb_skip_modules_with_callback():
 
     >>> def skip_module():
     ...     def callback():
-    ...         return None
-    ...     import pdb; pdb.Pdb(skip=['module_to_skip*'], nosigint=True, readrc=False).set_trace()
+    ...         return Nichts
+    ...     import pdb; pdb.Pdb(skip=['module_to_skip*'], nosigint=Wahr, readrc=Falsch).set_trace()
     ...     mod.foo_pony(callback)
 
     >>> with PdbTestInput([
@@ -1879,7 +1879,7 @@ def test_pdb_skip_modules_with_callback():
     ...     skip_module()
     ...     pass  # provides something to "step" to
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(4)skip_module()
-    -> import pdb; pdb.Pdb(skip=['module_to_skip*'], nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(skip=['module_to_skip*'], nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(5)skip_module()
     -> mod.foo_pony(callback)
@@ -1889,14 +1889,14 @@ def test_pdb_skip_modules_with_callback():
     -> def callback():
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(3)callback()
-    -> return None
+    -> return Nichts
     (Pdb) step
     --Return--
-    > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(3)callback()->None
-    -> return None
+    > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(3)callback()->Nichts
+    -> return Nichts
     (Pdb) step
     --Return--
-    > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(5)skip_module()->None
+    > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(5)skip_module()->Nichts
     -> mod.foo_pony(callback)
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[1]>(11)<module>()
@@ -1909,7 +1909,7 @@ def test_pdb_continue_in_bottomframe():
     """Test that "continue" and "next" work properly in bottom frame (issue #5294).
 
     >>> def test_function():
-    ...     import pdb, sys; inst = pdb.Pdb(nosigint=True, readrc=False)
+    ...     import pdb, sys; inst = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     inst.set_trace()
     ...     inst.botframe = sys._getframe()  # hackery to get the right botframe
     ...     print(1)
@@ -1953,7 +1953,7 @@ def test_pdb_continue_in_bottomframe():
 
 def pdb_invoke(method, arg):
     """Run pdb.method(arg)."""
-    getattr(pdb.Pdb(nosigint=True, readrc=False), method)(arg)
+    getattr(pdb.Pdb(nosigint=Wahr, readrc=Falsch), method)(arg)
 
 
 def test_pdb_run_with_incorrect_argument():
@@ -1980,7 +1980,7 @@ def test_pdb_run_with_code_object():
     > <string>(1)<module>()...
     (Pdb) step
     --Return--
-    > <string>(1)<module>()->None
+    > <string>(1)<module>()->Nichts
     (Pdb) x
     1
     (Pdb) continue
@@ -1988,7 +1988,7 @@ def test_pdb_run_with_code_object():
     >>> with PdbTestInput(['x', 'continue']):
     ...     x=0
     ...     pdb_invoke('runeval', compile('x+1', '<string>', 'eval'))
-    > <string>(1)<module>()->None
+    > <string>(1)<module>()->Nichts
     (Pdb) x
     1
     (Pdb) continue
@@ -2002,7 +2002,7 @@ def test_next_until_return_at_return_event():
     ...     x = 2
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     test_function_2()
     ...     test_function_2()
     ...     test_function_2()
@@ -2021,7 +2021,7 @@ def test_next_until_return_at_return_event():
     ...                    'continue']):
     ...     test_function()
     > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) break test_function_2
     Breakpoint 1 at <doctest test.test_pdb.test_next_until_return_at_return_event[0]>:2
     (Pdb) continue
@@ -2029,7 +2029,7 @@ def test_next_until_return_at_return_event():
     -> x = 1
     (Pdb) return
     --Return--
-    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->None
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Nichts
     -> x = 2
     (Pdb) next
     > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(4)test_function()
@@ -2039,7 +2039,7 @@ def test_next_until_return_at_return_event():
     -> x = 1
     (Pdb) return
     --Return--
-    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->None
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Nichts
     -> x = 2
     (Pdb) until
     > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(5)test_function()
@@ -2049,7 +2049,7 @@ def test_next_until_return_at_return_event():
     -> x = 1
     (Pdb) return
     --Return--
-    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->None
+    > <doctest test.test_pdb.test_next_until_return_at_return_event[0]>(3)test_function_2()->Nichts
     -> x = 2
     (Pdb) return
     > <doctest test.test_pdb.test_next_until_return_at_return_event[1]>(6)test_function()
@@ -2066,7 +2066,7 @@ def test_pdb_next_command_for_generator():
     ...     yield 2
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     it = test_gen()
     ...     try:
     ...         wenn next(it) != 0:
@@ -2088,7 +2088,7 @@ def test_pdb_next_command_for_generator():
     ...                    'continue']):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[1]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[1]>(3)test_function()
     -> it = test_gen()
@@ -2128,7 +2128,7 @@ wenn not SKIP_CORO_TESTS:
             >>> import asyncio
 
             >>> async def test():
-            ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+            ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
             >>> def test_function():
             ...     asyncio.run(test(), loop_factory=asyncio.EventLoop)
@@ -2139,7 +2139,7 @@ wenn not SKIP_CORO_TESTS:
             ... ]):
             ...     test_function()
             > <doctest test.test_pdb.test_pdb_asynctask[1]>(2)test()
-            -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+            -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
             (Pdb) $_asynctask
             <Task pending name=... coro=<test() running at <doctest test.test_pdb.test_pdb_asynctask[1]>:2> ...
             (Pdb) continue
@@ -2159,7 +2159,7 @@ wenn not SKIP_CORO_TESTS:
             >>> async def main():
             ...     import pdb
             ...     task = asyncio.create_task(test())
-            ...     await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            ...     await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             ...     pass
 
             >>> def test_function():
@@ -2178,19 +2178,19 @@ wenn not SKIP_CORO_TESTS:
             ... ]):
             ...     test_function()
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) x = await task
             hello
             world
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p x
             42
             (Pdb) x = await test()
             hello
             world
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p x
             42
             (Pdb) new_task = asyncio.create_task(test())
@@ -2198,11 +2198,11 @@ wenn not SKIP_CORO_TESTS:
             hello
             world
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) await non_exist()
             *** NameError: name 'non_exist' is not defined
             > <doctest test.test_pdb.test_pdb_await_support[2]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) s
             > <doctest test.test_pdb.test_pdb_await_support[2]>(5)main()
             -> pass
@@ -2222,7 +2222,7 @@ wenn not SKIP_CORO_TESTS:
             >>> async def main():
             ...     import pdb
             ...     task = asyncio.create_task(test())
-            ...     await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            ...     await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
 
             >>> def test_function():
             ...     asyncio.run(main(), loop_factory=asyncio.EventLoop)
@@ -2238,7 +2238,7 @@ wenn not SKIP_CORO_TESTS:
             ... ]):
             ...     test_function()
             > <doctest test.test_pdb.test_pdb_await_with_breakpoint[2]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) b test
             Breakpoint 1 at <doctest test.test_pdb.test_pdb_await_with_breakpoint[1]>:2
             (Pdb) k = await task
@@ -2251,7 +2251,7 @@ wenn not SKIP_CORO_TESTS:
             2
             (Pdb) continue
             > <doctest test.test_pdb.test_pdb_await_with_breakpoint[2]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p k
             42
             (Pdb) continue
@@ -2275,7 +2275,7 @@ wenn not SKIP_CORO_TESTS:
             >>> async def main():
             ...     var.set(42)
             ...     import pdb
-            ...     await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            ...     await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
 
             >>> def test_function():
             ...     asyncio.run(main(), loop_factory=asyncio.EventLoop)
@@ -2292,29 +2292,29 @@ wenn not SKIP_CORO_TESTS:
             ... ]):
             ...     test_function()
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p var.get()
             42
             (Pdb) print(await get_var())
             42
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) print(await asyncio.create_task(set_var(100)))
             100
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p var.get()
             42
             (Pdb) print(await set_var(99))
             99
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) p var.get()
             99
             (Pdb) print(await get_var())
             99
             > <doctest test.test_pdb.test_pdb_await_contextvar[5]>(4)main()
-            -> await pdb.Pdb(nosigint=True, readrc=False).set_trace_async()
+            -> await pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace_async()
             (Pdb) continue
             """
 
@@ -2329,7 +2329,7 @@ wenn not SKIP_CORO_TESTS:
         ...     await async_yield(0)
 
         >>> async def test_main():
-        ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         ...     await test_coro()
 
         >>> def test_function():
@@ -2346,7 +2346,7 @@ wenn not SKIP_CORO_TESTS:
         ...                    'continue']):
         ...     test_function()
         > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[2]>(2)test_main()
-        -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[2]>(3)test_main()
         -> await test_coro()
@@ -2369,7 +2369,7 @@ wenn not SKIP_CORO_TESTS:
         -> await test_coro()
         (Pdb) step
         --Return--
-        > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[2]>(3)test_main()->None
+        > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[2]>(3)test_main()->Nichts
         -> await test_coro()
         (Pdb) continue
         finished
@@ -2390,7 +2390,7 @@ wenn not SKIP_CORO_TESTS:
         ...         print(x)
 
         >>> async def test_main():
-        ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         ...     await test_coro()
 
         >>> def test_function():
@@ -2407,7 +2407,7 @@ wenn not SKIP_CORO_TESTS:
         ...                    'continue']):
         ...     test_function()
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[3]>(2)test_main()
-        -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[3]>(3)test_main()
         -> await test_coro()
@@ -2447,7 +2447,7 @@ def test_pdb_return_command_for_generator():
     ...     yield 2
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     it = test_gen()
     ...     try:
     ...         wenn next(it) != 0:
@@ -2468,7 +2468,7 @@ def test_pdb_return_command_for_generator():
     ...                    'continue']):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(3)test_function()
     -> it = test_gen()
@@ -2508,7 +2508,7 @@ wenn not SKIP_CORO_TESTS:
         ...     await async_yield(0)
 
         >>> async def test_main():
-        ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         ...     await test_coro()
 
         >>> def test_function():
@@ -2522,7 +2522,7 @@ wenn not SKIP_CORO_TESTS:
         ...                    'continue']):
         ...     test_function()
         > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[2]>(2)test_main()
-        -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[2]>(3)test_main()
         -> await test_coro()
@@ -2550,7 +2550,7 @@ def test_pdb_until_command_for_generator():
     ...     yield 2
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     fuer i in test_gen():
     ...         print(i)
     ...     print("finished")
@@ -2563,7 +2563,7 @@ def test_pdb_until_command_for_generator():
     ...                    'continue']):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_until_command_for_generator[1]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_until_command_for_generator[1]>(3)test_function()
     -> fuer i in test_gen():
@@ -2605,7 +2605,7 @@ wenn not SKIP_CORO_TESTS:
         ...     print(3)
 
         >>> async def test_main():
-        ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         ...     await test_coro()
 
         >>> def test_function():
@@ -2618,7 +2618,7 @@ wenn not SKIP_CORO_TESTS:
         ...                    'continue']):
         ...     test_function()
         > <doctest test.test_pdb.test_pdb_until_command_for_coroutine[2]>(2)test_main()
-        -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+        -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
         (Pdb) step
         > <doctest test.test_pdb.test_pdb_until_command_for_coroutine[2]>(3)test_main()
         -> await test_coro()
@@ -2645,7 +2645,7 @@ def test_pdb_next_command_in_generator_for_loop():
     ...     return 1
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     fuer i in test_gen():
     ...         print('value', i)
     ...     x = 123
@@ -2658,7 +2658,7 @@ def test_pdb_next_command_in_generator_for_loop():
     ...                    'continue']):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[1]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) break test_gen
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[0]>:2
     (Pdb) continue
@@ -2690,7 +2690,7 @@ def test_pdb_next_command_subiterator():
     ...     return x
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     fuer i in test_gen():
     ...         print('value', i)
     ...     x = 123
@@ -2704,7 +2704,7 @@ def test_pdb_next_command_subiterator():
     ...                    'continue']):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[2]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[2]>(3)test_function()
     -> fuer i in test_gen():
@@ -2736,7 +2736,7 @@ def test_pdb_breakpoint_with_throw():
     ...    yield 0
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     g = gen()
     ...     try:
     ...         g.throw(TypeError)
@@ -2751,7 +2751,7 @@ def test_pdb_breakpoint_with_throw():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_breakpoint_with_throw[1]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) b 7
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_breakpoint_with_throw[1]>:7
     (Pdb) continue
@@ -2766,7 +2766,7 @@ def test_pdb_multiline_statement():
     """Test fuer multiline statement
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'def f(x):',
@@ -2782,7 +2782,7 @@ def test_pdb_multiline_statement():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_multiline_statement[0]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) def f(x):
     ...     return x * 2
     ...
@@ -2804,7 +2804,7 @@ def test_pdb_closure():
     >>> def test_function():
     ...     x = 2
     ...     g = 3
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'k',
@@ -2827,7 +2827,7 @@ def test_pdb_closure():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_closure[2]>(4)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) k
     0
     (Pdb) g
@@ -2865,7 +2865,7 @@ def test_pdb_show_attribute_and_item():
     >>> def test_function():
     ...     n = lambda x: x
     ...     c = {"a": 1}
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'c["a"]',
@@ -2880,7 +2880,7 @@ def test_pdb_show_attribute_and_item():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_show_attribute_and_item[0]>(4)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) c["a"]
     1
     (Pdb) c.get("a")
@@ -2935,7 +2935,7 @@ def test_pdb_with_inline_breakpoint():
     -> x = 2
     (Pdb) n
     --Return--
-    > <doctest test.test_pdb.test_pdb_with_inline_breakpoint[0]>(5)test_function()->None
+    > <doctest test.test_pdb.test_pdb_with_inline_breakpoint[0]>(5)test_function()->Nichts
     -> x = 2
     display x: 2  [old: 1]
     (Pdb) undisplay
@@ -2970,7 +2970,7 @@ def test_pdb_issue_43318():
     """echo breakpoints cleared with filename:lineno
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     print(1)
     ...     print(2)
     ...     print(3)
@@ -2982,7 +2982,7 @@ def test_pdb_issue_43318():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_issue_43318[0]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) break 3
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_issue_43318[0]>:3
     (Pdb) clear <doctest test.test_pdb.test_pdb_issue_43318[0]>:3
@@ -3007,7 +3007,7 @@ def test_pdb_issue_gh_91742():
     ...            f"Version: {__version__!r}",
     ...            sep=" ")
     ...
-    ...    import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...    import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...    about()
 
 
@@ -3021,7 +3021,7 @@ def test_pdb_issue_gh_91742():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_issue_gh_91742[0]>(11)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_issue_gh_91742[0]>(12)test_function()
     -> about()
@@ -3054,7 +3054,7 @@ def test_pdb_issue_gh_94215():
     ...             42
     ...        )
     ...
-    ...    import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...    import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...    func()
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
@@ -3073,7 +3073,7 @@ def test_pdb_issue_gh_94215():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_issue_gh_94215[0]>(8)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_issue_gh_94215[0]>(9)test_function()
     -> func()
@@ -3118,7 +3118,7 @@ def test_pdb_issue_gh_101673():
 
     >>> def test_function():
     ...    a = 1
-    ...    import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...    import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     '!a = 2',
@@ -3132,12 +3132,12 @@ def test_pdb_issue_gh_101673():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_issue_gh_101673[0]>(3)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) !a = 2
     (Pdb) ll
       1         def test_function():
       2            a = 1
-      3  ->        import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+      3  ->        import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) p a
     2
     (Pdb) u
@@ -3147,7 +3147,7 @@ def test_pdb_issue_gh_101673():
     *** NameError: name 'a' is not defined
     (Pdb) d
     > <doctest test.test_pdb.test_pdb_issue_gh_101673[0]>(3)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) p a
     2
     (Pdb) continue
@@ -3163,17 +3163,17 @@ def test_pdb_issue_gh_103225():
     ...     'continue'
     ... ]):
     ...     a = 1
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     b = 2
     > <doctest test.test_pdb.test_pdb_issue_gh_103225[0]>(6)<module>()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) longlist
       1     with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
       2         'longlist',
       3         'continue'
       4     ]):
       5         a = 1
-      6 ->      import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+      6 ->      import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
       7         b = 2
     (Pdb) continue
     """
@@ -3187,31 +3187,31 @@ def test_pdb_issue_gh_101517():
     ...     try:
     ...         raise KeyError
     ...     except* Exception as e:
-    ...         import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...         import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue'
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_issue_gh_101517[0]>(5)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) continue
     """
 
 def test_pdb_issue_gh_108976():
     """See GH-108976
-    Make sure setting f_trace_opcodes = True won't crash pdb
+    Make sure setting f_trace_opcodes = Wahr won't crash pdb
     >>> def test_function():
     ...     import sys
-    ...     sys._getframe().f_trace_opcodes = True
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     sys._getframe().f_trace_opcodes = Wahr
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     a = 1
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue'
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_issue_gh_108976[0]>(4)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) continue
     """
 
@@ -3219,7 +3219,7 @@ def test_pdb_issue_gh_127321():
     """See GH-127321
     breakpoint() should stop at a opcode that has a line number
     >>> def test_function():
-    ...     import pdb; pdb_instance = pdb.Pdb(nosigint=True, readrc=False)
+    ...     import pdb; pdb_instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     [1, 2] and pdb_instance.set_trace()
     ...     a = 1
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
@@ -3245,9 +3245,9 @@ def test_pdb_issue_gh_80731():
     ...     try:
     ...         raise ValueError('Correct')
     ...     except ValueError:
-    ...         import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...         import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     > <doctest test.test_pdb.test_pdb_issue_gh_80731[0]>(9)<module>()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) import sys
     (Pdb) sys.exc_info()
     (<class 'ValueError'>, ValueError('Correct'), <traceback object at ...>)
@@ -3267,10 +3267,10 @@ def test_pdb_ambiguous_statements():
     ...     'continue'
     ... ]):
     ...     n = -1
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     print(f"The value of n is {n}")
     > <doctest test.test_pdb.test_pdb_ambiguous_statements[0]>(8)<module>()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) s
     > <doctest test.test_pdb.test_pdb_ambiguous_statements[0]>(9)<module>()
     -> print(f"The value of n is {n}")
@@ -3285,14 +3285,14 @@ def test_pdb_ambiguous_statements():
 def test_pdb_f_trace_lines():
     """GH-80675
 
-    pdb should work even wenn f_trace_lines is set to False on some frames.
+    pdb should work even wenn f_trace_lines is set to Falsch on some frames.
 
     >>> def test_function():
     ...     import sys
     ...     frame = sys._getframe()
-    ...     frame.f_trace_lines = False
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
-    ...     wenn frame.f_trace_lines != False:
+    ...     frame.f_trace_lines = Falsch
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
+    ...     wenn frame.f_trace_lines != Falsch:
     ...         print("f_trace_lines is not reset after continue!")
 
     >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
@@ -3300,7 +3300,7 @@ def test_pdb_f_trace_lines():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_f_trace_lines[0]>(5)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) continue
     """
 
@@ -3311,7 +3311,7 @@ def test_pdb_frame_refleak():
     >>> def frame_leaker(container):
     ...     import sys
     ...     container.append(sys._getframe())
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     pass
 
     >>> def test_function():
@@ -3335,21 +3335,21 @@ def test_pdb_frame_refleak():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_frame_refleak[0]>(4)frame_leaker()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) continue
     1
     > <doctest test.test_pdb.test_pdb_frame_refleak[0]>(4)frame_leaker()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_frame_refleak[0]>(5)frame_leaker()
     -> pass
     (Pdb) continue
     1
     > <doctest test.test_pdb.test_pdb_frame_refleak[0]>(4)frame_leaker()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) return
     --Return--
-    > <doctest test.test_pdb.test_pdb_frame_refleak[0]>(5)frame_leaker()->None
+    > <doctest test.test_pdb.test_pdb_frame_refleak[0]>(5)frame_leaker()->Nichts
     -> pass
     (Pdb) continue
     1
@@ -3373,7 +3373,7 @@ def test_pdb_function_break():
     ...     yield 42
 
     >>> def test_function():
-    ...     import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...     import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     ...     'break foo',
@@ -3384,7 +3384,7 @@ def test_pdb_function_break():
     ... ]):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_function_break[4]>(2)test_function()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) break foo
     Breakpoint ... at <doctest test.test_pdb.test_pdb_function_break[0]>:1
     (Pdb) break bar
@@ -3402,10 +3402,10 @@ def test_pdb_issue_gh_65052():
     args, retval and display should not crash wenn the object is not displayable
     >>> klasse A:
     ...     def __new__(cls):
-    ...         import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...         import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...         return object.__new__(cls)
     ...     def __init__(self):
-    ...         import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    ...         import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...         self.a = 1
     ...     def __repr__(self):
     ...         return self.a
@@ -3424,7 +3424,7 @@ def test_pdb_issue_gh_65052():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_issue_gh_65052[0]>(3)__new__()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) s
     > <doctest test.test_pdb.test_pdb_issue_gh_65052[0]>(4)__new__()
     -> return object.__new__(cls)
@@ -3436,7 +3436,7 @@ def test_pdb_issue_gh_65052():
     *** repr(retval) failed: AttributeError: 'A' object has no attribute 'a' ***
     (Pdb) continue
     > <doctest test.test_pdb.test_pdb_issue_gh_65052[0]>(6)__init__()
-    -> import pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
+    -> import pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) args
     self = *** repr(self) failed: AttributeError: 'A' object has no attribute 'a' ***
     (Pdb) display self
@@ -3458,10 +3458,10 @@ klasse PdbTestCase(unittest.TestCase):
                      'PYTHONSAFEPATH changes default sys.path')
     def _run_pdb(self, pdb_args, commands,
                  expected_returncode=0,
-                 extra_env=None):
+                 extra_env=Nichts):
         self.addCleanup(os_helper.rmtree, '__pycache__')
         cmd = [sys.executable, '-m', 'pdb'] + pdb_args
-        wenn extra_env is not None:
+        wenn extra_env is not Nichts:
             env = os.environ | extra_env
         sonst:
             env = os.environ
@@ -3484,16 +3484,16 @@ klasse PdbTestCase(unittest.TestCase):
 
     def run_pdb_script(self, script, commands,
                        expected_returncode=0,
-                       extra_env=None,
-                       script_args=None,
-                       pdbrc=None,
-                       remove_home=False):
+                       extra_env=Nichts,
+                       script_args=Nichts,
+                       pdbrc=Nichts,
+                       remove_home=Falsch):
         """Run 'script' lines with pdb and the pdb 'commands'."""
         filename = 'main.py'
         with open(filename, 'w') as f:
             f.write(textwrap.dedent(script))
 
-        wenn pdbrc is not None:
+        wenn pdbrc is not Nichts:
             with open('.pdbrc', 'w') as f:
                 f.write(textwrap.dedent(pdbrc))
             self.addCleanup(os_helper.unlink, '.pdbrc')
@@ -3502,7 +3502,7 @@ klasse PdbTestCase(unittest.TestCase):
         with os_helper.EnvironmentVarGuard() as env:
             wenn remove_home:
                 env.unset('HOME')
-            wenn script_args is None:
+            wenn script_args is Nichts:
                 script_args = []
             stdout, stderr = self._run_pdb([filename] + script_args, commands, expected_returncode, extra_env)
         return stdout, stderr
@@ -3525,13 +3525,13 @@ klasse PdbTestCase(unittest.TestCase):
         with open(os_helper.TESTFN, 'wb') as f:
             f.write(file_content)
 
-        expected = None wenn not expected sonst (
+        expected = Nichts wenn not expected sonst (
             expected[0], os_helper.TESTFN, expected[1])
         self.assertEqual(
             expected, pdb.find_function(func_name, os_helper.TESTFN))
 
     def test_find_function_empty_file(self):
-        self._assert_find_function(b'', 'foo', None)
+        self._assert_find_function(b'', 'foo', Nichts)
 
     def test_find_function_found(self):
         self._assert_find_function(
@@ -3577,7 +3577,7 @@ def bœr():
         )
 
     def test_spec(self):
-        # Test that __main__.__spec__ is set to None when running a script
+        # Test that __main__.__spec__ is set to Nichts when running a script
         script = """
             import __main__
             print(__main__.__spec__)
@@ -3586,7 +3586,7 @@ def bœr():
         commands = "continue"
 
         stdout, _ = self.run_pdb_script(script, commands)
-        self.assertIn('None', stdout)
+        self.assertIn('Nichts', stdout)
 
     def test_find_function_first_executable_line(self):
         code = textwrap.dedent("""\
@@ -3681,8 +3681,8 @@ def bœr():
             f.write(textwrap.dedent(bar))
         self.addCleanup(os_helper.unlink, 'bar.py')
         stdout, stderr = self.run_pdb_script(script, commands)
-        self.assertTrue(
-            any('main.py(5)foo()->None' in l fuer l in stdout.splitlines()),
+        self.assertWahr(
+            any('main.py(5)foo()->Nichts' in l fuer l in stdout.splitlines()),
             'Fail to step into the caller after a return')
 
     def test_issue13120(self):
@@ -3695,7 +3695,7 @@ def bœr():
                 import pdb
 
                 def start_pdb():
-                    pdb.Pdb(readrc=False).set_trace()
+                    pdb.Pdb(readrc=Falsch).set_trace()
                     x = 1
                     y = 1
 
@@ -3724,11 +3724,11 @@ def bœr():
 
                 def start_pdb():
                     evt.wait()
-                    pdb.Pdb(readrc=False).set_trace()
+                    pdb.Pdb(readrc=Falsch).set_trace()
 
                 t = threading.Thread(target=start_pdb)
                 t.start()
-                pdb.Pdb(readrc=False).set_trace()
+                pdb.Pdb(readrc=Falsch).set_trace()
                 evt.set()
                 t.join()""").encode('ascii'))
         cmd = [sys.executable, '-u', os_helper.TESTFN]
@@ -3842,7 +3842,7 @@ def bœr():
             p f"{a+8=}"
         """)
 
-        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=True)
+        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=Wahr)
         self.assertNotIn("SyntaxError", stdout)
         self.assertIn("a+8=9", stdout)
         self.assertIn("-> b = 2", stdout)
@@ -3861,7 +3861,7 @@ def bœr():
 
         """)
 
-        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=True)
+        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=Wahr)
         self.assertIn("b = 2", stdout)
         self.assertNotIn("c = 3", stdout)
 
@@ -3880,7 +3880,7 @@ def bœr():
             pi a
         """)
 
-        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=True)
+        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=Wahr)
         self.assertIn("a.attr = 1", stdout)
 
     def test_pdbrc_semicolon(self):
@@ -3896,7 +3896,7 @@ def bœr():
             b 5;;c;;n
         """)
 
-        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=True)
+        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=Wahr)
         self.assertIn("-> b = 2", stdout)
 
     def test_pdbrc_commands(self):
@@ -3914,7 +3914,7 @@ def bœr():
             c
         """)
 
-        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=True)
+        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc=pdbrc, remove_home=Wahr)
         self.assertIn("<__main__.A object at", stdout)
 
     def test_readrc_kwarg(self):
@@ -3922,7 +3922,7 @@ def bœr():
             print('hello')
         """)
 
-        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc='invalid', remove_home=True)
+        stdout, stderr = self.run_pdb_script(script, 'q\n', pdbrc='invalid', remove_home=Wahr)
         self.assertIn("NameError: name 'invalid' is not defined", stdout)
 
     def test_readrc_homedir(self):
@@ -3945,7 +3945,7 @@ def bœr():
             # We need to manually clear pdb.Pdb._last_pdb_instance so a
             # new instance with stdout redirected could be created when
             # pdb.set_trace() is called.
-            pdb.Pdb._last_pdb_instance = None
+            pdb.Pdb._last_pdb_instance = Nichts
             pdb.set_trace(header=header)
         self.assertEqual(stdout.getvalue(), header + '\n')
 
@@ -3956,7 +3956,7 @@ def bœr():
             quit
         """
         stdout, stderr = self.run_pdb_module(script, commands)
-        self.assertTrue(any("SUCCESS" in l fuer l in stdout.splitlines()), stdout)
+        self.assertWahr(any("SUCCESS" in l fuer l in stdout.splitlines()), stdout)
 
     def test_module_is_run_as_main(self):
         script = """
@@ -3968,7 +3968,7 @@ def bœr():
             quit
         """
         stdout, stderr = self.run_pdb_module(script, commands)
-        self.assertTrue(any("SUCCESS" in l fuer l in stdout.splitlines()), stdout)
+        self.assertWahr(any("SUCCESS" in l fuer l in stdout.splitlines()), stdout)
 
     def test_run_module_with_args(self):
         commands = """
@@ -4007,8 +4007,8 @@ def bœr():
             quit
         """
         stdout, stderr = self.run_pdb_module(script, commands)
-        self.assertTrue(any("Breakpoint 1 at" in l fuer l in stdout.splitlines()), stdout)
-        self.assertTrue(all("SUCCESS" not in l fuer l in stdout.splitlines()), stdout)
+        self.assertWahr(any("Breakpoint 1 at" in l fuer l in stdout.splitlines()), stdout)
+        self.assertWahr(all("SUCCESS" not in l fuer l in stdout.splitlines()), stdout)
 
     def test_run_pdb_with_pdb(self):
         commands = """
@@ -4076,7 +4076,7 @@ def bœr():
             quit
         """
         stdout, stderr = self.run_pdb_module(script, commands)
-        self.assertTrue(any("__main__.py(4)<module>()"
+        self.assertWahr(any("__main__.py(4)<module>()"
                             in l fuer l in stdout.splitlines()), stdout)
 
     def test_file_modified_after_execution(self):
@@ -4233,9 +4233,9 @@ def bœr():
             quit
         """
         stdout, _ = self._run_pdb(['-m', self.module_name], commands)
-        self.assertTrue(any("VAR from module" in l fuer l in stdout.splitlines()), stdout)
-        self.assertTrue(any("VAR from top" in l fuer l in stdout.splitlines()))
-        self.assertTrue(any("second var" in l fuer l in stdout.splitlines()))
+        self.assertWahr(any("VAR from module" in l fuer l in stdout.splitlines()), stdout)
+        self.assertWahr(any("VAR from top" in l fuer l in stdout.splitlines()))
+        self.assertWahr(any("second var" in l fuer l in stdout.splitlines()))
 
     def test_relative_imports_on_plain_module(self):
         # Validates running a plain module. See bpo32691
@@ -4266,7 +4266,7 @@ def bœr():
             quit
         """
         stdout, _ = self._run_pdb(['-m', self.module_name + '.runme'], commands)
-        self.assertTrue(any("VAR from module" in l fuer l in stdout.splitlines()), stdout)
+        self.assertWahr(any("VAR from module" in l fuer l in stdout.splitlines()), stdout)
 
     def test_errors_in_command(self):
         commands = "\n".join([
@@ -4406,7 +4406,7 @@ def bœr():
             jump 2
         """)
         stdout, stderr = self.run_pdb_script(script, commands)
-        self.assertFalse(stderr)
+        self.assertFalsch(stderr)
 
     def test_gh_93696_frozen_list(self):
         frozen_src = """
@@ -4427,7 +4427,7 @@ def bœr():
             func_code = dummy_mod.co_consts[0]
 
             mod = type(sys)("gh93696")
-            mod.func = type(lambda: None)(func_code, mod.__dict__)
+            mod.func = type(lambda: Nichts)(func_code, mod.__dict__)
             mod.__file__ = 'gh93696.py'
 
             return mod
@@ -4574,7 +4574,7 @@ klasse ChecklineTests(unittest.TestCase):
         with redirect_stdout(StringIO()):
             db = pdb.Pdb()
             fuer lineno in range(num_lines):
-                self.assertFalse(db.checkline(os_helper.TESTFN, lineno))
+                self.assertFalsch(db.checkline(os_helper.TESTFN, lineno))
 
 
 @support.requires_subprocess()
@@ -4583,7 +4583,7 @@ klasse PdbTestInline(unittest.TestCase):
                      'PYTHONSAFEPATH changes default sys.path')
     def _run_script(self, script, commands,
                     expected_returncode=0,
-                    extra_env=None):
+                    extra_env=Nichts):
         self.addCleanup(os_helper.rmtree, '__pycache__')
         filename = 'main.py'
         with open(filename, 'w') as f:
@@ -4593,7 +4593,7 @@ klasse PdbTestInline(unittest.TestCase):
         commands = textwrap.dedent(commands)
 
         cmd = [sys.executable, 'main.py']
-        wenn extra_env is not None:
+        wenn extra_env is not Nichts:
             env = os.environ | extra_env
         sonst:
             env = os.environ
@@ -4695,19 +4695,19 @@ klasse PdbTestColorize(unittest.TestCase):
         self._original_can_colorize = _colorize.can_colorize
         # Force colorize to be enabled because we are sending data
         # to a StringIO
-        _colorize.can_colorize = lambda *args, **kwargs: True
+        _colorize.can_colorize = lambda *args, **kwargs: Wahr
 
     def tearDown(self):
         _colorize.can_colorize = self._original_can_colorize
 
     def test_code_display(self):
         output = io.StringIO()
-        p = pdb.Pdb(stdout=output, colorize=True)
+        p = pdb.Pdb(stdout=output, colorize=Wahr)
         p.set_trace(commands=['ll', 'c'])
         self.assertIn("\x1b", output.getvalue())
 
         output = io.StringIO()
-        p = pdb.Pdb(stdout=output, colorize=False)
+        p = pdb.Pdb(stdout=output, colorize=Falsch)
         p.set_trace(commands=['ll', 'c'])
         self.assertNotIn("\x1b", output.getvalue())
 
@@ -4718,7 +4718,7 @@ klasse PdbTestColorize(unittest.TestCase):
 
     def test_stack_entry(self):
         output = io.StringIO()
-        p = pdb.Pdb(stdout=output, colorize=True)
+        p = pdb.Pdb(stdout=output, colorize=Wahr)
         p.set_trace(commands=['w', 'c'])
         self.assertIn("\x1b", output.getvalue())
 
@@ -4961,7 +4961,7 @@ def load_tests(loader, tests, pattern):
         # Ensure that asyncio state has been cleared at the end of the test.
         # This prevents a "test altered the execution environment" warning if
         # asyncio features are used.
-        _set_event_loop_policy(None)
+        _set_event_loop_policy(Nichts)
 
         # A doctest of pdb could have residues. For example, pdb could still
         # be running, or breakpoints might be left uncleared. These residues
@@ -4976,7 +4976,7 @@ def load_tests(loader, tests, pattern):
         # Stop tracing and clear the pdb instance cache
         wenn pdb.Pdb._last_pdb_instance:
             pdb.Pdb._last_pdb_instance.stop_trace()
-            pdb.Pdb._last_pdb_instance = None
+            pdb.Pdb._last_pdb_instance = Nichts
 
         # If garbage objects are collected right after we start tracing, we
         # could stop at __del__ of the object which would fail the test.

@@ -97,7 +97,7 @@ klasse LyingList(list):
 
 klasse CommonTest(unittest.TestCase):
     # The type to be tested
-    type2test = None
+    type2test = Nichts
 
     def test_constructors(self):
         l0 = []
@@ -149,8 +149,8 @@ klasse CommonTest(unittest.TestCase):
             self.type2test(unsupported_arg=[])
 
     def test_truth(self):
-        self.assertFalse(self.type2test())
-        self.assertTrue(self.type2test([42]))
+        self.assertFalsch(self.type2test())
+        self.assertWahr(self.type2test([42]))
 
     def test_getitem(self):
         u = self.type2test([0, 1, 2, 3, 4])
@@ -188,8 +188,8 @@ klasse CommonTest(unittest.TestCase):
         self.assertEqual(u[-1000:1000], u)
         self.assertEqual(u[1000:-1000], self.type2test([]))
         self.assertEqual(u[:], u)
-        self.assertEqual(u[1:None], self.type2test([1, 2, 3, 4]))
-        self.assertEqual(u[None:3], self.type2test([0, 1, 2]))
+        self.assertEqual(u[1:Nichts], self.type2test([1, 2, 3, 4]))
+        self.assertEqual(u[Nichts:3], self.type2test([0, 1, 2]))
 
         # Extended slices
         self.assertEqual(u[::], u)
@@ -368,7 +368,7 @@ klasse CommonTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn other == 2:
                     raise BadExc()
-                return False
+                return Falsch
 
         self.assertRaises(BadExc, a.count, BadCmp())
 
@@ -401,7 +401,7 @@ klasse CommonTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn other == 2:
                     raise BadExc()
-                return False
+                return Falsch
 
         a = self.type2test([0, 1, 2, 3])
         self.assertRaises(BadExc, a.index, BadCmp())

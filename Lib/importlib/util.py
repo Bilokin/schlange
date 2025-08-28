@@ -35,14 +35,14 @@ def resolve_name(name, package):
     return _resolve_name(name[level:], package, level)
 
 
-def _find_spec_from_path(name, path=None):
+def _find_spec_from_path(name, path=Nichts):
     """Return the spec fuer the specified module.
 
     First, sys.modules is checked to see wenn the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
-    set to None, then ValueError is raised. If the module is not in
+    set to Nichts, then ValueError is raised. If the module is not in
     sys.modules, then sys.meta_path is searched fuer a suitable spec with the
-    value of 'path' given to the finders. None is returned wenn no spec could
+    value of 'path' given to the finders. Nichts is returned wenn no spec could
     be found.
 
     Dotted names do not have their parent packages implicitly imported. You will
@@ -54,26 +54,26 @@ def _find_spec_from_path(name, path=None):
         return _find_spec(name, path)
     sonst:
         module = sys.modules[name]
-        wenn module is None:
-            return None
+        wenn module is Nichts:
+            return Nichts
         try:
             spec = module.__spec__
         except AttributeError:
-            raise ValueError(f'{name}.__spec__ is not set') from None
+            raise ValueError(f'{name}.__spec__ is not set') from Nichts
         sonst:
-            wenn spec is None:
-                raise ValueError(f'{name}.__spec__ is None')
+            wenn spec is Nichts:
+                raise ValueError(f'{name}.__spec__ is Nichts')
             return spec
 
 
-def find_spec(name, package=None):
+def find_spec(name, package=Nichts):
     """Return the spec fuer the specified module.
 
     First, sys.modules is checked to see wenn the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
-    set to None, then ValueError is raised. If the module is not in
+    set to Nichts, then ValueError is raised. If the module is not in
     sys.modules, then sys.meta_path is searched fuer a suitable spec with the
-    value of 'path' given to the finders. None is returned wenn no spec could
+    value of 'path' given to the finders. Nichts is returned wenn no spec could
     be found.
 
     If the name is fuer submodule (contains a dot), the parent module is
@@ -95,19 +95,19 @@ def find_spec(name, package=None):
                     f"__path__ attribute not found on {parent_name!r} "
                     f"while trying to find {fullname!r}", name=fullname) from e
         sonst:
-            parent_path = None
+            parent_path = Nichts
         return _find_spec(fullname, parent_path)
     sonst:
         module = sys.modules[fullname]
-        wenn module is None:
-            return None
+        wenn module is Nichts:
+            return Nichts
         try:
             spec = module.__spec__
         except AttributeError:
-            raise ValueError(f'{name}.__spec__ is not set') from None
+            raise ValueError(f'{name}.__spec__ is not set') from Nichts
         sonst:
-            wenn spec is None:
-                raise ValueError(f'{name}.__spec__ is None')
+            wenn spec is Nichts:
+                raise ValueError(f'{name}.__spec__ is Nichts')
             return spec
 
 
@@ -126,7 +126,7 @@ klasse _incompatible_extension_module_restrictions:
     unexpected behavior and even crashes.  It should only be used during
     extension module development.
 
-    If "disable_check" is True then the compatibility check will not
+    If "disable_check" is Wahr then the compatibility check will not
     happen while the context manager is active.  Otherwise the check
     *will* happen.
 
@@ -184,7 +184,7 @@ klasse _LazyModule(types.ModuleType):
                 # happen, but in any case we must return something to avoid deadlock.
                 wenn loader_state['is_loading']:
                     return __class__.__getattribute__(self, attr)
-                loader_state['is_loading'] = True
+                loader_state['is_loading'] = Wahr
 
                 __dict__ = __class__.__getattribute__(self, '__dict__')
 
@@ -262,13 +262,13 @@ klasse LazyLoader(Loader):
         module.__loader__ = self.loader
         # Don't need to worry about deep-copying as trying to set an attribute
         # on an object would have triggered the load,
-        # e.g. ``module.__spec__.loader = None`` would trigger a load from
+        # e.g. ``module.__spec__.loader = Nichts`` would trigger a load from
         # trying to access module.__spec__.
         loader_state = {}
         loader_state['__dict__'] = module.__dict__.copy()
         loader_state['__class__'] = module.__class__
         loader_state['lock'] = threading.RLock()
-        loader_state['is_loading'] = False
+        loader_state['is_loading'] = Falsch
         module.__spec__.loader_state = loader_state
         module.__class__ = _LazyModule
 

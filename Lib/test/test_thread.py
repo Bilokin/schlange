@@ -10,7 +10,7 @@ import weakref
 
 from test import lock_tests
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 NUMTASKS = 10
 NUMTRIPS = 3
@@ -115,7 +115,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         started = []
 
         def task():
-            started.append(None)
+            started.append(Nichts)
             mut.acquire()
             mut.release()
 
@@ -133,7 +133,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             # interpreter's point of view is to wait fuer the function object to
             # be destroyed.
             done = []
-            wr = weakref.ref(task, lambda _: done.append(None))
+            wr = weakref.ref(task, lambda _: done.append(Nichts))
             del task
 
             fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
@@ -155,10 +155,10 @@ klasse ThreadRunningTests(BasicThreadTest):
                 started.acquire()
 
             self.assertEqual(str(cm.unraisable.exc_value), "task failed")
-            self.assertIsNone(cm.unraisable.object)
+            self.assertIsNichts(cm.unraisable.object)
             self.assertEqual(cm.unraisable.err_msg,
                              f"Exception ignored in thread started by {task!r}")
-            self.assertIsNotNone(cm.unraisable.exc_traceback)
+            self.assertIsNotNichts(cm.unraisable.exc_traceback)
 
     def test_join_thread(self):
         finished = []
@@ -245,8 +245,8 @@ klasse ThreadRunningTests(BasicThreadTest):
             lock.acquire()
             return lock
 
-        error = None
-        self_joiner_handle = None
+        error = Nichts
+        self_joiner_handle = Nichts
         self_joiner_started = make_lock()
         self_joiner_barrier = make_lock()
         def self_joiner():
@@ -299,10 +299,10 @@ klasse ThreadRunningTests(BasicThreadTest):
         with threading_helper.wait_threads_exit():
             handle = thread.start_joinable_thread(thr)
             handle.join(0.1)
-            self.assertFalse(handle.is_done())
+            self.assertFalsch(handle.is_done())
             lock.release()
             handle.join()
-            self.assertTrue(handle.is_done())
+            self.assertWahr(handle.is_done())
 
     def test_join_unstarted(self):
         handle = thread._ThreadHandle()
@@ -334,7 +334,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             pass
 
         with threading_helper.wait_threads_exit():
-            handle = thread.start_joinable_thread(func, handle=None)
+            handle = thread.start_joinable_thread(func, handle=Nichts)
             handle.join()
 
 
@@ -394,7 +394,7 @@ klasse BarrierTest(BasicThreadTest):
         with self.running_mutex:
             self.running -= 1
             # Must release mutex before releasing done, sonst the main thread can
-            # exit and set mutex to None as part of global teardown; then
+            # exit and set mutex to Nichts as part of global teardown; then
             # mutex.release() raises AttributeError.
             finished = self.running == 0
         wenn finished:
@@ -411,7 +411,7 @@ klasse TestForkInThread(unittest.TestCase):
     @support.requires_fork()
     @threading_helper.reap_threads
     def test_forkinthread(self):
-        pid = None
+        pid = Nichts
 
         def fork_thread(read_fd, write_fd):
             nonlocal pid
@@ -436,7 +436,7 @@ klasse TestForkInThread(unittest.TestCase):
             self.assertEqual(os.read(self.read_fd, 2), b"OK")
             os.close(self.write_fd)
 
-        self.assertIsNotNone(pid)
+        self.assertIsNotNichts(pid)
         support.wait_process(pid, exitcode=0)
 
     def tearDown(self):

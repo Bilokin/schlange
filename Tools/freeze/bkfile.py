@@ -18,7 +18,7 @@ def open(file, mode='r', bufsize=-1):
     def close():
         _orig_close()
         import filecmp
-        wenn filecmp.cmp(backup, file, shallow=False):
+        wenn filecmp.cmp(backup, file, shallow=Falsch):
             import os
             os.unlink(file)
             os.rename(backup, file)

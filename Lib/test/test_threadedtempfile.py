@@ -22,7 +22,7 @@ import io
 import threading
 from traceback import print_exc
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 NUM_THREADS = 20
 FILES_PER_THREAD = 50
@@ -50,7 +50,7 @@ klasse TempFileGreedy(threading.Thread):
 
 
 klasse ThreadedTempFileTest(unittest.TestCase):
-    @support.bigmemtest(size=NUM_THREADS, memuse=60*2**20, dry_run=False)
+    @support.bigmemtest(size=NUM_THREADS, memuse=60*2**20, dry_run=Falsch)
     def test_main(self, size):
         threads = [TempFileGreedy() fuer i in range(NUM_THREADS)]
         with threading_helper.start_threads(threads, startEvent.set):

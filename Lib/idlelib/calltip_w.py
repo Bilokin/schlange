@@ -27,10 +27,10 @@ klasse CalltipWindow(TooltipBase):
         # Note: The Text widget will be accessible as self.anchor_widget
         super().__init__(text_widget)
 
-        self.label = self.text = None
-        self.parenline = self.parencol = self.lastline = None
-        self.hideid = self.checkhideid = None
-        self.checkhide_after_id = None
+        self.label = self.text = Nichts
+        self.parenline = self.parencol = self.lastline = Nichts
+        self.hideid = self.checkhideid = Nichts
+        self.checkhide_after_id = Nichts
 
     def get_position(self):
         """Choose the position of the call-tip."""
@@ -85,13 +85,13 @@ klasse CalltipWindow(TooltipBase):
                            font=self.anchor_widget['font'])
         self.label.pack()
 
-    def checkhide_event(self, event=None):
+    def checkhide_event(self, event=Nichts):
         """Handle CHECK_HIDE_EVENT: call hidetip or reschedule."""
         wenn not self.tipwindow:
             # If the event was triggered by the same event that unbound
             # this function, the function will be called nevertheless,
             # so do nothing in this case.
-            return None
+            return Nichts
 
         # Hide the call-tip wenn the insertion cursor moves outside of the
         # parenthesis.
@@ -106,17 +106,17 @@ klasse CalltipWindow(TooltipBase):
 
         self.position_window()
         # Re-schedule this function to be called again in a short while.
-        wenn self.checkhide_after_id is not None:
+        wenn self.checkhide_after_id is not Nichts:
             self.anchor_widget.after_cancel(self.checkhide_after_id)
         self.checkhide_after_id = \
             self.anchor_widget.after(CHECKHIDE_TIME, self.checkhide_event)
-        return None
+        return Nichts
 
     def hide_event(self, event):
         """Handle HIDE_EVENT by calling hidetip."""
         wenn not self.tipwindow:
             # See the explanation in checkhide_event.
-            return None
+            return Nichts
         self.hidetip()
         return "break"
 
@@ -129,9 +129,9 @@ klasse CalltipWindow(TooltipBase):
             self.label.destroy()
         except TclError:
             pass
-        self.label = None
+        self.label = Nichts
 
-        self.parenline = self.parencol = self.lastline = None
+        self.parenline = self.parencol = self.lastline = Nichts
         try:
             self.anchor_widget.mark_unset(MARK_RIGHT)
         except TclError:
@@ -162,11 +162,11 @@ klasse CalltipWindow(TooltipBase):
         fuer seq in CHECKHIDE_SEQUENCES:
             self.anchor_widget.event_delete(CHECKHIDE_EVENT, seq)
         self.anchor_widget.unbind(CHECKHIDE_EVENT, self.checkhideid)
-        self.checkhideid = None
+        self.checkhideid = Nichts
         fuer seq in HIDE_SEQUENCES:
             self.anchor_widget.event_delete(HIDE_EVENT, seq)
         self.anchor_widget.unbind(HIDE_EVENT, self.hideid)
-        self.hideid = None
+        self.hideid = Nichts
 
 
 def _calltip_window(parent):  # htest #
@@ -196,7 +196,7 @@ def _calltip_window(parent):  # htest #
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_calltip_w', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_calltip_w', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_calltip_window)

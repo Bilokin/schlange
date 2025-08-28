@@ -7,7 +7,7 @@ from test.support import import_helper, requires_specialization, requires_specia
 try:
     from sys import _clear_type_cache
 except ImportError:
-    _clear_type_cache = None
+    _clear_type_cache = Nichts
 
 # Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module("_testcapi")
@@ -23,7 +23,7 @@ def clear_type_cache():
         _clear_type_cache()
 
 @support.cpython_only
-@unittest.skipIf(_clear_type_cache is None, "requires sys._clear_type_cache")
+@unittest.skipIf(_clear_type_cache is Nichts, "requires sys._clear_type_cache")
 klasse TypeCacheTests(unittest.TestCase):
     def test_tp_version_tag_unique(self):
         """tp_version_tag should be unique assuming no overflow, even after
@@ -101,7 +101,7 @@ klasse TypeCacheTests(unittest.TestCase):
     def test_119462(self):
 
         klasse Holder:
-            value = None
+            value = Nichts
 
             @classmethod
             def set_value(cls):
@@ -133,7 +133,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         self.assertEqual(type_get_version(user_type), 0)
 
     def _all_opnames(self, func):
-        return set(instr.opname fuer instr in dis.Bytecode(func, adaptive=True))
+        return set(instr.opname fuer instr in dis.Bytecode(func, adaptive=Wahr))
 
     def _check_specialization(self, func, arg, opname, *, should_specialize):
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
@@ -155,7 +155,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def load_foo_1(type_):
             type_.foo
 
-        self._check_specialization(load_foo_1, A, "LOAD_ATTR", should_specialize=True)
+        self._check_specialization(load_foo_1, A, "LOAD_ATTR", should_specialize=Wahr)
         del load_foo_1
 
         self._no_more_versions(A)
@@ -163,7 +163,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def load_foo_2(type_):
             return type_.foo
 
-        self._check_specialization(load_foo_2, A, "LOAD_ATTR", should_specialize=False)
+        self._check_specialization(load_foo_2, A, "LOAD_ATTR", should_specialize=Falsch)
 
     @requires_specialization
     def test_class_load_attr_specialization_static_type(self):
@@ -173,7 +173,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def get_capitalize_1(type_):
             return type_.capitalize
 
-        self._check_specialization(get_capitalize_1, str, "LOAD_ATTR", should_specialize=True)
+        self._check_specialization(get_capitalize_1, str, "LOAD_ATTR", should_specialize=Wahr)
         self.assertEqual(get_capitalize_1(str)('hello'), 'Hello')
         self.assertEqual(get_capitalize_1(bytes)(b'hello'), b'Hello')
 
@@ -189,7 +189,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def load_x_1(instance):
             instance.x
 
-        self._check_specialization(load_x_1, G(), "LOAD_ATTR", should_specialize=True)
+        self._check_specialization(load_x_1, G(), "LOAD_ATTR", should_specialize=Wahr)
         del load_x_1
 
         self._no_more_versions(G)
@@ -197,7 +197,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def load_x_2(instance):
             instance.x
 
-        self._check_specialization(load_x_2, G(), "LOAD_ATTR", should_specialize=False)
+        self._check_specialization(load_x_2, G(), "LOAD_ATTR", should_specialize=Falsch)
 
     @requires_specialization
     def test_store_attr_specialization_user_type(self):
@@ -209,7 +209,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def store_bar_1(type_):
             type_.bar = 10
 
-        self._check_specialization(store_bar_1, B(), "STORE_ATTR", should_specialize=True)
+        self._check_specialization(store_bar_1, B(), "STORE_ATTR", should_specialize=Wahr)
         del store_bar_1
 
         self._no_more_versions(B)
@@ -217,7 +217,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def store_bar_2(type_):
             type_.bar = 10
 
-        self._check_specialization(store_bar_2, B(), "STORE_ATTR", should_specialize=False)
+        self._check_specialization(store_bar_2, B(), "STORE_ATTR", should_specialize=Falsch)
 
     @requires_specialization_ft
     def test_class_call_specialization_user_type(self):
@@ -230,7 +230,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def call_class_1(type_):
             type_()
 
-        self._check_specialization(call_class_1, F, "CALL", should_specialize=True)
+        self._check_specialization(call_class_1, F, "CALL", should_specialize=Wahr)
         del call_class_1
 
         self._no_more_versions(F)
@@ -238,7 +238,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def call_class_2(type_):
             type_()
 
-        self._check_specialization(call_class_2, F, "CALL", should_specialize=False)
+        self._check_specialization(call_class_2, F, "CALL", should_specialize=Falsch)
 
     @requires_specialization
     def test_to_bool_specialization_user_type(self):
@@ -250,7 +250,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def to_bool_1(instance):
             not instance
 
-        self._check_specialization(to_bool_1, H(), "TO_BOOL", should_specialize=True)
+        self._check_specialization(to_bool_1, H(), "TO_BOOL", should_specialize=Wahr)
         del to_bool_1
 
         self._no_more_versions(H)
@@ -258,7 +258,7 @@ klasse TypeCacheWithSpecializationTests(unittest.TestCase):
         def to_bool_2(instance):
             not instance
 
-        self._check_specialization(to_bool_2, H(), "TO_BOOL", should_specialize=False)
+        self._check_specialization(to_bool_2, H(), "TO_BOOL", should_specialize=Falsch)
 
 
 wenn __name__ == "__main__":

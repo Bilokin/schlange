@@ -13,10 +13,10 @@ _sentinel = object()
 
 klasse AbstractWidgetTest(AbstractTkTest):
     _default_pixels = ''   # Value fuer unset pixel options.
-    _rounds_pixels = True  # True wenn some pixel options are rounded.
+    _rounds_pixels = Wahr  # Wahr wenn some pixel options are rounded.
     _no_round = {}         # Pixel options which are not rounded nonetheless
-    _stringify = False     # Whether to convert tuples to strings
-    _allow_empty_justify = False
+    _stringify = Falsch     # Whether to convert tuples to strings
+    _allow_empty_justify = Falsch
 
     @property
     def scaling(self):
@@ -33,13 +33,13 @@ klasse AbstractWidgetTest(AbstractTkTest):
             return ' '.join(map(self._str, value))
         return str(value)
 
-    def assertEqual2(self, actual, expected, msg=None, eq=object.__eq__):
+    def assertEqual2(self, actual, expected, msg=Nichts, eq=object.__eq__):
         wenn eq(actual, expected):
             return
         self.assertEqual(actual, expected, msg)
 
     def checkParam(self, widget, name, value, *, expected=_sentinel,
-                   conv=False, eq=None):
+                   conv=Falsch, eq=Nichts):
         widget[name] = value
         wenn expected is _sentinel:
             expected = value
@@ -53,7 +53,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
                 expected = tkinter._join(expected)
             sonst:
                 expected = str(expected)
-        wenn eq is None:
+        wenn eq is Nichts:
             eq = tcl_obj_eq
         self.assertEqual2(widget[name], expected, eq=eq)
         self.assertEqual2(widget.cget(name), expected, eq=eq)
@@ -61,9 +61,9 @@ klasse AbstractWidgetTest(AbstractTkTest):
         self.assertEqual(len(t), 5)
         self.assertEqual2(t[4], expected, eq=eq)
 
-    def checkInvalidParam(self, widget, name, value, errmsg=None):
+    def checkInvalidParam(self, widget, name, value, errmsg=Nichts):
         orig = widget[name]
-        wenn errmsg is not None:
+        wenn errmsg is not Nichts:
             errmsg = errmsg.format(re.escape(str(value)))
             errmsg = fr'\A{errmsg}\z'
         with self.assertRaisesRegex(tkinter.TclError, errmsg or ''):
@@ -92,15 +92,15 @@ klasse AbstractWidgetTest(AbstractTkTest):
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
     def checkBooleanParam(self, widget, name):
-        fuer value in (False, 0, 'false', 'no', 'off'):
+        fuer value in (Falsch, 0, 'false', 'no', 'off'):
             self.checkParam(widget, name, value, expected=0)
-        fuer value in (True, 1, 'true', 'yes', 'on'):
+        fuer value in (Wahr, 1, 'true', 'yes', 'on'):
             self.checkParam(widget, name, value, expected=1)
         errmsg = 'expected boolean value but got "{}"'
         self.checkInvalidParam(widget, name, '', errmsg=errmsg)
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
-    def checkColorParam(self, widget, name, *, allow_empty=None, **kwargs):
+    def checkColorParam(self, widget, name, *, allow_empty=Nichts, **kwargs):
         self.checkParams(widget, name,
                          '#ff0000', '#00ff00', '#0000ff', '#123456',
                          'red', 'green', 'blue', 'white', 'black', 'grey',
@@ -118,14 +118,14 @@ klasse AbstractWidgetTest(AbstractTkTest):
         def command(*args):
             pass
         widget[name] = command
-        self.assertTrue(widget[name])
+        self.assertWahr(widget[name])
         self.checkParams(widget, name, '')
 
     def checkEnumParam(self, widget, name, *values,
-                       errmsg=None, allow_empty=False, fullname=None,
-                       sort=False, **kwargs):
+                       errmsg=Nichts, allow_empty=Falsch, fullname=Nichts,
+                       sort=Falsch, **kwargs):
         self.checkParams(widget, name, *values, **kwargs)
-        wenn errmsg is None:
+        wenn errmsg is Nichts:
             wenn sort:
                 wenn values[-1]:
                     values = tuple(sorted(values))
@@ -142,16 +142,16 @@ klasse AbstractWidgetTest(AbstractTkTest):
             errmsg = 'bad' + errmsg2
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
-    def checkPixelsParam(self, widget, name, *values, conv=None, **kwargs):
+    def checkPixelsParam(self, widget, name, *values, conv=Nichts, **kwargs):
         wenn not self._rounds_pixels or name in self._no_round:
-            conv = False
+            conv = Falsch
         sowenn conv != str:
             conv = round
         fuer value in values:
             expected = _sentinel
             conv1 = conv
             wenn isinstance(value, str):
-                wenn not getattr(self, '_converts_pixels', True):
+                wenn not getattr(self, '_converts_pixels', Wahr):
                     conv1 = str
                 wenn conv1 and conv1 is not str:
                     expected = pixels_conv(value) * self.scaling
@@ -162,7 +162,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
         self.checkInvalidParam(widget, name, '6x', errmsg=errmsg)
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
-    def checkReliefParam(self, widget, name, *, allow_empty=False):
+    def checkReliefParam(self, widget, name, *, allow_empty=Falsch):
         values = ('flat', 'groove', 'raised', 'ridge', 'solid', 'sunken')
         wenn allow_empty:
             values += ('',)
@@ -171,7 +171,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
                 ', '.join(values[:-1]),
                 values[-1] or '""')
         wenn tk_version < (8, 6):
-            errmsg = None
+            errmsg = Nichts
         self.checkInvalidParam(widget, name, 'spam', errmsg=errmsg)
 
     def checkImageParam(self, widget, name):
@@ -189,7 +189,7 @@ klasse AbstractWidgetTest(AbstractTkTest):
         self.checkParam(widget, name, var, conv=str)
 
     def assertIsBoundingBox(self, bbox):
-        self.assertIsNotNone(bbox)
+        self.assertIsNotNichts(bbox)
         self.assertIsInstance(bbox, tuple)
         wenn len(bbox) != 4:
             self.fail('Invalid bounding box: %r' % (bbox,))
@@ -591,4 +591,4 @@ def add_configure_tests(*source_classes):
 def setUpModule():
     wenn test.support.verbose:
         tcl = tkinter.Tcl()
-        print('patchlevel =', tcl.call('info', 'patchlevel'), flush=True)
+        print('patchlevel =', tcl.call('info', 'patchlevel'), flush=Wahr)

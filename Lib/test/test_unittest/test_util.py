@@ -14,7 +14,7 @@ klasse TestUtil(unittest.TestCase):
 
         safe_repr(RaisingRepr())
         self.assertEqual(safe_repr('foo'), "'foo'")
-        self.assertEqual(safe_repr(LongRepr(), short=True), 'x'*80 + ' [truncated]...')
+        self.assertEqual(safe_repr(LongRepr(), short=Wahr), 'x'*80 + ' [truncated]...')
 
     def test_sorted_list_difference(self):
         self.assertEqual(sorted_list_difference([], []), ([], []))

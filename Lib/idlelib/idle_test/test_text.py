@@ -177,12 +177,12 @@ klasse TextTest:
         self.assertRaises(TclError, compare, '2.2', 'op', '2.2')
 
         fuer op, less1, less0, equal, greater0, greater1 in (
-                ('<', True, True, False, False, False),
-                ('<=', True, True, True, False, False),
-                ('>', False, False, False, True, True),
-                ('>=', False, False, True, True, True),
-                ('==', False, False, True, False, False),
-                ('!=', True, True, False, True, True),
+                ('<', Wahr, Wahr, Falsch, Falsch, Falsch),
+                ('<=', Wahr, Wahr, Wahr, Falsch, Falsch),
+                ('>', Falsch, Falsch, Falsch, Wahr, Wahr),
+                ('>=', Falsch, Falsch, Wahr, Wahr, Wahr),
+                ('==', Falsch, Falsch, Wahr, Falsch, Falsch),
+                ('!=', Wahr, Wahr, Falsch, Wahr, Wahr),
                 ):
             Equal(compare('1.1', op, '2.2'), less1, op)
             Equal(compare('2.1', op, '2.2'), less0, op)
@@ -233,4 +233,4 @@ klasse TkTextTest(TextTest, unittest.TestCase):
 
 
 wenn __name__ == '__main__':
-    unittest.main(verbosity=2, exit=False)
+    unittest.main(verbosity=2, exit=Falsch)

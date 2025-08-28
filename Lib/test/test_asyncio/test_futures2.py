@@ -7,7 +7,7 @@ from asyncio import tasks
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse FutureTests:
@@ -31,12 +31,12 @@ klasse FutureTests:
     async def test_task_exc_handler_correct_context(self):
         # see https://github.com/python/cpython/issues/96704
         name = contextvars.ContextVar('name', default='foo')
-        exc_handler_called = False
+        exc_handler_called = Falsch
 
         def exc_handler(*args):
             self.assertEqual(name.get(), 'bar')
             nonlocal exc_handler_called
-            exc_handler_called = True
+            exc_handler_called = Wahr
 
         async def task():
             name.set('bar')
@@ -46,17 +46,17 @@ klasse FutureTests:
         loop.set_exception_handler(exc_handler)
         self.cls(task())
         await asyncio.sleep(0)
-        self.assertTrue(exc_handler_called)
+        self.assertWahr(exc_handler_called)
 
     async def test_handle_exc_handler_correct_context(self):
         # see https://github.com/python/cpython/issues/96704
         name = contextvars.ContextVar('name', default='foo')
-        exc_handler_called = False
+        exc_handler_called = Falsch
 
         def exc_handler(*args):
             self.assertEqual(name.get(), 'bar')
             nonlocal exc_handler_called
-            exc_handler_called = True
+            exc_handler_called = Wahr
 
         def callback():
             name.set('bar')
@@ -66,7 +66,7 @@ klasse FutureTests:
         loop.set_exception_handler(exc_handler)
         loop.call_soon(callback)
         await asyncio.sleep(0)
-        self.assertTrue(exc_handler_called)
+        self.assertWahr(exc_handler_called)
 
 @unittest.skipUnless(hasattr(tasks, '_CTask'),
                        'requires the C _asyncio module')

@@ -39,7 +39,7 @@ klasse TestType(TestCase):
         with ThreadPoolExecutor(NTHREADS) as pool:
             pool.submit(read, (1,))
             pool.submit(write, (1,))
-            pool.shutdown(wait=True)
+            pool.shutdown(wait=Wahr)
 
     def test_attr_cache_consistency(self):
         klasse C:

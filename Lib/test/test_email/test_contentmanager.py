@@ -19,7 +19,7 @@ klasse TestContentManager(TestEmailBase):
         }
 
     def get_key_as_get_content_key(self, order, key):
-        def foo_getter(msg, foo=None):
+        def foo_getter(msg, foo=Nichts):
             bar = msg['X-Bar-Header']
             return foo, bar
         cm = ContentManager()
@@ -71,11 +71,11 @@ klasse TestContentManager(TestEmailBase):
         'str_type':         (8,  str,),
         'str_full_path':    (9,  'builtins.str',),
         'str_name':         (10, 'str',),   # str name and qualname are the same
-        'null_key':         (11, None,),
+        'null_key':         (11, Nichts,),
         }
 
     def set_key_as_set_content_key(self, order, key):
-        def foo_setter(msg, obj, foo=None):
+        def foo_setter(msg, obj, foo=Nichts):
             msg['X-Foo-Header'] = foo
             msg.set_payload(obj)
         cm = ContentManager()
@@ -124,12 +124,12 @@ klasse TestContentManager(TestEmailBase):
         m['To'] = 'test'
         m.set_payload('abc')
         cm = ContentManager()
-        cm.add_set_handler(str, lambda *args, **kw: None)
+        cm.add_set_handler(str, lambda *args, **kw: Nichts)
         m.set_content('xyz', content_manager=cm)
-        self.assertIsNone(m['Content-Foo'])
-        self.assertIsNone(m['Content-Type'])
+        self.assertIsNichts(m['Content-Foo'])
+        self.assertIsNichts(m['Content-Type'])
         self.assertEqual(m['To'], 'test')
-        self.assertIsNone(m.get_payload())
+        self.assertIsNichts(m.get_payload())
 
 
 @parameterize
@@ -300,7 +300,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             Simple message.
             """))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_plain_null(self):
@@ -313,7 +313,7 @@ klasse TestRawDataManager(TestEmailBase):
 
 
             """))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), '\n')
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), '\n')
         self.assertEqual(m.get_content(), '\n')
 
     def test_set_text_html(self):
@@ -326,7 +326,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             <p>Simple message.</p>
             """))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_charset_latin_1(self):
@@ -339,7 +339,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             Simple message.
             """))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_plain_long_line_heuristics(self):
@@ -354,7 +354,7 @@ klasse TestRawDataManager(TestEmailBase):
             Simple but long message that is over 78 characters long to =
             force transfer encoding.
             """))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_short_line_minimal_non_ascii_heuristics(self):
@@ -367,7 +367,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             et là il est monté sur moi et il commence à m'éto.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_long_line_minimal_non_ascii_heuristics(self):
@@ -384,7 +384,7 @@ klasse TestRawDataManager(TestEmailBase):
             um.  et l=C3=A0 il est mont=C3=A9 sur moi et il commence =
             =C3=A0 m'=C3=A9to.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_11_lines_long_line_minimal_non_ascii_heuristics(self):
@@ -402,7 +402,7 @@ klasse TestRawDataManager(TestEmailBase):
             um.  et l=C3=A0 il est mont=C3=A9 sur moi et il commence =
             =C3=A0 m'=C3=A9to.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_maximal_non_ascii_heuristics(self):
@@ -415,7 +415,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             áàäéèęöő.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_11_lines_maximal_non_ascii_heuristics(self):
@@ -428,7 +428,7 @@ klasse TestRawDataManager(TestEmailBase):
             """ + '\n'*10 + """
             áàäéèęöő.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_long_line_maximal_non_ascii_heuristics(self):
@@ -447,7 +447,7 @@ klasse TestRawDataManager(TestEmailBase):
             qcOoxJnDtsWRw6HDoMOkw6nDqMSZw7bFkcOhw6DDpMOpw6jEmcO2xZHDocOg
             w6TDqcOoxJnDtsWRLgo=
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_11_lines_long_line_maximal_non_ascii_heuristics(self):
@@ -478,7 +478,7 @@ klasse TestRawDataManager(TestEmailBase):
             =99=C3=B6=C5=91=C3=A1=C3=A0=C3=A4=C3=A9=C3=A8=C4=99=C3=B6=
             =C5=91.
             """).encode('utf-8'))
-        self.assertEqual(m.get_payload(decode=True).decode('utf-8'), content)
+        self.assertEqual(m.get_payload(decode=Wahr).decode('utf-8'), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_text_non_ascii_with_cte_7bit_raises(self):
@@ -606,7 +606,7 @@ klasse TestRawDataManager(TestEmailBase):
 
                     Ym9ndXMgY29udGVudA==
                     """))
-                self.assertEqual(m.get_payload(decode=True), content)
+                self.assertEqual(m.get_payload(decode=Wahr), content)
                 self.assertEqual(m.get_content(), content)
 
     def test_set_audio_aif_with_quoted_printable_cte(self):
@@ -628,7 +628,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             b=FFgus=09con=0At=0Dent=20zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
             zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz""").encode('latin-1'))
-        self.assertEqual(m.get_payload(decode=True), content)
+        self.assertEqual(m.get_payload(decode=Wahr), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_video_mpeg_with_binary_cte(self):
@@ -645,7 +645,7 @@ klasse TestRawDataManager(TestEmailBase):
             # THIS MEANS WE DON'T ACTUALLY SUPPORT THE 'binary' CTE.
             b'b\xFFgus\tcon\nt\nent zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz' +
             b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
-        self.assertEqual(m.get_payload(decode=True), content)
+        self.assertEqual(m.get_payload(decode=Wahr), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_application_octet_stream_with_8bit_cte(self):
@@ -662,7 +662,7 @@ klasse TestRawDataManager(TestEmailBase):
             """).encode('ascii') +
             b'b\xFFgus\tcon\nt\nent\n' +
             b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\n')
-        self.assertEqual(m.get_payload(decode=True), content)
+        self.assertEqual(m.get_payload(decode=Wahr), content)
         self.assertEqual(m.get_content(), content)
 
     def test_set_headers_from_header_objects(self):

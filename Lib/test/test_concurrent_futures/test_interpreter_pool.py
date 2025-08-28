@@ -28,7 +28,7 @@ WINDOWS = sys.platform.startswith('win')
 def nonblocking(fd):
     blocking = os.get_blocking(fd)
     wenn blocking:
-        os.set_blocking(fd, False)
+        os.set_blocking(fd, Falsch)
     try:
         yield
     finally:
@@ -83,7 +83,7 @@ def get_current_name():
     return __name__
 
 
-def fail(exctype, msg=None):
+def fail(exctype, msg=Nichts):
     raise exctype(msg)
 
 
@@ -161,7 +161,7 @@ klasse InterpreterPoolExecutorTest(
 
     def test_init_with___main___global(self):
         # See https://github.com/python/cpython/pull/133957#issuecomment-2927415311.
-        text = """if True:
+        text = """if Wahr:
             from concurrent.futures import InterpreterPoolExecutor
 
             INITIALIZER_STATUS = 'uninitialized'
@@ -179,7 +179,7 @@ klasse InterpreterPoolExecutorTest(
                                               initargs=('initialized',))
                 fut = exe.submit(get_init_status)
                 print(fut.result())  # 'initialized'
-                exe.shutdown(wait=True)
+                exe.shutdown(wait=Wahr)
                 print(INITIALIZER_STATUS)  # 'uninitialized'
            """
         with os_helper.temp_dir() as tempdir:
@@ -201,14 +201,14 @@ klasse InterpreterPoolExecutorTest(
 
         with contextlib.redirect_stderr(io.StringIO()) as stderr:
             with self.executor_type(initializer=init1) as executor:
-                fut = executor.submit(lambda: None)
+                fut = executor.submit(lambda: Nichts)
         self.assertIn('NotShareableError', stderr.getvalue())
         with self.assertRaises(BrokenInterpreterPool):
             fut.result()
 
         with contextlib.redirect_stderr(io.StringIO()) as stderr:
             with self.executor_type(initializer=init2) as executor:
-                fut = executor.submit(lambda: None)
+                fut = executor.submit(lambda: Nichts)
         self.assertIn('NotShareableError', stderr.getvalue())
         with self.assertRaises(BrokenInterpreterPool):
             fut.result()
@@ -221,7 +221,7 @@ klasse InterpreterPoolExecutorTest(
 
         with contextlib.redirect_stderr(io.StringIO()) as stderr:
             with self.executor_type(initializer=spam.initializer) as executor:
-                fut = executor.submit(lambda: None)
+                fut = executor.submit(lambda: Nichts)
         self.assertIn('NotShareableError', stderr.getvalue())
         with self.assertRaises(BrokenInterpreterPool):
             fut.result()
@@ -267,10 +267,10 @@ klasse InterpreterPoolExecutorTest(
         after = read_msg(r)
 
         self.assertEqual(after, b'__main__')
-        self.assertIs(res, None)
+        self.assertIs(res, Nichts)
 
     def test_submit_closure(self):
-        spam = True
+        spam = Wahr
         def task1():
             return spam
         def task2():
@@ -291,7 +291,7 @@ klasse InterpreterPoolExecutorTest(
     def test_submit_local_instance(self):
         klasse Spam:
             def __init__(self):
-                self.value = True
+                self.value = Wahr
 
         executor = self.executor_type()
         fut = executor.submit(Spam)
@@ -301,7 +301,7 @@ klasse InterpreterPoolExecutorTest(
     def test_submit_instance_method(self):
         klasse Spam:
             def run(self):
-                return True
+                return Wahr
         spam = Spam()
 
         executor = self.executor_type()
@@ -353,8 +353,8 @@ klasse InterpreterPoolExecutorTest(
             executor.submit(blocker.get)
         self.assertEqual(len(executor._threads), executor._max_workers)
         fuer i in range(15 * executor._max_workers):
-            blocker.put_nowait(None)
-        executor.shutdown(wait=True)
+            blocker.put_nowait(Nichts)
+        executor.shutdown(wait=Wahr)
 
     def test_blocking(self):
         # There is no guarantee that a worker will be created fuer every
@@ -397,7 +397,7 @@ klasse InterpreterPoolExecutorTest(
                 pending -= done
                 # Unblock the workers.
                 fuer _ in range(done):
-                    blocker.put_nowait(None)
+                    blocker.put_nowait(Nichts)
 
     def test_blocking_with_limited_workers(self):
         # This is essentially the same as test_blocking,
@@ -432,7 +432,7 @@ klasse InterpreterPoolExecutorTest(
                 pending -= done
                 # Unblock the workers.
                 fuer _ in range(done):
-                    blocker.put_nowait(None)
+                    blocker.put_nowait(Nichts)
 
     @support.requires_gil_enabled("gh-117344: test is flaky without the GIL")
     def test_idle_thread_reuse(self):
@@ -441,7 +441,7 @@ klasse InterpreterPoolExecutorTest(
         executor.submit(mul, 6, 7).result()
         executor.submit(mul, 3, 14).result()
         self.assertEqual(len(executor._threads), 1)
-        executor.shutdown(wait=True)
+        executor.shutdown(wait=Wahr)
 
     def test_pickle_errors_propagate(self):
         # GH-125864: Pickle errors happen before the script tries to execute,
@@ -465,8 +465,8 @@ klasse InterpreterPoolExecutorTest(
         # Test the import behavior normally wenn _interpreters is unavailable.
         code = textwrap.dedent("""
         import sys
-        # Set it to None to emulate the case when _interpreter is unavailable.
-        sys.modules['_interpreters'] = None
+        # Set it to Nichts to emulate the case when _interpreter is unavailable.
+        sys.modules['_interpreters'] = Nichts
         from concurrent import futures
 
         try:
@@ -494,7 +494,7 @@ klasse InterpreterPoolExecutorTest(
         """)
 
         cmd = [sys.executable, '-c', code]
-        p = subprocess.run(cmd, capture_output=True)
+        p = subprocess.run(cmd, capture_output=Wahr)
         self.assertEqual(p.returncode, 0, p.stderr.decode())
         self.assertEqual(p.stdout.decode(), '')
         self.assertEqual(p.stderr.decode(), '')
@@ -522,12 +522,12 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
         # with the default policy wenn a policy hasn't been set already.
         # If that happens in a test, like here, we'll end up with a failure
         # when --fail-env-changed is used.  That's why the other tests that
-        # use asyncio are careful to set the policy back to None and why
+        # use asyncio are careful to set the policy back to Nichts and why
         # we're careful to do so here.  We also validate that no other
         # tests left a policy in place, just in case.
         policy = support.maybe_get_event_loop_policy()
-        assert policy is None, policy
-        cls.addClassCleanup(lambda: asyncio.events._set_event_loop_policy(None))
+        assert policy is Nichts, policy
+        cls.addClassCleanup(lambda: asyncio.events._set_event_loop_policy(Nichts))
 
     def setUp(self):
         super().setUp()
@@ -558,11 +558,11 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
     def test_run_in_executor_cancel(self):
         executor = self.executor_type()
 
-        called = False
+        called = Falsch
 
         def patched_call_soon(*args):
             nonlocal called
-            called = True
+            called = Wahr
 
         func = time.sleep
         fut = self.loop.run_in_executor(self.executor, func, 0.05)
@@ -573,13 +573,13 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
         self.loop.call_soon = patched_call_soon
         self.loop.call_soon_threadsafe = patched_call_soon
         time.sleep(0.4)
-        self.assertFalse(called)
+        self.assertFalsch(called)
 
     def test_default_executor(self):
         unexpected, _ = _interpreters.get_current()
 
         self.loop.set_default_executor(self.executor)
-        fut = self.loop.run_in_executor(None, get_current_interpid)
+        fut = self.loop.run_in_executor(Nichts, get_current_interpid)
         interpid, = self.loop.run_until_complete(fut)
 
         self.assertNotEqual(interpid, unexpected)

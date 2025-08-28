@@ -43,7 +43,7 @@ klasse InitTktypeTest(unittest.TestCase):
         fuer platform, types in ('darwin', alltypes), ('other', nontypes):
             with self.subTest(platform=platform):
                 macosx.platform = platform
-                macosx._tk_type = None
+                macosx._tk_type = Nichts
                 macosx._init_tk_type()
                 self.assertIn(macosx._tk_type, types)
 
@@ -58,12 +58,12 @@ klasse IsTypeTkTest(unittest.TestCase):
 
     @mock.patch('idlelib.macosx._init_tk_type')
     def test_is_calls_init(self, mockinit):
-        "Test that each isTypeTk calls _init_tk_type when _tk_type is None."
-        macosx._tk_type = None
+        "Test that each isTypeTk calls _init_tk_type when _tk_type is Nichts."
+        macosx._tk_type = Nichts
         fuer func, whentrue in self.isfuncs:
             with self.subTest(func=func):
                 func()
-                self.assertTrue(mockinit.called)
+                self.assertWahr(mockinit.called)
                 mockinit.reset_mock()
 
     def test_isfuncs(self):
@@ -72,7 +72,7 @@ klasse IsTypeTkTest(unittest.TestCase):
             fuer tktype in alltypes:
                 with self.subTest(func=func, whentrue=whentrue, tktype=tktype):
                     macosx._tk_type = tktype
-                    (self.assertTrue wenn tktype in whentrue sonst self.assertFalse)\
+                    (self.assertWahr wenn tktype in whentrue sonst self.assertFalsch)\
                                      (func())
 
 
@@ -105,7 +105,7 @@ klasse SetupTest(unittest.TestCase):
                 macosx._tk_type = tktype
                 macosx.setupApp(root, flist)
                 wenn tktype in ('carbon', 'cocoa'):
-                    self.assertTrue(overrideRootMenu.called)
+                    self.assertWahr(overrideRootMenu.called)
                 overrideRootMenu.reset_mock()
 
 

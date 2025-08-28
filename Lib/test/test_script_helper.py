@@ -39,17 +39,17 @@ klasse TestScriptHelper(unittest.TestCase):
     def test_assert_python_isolated_when_env_not_required(self, mock_popen):
         with mock.patch.object(script_helper,
                                'interpreter_requires_environment',
-                               return_value=False) as mock_ire_func:
+                               return_value=Falsch) as mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
             try:
-                script_helper._assert_python(True, '-c', 'None')
+                script_helper._assert_python(Wahr, '-c', 'Nichts')
             except RuntimeError as err:
                 self.assertEqual('bail out of unittest', err.args[0])
             self.assertEqual(1, mock_popen.call_count)
             self.assertEqual(1, mock_ire_func.call_count)
             popen_command = mock_popen.call_args[0][0]
             self.assertEqual(sys.executable, popen_command[0])
-            self.assertIn('None', popen_command)
+            self.assertIn('Nichts', popen_command)
             self.assertIn('-I', popen_command)
             self.assertNotIn('-E', popen_command)  # -I overrides this
 
@@ -58,10 +58,10 @@ klasse TestScriptHelper(unittest.TestCase):
         """Ensure that -I is not passed when the environment is required."""
         with mock.patch.object(script_helper,
                                'interpreter_requires_environment',
-                               return_value=True) as mock_ire_func:
+                               return_value=Wahr) as mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
             try:
-                script_helper._assert_python(True, '-c', 'None')
+                script_helper._assert_python(Wahr, '-c', 'Nichts')
             except RuntimeError as err:
                 self.assertEqual('bail out of unittest', err.args[0])
             popen_command = mock_popen.call_args[0][0]
@@ -76,37 +76,37 @@ klasse TestScriptHelperEnvironment(unittest.TestCase):
     def setUp(self):
         self.assertHasAttr(script_helper, '__cached_interp_requires_environment')
         # Reset the private cached state.
-        script_helper.__dict__['__cached_interp_requires_environment'] = None
+        script_helper.__dict__['__cached_interp_requires_environment'] = Nichts
 
     def tearDown(self):
         # Reset the private cached state.
-        script_helper.__dict__['__cached_interp_requires_environment'] = None
+        script_helper.__dict__['__cached_interp_requires_environment'] = Nichts
 
     @mock.patch('subprocess.check_call')
     def test_interpreter_requires_environment_true(self, mock_check_call):
         with mock.patch.dict(os.environ):
-            os.environ.pop('PYTHONHOME', None)
+            os.environ.pop('PYTHONHOME', Nichts)
             mock_check_call.side_effect = subprocess.CalledProcessError('', '')
-            self.assertTrue(script_helper.interpreter_requires_environment())
-            self.assertTrue(script_helper.interpreter_requires_environment())
+            self.assertWahr(script_helper.interpreter_requires_environment())
+            self.assertWahr(script_helper.interpreter_requires_environment())
             self.assertEqual(1, mock_check_call.call_count)
 
     @mock.patch('subprocess.check_call')
     def test_interpreter_requires_environment_false(self, mock_check_call):
         with mock.patch.dict(os.environ):
-            os.environ.pop('PYTHONHOME', None)
+            os.environ.pop('PYTHONHOME', Nichts)
             # The mocked subprocess.check_call fakes a no-error process.
             script_helper.interpreter_requires_environment()
-            self.assertFalse(script_helper.interpreter_requires_environment())
+            self.assertFalsch(script_helper.interpreter_requires_environment())
             self.assertEqual(1, mock_check_call.call_count)
 
     @mock.patch('subprocess.check_call')
     def test_interpreter_requires_environment_details(self, mock_check_call):
         with mock.patch.dict(os.environ):
-            os.environ.pop('PYTHONHOME', None)
+            os.environ.pop('PYTHONHOME', Nichts)
             script_helper.interpreter_requires_environment()
-            self.assertFalse(script_helper.interpreter_requires_environment())
-            self.assertFalse(script_helper.interpreter_requires_environment())
+            self.assertFalsch(script_helper.interpreter_requires_environment())
+            self.assertFalsch(script_helper.interpreter_requires_environment())
             self.assertEqual(1, mock_check_call.call_count)
             check_call_command = mock_check_call.call_args[0][0]
             self.assertEqual(sys.executable, check_call_command[0])
@@ -116,8 +116,8 @@ klasse TestScriptHelperEnvironment(unittest.TestCase):
     def test_interpreter_requires_environment_with_pythonhome(self, mock_check_call):
         with mock.patch.dict(os.environ):
             os.environ['PYTHONHOME'] = 'MockedHome'
-            self.assertTrue(script_helper.interpreter_requires_environment())
-            self.assertTrue(script_helper.interpreter_requires_environment())
+            self.assertWahr(script_helper.interpreter_requires_environment())
+            self.assertWahr(script_helper.interpreter_requires_environment())
             self.assertEqual(0, mock_check_call.call_count)
 
 

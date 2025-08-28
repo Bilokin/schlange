@@ -19,7 +19,7 @@ try:
     # is available.
     import _ctypes
 except ImportError:
-    _ctypes = None
+    _ctypes = Nichts
 
 FEDORA_OS_RELEASE = """\
 NAME=Fedora
@@ -83,16 +83,16 @@ klasse PlatformTest(unittest.TestCase):
     def clear_caches(self):
         platform._platform_cache.clear()
         platform._sys_version_cache.clear()
-        platform._uname_cache = None
-        platform._os_release_cache = None
+        platform._uname_cache = Nichts
+        platform._os_release_cache = Nichts
 
     def test_invalidate_caches(self):
         self.clear_caches()
 
         self.assertDictEqual(platform._platform_cache, {})
         self.assertDictEqual(platform._sys_version_cache, {})
-        self.assertIsNone(platform._uname_cache)
-        self.assertIsNone(platform._os_release_cache)
+        self.assertIsNichts(platform._uname_cache)
+        self.assertIsNichts(platform._os_release_cache)
 
         # fill the cached entries (some have side effects on others)
         platform.platform()                 # fuer platform._platform_cache
@@ -102,21 +102,21 @@ klasse PlatformTest(unittest.TestCase):
         # check that the cache are filled
         self.assertNotEqual(platform._platform_cache, {})
         self.assertNotEqual(platform._sys_version_cache, {})
-        self.assertIsNotNone(platform._uname_cache)
+        self.assertIsNotNichts(platform._uname_cache)
 
         try:
             platform.freedesktop_os_release()
         except OSError:
-            self.assertIsNone(platform._os_release_cache)
+            self.assertIsNichts(platform._os_release_cache)
         sonst:
-            self.assertIsNotNone(platform._os_release_cache)
+            self.assertIsNotNichts(platform._os_release_cache)
 
         with self.subTest('clear platform caches'):
             platform.invalidate_caches()
             self.assertDictEqual(platform._platform_cache, {})
             self.assertDictEqual(platform._sys_version_cache, {})
-            self.assertIsNone(platform._uname_cache)
-            self.assertIsNone(platform._os_release_cache)
+            self.assertIsNichts(platform._uname_cache)
+            self.assertIsNichts(platform._os_release_cache)
 
     def test_architecture(self):
         res = platform.architecture()
@@ -129,8 +129,8 @@ klasse PlatformTest(unittest.TestCase):
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
     def test_platform(self):
-        fuer aliased in (False, True):
-            fuer terse in (False, True):
+        fuer aliased in (Falsch, Wahr):
+            fuer terse in (Falsch, Wahr):
                 res = platform.platform(aliased, terse)
 
     def test__platform(self):
@@ -217,7 +217,7 @@ klasse PlatformTest(unittest.TestCase):
                  'GCC 4.0.1 (Apple Computer, Inc. build 5370)'),
 
             ("3.10.8 (tags/v3.10.8:aaaf517424, Feb 14 2023, 16:28:12) [GCC 9.4.0]",
-             None, "linux")
+             Nichts, "linux")
             :
                 ('CPython', '3.10.8', '', '',
                 ('tags/v3.10.8:aaaf517424', 'Feb 14 2023 16:28:12'), 'GCC 9.4.0'),
@@ -237,12 +237,12 @@ klasse PlatformTest(unittest.TestCase):
         fuer (version_tag, scm, sys_platform), info in \
                 sys_versions.items():
             sys.version = version_tag
-            wenn scm is None:
+            wenn scm is Nichts:
                 wenn hasattr(sys, "_git"):
                     del sys._git
             sonst:
                 sys._git = scm
-            wenn sys_platform is not None:
+            wenn sys_platform is not Nichts:
                 sys.platform = sys_platform
             self.assertEqual(platform.python_implementation(), info[0])
             self.assertEqual(platform.python_version(), info[1])
@@ -263,7 +263,7 @@ klasse PlatformTest(unittest.TestCase):
 
     def test_uname(self):
         res = platform.uname()
-        self.assertTrue(any(res))
+        self.assertWahr(any(res))
         self.assertEqual(res[0], res.system)
         self.assertEqual(res[-6], res.system)
         self.assertEqual(res[1], res.node)
@@ -366,7 +366,7 @@ klasse PlatformTest(unittest.TestCase):
         of 'uname -p'. See Issue 35967 fuer rationale.
         """
         try:
-            proc_res = subprocess.check_output(['uname', '-p'], text=True).strip()
+            proc_res = subprocess.check_output(['uname', '-p'], text=Wahr).strip()
             expect = platform._unknown_as_blank(proc_res)
         except (OSError, subprocess.CalledProcessError):
             expect = ''
@@ -389,15 +389,15 @@ klasse PlatformTest(unittest.TestCase):
                 try:
                     del environ['PROCESSOR_ARCHITEW6432']
                     environ['PROCESSOR_ARCHITECTURE'] = 'foo'
-                    platform._uname_cache = None
+                    platform._uname_cache = Nichts
                     system, node, release, version, machine, processor = platform.uname()
                     self.assertEqual(machine, 'foo')
                     environ['PROCESSOR_ARCHITEW6432'] = 'bar'
-                    platform._uname_cache = None
+                    platform._uname_cache = Nichts
                     system, node, release, version, machine, processor = platform.uname()
                     self.assertEqual(machine, 'bar')
                 finally:
-                    platform._uname_cache = None
+                    platform._uname_cache = Nichts
 
     @unittest.skipUnless(support.MS_WINDOWS, 'This test only makes sense on Windows')
     def test_win32_ver(self):
@@ -436,7 +436,7 @@ klasse PlatformTest(unittest.TestCase):
         wenn platform.uname().system == 'Darwin':
             # We are on a macOS system, check that the right version
             # information is returned
-            output = subprocess.check_output(['sw_vers'], text=True)
+            output = subprocess.check_output(['sw_vers'], text=Wahr)
             fuer line in output.splitlines():
                 wenn line.startswith('ProductVersion:'):
                     real_ver = line.strip().split()[-1]
@@ -503,7 +503,7 @@ klasse PlatformTest(unittest.TestCase):
             # Release is a numeric version specifier with at least 2 parts
             parts = release.split(".")
             self.assertGreaterEqual(len(parts), 2)
-            self.assertTrue(all(part.isdigit() fuer part in parts))
+            self.assertWahr(all(part.isdigit() fuer part in parts))
 
             # If this is a simulator, we get a high level device descriptor
             # with no identifying model number. If this is a physical device,
@@ -511,7 +511,7 @@ klasse PlatformTest(unittest.TestCase):
             wenn is_simulator:
                 self.assertIn(model, {"iPhone", "iPad"})
             sonst:
-                self.assertTrue(
+                self.assertWahr(
                     (model.startswith("iPhone") or model.startswith("iPad"))
                     and "," in model
                 )
@@ -523,14 +523,14 @@ klasse PlatformTest(unittest.TestCase):
             self.assertEqual(result.system, "")
             self.assertEqual(result.release, "")
             self.assertEqual(result.model, "")
-            self.assertFalse(result.is_simulator)
+            self.assertFalsch(result.is_simulator)
 
             # Check the fallback values can be overridden by arguments
-            override = platform.ios_ver("Foo", "Bar", "Whiz", True)
+            override = platform.ios_ver("Foo", "Bar", "Whiz", Wahr)
             self.assertEqual(override.system, "Foo")
             self.assertEqual(override.release, "Bar")
             self.assertEqual(override.model, "Whiz")
-            self.assertTrue(override.is_simulator)
+            self.assertWahr(override.is_simulator)
 
     @unittest.skipIf(support.is_emscripten, "Does not apply to Emscripten")
     def test_libc_ver(self):
@@ -551,7 +551,7 @@ klasse PlatformTest(unittest.TestCase):
         filename = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, filename)
 
-        with mock.patch('os.confstr', create=True, return_value='mock 1.0'):
+        with mock.patch('os.confstr', create=Wahr, return_value='mock 1.0'):
             # test os.confstr() code path
             self.assertEqual(platform.libc_ver(), ('mock', '1.0'))
 
@@ -625,17 +625,17 @@ klasse PlatformTest(unittest.TestCase):
             self.assertEqual(res.manufacturer, "")
             self.assertEqual(res.model, "")
             self.assertEqual(res.device, "")
-            self.assertEqual(res.is_emulator, False)
+            self.assertEqual(res.is_emulator, Falsch)
 
             # Default values may also be overridden using parameters.
             res = platform.android_ver(
-                "alpha", 1, "bravo", "charlie", "delta", True)
+                "alpha", 1, "bravo", "charlie", "delta", Wahr)
             self.assertEqual(res.release, "alpha")
             self.assertEqual(res.api_level, 1)
             self.assertEqual(res.manufacturer, "bravo")
             self.assertEqual(res.model, "charlie")
             self.assertEqual(res.device, "delta")
-            self.assertEqual(res.is_emulator, True)
+            self.assertEqual(res.is_emulator, Wahr)
 
     @support.cpython_only
     def test__comparable_version(self):
@@ -786,13 +786,13 @@ klasse CommandLineTest(unittest.TestCase):
         # Test that the arguments are correctly passed to the underlying
         # `platform.platform()` call.
         options = (
-            (["--nonaliased"], False, False),
-            (["nonaliased"], False, False),
-            (["--terse"], True, True),
-            (["terse"], True, True),
-            (["nonaliased", "terse"], False, True),
-            (["--nonaliased", "terse"], False, True),
-            (["--terse", "nonaliased"], False, True),
+            (["--nonaliased"], Falsch, Falsch),
+            (["nonaliased"], Falsch, Falsch),
+            (["--terse"], Wahr, Wahr),
+            (["terse"], Wahr, Wahr),
+            (["nonaliased", "terse"], Falsch, Wahr),
+            (["--nonaliased", "terse"], Falsch, Wahr),
+            (["--terse", "nonaliased"], Falsch, Wahr),
         )
 
         fuer flags, aliased, terse in options:

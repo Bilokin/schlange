@@ -110,7 +110,7 @@ KINDS = [
 ]
 
 
-def _parse_line(line, prev=None):
+def _parse_line(line, prev=Nichts):
     last = line
     wenn prev:
         wenn not prev.endswith(os.linesep):
@@ -122,7 +122,7 @@ def _parse_line(line, prev=None):
             return line  # the new "prev"
         #if 'PyAPI_' in line or '#define ' in line or ' define ' in line:
         #    print(line)
-        return None
+        return Nichts
     results = zip(KINDS, m.groups())
     fuer kind, name in results:
         wenn name:
@@ -145,7 +145,7 @@ def _parse_line(line, prev=None):
                 raise NotImplementedError
             return line  # the new "prev"
     # It was a plain #define.
-    return None
+    return Nichts
 
 
 LEVELS = [
@@ -181,13 +181,13 @@ GROUPINGS = {
 klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
 
     @classmethod
-    def from_line(cls, line, filename, lno, prev=None):
+    def from_line(cls, line, filename, lno, prev=Nichts):
         parsed = _parse_line(line, prev)
         wenn not parsed:
-            return None, None
+            return Nichts, Nichts
         wenn isinstance(parsed, str):
             # incomplete
-            return None, parsed
+            return Nichts, parsed
         name, kind = parsed
         level = _get_level(filename, name)
         self = cls(filename, lno, name, kind, level)
@@ -195,7 +195,7 @@ klasse CAPIItem(namedtuple('CAPIItem', 'file lno name kind level')):
             self._text = (prev + line).rstrip().splitlines()
         sonst:
             self._text = [line.rstrip()]
-        return self, None
+        return self, Nichts
 
     @property
     def relfile(self):
@@ -259,14 +259,14 @@ def _resolve_full_groupby(groupby):
     return groupings
 
 
-def summarize(items, *, groupby='kind', includeempty=True, minimize=None):
-    wenn minimize is None:
-        wenn includeempty is None:
-            minimize = True
-            includeempty = False
+def summarize(items, *, groupby='kind', includeempty=Wahr, minimize=Nichts):
+    wenn minimize is Nichts:
+        wenn includeempty is Nichts:
+            minimize = Wahr
+            includeempty = Falsch
         sonst:
             minimize = includeempty
-    sowenn includeempty is None:
+    sowenn includeempty is Nichts:
         includeempty = minimize
     sowenn minimize and includeempty:
         raise ValueError(f'cannot minimize and includeempty at the same time')
@@ -315,7 +315,7 @@ def summarize(items, *, groupby='kind', includeempty=True, minimize=None):
 def _parse_capi(lines, filename):
     wenn isinstance(lines, str):
         lines = lines.splitlines()
-    prev = None
+    prev = Nichts
     fuer lno, line in enumerate(lines, 1):
         parsed, prev = CAPIItem.from_line(line, filename, lno, prev)
         wenn parsed:
@@ -331,7 +331,7 @@ def _parse_capi(lines, filename):
             raise Exception
 
 
-def iter_capi(filenames=None):
+def iter_capi(filenames=Nichts):
     fuer filename in iter_header_files(filenames):
         with open(filename) as infile:
             fuer item in _parse_capi(infile, filename):
@@ -340,14 +340,14 @@ def iter_capi(filenames=None):
 
 def resolve_filter(ignored):
     wenn not ignored:
-        return None
+        return Nichts
     ignored = set(_resolve_ignored(ignored))
-    def filter(item, *, log=None):
+    def filter(item, *, log=Nichts):
         wenn item.name not in ignored:
-            return True
-        wenn log is not None:
+            return Wahr
+        wenn log is not Nichts:
             log(f'ignored {item.name!r}')
-        return False
+        return Falsch
     return filter
 
 
@@ -412,7 +412,7 @@ def _collate(items, groupby, includeempty):
 
 
 def _get_sortkey(sort, _groupby, _columns):
-    wenn sort is True or sort is None:
+    wenn sort is Wahr or sort is Nichts:
         # For now:
         def sortkey(item):
             return (
@@ -480,16 +480,16 @@ def get_renderer(format):
 
 
 def render_table(items, *,
-                 columns=None,
+                 columns=Nichts,
                  groupby='kind',
-                 sort=True,
-                 showempty=False,
-                 verbose=False,
+                 sort=Wahr,
+                 showempty=Falsch,
+                 verbose=Falsch,
                  ):
-    wenn groupby is None:
+    wenn groupby is Nichts:
         groupby = 'kind'
-    wenn showempty is None:
-        showempty = False
+    wenn showempty is Nichts:
+        showempty = Falsch
 
     wenn groupby:
         (collated, groupby, maxfilename, maxname, maxextra,
@@ -572,17 +572,17 @@ def render_table(items, *,
 
 def render_full(items, *,
                 groupby='kind',
-                sort=None,
-                showempty=None,
-                verbose=False,
+                sort=Nichts,
+                showempty=Nichts,
+                verbose=Falsch,
                 ):
-    wenn groupby is None:
+    wenn groupby is Nichts:
         groupby = 'kind'
-    wenn showempty is None:
-        showempty = False
+    wenn showempty is Nichts:
+        showempty = Falsch
 
     wenn sort:
-        sortkey = _get_sortkey(sort, groupby, None)
+        sortkey = _get_sortkey(sort, groupby, Nichts)
 
     wenn groupby:
         collated, groupby, _, _, _ = _collate(items, groupby, showempty)
@@ -602,7 +602,7 @@ def render_full(items, *,
         wenn sort:
             items = sorted(items, key=sortkey)
         fuer item in items:
-            yield from _render_item_full(item, None, verbose)
+            yield from _render_item_full(item, Nichts, verbose)
             yield ''
 
 
@@ -620,17 +620,17 @@ def _render_item_full(item, groupby, verbose):
 
 def render_summary(items, *,
                    groupby='kind',
-                   sort=None,
-                   showempty=None,
-                   verbose=False,
+                   sort=Nichts,
+                   showempty=Nichts,
+                   verbose=Falsch,
                    ):
-    wenn groupby is None:
+    wenn groupby is Nichts:
         groupby = 'kind'
     summary = summarize(
         items,
         groupby=groupby,
         includeempty=showempty,
-        minimize=None wenn showempty sonst not verbose,
+        minimize=Nichts wenn showempty sonst not verbose,
     )
 
     subtotals = summary['totals']['subs']

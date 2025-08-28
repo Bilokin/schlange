@@ -12,11 +12,11 @@ import unittest
 try:
     import _testcapi
 except ImportError:
-    _testcapi = None
+    _testcapi = Nichts
 try:
     import _testinternalcapi
 except ImportError:
-    _testinternalcapi = None
+    _testinternalcapi = Nichts
 
 from test.support import skip_if_buggy_ucrt_strfptime, SuppressCrashReport
 
@@ -69,8 +69,8 @@ klasse TimeTestCase(unittest.TestCase):
     def test_time(self):
         time.time()
         info = time.get_clock_info('time')
-        self.assertFalse(info.monotonic)
-        self.assertTrue(info.adjustable)
+        self.assertFalsch(info.monotonic)
+        self.assertWahr(info.adjustable)
 
     def test_time_ns_type(self):
         def check_ns(sec, ns):
@@ -119,7 +119,7 @@ klasse TimeTestCase(unittest.TestCase):
     @unittest.skipIf(support.is_emscripten, "Fails to find clock")
     def test_pthread_getcpuclockid(self):
         clk_id = time.pthread_getcpuclockid(threading.get_ident())
-        self.assertTrue(type(clk_id) is int)
+        self.assertWahr(type(clk_id) is int)
         # when in 32-bit mode AIX only returns the predefined constant
         wenn platform.system() == "AIX" and (sys.maxsize.bit_length() <= 32):
             self.assertEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
@@ -345,11 +345,11 @@ klasse TimeTestCase(unittest.TestCase):
         # check that this doesn't chain exceptions needlessly (see #17572)
         with self.assertRaises(ValueError) as e:
             time.strptime('', '%D')
-        self.assertTrue(e.exception.__suppress_context__)
+        self.assertWahr(e.exception.__suppress_context__)
         # additional check fuer stray % branch
         with self.assertRaises(ValueError) as e:
             time.strptime('%', '%')
-        self.assertTrue(e.exception.__suppress_context__)
+        self.assertWahr(e.exception.__suppress_context__)
 
     def test_strptime_leap_year(self):
         # GH-70647: warns wenn parsing a format with a day and no year.
@@ -409,7 +409,7 @@ klasse TimeTestCase(unittest.TestCase):
         victoria = 'AEST-10AEDT-11,M10.5.0,M3.5.0'
         utc='UTC+0'
 
-        org_TZ = environ.get('TZ',None)
+        org_TZ = environ.get('TZ',Nichts)
         try:
             # Make sure we can switch to UTC time and results are correct
             # Note that unknown timezones default to UTC.
@@ -449,7 +449,7 @@ klasse TimeTestCase(unittest.TestCase):
             # example this bug:
             # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=93810
             self.assertIn(time.tzname[0], ('AEST' 'EST'), time.tzname[0])
-            self.assertTrue(time.tzname[1] in ('AEDT', 'EDT'), str(time.tzname[1]))
+            self.assertWahr(time.tzname[1] in ('AEDT', 'EDT'), str(time.tzname[1]))
             self.assertEqual(len(time.tzname), 2)
             self.assertEqual(time.daylight, 1)
             self.assertEqual(time.timezone, -36000)
@@ -459,7 +459,7 @@ klasse TimeTestCase(unittest.TestCase):
         finally:
             # Repair TZ environment variable in case any other tests
             # rely on it.
-            wenn org_TZ is not None:
+            wenn org_TZ is not Nichts:
                 environ['TZ'] = org_TZ
             sowenn 'TZ' in environ:
                 del environ['TZ']
@@ -479,18 +479,18 @@ klasse TimeTestCase(unittest.TestCase):
         # at any time.  Make sure these are at least accepted and
         # don't raise errors.
         time.ctime()
-        time.ctime(None)
+        time.ctime(Nichts)
 
     def test_gmtime_without_arg(self):
         gt0 = time.gmtime()
-        gt1 = time.gmtime(None)
+        gt1 = time.gmtime(Nichts)
         t0 = time.mktime(gt0)
         t1 = time.mktime(gt1)
         self.assertAlmostEqual(t1, t0, delta=0.2)
 
     def test_localtime_without_arg(self):
         lt0 = time.localtime()
-        lt1 = time.localtime(None)
+        lt1 = time.localtime(Nichts)
         t0 = time.mktime(lt0)
         t1 = time.mktime(lt1)
         self.assertAlmostEqual(t1, t0, delta=0.2)
@@ -538,12 +538,12 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertGreater(t2, t1)
         # bpo-20101: tolerate a difference of 50 ms because of bad timer
         # resolution on Windows
-        self.assertTrue(0.450 <= dt)
+        self.assertWahr(0.450 <= dt)
 
         # monotonic() is a monotonic but non adjustable clock
         info = time.get_clock_info('monotonic')
-        self.assertTrue(info.monotonic)
-        self.assertFalse(info.adjustable)
+        self.assertWahr(info.monotonic)
+        self.assertFalsch(info.adjustable)
 
     def test_perf_counter(self):
         time.perf_counter()
@@ -564,8 +564,8 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertLess(stop - start, 0.020)
 
         info = time.get_clock_info('process_time')
-        self.assertTrue(info.monotonic)
-        self.assertFalse(info.adjustable)
+        self.assertWahr(info.monotonic)
+        self.assertFalsch(info.adjustable)
 
     def test_thread_time(self):
         wenn not hasattr(time, 'thread_time'):
@@ -584,8 +584,8 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertLess(stop - start, 0.020)
 
         info = time.get_clock_info('thread_time')
-        self.assertTrue(info.monotonic)
-        self.assertFalse(info.adjustable)
+        self.assertWahr(info.monotonic)
+        self.assertFalsch(info.adjustable)
 
     @unittest.skipUnless(hasattr(time, 'clock_settime'),
                          'need time.clock_settime')
@@ -604,7 +604,7 @@ klasse TimeTestCase(unittest.TestCase):
 
     def test_localtime_failure(self):
         # Issue #13847: check fuer localtime() failure
-        invalid_time_t = None
+        invalid_time_t = Nichts
         fuer time_t in (-1, 2**30, 2**33, 2**60):
             try:
                 time.localtime(time_t)
@@ -613,7 +613,7 @@ klasse TimeTestCase(unittest.TestCase):
             except OSError:
                 invalid_time_t = time_t
                 break
-        wenn invalid_time_t is None:
+        wenn invalid_time_t is Nichts:
             self.skipTest("unable to find an invalid time_t value")
 
         self.assertRaises(OSError, time.localtime, invalid_time_t)
@@ -699,9 +699,9 @@ klasse _TestStrftimeYear:
         try:
             time.strftime('%Y', (y,) + (0,) * 8)
         except ValueError:
-            cond = False
+            cond = Falsch
         sonst:
-            cond = True
+            cond = Wahr
         return unittest.skipUnless(cond, msg)
 
     @skip_if_not_supported(10000)
@@ -718,7 +718,7 @@ klasse _TestStrftimeYear:
 klasse _Test4dYear:
     _format = '%d'
 
-    def test_year(self, fmt=None, func=None):
+    def test_year(self, fmt=Nichts, func=Nichts):
         fmt = fmt or self._format
         func = func or self.yearstr
         self.assertEqual(func(1),    fmt % 1)
@@ -766,11 +766,11 @@ klasse TestPytime(unittest.TestCase):
 
         # See wenn the offset and zone are similar to the module
         # attributes.
-        wenn lt.tm_gmtoff is None:
+        wenn lt.tm_gmtoff is Nichts:
             self.assertNotHasAttr(time, "timezone")
         sonst:
             self.assertEqual(lt.tm_gmtoff, -[time.timezone, time.altzone][lt.tm_isdst])
-        wenn lt.tm_zone is None:
+        wenn lt.tm_zone is Nichts:
             self.assertNotHasAttr(time, "tzname")
         sonst:
             self.assertEqual(lt.tm_zone, time.tzname[lt.tm_isdst])
@@ -806,17 +806,17 @@ klasse TestPytime(unittest.TestCase):
         # Load a short time structure using pickle.
         st = b"ctime\nstruct_time\np0\n((I2007\nI8\nI11\nI1\nI24\nI49\nI5\nI223\nI1\ntp1\n(dp2\ntp3\nRp4\n."
         lt = pickle.loads(st)
-        self.assertIs(lt.tm_gmtoff, None)
-        self.assertIs(lt.tm_zone, None)
+        self.assertIs(lt.tm_gmtoff, Nichts)
+        self.assertIs(lt.tm_zone, Nichts)
 
 
-@unittest.skipIf(_testcapi is None, 'need the _testinternalcapi module')
-@unittest.skipIf(_testinternalcapi is None, 'need the _testinternalcapi module')
+@unittest.skipIf(_testcapi is Nichts, 'need the _testinternalcapi module')
+@unittest.skipIf(_testinternalcapi is Nichts, 'need the _testinternalcapi module')
 klasse CPyTimeTestCase:
     """
     Base klasse to test the C _PyTime_t API.
     """
-    OVERFLOW_SECONDS = None
+    OVERFLOW_SECONDS = Nichts
 
     def setUp(self):
         from _testinternalcapi import SIZEOF_TIME_T
@@ -879,7 +879,7 @@ klasse CPyTimeTestCase:
         return ns_timestamps
 
     def _check_rounding(self, pytime_converter, expected_func,
-                        use_float, unit_to_sec, value_filter=None):
+                        use_float, unit_to_sec, value_filter=Nichts):
 
         def convert_values(ns_timestamps):
             wenn use_float:
@@ -924,14 +924,14 @@ klasse CPyTimeTestCase:
                     pytime_converter(value, time_rnd)
 
     def check_int_rounding(self, pytime_converter, expected_func,
-                           unit_to_sec=1, value_filter=None):
+                           unit_to_sec=1, value_filter=Nichts):
         self._check_rounding(pytime_converter, expected_func,
-                             False, unit_to_sec, value_filter)
+                             Falsch, unit_to_sec, value_filter)
 
     def check_float_rounding(self, pytime_converter, expected_func,
-                             unit_to_sec=1, value_filter=None):
+                             unit_to_sec=1, value_filter=Nichts):
         self._check_rounding(pytime_converter, expected_func,
-                             True, unit_to_sec, value_filter)
+                             Wahr, unit_to_sec, value_filter)
 
     def decimal_round(self, x):
         d = decimal.Decimal(x)

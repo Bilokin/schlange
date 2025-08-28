@@ -9,7 +9,7 @@ from test.support.warnings_helper import check_warnings
 
 _testcapi = import_helper.import_module('_testcapi')
 _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
-NULL = None
+NULL = Nichts
 
 
 klasse ImportTests(unittest.TestCase):
@@ -43,7 +43,7 @@ klasse ImportTests(unittest.TestCase):
         try:
             fuer name in ('colorsys', 'math'):
                 with self.subTest(name=name):
-                    sys.modules.pop(name, None)
+                    sys.modules.pop(name, Nichts)
                     module = import_module(name)
                     self.assertIsInstance(module, types.ModuleType)
                     self.assertIs(module, sys.modules[name])
@@ -66,7 +66,7 @@ klasse ImportTests(unittest.TestCase):
         self.assertRaises(TypeError, getmodule, [])  # unhashable
         # CRASHES getmodule(NULL)
 
-    def check_addmodule(self, add_module, accept_nonstr=False):
+    def check_addmodule(self, add_module, accept_nonstr=Falsch):
         # create a new module
         names = ['nonexistent']
         wenn accept_nonstr:
@@ -82,7 +82,7 @@ klasse ImportTests(unittest.TestCase):
                     self.assertEqual(module.__name__, name)
                     self.assertIs(module, sys.modules[name])
                 finally:
-                    sys.modules.pop(name, None)
+                    sys.modules.pop(name, Nichts)
 
         # get an existing module
         self.check_import_loaded_module(add_module)
@@ -90,7 +90,7 @@ klasse ImportTests(unittest.TestCase):
     def test_addmoduleobject(self):
         # Test PyImport_AddModuleObject()
         addmoduleobject = _testlimitedcapi.PyImport_AddModuleObject
-        self.check_addmodule(addmoduleobject, accept_nonstr=True)
+        self.check_addmodule(addmoduleobject, accept_nonstr=Wahr)
 
         self.assertRaises(TypeError, addmoduleobject, [])  # unhashable
         # CRASHES addmoduleobject(NULL)
@@ -232,7 +232,7 @@ klasse ImportTests(unittest.TestCase):
             # Check the function side effects
             self.assertEqual(module.attr, 1)
         finally:
-            sys.modules.pop(name, None)
+            sys.modules.pop(name, Nichts)
         return module.__spec__.origin
 
     def test_executecodemodule(self):
@@ -267,7 +267,7 @@ klasse ImportTests(unittest.TestCase):
         # CRASHES execcodemoduleex(NULL, code, NULL)
         # CRASHES execcodemoduleex(name, NULL, NULL)
 
-    def check_executecode_pathnames(self, execute_code_func, object=False):
+    def check_executecode_pathnames(self, execute_code_func, object=Falsch):
         # Test non-NULL pathname and NULL cpathname
 
         # Test NULL paths (it should not crash)
@@ -308,13 +308,13 @@ klasse ImportTests(unittest.TestCase):
     def test_executecodemoduleobject(self):
         # Test PyImport_ExecCodeModuleObject()
         execute_code_func = _testlimitedcapi.PyImport_ExecCodeModuleObject
-        self.check_executecode_pathnames(execute_code_func, object=True)
+        self.check_executecode_pathnames(execute_code_func, object=Wahr)
 
         code = compile('attr = 1', '<test>', 'exec')
         self.assertRaises(TypeError, execute_code_func, [], code, NULL, NULL)
         nonstring = tuple(['hashable non-string'])
         self.assertRaises(AttributeError, execute_code_func, nonstring, code, NULL, NULL)
-        sys.modules.pop(nonstring, None)
+        sys.modules.pop(nonstring, Nichts)
         # CRASHES execute_code_func(NULL, code, NULL, NULL)
         # CRASHES execute_code_func(name, NULL, NULL, NULL)
 

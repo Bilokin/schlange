@@ -15,10 +15,10 @@ from xml.sax.handler import property_xml_string, property_interning_dict
 try:
     from xml.parsers import expat
 except ImportError:
-    raise SAXReaderNotAvailable("expat not supported", None)
+    raise SAXReaderNotAvailable("expat not supported", Nichts)
 sonst:
     wenn not hasattr(expat, "ParserCreate"):
-        raise SAXReaderNotAvailable("expat not supported", None)
+        raise SAXReaderNotAvailable("expat not supported", Nichts)
 from xml.sax import xmlreader, saxutils, handler
 
 AttributesImpl = xmlreader.AttributesImpl
@@ -53,26 +53,26 @@ klasse ExpatLocator(xmlreader.Locator):
 
     def getColumnNumber(self):
         parser = self._ref
-        wenn parser._parser is None:
-            return None
+        wenn parser._parser is Nichts:
+            return Nichts
         return parser._parser.ErrorColumnNumber
 
     def getLineNumber(self):
         parser = self._ref
-        wenn parser._parser is None:
+        wenn parser._parser is Nichts:
             return 1
         return parser._parser.ErrorLineNumber
 
     def getPublicId(self):
         parser = self._ref
-        wenn parser is None:
-            return None
+        wenn parser is Nichts:
+            return Nichts
         return parser._source.getPublicId()
 
     def getSystemId(self):
         parser = self._ref
-        wenn parser is None:
-            return None
+        wenn parser is Nichts:
+            return Nichts
         return parser._source.getSystemId()
 
 
@@ -84,13 +84,13 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     def __init__(self, namespaceHandling=0, bufsize=2**16-20):
         xmlreader.IncrementalParser.__init__(self, bufsize)
         self._source = xmlreader.InputSource()
-        self._parser = None
+        self._parser = Nichts
         self._namespaces = namespaceHandling
-        self._lex_handler_prop = None
-        self._parsing = False
+        self._lex_handler_prop = Nichts
+        self._parsing = Falsch
         self._entity_stack = []
         self._external_ges = 0
-        self._interning = None
+        self._interning = Nichts
 
     # XMLReader methods
 
@@ -111,7 +111,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             raise
 
     def prepareParser(self, source):
-        wenn source.getSystemId() is not None:
+        wenn source.getSystemId() is not Nichts:
             self._parser.SetBase(source.getSystemId())
 
     # Redefined setContentHandler to allow changing handlers during parsing
@@ -125,7 +125,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         wenn name == feature_namespaces:
             return self._namespaces
         sowenn name == feature_string_interning:
-            return self._interning is not None
+            return self._interning is not Nichts
         sowenn name in (feature_validation, feature_external_pes,
                       feature_namespace_prefixes):
             return 0
@@ -143,10 +143,10 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._external_ges = state
         sowenn name == feature_string_interning:
             wenn state:
-                wenn self._interning is None:
+                wenn self._interning is Nichts:
                     self._interning = {}
             sonst:
-                self._interning = None
+                self._interning = Nichts
         sowenn name == feature_validation:
             wenn state:
                 raise SAXNotSupportedException(
@@ -197,10 +197,10 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     # IncrementalParser methods
 
-    def feed(self, data, isFinal=False):
+    def feed(self, data, isFinal=Falsch):
         wenn not self._parsing:
             self.reset()
-            self._parsing = True
+            self._parsing = Wahr
             self._cont_handler.startDocument()
 
         try:
@@ -215,13 +215,13 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self._err_handler.fatalError(exc)
 
     def flush(self):
-        wenn self._parser is None:
+        wenn self._parser is Nichts:
             return
 
         was_enabled = self._parser.GetReparseDeferralEnabled()
         try:
-            self._parser.SetReparseDeferralEnabled(False)
-            self._parser.Parse(b"", False)
+            self._parser.SetReparseDeferralEnabled(Falsch)
+            self._parser.Parse(b"", Falsch)
         except expat.error as e:
             exc = SAXParseException(expat.ErrorString(e.code), e, self)
             self._err_handler.fatalError(exc)
@@ -232,27 +232,27 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         source = self._source
         try:
             file = source.getCharacterStream()
-            wenn file is not None:
+            wenn file is not Nichts:
                 file.close()
         finally:
             file = source.getByteStream()
-            wenn file is not None:
+            wenn file is not Nichts:
                 file.close()
 
     def close(self):
-        wenn (self._entity_stack or self._parser is None or
+        wenn (self._entity_stack or self._parser is Nichts or
             isinstance(self._parser, _ClosedParser)):
             # If we are completing an external entity, do nothing here
             return
         try:
-            self.feed(b"", isFinal=True)
+            self.feed(b"", isFinal=Wahr)
             self._cont_handler.endDocument()
-            self._parsing = False
+            self._parsing = Falsch
             # break cycle created by expat handlers pointing to our methods
-            self._parser = None
+            self._parser = Nichts
         finally:
-            self._parsing = False
-            wenn self._parser is not None:
+            self._parsing = Falsch
+            wenn self._parser is not Nichts:
                 # Keep ErrorColumnNumber and ErrorLineNumber after closing.
                 parser = _ClosedParser()
                 parser.ErrorColumnNumber = self._parser.ErrorColumnNumber
@@ -268,12 +268,12 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     def _reset_lex_handler_prop(self):
         lex = self._lex_handler_prop
         parser = self._parser
-        wenn lex is None:
-            parser.CommentHandler = None
-            parser.StartCdataSectionHandler = None
-            parser.EndCdataSectionHandler = None
-            parser.StartDoctypeDeclHandler = None
-            parser.EndDoctypeDeclHandler = None
+        wenn lex is Nichts:
+            parser.CommentHandler = Nichts
+            parser.StartCdataSectionHandler = Nichts
+            parser.EndCdataSectionHandler = Nichts
+            parser.StartDoctypeDeclHandler = Nichts
+            parser.EndDoctypeDeclHandler = Nichts
         sonst:
             parser.CommentHandler = lex.comment
             parser.StartCdataSectionHandler = lex.startCDATA
@@ -300,7 +300,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         self._parser.StartNamespaceDeclHandler = self.start_namespace_decl
         self._parser.EndNamespaceDeclHandler = self.end_namespace_decl
 
-        self._decl_handler_prop = None
+        self._decl_handler_prop = Nichts
         wenn self._lex_handler_prop:
             self._reset_lex_handler_prop()
 #         self._parser.DefaultHandler =
@@ -315,18 +315,18 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         self._parser.SetParamEntityParsing(
             expat.XML_PARAM_ENTITY_PARSING_UNLESS_STANDALONE)
 
-        self._parsing = False
+        self._parsing = Falsch
         self._entity_stack = []
 
     # Locator methods
 
     def getColumnNumber(self):
-        wenn self._parser is None:
-            return None
+        wenn self._parser is Nichts:
+            return Nichts
         return self._parser.ErrorColumnNumber
 
     def getLineNumber(self):
-        wenn self._parser is None:
+        wenn self._parser is Nichts:
             return 1
         return self._parser.ErrorLineNumber
 
@@ -347,7 +347,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         pair = name.split()
         wenn len(pair) == 1:
             # no namespace
-            pair = (None, name)
+            pair = (Nichts, name)
         sowenn len(pair) == 3:
             pair = pair[0], pair[1]
         sonst:
@@ -362,7 +362,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             wenn length == 1:
                 # no namespace
                 qname = aname
-                apair = (None, aname)
+                apair = (Nichts, aname)
             sowenn length == 3:
                 qname = "%s:%s" % (parts[2], parts[1])
                 apair = parts[0], parts[1]
@@ -374,19 +374,19 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             newattrs[apair] = value
             qnames[apair] = qname
 
-        self._cont_handler.startElementNS(pair, None,
+        self._cont_handler.startElementNS(pair, Nichts,
                                           AttributesNSImpl(newattrs, qnames))
 
     def end_element_ns(self, name):
         pair = name.split()
         wenn len(pair) == 1:
-            pair = (None, name)
+            pair = (Nichts, name)
         sowenn len(pair) == 3:
             pair = pair[0], pair[1]
         sonst:
             pair = tuple(pair)
 
-        self._cont_handler.endElementNS(pair, None)
+        self._cont_handler.endElementNS(pair, Nichts)
 
     # this is not used (call directly to ContentHandler)
     def processing_instruction(self, target, data):

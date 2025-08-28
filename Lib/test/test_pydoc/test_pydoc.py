@@ -384,18 +384,18 @@ klasse PydocBaseTest(unittest.TestCase):
         # sys.modules, so check that it was restored.
         self.assertIs(sys.modules['pydoc'], pydoc)
 
-    def _restricted_walk_packages(self, walk_packages, path=None):
+    def _restricted_walk_packages(self, walk_packages, path=Nichts):
         """
         A version of pkgutil.walk_packages() that will restrict itself to
         a given path.
         """
         default_path = path or [os.path.dirname(__file__)]
-        def wrapper(path=None, prefix='', onerror=None):
+        def wrapper(path=Nichts, prefix='', onerror=Nichts):
             return walk_packages(path or default_path, prefix, onerror)
         return wrapper
 
     @contextlib.contextmanager
-    def restrict_walk_packages(self, path=None):
+    def restrict_walk_packages(self, path=Nichts):
         walk_packages = pkgutil.walk_packages
         pkgutil.walk_packages = self._restricted_walk_packages(walk_packages,
                                                                path)
@@ -413,7 +413,7 @@ klasse PydocBaseTest(unittest.TestCase):
 
 
 klasse PydocDocTest(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
     def tearDown(self):
         self.assertIs(sys.modules['pydoc'], pydoc)
 
@@ -458,7 +458,7 @@ klasse PydocDocTest(unittest.TestCase):
 
     def test_slotted_dataclass_with_field_docs(self):
         import dataclasses
-        @dataclasses.dataclass(slots=True)
+        @dataclasses.dataclass(slots=Wahr)
         klasse My:
             x: int = dataclasses.field(doc='Docstring fuer x')
         doc = pydoc.render_doc(My)
@@ -477,7 +477,7 @@ klasse PydocDocTest(unittest.TestCase):
     def test_getpager_with_stdin_none(self):
         previous_stdin = sys.stdin
         try:
-            sys.stdin = None
+            sys.stdin = Nichts
             pydoc.getpager() # Shouldn't fail.
         finally:
             sys.stdin = previous_stdin
@@ -685,7 +685,7 @@ klasse PydocDocTest(unittest.TestCase):
     def test_help_output_redirect(self, pager_mock):
         # issue 940286, wenn output is set in Helper, then all output from
         # Helper.help should be redirected
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         unused, doc_loc = get_pydoc_text(pydoc_mod)
         module = "test.test_pydoc.pydoc_mod"
@@ -731,7 +731,7 @@ klasse PydocDocTest(unittest.TestCase):
                 self.assertIn(expected_text_part, result, msg=f'failed on request "{request}"')
                 pager_mock.assert_not_called()
 
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         # test fuer "keywords"
         run_pydoc_for_request('keywords', 'Here is a list of the Python keywords.')
@@ -742,10 +742,10 @@ klasse PydocDocTest(unittest.TestCase):
         # test fuer "modules" skipped, see test_modules()
         # test fuer symbol "%"
         run_pydoc_for_request('%', 'The power operator')
-        # test fuer special True, False, None keywords
-        run_pydoc_for_request('True', 'class bool(int)')
-        run_pydoc_for_request('False', 'class bool(int)')
-        run_pydoc_for_request('None', 'class NoneType(object)')
+        # test fuer special Wahr, Falsch, Nichts keywords
+        run_pydoc_for_request('Wahr', 'class bool(int)')
+        run_pydoc_for_request('Falsch', 'class bool(int)')
+        run_pydoc_for_request('Nichts', 'class NoneType(object)')
         # test fuer keyword "assert"
         run_pydoc_for_request('assert', 'The "assert" statement')
         # test fuer topic "TYPES"
@@ -775,8 +775,8 @@ klasse PydocDocTest(unittest.TestCase):
                 self.assertEqual(pager_mock.call_args.args[1], f'Help on {what}')
 
         run_pydoc_pager('%', 'EXPRESSIONS', 'Operator precedence')
-        run_pydoc_pager('True', 'bool object', 'Help on bool object:')
-        run_pydoc_pager(True, 'bool object', 'Help on bool object:')
+        run_pydoc_pager('Wahr', 'bool object', 'Help on bool object:')
+        run_pydoc_pager(Wahr, 'bool object', 'Help on bool object:')
         run_pydoc_pager('assert', 'assert', 'The "assert" statement')
         run_pydoc_pager('TYPES', 'TYPES', 'The standard type hierarchy')
         run_pydoc_pager('pydoc.Helper.help', 'pydoc.Helper.help',
@@ -833,7 +833,7 @@ klasse PydocDocTest(unittest.TestCase):
     def test_showtopic_output_redirect(self, pager_mock):
         # issue 940286, wenn output is set in Helper, then all output from
         # Helper.showtopic should be redirected
-        self.maxDiff = None
+        self.maxDiff = Nichts
 
         with captured_stdout() as output, captured_stderr() as err:
             buf = StringIO()
@@ -881,7 +881,7 @@ klasse PydocDocTest(unittest.TestCase):
         self.assertIn("Alias fuer field number 1", helptext)
 
     def test_namedtuple_public_underscore(self):
-        NT = namedtuple('NT', ['abc', 'def'], rename=True)
+        NT = namedtuple('NT', ['abc', 'def'], rename=Wahr)
         with captured_stdout() as help_io:
             pydoc.help(NT)
         helptext = help_io.getvalue()
@@ -901,7 +901,7 @@ klasse PydocDocTest(unittest.TestCase):
             self.assertEqual(synopsis, 'line 1: h\xe9')
 
     def test_source_synopsis(self):
-        def check(source, expected, encoding=None):
+        def check(source, expected, encoding=Nichts):
             wenn isinstance(source, str):
                 source_file = StringIO(source)
             sonst:
@@ -919,7 +919,7 @@ klasse PydocDocTest(unittest.TestCase):
         check('"""  Whitespace around docstring.  """',
               'Whitespace around docstring.')
         check('import sys\n"""No docstring"""',
-              None)
+              Nichts)
         check('  \n"""Docstring after empty line."""',
               'Docstring after empty line.')
         check('# Comment\n"""Docstring after comment."""',
@@ -929,11 +929,11 @@ klasse PydocDocTest(unittest.TestCase):
         check('""""""', # Empty docstring
               '')
         check('', # Empty file
-              None)
+              Nichts)
         check('"""Embedded\0null byte"""',
-              None)
+              Nichts)
         check('"""Embedded null byte"""\0',
-              None)
+              Nichts)
         check('"""Café and résumé."""',
               'Café and résumé.')
         check("'''Triple single quotes'''",
@@ -947,27 +947,27 @@ klasse PydocDocTest(unittest.TestCase):
         check('"""Unrecognized escape \\sequence"""',
               'Unrecognized escape \\sequence')
         check('"""Invalid escape seq\\uence"""',
-              None)
+              Nichts)
         check('r"""Raw \\stri\\ng"""',
               'Raw \\stri\\ng')
         check('b"""Bytes literal"""',
-              None)
+              Nichts)
         check('f"""f-string"""',
-              None)
+              Nichts)
         check('"""Concatenated""" \\\n"string" \'literals\'',
               'Concatenatedstringliterals')
         check('"""String""" + """expression"""',
-              None)
+              Nichts)
         check('("""In parentheses""")',
               'In parentheses')
         check('("""Multiple lines """\n"""in parentheses""")',
               'Multiple lines in parentheses')
         check('()', # tuple
-              None)
+              Nichts)
         check(b'# coding: iso-8859-15\n"""\xa4uro sign"""',
               '€uro sign', encoding='iso-8859-15')
         check(b'"""\xa4"""', # Decoding error
-              None, encoding='utf-8')
+              Nichts, encoding='utf-8')
 
         with tempfile.NamedTemporaryFile(mode='w+', encoding='utf-8') as temp_file:
             temp_file.write('"""Real file test."""\n')
@@ -993,9 +993,9 @@ klasse PydocDocTest(unittest.TestCase):
                 fobj.write("foo = 1")
             py_compile.compile(init_path)
             synopsis = pydoc.synopsis(init_path, {})
-            self.assertIsNone(synopsis)
+            self.assertIsNichts(synopsis)
             synopsis_cached = pydoc.synopsis(cached_path, {})
-            self.assertIsNone(synopsis_cached)
+            self.assertIsNichts(synopsis_cached)
 
     def test_splitdoc_with_description(self):
         example_string = "I Am A Doc\n\n\nHere is my description"
@@ -1005,7 +1005,7 @@ klasse PydocDocTest(unittest.TestCase):
     def test_is_package_when_not_package(self):
         with os_helper.temp_cwd() as test_dir:
             with self.assertWarns(DeprecationWarning) as cm:
-                self.assertFalse(pydoc.ispackage(test_dir))
+                self.assertFalsch(pydoc.ispackage(test_dir))
             self.assertEqual(cm.filename, __file__)
 
     def test_is_package_when_is_package(self):
@@ -1013,7 +1013,7 @@ klasse PydocDocTest(unittest.TestCase):
             init_path = os.path.join(test_dir, '__init__.py')
             open(init_path, 'w').close()
             with self.assertWarns(DeprecationWarning) as cm:
-                self.assertTrue(pydoc.ispackage(test_dir))
+                self.assertWahr(pydoc.ispackage(test_dir))
             os.remove(init_path)
             self.assertEqual(cm.filename, __file__)
 
@@ -1025,7 +1025,7 @@ klasse PydocDocTest(unittest.TestCase):
 
         klasse TestClass(object):
             def method_returning_true(self):
-                return True
+                return Wahr
 
         # What we expect to get back: everything on object...
         expected = dict(vars(object))
@@ -1045,13 +1045,13 @@ klasse PydocDocTest(unittest.TestCase):
     @requires_docstrings
     def test_method_aliases(self):
         klasse A:
-            def tkraise(self, aboveThis=None):
+            def tkraise(self, aboveThis=Nichts):
                 """Raise this widget in the stacking order."""
             lift = tkraise
             def a_size(self):
                 """Return size"""
         klasse B(A):
-            def itemconfigure(self, tagOrId, cnf=None, **kw):
+            def itemconfigure(self, tagOrId, cnf=Nichts, **kw):
                 """Configure resources of an item TAGORID."""
             itemconfig = itemconfigure
             b_size = A.a_size
@@ -1071,9 +1071,9 @@ klasse B(A)
  |
  |  b_size = a_size(self)
  |
- |  itemconfig = itemconfigure(self, tagOrId, cnf=None, **kw)
+ |  itemconfig = itemconfigure(self, tagOrId, cnf=Nichts, **kw)
  |
- |  itemconfigure(self, tagOrId, cnf=None, **kw)
+ |  itemconfigure(self, tagOrId, cnf=Nichts, **kw)
  |      Configure resources of an item TAGORID.
  |
  |  ----------------------------------------------------------------------
@@ -1082,9 +1082,9 @@ klasse B(A)
  |  a_size(self)
  |      Return size
  |
- |  lift = tkraise(self, aboveThis=None)
+ |  lift = tkraise(self, aboveThis=Nichts)
  |
- |  tkraise(self, aboveThis=None)
+ |  tkraise(self, aboveThis=Nichts)
  |      Raise this widget in the stacking order.
  |
  |  ----------------------------------------------------------------------
@@ -1110,15 +1110,15 @@ klasse B(A)
 
     Methods defined here:
         b_size = a_size(self)
-        itemconfig = itemconfigure(self, tagOrId, cnf=None, **kw)
-        itemconfigure(self, tagOrId, cnf=None, **kw)
+        itemconfig = itemconfigure(self, tagOrId, cnf=Nichts, **kw)
+        itemconfigure(self, tagOrId, cnf=Nichts, **kw)
             Configure resources of an item TAGORID.
 
     Methods inherited from A:
         a_size(self)
             Return size
-        lift = tkraise(self, aboveThis=None)
-        tkraise(self, aboveThis=None)
+        lift = tkraise(self, aboveThis=Nichts)
+        tkraise(self, aboveThis=Nichts)
             Raise this widget in the stacking order.
 
     Data descriptors inherited from A:
@@ -1141,7 +1141,7 @@ klasse B(A)
                          arg1: Callable[[int, int, int], str],
                          arg2: Literal['some value', 'other value'],
                          arg3: Annotated[int, 'some docs about this type'],
-                         ) -> None:
+                         ) -> Nichts:
                 ...
 
         doc = pydoc.render_doc(A)
@@ -1153,7 +1153,7 @@ klasse A(builtins.object)
  |      arg1: Callable[[int, int, int], str],
  |      arg2: Literal['some value', 'other value'],
  |      arg3: Annotated[int, 'some docs about this type']
- |  ) -> None
+ |  ) -> Nichts
  |
  |  Methods defined here:
  |
@@ -1162,7 +1162,7 @@ klasse A(builtins.object)
  |      arg1: Callable[[int, int, int], str],
  |      arg2: Literal['some value', 'other value'],
  |      arg3: Annotated[int, 'some docs about this type']
- |  ) -> None
+ |  ) -> Nichts
  |
  |  ----------------------------------------------------------------------
  |  Data descriptors defined here:
@@ -1484,7 +1484,7 @@ klasse TestDescriptions(unittest.TestCase):
         fuer name in ('str', 'str.translate', 'builtins.str',
                      'builtins.str.translate'):
             # test low-level function
-            self.assertIsNotNone(pydoc.locate(name))
+            self.assertIsNotNichts(pydoc.locate(name))
             # test high-level function
             try:
                 pydoc.render_doc(name)
@@ -1494,7 +1494,7 @@ klasse TestDescriptions(unittest.TestCase):
         fuer name in ('notbuiltins', 'strrr', 'strr.translate',
                      'str.trrrranslate', 'builtins.strrr',
                      'builtins.str.trrranslate'):
-            self.assertIsNone(pydoc.locate(name))
+            self.assertIsNichts(pydoc.locate(name))
             self.assertRaises(ImportError, pydoc.render_doc, name)
 
     @staticmethod
@@ -1532,7 +1532,7 @@ klasse TestDescriptions(unittest.TestCase):
         self.assertLess(s.index('firstname'), s.index('agegroup'))
 
         klasse NonIterableFields:
-            _fields = None
+            _fields = Nichts
 
         klasse NonHashableFields:
             _fields = [[]]
@@ -1552,7 +1552,7 @@ klasse TestDescriptions(unittest.TestCase):
     @requires_docstrings
     def test_module_level_callable(self):
         self.assertEqual(self._get_summary_line(os.stat),
-            "stat(path, *, dir_fd=None, follow_symlinks=True)")
+            "stat(path, *, dir_fd=Nichts, follow_symlinks=Wahr)")
 
     def test_module_level_callable_noargs(self):
         self.assertEqual(self._get_summary_line(time.time),
@@ -1818,7 +1818,7 @@ area
     def test_custom_non_data_descriptor(self):
         klasse Descr:
             def __get__(self, obj, cls):
-                wenn obj is None:
+                wenn obj is Nichts:
                     return self
                 return 42
         klasse X:
@@ -1843,7 +1843,7 @@ foo(...)
     def test_custom_data_descriptor(self):
         klasse Descr:
             def __get__(self, obj, cls):
-                wenn obj is None:
+                wenn obj is Nichts:
                     return self
                 return 42
             def __set__(self, obj, cls):
@@ -1912,10 +1912,10 @@ klasse PydocFodderTest(unittest.TestCase):
 
     def getsection(self, text, beginline, endline):
         lines = text.splitlines()
-        beginindex, endindex = 0, None
-        wenn beginline is not None:
+        beginindex, endindex = 0, Nichts
+        wenn beginline is not Nichts:
             beginindex = lines.index(beginline)
-        wenn endline is not None:
+        wenn endline is not Nichts:
             endindex = lines.index(endline, beginindex)
         return lines[beginindex:endindex]
 
@@ -1949,8 +1949,8 @@ klasse PydocFodderTest(unittest.TestCase):
         self.assertIn(' |  B_classmethod_ref = B_classmethod(x)' + note, lines)
         self.assertIn(' |  A_method_ref = A_method() method of test.test_pydoc.pydocfodder.A instance', lines)
         wenn not support.MISSING_C_DOCSTRINGS:
-            self.assertIn(' |  get(key, default=None, /) method of builtins.dict instance', lines)
-            self.assertIn(' |  dict_get = get(key, default=None, /) method of builtins.dict instance', lines)
+            self.assertIn(' |  get(key, default=Nichts, /) method of builtins.dict instance', lines)
+            self.assertIn(' |  dict_get = get(key, default=Nichts, /) method of builtins.dict instance', lines)
         sonst:
             self.assertIn(' |  get(...) method of builtins.dict instance', lines)
             self.assertIn(' |  dict_get = get(...) method of builtins.dict instance', lines)
@@ -2019,8 +2019,8 @@ klasse PydocFodderTest(unittest.TestCase):
         self.assertIn('    A_staticmethod_ref = A_staticmethod(x, y)', lines)
         self.assertIn('    A_staticmethod_ref2 = A_staticmethod(y) method of B instance', lines)
         wenn not support.MISSING_C_DOCSTRINGS:
-            self.assertIn('    get(key, default=None, /) method of builtins.dict instance', lines)
-            self.assertIn('    dict_get = get(key, default=None, /) method of builtins.dict instance', lines)
+            self.assertIn('    get(key, default=Nichts, /) method of builtins.dict instance', lines)
+            self.assertIn('    dict_get = get(key, default=Nichts, /) method of builtins.dict instance', lines)
         sonst:
             self.assertIn('    get(...) method of builtins.dict instance', lines)
             self.assertIn('    dict_get = get(...) method of builtins.dict instance', lines)
@@ -2044,7 +2044,7 @@ klasse PydocFodderTest(unittest.TestCase):
         doc = pydoc.HTMLDoc()
         result = doc.docmodule(pydocfodder)
         result = html2text(result)
-        lines = self.getsection(result, ' Functions', None)
+        lines = self.getsection(result, ' Functions', Nichts)
         # function alias
         self.assertIn(' global_func_alias = global_func(x, y)', lines)
         self.assertIn(' A_staticmethod(x, y)', lines)
@@ -2060,8 +2060,8 @@ klasse PydocFodderTest(unittest.TestCase):
         self.assertIn(' A_staticmethod_ref = A_staticmethod(x, y)', lines)
         self.assertIn(' A_staticmethod_ref2 = A_staticmethod(y) method of B instance', lines)
         wenn not support.MISSING_C_DOCSTRINGS:
-            self.assertIn(' get(key, default=None, /) method of builtins.dict instance', lines)
-            self.assertIn(' dict_get = get(key, default=None, /) method of builtins.dict instance', lines)
+            self.assertIn(' get(key, default=Nichts, /) method of builtins.dict instance', lines)
+            self.assertIn(' dict_get = get(key, default=Nichts, /) method of builtins.dict instance', lines)
         sonst:
             self.assertIn(' get(...) method of builtins.dict instance', lines)
             self.assertIn(' dict_get = get(...) method of builtins.dict instance', lines)
@@ -2101,10 +2101,10 @@ klasse PydocServerTest(unittest.TestCase):
             hostname='localhost',
             port=0,
             )
-        self.assertEqual(serverthread.error, None)
-        self.assertTrue(serverthread.serving)
+        self.assertEqual(serverthread.error, Nichts)
+        self.assertWahr(serverthread.serving)
         self.addCleanup(
-            lambda: serverthread.stop() wenn serverthread.serving sonst None
+            lambda: serverthread.stop() wenn serverthread.serving sonst Nichts
             )
         self.assertIn('localhost', serverthread.url)
 
@@ -2119,9 +2119,9 @@ klasse PydocServerTest(unittest.TestCase):
             )
 
         serverthread.stop()
-        self.assertFalse(serverthread.serving)
-        self.assertIsNone(serverthread.docserver)
-        self.assertIsNone(serverthread.url)
+        self.assertFalsch(serverthread.serving)
+        self.assertIsNichts(serverthread.docserver)
+        self.assertIsNichts(serverthread.url)
 
 
 klasse PydocUrlHandlerTest(PydocBaseTest):
@@ -2275,7 +2275,7 @@ klasse PydocWithMetaClasses(unittest.TestCase):
 
     def test_resolve_false(self):
         # Issue #23008: pydoc enum.{,Int}Enum failed
-        # because bool(enum.Enum) is False.
+        # because bool(enum.Enum) is Falsch.
         with captured_stdout() as help_io:
             pydoc.help('enum.Enum')
         helptext = help_io.getvalue()
@@ -2292,10 +2292,10 @@ klasse TestInternalUtilities(unittest.TestCase):
         self.abs_curdir = abs_curdir = os.getcwd()
         self.curdir_spellings = ["", os.curdir, abs_curdir]
 
-    def _get_revised_path(self, given_path, argv0=None):
+    def _get_revised_path(self, given_path, argv0=Nichts):
         # Checking that pydoc.cli() actually calls pydoc._get_revised_path()
         # is handled via code review (at least fuer now).
-        wenn argv0 is None:
+        wenn argv0 is Nichts:
             argv0 = self.argv0
         return pydoc._get_revised_path(given_path, argv0)
 
@@ -2337,13 +2337,13 @@ klasse TestInternalUtilities(unittest.TestCase):
             with self.subTest(curdir_spelling=spelling):
                 # If curdir is already present, no alterations are made at all
                 leading_curdir = [spelling] + clean_path
-                self.assertIsNone(self._get_revised_path(leading_curdir))
+                self.assertIsNichts(self._get_revised_path(leading_curdir))
                 trailing_curdir = clean_path + [spelling]
-                self.assertIsNone(self._get_revised_path(trailing_curdir))
+                self.assertIsNichts(self._get_revised_path(trailing_curdir))
                 leading_argv0dir = [self.argv0dir] + leading_curdir
-                self.assertIsNone(self._get_revised_path(leading_argv0dir))
+                self.assertIsNichts(self._get_revised_path(leading_argv0dir))
                 trailing_argv0dir = trailing_curdir + [self.argv0dir]
-                self.assertIsNone(self._get_revised_path(trailing_argv0dir))
+                self.assertIsNichts(self._get_revised_path(trailing_argv0dir))
 
 
 def setUpModule():

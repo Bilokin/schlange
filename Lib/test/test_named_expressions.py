@@ -1,6 +1,6 @@
 import unittest
 
-GLOBAL_VAR = None
+GLOBAL_VAR = Nichts
 
 klasse NamedExpressionInvalidTest(unittest.TestCase):
 
@@ -184,9 +184,9 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Reuse inner loop target", 'j', "[(j := 0) fuer i in range(5) fuer j in range(5)]"),
             ("Unpacking reuse", 'i', "[i := 0 fuer i, j in [(0, 1)]]"),
             ("Reuse in loop condition", 'i', "[i+1 fuer i in range(5) wenn (i := 0)]"),
-            ("Unreachable reuse", 'i', "[False or (i:=0) fuer i in range(5)]"),
+            ("Unreachable reuse", 'i', "[Falsch or (i:=0) fuer i in range(5)]"),
             ("Unreachable nested reuse", 'i',
-                "[(i, j) fuer i in range(5) fuer j in range(5) wenn True or (i:=10)]"),
+                "[(i, j) fuer i in range(5) fuer j in range(5) wenn Wahr or (i:=10)]"),
         ]
         fuer case, target, code in cases:
             msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
@@ -222,8 +222,8 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Lambda expression", "[i fuer i in (lambda:(j := range(5)))()]"),
             ("Inner loop", "[i fuer i in range(5) fuer j in (i := range(5))]"),
             ("Nested comprehension", "[i fuer i in [j fuer j in (k := range(5))]]"),
-            ("Nested comprehension condition", "[i fuer i in [j fuer j in range(5) wenn (j := True)]]"),
-            ("Nested comprehension body", "[i fuer i in [(j := True) fuer j in range(5)]]"),
+            ("Nested comprehension condition", "[i fuer i in [j fuer j in range(5) wenn (j := Wahr)]]"),
+            ("Nested comprehension body", "[i fuer i in [(j := Wahr) fuer j in range(5)]]"),
         ]
         msg = "assignment expression cannot be used in a comprehension iterable expression"
         fuer case, code in cases:
@@ -242,9 +242,9 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Reuse inner loop target", 'j', "{(j := 0) fuer i in range(5) fuer j in range(5)}"),
             ("Unpacking reuse", 'i', "{i := 0 fuer i, j in {(0, 1)}}"),
             ("Reuse in loop condition", 'i', "{i+1 fuer i in range(5) wenn (i := 0)}"),
-            ("Unreachable reuse", 'i', "{False or (i:=0) fuer i in range(5)}"),
+            ("Unreachable reuse", 'i', "{Falsch or (i:=0) fuer i in range(5)}"),
             ("Unreachable nested reuse", 'i',
-                "{(i, j) fuer i in range(5) fuer j in range(5) wenn True or (i:=10)}"),
+                "{(i, j) fuer i in range(5) fuer j in range(5) wenn Wahr or (i:=10)}"),
             # Regression tests from https://github.com/python/cpython/issues/87447
             ("Complex expression: a", "a",
                 "{(a := 1) fuer a, (*b, c[d+e::f(g)], h.i) in j}"),
@@ -285,8 +285,8 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Lambda expression", "{i fuer i in (lambda:(j := range(5)))()}"),
             ("Inner loop", "{i fuer i in range(5) fuer j in (i := range(5))}"),
             ("Nested comprehension", "{i fuer i in {j fuer j in (k := range(5))}}"),
-            ("Nested comprehension condition", "{i fuer i in {j fuer j in range(5) wenn (j := True)}}"),
-            ("Nested comprehension body", "{i fuer i in {(j := True) fuer j in range(5)}}"),
+            ("Nested comprehension condition", "{i fuer i in {j fuer j in range(5) wenn (j := Wahr)}}"),
+            ("Nested comprehension body", "{i fuer i in {(j := Wahr) fuer j in range(5)}}"),
         ]
         msg = "assignment expression cannot be used in a comprehension iterable expression"
         fuer case, code in cases:
@@ -308,9 +308,9 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Unpacking key reuse", 'i', "{(i := 0): 1 fuer i, j in {(0, 1)}}"),
             ("Unpacking value reuse", 'i', "{1: (i := 0) fuer i, j in {(0, 1)}}"),
             ("Reuse in loop condition", 'i', "{i+1: 1 fuer i in range(5) wenn (i := 0)}"),
-            ("Unreachable reuse", 'i', "{(False or (i:=0)): 1 fuer i in range(5)}"),
+            ("Unreachable reuse", 'i', "{(Falsch or (i:=0)): 1 fuer i in range(5)}"),
             ("Unreachable nested reuse", 'i',
-                "{i: j fuer i in range(5) fuer j in range(5) wenn True or (i:=10)}"),
+                "{i: j fuer i in range(5) fuer j in range(5) wenn Wahr or (i:=10)}"),
             # Regression tests from https://github.com/python/cpython/issues/87447
             ("Complex expression: a", "a",
                 "{(a := 1): 1 fuer a, (*b, c[d+e::f(g)], h.i) in j}"),
@@ -351,8 +351,8 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             ("Lambda expression", "{i: 1 fuer i in (lambda:(j := range(5)))()}"),
             ("Inner loop", "{i: 1 fuer i in range(5) fuer j in (i := range(5))}"),
             ("Nested comprehension", "{i: 1 fuer i in {j: 2 fuer j in (k := range(5))}}"),
-            ("Nested comprehension condition", "{i: 1 fuer i in {j: 2 fuer j in range(5) wenn (j := True)}}"),
-            ("Nested comprehension body", "{i: 1 fuer i in {(j := True) fuer j in range(5)}}"),
+            ("Nested comprehension condition", "{i: 1 fuer i in {j: 2 fuer j in range(5) wenn (j := Wahr)}}"),
+            ("Nested comprehension body", "{i: 1 fuer i in {(j := Wahr) fuer j in range(5)}}"),
         ]
         msg = "assignment expression cannot be used in a comprehension iterable expression"
         fuer case, code in cases:
@@ -421,8 +421,8 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
         sonst: self.fail("variable was not assigned using named expression")
 
     def test_named_expression_assignment_09(self):
-        wenn True and (spam := True):
-            self.assertTrue(spam)
+        wenn Wahr and (spam := Wahr):
+            self.assertWahr(spam)
         sonst: self.fail("variable was not assigned using named expression")
 
     def test_named_expression_assignment_10(self):
@@ -468,10 +468,10 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
         self.assertEqual(a, 1)
 
     def test_named_expression_assignment_15(self):
-        while a := False:
+        while a := Falsch:
             self.fail("While body executed")  # This will not run
 
-        self.assertEqual(a, False)
+        self.assertEqual(a, Falsch)
 
     def test_named_expression_assignment_16(self):
         a, b = 1, 2
@@ -520,7 +520,7 @@ print(a)"""
     def test_named_expression_scope_03(self):
         containsOne = any((lastNum := num) == 1 fuer num in [1, 2, 3])
 
-        self.assertTrue(containsOne)
+        self.assertWahr(containsOne)
         self.assertEqual(lastNum, 1)
 
     def test_named_expression_scope_04(self):
@@ -709,21 +709,21 @@ spam()"""
             f()
             self.assertEqual(GLOBAL_VAR, sentinel)
         finally:
-            GLOBAL_VAR = None
+            GLOBAL_VAR = Nichts
 
     def test_named_expression_global_scope_no_global_keyword(self):
         sentinel = object()
         def f():
-            GLOBAL_VAR = None
+            GLOBAL_VAR = Nichts
             [GLOBAL_VAR := sentinel fuer _ in range(1)]
             self.assertEqual(GLOBAL_VAR, sentinel)
         f()
-        self.assertEqual(GLOBAL_VAR, None)
+        self.assertEqual(GLOBAL_VAR, Nichts)
 
     def test_named_expression_nonlocal_scope(self):
         sentinel = object()
         def f():
-            nonlocal_var = None
+            nonlocal_var = Nichts
             def g():
                 nonlocal nonlocal_var
                 [nonlocal_var := sentinel fuer _ in range(1)]
@@ -734,11 +734,11 @@ spam()"""
     def test_named_expression_nonlocal_scope_no_nonlocal_keyword(self):
         sentinel = object()
         def f():
-            nonlocal_var = None
+            nonlocal_var = Nichts
             def g():
                 [nonlocal_var := sentinel fuer _ in range(1)]
             g()
-            self.assertEqual(nonlocal_var, None)
+            self.assertEqual(nonlocal_var, Nichts)
         f()
 
     def test_named_expression_scope_in_genexp(self):

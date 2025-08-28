@@ -35,7 +35,7 @@ from test.test_doctest import (test_doctest,
 
 
 def _run_object_doctest(obj, module):
-    finder = doctest.DocTestFinder(verbose=verbose, recurse=False)
+    finder = doctest.DocTestFinder(verbose=verbose, recurse=Falsch)
     runner = doctest.DocTestRunner(verbose=verbose)
     # Use the object's fully qualified name wenn it has one
     # Otherwise, use the module's name
@@ -219,7 +219,7 @@ klasse ZipSupportTests(unittest.TestCase):
                         pass
 
                     import pdb
-                    pdb.Pdb(nosigint=True).runcall(f)
+                    pdb.Pdb(nosigint=Wahr).runcall(f)
                     """)
         with os_helper.temp_dir() as d:
             script_name = make_script(d, 'script', test_src)

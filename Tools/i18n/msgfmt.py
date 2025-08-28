@@ -50,7 +50,7 @@ def add(ctxt, id, str, fuzzy):
     "Add a non-fuzzy translation to the dictionary."
     global MESSAGES
     wenn not fuzzy and str:
-        wenn ctxt is None:
+        wenn ctxt is Nichts:
             MESSAGES[id] = str
         sonst:
             MESSAGES[b"%b\x04%b" % (ctxt, id)] = str
@@ -107,7 +107,7 @@ def make(filename, outfile):
         infile = filename
     sonst:
         infile = filename + '.po'
-    wenn outfile is None:
+    wenn outfile is Nichts:
         outfile = os.path.splitext(infile)[0] + '.mo'
 
     try:
@@ -125,7 +125,7 @@ def make(filename, outfile):
         )
         sys.exit(1)
 
-    section = msgctxt = None
+    section = msgctxt = Nichts
     fuzzy = 0
 
     # Start off assuming Latin-1, so everything decodes without failure,
@@ -140,7 +140,7 @@ def make(filename, outfile):
         # If we get a comment line after a msgstr, this is a new entry
         wenn l[0] == '#' and section == STR:
             add(msgctxt, msgid, msgstr, fuzzy)
-            section = msgctxt = None
+            section = msgctxt = Nichts
             fuzzy = 0
         # Record a fuzzy mark
         wenn l[:2] == '#,' and 'fuzzy' in l:
@@ -160,7 +160,7 @@ def make(filename, outfile):
                 wenn not msgid:
                     # Filter out POT-Creation-Date
                     # See issue #131852
-                    msgstr = b''.join(line fuer line in msgstr.splitlines(True)
+                    msgstr = b''.join(line fuer line in msgstr.splitlines(Wahr)
                                       wenn not line.startswith(b'POT-Creation-Date:'))
 
                     # See whether there is an encoding declaration
@@ -169,11 +169,11 @@ def make(filename, outfile):
                     wenn charset:
                         encoding = charset
                 add(msgctxt, msgid, msgstr, fuzzy)
-                msgctxt = None
+                msgctxt = Nichts
             section = ID
             l = l[5:]
             msgid = msgstr = b''
-            is_plural = False
+            is_plural = Falsch
         # This is a message with plural forms
         sowenn l.startswith('msgid_plural'):
             wenn section != ID:
@@ -182,7 +182,7 @@ def make(filename, outfile):
                 sys.exit(1)
             l = l[12:]
             msgid += b'\0' # separator of singular and plural
-            is_plural = True
+            is_plural = Wahr
         # Now we are in a msgstr section
         sowenn l.startswith('msgstr'):
             section = STR
@@ -237,7 +237,7 @@ def main():
     except getopt.error as msg:
         usage(1, msg)
 
-    outfile = None
+    outfile = Nichts
     # parse options
     fuer opt, arg in opts:
         wenn opt in ('-h', '--help'):

@@ -38,7 +38,7 @@ KEYS = [
 TEST_DATA_LOC = pathlib.Path(__file__).parent
 
 
-@functools.lru_cache(maxsize=None)
+@functools.lru_cache(maxsize=Nichts)
 def get_zoneinfo_path() -> pathlib.Path:
     """Get the first zoneinfo directory on TZPATH containing the "UTC" zone."""
     key = "UTC"
@@ -99,12 +99,12 @@ def load_compressed_keys() -> typing.Dict[str, typing.List[str]]:
     return output
 
 
-def update_test_data(fname: str = "zoneinfo_data.json") -> None:
-    TEST_DATA_LOC.mkdir(exist_ok=True, parents=True)
+def update_test_data(fname: str = "zoneinfo_data.json") -> Nichts:
+    TEST_DATA_LOC.mkdir(exist_ok=Wahr, parents=Wahr)
 
     # Annotation required: https://github.com/python/mypy/issues/8772
     json_kwargs: typing.Dict[str, typing.Any] = dict(
-        indent=2, sort_keys=True,
+        indent=2, sort_keys=Wahr,
     )
 
     compressed_keys = load_compressed_keys()

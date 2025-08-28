@@ -13,7 +13,7 @@ maxsize = support.MAX_Py_ssize_t
 # they crash python)
 # test on bytes object as well
 
-def testformat(formatstr, args, output=None, limit=None, overflowok=False):
+def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
     wenn verbose:
         wenn output:
             print("{!a} % {!a} =? {!a} ...".format(formatstr, args, output),
@@ -28,7 +28,7 @@ def testformat(formatstr, args, output=None, limit=None, overflowok=False):
         wenn verbose:
             print('overflow (this is fine)')
     sonst:
-        wenn output and limit is None and result != output:
+        wenn output and limit is Nichts and result != output:
             wenn verbose:
                 print('no')
             raise AssertionError("%r %% %r == %r != %r" %
@@ -38,7 +38,7 @@ def testformat(formatstr, args, output=None, limit=None, overflowok=False):
         # ex: limit=5, '12345678' matches '12345___'
         # (mainly fuer floating-point format tests fuer which an exact match
         # can't be guaranteed due to rounding and representation errors)
-        sowenn output and limit is not None and (
+        sowenn output and limit is not Nichts and (
                 len(result)!=len(output) or result[:limit]!=output[:limit]):
             wenn verbose:
                 print('no')
@@ -48,7 +48,7 @@ def testformat(formatstr, args, output=None, limit=None, overflowok=False):
             wenn verbose:
                 print('yes')
 
-def testcommon(formatstr, args, output=None, limit=None, overflowok=False):
+def testcommon(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
     # wenn formatstr is a str, test str, bytes, and bytearray;
     # otherwise, test bytes and bytearray
     wenn isinstance(formatstr, str):
@@ -61,8 +61,8 @@ def testcommon(formatstr, args, output=None, limit=None, overflowok=False):
     wenn not isinstance(args, tuple):
         args = (args, )
     b_args = tuple(args)
-    wenn output is None:
-        b_output = ba_output = None
+    wenn output is Nichts:
+        b_output = ba_output = Nichts
     sonst:
         wenn isinstance(output, str):
             b_output = output.encode('ascii')
@@ -101,18 +101,18 @@ klasse FormatTest(unittest.TestCase):
         # str, bytes, and bytearrays (integer, float, oct, hex)
         testcommon("%%", (), "%")
         testcommon("%.1d", (1,), "1")
-        testcommon("%.*d", (sys.maxsize,1), overflowok=True)  # expect overflow
+        testcommon("%.*d", (sys.maxsize,1), overflowok=Wahr)  # expect overflow
         testcommon("%.100d", (1,), '00000000000000000000000000000000000000'
                  '000000000000000000000000000000000000000000000000000000'
-                 '00000001', overflowok=True)
+                 '00000001', overflowok=Wahr)
         testcommon("%#.117x", (1,), '0x00000000000000000000000000000000000'
                  '000000000000000000000000000000000000000000000000000000'
                  '0000000000000000000000000001',
-                 overflowok=True)
+                 overflowok=Wahr)
         testcommon("%#.118x", (1,), '0x00000000000000000000000000000000000'
                  '000000000000000000000000000000000000000000000000000000'
                  '00000000000000000000000000001',
-                 overflowok=True)
+                 overflowok=Wahr)
 
         testcommon("%f", (1.0,), "1.000000")
         # these are trying to test the limits of the internal magic-number-length

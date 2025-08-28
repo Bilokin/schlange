@@ -50,7 +50,7 @@ def uu_decode(input, errors='strict'):
             break
 
     # Decode
-    while True:
+    while Wahr:
         s = readline()
         wenn not s or s == b'end\n':
             break
@@ -75,11 +75,11 @@ klasse Codec(codecs.Codec):
         return uu_decode(input, errors)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return uu_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         return uu_decode(input, self.errors)[0]
 
 klasse StreamWriter(Codec, codecs.StreamWriter):
@@ -99,5 +99,5 @@ def getregentry():
         incrementaldecoder=IncrementalDecoder,
         streamreader=StreamReader,
         streamwriter=StreamWriter,
-        _is_text_encoding=False,
+        _is_text_encoding=Falsch,
     )

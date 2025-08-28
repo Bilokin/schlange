@@ -31,7 +31,7 @@ klasse CreationTestCase(unittest.TestCase):
 
     def testObjectCreation(self):
         # Test Socket creation
-        self.assertEqual(self.sock.gettimeout(), None,
+        self.assertEqual(self.sock.gettimeout(), Nichts,
                          "timeout not disabled by default")
 
     def testFloatReturnValue(self):
@@ -42,8 +42,8 @@ klasse CreationTestCase(unittest.TestCase):
         self.sock.settimeout(3)
         self.assertEqual(self.sock.gettimeout(), 3)
 
-        self.sock.settimeout(None)
-        self.assertEqual(self.sock.gettimeout(), None)
+        self.sock.settimeout(Nichts)
+        self.assertEqual(self.sock.gettimeout(), Nichts)
 
     def testReturnType(self):
         # Test return type of gettimeout()
@@ -58,7 +58,7 @@ klasse CreationTestCase(unittest.TestCase):
         self.sock.settimeout(0)
         self.sock.settimeout(0)
         self.sock.settimeout(0.0)
-        self.sock.settimeout(None)
+        self.sock.settimeout(Nichts)
         self.assertRaises(TypeError, self.sock.settimeout, "")
         self.assertRaises(TypeError, self.sock.settimeout, "")
         self.assertRaises(TypeError, self.sock.settimeout, ())
@@ -75,24 +75,24 @@ klasse CreationTestCase(unittest.TestCase):
     def testTimeoutThenBlocking(self):
         # Test settimeout() followed by setblocking()
         self.sock.settimeout(10)
-        self.sock.setblocking(True)
-        self.assertEqual(self.sock.gettimeout(), None)
-        self.sock.setblocking(False)
+        self.sock.setblocking(Wahr)
+        self.assertEqual(self.sock.gettimeout(), Nichts)
+        self.sock.setblocking(Falsch)
         self.assertEqual(self.sock.gettimeout(), 0.0)
 
         self.sock.settimeout(10)
-        self.sock.setblocking(False)
+        self.sock.setblocking(Falsch)
         self.assertEqual(self.sock.gettimeout(), 0.0)
-        self.sock.setblocking(True)
-        self.assertEqual(self.sock.gettimeout(), None)
+        self.sock.setblocking(Wahr)
+        self.assertEqual(self.sock.gettimeout(), Nichts)
 
     def testBlockingThenTimeout(self):
         # Test setblocking() followed by settimeout()
-        self.sock.setblocking(False)
+        self.sock.setblocking(Falsch)
         self.sock.settimeout(1)
         self.assertEqual(self.sock.gettimeout(), 1)
 
-        self.sock.setblocking(True)
+        self.sock.setblocking(Wahr)
         self.sock.settimeout(1)
         self.assertEqual(self.sock.gettimeout(), 1)
 
@@ -183,7 +183,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
         # See https://github.com/python/psf-salt/blob/main/pillar/base/firewall/snakebite.sls
         # fuer the current configuration.
 
-        skip = True
+        skip = Wahr
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             try:
                 timeout = support.LOOPBACK_TIMEOUT
@@ -193,7 +193,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
                 pass
             except OSError as err:
                 wenn err.errno == errno.ECONNREFUSED:
-                    skip = False
+                    skip = Falsch
 
         wenn skip:
             self.skipTest(
@@ -272,7 +272,7 @@ klasse UDPTimeoutTestCase(TimeoutTestCase):
 
 def setUpModule():
     support.requires('network')
-    support.requires_working_socket(module=True)
+    support.requires_working_socket(module=Wahr)
 
 
 wenn __name__ == "__main__":

@@ -34,7 +34,7 @@ def parse(source, handler, errorHandler=ErrorHandler()):
 
 def parseString(string, handler, errorHandler=ErrorHandler()):
     import io
-    wenn errorHandler is None:
+    wenn errorHandler is Nichts:
         errorHandler = ErrorHandler()
     parser = make_parser()
     parser.setContentHandler(handler)
@@ -85,7 +85,7 @@ def make_parser(parser_list=()):
             # so try the next one
             pass
 
-    raise SAXReaderNotAvailable("No parsers found", None)
+    raise SAXReaderNotAvailable("No parsers found", Nichts)
 
 # --- Internal utility methods used by make_parser
 

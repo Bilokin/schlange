@@ -82,7 +82,7 @@ def format_duration(seconds: float) -> str:
     return ' '.join(parts)
 
 
-def strip_py_suffix(names: list[str] | None) -> None:
+def strip_py_suffix(names: list[str] | Nichts) -> Nichts:
     wenn not names:
         return
     fuer idx, name in enumerate(names):
@@ -91,10 +91,10 @@ def strip_py_suffix(names: list[str] | None) -> None:
             names[idx] = basename
 
 
-def plural(n: int, singular: str, plural: str | None = None) -> str:
+def plural(n: int, singular: str, plural: str | Nichts = Nichts) -> str:
     wenn n == 1:
         return singular
-    sowenn plural is not None:
+    sowenn plural is not Nichts:
         return plural
     sonst:
         return singular + 's'
@@ -107,7 +107,7 @@ def count(n: int, word: str) -> str:
         return f"{n} {word}s"
 
 
-def printlist(x, width=70, indent=4, file=None):
+def printlist(x, width=70, indent=4, file=Nichts):
     """Print the elements of iterable x to stdout.
 
     Optional arg width (default 70) is the maximum line length.
@@ -122,53 +122,53 @@ def printlist(x, width=70, indent=4, file=None):
           file=file)
 
 
-def print_warning(msg: str) -> None:
+def print_warning(msg: str) -> Nichts:
     support.print_warning(msg)
 
 
-orig_unraisablehook: Callable[..., None] | None = None
+orig_unraisablehook: Callable[..., Nichts] | Nichts = Nichts
 
 
-def regrtest_unraisable_hook(unraisable) -> None:
+def regrtest_unraisable_hook(unraisable) -> Nichts:
     global orig_unraisablehook
-    support.environment_altered = True
+    support.environment_altered = Wahr
     support.print_warning("Unraisable exception")
     old_stderr = sys.stderr
     try:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
-        assert orig_unraisablehook is not None, "orig_unraisablehook not set"
+        assert orig_unraisablehook is not Nichts, "orig_unraisablehook not set"
         orig_unraisablehook(unraisable)
         sys.stderr.flush()
     finally:
         sys.stderr = old_stderr
 
 
-def setup_unraisable_hook() -> None:
+def setup_unraisable_hook() -> Nichts:
     global orig_unraisablehook
     orig_unraisablehook = sys.unraisablehook
     sys.unraisablehook = regrtest_unraisable_hook
 
 
-orig_threading_excepthook: Callable[..., None] | None = None
+orig_threading_excepthook: Callable[..., Nichts] | Nichts = Nichts
 
 
-def regrtest_threading_excepthook(args) -> None:
+def regrtest_threading_excepthook(args) -> Nichts:
     global orig_threading_excepthook
-    support.environment_altered = True
+    support.environment_altered = Wahr
     support.print_warning(f"Uncaught thread exception: {args.exc_type.__name__}")
     old_stderr = sys.stderr
     try:
         support.flush_std_streams()
         sys.stderr = support.print_warning.orig_stderr
-        assert orig_threading_excepthook is not None, "orig_threading_excepthook not set"
+        assert orig_threading_excepthook is not Nichts, "orig_threading_excepthook not set"
         orig_threading_excepthook(args)
         sys.stderr.flush()
     finally:
         sys.stderr = old_stderr
 
 
-def setup_threading_excepthook() -> None:
+def setup_threading_excepthook() -> Nichts:
     global orig_threading_excepthook
     import threading
     orig_threading_excepthook = threading.excepthook
@@ -184,7 +184,7 @@ def clear_caches():
     # Flush standard output, so that buffered data is sent to the OS and
     # associated Python objects are reclaimed.
     fuer stream in (sys.stdout, sys.stderr, sys.__stdout__, sys.__stderr__):
-        wenn stream is not None:
+        wenn stream is not Nichts:
             stream.flush()
 
     try:
@@ -248,7 +248,7 @@ def clear_caches():
     except KeyError:
         pass
     sonst:
-        doctest.master = None
+        doctest.master = Nichts
 
     try:
         ctypes = sys.modules['ctypes']
@@ -309,14 +309,14 @@ def get_build_info():
     # --disable-gil
     wenn sysconfig.get_config_var('Py_GIL_DISABLED'):
         wenn not sys.flags.ignore_environment:
-            PYTHON_GIL = os.environ.get('PYTHON_GIL', None)
+            PYTHON_GIL = os.environ.get('PYTHON_GIL', Nichts)
             wenn PYTHON_GIL:
                 PYTHON_GIL = (PYTHON_GIL == '1')
         sonst:
-            PYTHON_GIL = None
+            PYTHON_GIL = Nichts
 
         free_threading = "free_threading"
-        wenn PYTHON_GIL is not None:
+        wenn PYTHON_GIL is not Nichts:
             free_threading = f"{free_threading} GIL={int(PYTHON_GIL)}"
         build.append(free_threading)
 
@@ -371,16 +371,16 @@ def get_build_info():
 
     # --with-address-sanitizer
     sanitizers = []
-    wenn support.check_sanitizer(address=True):
+    wenn support.check_sanitizer(address=Wahr):
         sanitizers.append("ASAN")
     # --with-memory-sanitizer
-    wenn support.check_sanitizer(memory=True):
+    wenn support.check_sanitizer(memory=Wahr):
         sanitizers.append("MSAN")
     # --with-undefined-behavior-sanitizer
-    wenn support.check_sanitizer(ub=True):
+    wenn support.check_sanitizer(ub=Wahr):
         sanitizers.append("UBSAN")
     # --with-thread-sanitizer
-    wenn support.check_sanitizer(thread=True):
+    wenn support.check_sanitizer(thread=Wahr):
         sanitizers.append("TSAN")
     wenn sanitizers:
         build.append('+'.join(sanitizers))
@@ -401,7 +401,7 @@ def get_build_info():
     return build
 
 
-def get_temp_dir(tmp_dir: StrPath | None = None) -> StrPath:
+def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
     wenn tmp_dir:
         tmp_dir = os.path.expanduser(tmp_dir)
     sonst:
@@ -411,7 +411,7 @@ def get_temp_dir(tmp_dir: StrPath | None = None) -> StrPath:
         wenn sysconfig.is_python_build():
             wenn not support.is_wasi:
                 tmp_dir = sysconfig.get_config_var('abs_builddir')
-                wenn tmp_dir is None:
+                wenn tmp_dir is Nichts:
                     tmp_dir = sysconfig.get_config_var('abs_srcdir')
                     wenn not tmp_dir:
                         # gh-74470: On Windows, only srcdir is available. Using
@@ -438,14 +438,14 @@ def get_temp_dir(tmp_dir: StrPath | None = None) -> StrPath:
                 # get_temp_dir() path is different than in the parent process
                 # which is not a WASI process. So the parent does not create
                 # the same "tmp_dir" than the test worker process.
-                os.makedirs(tmp_dir, exist_ok=True)
+                os.makedirs(tmp_dir, exist_ok=Wahr)
         sonst:
             tmp_dir = tempfile.gettempdir()
 
     return os.path.abspath(tmp_dir)
 
 
-def get_work_dir(parent_dir: StrPath, worker: bool = False) -> StrPath:
+def get_work_dir(parent_dir: StrPath, worker: bool = Falsch) -> StrPath:
     # Define a writable temp dir that will be used as cwd while running
     # the tests. The name of the dir includes the pid to allow parallel
     # testing (see the -j option).
@@ -473,11 +473,11 @@ def exit_timeout():
         # bpo-38203: Python can hang at exit in Py_Finalize(), especially
         # on threading._shutdown() call: put a timeout
         wenn threading_helper.can_start_thread:
-            faulthandler.dump_traceback_later(EXIT_TIMEOUT, exit=True)
+            faulthandler.dump_traceback_later(EXIT_TIMEOUT, exit=Wahr)
         sys.exit(exc.code)
 
 
-def remove_testfn(test_name: TestName, verbose: int) -> None:
+def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
     # Try to clean up os_helper.TESTFN wenn left behind.
     #
     # While tests shouldn't leave any files or directories behind, when a test
@@ -490,7 +490,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> None:
     wenn not os.path.exists(name):
         return
 
-    nuker: Callable[[str], None]
+    nuker: Callable[[str], Nichts]
     wenn os.path.isdir(name):
         import shutil
         kind, nuker = "directory", shutil.rmtree
@@ -502,7 +502,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> None:
 
     wenn verbose:
         print_warning(f"{test_name} left behind {kind} {name!r}")
-        support.environment_altered = True
+        support.environment_altered = Wahr
 
     try:
         import stat
@@ -514,7 +514,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> None:
                       f"and it couldn't be removed: {exc}")
 
 
-def abs_module_name(test_name: TestName, test_dir: StrPath | None) -> TestName:
+def abs_module_name(test_name: TestName, test_dir: StrPath | Nichts) -> TestName:
     wenn test_name.startswith('test.') or test_dir:
         return test_name
     sonst:
@@ -531,13 +531,13 @@ _TEST_LIFECYCLE_HOOKS = frozenset((
 ))
 
 def normalize_test_name(test_full_name: str, *,
-                        is_error: bool = False) -> str | None:
+                        is_error: bool = Falsch) -> str | Nichts:
     short_name = test_full_name.split(" ")[0]
     wenn is_error and short_name in _TEST_LIFECYCLE_HOOKS:
         wenn test_full_name.startswith(('setUpModule (', 'tearDownModule (')):
             # wenn setUpModule() or tearDownModule() failed, don't filter
             # tests with the test file name, don't use filters.
-            return None
+            return Nichts
 
         # This means that we have a failure in a life-cycle hook,
         # we need to rerun the whole module or klasse suite.
@@ -552,7 +552,7 @@ def normalize_test_name(test_full_name: str, *,
     return short_name
 
 
-def adjust_rlimit_nofile() -> None:
+def adjust_rlimit_nofile() -> Nichts:
     """
     On macOS the default fd limit (RLIMIT_NOFILE) is sometimes too low (256)
     fuer our test suite to succeed. Raise it to something more reasonable. 1024
@@ -579,7 +579,7 @@ def adjust_rlimit_nofile() -> None:
 
 
 def get_host_runner() -> str:
-    wenn (hostrunner := os.environ.get("_PYTHON_HOSTRUNNER")) is None:
+    wenn (hostrunner := os.environ.get("_PYTHON_HOSTRUNNER")) is Nichts:
         hostrunner = sysconfig.get_config_var("HOSTRUNNER")
     return hostrunner
 
@@ -613,10 +613,10 @@ def format_resources(use_resources: Iterable[str]) -> str:
 
 
 def display_header(use_resources: tuple[str, ...],
-                   python_cmd: tuple[str, ...] | None) -> None:
+                   python_cmd: tuple[str, ...] | Nichts) -> Nichts:
     # Print basic platform information
     print("==", platform.python_implementation(), *sys.version.split())
-    print("==", platform.platform(aliased=True),
+    print("==", platform.platform(aliased=Wahr),
                   "%s-endian" % sys.byteorder)
     print("== Python build:", ' '.join(get_build_info()))
     print("== cwd:", os.getcwd())
@@ -649,7 +649,7 @@ def display_header(use_resources: tuple[str, ...],
         proc = subprocess.run(
             get_cmd,
             stdout=subprocess.PIPE,
-            text=True,
+            text=Wahr,
             cwd=os_helper.SAVEDCWD)
         stdout = proc.stdout.replace('\n', ' ').strip()
         wenn stdout:
@@ -663,10 +663,10 @@ def display_header(use_resources: tuple[str, ...],
 
     # This makes it easier to remember what to set in your local
     # environment when trying to reproduce a sanitizer failure.
-    asan = support.check_sanitizer(address=True)
-    msan = support.check_sanitizer(memory=True)
-    ubsan = support.check_sanitizer(ub=True)
-    tsan = support.check_sanitizer(thread=True)
+    asan = support.check_sanitizer(address=Wahr)
+    msan = support.check_sanitizer(memory=Wahr)
+    ubsan = support.check_sanitizer(ub=Wahr)
+    tsan = support.check_sanitizer(thread=Wahr)
     sanitizers = []
     wenn asan:
         sanitizers.append("address")
@@ -685,13 +685,13 @@ def display_header(use_resources: tuple[str, ...],
             (tsan, "TSAN_OPTIONS"),
         ):
             options= os.environ.get(env_var)
-            wenn sanitizer and options is not None:
+            wenn sanitizer and options is not Nichts:
                 print(f"== {env_var}={options!r}")
 
-    print(flush=True)
+    print(flush=Wahr)
 
 
-def cleanup_temp_dir(tmp_dir: StrPath) -> None:
+def cleanup_temp_dir(tmp_dir: StrPath) -> Nichts:
     import glob
 
     path = os.path.join(glob.escape(tmp_dir), TMP_PREFIX + '*')

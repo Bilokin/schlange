@@ -67,7 +67,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.test_values.close()
 
     def rAssertAlmostEqual(self, a, b, rel_err = 2e-15, abs_err = 5e-323,
-                           msg=None):
+                           msg=Nichts):
         """Fail wenn the two floating-point numbers are not almost equal.
 
         Determine whether floating-point values a and b are equal to within
@@ -98,7 +98,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.fail(msg or 'zero has wrong sign: expected {!r}, '
                           'got {!r}'.format(a, b))
 
-        # wenn a-b overflows, or b is infinite, return False.  Again, in
+        # wenn a-b overflows, or b is infinite, return Falsch.  Again, in
         # theory there are examples where a is within a few ulps of the
         # max representable float, and then b could legitimately be
         # infinite.  In practice these examples are rare.
@@ -130,10 +130,10 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(cmath.infj.real, 0.0)
         self.assertEqual(cmath.infj.imag, math.inf)
 
-        self.assertTrue(math.isnan(cmath.nan.real))
+        self.assertWahr(math.isnan(cmath.nan.real))
         self.assertEqual(cmath.nan.imag, 0.0)
         self.assertEqual(cmath.nanj.real, 0.0)
-        self.assertTrue(math.isnan(cmath.nanj.imag))
+        self.assertWahr(math.isnan(cmath.nanj.imag))
         # Also check that the sign of all of these is positive:
         self.assertEqual(math.copysign(1., cmath.nan.real), 1.)
         self.assertEqual(math.copysign(1., cmath.nan.imag), 1.)
@@ -158,7 +158,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         # a variety of non-complex numbers, used to check that
         # non-complex return values from __complex__ give an error
-        non_complexes = ["not complex", 1, 5, 2., None,
+        non_complexes = ["not complex", 1, 5, 2., Nichts,
                          object(), NotImplemented]
 
         # Now we introduce a variety of classes whose instances might
@@ -282,7 +282,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         # See issue #27953.
         SKIP_ON_TIGER = {'tan0064'}
 
-        osx_version = None
+        osx_version = Nichts
         wenn sys.platform == 'darwin':
             version_txt = platform.mac_ver()[0]
             try:
@@ -305,7 +305,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
             expected = complex(er, ei)
 
             # Skip certain tests on OS X 10.4.
-            wenn osx_version is not None and osx_version < (10, 5):
+            wenn osx_version is not Nichts and osx_version < (10, 5):
                 wenn id in SKIP_ON_TIGER:
                     continue
 
@@ -445,7 +445,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         # real or imaginary part NaN
         fuer z in complex_nans:
-            self.assertTrue(math.isnan(phase(z)))
+            self.assertWahr(math.isnan(phase(z)))
 
     def test_abs(self):
         # zeros
@@ -458,18 +458,18 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         # real or imaginary part NaN
         self.assertEqual(abs(complex(NAN, -INF)), INF)
-        self.assertTrue(math.isnan(abs(complex(NAN, -2.3))))
-        self.assertTrue(math.isnan(abs(complex(NAN, -0.0))))
-        self.assertTrue(math.isnan(abs(complex(NAN, 0.0))))
-        self.assertTrue(math.isnan(abs(complex(NAN, 2.3))))
+        self.assertWahr(math.isnan(abs(complex(NAN, -2.3))))
+        self.assertWahr(math.isnan(abs(complex(NAN, -0.0))))
+        self.assertWahr(math.isnan(abs(complex(NAN, 0.0))))
+        self.assertWahr(math.isnan(abs(complex(NAN, 2.3))))
         self.assertEqual(abs(complex(NAN, INF)), INF)
         self.assertEqual(abs(complex(-INF, NAN)), INF)
-        self.assertTrue(math.isnan(abs(complex(-2.3, NAN))))
-        self.assertTrue(math.isnan(abs(complex(-0.0, NAN))))
-        self.assertTrue(math.isnan(abs(complex(0.0, NAN))))
-        self.assertTrue(math.isnan(abs(complex(2.3, NAN))))
+        self.assertWahr(math.isnan(abs(complex(-2.3, NAN))))
+        self.assertWahr(math.isnan(abs(complex(-0.0, NAN))))
+        self.assertWahr(math.isnan(abs(complex(0.0, NAN))))
+        self.assertWahr(math.isnan(abs(complex(2.3, NAN))))
         self.assertEqual(abs(complex(INF, NAN)), INF)
-        self.assertTrue(math.isnan(abs(complex(NAN, NAN))))
+        self.assertWahr(math.isnan(abs(complex(NAN, NAN))))
 
 
     @requires_IEEE_754
@@ -499,26 +499,26 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                                   math.isfinite(x) and math.isfinite(y))
 
     def test_isnan(self):
-        self.assertFalse(cmath.isnan(1))
-        self.assertFalse(cmath.isnan(1j))
-        self.assertFalse(cmath.isnan(INF))
-        self.assertTrue(cmath.isnan(NAN))
-        self.assertTrue(cmath.isnan(complex(NAN, 0)))
-        self.assertTrue(cmath.isnan(complex(0, NAN)))
-        self.assertTrue(cmath.isnan(complex(NAN, NAN)))
-        self.assertTrue(cmath.isnan(complex(NAN, INF)))
-        self.assertTrue(cmath.isnan(complex(INF, NAN)))
+        self.assertFalsch(cmath.isnan(1))
+        self.assertFalsch(cmath.isnan(1j))
+        self.assertFalsch(cmath.isnan(INF))
+        self.assertWahr(cmath.isnan(NAN))
+        self.assertWahr(cmath.isnan(complex(NAN, 0)))
+        self.assertWahr(cmath.isnan(complex(0, NAN)))
+        self.assertWahr(cmath.isnan(complex(NAN, NAN)))
+        self.assertWahr(cmath.isnan(complex(NAN, INF)))
+        self.assertWahr(cmath.isnan(complex(INF, NAN)))
 
     def test_isinf(self):
-        self.assertFalse(cmath.isinf(1))
-        self.assertFalse(cmath.isinf(1j))
-        self.assertFalse(cmath.isinf(NAN))
-        self.assertTrue(cmath.isinf(INF))
-        self.assertTrue(cmath.isinf(complex(INF, 0)))
-        self.assertTrue(cmath.isinf(complex(0, INF)))
-        self.assertTrue(cmath.isinf(complex(INF, INF)))
-        self.assertTrue(cmath.isinf(complex(NAN, INF)))
-        self.assertTrue(cmath.isinf(complex(INF, NAN)))
+        self.assertFalsch(cmath.isinf(1))
+        self.assertFalsch(cmath.isinf(1j))
+        self.assertFalsch(cmath.isinf(NAN))
+        self.assertWahr(cmath.isinf(INF))
+        self.assertWahr(cmath.isinf(complex(INF, 0)))
+        self.assertWahr(cmath.isinf(complex(0, INF)))
+        self.assertWahr(cmath.isinf(complex(INF, INF)))
+        self.assertWahr(cmath.isinf(complex(NAN, INF)))
+        self.assertWahr(cmath.isinf(complex(INF, NAN)))
 
     @requires_IEEE_754
     def testTanhSign(self):

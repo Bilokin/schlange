@@ -58,12 +58,12 @@ def add_common_cli(parser, *, get_preprocessor=_get_preprocessor):
 
 def _iter_preprocessed(filename, *,
                        get_preprocessor,
-                       match_kind=None,
-                       pure=False,
+                       match_kind=Nichts,
+                       pure=Falsch,
                        ):
     preprocess = get_preprocessor(filename)
     fuer line in preprocess(tool=not pure) or ():
-        wenn match_kind is not None and not match_kind(line.kind):
+        wenn match_kind is not Nichts and not match_kind(line.kind):
             continue
         yield line
 
@@ -71,9 +71,9 @@ def _iter_preprocessed(filename, *,
 #######################################
 # the commands
 
-def _cli_preprocess(parser, excluded=None, **prepr_kwargs):
+def _cli_preprocess(parser, excluded=Nichts, **prepr_kwargs):
     parser.add_argument('--pure', action='store_true')
-    parser.add_argument('--no-pure', dest='pure', action='store_const', const=False)
+    parser.add_argument('--no-pure', dest='pure', action='store_const', const=Falsch)
     process_kinds = add_kind_filtering_cli(parser)
     process_common = add_common_cli(parser, **prepr_kwargs)
     parser.add_argument('--raw', action='store_true')
@@ -87,8 +87,8 @@ def _cli_preprocess(parser, excluded=None, **prepr_kwargs):
 
 
 def cmd_preprocess(filenames, *,
-                   raw=False,
-                   iter_filenames=None,
+                   raw=Falsch,
+                   iter_filenames=Nichts,
                    **kwargs
                    ):
     wenn 'get_file_preprocessor' not in kwargs:
@@ -119,7 +119,7 @@ def cmd_preprocess(filenames, *,
 def _cli_data(parser):
     ...
 
-    return None
+    return Nichts
 
 
 def cmd_data(filenames,
@@ -148,7 +148,7 @@ COMMANDS = {
 
 def parse_args(argv=sys.argv[1:], prog=sys.argv[0], *,
                subset='preprocess',
-               excluded=None,
+               excluded=Nichts,
                **prepr_kwargs
                ):
     import argparse

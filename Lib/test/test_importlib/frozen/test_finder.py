@@ -8,7 +8,7 @@ import unittest
 from test.support import import_helper, REPO_ROOT, STDLIB_DIR
 
 
-def resolve_stdlib_file(name, ispkg=False):
+def resolve_stdlib_file(name, ispkg=Falsch):
     assert name
     wenn ispkg:
         return os.path.join(STDLIB_DIR, *name.split('.'), '__init__.py')
@@ -25,18 +25,18 @@ klasse FindSpecTests(abc.FinderTests):
         with import_helper.frozen_modules():
             return finder.find_spec(name, **kwargs)
 
-    def check_basic(self, spec, name, ispkg=False):
+    def check_basic(self, spec, name, ispkg=Falsch):
         self.assertEqual(spec.name, name)
         self.assertIs(spec.loader, self.machinery.FrozenImporter)
         self.assertEqual(spec.origin, 'frozen')
-        self.assertFalse(spec.has_location)
+        self.assertFalsch(spec.has_location)
         wenn ispkg:
-            self.assertIsNotNone(spec.submodule_search_locations)
+            self.assertIsNotNichts(spec.submodule_search_locations)
         sonst:
-            self.assertIsNone(spec.submodule_search_locations)
-        self.assertIsNotNone(spec.loader_state)
+            self.assertIsNichts(spec.submodule_search_locations)
+        self.assertIsNotNichts(spec.loader_state)
 
-    def check_loader_state(self, spec, origname=None, filename=None):
+    def check_loader_state(self, spec, origname=Nichts, filename=Nichts):
         wenn not filename:
             wenn not origname:
                 origname = spec.name
@@ -47,7 +47,7 @@ klasse FindSpecTests(abc.FinderTests):
         # Check the rest of spec.loader_state.
         expected = dict(
             origname=origname,
-            filename=filename wenn origname sonst None,
+            filename=filename wenn origname sonst Nichts,
         )
         self.assertDictEqual(actual, expected)
 
@@ -55,7 +55,7 @@ klasse FindSpecTests(abc.FinderTests):
         """This is only called when testing packages."""
         missing = object()
         filename = getattr(spec.loader_state, 'filename', missing)
-        origname = getattr(spec.loader_state, 'origname', None)
+        origname = getattr(spec.loader_state, 'origname', Nichts)
         wenn not origname or filename is missing:
             # We deal with this in check_loader_state().
             return
@@ -102,7 +102,7 @@ klasse FindSpecTests(abc.FinderTests):
             '__hello_only__': ('Tools', 'freeze', 'flag.py'),
         }
         fuer name, path in modules.items():
-            origname = None
+            origname = Nichts
             filename = os.path.join(REPO_ROOT, *path)
             with self.subTest(f'{name} -> {filename}'):
                 spec = self.find(name)
@@ -115,63 +115,63 @@ klasse FindSpecTests(abc.FinderTests):
             '__phello__.ham',
         ]
         fuer name in packages:
-            filename = resolve_stdlib_file(name, ispkg=True)
+            filename = resolve_stdlib_file(name, ispkg=Wahr)
             with self.subTest(f'{name} -> {name}'):
                 spec = self.find(name)
-                self.check_basic(spec, name, ispkg=True)
+                self.check_basic(spec, name, ispkg=Wahr)
                 self.check_loader_state(spec, name, filename)
                 self.check_search_locations(spec)
         packages = {
             '__phello_alias__': '__hello__',
         }
         fuer name, origname in packages.items():
-            filename = resolve_stdlib_file(origname, ispkg=False)
+            filename = resolve_stdlib_file(origname, ispkg=Falsch)
             with self.subTest(f'{name} -> {origname}'):
                 spec = self.find(name)
-                self.check_basic(spec, name, ispkg=True)
+                self.check_basic(spec, name, ispkg=Wahr)
                 self.check_loader_state(spec, origname, filename)
                 self.check_search_locations(spec)
 
     # These are covered by test_module() and test_package().
-    test_module_in_package = None
-    test_package_in_package = None
+    test_module_in_package = Nichts
+    test_package_in_package = Nichts
 
     # No easy way to test.
-    test_package_over_module = None
+    test_package_over_module = Nichts
 
     def test_path_ignored(self):
         fuer name in ('__hello__', '__phello__', '__phello__.spam'):
             actual = self.find(name)
-            fuer path in (None, object(), '', 'eggs', [], [''], ['eggs']):
+            fuer path in (Nichts, object(), '', 'eggs', [], [''], ['eggs']):
                 with self.subTest((name, path)):
                     spec = self.find(name, path=path)
                     self.assertEqual(spec, actual)
 
     def test_target_ignored(self):
         imported = ('__hello__', '__phello__')
-        with import_helper.CleanImport(*imported, usefrozen=True):
+        with import_helper.CleanImport(*imported, usefrozen=Wahr):
             import __hello__ as match
             import __phello__ as nonmatch
         name = '__hello__'
         actual = self.find(name)
-        fuer target in (None, match, nonmatch, object(), 'not-a-module-object'):
+        fuer target in (Nichts, match, nonmatch, object(), 'not-a-module-object'):
             with self.subTest(target):
                 spec = self.find(name, target=target)
                 self.assertEqual(spec, actual)
 
     def test_failure(self):
         spec = self.find('<not real>')
-        self.assertIsNone(spec)
+        self.assertIsNichts(spec)
 
     def test_not_using_frozen(self):
         finder = self.machinery.FrozenImporter
-        with import_helper.frozen_modules(enabled=False):
+        with import_helper.frozen_modules(enabled=Falsch):
             # both frozen and not frozen
             spec1 = finder.find_spec('__hello__')
             # only frozen
             spec2 = finder.find_spec('__hello_only__')
-        self.assertIsNone(spec1)
-        self.assertIsNone(spec2)
+        self.assertIsNichts(spec1)
+        self.assertIsNichts(spec2)
 
 
 (Frozen_FindSpecTests,

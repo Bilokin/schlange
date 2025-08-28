@@ -20,7 +20,7 @@ klasse Tokenizer:
     _tokens: List[tokenize.TokenInfo]
 
     def __init__(
-        self, tokengen: Iterator[tokenize.TokenInfo], *, path: str = "", verbose: bool = False
+        self, tokengen: Iterator[tokenize.TokenInfo], *, path: str = "", verbose: bool = Falsch
     ):
         self._tokengen = tokengen
         self._tokens = []
@@ -29,7 +29,7 @@ klasse Tokenizer:
         self._lines: Dict[int, str] = {}
         self._path = path
         wenn verbose:
-            self.report(False, False)
+            self.report(Falsch, Falsch)
 
     def getnext(self) -> tokenize.TokenInfo:
         """Return the next token and updates the index."""
@@ -37,7 +37,7 @@ klasse Tokenizer:
         tok = self.peek()
         self._index += 1
         wenn self._verbose:
-            self.report(cached, False)
+            self.report(cached, Falsch)
         return tok
 
     def peek(self) -> tokenize.TokenInfo:
@@ -95,16 +95,16 @@ klasse Tokenizer:
     def mark(self) -> Mark:
         return self._index
 
-    def reset(self, index: Mark) -> None:
+    def reset(self, index: Mark) -> Nichts:
         wenn index == self._index:
             return
         assert 0 <= index <= len(self._tokens), (index, len(self._tokens))
         old_index = self._index
         self._index = index
         wenn self._verbose:
-            self.report(True, index < old_index)
+            self.report(Wahr, index < old_index)
 
-    def report(self, cached: bool, back: bool) -> None:
+    def report(self, cached: bool, back: bool) -> Nichts:
         wenn back:
             fill = "-" * self._index + "-"
         sowenn cached:

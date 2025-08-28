@@ -36,14 +36,14 @@ def generate_c_code(
             verbose_tokenizer,
             verbose_parser,
             args.verbose,
-            keep_asserts_in_extension=False wenn args.optimized sonst True,
+            keep_asserts_in_extension=Falsch wenn args.optimized sonst Wahr,
             skip_actions=args.skip_actions,
         )
         return grammar, parser, tokenizer, gen
     except Exception as err:
         wenn args.verbose:
             raise  # Show traceback
-        traceback.print_exception(err.__class__, err, None)
+        traceback.print_exception(err.__class__, err, Nichts)
         sys.stderr.write("For full traceback, use -v\n")
         sys.exit(1)
 
@@ -68,7 +68,7 @@ def generate_python_code(
     except Exception as err:
         wenn args.verbose:
             raise  # Show traceback
-        traceback.print_exception(err.__class__, err, None)
+        traceback.print_exception(err.__class__, err, Nichts)
         sys.stderr.write("For full traceback, use -v\n")
         sys.exit(1)
 
@@ -127,7 +127,7 @@ python_parser.add_argument(
 )
 
 
-def main() -> None:
+def main() -> Nichts:
     from pegen.testutil import print_memstats
 
     args = argparser.parse_args()

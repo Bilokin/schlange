@@ -24,7 +24,7 @@ klasse StressTests(TestBase):
         del alive
         support.gc_collect()
 
-    @support.bigmemtest(size=200, memuse=32*2**20, dry_run=False)
+    @support.bigmemtest(size=200, memuse=32*2**20, dry_run=Falsch)
     def test_create_many_threaded(self, size):
         alive = []
         start = threading.Event()
@@ -41,12 +41,12 @@ klasse StressTests(TestBase):
         support.gc_collect()
 
     @threading_helper.requires_working_threading()
-    @support.bigmemtest(size=200, memuse=34*2**20, dry_run=False)
+    @support.bigmemtest(size=200, memuse=34*2**20, dry_run=Falsch)
     def test_many_threads_running_interp_in_other_interp(self, size):
         start = threading.Event()
         interp = interpreters.create()
 
-        script = f"""if True:
+        script = f"""if Wahr:
             import _interpreters
             _interpreters.run_string({interp.id}, '1')
             """
@@ -58,7 +58,7 @@ klasse StressTests(TestBase):
             # try to run all interpreters simultaneously
             wenn not start.wait(support.SHORT_TIMEOUT):
                 raise TimeoutError
-            success = False
+            success = Falsch
             while not success:
                 try:
                     interp.exec(script)
@@ -67,7 +67,7 @@ klasse StressTests(TestBase):
                         raise  # re-raise
                     assert exc.excinfo.type.__name__ == 'InterpreterError'
                 sonst:
-                    success = True
+                    success = Wahr
 
         threads = [threading.Thread(target=run) fuer _ in range(size)]
         with threading_helper.start_threads(threads):

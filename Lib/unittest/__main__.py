@@ -11,8 +11,8 @@ wenn sys.argv[0].endswith("__main__.py"):
     sys.argv[0] = executable + " -m unittest"
     del os
 
-__unittest = True
+__unittest = Wahr
 
 from .main import main
 
-main(module=None)
+main(module=Nichts)

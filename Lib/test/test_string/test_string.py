@@ -64,8 +64,8 @@ klasse ModuleTest(unittest.TestCase):
         fmt = string.Formatter()
         self.assertEqual(fmt.format('foo{}{}', 'bar', 6),
                          'foo{}{}'.format('bar', 6))
-        self.assertEqual(fmt.format('foo{1}{num}{1}', None, 'bar', num=6),
-                         'foo{1}{num}{1}'.format(None, 'bar', num=6))
+        self.assertEqual(fmt.format('foo{1}{num}{1}', Nichts, 'bar', num=6),
+                         'foo{1}{num}{1}'.format(Nichts, 'bar', num=6))
         self.assertEqual(fmt.format('{:^{}}', 'bar', 6),
                          '{:^{}}'.format('bar', 6))
         self.assertEqual(fmt.format('{:^{}} {}', 'bar', 6, 'X'),
@@ -113,7 +113,7 @@ klasse ModuleTest(unittest.TestCase):
     def test_auto_numbering_lookup(self):
         fmt = string.Formatter()
         namespace = types.SimpleNamespace(foo=types.SimpleNamespace(bar='baz'))
-        widths = [None, types.SimpleNamespace(qux=4)]
+        widths = [Nichts, types.SimpleNamespace(qux=4)]
         self.assertEqual(
             fmt.format("{.foo.bar:{[1].qux}}", namespace, widths), 'baz ')
 
@@ -161,11 +161,11 @@ klasse ModuleTest(unittest.TestCase):
         klasse XFormatter(string.Formatter):
             def convert_field(self, value, conversion):
                 wenn conversion == 'x':
-                    return None
+                    return Nichts
                 return super().convert_field(value, conversion)
 
         fmt = XFormatter()
-        self.assertEqual(fmt.format("{0!r}:{0!x}", 'foo', 'foo'), "'foo':None")
+        self.assertEqual(fmt.format("{0!r}:{0!x}", 'foo', 'foo'), "'foo':Nichts")
 
 
     def test_override_parse(self):
@@ -177,9 +177,9 @@ klasse ModuleTest(unittest.TestCase):
                     wenn field[0] == '+':
                         # it's markup
                         field_name, _, format_spec = field[1:].partition(':')
-                        yield '', field_name, format_spec, None
+                        yield '', field_name, format_spec, Nichts
                     sonst:
-                        yield field, None, None, None
+                        yield field, Nichts, Nichts, Nichts
 
         fmt = BarFormatter()
         self.assertEqual(fmt.format('*|+0:^10s|*', 'foo'), '*   foo    *')
@@ -505,10 +505,10 @@ klasse TestTemplate(unittest.TestCase):
     def test_is_valid(self):
         eq = self.assertEqual
         s = Template('$who likes to eat a bag of ${what} worth $$100')
-        self.assertTrue(s.is_valid())
+        self.assertWahr(s.is_valid())
 
         s = Template('$who likes to eat a bag of ${what} worth $100')
-        self.assertFalse(s.is_valid())
+        self.assertFalsch(s.is_valid())
 
         # wenn the pattern has an unrecognized capture group,
         # it should raise ValueError like substitute and safe_substitute do

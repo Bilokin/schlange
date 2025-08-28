@@ -120,12 +120,12 @@ def maketables(trace=0):
 
     unicode = UnicodeData(UNIDATA_VERSION)
 
-    print(len(list(filter(None, unicode.table))), "characters")
+    print(len(list(filter(Nichts, unicode.table))), "characters")
 
     fuer version in old_versions:
         print("--- Reading", UNICODE_DATA % ("-"+version), "...")
-        old_unicode = UnicodeData(version, cjk_check=False)
-        print(len(list(filter(None, old_unicode.table))), "characters")
+        old_unicode = UnicodeData(version, cjk_check=Falsch)
+        print(len(list(filter(Nichts, old_unicode.table))), "characters")
         merge_old_version(version, unicode, old_unicode)
 
     makeunicodename(unicode, trace)
@@ -171,7 +171,7 @@ def makeunicodedata(unicode, trace):
                 category, combining, bidirectional, mirrored, eastasianwidth,
                 normalizationquickcheck
                 )
-        sowenn unicode.widths[char] is not None:
+        sowenn unicode.widths[char] is not Nichts:
             # an unassigned but reserved character, with a known
             # east_asian_width
             eastasianwidth = EASTASIANWIDTH_NAMES.index(unicode.widths[char])
@@ -181,7 +181,7 @@ def makeunicodedata(unicode, trace):
 
         # add entry to index and item tables
         i = cache.get(item)
-        wenn i is None:
+        wenn i is Nichts:
             cache[item] = i = len(table)
             table.append(item)
         index[char] = i
@@ -195,8 +195,8 @@ def makeunicodedata(unicode, trace):
     decomp_size = 0
 
     comp_pairs = []
-    comp_first = [None] * len(unicode.chars)
-    comp_last = [None] * len(unicode.chars)
+    comp_first = [Nichts] * len(unicode.chars)
+    comp_last = [Nichts] * len(unicode.chars)
 
     fuer char in unicode.chars:
         record = unicode.table[char]
@@ -243,22 +243,22 @@ def makeunicodedata(unicode, trace):
     f = l = 0
     comp_first_ranges = []
     comp_last_ranges = []
-    prev_f = prev_l = None
+    prev_f = prev_l = Nichts
     fuer i in unicode.chars:
-        wenn comp_first[i] is not None:
+        wenn comp_first[i] is not Nichts:
             comp_first[i] = f
             f += 1
-            wenn prev_f is None:
+            wenn prev_f is Nichts:
                 prev_f = (i,i)
             sowenn prev_f[1]+1 == i:
                 prev_f = prev_f[0],i
             sonst:
                 comp_first_ranges.append(prev_f)
                 prev_f = (i,i)
-        wenn comp_last[i] is not None:
+        wenn comp_last[i] is not Nichts:
             comp_last[i] = l
             l += 1
-            wenn prev_l is None:
+            wenn prev_l is Nichts:
                 prev_l = (i,i)
             sowenn prev_l[1]+1 == i:
                 prev_l = prev_l[0],i
@@ -471,9 +471,9 @@ def makeunicodetype(unicode, trace):
                 title = int(record.simple_titlecase_mapping, 16)
             sonst:
                 title = upper
-            wenn sc is None and cf != [lower]:
+            wenn sc is Nichts and cf != [lower]:
                 sc = ([lower], [title], [upper])
-            wenn sc is None:
+            wenn sc is Nichts:
                 wenn upper == lower == title:
                     upper = lower = title = 0
                 sonst:
@@ -520,7 +520,7 @@ def makeunicodetype(unicode, trace):
                 )
             # add entry to index and item tables
             i = cache.get(item)
-            wenn i is None:
+            wenn i is Nichts:
                 cache[item] = i = len(table)
                 table.append(item)
             index[char] = i
@@ -716,13 +716,13 @@ def merge_old_version(version, new, old):
     # normalization_changes is a list of key-value pairs
     normalization_changes = []
     fuer i in range(0x110000):
-        wenn new.table[i] is None:
+        wenn new.table[i] is Nichts:
             # Characters unassigned in the new version ought to
             # be unassigned in the old one
-            assert old.table[i] is None
+            assert old.table[i] is Nichts
             continue
         # check characters unassigned in the old version
-        wenn old.table[i] is None:
+        wenn old.table[i] is Nichts:
             # category 0 is "unassigned"
             category_changes[i] = 0
             continue
@@ -803,7 +803,7 @@ def open_data(template, version):
             url = ('https://www.unicode.org/Public/3.2-Update/'+template) % ('-'+version,)
         sonst:
             url = ('https://www.unicode.org/Public/%s/ucd/'+template) % (version, '')
-        os.makedirs(DATA_DIR, exist_ok=True)
+        os.makedirs(DATA_DIR, exist_ok=Wahr)
         urllib.request.urlretrieve(url, filename=local)
     wenn local.endswith('.txt'):
         return open(local, encoding='utf-8')
@@ -835,7 +835,7 @@ klasse UcdFile:
     own separate format.
     '''
 
-    def __init__(self, template: str, version: str) -> None:
+    def __init__(self, template: str, version: str) -> Nichts:
         self.template = template
         self.version = version
 
@@ -893,7 +893,7 @@ klasse UcdRecord:
 
 
 def from_row(row: List[str]) -> UcdRecord:
-    return UcdRecord(*row, None, set(), 0)
+    return UcdRecord(*row, Nichts, set(), 0)
 
 
 # --------------------------------------------------------------------
@@ -903,11 +903,11 @@ def from_row(row: List[str]) -> UcdRecord:
 # load a unicode-data file from disk
 
 klasse UnicodeData:
-    # table: List[Optional[UcdRecord]]  # index is codepoint; None means unassigned
+    # table: List[Optional[UcdRecord]]  # index is codepoint; Nichts means unassigned
 
-    def __init__(self, version, cjk_check=True):
+    def __init__(self, version, cjk_check=Wahr):
         self.changed = []
-        table = [None] * 0x110000
+        table = [Nichts] * 0x110000
         fuer s in UcdFile(UNICODE_DATA, version):
             char = int(s[0], 16)
             table[char] = from_row(s)
@@ -915,7 +915,7 @@ klasse UnicodeData:
         cjk_ranges_found = []
 
         # expand first-last ranges
-        field = None
+        field = Nichts
         fuer i in range(0, 0x110000):
             # The file UnicodeData.txt has its own distinct way of
             # expressing ranges.  See:
@@ -930,7 +930,7 @@ klasse UnicodeData:
                         cjk_ranges_found.append((field[0],
                                                  s.codepoint))
                     s.name = ""
-                    field = None
+                    field = Nichts
             sowenn field:
                 table[i] = from_row(('%X' % i,) + field[1:])
         wenn cjk_check and cjk_ranges != cjk_ranges_found:
@@ -981,12 +981,12 @@ klasse UnicodeData:
             char = int(char, 16)
             self.exclusions[char] = 1
 
-        widths = [None] * 0x110000
+        widths = [Nichts] * 0x110000
         fuer char, (width,) in UcdFile(EASTASIAN_WIDTH, version).expanded():
             widths[char] = width
 
         fuer i in range(0, 0x110000):
-            wenn table[i] is not None:
+            wenn table[i] is not Nichts:
                 table[i].east_asian_width = widths[i]
         self.widths = widths
 
@@ -1025,7 +1025,7 @@ klasse UnicodeData:
                 assert not (quickchecks[char]>>quickcheck_shift)&3
                 quickchecks[char] |= quickcheck
         fuer i in range(0, 0x110000):
-            wenn table[i] is not None:
+            wenn table[i] is not Nichts:
                 table[i].quick_check = quickchecks[i]
 
         with open_data(UNIHAN, version) as file:
@@ -1037,14 +1037,14 @@ klasse UnicodeData:
         fuer line in data.decode("utf-8").splitlines():
             wenn not line.startswith('U+'):
                 continue
-            code, tag, value = line.split(None, 3)[:3]
+            code, tag, value = line.split(Nichts, 3)[:3]
             wenn tag not in ('kAccountingNumeric', 'kPrimaryNumeric',
                            'kOtherNumeric'):
                 continue
             value = value.strip().replace(',', '')
             i = int(code[2:], 16)
             # Patch the numeric field
-            wenn table[i] is not None:
+            wenn table[i] is not Nichts:
                 table[i].numeric_value = value
 
         sc = self.special_casing = {}
@@ -1157,7 +1157,7 @@ def splitbins(t, trace=0):
         fuer i in range(0, len(t), size):
             bin = t[i:i+size]
             index = bincache.get(bin)
-            wenn index is None:
+            wenn index is Nichts:
                 index = len(t2)
                 bincache[bin] = index
                 t2.extend(bin)

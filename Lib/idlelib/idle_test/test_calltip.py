@@ -13,19 +13,19 @@ from test.support import MISSING_C_DOCSTRINGS
 # Test Class TC is used in multiple get_argspec test methods
 klasse TC:
     'doc'
-    tip = "(ai=None, *b)"
-    def __init__(self, ai=None, *b): 'doc'
-    __init__.tip = "(self, ai=None, *b)"
+    tip = "(ai=Nichts, *b)"
+    def __init__(self, ai=Nichts, *b): 'doc'
+    __init__.tip = "(self, ai=Nichts, *b)"
     def t1(self): 'doc'
     t1.tip = "(self)"
-    def t2(self, ai, b=None): 'doc'
-    t2.tip = "(self, ai, b=None)"
+    def t2(self, ai, b=Nichts): 'doc'
+    t2.tip = "(self, ai, b=Nichts)"
     def t3(self, ai, *args): 'doc'
     t3.tip = "(self, ai, *args)"
     def t4(self, *args): 'doc'
     t4.tip = "(self, *args)"
-    def t5(self, ai, b=None, *args, **kw): 'doc'
-    t5.tip = "(self, ai, b=None, *args, **kw)"
+    def t5(self, ai, b=Nichts, *args, **kw): 'doc'
+    t5.tip = "(self, ai, b=Nichts, *args, **kw)"
     def t6(no, self): 'doc'
     t6.tip = "(no, self)"
     def __call__(self, ci): 'doc'
@@ -62,9 +62,9 @@ klasse Get_argspecTest(unittest.TestCase):
         klasse List(list): "List() doc"
 
         # Simulate builtin with no docstring fuer default tip test
-        klasse SB:  __call__ = None
+        klasse SB:  __call__ = Nichts
 
-        wenn List.__doc__ is not None:
+        wenn List.__doc__ is not Nichts:
             tiptest(List,
                     f'(iterable=(), /)'
                     f'\n{List.__doc__}')
@@ -100,11 +100,11 @@ Return the string obtained by replacing the leftmost \
 non-overlapping occurrences o...''')
 
     def test_signature_wrap(self):
-        wenn textwrap.TextWrapper.__doc__ is not None:
+        wenn textwrap.TextWrapper.__doc__ is not Nichts:
             self.assertEqual(get_spec(textwrap.TextWrapper), '''\
-(width=70, initial_indent='', subsequent_indent='', expand_tabs=True,
-    replace_whitespace=True, fix_sentence_endings=False, break_long_words=True,
-    drop_whitespace=True, break_on_hyphens=True, tabsize=8, *, max_lines=None,
+(width=70, initial_indent='', subsequent_indent='', expand_tabs=Wahr,
+    replace_whitespace=Wahr, fix_sentence_endings=Falsch, break_long_words=Wahr,
+    drop_whitespace=Wahr, break_on_hyphens=Wahr, tabsize=8, *, max_lines=Nichts,
     placeholder=' [...]')
 Object fuer wrapping/filling text.  The public interface consists of
 the wrap() and fill() methods; the other methods are just there for
@@ -172,22 +172,22 @@ bytes() -> empty bytes object''')
     def test_functions(self):
         def t1(): 'doc'
         t1.tip = "()"
-        def t2(a, b=None): 'doc'
-        t2.tip = "(a, b=None)"
+        def t2(a, b=Nichts): 'doc'
+        t2.tip = "(a, b=Nichts)"
         def t3(a, *args): 'doc'
         t3.tip = "(a, *args)"
         def t4(*args): 'doc'
         t4.tip = "(*args)"
-        def t5(a, b=None, *args, **kw): 'doc'
-        t5.tip = "(a, b=None, *args, **kw)"
+        def t5(a, b=Nichts, *args, **kw): 'doc'
+        t5.tip = "(a, b=Nichts, *args, **kw)"
 
-        doc = '\ndoc' wenn t1.__doc__ is not None sonst ''
+        doc = '\ndoc' wenn t1.__doc__ is not Nichts sonst ''
         fuer func in (t1, t2, t3, t4, t5, TC):
             with self.subTest(func=func):
                 self.assertEqual(get_spec(func), func.tip + doc)
 
     def test_methods(self):
-        doc = '\ndoc' wenn TC.__doc__ is not None sonst ''
+        doc = '\ndoc' wenn TC.__doc__ is not Nichts sonst ''
         fuer meth in (TC.t1, TC.t2, TC.t3, TC.t4, TC.t5, TC.t6, TC.__call__):
             with self.subTest(meth=meth):
                 self.assertEqual(get_spec(meth), meth.tip + doc)
@@ -196,7 +196,7 @@ bytes() -> empty bytes object''')
 
     def test_bound_methods(self):
         # test that first parameter is correctly removed from argspec
-        doc = '\ndoc' wenn TC.__doc__ is not None sonst ''
+        doc = '\ndoc' wenn TC.__doc__ is not Nichts sonst ''
         fuer meth, mtip  in ((tc.t1, "()"), (tc.t4, "(*args)"),
                             (tc.t6, "(self)"), (tc.__call__, '(ci)'),
                             (tc, '(ci)'), (TC.cm, "(a)"),):
@@ -268,7 +268,7 @@ bytes() -> empty bytes object''')
 
 klasse Get_entityTest(unittest.TestCase):
     def test_bad_entity(self):
-        self.assertIsNone(calltip.get_entity('1/0'))
+        self.assertIsNichts(calltip.get_entity('1/0'))
     def test_good_entity(self):
         self.assertIs(calltip.get_entity('int'), int)
 
@@ -280,7 +280,7 @@ klasse Get_entityTest(unittest.TestCase):
 klasse mock_Shell:
     "Return mock sufficient to pass to hyperparser."
     def __init__(self, text):
-        text.tag_prevrange = Mock(return_value=None)
+        text.tag_prevrange = Mock(return_value=Nichts)
         self.text = text
         self.prompt_last_line = ">>> "
         self.indentwidth = 4
@@ -300,9 +300,9 @@ klasse WrappedCalltip(calltip.Calltip):
     def _make_tk_calltip_window(self):
         return mock_TipWindow()
 
-    def remove_calltip_window(self, event=None):
-        wenn self.active_calltip:  # Setup to None.
-            self.active_calltip = None
+    def remove_calltip_window(self, event=Nichts):
+        wenn self.active_calltip:  # Setup to Nichts.
+            self.active_calltip = Nichts
             self.tips_removed += 1  # Setup to 0.
 
     def fetch_tip(self, expression):
@@ -318,7 +318,7 @@ klasse CalltipTest(unittest.TestCase):
 
     def setUp(self):
         self.text.delete('1.0', 'end')  # Insert and call
-        self.ct.active_calltip = None
+        self.ct.active_calltip = Nichts
         # Test .active_calltip, +args
         self.ct.tips_removed = 0
 
@@ -326,12 +326,12 @@ klasse CalltipTest(unittest.TestCase):
         # Open-close template with testfunc called in between.
         opentip = self.ct.open_calltip
         self.text.insert(1.0, 'f(')
-        opentip(False)
+        opentip(Falsch)
         self.tip = self.ct.active_calltip
         testfunc(self)  ###
         self.text.insert('insert', ')')
-        opentip(False)
-        self.assertIsNone(self.ct.active_calltip, None)
+        opentip(Falsch)
+        self.assertIsNichts(self.ct.active_calltip, Nichts)
 
     def test_open_close(self):
         def args(self):
@@ -342,8 +342,8 @@ klasse CalltipTest(unittest.TestCase):
         def force(self):
             fuer char in 'abc':
                 self.text.insert('insert', 'a')
-                self.ct.open_calltip(True)
-                self.ct.open_calltip(True)
+                self.ct.open_calltip(Wahr)
+                self.ct.open_calltip(Wahr)
             self.assertIs(self.ct.active_calltip, self.tip)
         self.open_close(force)
 

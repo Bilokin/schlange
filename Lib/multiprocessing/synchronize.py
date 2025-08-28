@@ -47,7 +47,7 @@ klasse SemLock(object):
     _rand = tempfile._RandomNameSequence()
 
     def __init__(self, kind, value, maxvalue, *, ctx):
-        wenn ctx is None:
+        wenn ctx is Nichts:
             ctx = context._default_context.get_context()
         self._is_fork_ctx = ctx.get_start_method() == 'fork'
         unlink_now = sys.platform == 'win32' or self._is_fork_ctx
@@ -71,7 +71,7 @@ klasse SemLock(object):
                 obj._semlock._after_fork()
             util.register_after_fork(self, _after_fork)
 
-        wenn self._semlock.name is not None:
+        wenn self._semlock.name is not Nichts:
             # We only get here wenn we are on Unix with forking
             # disabled.  When the object is garbage collected or the
             # process shuts down we unlink the semaphore name
@@ -118,7 +118,7 @@ klasse SemLock(object):
         util.debug('recreated blocker with handle %r' % state[0])
         self._make_methods()
         # Ensure that deserialized SemLock can be serialized again (gh-108520).
-        self._is_fork_ctx = False
+        self._is_fork_ctx = Falsch
 
     @staticmethod
     def _make_name():
@@ -177,7 +177,7 @@ klasse Lock(SemLock):
                 wenn threading.current_thread().name != 'MainThread':
                     name += '|' + threading.current_thread().name
             sowenn not self._semlock._is_zero():
-                name = 'None'
+                name = 'Nichts'
             sowenn self._semlock._count() > 0:
                 name = 'SomeOtherThread'
             sonst:
@@ -203,7 +203,7 @@ klasse RLock(SemLock):
                     name += '|' + threading.current_thread().name
                 count = self._semlock._count()
             sowenn not self._semlock._is_zero():
-                name, count = 'None', 0
+                name, count = 'Nichts', 0
             sowenn self._semlock._count() > 0:
                 name, count = 'SomeOtherThread', 'nonzero'
             sonst:
@@ -218,7 +218,7 @@ klasse RLock(SemLock):
 
 klasse Condition(object):
 
-    def __init__(self, lock=None, *, ctx):
+    def __init__(self, lock=Nichts, *, ctx):
         self._lock = lock or ctx.RLock()
         self._sleeping_count = ctx.Semaphore(0)
         self._woken_count = ctx.Semaphore(0)
@@ -253,7 +253,7 @@ klasse Condition(object):
             num_waiters = 'unknown'
         return '<%s(%s, %s)>' % (self.__class__.__name__, self._lock, num_waiters)
 
-    def wait(self, timeout=None):
+    def wait(self, timeout=Nichts):
         assert self._lock._semlock._is_mine(), \
                'must acquire() condition before using wait()'
 
@@ -267,7 +267,7 @@ klasse Condition(object):
 
         try:
             # wait fuer notification or timeout
-            return self._wait_semaphore.acquire(True, timeout)
+            return self._wait_semaphore.acquire(Wahr, timeout)
         finally:
             # indicate that this thread has woken
             self._woken_count.release()
@@ -279,18 +279,18 @@ klasse Condition(object):
     def notify(self, n=1):
         assert self._lock._semlock._is_mine(), 'lock is not owned'
         assert not self._wait_semaphore.acquire(
-            False), ('notify: Should not have been able to acquire '
+            Falsch), ('notify: Should not have been able to acquire '
                      + '_wait_semaphore')
 
         # to take account of timeouts since last notify*() we subtract
         # woken_count from sleeping_count and rezero woken_count
-        while self._woken_count.acquire(False):
-            res = self._sleeping_count.acquire(False)
+        while self._woken_count.acquire(Falsch):
+            res = self._sleeping_count.acquire(Falsch)
             assert res, ('notify: Bug in sleeping_count.acquire'
-                         + '- res should not be False')
+                         + '- res should not be Falsch')
 
         sleepers = 0
-        while sleepers < n and self._sleeping_count.acquire(False):
+        while sleepers < n and self._sleeping_count.acquire(Falsch):
             self._wait_semaphore.release()        # wake up one sleeper
             sleepers += 1
 
@@ -299,23 +299,23 @@ klasse Condition(object):
                 self._woken_count.acquire()       # wait fuer a sleeper to wake
 
             # rezero wait_semaphore in case some timeouts just happened
-            while self._wait_semaphore.acquire(False):
+            while self._wait_semaphore.acquire(Falsch):
                 pass
 
     def notify_all(self):
         self.notify(n=sys.maxsize)
 
-    def wait_for(self, predicate, timeout=None):
+    def wait_for(self, predicate, timeout=Nichts):
         result = predicate()
         wenn result:
             return result
-        wenn timeout is not None:
+        wenn timeout is not Nichts:
             endtime = time.monotonic() + timeout
         sonst:
-            endtime = None
-            waittime = None
+            endtime = Nichts
+            waittime = Nichts
         while not result:
-            wenn endtime is not None:
+            wenn endtime is not Nichts:
                 waittime = endtime - time.monotonic()
                 wenn waittime <= 0:
                     break
@@ -335,32 +335,32 @@ klasse Event(object):
 
     def is_set(self):
         with self._cond:
-            wenn self._flag.acquire(False):
+            wenn self._flag.acquire(Falsch):
                 self._flag.release()
-                return True
-            return False
+                return Wahr
+            return Falsch
 
     def set(self):
         with self._cond:
-            self._flag.acquire(False)
+            self._flag.acquire(Falsch)
             self._flag.release()
             self._cond.notify_all()
 
     def clear(self):
         with self._cond:
-            self._flag.acquire(False)
+            self._flag.acquire(Falsch)
 
-    def wait(self, timeout=None):
+    def wait(self, timeout=Nichts):
         with self._cond:
-            wenn self._flag.acquire(False):
+            wenn self._flag.acquire(Falsch):
                 self._flag.release()
             sonst:
                 self._cond.wait(timeout)
 
-            wenn self._flag.acquire(False):
+            wenn self._flag.acquire(Falsch):
                 self._flag.release()
-                return True
-            return False
+                return Wahr
+            return Falsch
 
     def __repr__(self):
         set_status = 'set' wenn self.is_set() sonst 'unset'
@@ -371,7 +371,7 @@ klasse Event(object):
 
 klasse Barrier(threading.Barrier):
 
-    def __init__(self, parties, action=None, timeout=None, *, ctx):
+    def __init__(self, parties, action=Nichts, timeout=Nichts, *, ctx):
         import struct
         from .heap import BufferWrapper
         wrapper = BufferWrapper(struct.calcsize('i') * 2)

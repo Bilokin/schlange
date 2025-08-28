@@ -32,9 +32,9 @@ from test.pickletester import BigmemPickleTests
 
 try:
     import _pickle
-    has_c_implementation = True
+    has_c_implementation = Wahr
 except ImportError:
-    has_c_implementation = False
+    has_c_implementation = Falsch
 
 
 klasse LazyImportTest(unittest.TestCase):
@@ -70,7 +70,7 @@ klasse PyPicklingErrorTests(AbstractPicklingErrorTests, unittest.TestCase):
 
     pickler = pickle._Pickler
 
-    def dumps(self, arg, proto=None, **kwargs):
+    def dumps(self, arg, proto=Nichts, **kwargs):
         f = io.BytesIO()
         p = self.pickler(f, proto, **kwargs)
         p.dump(arg)
@@ -83,7 +83,7 @@ klasse PyPicklerTests(AbstractPickleTests, unittest.TestCase):
     pickler = pickle._Pickler
     unpickler = pickle._Unpickler
 
-    def dumps(self, arg, proto=None, **kwargs):
+    def dumps(self, arg, proto=Nichts, **kwargs):
         f = io.BytesIO()
         p = self.pickler(f, proto, **kwargs)
         p.dump(arg)
@@ -104,20 +104,20 @@ klasse InMemoryPickleTests(AbstractPickleTests, AbstractUnpickleTests,
                         AttributeError, ValueError,
                         struct.error, IndexError, ImportError)
 
-    def dumps(self, arg, protocol=None, **kwargs):
+    def dumps(self, arg, protocol=Nichts, **kwargs):
         return pickle.dumps(arg, protocol, **kwargs)
 
     def loads(self, buf, **kwds):
         return pickle.loads(buf, **kwds)
 
-    test_framed_write_sizes_with_delayed_writer = None
-    test_find_class = None
-    test_custom_find_class = None
+    test_framed_write_sizes_with_delayed_writer = Nichts
+    test_find_class = Nichts
+    test_custom_find_class = Nichts
 
 
 klasse PersistentPicklerUnpicklerMixin(object):
 
-    def dumps(self, arg, proto=None):
+    def dumps(self, arg, proto=Nichts):
         klasse PersPickler(self.pickler):
             def persistent_id(subself, obj):
                 return self.persistent_id(obj)
@@ -161,7 +161,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             self.assertEqual(pickler.persistent_id('def'), 'def')
             r = weakref.ref(pickler)
             del pickler
-            self.assertIsNone(r())
+            self.assertIsNichts(r())
 
         klasse PersPickler(self.pickler):
             def persistent_id(subself, obj):
@@ -196,11 +196,11 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
         pickler = Pickler(io.BytesIO())
         self.assertIs(pickler.dispatch_table, table)
         table_ref = weakref.ref(table)
-        self.assertIsNotNone(table_ref())
+        self.assertIsNotNichts(table_ref())
         del pickler
         del table
         support.gc_collect()
-        self.assertIsNone(table_ref())
+        self.assertIsNichts(table_ref())
 
     @support.cpython_only
     def test_unpickler_reference_cycle(self):
@@ -212,7 +212,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
             self.assertEqual(unpickler.persistent_load('def'), 'def')
             r = weakref.ref(unpickler)
             del unpickler
-            self.assertIsNone(r())
+            self.assertIsNichts(r())
 
         klasse PersUnpickler(self.unpickler):
             def persistent_load(subself, pid):
@@ -235,7 +235,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
         klasse PersPickler(self.pickler):
             def persistent_id(subself, obj):
                 called.append(obj)
-                self.assertIsNone(super().persistent_id(obj))
+                self.assertIsNichts(super().persistent_id(obj))
                 return obj
 
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -300,7 +300,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
                 raise AssertionError('should never be called')
             def _persistent_id(subself, obj):
                 called.append(obj)
-                self.assertIsNone(super().persistent_id(obj))
+                self.assertIsNichts(super().persistent_id(obj))
                 return obj
 
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -410,8 +410,8 @@ wenn has_c_implementation:
                 unpickler.memo = object
             # used to cause a segfault
             with self.assertRaises(ValueError):
-                unpickler.memo = {-1: None}
-            unpickler.memo = {1: None}
+                unpickler.memo = {-1: Nichts}
+            unpickler.memo = {1: Nichts}
 
     klasse CDispatchTableTests(AbstractDispatchTableTests, unittest.TestCase):
         pickler_class = pickle.Pickler
@@ -448,7 +448,7 @@ wenn has_c_implementation:
             import gc
             fuer tp in self._types:
                 with self.subTest(tp=tp):
-                    self.assertTrue(gc.is_tracked(tp))
+                    self.assertWahr(gc.is_tracked(tp))
 
         def test_immutable(self):
             fuer tp in self._types:
@@ -635,7 +635,7 @@ klasse CompatPickleTests(unittest.TestCase):
                     wenn support.verbose:
                         print(exc)
                 wenn ((module2, module3) not in ALT_IMPORT_MAPPING and
-                    REVERSE_IMPORT_MAPPING.get(module3, None) != module2):
+                    REVERSE_IMPORT_MAPPING.get(module3, Nichts) != module2):
                     fuer (m3, n3), (m2, n2) in REVERSE_NAME_MAPPING.items():
                         wenn (module3, module2) == (m3, m2):
                             break

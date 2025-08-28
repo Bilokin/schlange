@@ -30,7 +30,7 @@ klasse ListSharedLibraries(unittest.TestCase):
         dlls = ctypes.util.dllist()
 
         self.assertGreater(len(dlls), 0, f"loaded={dlls}")
-        self.assertTrue(
+        self.assertWahr(
             any(lib in dll fuer dll in dlls fuer lib in KNOWN_LIBRARIES), f"loaded={dlls}"
         )
 
@@ -46,13 +46,13 @@ klasse ListSharedLibraries(unittest.TestCase):
         _ctypes_test = import_helper.import_module("_ctypes_test")
         test_module = CDLL(_ctypes_test.__file__)
         dlls2 = ctypes.util.dllist()
-        self.assertIsNotNone(dlls2)
+        self.assertIsNotNichts(dlls2)
 
         dlls1 = set(dlls)
         dlls2 = set(dlls2)
 
         self.assertGreater(dlls2, dlls1, f"newly loaded libraries: {dlls2 - dlls1}")
-        self.assertTrue(any("_ctypes_test" in dll fuer dll in dlls2), f"loaded={dlls2}")
+        self.assertWahr(any("_ctypes_test" in dll fuer dll in dlls2), f"loaded={dlls2}")
 
 
 wenn __name__ == "__main__":

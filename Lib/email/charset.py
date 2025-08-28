@@ -34,30 +34,30 @@ EMPTYSTRING = ''
 # Defaults
 CHARSETS = {
     # input        header enc  body enc output conv
-    'iso-8859-1':  (QP,        QP,      None),
-    'iso-8859-2':  (QP,        QP,      None),
-    'iso-8859-3':  (QP,        QP,      None),
-    'iso-8859-4':  (QP,        QP,      None),
+    'iso-8859-1':  (QP,        QP,      Nichts),
+    'iso-8859-2':  (QP,        QP,      Nichts),
+    'iso-8859-3':  (QP,        QP,      Nichts),
+    'iso-8859-4':  (QP,        QP,      Nichts),
     # iso-8859-5 is Cyrillic, and not especially used
     # iso-8859-6 is Arabic, also not particularly used
     # iso-8859-7 is Greek, QP will not make it readable
     # iso-8859-8 is Hebrew, QP will not make it readable
-    'iso-8859-9':  (QP,        QP,      None),
-    'iso-8859-10': (QP,        QP,      None),
+    'iso-8859-9':  (QP,        QP,      Nichts),
+    'iso-8859-10': (QP,        QP,      Nichts),
     # iso-8859-11 is Thai, QP will not make it readable
-    'iso-8859-13': (QP,        QP,      None),
-    'iso-8859-14': (QP,        QP,      None),
-    'iso-8859-15': (QP,        QP,      None),
-    'iso-8859-16': (QP,        QP,      None),
-    'windows-1252':(QP,        QP,      None),
-    'viscii':      (QP,        QP,      None),
-    'us-ascii':    (None,      None,    None),
-    'big5':        (BASE64,    BASE64,  None),
-    'gb2312':      (BASE64,    BASE64,  None),
-    'euc-jp':      (BASE64,    None,    'iso-2022-jp'),
-    'shift_jis':   (BASE64,    None,    'iso-2022-jp'),
-    'iso-2022-jp': (BASE64,    None,    None),
-    'koi8-r':      (BASE64,    BASE64,  None),
+    'iso-8859-13': (QP,        QP,      Nichts),
+    'iso-8859-14': (QP,        QP,      Nichts),
+    'iso-8859-15': (QP,        QP,      Nichts),
+    'iso-8859-16': (QP,        QP,      Nichts),
+    'windows-1252':(QP,        QP,      Nichts),
+    'viscii':      (QP,        QP,      Nichts),
+    'us-ascii':    (Nichts,      Nichts,    Nichts),
+    'big5':        (BASE64,    BASE64,  Nichts),
+    'gb2312':      (BASE64,    BASE64,  Nichts),
+    'euc-jp':      (BASE64,    Nichts,    'iso-2022-jp'),
+    'shift_jis':   (BASE64,    Nichts,    'iso-2022-jp'),
+    'iso-2022-jp': (BASE64,    Nichts,    Nichts),
+    'koi8-r':      (BASE64,    BASE64,  Nichts),
     'utf-8':       (SHORTEST,  BASE64, 'utf-8'),
     }
 
@@ -98,12 +98,12 @@ CODEC_MAP = {
     # Hack: We don't want *any* conversion fuer stuff marked us-ascii, as all
     # sorts of garbage might be sent to us in the guise of 7-bit us-ascii.
     # Let that stuff pass through without conversion to/from Unicode.
-    'us-ascii':    None,
+    'us-ascii':    Nichts,
     }
 
 
 # Convenience functions fuer extending the above mappings
-def add_charset(charset, header_enc=None, body_enc=None, output_charset=None):
+def add_charset(charset, header_enc=Nichts, body_enc=Nichts, output_charset=Nichts):
     """Add character set properties to the global registry.
 
     charset is the input character set, and must be the canonical name of a
@@ -111,7 +111,7 @@ def add_charset(charset, header_enc=None, body_enc=None, output_charset=None):
 
     Optional header_enc and body_enc is either charset.QP for
     quoted-printable, charset.BASE64 fuer base64 encoding, charset.SHORTEST for
-    the shortest of qp or base64 encoding, or None fuer no encoding.  SHORTEST
+    the shortest of qp or base64 encoding, or Nichts fuer no encoding.  SHORTEST
     is only valid fuer header_enc.  It describes how message headers and
     message bodies in the input charset are to be encoded.  Default is no
     encoding.
@@ -182,7 +182,7 @@ klasse Charset:
                      used in an email header, this attribute will be set to
                      charset.QP (for quoted-printable), charset.BASE64 (for
                      base64 encoding), or charset.SHORTEST fuer the shortest of
-                     QP or BASE64 encoding.  Otherwise, it will be None.
+                     QP or BASE64 encoding.  Otherwise, it will be Nichts.
 
     body_encoding: Same as header_encoding, but describes the encoding fuer the
                    mail message's body, which indeed may be different than the
@@ -193,11 +193,11 @@ klasse Charset:
                     used in email headers or bodies.  If the input_charset is
                     one of them, this attribute will contain the name of the
                     charset output will be converted to.  Otherwise, it will
-                    be None.
+                    be Nichts.
 
     input_codec: The name of the Python codec used to convert the
                  input_charset to Unicode.  If no conversion codec is
-                 necessary, this attribute will be None.
+                 necessary, this attribute will be Nichts.
 
     output_codec: The name of the Python codec used to convert Unicode
                   to the output_charset.  If no conversion codec is necessary,
@@ -222,7 +222,7 @@ klasse Charset:
         # charset_map dictionary.  Try that first, but let the user override
         # it.
         henc, benc, conv = CHARSETS.get(self.input_charset,
-                                        (SHORTEST, BASE64, None))
+                                        (SHORTEST, BASE64, Nichts))
         wenn not conv:
             conv = self.input_charset
         # Set the attributes, allowing the arguments to override the default.
@@ -266,7 +266,7 @@ klasse Charset:
     def get_output_charset(self):
         """Return the output character set.
 
-        This is self.output_charset wenn that is not None, otherwise it is
+        This is self.output_charset wenn that is not Nichts, otherwise it is
         self.input_charset.
         """
         return self.output_charset or self.input_charset
@@ -286,7 +286,7 @@ klasse Charset:
         header_bytes = _encode(string, codec)
         # 7bit/8bit encodings return the string unchanged (modulo conversions)
         encoder_module = self._get_encoder(header_bytes)
-        wenn encoder_module is None:
+        wenn encoder_module is Nichts:
             return string
         return encoder_module.header_encode(header_bytes, codec)
 
@@ -339,7 +339,7 @@ klasse Charset:
                 current_line.pop()
                 # Does nothing fit on the first line?
                 wenn not lines and not current_line:
-                    lines.append(None)
+                    lines.append(Nichts)
                 sonst:
                     joined_line = EMPTYSTRING.join(current_line)
                     header_bytes = _encode(joined_line, codec)
@@ -364,13 +364,13 @@ klasse Charset:
             sonst:
                 return email.quoprimime
         sonst:
-            return None
+            return Nichts
 
     def body_encode(self, string):
         """Body-encode a string by converting it first to bytes.
 
         The type of encoding (base64 or quoted-printable) will be based on
-        self.body_encoding.  If body_encoding is None, we assume the
+        self.body_encoding.  If body_encoding is Nichts, we assume the
         output charset is a 7bit encoding, so re-encoding the decoded
         string using the ascii codec produces the correct string version
         of the content.

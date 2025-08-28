@@ -24,7 +24,7 @@ klasse DbcheckError (Exception):
                            (exprstr, func, args, kwds))
 
 
-def dbcheck(exprstr, globals=None, locals=None):
+def dbcheck(exprstr, globals=Nichts, locals=Nichts):
     "Decorator to implement debugging assertions"
     def decorate(func):
         expr = compile(exprstr, "dbcheck-%s" % func.__name__, "eval")
@@ -139,11 +139,11 @@ klasse TestDecorators(unittest.TestCase):
         self.assertEqual(f3.dbval, ((1, 2), {}))
 
     def test_dbcheck(self):
-        @dbcheck('args[1] is not None')
+        @dbcheck('args[1] is not Nichts')
         def f(a, b):
             return a + b
         self.assertEqual(f(1, 2), 3)
-        self.assertRaises(DbcheckError, f, 1, None)
+        self.assertRaises(DbcheckError, f, 1, Nichts)
 
     def test_memoize(self):
         counts = {}
@@ -181,20 +181,20 @@ klasse TestDecorators(unittest.TestCase):
                 compile(f"@{stmt}\ndef f(): pass", "test", "exec")
 
         # Test TypeErrors that used to be SyntaxErrors:
-        fuer expr in ("1.+2j", "[1, 2][-1]", "(1, 2)", "True", "...", "None"):
+        fuer expr in ("1.+2j", "[1, 2][-1]", "(1, 2)", "Wahr", "...", "Nichts"):
             compile(expr, "test", "eval")  # Sanity check.
             with self.assertRaises(TypeError):
                 exec(f"@{expr}\ndef f(): pass")
 
         def unimp(func):
             raise NotImplementedError
-        context = dict(nullval=None, unimp=unimp)
+        context = dict(nullval=Nichts, unimp=unimp)
 
         fuer expr, exc in [ ("undef", NameError),
                            ("nullval", TypeError),
                            ("nullval.attr", AttributeError),
                            ("unimp", NotImplementedError)]:
-            codestr = "@%s\ndef f(): pass\nassert f() is None" % expr
+            codestr = "@%s\ndef f(): pass\nassert f() is Nichts" % expr
             code = compile(codestr, "test", "exec")
             self.assertRaises(exc, eval, code, context)
 
@@ -263,7 +263,7 @@ klasse TestDecorators(unittest.TestCase):
                 sowenn fname == 'arg':
                     opname, res = ('evalargs', str(self.index))
                 sonst:
-                    assert False, "Unknown attrname %s" % fname
+                    assert Falsch, "Unknown attrname %s" % fname
                 actions.append('%s%d' % (opname, self.index))
                 return res
 

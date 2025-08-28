@@ -42,9 +42,9 @@ klasse IOBinding:
         self.text.unbind("<<save-copy-of-window-as-file>>", self.__id_savecopy)
         self.text.unbind("<<print-window>>", self.__id_print)
         # Break cycles
-        self.editwin = None
-        self.text = None
-        self.filename_change_hook = None
+        self.editwin = Nichts
+        self.text = Nichts
+        self.filename_change_hook = Nichts
 
     def get_saved(self):
         return self.editwin.get_saved()
@@ -55,26 +55,26 @@ klasse IOBinding:
     def reset_undo(self):
         self.editwin.reset_undo()
 
-    filename_change_hook = None
+    filename_change_hook = Nichts
 
     def set_filename_change_hook(self, hook):
         self.filename_change_hook = hook
 
-    filename = None
-    dirname = None
+    filename = Nichts
+    dirname = Nichts
 
     def set_filename(self, filename):
         wenn filename and os.path.isdir(filename):
-            self.filename = None
+            self.filename = Nichts
             self.dirname = filename
         sonst:
             self.filename = filename
-            self.dirname = None
+            self.dirname = Nichts
             self.set_saved(1)
             wenn self.filename_change_hook:
                 self.filename_change_hook()
 
-    def open(self, event=None, editFile=None):
+    def open(self, event=Nichts, editFile=Nichts):
         flist = self.editwin.flist
         # Save in case parent window is closed (ie, during askopenfile()).
         wenn flist:
@@ -91,7 +91,7 @@ klasse IOBinding:
                 # in the current window (if the file is not already open)
                 # instead of a new window.
                 wenn (self.editwin and
-                        not getattr(self.editwin, 'interp', None) and
+                        not getattr(self.editwin, 'interp', Nichts) and
                         not self.filename and
                         self.get_saved()):
                     flist.open(filename, self.loadfile)
@@ -127,7 +127,7 @@ klasse IOBinding:
                     chars = f.read()
                     fileencoding = f.encoding
                     eol_convention = f.newlines
-                    converted = False
+                    converted = Falsch
             except (UnicodeDecodeError, SyntaxError):
                 # Wait fuer the editor window to appear
                 self.editwin.text.update()
@@ -142,29 +142,29 @@ klasse IOBinding:
                     chars = f.read()
                     fileencoding = f.encoding
                     eol_convention = f.newlines
-                    converted = True
+                    converted = Wahr
         except OSError as err:
             messagebox.showerror("I/O Error", str(err), parent=self.text)
-            return False
+            return Falsch
         except UnicodeDecodeError:
             messagebox.showerror("Decoding Error",
                                    "File %s\nFailed to Decode" % filename,
                                    parent=self.text)
-            return False
+            return Falsch
 
         wenn not isinstance(eol_convention, str):
-            # If the file does not contain line separators, it is None.
+            # If the file does not contain line separators, it is Nichts.
             # If the file contains mixed line separators, it is a tuple.
-            wenn eol_convention is not None:
+            wenn eol_convention is not Nichts:
                 messagebox.showwarning("Mixed Newlines",
                                          "Mixed newlines detected.\n"
                                          "The file will be changed on save.",
                                          parent=self.text)
-                converted = True
+                converted = Wahr
             eol_convention = os.linesep  # default
 
         self.text.delete("1.0", "end")
-        self.set_filename(None)
+        self.set_filename(Nichts)
         self.fileencoding = fileencoding
         self.eol_convention = eol_convention
         self.text.insert("1.0", chars)
@@ -173,17 +173,17 @@ klasse IOBinding:
         wenn converted:
             # We need to save the conversion results first
             # before being able to execute the code
-            self.set_saved(False)
+            self.set_saved(Falsch)
         self.text.mark_set("insert", "1.0")
         self.text.yview("insert")
         self.updaterecentfileslist(filename)
-        return True
+        return Wahr
 
     def maybesave(self):
         """Return 'yes', 'no', 'cancel' as appropriate.
 
         Tkinter messagebox.askyesnocancel converts these tk responses
-        to True, False, None.  Convert back, as now expected elsewhere.
+        to Wahr, Falsch, Nichts.  Convert back, as now expected elsewhere.
         """
         wenn self.get_saved():
             return "yes"
@@ -196,9 +196,9 @@ klasse IOBinding:
                   default=messagebox.YES,
                   parent=self.text)
         wenn confirm:
-            self.save(None)
+            self.save(Nichts)
             reply = "yes" wenn self.get_saved() sonst "cancel"
-        sonst:  reply = "cancel" wenn confirm is None sonst "no"
+        sonst:  reply = "cancel" wenn confirm is Nichts sonst "no"
         self.text.focus_set()
         return reply
 
@@ -207,7 +207,7 @@ klasse IOBinding:
             self.save_as(event)
         sonst:
             wenn self.writefile(self.filename):
-                self.set_saved(True)
+                self.set_saved(Wahr)
                 try:
                     self.editwin.store_file_breaks()
                 except AttributeError:  # may be a PyShell
@@ -245,11 +245,11 @@ klasse IOBinding:
                 f.write(chars)
                 f.flush()
                 os.fsync(f.fileno())
-            return True
+            return Wahr
         except OSError as msg:
             messagebox.showerror("I/O Error", str(msg),
                                    parent=self.text)
-            return False
+            return Falsch
 
     def fixnewlines(self):
         """Return text with os eols.
@@ -307,12 +307,12 @@ klasse IOBinding:
         wenn not confirm:
             self.text.focus_set()
             return "break"
-        tempfilename = None
+        tempfilename = Nichts
         saved = self.get_saved()
         wenn saved:
             filename = self.filename
         # shell undo is reset after every prompt, looks saved, probably isn't
-        wenn not saved or filename is None:
+        wenn not saved or filename is Nichts:
             (tfd, tempfilename) = tempfile.mkstemp(prefix='IDLE_tmp_')
             filename = tempfilename
             os.close(tfd)
@@ -320,7 +320,7 @@ klasse IOBinding:
                 os.unlink(tempfilename)
                 return "break"
         platform = os.name
-        printPlatform = True
+        printPlatform = Wahr
         wenn platform == 'posix': #posix platform
             command = idleConf.GetOption('main','General',
                                          'print-command-posix')
@@ -328,7 +328,7 @@ klasse IOBinding:
         sowenn platform == 'nt': #win32 platform
             command = idleConf.GetOption('main','General','print-command-win')
         sonst: #no printing fuer this platform
-            printPlatform = False
+            printPlatform = Falsch
         wenn printPlatform:  #we can try to print fuer this platform
             command = command % shlex.quote(filename)
             pipe = os.popen(command, "r")
@@ -348,8 +348,8 @@ klasse IOBinding:
             os.unlink(tempfilename)
         return "break"
 
-    opendialog = None
-    savedialog = None
+    opendialog = Nichts
+    savedialog = Nichts
 
     filetypes = (
         ("Python files", py_extensions, "TEXT"),
@@ -406,7 +406,7 @@ def _io_binding(parent):  # htest #
     klasse MyEditWin:
         def __init__(self, text):
             self.text = text
-            self.flist = None
+            self.flist = Nichts
             self.text.bind("<Control-o>", self.open)
             self.text.bind('<Control-p>', self.print)
             self.text.bind("<Control-s>", self.save)
@@ -435,7 +435,7 @@ def _io_binding(parent):  # htest #
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_iomenu', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_iomenu', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_io_binding)

@@ -10,7 +10,7 @@ except ImportError:
 def supports_trampoline_profiling():
     perf_trampoline = sysconfig.get_config_var("PY_HAVE_PERF_TRAMPOLINE")
     wenn not perf_trampoline:
-        return False
+        return Falsch
     return int(perf_trampoline) == 1
 
 wenn not supports_trampoline_profiling():

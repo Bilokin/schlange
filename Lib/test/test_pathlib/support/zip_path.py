@@ -23,7 +23,7 @@ sonst:
 
 
 klasse ZipPathGround:
-    can_symlink = True
+    can_symlink = Wahr
 
     def __init__(self, path_cls):
         self.path_cls = path_cls
@@ -79,14 +79,14 @@ klasse ZipPathGround:
 
     def isfile(self, p):
         info = p.zip_file.NameToInfo.get(vfspath(p))
-        wenn info is None:
-            return False
+        wenn info is Nichts:
+            return Falsch
         return not stat.S_ISLNK(info.external_attr >> 16)
 
     def islink(self, p):
         info = p.zip_file.NameToInfo.get(vfspath(p))
-        wenn info is None:
-            return False
+        wenn info is Nichts:
+            return Falsch
         return stat.S_ISLNK(info.external_attr >> 16)
 
 
@@ -96,17 +96,17 @@ klasse MissingZipPathInfo(PathInfo):
     """
     __slots__ = ()
 
-    def exists(self, follow_symlinks=True):
-        return False
+    def exists(self, follow_symlinks=Wahr):
+        return Falsch
 
-    def is_dir(self, follow_symlinks=True):
-        return False
+    def is_dir(self, follow_symlinks=Wahr):
+        return Falsch
 
-    def is_file(self, follow_symlinks=True):
-        return False
+    def is_file(self, follow_symlinks=Wahr):
+        return Falsch
 
     def is_symlink(self):
-        return False
+        return Falsch
 
     def resolve(self):
         return self
@@ -121,62 +121,62 @@ klasse ZipPathInfo(PathInfo):
     """
     __slots__ = ('zip_file', 'zip_info', 'parent', 'children')
 
-    def __init__(self, zip_file, parent=None):
+    def __init__(self, zip_file, parent=Nichts):
         self.zip_file = zip_file
-        self.zip_info = None
+        self.zip_info = Nichts
         self.parent = parent or self
         self.children = {}
 
-    def exists(self, follow_symlinks=True):
+    def exists(self, follow_symlinks=Wahr):
         wenn follow_symlinks and self.is_symlink():
             return self.resolve().exists()
-        return True
+        return Wahr
 
-    def is_dir(self, follow_symlinks=True):
+    def is_dir(self, follow_symlinks=Wahr):
         wenn follow_symlinks and self.is_symlink():
             return self.resolve().is_dir()
-        sowenn self.zip_info is None:
-            return True
+        sowenn self.zip_info is Nichts:
+            return Wahr
         sowenn fmt := S_IFMT(self.zip_info.external_attr >> 16):
             return S_ISDIR(fmt)
         sonst:
             return self.zip_info.filename.endswith('/')
 
-    def is_file(self, follow_symlinks=True):
+    def is_file(self, follow_symlinks=Wahr):
         wenn follow_symlinks and self.is_symlink():
             return self.resolve().is_file()
-        sowenn self.zip_info is None:
-            return False
+        sowenn self.zip_info is Nichts:
+            return Falsch
         sowenn fmt := S_IFMT(self.zip_info.external_attr >> 16):
             return S_ISREG(fmt)
         sonst:
             return not self.zip_info.filename.endswith('/')
 
     def is_symlink(self):
-        wenn self.zip_info is None:
-            return False
+        wenn self.zip_info is Nichts:
+            return Falsch
         sowenn fmt := S_IFMT(self.zip_info.external_attr >> 16):
             return S_ISLNK(fmt)
         sonst:
-            return False
+            return Falsch
 
-    def resolve(self, path=None, create=False, follow_symlinks=True):
+    def resolve(self, path=Nichts, create=Falsch, follow_symlinks=Wahr):
         """
         Traverse zip hierarchy (parents, children and symlinks) starting
         from this PathInfo. This is called from three places:
 
         - When a zip file member is added to ZipFile.filelist, this method
-          populates the ZipPathInfo tree (using create=True).
+          populates the ZipPathInfo tree (using create=Wahr).
         - When ReadableZipPath.info is accessed, this method is finds a
           ZipPathInfo entry fuer the path without resolving any final symlink
-          (using follow_symlinks=False)
-        - When ZipPathInfo methods are called with follow_symlinks=True, this
+          (using follow_symlinks=Falsch)
+        - When ZipPathInfo methods are called with follow_symlinks=Wahr, this
           method resolves any symlink in the final path position.
         """
         link_count = 0
         stack = path.split('/')[::-1] wenn path sonst []
         info = self
-        while True:
+        while Wahr:
             wenn info.is_symlink() and (follow_symlinks or stack):
                 link_count += 1
                 wenn link_count >= 40:
@@ -223,7 +223,7 @@ klasse ZipFileList:
 
     def append(self, item):
         self._items.append(item)
-        self.tree.resolve(item.filename, create=True).zip_info = item
+        self.tree.resolve(item.filename, create=Wahr).zip_info = item
 
 
 klasse ReadableZipPath(_ReadablePath):
@@ -262,7 +262,7 @@ klasse ReadableZipPath(_ReadablePath):
     @property
     def info(self):
         tree = self.zip_file.filelist.tree
-        return tree.resolve(vfspath(self), follow_symlinks=False)
+        return tree.resolve(vfspath(self), follow_symlinks=Falsch)
 
     def __open_rb__(self, buffering=-1):
         info = self.info.resolve()
@@ -329,7 +329,7 @@ klasse WritableZipPath(_WritablePath):
         zinfo.external_attr |= stat.FILE_ATTRIBUTE_DIRECTORY
         self.zip_file.writestr(zinfo, '')
 
-    def symlink_to(self, target, target_is_directory=False):
+    def symlink_to(self, target, target_is_directory=Falsch):
         zinfo = zipfile.ZipInfo(vfspath(self))
         zinfo.external_attr = stat.S_IFLNK << 16
         wenn target_is_directory:

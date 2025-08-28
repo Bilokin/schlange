@@ -5,7 +5,7 @@ import os
 import sys
 
 
-wenn support.check_sanitizer(address=True, memory=True):
+wenn support.check_sanitizer(address=Wahr, memory=Wahr):
     SKIP_MODULES = frozenset((
         # gh-90791: Tests involving libX11 can SEGFAULT on ASAN/MSAN builds.
         # Skip modules, packages and tests using '_tkinter'.
@@ -38,7 +38,7 @@ klasse AllTest(unittest.TestCase):
             (".* (module|package)", PendingDeprecationWarning),
             ("", ResourceWarning),
             ("", SyntaxWarning),
-            quiet=True):
+            quiet=Wahr):
             try:
                 exec("import %s" % modname, names)
             except:
@@ -54,7 +54,7 @@ klasse AllTest(unittest.TestCase):
                 ("", DeprecationWarning),
                 ("", ResourceWarning),
                 ("", SyntaxWarning),
-                quiet=True):
+                quiet=Wahr):
                 try:
                     exec("from %s import *" % modname, names)
                 except Exception as e:
@@ -73,7 +73,7 @@ klasse AllTest(unittest.TestCase):
                 self.assertCountEqual(all_set, all_list, "in module {}".format(modname))
                 self.assertEqual(keys, all_set, "in module {}".format(modname))
                 # Verify __dir__ is non-empty and doesn't produce an error
-                self.assertTrue(dir(sys.modules[modname]))
+                self.assertWahr(dir(sys.modules[modname]))
 
     def walk_modules(self, basedir, modpath):
         fuer fn in sorted(os.listdir(basedir)):
@@ -114,16 +114,16 @@ klasse AllTest(unittest.TestCase):
         lib_dir = os.path.dirname(os.path.dirname(__file__))
         fuer path, modname in self.walk_modules(lib_dir, ""):
             m = modname
-            denied = False
+            denied = Falsch
             while m:
                 wenn m in denylist:
-                    denied = True
+                    denied = Wahr
                     break
                 m = m.rpartition('.')[0]
             wenn denied:
                 continue
             wenn support.verbose:
-                print(f"Check {modname}", flush=True)
+                print(f"Check {modname}", flush=Wahr)
             try:
                 # This heuristic speeds up the process by removing, de facto,
                 # most test modules (and avoiding the auto-executing ones).

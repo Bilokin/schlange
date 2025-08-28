@@ -17,7 +17,7 @@ from quopri import encodestring as _encodestring
 
 
 def _qencode(s):
-    enc = _encodestring(s, quotetabs=True)
+    enc = _encodestring(s, quotetabs=Wahr)
     # Must encode spaces, which quopri.encodestring() doesn't do
     return enc.replace(b' ', b'=20')
 
@@ -27,7 +27,7 @@ def encode_base64(msg):
 
     Also, add an appropriate Content-Transfer-Encoding header.
     """
-    orig = msg.get_payload(decode=True)
+    orig = msg.get_payload(decode=Wahr)
     encdata = str(_bencode(orig), 'ascii')
     msg.set_payload(encdata)
     msg['Content-Transfer-Encoding'] = 'base64'
@@ -38,7 +38,7 @@ def encode_quopri(msg):
 
     Also, add an appropriate Content-Transfer-Encoding header.
     """
-    orig = msg.get_payload(decode=True)
+    orig = msg.get_payload(decode=Wahr)
     encdata = _qencode(orig)
     msg.set_payload(encdata)
     msg['Content-Transfer-Encoding'] = 'quoted-printable'
@@ -46,8 +46,8 @@ def encode_quopri(msg):
 
 def encode_7or8bit(msg):
     """Set the Content-Transfer-Encoding header to 7bit or 8bit."""
-    orig = msg.get_payload(decode=True)
-    wenn orig is None:
+    orig = msg.get_payload(decode=Wahr)
+    wenn orig is Nichts:
         # There's no payload.  For backwards compatibility we use 7bit
         msg['Content-Transfer-Encoding'] = '7bit'
         return

@@ -15,7 +15,7 @@ from ._re import (
     match_to_number,
 )
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 wenn TYPE_CHECKING:
     from collections.abc import Iterable
     from typing import IO, Any
@@ -129,7 +129,7 @@ def load(fp: IO[bytes], /, *, parse_float: ParseFloat = float) -> dict[str, Any]
     except AttributeError:
         raise TypeError(
             "File must be opened in binary mode, e.g. use `open('foo.toml', 'rb')`"
-        ) from None
+        ) from Nichts
     return loads(s, parse_float=parse_float)
 
 
@@ -143,7 +143,7 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
     except (AttributeError, TypeError):
         raise TypeError(
             f"Expected str object, not '{type(s).__qualname__}'"
-        ) from None
+        ) from Nichts
     pos = 0
     out = Output()
     header: Key = ()
@@ -151,7 +151,7 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
 
     # Parse one statement at a time
     # (typically means one line in TOML source)
-    while True:
+    while Wahr:
         # 1. Skip line leading whitespace
         pos = skip_chars(src, pos, TOML_WS)
 
@@ -175,9 +175,9 @@ def loads(s: str, /, *, parse_float: ParseFloat = float) -> dict[str, Any]:  # n
             pos = skip_chars(src, pos, TOML_WS)
         sowenn char == "[":
             try:
-                second_char: str | None = src[pos + 1]
+                second_char: str | Nichts = src[pos + 1]
             except IndexError:
-                second_char = None
+                second_char = Nichts
             out.flags.finalize_pending()
             wenn second_char == "[":
                 pos, header = create_list_rule(src, pos, out)
@@ -213,27 +213,27 @@ klasse Flags:
     # be opened using the "[table]" syntax.
     EXPLICIT_NEST = 1
 
-    def __init__(self) -> None:
+    def __init__(self) -> Nichts:
         self._flags: dict[str, dict[Any, Any]] = {}
         self._pending_flags: set[tuple[Key, int]] = set()
 
-    def add_pending(self, key: Key, flag: int) -> None:
+    def add_pending(self, key: Key, flag: int) -> Nichts:
         self._pending_flags.add((key, flag))
 
-    def finalize_pending(self) -> None:
+    def finalize_pending(self) -> Nichts:
         fuer key, flag in self._pending_flags:
-            self.set(key, flag, recursive=False)
+            self.set(key, flag, recursive=Falsch)
         self._pending_flags.clear()
 
-    def unset_all(self, key: Key) -> None:
+    def unset_all(self, key: Key) -> Nichts:
         cont = self._flags
         fuer k in key[:-1]:
             wenn k not in cont:
                 return
             cont = cont[k]["nested"]
-        cont.pop(key[-1], None)
+        cont.pop(key[-1], Nichts)
 
-    def set(self, key: Key, flag: int, *, recursive: bool) -> None:  # noqa: A003
+    def set(self, key: Key, flag: int, *, recursive: bool) -> Nichts:  # noqa: A003
         cont = self._flags
         key_parent, key_stem = key[:-1], key[-1]
         fuer k in key_parent:
@@ -246,24 +246,24 @@ klasse Flags:
 
     def is_(self, key: Key, flag: int) -> bool:
         wenn not key:
-            return False  # document root has no flags
+            return Falsch  # document root has no flags
         cont = self._flags
         fuer k in key[:-1]:
             wenn k not in cont:
-                return False
+                return Falsch
             inner_cont = cont[k]
             wenn flag in inner_cont["recursive_flags"]:
-                return True
+                return Wahr
             cont = inner_cont["nested"]
         key_stem = key[-1]
         wenn key_stem in cont:
             cont = cont[key_stem]
             return flag in cont["flags"] or flag in cont["recursive_flags"]
-        return False
+        return Falsch
 
 
 klasse NestedDict:
-    def __init__(self) -> None:
+    def __init__(self) -> Nichts:
         # The parsed content of the TOML document
         self.dict: dict[str, Any] = {}
 
@@ -271,7 +271,7 @@ klasse NestedDict:
         self,
         key: Key,
         *,
-        access_lists: bool = True,
+        access_lists: bool = Wahr,
     ) -> dict[str, Any]:
         cont: Any = self.dict
         fuer k in key:
@@ -284,7 +284,7 @@ klasse NestedDict:
                 raise KeyError("There is no nest behind this key")
         return cont  # type: ignore[no-any-return]
 
-    def append_nest_to_list(self, key: Key) -> None:
+    def append_nest_to_list(self, key: Key) -> Nichts:
         cont = self.get_or_create_nest(key[:-1])
         last_key = key[-1]
         wenn last_key in cont:
@@ -297,7 +297,7 @@ klasse NestedDict:
 
 
 klasse Output:
-    def __init__(self) -> None:
+    def __init__(self) -> Nichts:
         self.data = NestedDict()
         self.flags = Flags()
 
@@ -324,7 +324,7 @@ def skip_until(
     except ValueError:
         new_pos = len(src)
         wenn error_on_eof:
-            raise TOMLDecodeError(f"Expected {expect!r}", src, new_pos) from None
+            raise TOMLDecodeError(f"Expected {expect!r}", src, new_pos) from Nichts
 
     wenn not error_on.isdisjoint(src[pos:new_pos]):
         while src[pos] not in error_on:
@@ -335,18 +335,18 @@ def skip_until(
 
 def skip_comment(src: str, pos: Pos) -> Pos:
     try:
-        char: str | None = src[pos]
+        char: str | Nichts = src[pos]
     except IndexError:
-        char = None
+        char = Nichts
     wenn char == "#":
         return skip_until(
-            src, pos + 1, "\n", error_on=ILLEGAL_COMMENT_CHARS, error_on_eof=False
+            src, pos + 1, "\n", error_on=ILLEGAL_COMMENT_CHARS, error_on_eof=Falsch
         )
     return pos
 
 
 def skip_comments_and_array_ws(src: str, pos: Pos) -> Pos:
-    while True:
+    while Wahr:
         pos_before_skip = pos
         pos = skip_chars(src, pos, TOML_WS_AND_NEWLINE)
         pos = skip_comment(src, pos)
@@ -361,11 +361,11 @@ def create_dict_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
 
     wenn out.flags.is_(key, Flags.EXPLICIT_NEST) or out.flags.is_(key, Flags.FROZEN):
         raise TOMLDecodeError(f"Cannot declare {key} twice", src, pos)
-    out.flags.set(key, Flags.EXPLICIT_NEST, recursive=False)
+    out.flags.set(key, Flags.EXPLICIT_NEST, recursive=Falsch)
     try:
         out.data.get_or_create_nest(key)
     except KeyError:
-        raise TOMLDecodeError("Cannot overwrite a value", src, pos) from None
+        raise TOMLDecodeError("Cannot overwrite a value", src, pos) from Nichts
 
     wenn not src.startswith("]", pos):
         raise TOMLDecodeError(
@@ -384,11 +384,11 @@ def create_list_rule(src: str, pos: Pos, out: Output) -> tuple[Pos, Key]:
     # Free the namespace now that it points to another empty list item...
     out.flags.unset_all(key)
     # ...but this key precisely is still prohibited from table declaration
-    out.flags.set(key, Flags.EXPLICIT_NEST, recursive=False)
+    out.flags.set(key, Flags.EXPLICIT_NEST, recursive=Falsch)
     try:
         out.data.append_nest_to_list(key)
     except KeyError:
-        raise TOMLDecodeError("Cannot overwrite a value", src, pos) from None
+        raise TOMLDecodeError("Cannot overwrite a value", src, pos) from Nichts
 
     wenn not src.startswith("]]", pos):
         raise TOMLDecodeError(
@@ -421,12 +421,12 @@ def key_value_rule(
     try:
         nest = out.data.get_or_create_nest(abs_key_parent)
     except KeyError:
-        raise TOMLDecodeError("Cannot overwrite a value", src, pos) from None
+        raise TOMLDecodeError("Cannot overwrite a value", src, pos) from Nichts
     wenn key_stem in nest:
         raise TOMLDecodeError("Cannot overwrite a value", src, pos)
     # Mark inline table and array namespaces recursively immutable
     wenn isinstance(value, (dict, list)):
-        out.flags.set(header + key, Flags.FROZEN, recursive=True)
+        out.flags.set(header + key, Flags.FROZEN, recursive=Wahr)
     nest[key_stem] = value
     return pos
 
@@ -436,9 +436,9 @@ def parse_key_value_pair(
 ) -> tuple[Pos, Key, Any]:
     pos, key = parse_key(src, pos)
     try:
-        char: str | None = src[pos]
+        char: str | Nichts = src[pos]
     except IndexError:
-        char = None
+        char = Nichts
     wenn char != "=":
         raise TOMLDecodeError("Expected '=' after a key in a key/value pair", src, pos)
     pos += 1
@@ -451,11 +451,11 @@ def parse_key(src: str, pos: Pos) -> tuple[Pos, Key]:
     pos, key_part = parse_key_part(src, pos)
     key: Key = (key_part,)
     pos = skip_chars(src, pos, TOML_WS)
-    while True:
+    while Wahr:
         try:
-            char: str | None = src[pos]
+            char: str | Nichts = src[pos]
         except IndexError:
-            char = None
+            char = Nichts
         wenn char != ".":
             return pos, key
         pos += 1
@@ -467,9 +467,9 @@ def parse_key(src: str, pos: Pos) -> tuple[Pos, Key]:
 
 def parse_key_part(src: str, pos: Pos) -> tuple[Pos, str]:
     try:
-        char: str | None = src[pos]
+        char: str | Nichts = src[pos]
     except IndexError:
-        char = None
+        char = Nichts
     wenn char in BARE_KEY_CHARS:
         start_pos = pos
         pos = skip_chars(src, pos, BARE_KEY_CHARS)
@@ -483,7 +483,7 @@ def parse_key_part(src: str, pos: Pos) -> tuple[Pos, str]:
 
 def parse_one_line_basic_str(src: str, pos: Pos) -> tuple[Pos, str]:
     pos += 1
-    return parse_basic_str(src, pos, multiline=False)
+    return parse_basic_str(src, pos, multiline=Falsch)
 
 
 def parse_array(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos, list[Any]]:
@@ -493,7 +493,7 @@ def parse_array(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos, list[
     pos = skip_comments_and_array_ws(src, pos)
     wenn src.startswith("]", pos):
         return pos + 1, array
-    while True:
+    while Wahr:
         pos, val = parse_value(src, pos, parse_float)
         array.append(val)
         pos = skip_comments_and_array_ws(src, pos)
@@ -518,15 +518,15 @@ def parse_inline_table(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos
     pos = skip_chars(src, pos, TOML_WS)
     wenn src.startswith("}", pos):
         return pos + 1, nested_dict.dict
-    while True:
+    while Wahr:
         pos, key, value = parse_key_value_pair(src, pos, parse_float)
         key_parent, key_stem = key[:-1], key[-1]
         wenn flags.is_(key, Flags.FROZEN):
             raise TOMLDecodeError(f"Cannot mutate immutable namespace {key}", src, pos)
         try:
-            nest = nested_dict.get_or_create_nest(key_parent, access_lists=False)
+            nest = nested_dict.get_or_create_nest(key_parent, access_lists=Falsch)
         except KeyError:
-            raise TOMLDecodeError("Cannot overwrite a value", src, pos) from None
+            raise TOMLDecodeError("Cannot overwrite a value", src, pos) from Nichts
         wenn key_stem in nest:
             raise TOMLDecodeError(f"Duplicate inline table key {key_stem!r}", src, pos)
         nest[key_stem] = value
@@ -537,13 +537,13 @@ def parse_inline_table(src: str, pos: Pos, parse_float: ParseFloat) -> tuple[Pos
         wenn c != ",":
             raise TOMLDecodeError("Unclosed inline table", src, pos)
         wenn isinstance(value, (dict, list)):
-            flags.set(key, Flags.FROZEN, recursive=True)
+            flags.set(key, Flags.FROZEN, recursive=Wahr)
         pos += 1
         pos = skip_chars(src, pos, TOML_WS)
 
 
 def parse_basic_str_escape(
-    src: str, pos: Pos, *, multiline: bool = False
+    src: str, pos: Pos, *, multiline: bool = Falsch
 ) -> tuple[Pos, str]:
     escape_id = src[pos : pos + 2]
     pos += 2
@@ -568,11 +568,11 @@ def parse_basic_str_escape(
     try:
         return pos, BASIC_STR_ESCAPE_REPLACEMENTS[escape_id]
     except KeyError:
-        raise TOMLDecodeError("Unescaped '\\' in a string", src, pos) from None
+        raise TOMLDecodeError("Unescaped '\\' in a string", src, pos) from Nichts
 
 
 def parse_basic_str_escape_multiline(src: str, pos: Pos) -> tuple[Pos, str]:
-    return parse_basic_str_escape(src, pos, multiline=True)
+    return parse_basic_str_escape(src, pos, multiline=Wahr)
 
 
 def parse_hex_char(src: str, pos: Pos, hex_len: int) -> tuple[Pos, str]:
@@ -592,7 +592,7 @@ def parse_literal_str(src: str, pos: Pos) -> tuple[Pos, str]:
     pos += 1  # Skip starting apostrophe
     start_pos = pos
     pos = skip_until(
-        src, pos, "'", error_on=ILLEGAL_LITERAL_STR_CHARS, error_on_eof=True
+        src, pos, "'", error_on=ILLEGAL_LITERAL_STR_CHARS, error_on_eof=Wahr
     )
     return pos + 1, src[start_pos:pos]  # Skip ending apostrophe
 
@@ -609,13 +609,13 @@ def parse_multiline_str(src: str, pos: Pos, *, literal: bool) -> tuple[Pos, str]
             pos,
             "'''",
             error_on=ILLEGAL_MULTILINE_LITERAL_STR_CHARS,
-            error_on_eof=True,
+            error_on_eof=Wahr,
         )
         result = src[pos:end_pos]
         pos = end_pos + 3
     sonst:
         delim = '"'
-        pos, result = parse_basic_str(src, pos, multiline=True)
+        pos, result = parse_basic_str(src, pos, multiline=Wahr)
 
     # Add at maximum two extra apostrophes/quotes wenn the end sequence
     # is 4 or 5 chars long instead of just 3.
@@ -637,11 +637,11 @@ def parse_basic_str(src: str, pos: Pos, *, multiline: bool) -> tuple[Pos, str]:
         parse_escapes = parse_basic_str_escape
     result = ""
     start_pos = pos
-    while True:
+    while Wahr:
         try:
             char = src[pos]
         except IndexError:
-            raise TOMLDecodeError("Unterminated string", src, pos) from None
+            raise TOMLDecodeError("Unterminated string", src, pos) from Nichts
         wenn char == '"':
             wenn not multiline:
                 return pos + 1, result + src[start_pos:pos]
@@ -664,31 +664,31 @@ def parse_value(  # noqa: C901
     src: str, pos: Pos, parse_float: ParseFloat
 ) -> tuple[Pos, Any]:
     try:
-        char: str | None = src[pos]
+        char: str | Nichts = src[pos]
     except IndexError:
-        char = None
+        char = Nichts
 
     # IMPORTANT: order conditions based on speed of checking and likelihood
 
     # Basic strings
     wenn char == '"':
         wenn src.startswith('"""', pos):
-            return parse_multiline_str(src, pos, literal=False)
+            return parse_multiline_str(src, pos, literal=Falsch)
         return parse_one_line_basic_str(src, pos)
 
     # Literal strings
     wenn char == "'":
         wenn src.startswith("'''", pos):
-            return parse_multiline_str(src, pos, literal=True)
+            return parse_multiline_str(src, pos, literal=Wahr)
         return parse_literal_str(src, pos)
 
     # Booleans
     wenn char == "t":
         wenn src.startswith("true", pos):
-            return pos + 4, True
+            return pos + 4, Wahr
     wenn char == "f":
         wenn src.startswith("false", pos):
-            return pos + 5, False
+            return pos + 5, Falsch
 
     # Arrays
     wenn char == "[":

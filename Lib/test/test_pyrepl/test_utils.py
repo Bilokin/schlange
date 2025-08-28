@@ -34,10 +34,10 @@ klasse TestUtils(TestCase):
             yield 4
 
         pnw = prev_next_window(gen_normal())
-        self.assertEqual(next(pnw), (None, 1, 2))
+        self.assertEqual(next(pnw), (Nichts, 1, 2))
         self.assertEqual(next(pnw), (1, 2, 3))
         self.assertEqual(next(pnw), (2, 3, 4))
-        self.assertEqual(next(pnw), (3, 4, None))
+        self.assertEqual(next(pnw), (3, 4, Nichts))
         with self.assertRaises(StopIteration):
             next(pnw)
 
@@ -45,7 +45,7 @@ klasse TestUtils(TestCase):
             yield 1
 
         pnw = prev_next_window(gen_short())
-        self.assertEqual(next(pnw), (None, 1, None))
+        self.assertEqual(next(pnw), (Nichts, 1, Nichts))
         with self.assertRaises(StopIteration):
             next(pnw)
 
@@ -54,9 +54,9 @@ klasse TestUtils(TestCase):
             1/0
 
         pnw = prev_next_window(gen_raise())
-        self.assertEqual(next(pnw), (None, 1, 2))
+        self.assertEqual(next(pnw), (Nichts, 1, 2))
         self.assertEqual(next(pnw), (1, 2, 3))
         self.assertEqual(next(pnw), (2, 3, 4))
-        self.assertEqual(next(pnw), (3, 4, None))
+        self.assertEqual(next(pnw), (3, 4, Nichts))
         with self.assertRaises(ZeroDivisionError):
             next(pnw)

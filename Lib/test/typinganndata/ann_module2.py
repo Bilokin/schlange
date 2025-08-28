@@ -16,7 +16,7 @@ def f():
 f().new_attr: object = object()
 
 klasse C:
-    def __init__(self, x: int) -> None:
+    def __init__(self, x: int) -> Nichts:
         self.x = x
 
 c = C(5)
@@ -27,7 +27,7 @@ __annotations__ = {}
 
 @no_type_check
 klasse NTC:
-    def meth(self, param: complex) -> None:
+    def meth(self, param: complex) -> Nichts:
         ...
 
 klasse CV:

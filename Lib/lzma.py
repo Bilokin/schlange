@@ -46,8 +46,8 @@ klasse LZMAFile(_streams.BaseStream):
     is returned as bytes, and data to be written must be given as bytes.
     """
 
-    def __init__(self, filename=None, mode="r", *,
-                 format=None, check=-1, preset=None, filters=None):
+    def __init__(self, filename=Nichts, mode="r", *,
+                 format=Nichts, check=-1, preset=Nichts, filters=Nichts):
         """Open an LZMA-compressed file in binary mode.
 
         filename can be either an actual file name (given as a str,
@@ -90,22 +90,22 @@ klasse LZMAFile(_streams.BaseStream):
         should have an entry fuer "id" indicating ID of the filter, plus
         additional entries fuer options to the filter.
         """
-        self._fp = None
-        self._closefp = False
-        self._mode = None
+        self._fp = Nichts
+        self._closefp = Falsch
+        self._mode = Nichts
 
         wenn mode in ("r", "rb"):
             wenn check != -1:
                 raise ValueError("Cannot specify an integrity check "
                                  "when opening a file fuer reading")
-            wenn preset is not None:
+            wenn preset is not Nichts:
                 raise ValueError("Cannot specify a preset compression "
                                  "level when opening a file fuer reading")
-            wenn format is None:
+            wenn format is Nichts:
                 format = FORMAT_AUTO
             mode_code = _MODE_READ
         sowenn mode in ("w", "wb", "a", "ab", "x", "xb"):
-            wenn format is None:
+            wenn format is Nichts:
                 format = FORMAT_XZ
             mode_code = _MODE_WRITE
             self._compressor = LZMACompressor(format=format, check=check,
@@ -118,7 +118,7 @@ klasse LZMAFile(_streams.BaseStream):
             wenn "b" not in mode:
                 mode += "b"
             self._fp = builtins.open(filename, mode)
-            self._closefp = True
+            self._closefp = Wahr
             self._mode = mode_code
         sowenn hasattr(filename, "read") or hasattr(filename, "write"):
             self._fp = filename
@@ -142,22 +142,22 @@ klasse LZMAFile(_streams.BaseStream):
         try:
             wenn self._mode == _MODE_READ:
                 self._buffer.close()
-                self._buffer = None
+                self._buffer = Nichts
             sowenn self._mode == _MODE_WRITE:
                 self._fp.write(self._compressor.flush())
-                self._compressor = None
+                self._compressor = Nichts
         finally:
             try:
                 wenn self._closefp:
                     self._fp.close()
             finally:
-                self._fp = None
-                self._closefp = False
+                self._fp = Nichts
+                self._closefp = Falsch
 
     @property
     def closed(self):
-        """True wenn this file is closed."""
-        return self._fp is None
+        """Wahr wenn this file is closed."""
+        return self._fp is Nichts
 
     @property
     def name(self):
@@ -277,8 +277,8 @@ klasse LZMAFile(_streams.BaseStream):
 
 
 def open(filename, mode="rb", *,
-         format=None, check=-1, preset=None, filters=None,
-         encoding=None, errors=None, newline=None):
+         format=Nichts, check=-1, preset=Nichts, filters=Nichts,
+         encoding=Nichts, errors=Nichts, newline=Nichts):
     """Open an LZMA-compressed file in binary or text mode.
 
     filename can be either an actual file name (given as a str, bytes,
@@ -306,11 +306,11 @@ def open(filename, mode="rb", *,
         wenn "b" in mode:
             raise ValueError("Invalid mode: %r" % (mode,))
     sonst:
-        wenn encoding is not None:
+        wenn encoding is not Nichts:
             raise ValueError("Argument 'encoding' not supported in binary mode")
-        wenn errors is not None:
+        wenn errors is not Nichts:
             raise ValueError("Argument 'errors' not supported in binary mode")
-        wenn newline is not None:
+        wenn newline is not Nichts:
             raise ValueError("Argument 'newline' not supported in binary mode")
 
     lz_mode = mode.replace("t", "")
@@ -324,7 +324,7 @@ def open(filename, mode="rb", *,
         return binary_file
 
 
-def compress(data, format=FORMAT_XZ, check=-1, preset=None, filters=None):
+def compress(data, format=FORMAT_XZ, check=-1, preset=Nichts, filters=Nichts):
     """Compress a block of data.
 
     Refer to LZMACompressor's docstring fuer a description of the
@@ -336,7 +336,7 @@ def compress(data, format=FORMAT_XZ, check=-1, preset=None, filters=None):
     return comp.compress(data) + comp.flush()
 
 
-def decompress(data, format=FORMAT_AUTO, memlimit=None, filters=None):
+def decompress(data, format=FORMAT_AUTO, memlimit=Nichts, filters=Nichts):
     """Decompress a block of data.
 
     Refer to LZMADecompressor's docstring fuer a description of the
@@ -345,7 +345,7 @@ def decompress(data, format=FORMAT_AUTO, memlimit=None, filters=None):
     For incremental decompression, use an LZMADecompressor instead.
     """
     results = []
-    while True:
+    while Wahr:
         decomp = LZMADecompressor(format, memlimit, filters)
         try:
             res = decomp.decompress(data)

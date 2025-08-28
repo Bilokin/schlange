@@ -7,9 +7,9 @@ from test.support import import_helper
 try:
     import _testlimitedcapi
 except ImportError:
-    _testlimitedcapi = None
+    _testlimitedcapi = Nichts
 
-NULL = None
+NULL = Nichts
 
 klasse CAPITest(unittest.TestCase):
     # TODO: Test the following functions:
@@ -17,9 +17,9 @@ klasse CAPITest(unittest.TestCase):
     #   PySys_Audit()
     #   PySys_AuditTuple()
 
-    maxDiff = None
+    maxDiff = Nichts
 
-    @unittest.skipIf(_testlimitedcapi is None, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
     def test_sys_getattr(self):
         # Test PySys_GetAttr()
         sys_getattr = _testlimitedcapi.sys_getattr
@@ -36,7 +36,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(TypeError, sys_getattr, [])
         # CRASHES sys_getattr(NULL)
 
-    @unittest.skipIf(_testlimitedcapi is None, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
     def test_sys_getattrstring(self):
         # Test PySys_GetAttrString()
         getattrstring = _testlimitedcapi.sys_getattrstring
@@ -52,7 +52,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(UnicodeDecodeError, getattrstring, b'\xff')
         # CRASHES getattrstring(NULL)
 
-    @unittest.skipIf(_testlimitedcapi is None, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
     def test_sys_getoptionalattr(self):
         # Test PySys_GetOptionalAttr()
         getoptionalattr = _testlimitedcapi.sys_getoptionalattr
@@ -67,7 +67,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(TypeError, getoptionalattr, [])
         # CRASHES getoptionalattr(NULL)
 
-    @unittest.skipIf(_testlimitedcapi is None, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
     def test_sys_getoptionalattrstring(self):
         # Test PySys_GetOptionalAttrString()
         getoptionalattrstring = _testlimitedcapi.sys_getoptionalattrstring
@@ -82,7 +82,7 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES getoptionalattrstring(NULL)
 
     @support.cpython_only
-    @unittest.skipIf(_testlimitedcapi is None, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
     def test_sys_getobject(self):
         # Test PySys_GetObject()
         getobject = _testlimitedcapi.sys_getobject
@@ -100,7 +100,7 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES getobject(NULL)
 
     @support.cpython_only
-    @unittest.skipIf(_testlimitedcapi is None, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
     def test_sys_setobject(self):
         # Test PySys_SetObject()
         setobject = _testlimitedcapi.sys_setobject
@@ -132,7 +132,7 @@ klasse CAPITest(unittest.TestCase):
         # CRASHES setobject(NULL, value)
 
     @support.cpython_only
-    @unittest.skipIf(_testlimitedcapi is None, 'need _testlimitedcapi module')
+    @unittest.skipIf(_testlimitedcapi is Nichts, 'need _testlimitedcapi module')
     def test_sys_getxoptions(self):
         # Test PySys_GetXOptions()
         getxoptions = _testlimitedcapi.sys_getxoptions

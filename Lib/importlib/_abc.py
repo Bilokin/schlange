@@ -11,11 +11,11 @@ klasse Loader(metaclass=abc.ABCMeta):
         """Return a module to initialize and into which to load.
 
         This method should raise ImportError wenn anything prevents it
-        from creating a new module.  It may return None to indicate
+        from creating a new module.  It may return Nichts to indicate
         that the spec should create the new module.
         """
         # By default, defer to default semantics fuer the new module.
-        return None
+        return Nichts
 
     # We don't define exec_module() here since that would break
     # hasattr checks we do to support backward compatibility.

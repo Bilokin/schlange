@@ -38,7 +38,7 @@ def parse_gb18030map(fo):
     m, gbuni = {}, {}
     fuer i in range(65536):
         wenn i < 0xd800 or i > 0xdfff: # exclude unicode surrogate area
-            gbuni[i] = None
+            gbuni[i] = Nichts
     fuer uni, native in re_gb18030ass.findall(fo.read()):
         uni = eval('0x'+uni)
         native = [eval('0x'+u) fuer u in native.split()]

@@ -94,7 +94,7 @@ klasse ProfileTest(unittest.TestCase):
         with silent():
             self.profilermodule.run("int('1')")
         self.profilermodule.run("int('1')", filename=TESTFN)
-        self.assertTrue(os.path.exists(TESTFN))
+        self.assertWahr(os.path.exists(TESTFN))
 
     def test_run_with_sort_by_values(self):
         with redirect_stdout(StringIO()) as f:
@@ -106,7 +106,7 @@ klasse ProfileTest(unittest.TestCase):
             self.profilermodule.runctx("testfunc()", globals(), locals())
         self.profilermodule.runctx("testfunc()", globals(), locals(),
                                   filename=TESTFN)
-        self.assertTrue(os.path.exists(TESTFN))
+        self.assertWahr(os.path.exists(TESTFN))
 
     def test_run_profile_as_module(self):
         # Test that -m switch needs an argument
@@ -132,7 +132,7 @@ klasse ProfileTest(unittest.TestCase):
                 'demo.py',
             )
 
-            self.assertTrue(os.path.exists('out.pstats'))
+            self.assertWahr(os.path.exists('out.pstats'))
 
 
 def regenerate_expected_output(filename, cls):

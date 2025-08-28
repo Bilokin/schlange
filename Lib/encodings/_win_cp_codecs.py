@@ -7,10 +7,10 @@ def create_win32_code_page_codec(cp):
         return code_page_encode(cp, input, errors)
 
     def decode(input, errors='strict'):
-        return code_page_decode(cp, input, errors, True)
+        return code_page_decode(cp, input, errors, Wahr)
 
     klasse IncrementalEncoder(codecs.IncrementalEncoder):
-        def encode(self, input, final=False):
+        def encode(self, input, final=Falsch):
             return code_page_encode(cp, input, self.errors)[0]
 
     klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):

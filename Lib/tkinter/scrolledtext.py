@@ -18,14 +18,14 @@ __all__ = ['ScrolledText']
 
 
 klasse ScrolledText(Text):
-    def __init__(self, master=None, **kw):
+    def __init__(self, master=Nichts, **kw):
         self.frame = Frame(master)
         self.vbar = Scrollbar(self.frame)
         self.vbar.pack(side=RIGHT, fill=Y)
 
         kw['yscrollcommand'] = self.vbar.set
         Text.__init__(self, self.frame, **kw)
-        self.pack(side=LEFT, fill=BOTH, expand=True)
+        self.pack(side=LEFT, fill=BOTH, expand=Wahr)
         self.vbar['command'] = self.yview
 
         # Copy geometry methods of self.frame without overriding Text
@@ -47,7 +47,7 @@ def example():
 
     stext = ScrolledText(bg='white', height=10)
     stext.insert(END, __doc__)
-    stext.pack(fill=BOTH, side=LEFT, expand=True)
+    stext.pack(fill=BOTH, side=LEFT, expand=Wahr)
     stext.focus_set()
     stext.mainloop()
 

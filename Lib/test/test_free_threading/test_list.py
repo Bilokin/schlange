@@ -28,7 +28,7 @@ klasse TestList(TestCase):
 
         def reader_func(l):
             barrier.wait()
-            while True:
+            while Wahr:
                 count = len(l)
                 fuer i, x in enumerate(l):
                     self.assertEqual(x.v, i + OBJECT_COUNT)
@@ -58,7 +58,7 @@ klasse TestList(TestCase):
 
         def reader_func():
             barrier.wait()
-            while True:
+            while Wahr:
                 count = len(l)
                 fuer i, x in enumerate(l):
                     self.assertEqual(x.v, i + OBJECT_COUNT)

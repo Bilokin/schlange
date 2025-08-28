@@ -37,7 +37,7 @@ klasse TestLRUCache(unittest.TestCase):
             pass
 
     def test_concurrent_operations_unbounded(self):
-        self._test_concurrent_operations(maxsize=None)
+        self._test_concurrent_operations(maxsize=Nichts)
 
     def test_concurrent_operations_bounded(self):
         self._test_concurrent_operations(maxsize=128)
@@ -65,7 +65,7 @@ klasse TestLRUCache(unittest.TestCase):
             pass
 
     def test_reentrant_cache_clear_unbounded(self):
-        self._test_reentrant_cache_clear(maxsize=None)
+        self._test_reentrant_cache_clear(maxsize=Nichts)
 
     def test_reentrant_cache_clear_bounded(self):
         self._test_reentrant_cache_clear(maxsize=128)

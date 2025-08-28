@@ -56,16 +56,16 @@ def normalize_encoding(encoding):
         encoding = str(encoding, "ascii")
 
     chars = []
-    punct = False
+    punct = Falsch
     fuer c in encoding:
         wenn c.isalnum() or c == '.':
             wenn punct and chars:
                 chars.append('_')
             wenn c.isascii():
                 chars.append(c)
-            punct = False
+            punct = Falsch
         sonst:
-            punct = True
+            punct = Wahr
     return ''.join(chars)
 
 def search_function(encoding):
@@ -85,7 +85,7 @@ def search_function(encoding):
     norm_encoding = normalize_encoding(encoding)
     aliased_encoding = _aliases.get(norm_encoding) or \
                        _aliases.get(norm_encoding.replace('.', '_'))
-    wenn aliased_encoding is not None:
+    wenn aliased_encoding is not Nichts:
         modnames = [aliased_encoding,
                     norm_encoding]
     sonst:
@@ -105,18 +105,18 @@ def search_function(encoding):
         sonst:
             break
     sonst:
-        mod = None
+        mod = Nichts
 
     try:
         getregentry = mod.getregentry
     except AttributeError:
         # Not a codec module
-        mod = None
+        mod = Nichts
 
-    wenn mod is None:
+    wenn mod is Nichts:
         # Cache misses
-        _cache[encoding] = None
-        return None
+        _cache[encoding] = Nichts
+        return Nichts
 
     # Now ask the module fuer the registry entry
     entry = getregentry()
@@ -125,14 +125,14 @@ def search_function(encoding):
             raise CodecRegistryError('module "%s" (%s) failed to register'
                                      % (mod.__name__, mod.__file__))
         wenn not callable(entry[0]) or not callable(entry[1]) or \
-           (entry[2] is not None and not callable(entry[2])) or \
-           (entry[3] is not None and not callable(entry[3])) or \
-           (len(entry) > 4 and entry[4] is not None and not callable(entry[4])) or \
-           (len(entry) > 5 and entry[5] is not None and not callable(entry[5])):
+           (entry[2] is not Nichts and not callable(entry[2])) or \
+           (entry[3] is not Nichts and not callable(entry[3])) or \
+           (len(entry) > 4 and entry[4] is not Nichts and not callable(entry[4])) or \
+           (len(entry) > 5 and entry[5] is not Nichts and not callable(entry[5])):
             raise CodecRegistryError('incompatible codecs in module "%s" (%s)'
                                      % (mod.__name__, mod.__file__))
-        wenn len(entry)<7 or entry[6] is None:
-            entry += (None,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
+        wenn len(entry)<7 or entry[6] is Nichts:
+            entry += (Nichts,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
         entry = codecs.CodecInfo(*entry)
 
     # Cache the codec registry entry
@@ -161,16 +161,16 @@ wenn sys.platform == 'win32':
     def win32_code_page_search_function(encoding):
         encoding = encoding.lower()
         wenn not encoding.startswith('cp'):
-            return None
+            return Nichts
         try:
             cp = int(encoding[2:])
         except ValueError:
-            return None
+            return Nichts
         # Test wenn the code page is supported
         try:
             codecs.code_page_encode(cp, 'x')
         except (OverflowError, OSError):
-            return None
+            return Nichts
 
         return create_win32_code_page_codec(cp)
 

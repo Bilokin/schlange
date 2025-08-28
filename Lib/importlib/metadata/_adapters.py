@@ -43,14 +43,14 @@ klasse Message(email.message.Message):
         """
         Override parent behavior to typical dict behavior.
 
-        ``email.message.Message`` will emit None values fuer missing
+        ``email.message.Message`` will emit Nichts values fuer missing
         keys. Typical mappings, including this ``Message``, will raise
         a key error fuer missing keys.
 
         Ref python/importlib_metadata#371.
         """
         res = super().__getitem__(item)
-        wenn res is None:
+        wenn res is Nichts:
             raise KeyError(item)
         return res
 

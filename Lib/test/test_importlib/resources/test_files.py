@@ -14,7 +14,7 @@ from test.support import os_helper, import_helper
 
 @contextlib.contextmanager
 def suppress_known_deprecation():
-    with warnings.catch_warnings(record=True) as ctx:
+    with warnings.catch_warnings(record=Wahr) as ctx:
         warnings.simplefilter('default', category=DeprecationWarning)
         yield ctx
 
@@ -36,7 +36,7 @@ klasse FilesTests:
     def test_joinpath_with_multiple_args(self):
         files = resources.files(self.data)
         binfile = files.joinpath('subdirectory', 'binary.file')
-        self.assertTrue(binfile.is_file())
+        self.assertWahr(binfile.is_file())
 
     def test_old_parameter(self):
         """

@@ -27,17 +27,17 @@ klasse UnsupportedError(Exception):
     """The operation isn't supported."""
 
 
-def _run_quiet(cmd, *, cwd=None):
+def _run_quiet(cmd, *, cwd=Nichts):
     wenn cwd:
-        print('+', 'cd', cwd, flush=True)
-    print('+', shlex.join(cmd), flush=True)
+        print('+', 'cd', cwd, flush=Wahr)
+    print('+', shlex.join(cmd), flush=Wahr)
     try:
         return subprocess.run(
             cmd,
             cwd=cwd,
-            capture_output=True,
-            text=True,
-            check=True,
+            capture_output=Wahr,
+            text=Wahr,
+            check=Wahr,
         )
     except subprocess.CalledProcessError as err:
         # Don't be quiet wenn things fail
@@ -67,7 +67,7 @@ def find_opt(args, name):
 def ensure_opt(args, name, value):
     opt = f'--{name}'
     pos = find_opt(args, name)
-    wenn value is None:
+    wenn value is Nichts:
         wenn pos < 0:
             args.append(opt)
         sonst:
@@ -101,13 +101,13 @@ def copy_source_tree(newroot, oldroot):
 ##################################
 # freezing
 
-def prepare(script=None, outdir=None):
+def prepare(script=Nichts, outdir=Nichts):
     print()
     print("cwd:", os.getcwd())
 
     wenn not outdir:
         outdir = OUTDIR
-    os.makedirs(outdir, exist_ok=True)
+    os.makedirs(outdir, exist_ok=Wahr)
 
     # Write the script to disk.
     wenn script:
@@ -123,7 +123,7 @@ def prepare(script=None, outdir=None):
 
     # We use an out-of-tree build (instead of srcdir).
     builddir = os.path.join(outdir, 'python-build')
-    os.makedirs(builddir, exist_ok=True)
+    os.makedirs(builddir, exist_ok=Wahr)
 
     # Run configure.
     print(f'configuring python in {builddir}...')
@@ -164,7 +164,7 @@ def freeze(python, scriptfile, outdir):
         raise UnsupportedError('make')
 
     print(f'freezing {scriptfile}...')
-    os.makedirs(outdir, exist_ok=True)
+    os.makedirs(outdir, exist_ok=Wahr)
     # Use -E to ignore PYTHONSAFEPATH
     _run_quiet([python, '-E', FREEZE, '-o', outdir, scriptfile], cwd=outdir)
     _run_quiet([MAKE], cwd=os.path.dirname(scriptfile))

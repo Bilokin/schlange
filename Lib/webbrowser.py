@@ -17,14 +17,14 @@ klasse Error(Exception):
 
 _lock = threading.RLock()
 _browsers = {}                  # Dictionary of available browser controllers
-_tryorder = None                # Preference order of available browsers
-_os_preferred_browser = None    # The preferred browser
+_tryorder = Nichts                # Preference order of available browsers
+_os_preferred_browser = Nichts    # The preferred browser
 
 
-def register(name, klass, instance=None, *, preferred=False):
+def register(name, klass, instance=Nichts, *, preferred=Falsch):
     """Register a browser connector."""
     with _lock:
-        wenn _tryorder is None:
+        wenn _tryorder is Nichts:
             register_standard_browsers()
         _browsers[name.lower()] = [klass, instance]
 
@@ -37,13 +37,13 @@ def register(name, klass, instance=None, *, preferred=False):
             _tryorder.append(name)
 
 
-def get(using=None):
+def get(using=Nichts):
     """Return a browser launcher instance appropriate fuer the environment."""
-    wenn _tryorder is None:
+    wenn _tryorder is Nichts:
         with _lock:
-            wenn _tryorder is None:
+            wenn _tryorder is Nichts:
                 register_standard_browsers()
-    wenn using is not None:
+    wenn using is not Nichts:
         alternatives = [using]
     sonst:
         alternatives = _tryorder
@@ -61,9 +61,9 @@ def get(using=None):
                 command = _browsers[browser.lower()]
             except KeyError:
                 command = _synthesize(browser)
-            wenn command[1] is not None:
+            wenn command[1] is not Nichts:
                 return command[1]
-            sowenn command[0] is not None:
+            sowenn command[0] is not Nichts:
                 return command[0]()
     raise Error("could not locate runnable browser")
 
@@ -72,7 +72,7 @@ def get(using=None):
 # It is recommended one does "import webbrowser" and uses webbrowser.open(url)
 # instead of "from webbrowser import *".
 
-def open(url, new=0, autoraise=True):
+def open(url, new=0, autoraise=Wahr):
     """Display url using the default browser.
 
     If possible, open url in a location determined by new.
@@ -81,18 +81,18 @@ def open(url, new=0, autoraise=True):
     - 2: a new browser page ("tab").
     If possible, autoraise raises the window (the default) or not.
 
-    If opening the browser succeeds, return True.
-    If there is a problem, return False.
+    If opening the browser succeeds, return Wahr.
+    If there is a problem, return Falsch.
     """
-    wenn _tryorder is None:
+    wenn _tryorder is Nichts:
         with _lock:
-            wenn _tryorder is None:
+            wenn _tryorder is Nichts:
                 register_standard_browsers()
     fuer name in _tryorder:
         browser = get(name)
         wenn browser.open(url, new, autoraise):
-            return True
-    return False
+            return Wahr
+    return Falsch
 
 
 def open_new(url):
@@ -111,7 +111,7 @@ def open_new_tab(url):
     return open(url, 2)
 
 
-def _synthesize(browser, *, preferred=False):
+def _synthesize(browser, *, preferred=Falsch):
     """Attempt to synthesize a controller based on existing controllers.
 
     This is useful to create a controller when a user specifies a path to
@@ -120,17 +120,17 @@ def _synthesize(browser, *, preferred=False):
     browser in this way.
 
     If we can't create a controller in this way, or wenn there is no
-    executable fuer the requested browser, return [None, None].
+    executable fuer the requested browser, return [Nichts, Nichts].
 
     """
     cmd = browser.split()[0]
     wenn not shutil.which(cmd):
-        return [None, None]
+        return [Nichts, Nichts]
     name = os.path.basename(cmd)
     try:
         command = _browsers[name.lower()]
     except KeyError:
-        return [None, None]
+        return [Nichts, Nichts]
     # now attempt to clone to fit the new name:
     controller = command[1]
     wenn controller and name.lower() == controller.basename:
@@ -138,9 +138,9 @@ def _synthesize(browser, *, preferred=False):
         controller = copy.copy(controller)
         controller.name = browser
         controller.basename = os.path.basename(browser)
-        register(browser, None, instance=controller, preferred=preferred)
-        return [None, controller]
-    return [None, None]
+        register(browser, Nichts, instance=controller, preferred=preferred)
+        return [Nichts, controller]
+    return [Nichts, Nichts]
 
 
 # General parent classes
@@ -154,7 +154,7 @@ klasse BaseBrowser:
         self.name = name
         self.basename = name
 
-    def open(self, url, new=0, autoraise=True):
+    def open(self, url, new=0, autoraise=Wahr):
         raise NotImplementedError
 
     def open_new(self, url):
@@ -178,7 +178,7 @@ klasse GenericBrowser(BaseBrowser):
             self.args = name[1:]
         self.basename = os.path.basename(self.name)
 
-    def open(self, url, new=0, autoraise=True):
+    def open(self, url, new=0, autoraise=Wahr):
         sys.audit("webbrowser.open", url)
         cmdline = [self.name] + [arg.replace("%s", url)
                                  fuer arg in self.args]
@@ -186,17 +186,17 @@ klasse GenericBrowser(BaseBrowser):
             wenn sys.platform[:3] == 'win':
                 p = subprocess.Popen(cmdline)
             sonst:
-                p = subprocess.Popen(cmdline, close_fds=True)
+                p = subprocess.Popen(cmdline, close_fds=Wahr)
             return not p.wait()
         except OSError:
-            return False
+            return Falsch
 
 
 klasse BackgroundBrowser(GenericBrowser):
     """Class fuer all browsers which are to be started in the
        background."""
 
-    def open(self, url, new=0, autoraise=True):
+    def open(self, url, new=0, autoraise=Wahr):
         cmdline = [self.name] + [arg.replace("%s", url)
                                  fuer arg in self.args]
         sys.audit("webbrowser.open", url)
@@ -204,31 +204,31 @@ klasse BackgroundBrowser(GenericBrowser):
             wenn sys.platform[:3] == 'win':
                 p = subprocess.Popen(cmdline)
             sonst:
-                p = subprocess.Popen(cmdline, close_fds=True,
-                                     start_new_session=True)
-            return p.poll() is None
+                p = subprocess.Popen(cmdline, close_fds=Wahr,
+                                     start_new_session=Wahr)
+            return p.poll() is Nichts
         except OSError:
-            return False
+            return Falsch
 
 
 klasse UnixBrowser(BaseBrowser):
     """Parent klasse fuer all Unix browsers with remote functionality."""
 
-    raise_opts = None
-    background = False
-    redirect_stdout = True
+    raise_opts = Nichts
+    background = Falsch
+    redirect_stdout = Wahr
     # In remote_args, %s will be replaced with the requested URL.  %action will
     # be replaced depending on the value of 'new' passed to open.
-    # remote_action is used fuer new=0 (open).  If newwin is not None, it is
-    # used fuer new=1 (open_new).  If newtab is not None, it is used for
+    # remote_action is used fuer new=0 (open).  If newwin is not Nichts, it is
+    # used fuer new=1 (open_new).  If newtab is not Nichts, it is used for
     # new=3 (open_new_tab).  After both substitutions are made, any empty
     # strings in the transformed remote_args list will be removed.
     remote_args = ['%action', '%s']
-    remote_action = None
-    remote_action_newwin = None
-    remote_action_newtab = None
+    remote_action = Nichts
+    remote_action_newwin = Nichts
+    remote_action_newtab = Nichts
 
-    def _invoke(self, args, remote, autoraise, url=None):
+    def _invoke(self, args, remote, autoraise, url=Nichts):
         raise_opt = []
         wenn remote and self.raise_opts:
             # use autoraise argument only fuer remote invocation
@@ -243,10 +243,10 @@ klasse UnixBrowser(BaseBrowser):
             inout = subprocess.DEVNULL
         sonst:
             # fuer TTY browsers, we need stdin/out
-            inout = None
-        p = subprocess.Popen(cmdline, close_fds=True, stdin=inout,
-                             stdout=(self.redirect_stdout and inout or None),
-                             stderr=inout, start_new_session=True)
+            inout = Nichts
+        p = subprocess.Popen(cmdline, close_fds=Wahr, stdin=inout,
+                             stdout=(self.redirect_stdout and inout or Nichts),
+                             stderr=inout, start_new_session=Wahr)
         wenn remote:
             # wait at most five seconds. If the subprocess is not finished, the
             # remote invocation has (hopefully) started a new instance.
@@ -255,23 +255,23 @@ klasse UnixBrowser(BaseBrowser):
                 # wenn remote call failed, open() will try direct invocation
                 return not rc
             except subprocess.TimeoutExpired:
-                return True
+                return Wahr
         sowenn self.background:
-            wenn p.poll() is None:
-                return True
+            wenn p.poll() is Nichts:
+                return Wahr
             sonst:
-                return False
+                return Falsch
         sonst:
             return not p.wait()
 
-    def open(self, url, new=0, autoraise=True):
+    def open(self, url, new=0, autoraise=Wahr):
         sys.audit("webbrowser.open", url)
         wenn new == 0:
             action = self.remote_action
         sowenn new == 1:
             action = self.remote_action_newwin
         sowenn new == 2:
-            wenn self.remote_action_newtab is None:
+            wenn self.remote_action_newtab is Nichts:
                 action = self.remote_action_newwin
             sonst:
                 action = self.remote_action_newtab
@@ -282,13 +282,13 @@ klasse UnixBrowser(BaseBrowser):
         args = [arg.replace("%s", url).replace("%action", action)
                 fuer arg in self.remote_args]
         args = [arg fuer arg in args wenn arg]
-        success = self._invoke(args, True, autoraise, url)
+        success = self._invoke(args, Wahr, autoraise, url)
         wenn not success:
             # remote invocation failed, try straight way
             args = [arg.replace("%s", url) fuer arg in self.args]
-            return self._invoke(args, False, False)
+            return self._invoke(args, Falsch, Falsch)
         sonst:
-            return True
+            return Wahr
 
 
 klasse Mozilla(UnixBrowser):
@@ -298,7 +298,7 @@ klasse Mozilla(UnixBrowser):
     remote_action = ""
     remote_action_newwin = "-new-window"
     remote_action_newtab = "-new-tab"
-    background = True
+    background = Wahr
 
 
 klasse Epiphany(UnixBrowser):
@@ -308,7 +308,7 @@ klasse Epiphany(UnixBrowser):
     remote_args = ['%action', '%s']
     remote_action = "-n"
     remote_action_newwin = "-w"
-    background = True
+    background = Wahr
 
 
 klasse Chrome(UnixBrowser):
@@ -318,7 +318,7 @@ klasse Chrome(UnixBrowser):
     remote_action = ""
     remote_action_newwin = "--new-window"
     remote_action_newtab = ""
-    background = True
+    background = Wahr
 
 
 Chromium = Chrome
@@ -331,7 +331,7 @@ klasse Opera(UnixBrowser):
     remote_action = ""
     remote_action_newwin = "--new-window"
     remote_action_newtab = ""
-    background = True
+    background = Wahr
 
 
 klasse Elinks(UnixBrowser):
@@ -341,11 +341,11 @@ klasse Elinks(UnixBrowser):
     remote_action = ""
     remote_action_newwin = ",new-window"
     remote_action_newtab = ",new-tab"
-    background = False
+    background = Falsch
 
     # elinks doesn't like its stdout to be redirected -
     # it uses redirected stdout as a signal to do -dump
-    redirect_stdout = False
+    redirect_stdout = Falsch
 
 
 klasse Konqueror(BaseBrowser):
@@ -355,7 +355,7 @@ klasse Konqueror(BaseBrowser):
     fuer more information on the Konqueror remote-control interface.
     """
 
-    def open(self, url, new=0, autoraise=True):
+    def open(self, url, new=0, autoraise=Wahr):
         sys.audit("webbrowser.open", url)
         # XXX Currently I know no way to prevent KFM from opening a new win.
         wenn new == 2:
@@ -367,7 +367,7 @@ klasse Konqueror(BaseBrowser):
 
         try:
             p = subprocess.Popen(["kfmclient", action, url],
-                                 close_fds=True, stdin=devnull,
+                                 close_fds=Wahr, stdin=devnull,
                                  stdout=devnull, stderr=devnull)
         except OSError:
             # fall through to next variant
@@ -375,30 +375,30 @@ klasse Konqueror(BaseBrowser):
         sonst:
             p.wait()
             # kfmclient's return code unfortunately has no meaning as it seems
-            return True
+            return Wahr
 
         try:
             p = subprocess.Popen(["konqueror", "--silent", url],
-                                 close_fds=True, stdin=devnull,
+                                 close_fds=Wahr, stdin=devnull,
                                  stdout=devnull, stderr=devnull,
-                                 start_new_session=True)
+                                 start_new_session=Wahr)
         except OSError:
             # fall through to next variant
             pass
         sonst:
-            wenn p.poll() is None:
+            wenn p.poll() is Nichts:
                 # Should be running now.
-                return True
+                return Wahr
 
         try:
             p = subprocess.Popen(["kfm", "-d", url],
-                                 close_fds=True, stdin=devnull,
+                                 close_fds=Wahr, stdin=devnull,
                                  stdout=devnull, stderr=devnull,
-                                 start_new_session=True)
+                                 start_new_session=Wahr)
         except OSError:
-            return False
+            return Falsch
         sonst:
-            return p.poll() is None
+            return p.poll() is Nichts
 
 
 klasse Edge(UnixBrowser):
@@ -408,7 +408,7 @@ klasse Edge(UnixBrowser):
     remote_action = ""
     remote_action_newwin = "--new-window"
     remote_action_newtab = ""
-    background = True
+    background = Wahr
 
 
 #
@@ -422,12 +422,12 @@ def register_X_browsers():
 
     # use xdg-open wenn around
     wenn shutil.which("xdg-open"):
-        register("xdg-open", None, BackgroundBrowser("xdg-open"))
+        register("xdg-open", Nichts, BackgroundBrowser("xdg-open"))
 
     # Opens an appropriate browser fuer the URL scheme according to
     # freedesktop.org settings (GNOME, KDE, XFCE, etc.)
     wenn shutil.which("gio"):
-        register("gio", None, BackgroundBrowser(["gio", "open", "--", "%s"]))
+        register("gio", Nichts, BackgroundBrowser(["gio", "open", "--", "%s"]))
 
     xdg_desktop = os.getenv("XDG_CURRENT_DESKTOP", "").split(":")
 
@@ -435,7 +435,7 @@ def register_X_browsers():
     wenn (("GNOME" in xdg_desktop or
          "GNOME_DESKTOP_SESSION_ID" in os.environ) and
             shutil.which("gvfs-open")):
-        register("gvfs-open", None, BackgroundBrowser("gvfs-open"))
+        register("gvfs-open", Nichts, BackgroundBrowser("gvfs-open"))
 
     # The default KDE browser
     wenn (("KDE" in xdg_desktop or
@@ -445,13 +445,13 @@ def register_X_browsers():
 
     # Common symbolic link fuer the default X11 browser
     wenn shutil.which("x-www-browser"):
-        register("x-www-browser", None, BackgroundBrowser("x-www-browser"))
+        register("x-www-browser", Nichts, BackgroundBrowser("x-www-browser"))
 
     # The Mozilla browsers
     fuer browser in ("firefox", "iceweasel", "seamonkey", "mozilla-firefox",
                     "mozilla"):
         wenn shutil.which(browser):
-            register(browser, None, Mozilla(browser))
+            register(browser, Nichts, Mozilla(browser))
 
     # Konqueror/kfm, the KDE browser.
     wenn shutil.which("kfm"):
@@ -461,19 +461,19 @@ def register_X_browsers():
 
     # Gnome's Epiphany
     wenn shutil.which("epiphany"):
-        register("epiphany", None, Epiphany("epiphany"))
+        register("epiphany", Nichts, Epiphany("epiphany"))
 
     # Google Chrome/Chromium browsers
     fuer browser in ("google-chrome", "chrome", "chromium", "chromium-browser"):
         wenn shutil.which(browser):
-            register(browser, None, Chrome(browser))
+            register(browser, Nichts, Chrome(browser))
 
     # Opera, quite popular
     wenn shutil.which("opera"):
-        register("opera", None, Opera("opera"))
+        register("opera", Nichts, Opera("opera"))
 
     wenn shutil.which("microsoft-edge"):
-        register("microsoft-edge", None, Edge("microsoft-edge"))
+        register("microsoft-edge", Nichts, Edge("microsoft-edge"))
 
 
 def register_standard_browsers():
@@ -481,19 +481,19 @@ def register_standard_browsers():
     _tryorder = []
 
     wenn sys.platform == 'darwin':
-        register("MacOSX", None, MacOSXOSAScript('default'))
-        register("chrome", None, MacOSXOSAScript('google chrome'))
-        register("firefox", None, MacOSXOSAScript('firefox'))
-        register("safari", None, MacOSXOSAScript('safari'))
+        register("MacOSX", Nichts, MacOSXOSAScript('default'))
+        register("chrome", Nichts, MacOSXOSAScript('google chrome'))
+        register("firefox", Nichts, MacOSXOSAScript('firefox'))
+        register("safari", Nichts, MacOSXOSAScript('safari'))
         # macOS can use below Unix support (but we prefer using the macOS
         # specific stuff)
 
     wenn sys.platform == "ios":
-        register("iosbrowser", None, IOSBrowser(), preferred=True)
+        register("iosbrowser", Nichts, IOSBrowser(), preferred=Wahr)
 
     wenn sys.platform == "serenityos":
         # SerenityOS webbrowser, simply called "Browser".
-        register("Browser", None, BackgroundBrowser("Browser"))
+        register("Browser", Nichts, BackgroundBrowser("Browser"))
 
     wenn sys.platform[:3] == "win":
         # First try to use the default Windows browser
@@ -509,9 +509,9 @@ def register_standard_browsers():
         fuer browser in ("firefox", "seamonkey", "mozilla", "chrome",
                         "opera", edge64, edge32):
             wenn shutil.which(browser):
-                register(browser, None, BackgroundBrowser(browser))
+                register(browser, Nichts, BackgroundBrowser(browser))
         wenn shutil.which("MicrosoftEdge.exe"):
-            register("microsoft-edge", None, Edge("MicrosoftEdge.exe"))
+            register("microsoft-edge", Nichts, Edge("MicrosoftEdge.exe"))
     sonst:
         # Prefer X browsers wenn present
         #
@@ -537,18 +537,18 @@ def register_standard_browsers():
         wenn os.environ.get("TERM"):
             # Common symbolic link fuer the default text-based browser
             wenn shutil.which("www-browser"):
-                register("www-browser", None, GenericBrowser("www-browser"))
+                register("www-browser", Nichts, GenericBrowser("www-browser"))
             # The Links/elinks browsers <http://links.twibright.com/>
             wenn shutil.which("links"):
-                register("links", None, GenericBrowser("links"))
+                register("links", Nichts, GenericBrowser("links"))
             wenn shutil.which("elinks"):
-                register("elinks", None, Elinks("elinks"))
+                register("elinks", Nichts, Elinks("elinks"))
             # The Lynx browser <https://lynx.invisible-island.net/>, <http://lynx.browser.org/>
             wenn shutil.which("lynx"):
-                register("lynx", None, GenericBrowser("lynx"))
+                register("lynx", Nichts, GenericBrowser("lynx"))
             # The w3m browser <http://w3m.sourceforge.net/>
             wenn shutil.which("w3m"):
-                register("w3m", None, GenericBrowser("w3m"))
+                register("w3m", Nichts, GenericBrowser("w3m"))
 
     # OK, now that we know what the default preference orders fuer each
     # platform are, allow user to override them with the BROWSER variable.
@@ -573,9 +573,9 @@ def register_standard_browsers():
                         continue
 
             wenn cmdline != '':
-                cmd = _synthesize(cmdline, preferred=True)
-                wenn cmd[1] is None:
-                    register(cmdline, None, GenericBrowser(cmdline), preferred=True)
+                cmd = _synthesize(cmdline, preferred=Wahr)
+                wenn cmd[1] is Nichts:
+                    register(cmdline, Nichts, GenericBrowser(cmdline), preferred=Wahr)
 
     # what to do wenn _tryorder is now empty?
 
@@ -586,16 +586,16 @@ def register_standard_browsers():
 
 wenn sys.platform[:3] == "win":
     klasse WindowsDefault(BaseBrowser):
-        def open(self, url, new=0, autoraise=True):
+        def open(self, url, new=0, autoraise=Wahr):
             sys.audit("webbrowser.open", url)
             try:
                 os.startfile(url)
             except OSError:
                 # [Error 22] No application is associated with the specified
                 # file fuer this operation: '<URL>'
-                return False
+                return Falsch
             sonst:
-                return True
+                return Wahr
 
 #
 # Platform support fuer macOS
@@ -606,7 +606,7 @@ wenn sys.platform == 'darwin':
         def __init__(self, name='default'):
             super().__init__(name)
 
-        def open(self, url, new=0, autoraise=True):
+        def open(self, url, new=0, autoraise=Wahr):
             sys.audit("webbrowser.open", url)
             url = url.replace('"', '%22')
             wenn self.name == 'default':
@@ -645,8 +645,8 @@ wenn sys.platform == 'darwin':
                    '''
 
             osapipe = os.popen("osascript", "w")
-            wenn osapipe is None:
-                return False
+            wenn osapipe is Nichts:
+                return Falsch
 
             osapipe.write(script)
             rc = osapipe.close()
@@ -662,11 +662,11 @@ wenn sys.platform == "ios":
         from ctypes import c_void_p, c_char_p, c_ulong
 
     klasse IOSBrowser(BaseBrowser):
-        def open(self, url, new=0, autoraise=True):
+        def open(self, url, new=0, autoraise=Wahr):
             sys.audit("webbrowser.open", url)
             # If ctypes isn't available, we can't open a browser
-            wenn objc is None:
-                return False
+            wenn objc is Nichts:
+                return Falsch
 
             # All the messages in this call return object references.
             objc.objc_msgSend.restype = c_void_p
@@ -711,16 +711,16 @@ wenn sys.platform == "ios":
                 c_void_p, c_void_p, c_void_p, c_void_p, c_void_p
             ]
             # Method returns void
-            objc.objc_msgSend.restype = None
-            objc.objc_msgSend(shared_app, openURL_, ns_url, None, None)
+            objc.objc_msgSend.restype = Nichts
+            objc.objc_msgSend(shared_app, openURL_, ns_url, Nichts, Nichts)
 
-            return True
+            return Wahr
 
 
-def parse_args(arg_list: list[str] | None):
+def parse_args(arg_list: list[str] | Nichts):
     import argparse
     parser = argparse.ArgumentParser(
-        description="Open URL in a web browser.", color=True,
+        description="Open URL in a web browser.", color=Wahr,
     )
     parser.add_argument("url", help="URL to open")
 
@@ -737,7 +737,7 @@ def parse_args(arg_list: list[str] | None):
     return args
 
 
-def main(arg_list: list[str] | None = None):
+def main(arg_list: list[str] | Nichts = Nichts):
     args = parse_args(arg_list)
 
     open(args.url, args.new_win)

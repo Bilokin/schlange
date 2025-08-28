@@ -1,5 +1,5 @@
 # line 1
-def wrap(foo=None):
+def wrap(foo=Nichts):
     def wrapper(func):
         return func
     return wrapper
@@ -45,9 +45,9 @@ def twolinefunc(m): return m and \
 m
 
 # line 47
-a = [None,
+a = [Nichts,
      lambda x: x,
-     None]
+     Nichts]
 
 # line 52
 def setfunc(func):
@@ -62,7 +62,7 @@ def with_comment():  # hello
 multiline_sig = [
     lambda x, \
             y: x+y,
-    None,
+    Nichts,
     ]
 
 # line 68
@@ -110,7 +110,7 @@ def annotated(arg1: list):
 def keyword_only_arg(*, arg):
     pass
 
-@wrap(lambda: None)
+@wrap(lambda: Nichts)
 def func114():
     return 115
 
@@ -234,7 +234,7 @@ klasse cls226:
             pass
         return cls233
 
-wenn True:
+wenn Wahr:
     klasse cls238:
         klasse cls239:
             '''if clause cls239'''
@@ -292,7 +292,7 @@ nested_lambda = (
         lambda length: ()))
 
 # line 294
-wenn True:
+wenn Wahr:
     klasse cls296:
         def f():
             pass
@@ -302,7 +302,7 @@ sonst:
             pass
 
 # line 304
-wenn False:
+wenn Falsch:
     klasse cls310:
         def f():
             pass

@@ -49,31 +49,31 @@ klasse FileCompareTestCase(unittest.TestCase):
         os.unlink(self.name_same_shallow)
 
     def test_matching(self):
-        self.assertTrue(filecmp.cmp(self.name, self.name),
+        self.assertWahr(filecmp.cmp(self.name, self.name),
                         "Comparing file to itself fails")
-        self.assertTrue(filecmp.cmp(self.name, self.name, shallow=False),
+        self.assertWahr(filecmp.cmp(self.name, self.name, shallow=Falsch),
                         "Comparing file to itself fails")
-        self.assertTrue(filecmp.cmp(self.name, self.name_same),
+        self.assertWahr(filecmp.cmp(self.name, self.name_same),
                         "Comparing file to identical file fails")
-        self.assertTrue(filecmp.cmp(self.name, self.name_same, shallow=False),
+        self.assertWahr(filecmp.cmp(self.name, self.name_same, shallow=Falsch),
                         "Comparing file to identical file fails")
-        self.assertTrue(filecmp.cmp(self.name, self.name_same_shallow),
+        self.assertWahr(filecmp.cmp(self.name, self.name_same_shallow),
                         "Shallow identical files should be considered equal")
 
     def test_different(self):
-        self.assertFalse(filecmp.cmp(self.name, self.name_diff),
+        self.assertFalsch(filecmp.cmp(self.name, self.name_diff),
                     "Mismatched files compare as equal")
-        self.assertFalse(filecmp.cmp(self.name, self.dir),
+        self.assertFalsch(filecmp.cmp(self.name, self.dir),
                     "File and directory compare as equal")
-        self.assertFalse(filecmp.cmp(self.name, self.name_same_shallow,
-                                     shallow=False),
+        self.assertFalsch(filecmp.cmp(self.name, self.name_same_shallow,
+                                     shallow=Falsch),
                         "Mismatched file to shallow identical file compares as equal")
 
     def test_cache_clear(self):
-        first_compare = filecmp.cmp(self.name, self.name_same, shallow=False)
-        second_compare = filecmp.cmp(self.name, self.name_diff, shallow=False)
+        first_compare = filecmp.cmp(self.name, self.name_same, shallow=Falsch)
+        second_compare = filecmp.cmp(self.name, self.name_diff, shallow=Falsch)
         filecmp.clear_cache()
-        self.assertTrue(len(filecmp._cache) == 0,
+        self.assertWahr(len(filecmp._cache) == 0,
                         "Cache not cleared after calling clear_cache")
 
 klasse DirCompareTestCase(unittest.TestCase):
@@ -92,7 +92,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         self.caseinsensitive = os.path.normcase('A') == os.path.normcase('a')
         data = 'Contents of file go here.\n'
 
-        shutil.rmtree(self.dir, True)
+        shutil.rmtree(self.dir, Wahr)
         os.mkdir(self.dir)
         subdir_path = os.path.join(self.dir, 'subdir')
         os.mkdir(subdir_path)
@@ -102,7 +102,7 @@ klasse DirCompareTestCase(unittest.TestCase):
 
         fuer dir in (self.dir_same, self.dir_same_shallow,
                     self.dir_diff, self.dir_diff_file):
-            shutil.rmtree(dir, True)
+            shutil.rmtree(dir, Wahr)
             os.mkdir(dir)
             subdir_path = os.path.join(dir, 'subdir')
             os.mkdir(subdir_path)
@@ -135,23 +135,23 @@ klasse DirCompareTestCase(unittest.TestCase):
         self.assertIn('.hg', filecmp.DEFAULT_IGNORES)
 
     def test_cmpfiles(self):
-        self.assertTrue(filecmp.cmpfiles(self.dir, self.dir, ['file']) ==
+        self.assertWahr(filecmp.cmpfiles(self.dir, self.dir, ['file']) ==
                         (['file'], [], []),
                         "Comparing directory to itself fails")
-        self.assertTrue(filecmp.cmpfiles(self.dir, self.dir_same, ['file']) ==
+        self.assertWahr(filecmp.cmpfiles(self.dir, self.dir_same, ['file']) ==
                         (['file'], [], []),
                         "Comparing directory to same fails")
 
-        # Try it with shallow=False
-        self.assertTrue(filecmp.cmpfiles(self.dir, self.dir, ['file'],
-                                         shallow=False) ==
+        # Try it with shallow=Falsch
+        self.assertWahr(filecmp.cmpfiles(self.dir, self.dir, ['file'],
+                                         shallow=Falsch) ==
                         (['file'], [], []),
                         "Comparing directory to itself fails")
-        self.assertTrue(filecmp.cmpfiles(self.dir, self.dir_same, ['file'],
-                                         shallow=False),
+        self.assertWahr(filecmp.cmpfiles(self.dir, self.dir_same, ['file'],
+                                         shallow=Falsch),
                         "Comparing directory to same fails")
 
-        self.assertFalse(filecmp.cmpfiles(self.dir, self.dir_diff_file,
+        self.assertFalsch(filecmp.cmpfiles(self.dir, self.dir_diff_file,
                                      ['file', 'file2']) ==
                     (['file'], ['file2'], []),
                     "Comparing mismatched directories fails")
@@ -196,15 +196,15 @@ klasse DirCompareTestCase(unittest.TestCase):
 
     def test_dircmp_identical_directories(self):
         self._assert_dircmp_identical_directories()
-        self._assert_dircmp_identical_directories(shallow=False)
+        self._assert_dircmp_identical_directories(shallow=Falsch)
 
     def test_dircmp_different_file(self):
         self._assert_dircmp_different_file()
-        self._assert_dircmp_different_file(shallow=False)
+        self._assert_dircmp_different_file(shallow=Falsch)
 
     def test_dircmp_different_directories(self):
         self._assert_dircmp_different_directories()
-        self._assert_dircmp_different_directories(shallow=False)
+        self._assert_dircmp_different_directories(shallow=Falsch)
 
     def _assert_dircmp_identical_directories(self, **options):
         # Check attributes fuer comparison of two identical directories
@@ -289,7 +289,7 @@ klasse DirCompareTestCase(unittest.TestCase):
 
     def test_dircmp_no_shallow_different_file(self):
         # A non shallow different file2
-        d = filecmp.dircmp(self.dir, self.dir_same_shallow, shallow=False)
+        d = filecmp.dircmp(self.dir, self.dir_same_shallow, shallow=Falsch)
         self.assertEqual(d.same_files, [])
         self.assertEqual(d.diff_files, ['file'])
         expected_report = [
@@ -316,9 +316,9 @@ klasse DirCompareTestCase(unittest.TestCase):
             TypeError,
             re.escape("dircmp.__init__() takes from 3 to 5 positional arguments but 6 were given"),
         ):
-            filecmp.dircmp(self.dir, self.dir_same, None, None, True)
+            filecmp.dircmp(self.dir, self.dir_same, Nichts, Nichts, Wahr)
         self.assertIsInstance(
-            filecmp.dircmp(self.dir, self.dir_same, None, None, shallow=True),
+            filecmp.dircmp(self.dir, self.dir_same, Nichts, Nichts, shallow=Wahr),
             filecmp.dircmp,
         )
 

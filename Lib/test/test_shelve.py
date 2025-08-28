@@ -49,7 +49,7 @@ klasse TestCase(unittest.TestCase):
 
     def test_close(self):
         d1 = {}
-        s = shelve.Shelf(d1, protocol=2, writeback=False)
+        s = shelve.Shelf(d1, protocol=2, writeback=Falsch)
         s['key1'] = [1,2,3,4]
         self.assertEqual(s['key1'], [1,2,3,4])
         self.assertEqual(len(s), 1)
@@ -62,10 +62,10 @@ klasse TestCase(unittest.TestCase):
         sonst:
             self.fail('Closed shelf should not find a key')
 
-    def test_open_template(self, filename=None, protocol=None):
+    def test_open_template(self, filename=Nichts, protocol=Nichts):
         os.mkdir(self.dirname)
         self.addCleanup(os_helper.rmtree, self.dirname)
-        s = shelve.open(filename=filename wenn filename is not None sonst self.fn,
+        s = shelve.open(filename=filename wenn filename is not Nichts sonst self.fn,
                         protocol=protocol)
         try:
             s['key1'] = (1,2,3,4)
@@ -107,14 +107,14 @@ klasse TestCase(unittest.TestCase):
 
     def test_mutable_entry(self):
         d1 = byteskeydict()
-        with shelve.Shelf(d1, protocol=2, writeback=False) as s:
+        with shelve.Shelf(d1, protocol=2, writeback=Falsch) as s:
             s['key1'] = [1,2,3,4]
             self.assertEqual(s['key1'], [1,2,3,4])
             s['key1'].append(5)
             self.assertEqual(s['key1'], [1,2,3,4])
 
         d2 = byteskeydict()
-        with shelve.Shelf(d2, protocol=2, writeback=True) as s:
+        with shelve.Shelf(d2, protocol=2, writeback=Wahr) as s:
             s['key1'] = [1,2,3,4]
             self.assertEqual(s['key1'], [1,2,3,4])
             s['key1'].append(5)
@@ -141,7 +141,7 @@ klasse TestCase(unittest.TestCase):
         d = {}
         key = 'key'
         encodedkey = key.encode('utf-8')
-        with shelve.Shelf(d, writeback=True) as s:
+        with shelve.Shelf(d, writeback=Wahr) as s:
             s[key] = [1]
             p1 = d[encodedkey]  # Will give a KeyError wenn backing store not updated
             s['key'].append(2)
@@ -150,7 +150,7 @@ klasse TestCase(unittest.TestCase):
 
     def test_with(self):
         d1 = {}
-        with shelve.Shelf(d1, protocol=2, writeback=False) as s:
+        with shelve.Shelf(d1, protocol=2, writeback=Falsch) as s:
             s['key1'] = [1,2,3,4]
             self.assertEqual(s['key1'], [1,2,3,4])
             self.assertEqual(len(s), 1)
@@ -228,7 +228,7 @@ klasse TestCase(unittest.TestCase):
         self.addCleanup(os_helper.rmtree, self.dirname)
 
         with self.assertRaises(dbm_sqlite3.error):
-            def serializer(obj, protocol=None):
+            def serializer(obj, protocol=Nichts):
                 pass
 
             def deserializer(data):
@@ -238,7 +238,7 @@ klasse TestCase(unittest.TestCase):
                              deserializer=deserializer) as s:
                 s["foo"] = "bar"
 
-        def serializer(obj, protocol=None):
+        def serializer(obj, protocol=Nichts):
             return type(obj).__name__.encode("utf-8")
 
         def deserializer(data):
@@ -248,14 +248,14 @@ klasse TestCase(unittest.TestCase):
                          deserializer=deserializer) as s:
             s["foo"] = "bar"
             self.assertNotEqual(s["foo"], "bar")
-            self.assertIsNone(s["foo"])
+            self.assertIsNichts(s["foo"])
 
     def test_custom_serializer_and_deserializer_bsd_db_shelf(self):
         berkeleydb = import_helper.import_module("berkeleydb")
         os.mkdir(self.dirname)
         self.addCleanup(os_helper.rmtree, self.dirname)
 
-        def serializer(obj, protocol=None):
+        def serializer(obj, protocol=Nichts):
             data = obj.__class__.__name__
             wenn protocol == 5:
                 data = str(len(data))
@@ -357,7 +357,7 @@ klasse TestCase(unittest.TestCase):
         os.mkdir(self.dirname)
         self.addCleanup(os_helper.rmtree, self.dirname)
 
-        def serializer(obj, protocol=None):
+        def serializer(obj, protocol=Nichts):
             return type(obj).__name__.encode("utf-8")
 
         def deserializer(data):
@@ -367,10 +367,10 @@ klasse TestCase(unittest.TestCase):
                                serializer=serializer,
                                deserializer=deserializer) as s:
             s["foo"] = "bar"
-            self.assertIsNone(s["foo"])
+            self.assertIsNichts(s["foo"])
             self.assertNotEqual(s["foo"], "bar")
 
-        def serializer(obj, protocol=None):
+        def serializer(obj, protocol=Nichts):
             pass
 
         def deserializer(data):
@@ -384,10 +384,10 @@ klasse TestCase(unittest.TestCase):
             self.assertNotEqual(s["foo"], "bar")
 
     def test_missing_custom_deserializer(self):
-        def serializer(obj, protocol=None):
+        def serializer(obj, protocol=Nichts):
             pass
 
-        kwargs = dict(protocol=2, writeback=False, serializer=serializer)
+        kwargs = dict(protocol=2, writeback=Falsch, serializer=serializer)
         self.assertRaises(shelve.ShelveError, shelve.Shelf, {}, **kwargs)
         self.assertRaises(shelve.ShelveError, shelve.BsdDbShelf, {}, **kwargs)
 
@@ -395,7 +395,7 @@ klasse TestCase(unittest.TestCase):
         def deserializer(data):
             pass
 
-        kwargs = dict(protocol=2, writeback=False, deserializer=deserializer)
+        kwargs = dict(protocol=2, writeback=Falsch, deserializer=deserializer)
         self.assertRaises(shelve.ShelveError, shelve.Shelf, {}, **kwargs)
         self.assertRaises(shelve.ShelveError, shelve.BsdDbShelf, {}, **kwargs)
 

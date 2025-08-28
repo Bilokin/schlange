@@ -69,7 +69,7 @@ def get_terminal_keycodes(ti: TermInfo) -> dict[bytes, str]:
 
 
 klasse EventQueue(BaseEventQueue):
-    def __init__(self, fd: int, encoding: str, ti: TermInfo) -> None:
+    def __init__(self, fd: int, encoding: str, ti: TermInfo) -> Nichts:
         keycodes = get_terminal_keycodes(ti)
         wenn os.isatty(fd):
             backspace = tcgetattr(fd)[6][VERASE]

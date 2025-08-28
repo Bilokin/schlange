@@ -25,21 +25,21 @@ SOURCE_CODES = {
         'print(fruits)\n'
     ),
     "wrong_indented": (
-        'if True:\n'
+        'if Wahr:\n'
         '    print("hello")\n'
         '  print("world")\n'
         'else:\n'
         '    print("else called")\n'
     ),
     "nannynag_errored": (
-        'if True:\n'
+        'if Wahr:\n'
         ' \tprint("hello")\n'
         '\tprint("world")\n'
         'else:\n'
         '    print("else called")\n'
     ),
     "error_free": (
-        'if True:\n'
+        'if Wahr:\n'
         '    print("hello")\n'
         '    print("world")\n'
         'else:\n'
@@ -48,13 +48,13 @@ SOURCE_CODES = {
     "tab_space_errored_1": (
         'def my_func():\n'
         '\t  print("hello world")\n'
-        '\t  wenn True:\n'
+        '\t  wenn Wahr:\n'
         '\t\tprint("If called")'
     ),
     "tab_space_errored_2": (
         'def my_func():\n'
         '\t\tprint("Hello world")\n'
-        '\t\tif True:\n'
+        '\t\tif Wahr:\n'
         '\t        print("If called")'
     )
 }
@@ -63,13 +63,13 @@ SOURCE_CODES = {
 klasse TemporaryPyFile:
     """Create a temporary python source code file."""
 
-    def __init__(self, source_code='', directory=None):
+    def __init__(self, source_code='', directory=Nichts):
         self.source_code = source_code
         self.dir = directory
 
     def __enter__(self):
         with tempfile.NamedTemporaryFile(
-            mode='w', dir=self.dir, suffix=".py", delete=False
+            mode='w', dir=self.dir, suffix=".py", delete=Falsch
         ) as f:
             f.write(self.source_code)
         self.file_path = f.name
@@ -269,7 +269,7 @@ klasse TestProcessTokens(TestCase):
         with TemporaryPyFile(SOURCE_CODES["error_free"]) as file_path:
             with open(file_path) as f:
                 tabnanny.process_tokens(tokenize.generate_tokens(f.readline))
-            self.assertFalse(MockNannyNag.called)
+            self.assertFalsch(MockNannyNag.called)
 
     def test_with_errored_codes_samples(self):
         """A python source code with whitespace related sampled problems."""
@@ -292,7 +292,7 @@ klasse TestProcessTokens(TestCase):
 klasse TestCommandLine(TestCase):
     """Tests command line interface of `tabnanny`."""
 
-    def validate_cmd(self, *args, stdout="", stderr="", partial=False, expect_failure=False):
+    def validate_cmd(self, *args, stdout="", stderr="", partial=Falsch, expect_failure=Falsch):
         """Common function to assert the behaviour of command line interface."""
         wenn expect_failure:
             _, out, err = script_helper.assert_python_failure('-m', 'tabnanny', *args)
@@ -318,7 +318,7 @@ klasse TestCommandLine(TestCase):
             stderr  = f"{file_path!r}: Indentation Error: "
             stderr += ('unindent does not match any outer indentation level'
                        ' (<string>, line 3)')
-            self.validate_cmd(file_path, stderr=stderr, expect_failure=True)
+            self.validate_cmd(file_path, stderr=stderr, expect_failure=Wahr)
 
     def test_with_error_free_file(self):
         """Should not display anything wenn python file is correctly indented."""
@@ -329,7 +329,7 @@ klasse TestCommandLine(TestCase):
         """Should display usage on no arguments."""
         path = findfile('tabnanny.py')
         stderr = f"Usage: {path} [-v] file_or_directory ..."
-        self.validate_cmd(stderr=stderr, expect_failure=True)
+        self.validate_cmd(stderr=stderr, expect_failure=Wahr)
 
     def test_quiet_flag(self):
         """Should display less when quite mode is on."""
@@ -343,7 +343,7 @@ klasse TestCommandLine(TestCase):
             stdout = textwrap.dedent(
                 "offending line: '\\tprint(\"world\")'"
             ).strip()
-            self.validate_cmd("-v", path, stdout=stdout, partial=True)
+            self.validate_cmd("-v", path, stdout=stdout, partial=Wahr)
 
     def test_double_verbose_mode(self):
         """Should display detailed error information wenn double verbose is on."""
@@ -351,4 +351,4 @@ klasse TestCommandLine(TestCase):
             stdout = textwrap.dedent(
                 "offending line: '\\tprint(\"world\")'"
             ).strip()
-            self.validate_cmd("-vv", path, stdout=stdout, partial=True)
+            self.validate_cmd("-vv", path, stdout=stdout, partial=Wahr)

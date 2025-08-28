@@ -10,19 +10,19 @@ from test import support
 
 klasse EventCollector(html.parser.HTMLParser):
 
-    def __init__(self, *args, autocdata=False, **kw):
+    def __init__(self, *args, autocdata=Falsch, **kw):
         self.autocdata = autocdata
         self.events = []
         self.append = self.events.append
         html.parser.HTMLParser.__init__(self, *args, **kw)
         wenn autocdata:
-            self._set_support_cdata(False)
+            self._set_support_cdata(Falsch)
 
     def get_events(self):
         # Normalize the list of events so that buffer artefacts don't
         # separate runs of contiguous characters.
         L = []
-        prevtype = None
+        prevtype = Nichts
         fuer event in self.events:
             type = event[0]
             wenn type == prevtype == "data":
@@ -38,7 +38,7 @@ klasse EventCollector(html.parser.HTMLParser):
     def handle_starttag(self, tag, attrs):
         self.append(("starttag", tag, attrs))
         wenn self.autocdata and tag == 'svg':
-            self._set_support_cdata(True)
+            self._set_support_cdata(Wahr)
 
     def handle_startendtag(self, tag, attrs):
         self.append(("startendtag", tag, attrs))
@@ -46,7 +46,7 @@ klasse EventCollector(html.parser.HTMLParser):
     def handle_endtag(self, tag):
         self.append(("endtag", tag))
         wenn self.autocdata and tag == 'svg':
-            self._set_support_cdata(False)
+            self._set_support_cdata(Falsch)
 
     # all other markup
 
@@ -82,10 +82,10 @@ klasse EventCollectorExtra(EventCollector):
 klasse EventCollectorCharrefs(EventCollector):
 
     def handle_charref(self, data):
-        self.fail('This should never be called with convert_charrefs=True')
+        self.fail('This should never be called with convert_charrefs=Wahr')
 
     def handle_entityref(self, data):
-        self.fail('This should never be called with convert_charrefs=True')
+        self.fail('This should never be called with convert_charrefs=Wahr')
 
 
 # The normal event collector normalizes the events in get_events,
@@ -98,10 +98,10 @@ klasse EventCollectorNoNormalize(EventCollector):
 klasse TestCaseBase(unittest.TestCase):
 
     def get_collector(self):
-        return EventCollector(convert_charrefs=False)
+        return EventCollector(convert_charrefs=Falsch)
 
-    def _run_check(self, source, expected_events, collector=None):
-        wenn collector is None:
+    def _run_check(self, source, expected_events, collector=Nichts):
+        wenn collector is Nichts:
             collector = self.get_collector()
         parser = collector
         fuer s in source:
@@ -116,7 +116,7 @@ klasse TestCaseBase(unittest.TestCase):
 
     def _run_check_extra(self, source, events):
         self._run_check(source, events,
-                        EventCollectorExtra(convert_charrefs=False))
+                        EventCollectorExtra(convert_charrefs=Falsch))
 
 
 klasse HTMLParserTestCase(TestCaseBase):
@@ -151,7 +151,7 @@ text
     ("data", "\n"),
     ("comment", "comment1a\n-></foo><bar>&lt;<?pi?></foo<bar\ncomment1b"),
     ("data", "\n"),
-    ("starttag", "img", [("src", "Bar"), ("ismap", None)]),
+    ("starttag", "img", [("src", "Bar"), ("ismap", Nichts)]),
     ("data", "sample\ntext\n"),
     ("charref", "x201C"),
     ("data", "\n"),
@@ -379,7 +379,7 @@ text
         self._run_check(s, [("starttag", "script", []),
                             ("data", content),
                             ("endtag", "script")],
-                        collector=EventCollectorNoNormalize(convert_charrefs=False))
+                        collector=EventCollectorNoNormalize(convert_charrefs=Falsch))
 
     @support.subTests('endtag', ['style', 'STYLE', 'style ', 'style\n',
                                  'style/', 'style foo=bar', 'style foo=">"'])
@@ -394,7 +394,7 @@ text
         self._run_check(s, [("starttag", "style", []),
                             ("data", content),
                             ("endtag", "style")],
-                        collector=EventCollectorNoNormalize(convert_charrefs=False))
+                        collector=EventCollectorNoNormalize(convert_charrefs=Falsch))
 
     @support.subTests('endtag', ['title', 'TITLE', 'title ', 'title\n',
                                  'title/', 'title foo=bar', 'title foo=">"'])
@@ -404,13 +404,13 @@ text
         self._run_check(s, [("starttag", "title", []),
                             ('data', '<!-- not a comment --><i>Egg & Spam</i>'),
                             ("endtag", "title")],
-                        collector=EventCollectorNoNormalize(convert_charrefs=True))
+                        collector=EventCollectorNoNormalize(convert_charrefs=Wahr))
         self._run_check(s, [("starttag", "title", []),
                             ('data', '<!-- not a comment --><i>Egg '),
                             ('entityref', 'amp'),
                             ('data', ' Spam</i>'),
                             ("endtag", "title")],
-                        collector=EventCollectorNoNormalize(convert_charrefs=False))
+                        collector=EventCollectorNoNormalize(convert_charrefs=Falsch))
 
     @support.subTests('endtag', ['textarea', 'TEXTAREA', 'textarea ', 'textarea\n',
                                  'textarea/', 'textarea foo=bar', 'textarea foo=">"'])
@@ -420,51 +420,51 @@ text
         self._run_check(s, [("starttag", "textarea", []),
                             ('data', '<!-- not a comment --><i>Egg & Spam</i>'),
                             ("endtag", "textarea")],
-                        collector=EventCollectorNoNormalize(convert_charrefs=True))
+                        collector=EventCollectorNoNormalize(convert_charrefs=Wahr))
         self._run_check(s, [("starttag", "textarea", []),
                             ('data', '<!-- not a comment --><i>Egg '),
                             ('entityref', 'amp'),
                             ('data', ' Spam</i>'),
                             ("endtag", "textarea")],
-                        collector=EventCollectorNoNormalize(convert_charrefs=False))
+                        collector=EventCollectorNoNormalize(convert_charrefs=Falsch))
 
     @support.subTests('tail,end', [
-        ('', False),
-        ('<', False),
-        ('</', False),
-        ('</s', False),
-        ('</script', False),
-        ('</script ', True),
-        ('</script foo=bar', True),
-        ('</script foo=">', True),
+        ('', Falsch),
+        ('<', Falsch),
+        ('</', Falsch),
+        ('</s', Falsch),
+        ('</script', Falsch),
+        ('</script ', Wahr),
+        ('</script foo=bar', Wahr),
+        ('</script foo=">', Wahr),
     ])
     def test_eof_in_script(self, tail, end):
         content = "a = 123"
         s = f'<ScrIPt>{content}{tail}'
         self._run_check(s, [("starttag", "script", []),
                             ("data", content wenn end sonst content + tail)],
-                        collector=EventCollectorNoNormalize(convert_charrefs=False))
+                        collector=EventCollectorNoNormalize(convert_charrefs=Falsch))
 
     @support.subTests('tail,end', [
-        ('', False),
-        ('<', False),
-        ('</', False),
-        ('</t', False),
-        ('</title', False),
-        ('</title ', True),
-        ('</title foo=bar', True),
-        ('</title foo=">', True),
+        ('', Falsch),
+        ('<', Falsch),
+        ('</', Falsch),
+        ('</t', Falsch),
+        ('</title', Falsch),
+        ('</title ', Wahr),
+        ('</title foo=bar', Wahr),
+        ('</title foo=">', Wahr),
     ])
     def test_eof_in_title(self, tail, end):
         s = f'<TitLe>Egg &amp; Spam{tail}'
         self._run_check(s, [("starttag", "title", []),
                             ("data", "Egg & Spam" + ('' wenn end sonst tail))],
-                        collector=EventCollectorNoNormalize(convert_charrefs=True))
+                        collector=EventCollectorNoNormalize(convert_charrefs=Wahr))
         self._run_check(s, [("starttag", "title", []),
                             ('data', 'Egg '),
                             ('entityref', 'amp'),
                             ('data', ' Spam' + ('' wenn end sonst tail))],
-                        collector=EventCollectorNoNormalize(convert_charrefs=False))
+                        collector=EventCollectorNoNormalize(convert_charrefs=Falsch))
 
     def test_comments(self):
         html = ("<!-- I'm a valid comment -->"
@@ -521,9 +521,9 @@ text
         self._run_check(html, expected)
 
     def test_convert_charrefs(self):
-        # default value fuer convert_charrefs is now True
+        # default value fuer convert_charrefs is now Wahr
         collector = lambda: EventCollectorCharrefs()
-        self.assertTrue(collector().convert_charrefs)
+        self.assertWahr(collector().convert_charrefs)
         charrefs = ['&quot;', '&#34;', '&#x22;', '&quot', '&#34', '&#x22']
         # check charrefs in the middle of the text
         expected = [('starttag', 'a', []), ('data', 'a"z'), ('endtag', 'a')]
@@ -558,9 +558,9 @@ text
                         collector=collector())
 
     def test_convert_charrefs_in_attribute_values(self):
-        # default value fuer convert_charrefs is now True
+        # default value fuer convert_charrefs is now Wahr
         collector = lambda: EventCollectorCharrefs()
-        self.assertTrue(collector().convert_charrefs)
+        self.assertWahr(collector().convert_charrefs)
 
         # always unescape terminated entity refs, numeric and hex char refs:
         # - regardless whether they are at start, middle, end of attribute
@@ -591,11 +591,11 @@ text
     def test_tolerant_parsing(self):
         self._run_check('<html <html>te>>xt&a<<bc</a></html>\n'
                         '<img src="URL><//img></html</html>', [
-                            ('starttag', 'html', [('<html', None)]),
+                            ('starttag', 'html', [('<html', Nichts)]),
                             ('data', 'te>>xt'),
                             ('entityref', 'a'),
                             ('data', '<'),
-                            ('starttag', 'bc<', [('a', None)]),
+                            ('starttag', 'bc<', [('a', Nichts)]),
                             ('endtag', 'html'),
                             ('data', '\n')])
 
@@ -635,15 +635,15 @@ text
             'startendtag', 'img',
             [('width', '902'), ('height', '250px'),
              ('src', '/sites/default/files/images/homepage/foo.jpg'),
-             ('*what', None), ('am', None), ('i', None),
-             ('doing', None), ('here*', None)]
+             ('*what', Nichts), ('am', Nichts), ('i', Nichts),
+             ('doing', Nichts), ('here*', Nichts)]
         )]
         self._run_check(html, expected)
         html = ('<a / /foo/ / /=/ / /bar/ / />'
                 '<a / /foo/ / /=/ / /bar/ / >')
         expected = [
-            ('startendtag', 'a', [('foo', None), ('=', None), ('bar', None)]),
-            ('starttag', 'a', [('foo', None), ('=', None), ('bar', None)])
+            ('startendtag', 'a', [('foo', Nichts), ('=', Nichts), ('bar', Nichts)]),
+            ('starttag', 'a', [('foo', Nichts), ('=', Nichts), ('bar', Nichts)])
         ]
         self._run_check(html, expected)
         #see issue #14538
@@ -726,7 +726,7 @@ text
 
         html = '<div style="", foo = "bar" ><b>The <a href="some_url">rain</a>'
         expected = [
-            ('starttag', 'div', [('style', ''), (',', None), ('foo', 'bar')]),
+            ('starttag', 'div', [('style', ''), (',', Nichts), ('foo', 'bar')]),
             ('starttag', 'b', []),
             ('data', 'The '),
             ('starttag', 'a', [('href', 'some_url')]),
@@ -792,7 +792,7 @@ text
                         [('unknown decl', 'CDATA[' + content)])
         self._run_check('<![CDATA[' + content,
                         [('comment', '[CDATA[' + content)],
-                        collector=EventCollector(autocdata=True))
+                        collector=EventCollector(autocdata=Wahr))
         self._run_check('<svg><text y="100"><![CDATA[' + content,
                         [('starttag', 'svg', []),
                          ('starttag', 'text', [('y', '100')]),
@@ -888,7 +888,7 @@ text
             ('endtag', 'svg'),
         ]
         self._run_check(html, expected)
-        self._run_check(html, expected, collector=EventCollector(autocdata=True))
+        self._run_check(html, expected, collector=EventCollector(autocdata=Wahr))
 
     def test_cdata_section(self):
         # See "13.2.5.42 Markup declaration open state".
@@ -906,12 +906,12 @@ text
             ('comment', '[CDATA[foo<br'),
             ('data', 'bar]]>'),
         ]
-        self._run_check(html, expected, collector=EventCollector(autocdata=True))
+        self._run_check(html, expected, collector=EventCollector(autocdata=Wahr))
 
     def test_convert_charrefs_dropped_text(self):
         # #23144: make sure that all the events are triggered when
-        # convert_charrefs is True, even wenn we don't call .close()
-        parser = EventCollector(convert_charrefs=True)
+        # convert_charrefs is Wahr, even wenn we don't call .close()
+        parser = EventCollector(convert_charrefs=Wahr)
         # before the fix, bar & baz was missing
         parser.feed("foo <a>link</a> bar &amp; baz")
         self.assertEqual(
@@ -945,7 +945,7 @@ klasse AttributesTestCase(TestCaseBase):
 
     def test_attr_syntax(self):
         output = [
-          ("starttag", "a", [("b", "v"), ("c", "v"), ("d", "v"), ("e", None)])
+          ("starttag", "a", [("b", "v"), ("c", "v"), ("d", "v"), ("e", Nichts)])
         ]
         self._run_check("""<a b='v' c="v" d=v e>""", output)
         self._run_check("<a foo==bar>", [('starttag', 'a', [('foo', '=bar')])])
@@ -1011,7 +1011,7 @@ klasse AttributesTestCase(TestCaseBase):
     def test_attr_funky_names2(self):
         self._run_check(
             r"<a $><b $=%><c \=/>",
-            [("starttag", "a", [("$", None)]),
+            [("starttag", "a", [("$", Nichts)]),
              ("starttag", "b", [("$", "%")]),
              ("starttag", "c", [("\\", "/")])])
 
@@ -1053,11 +1053,11 @@ klasse AttributesTestCase(TestCaseBase):
         # see #12629
         self._run_check('<x><y z=""o"" /></x>',
                         [('starttag', 'x', []),
-                            ('startendtag', 'y', [('z', ''), ('o""', None)]),
+                            ('startendtag', 'y', [('z', ''), ('o""', Nichts)]),
                             ('endtag', 'x')])
         self._run_check('<x><y z="""" /></x>',
                         [('starttag', 'x', []),
-                            ('startendtag', 'y', [('z', ''), ('""', None)]),
+                            ('startendtag', 'y', [('z', ''), ('""', Nichts)]),
                             ('endtag', 'x')])
 
     # see #755670 fuer the following 3 tests
@@ -1128,9 +1128,9 @@ klasse AttributesTestCase(TestCaseBase):
             ('starttag', 'div', [('class', 'bar,baz=asd'),]),
             ('starttag', 'div', [('class', 'bar'), (',baz', 'asd')]),
             ('starttag', 'div', [('class', 'bar,'), ('baz', 'asd,')]),
-            ('starttag', 'div', [('class', 'bar'), (',', None),
-                                 ('baz', 'asd'), (',', None)]),
-            ('starttag', 'div', [('class', 'bar'), (',', None)]),
+            ('starttag', 'div', [('class', 'bar'), (',', Nichts),
+                                 ('baz', 'asd'), (',', Nichts)]),
+            ('starttag', 'div', [('class', 'bar'), (',', Nichts)]),
             ('starttag', 'div', [('class', ',bar'), ('baz', ',asd')]),
             ('starttag', 'div', [('class', ',"bar"'), ('baz', ',"asd"')]),
             ('starttag', 'div', [(',class', 'bar'), (',baz', 'asd')]),

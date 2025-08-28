@@ -33,7 +33,7 @@ try:
 except ImportError:
     wenn sys.platform == 'win32':
         raise
-    _winapi = None
+    _winapi = Nichts
 
 #
 #
@@ -115,15 +115,15 @@ def address_type(address):
 #
 
 klasse _ConnectionBase:
-    _handle = None
+    _handle = Nichts
 
-    def __init__(self, handle, readable=True, writable=True):
+    def __init__(self, handle, readable=Wahr, writable=Wahr):
         handle = handle.__index__()
         wenn handle < 0:
             raise ValueError("invalid handle")
         wenn not readable and not writable:
             raise ValueError(
-                "at least one of `readable` and `writable` must be True")
+                "at least one of `readable` and `writable` must be Wahr")
         self._handle = handle
         self._readable = readable
         self._writable = writable
@@ -131,11 +131,11 @@ klasse _ConnectionBase:
     # XXX should we use util.Finalize instead of a __del__?
 
     def __del__(self):
-        wenn self._handle is not None:
+        wenn self._handle is not Nichts:
             self._close()
 
     def _check_closed(self):
-        wenn self._handle is None:
+        wenn self._handle is Nichts:
             raise OSError("handle is closed")
 
     def _check_readable(self):
@@ -148,24 +148,24 @@ klasse _ConnectionBase:
 
     def _bad_message_length(self):
         wenn self._writable:
-            self._readable = False
+            self._readable = Falsch
         sonst:
             self.close()
         raise OSError("bad message length")
 
     @property
     def closed(self):
-        """True wenn the connection is closed"""
-        return self._handle is None
+        """Wahr wenn the connection is closed"""
+        return self._handle is Nichts
 
     @property
     def readable(self):
-        """True wenn the connection is readable"""
+        """Wahr wenn the connection is readable"""
         return self._readable
 
     @property
     def writable(self):
-        """True wenn the connection is writable"""
+        """Wahr wenn the connection is writable"""
         return self._writable
 
     def fileno(self):
@@ -175,17 +175,17 @@ klasse _ConnectionBase:
 
     def close(self):
         """Close the connection"""
-        wenn self._handle is not None:
+        wenn self._handle is not Nichts:
             try:
                 self._close()
             finally:
-                self._handle = None
+                self._handle = Nichts
 
     def _detach(self):
         """Stop managing the underlying file descriptor or handle."""
-        self._handle = None
+        self._handle = Nichts
 
-    def send_bytes(self, buf, offset=0, size=None):
+    def send_bytes(self, buf, offset=0, size=Nichts):
         """Send the bytes data from a bytes-like object"""
         self._check_closed()
         self._check_writable()
@@ -197,7 +197,7 @@ klasse _ConnectionBase:
             raise ValueError("offset is negative")
         wenn n < offset:
             raise ValueError("buffer length < offset")
-        wenn size is None:
+        wenn size is Nichts:
             size = n - offset
         sowenn size < 0:
             raise ValueError("size is negative")
@@ -211,16 +211,16 @@ klasse _ConnectionBase:
         self._check_writable()
         self._send_bytes(_ForkingPickler.dumps(obj))
 
-    def recv_bytes(self, maxlength=None):
+    def recv_bytes(self, maxlength=Nichts):
         """
         Receive bytes data as a bytes object.
         """
         self._check_closed()
         self._check_readable()
-        wenn maxlength is not None and maxlength < 0:
+        wenn maxlength is not Nichts and maxlength < 0:
             raise ValueError("negative maxlength")
         buf = self._recv_bytes(maxlength)
-        wenn buf is None:
+        wenn buf is Nichts:
             self._bad_message_length()
         return buf.getvalue()
 
@@ -277,34 +277,34 @@ wenn _winapi:
         Overlapped I/O is used, so the handles must have been created
         with FILE_FLAG_OVERLAPPED.
         """
-        _got_empty_message = False
-        _send_ov = None
+        _got_empty_message = Falsch
+        _send_ov = Nichts
 
         def _close(self, _CloseHandle=_winapi.CloseHandle):
             ov = self._send_ov
-            wenn ov is not None:
+            wenn ov is not Nichts:
                 # Interrupt WaitForMultipleObjects() in _send_bytes()
                 ov.cancel()
             _CloseHandle(self._handle)
 
         def _send_bytes(self, buf):
-            wenn self._send_ov is not None:
+            wenn self._send_ov is not Nichts:
                 # A connection should only be used by a single thread
                 raise ValueError("concurrent send_bytes() calls "
                                  "are not supported")
-            ov, err = _winapi.WriteFile(self._handle, buf, overlapped=True)
+            ov, err = _winapi.WriteFile(self._handle, buf, overlapped=Wahr)
             self._send_ov = ov
             try:
                 wenn err == _winapi.ERROR_IO_PENDING:
                     waitres = _winapi.WaitForMultipleObjects(
-                        [ov.event], False, INFINITE)
+                        [ov.event], Falsch, INFINITE)
                     assert waitres == WAIT_OBJECT_0
             except:
                 ov.cancel()
                 raise
             finally:
-                self._send_ov = None
-                nwritten, err = ov.GetOverlappedResult(True)
+                self._send_ov = Nichts
+                nwritten, err = ov.GetOverlappedResult(Wahr)
             wenn err == _winapi.ERROR_OPERATION_ABORTED:
                 # close() was called by another thread while
                 # WaitForMultipleObjects() was waiting fuer the overlapped
@@ -313,15 +313,15 @@ wenn _winapi:
             assert err == 0
             assert nwritten == len(buf)
 
-        def _recv_bytes(self, maxsize=None):
+        def _recv_bytes(self, maxsize=Nichts):
             wenn self._got_empty_message:
-                self._got_empty_message = False
+                self._got_empty_message = Falsch
                 return io.BytesIO()
             sonst:
-                bsize = 128 wenn maxsize is None sonst min(maxsize, 128)
+                bsize = 128 wenn maxsize is Nichts sonst min(maxsize, 128)
                 try:
                     ov, err = _winapi.ReadFile(self._handle, bsize,
-                                                overlapped=True)
+                                                overlapped=Wahr)
 
                     sentinel = object()
                     return_value = sentinel
@@ -329,13 +329,13 @@ wenn _winapi:
                         try:
                             wenn err == _winapi.ERROR_IO_PENDING:
                                 waitres = _winapi.WaitForMultipleObjects(
-                                    [ov.event], False, INFINITE)
+                                    [ov.event], Falsch, INFINITE)
                                 assert waitres == WAIT_OBJECT_0
                         except:
                             ov.cancel()
                             raise
                         finally:
-                            nread, err = ov.GetOverlappedResult(True)
+                            nread, err = ov.GetOverlappedResult(Wahr)
                             wenn err == 0:
                                 f = io.BytesIO()
                                 f.write(ov.getbuffer())
@@ -358,7 +358,7 @@ wenn _winapi:
         def _poll(self, timeout):
             wenn (self._got_empty_message or
                         _winapi.PeekNamedPipe(self._handle)[0] != 0):
-                return True
+                return Wahr
             return bool(wait([self], timeout))
 
         def _get_more_data(self, ov, maxsize):
@@ -367,10 +367,10 @@ wenn _winapi:
             f.write(buf)
             left = _winapi.PeekNamedPipe(self._handle)[1]
             assert left > 0
-            wenn maxsize is not None and len(buf) + left > maxsize:
+            wenn maxsize is not Nichts and len(buf) + left > maxsize:
                 self._bad_message_length()
-            ov, err = _winapi.ReadFile(self._handle, left, overlapped=True)
-            rbytes, err = ov.GetOverlappedResult(True)
+            ov, err = _winapi.ReadFile(self._handle, left, overlapped=Wahr)
+            rbytes, err = ov.GetOverlappedResult(Wahr)
             assert err == 0
             assert rbytes == left
             f.write(ov.getbuffer())
@@ -396,7 +396,7 @@ klasse Connection(_ConnectionBase):
 
     def _send(self, buf, write=_write):
         remaining = len(buf)
-        while True:
+        while Wahr:
             n = write(self._handle, buf)
             remaining -= n
             wenn remaining == 0:
@@ -443,14 +443,14 @@ klasse Connection(_ConnectionBase):
                 # to avoid "broken pipe" errors wenn the other end closed the pipe.
                 self._send(header + buf)
 
-    def _recv_bytes(self, maxsize=None):
+    def _recv_bytes(self, maxsize=Nichts):
         buf = self._recv(4)
         size, = struct.unpack("!i", buf.getvalue())
         wenn size == -1:
             buf = self._recv(8)
             size, = struct.unpack("!Q", buf.getvalue())
-        wenn maxsize is not None and size > maxsize:
-            return None
+        wenn maxsize is not Nichts and size > maxsize:
+            return Nichts
         return self._recv(size)
 
     def _poll(self, timeout):
@@ -469,7 +469,7 @@ klasse Listener(object):
     This is a wrapper fuer a bound socket which is 'listening' for
     connections, or fuer a Windows named pipe.
     '''
-    def __init__(self, address=None, family=None, backlog=1, authkey=None):
+    def __init__(self, address=Nichts, family=Nichts, backlog=1, authkey=Nichts):
         family = family or (address and address_type(address)) \
                  or default_family
         address = address or arbitrary_address(family)
@@ -480,7 +480,7 @@ klasse Listener(object):
         sonst:
             self._listener = SocketListener(address, family, backlog)
 
-        wenn authkey is not None and not isinstance(authkey, bytes):
+        wenn authkey is not Nichts and not isinstance(authkey, bytes):
             raise TypeError('authkey should be a byte string')
 
         self._authkey = authkey
@@ -491,11 +491,11 @@ klasse Listener(object):
 
         Returns a `Connection` object.
         '''
-        wenn self._listener is None:
+        wenn self._listener is Nichts:
             raise OSError('listener is closed')
 
         c = self._listener.accept()
-        wenn self._authkey is not None:
+        wenn self._authkey is not Nichts:
             deliver_challenge(c, self._authkey)
             answer_challenge(c, self._authkey)
         return c
@@ -505,8 +505,8 @@ klasse Listener(object):
         Close the bound socket or named pipe of `self`.
         '''
         listener = self._listener
-        wenn listener is not None:
-            self._listener = None
+        wenn listener is not Nichts:
+            self._listener = Nichts
             listener.close()
 
     @property
@@ -524,7 +524,7 @@ klasse Listener(object):
         self.close()
 
 
-def Client(address, family=None, authkey=None):
+def Client(address, family=Nichts, authkey=Nichts):
     '''
     Returns a connection to the address of a `Listener`
     '''
@@ -535,10 +535,10 @@ def Client(address, family=None, authkey=None):
     sonst:
         c = SocketClient(address)
 
-    wenn authkey is not None and not isinstance(authkey, bytes):
+    wenn authkey is not Nichts and not isinstance(authkey, bytes):
         raise TypeError('authkey should be a byte string')
 
-    wenn authkey is not None:
+    wenn authkey is not Nichts:
         answer_challenge(c, authkey)
         deliver_challenge(c, authkey)
 
@@ -547,26 +547,26 @@ def Client(address, family=None, authkey=None):
 
 wenn sys.platform != 'win32':
 
-    def Pipe(duplex=True):
+    def Pipe(duplex=Wahr):
         '''
         Returns pair of connection objects at either end of a pipe
         '''
         wenn duplex:
             s1, s2 = socket.socketpair()
-            s1.setblocking(True)
-            s2.setblocking(True)
+            s1.setblocking(Wahr)
+            s2.setblocking(Wahr)
             c1 = Connection(s1.detach())
             c2 = Connection(s2.detach())
         sonst:
             fd1, fd2 = os.pipe()
-            c1 = Connection(fd1, writable=False)
-            c2 = Connection(fd2, readable=False)
+            c1 = Connection(fd1, writable=Falsch)
+            c2 = Connection(fd2, readable=Falsch)
 
         return c1, c2
 
 sonst:
 
-    def Pipe(duplex=True):
+    def Pipe(duplex=Wahr):
         '''
         Returns pair of connection objects at either end of a pipe
         '''
@@ -594,11 +594,11 @@ sonst:
             _winapi.FILE_FLAG_OVERLAPPED, _winapi.NULL
             )
         _winapi.SetNamedPipeHandleState(
-            h2, _winapi.PIPE_READMODE_MESSAGE, None, None
+            h2, _winapi.PIPE_READMODE_MESSAGE, Nichts, Nichts
             )
 
-        overlapped = _winapi.ConnectNamedPipe(h1, overlapped=True)
-        _, err = overlapped.GetOverlappedResult(True)
+        overlapped = _winapi.ConnectNamedPipe(h1, overlapped=Wahr)
+        _, err = overlapped.GetOverlappedResult(Wahr)
         assert err == 0
 
         c1 = PipeConnection(h1, writable=duplex)
@@ -621,7 +621,7 @@ klasse SocketListener(object):
             wenn os.name == 'posix':
                 self._socket.setsockopt(socket.SOL_SOCKET,
                                         socket.SO_REUSEADDR, 1)
-            self._socket.setblocking(True)
+            self._socket.setblocking(Wahr)
             self._socket.bind(address)
             self._socket.listen(backlog)
             self._address = self._socket.getsockname()
@@ -629,7 +629,7 @@ klasse SocketListener(object):
             self._socket.close()
             raise
         self._family = family
-        self._last_accepted = None
+        self._last_accepted = Nichts
 
         wenn family == 'AF_UNIX' and not util.is_abstract_socket_namespace(address):
             # Linux abstract socket namespaces do not need to be explicitly unlinked
@@ -637,11 +637,11 @@ klasse SocketListener(object):
                 self, os.unlink, args=(address,), exitpriority=0
                 )
         sonst:
-            self._unlink = None
+            self._unlink = Nichts
 
     def accept(self):
         s, self._last_accepted = self._socket.accept()
-        s.setblocking(True)
+        s.setblocking(Wahr)
         return Connection(s.detach())
 
     def close(self):
@@ -649,8 +649,8 @@ klasse SocketListener(object):
             self._socket.close()
         finally:
             unlink = self._unlink
-            wenn unlink is not None:
-                self._unlink = None
+            wenn unlink is not Nichts:
+                self._unlink = Nichts
                 unlink()
 
 
@@ -660,7 +660,7 @@ def SocketClient(address):
     '''
     family = address_type(address)
     with socket.socket( getattr(socket, family) ) as s:
-        s.setblocking(True)
+        s.setblocking(Wahr)
         s.connect(address)
         return Connection(s.detach())
 
@@ -674,18 +674,18 @@ wenn sys.platform == 'win32':
         '''
         Representation of a named pipe
         '''
-        def __init__(self, address, backlog=None):
+        def __init__(self, address, backlog=Nichts):
             self._address = address
-            self._handle_queue = [self._new_handle(first=True)]
+            self._handle_queue = [self._new_handle(first=Wahr)]
 
-            self._last_accepted = None
+            self._last_accepted = Nichts
             util.sub_debug('listener created with address=%r', self._address)
             self.close = util.Finalize(
                 self, PipeListener._finalize_pipe_listener,
                 args=(self._handle_queue, self._address), exitpriority=0
                 )
 
-        def _new_handle(self, first=False):
+        def _new_handle(self, first=Falsch):
             flags = _winapi.PIPE_ACCESS_DUPLEX | _winapi.FILE_FLAG_OVERLAPPED
             wenn first:
                 flags |= _winapi.FILE_FLAG_FIRST_PIPE_INSTANCE
@@ -701,7 +701,7 @@ wenn sys.platform == 'win32':
             self._handle_queue.append(self._new_handle())
             handle = self._handle_queue.pop(0)
             try:
-                ov = _winapi.ConnectNamedPipe(handle, overlapped=True)
+                ov = _winapi.ConnectNamedPipe(handle, overlapped=Wahr)
             except OSError as e:
                 wenn e.winerror != _winapi.ERROR_NO_DATA:
                     raise
@@ -710,13 +710,13 @@ wenn sys.platform == 'win32':
             sonst:
                 try:
                     res = _winapi.WaitForMultipleObjects(
-                        [ov.event], False, INFINITE)
+                        [ov.event], Falsch, INFINITE)
                 except:
                     ov.cancel()
                     _winapi.CloseHandle(handle)
                     raise
                 finally:
-                    _, err = ov.GetOverlappedResult(True)
+                    _, err = ov.GetOverlappedResult(Wahr)
                     assert err == 0
             return PipeConnection(handle)
 
@@ -749,7 +749,7 @@ wenn sys.platform == 'win32':
             raise
 
         _winapi.SetNamedPipeHandleState(
-            h, _winapi.PIPE_READMODE_MESSAGE, None, None
+            h, _winapi.PIPE_READMODE_MESSAGE, Nichts, Nichts
             )
         return PipeConnection(h)
 
@@ -1000,7 +1000,7 @@ klasse ConnectionWrapper(object):
         return self._loads(s)
 
 def _xml_dumps(obj):
-    return xmlrpclib.dumps((obj,), None, None, None, 1).encode('utf-8')
+    return xmlrpclib.dumps((obj,), Nichts, Nichts, Nichts, 1).encode('utf-8')
 
 def _xml_loads(s):
     (obj,), method = xmlrpclib.loads(s.decode('utf-8'))
@@ -1033,7 +1033,7 @@ wenn sys.platform == 'win32':
         # few fuer synchronisation, so we switch to batched waits at 60.
         wenn len(L) > 60:
             try:
-                res = _winapi.BatchedWaitForMultipleObjects(L, False, timeout)
+                res = _winapi.BatchedWaitForMultipleObjects(L, Falsch, timeout)
             except TimeoutError:
                 return []
             ready.extend(L[i] fuer i in res)
@@ -1042,7 +1042,7 @@ wenn sys.platform == 'win32':
             timeout = 0
         while L:
             short_L = L[:60] wenn len(L) > 60 sonst L
-            res = _winapi.WaitForMultipleObjects(short_L, False, timeout)
+            res = _winapi.WaitForMultipleObjects(short_L, Falsch, timeout)
             wenn res == WAIT_TIMEOUT:
                 break
             sowenn WAIT_OBJECT_0 <= res < WAIT_OBJECT_0 + len(L):
@@ -1058,13 +1058,13 @@ wenn sys.platform == 'win32':
 
     _ready_errors = {_winapi.ERROR_BROKEN_PIPE, _winapi.ERROR_NETNAME_DELETED}
 
-    def wait(object_list, timeout=None):
+    def wait(object_list, timeout=Nichts):
         '''
         Wait till an object in object_list is ready/readable.
 
         Returns list of those objects in object_list which are ready/readable.
         '''
-        wenn timeout is None:
+        wenn timeout is Nichts:
             timeout = INFINITE
         sowenn timeout < 0:
             timeout = 0
@@ -1086,9 +1086,9 @@ wenn sys.platform == 'win32':
                 sonst:
                     # start an overlapped read of length zero
                     try:
-                        ov, err = _winapi.ReadFile(fileno(), 0, True)
+                        ov, err = _winapi.ReadFile(fileno(), 0, Wahr)
                     except OSError as e:
-                        ov, err = None, e.winerror
+                        ov, err = Nichts, e.winerror
                         wenn err not in _ready_errors:
                             raise
                     wenn err == _winapi.ERROR_IO_PENDING:
@@ -1102,11 +1102,11 @@ wenn sys.platform == 'win32':
                             # ... except on Windows 8 and later, where
                             # the message HAS been consumed.
                             try:
-                                _, err = ov.GetOverlappedResult(False)
+                                _, err = ov.GetOverlappedResult(Falsch)
                             except OSError as e:
                                 err = e.winerror
                             wenn not err and hasattr(o, '_got_empty_message'):
-                                o._got_empty_message = True
+                                o._got_empty_message = Wahr
                         ready_objects.add(o)
                         timeout = 0
 
@@ -1119,7 +1119,7 @@ wenn sys.platform == 'win32':
             # wait fuer all overlapped reads to stop
             fuer ov in ov_list:
                 try:
-                    _, err = ov.GetOverlappedResult(True)
+                    _, err = ov.GetOverlappedResult(Wahr)
                 except OSError as e:
                     err = e.winerror
                     wenn err not in _ready_errors:
@@ -1131,7 +1131,7 @@ wenn sys.platform == 'win32':
                         # If o.fileno() is an overlapped pipe handle then
                         # a zero length message HAS been consumed.
                         wenn hasattr(o, '_got_empty_message'):
-                            o._got_empty_message = True
+                            o._got_empty_message = Wahr
 
         ready_objects.update(waithandle_to_obj[h] fuer h in ready_handles)
         return [o fuer o in object_list wenn o in ready_objects]
@@ -1148,7 +1148,7 @@ sonst:
     sonst:
         _WaitSelector = selectors.SelectSelector
 
-    def wait(object_list, timeout=None):
+    def wait(object_list, timeout=Nichts):
         '''
         Wait till an object in object_list is ready/readable.
 
@@ -1158,15 +1158,15 @@ sonst:
             fuer obj in object_list:
                 selector.register(obj, selectors.EVENT_READ)
 
-            wenn timeout is not None:
+            wenn timeout is not Nichts:
                 deadline = time.monotonic() + timeout
 
-            while True:
+            while Wahr:
                 ready = selector.select(timeout)
                 wenn ready:
                     return [key.fileobj fuer (key, events) in ready]
                 sonst:
-                    wenn timeout is not None:
+                    wenn timeout is not Nichts:
                         timeout = deadline - time.monotonic()
                         wenn timeout < 0:
                             return ready

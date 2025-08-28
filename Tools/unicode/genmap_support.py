@@ -61,7 +61,7 @@ klasse DecodeMapWriter:
             wenn not rc2values:
                 continue
 
-            c2map[self.prefix] = True
+            c2map[self.prefix] = Wahr
             c2map['min'] = rc2values[0]
             c2map['max'] = rc2values[-1]
             c2map['midx'] = len(self.filler)
@@ -72,7 +72,7 @@ klasse DecodeMapWriter:
                 sonst:
                     self.filler.write('U,')
 
-    def generate(self, wide=False):
+    def generate(self, wide=Falsch):
         wenn not wide:
             self.fp.write(f"static const ucs2_t __{self.prefix}_decmap[{len(self.filler)}] = {{\n")
         sonst:
@@ -125,7 +125,7 @@ klasse EncodeMapWriter:
             wenn not rc2values:
                 continue
 
-            c2map[self.prefix] = True
+            c2map[self.prefix] = Wahr
             c2map['min'] = rc2values[0]
             c2map['max'] = rc2values[-1]
             c2map['midx'] = len(self.filler)

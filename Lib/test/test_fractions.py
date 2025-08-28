@@ -44,11 +44,11 @@ klasse DummyFloat(object):
 
     # shouldn't be calling __float__ at all when doing comparisons
     def __float__(self):
-        assert False, "__float__ should not be invoked fuer comparisons"
+        assert Falsch, "__float__ should not be invoked fuer comparisons"
 
     # same goes fuer subtraction
     def __sub__(self, other):
-        assert False, "__sub__ should not be invoked fuer comparisons"
+        assert Falsch, "__sub__ should not be invoked fuer comparisons"
     __rsub__ = __sub__
 
 
@@ -82,7 +82,7 @@ klasse DummyRational(object):
     # this klasse is fuer testing comparisons; conversion to float
     # should never be used fuer a comparison, since it loses accuracy
     def __float__(self):
-        assert False, "__float__ should not be invoked"
+        assert Falsch, "__float__ should not be invoked"
 
 klasse DummyFraction(fractions.Fraction):
     """Dummy Fraction subclass fuer copy and deepcopy testing."""
@@ -618,17 +618,17 @@ klasse FractionTest(unittest.TestCase):
 
 
     def test_is_integer(self):
-        self.assertTrue(F(1, 1).is_integer())
-        self.assertTrue(F(-1, 1).is_integer())
-        self.assertTrue(F(1, -1).is_integer())
-        self.assertTrue(F(2, 2).is_integer())
-        self.assertTrue(F(-2, 2).is_integer())
-        self.assertTrue(F(2, -2).is_integer())
+        self.assertWahr(F(1, 1).is_integer())
+        self.assertWahr(F(-1, 1).is_integer())
+        self.assertWahr(F(1, -1).is_integer())
+        self.assertWahr(F(2, 2).is_integer())
+        self.assertWahr(F(-2, 2).is_integer())
+        self.assertWahr(F(2, -2).is_integer())
 
-        self.assertFalse(F(1, 2).is_integer())
-        self.assertFalse(F(-1, 2).is_integer())
-        self.assertFalse(F(1, -2).is_integer())
-        self.assertFalse(F(-1, -2).is_integer())
+        self.assertFalsch(F(1, 2).is_integer())
+        self.assertFalsch(F(-1, 2).is_integer())
+        self.assertFalsch(F(1, -2).is_integer())
+        self.assertFalsch(F(-1, -2).is_integer())
 
     def test_as_integer_ratio(self):
         self.assertEqual(F(4, 6).as_integer_ratio(), (2, 3))
@@ -662,8 +662,8 @@ klasse FractionTest(unittest.TestCase):
         self.assertTypedEquals(-2, round(F(-15, 10)))
         self.assertTypedEquals(-1, round(F(-7, 10)))
 
-        self.assertEqual(False, bool(F(0, 1)))
-        self.assertEqual(True, bool(F(3, 2)))
+        self.assertEqual(Falsch, bool(F(0, 1)))
+        self.assertEqual(Wahr, bool(F(3, 2)))
         self.assertTypedEquals(0.1, float(F(1, 10)))
 
         # Check that __float__ isn't implemented by converting the
@@ -745,11 +745,11 @@ klasse FractionTest(unittest.TestCase):
         r = F(numerator)
         # ensure the numerator was not lost during instantiation:
         self.assertIs(r.numerator, numerator)
-        self.assertIs(bool(r), True)
+        self.assertIs(bool(r), Wahr)
 
         numerator = CustomValue(0)
         r = F(numerator)
-        self.assertIs(bool(r), False)
+        self.assertIs(bool(r), Falsch)
 
     def testRound(self):
         self.assertTypedEquals(F(-200), round(F(-150), -2))
@@ -1004,117 +1004,117 @@ klasse FractionTest(unittest.TestCase):
                           Decimal('3.1415926'), F(3,11))
 
     def testComparisons(self):
-        self.assertTrue(F(1, 2) < F(2, 3))
-        self.assertFalse(F(1, 2) < F(1, 2))
-        self.assertTrue(F(1, 2) <= F(2, 3))
-        self.assertTrue(F(1, 2) <= F(1, 2))
-        self.assertFalse(F(2, 3) <= F(1, 2))
-        self.assertTrue(F(1, 2) == F(1, 2))
-        self.assertFalse(F(1, 2) == F(1, 3))
-        self.assertFalse(F(1, 2) != F(1, 2))
-        self.assertTrue(F(1, 2) != F(1, 3))
+        self.assertWahr(F(1, 2) < F(2, 3))
+        self.assertFalsch(F(1, 2) < F(1, 2))
+        self.assertWahr(F(1, 2) <= F(2, 3))
+        self.assertWahr(F(1, 2) <= F(1, 2))
+        self.assertFalsch(F(2, 3) <= F(1, 2))
+        self.assertWahr(F(1, 2) == F(1, 2))
+        self.assertFalsch(F(1, 2) == F(1, 3))
+        self.assertFalsch(F(1, 2) != F(1, 2))
+        self.assertWahr(F(1, 2) != F(1, 3))
 
     def testComparisonsDummyRational(self):
-        self.assertTrue(F(1, 2) == DummyRational(1, 2))
-        self.assertTrue(DummyRational(1, 2) == F(1, 2))
-        self.assertFalse(F(1, 2) == DummyRational(3, 4))
-        self.assertFalse(DummyRational(3, 4) == F(1, 2))
+        self.assertWahr(F(1, 2) == DummyRational(1, 2))
+        self.assertWahr(DummyRational(1, 2) == F(1, 2))
+        self.assertFalsch(F(1, 2) == DummyRational(3, 4))
+        self.assertFalsch(DummyRational(3, 4) == F(1, 2))
 
-        self.assertTrue(F(1, 2) < DummyRational(3, 4))
-        self.assertFalse(F(1, 2) < DummyRational(1, 2))
-        self.assertFalse(F(1, 2) < DummyRational(1, 7))
-        self.assertFalse(F(1, 2) > DummyRational(3, 4))
-        self.assertFalse(F(1, 2) > DummyRational(1, 2))
-        self.assertTrue(F(1, 2) > DummyRational(1, 7))
-        self.assertTrue(F(1, 2) <= DummyRational(3, 4))
-        self.assertTrue(F(1, 2) <= DummyRational(1, 2))
-        self.assertFalse(F(1, 2) <= DummyRational(1, 7))
-        self.assertFalse(F(1, 2) >= DummyRational(3, 4))
-        self.assertTrue(F(1, 2) >= DummyRational(1, 2))
-        self.assertTrue(F(1, 2) >= DummyRational(1, 7))
+        self.assertWahr(F(1, 2) < DummyRational(3, 4))
+        self.assertFalsch(F(1, 2) < DummyRational(1, 2))
+        self.assertFalsch(F(1, 2) < DummyRational(1, 7))
+        self.assertFalsch(F(1, 2) > DummyRational(3, 4))
+        self.assertFalsch(F(1, 2) > DummyRational(1, 2))
+        self.assertWahr(F(1, 2) > DummyRational(1, 7))
+        self.assertWahr(F(1, 2) <= DummyRational(3, 4))
+        self.assertWahr(F(1, 2) <= DummyRational(1, 2))
+        self.assertFalsch(F(1, 2) <= DummyRational(1, 7))
+        self.assertFalsch(F(1, 2) >= DummyRational(3, 4))
+        self.assertWahr(F(1, 2) >= DummyRational(1, 2))
+        self.assertWahr(F(1, 2) >= DummyRational(1, 7))
 
-        self.assertTrue(DummyRational(1, 2) < F(3, 4))
-        self.assertFalse(DummyRational(1, 2) < F(1, 2))
-        self.assertFalse(DummyRational(1, 2) < F(1, 7))
-        self.assertFalse(DummyRational(1, 2) > F(3, 4))
-        self.assertFalse(DummyRational(1, 2) > F(1, 2))
-        self.assertTrue(DummyRational(1, 2) > F(1, 7))
-        self.assertTrue(DummyRational(1, 2) <= F(3, 4))
-        self.assertTrue(DummyRational(1, 2) <= F(1, 2))
-        self.assertFalse(DummyRational(1, 2) <= F(1, 7))
-        self.assertFalse(DummyRational(1, 2) >= F(3, 4))
-        self.assertTrue(DummyRational(1, 2) >= F(1, 2))
-        self.assertTrue(DummyRational(1, 2) >= F(1, 7))
+        self.assertWahr(DummyRational(1, 2) < F(3, 4))
+        self.assertFalsch(DummyRational(1, 2) < F(1, 2))
+        self.assertFalsch(DummyRational(1, 2) < F(1, 7))
+        self.assertFalsch(DummyRational(1, 2) > F(3, 4))
+        self.assertFalsch(DummyRational(1, 2) > F(1, 2))
+        self.assertWahr(DummyRational(1, 2) > F(1, 7))
+        self.assertWahr(DummyRational(1, 2) <= F(3, 4))
+        self.assertWahr(DummyRational(1, 2) <= F(1, 2))
+        self.assertFalsch(DummyRational(1, 2) <= F(1, 7))
+        self.assertFalsch(DummyRational(1, 2) >= F(3, 4))
+        self.assertWahr(DummyRational(1, 2) >= F(1, 2))
+        self.assertWahr(DummyRational(1, 2) >= F(1, 7))
 
     def testComparisonsDummyFloat(self):
         x = DummyFloat(1./3.)
         y = F(1, 3)
-        self.assertTrue(x != y)
-        self.assertTrue(x < y or x > y)
-        self.assertFalse(x == y)
-        self.assertFalse(x <= y and x >= y)
-        self.assertTrue(y != x)
-        self.assertTrue(y < x or y > x)
-        self.assertFalse(y == x)
-        self.assertFalse(y <= x and y >= x)
+        self.assertWahr(x != y)
+        self.assertWahr(x < y or x > y)
+        self.assertFalsch(x == y)
+        self.assertFalsch(x <= y and x >= y)
+        self.assertWahr(y != x)
+        self.assertWahr(y < x or y > x)
+        self.assertFalsch(y == x)
+        self.assertFalsch(y <= x and y >= x)
 
     def testMixedLess(self):
-        self.assertTrue(2 < F(5, 2))
-        self.assertFalse(2 < F(4, 2))
-        self.assertTrue(F(5, 2) < 3)
-        self.assertFalse(F(4, 2) < 2)
+        self.assertWahr(2 < F(5, 2))
+        self.assertFalsch(2 < F(4, 2))
+        self.assertWahr(F(5, 2) < 3)
+        self.assertFalsch(F(4, 2) < 2)
 
-        self.assertTrue(F(1, 2) < 0.6)
-        self.assertFalse(F(1, 2) < 0.4)
-        self.assertTrue(0.4 < F(1, 2))
-        self.assertFalse(0.5 < F(1, 2))
+        self.assertWahr(F(1, 2) < 0.6)
+        self.assertFalsch(F(1, 2) < 0.4)
+        self.assertWahr(0.4 < F(1, 2))
+        self.assertFalsch(0.5 < F(1, 2))
 
-        self.assertFalse(float('inf') < F(1, 2))
-        self.assertTrue(float('-inf') < F(0, 10))
-        self.assertFalse(float('nan') < F(-3, 7))
-        self.assertTrue(F(1, 2) < float('inf'))
-        self.assertFalse(F(17, 12) < float('-inf'))
-        self.assertFalse(F(144, -89) < float('nan'))
+        self.assertFalsch(float('inf') < F(1, 2))
+        self.assertWahr(float('-inf') < F(0, 10))
+        self.assertFalsch(float('nan') < F(-3, 7))
+        self.assertWahr(F(1, 2) < float('inf'))
+        self.assertFalsch(F(17, 12) < float('-inf'))
+        self.assertFalsch(F(144, -89) < float('nan'))
 
     def testMixedLessEqual(self):
-        self.assertTrue(0.5 <= F(1, 2))
-        self.assertFalse(0.6 <= F(1, 2))
-        self.assertTrue(F(1, 2) <= 0.5)
-        self.assertFalse(F(1, 2) <= 0.4)
-        self.assertTrue(2 <= F(4, 2))
-        self.assertFalse(2 <= F(3, 2))
-        self.assertTrue(F(4, 2) <= 2)
-        self.assertFalse(F(5, 2) <= 2)
+        self.assertWahr(0.5 <= F(1, 2))
+        self.assertFalsch(0.6 <= F(1, 2))
+        self.assertWahr(F(1, 2) <= 0.5)
+        self.assertFalsch(F(1, 2) <= 0.4)
+        self.assertWahr(2 <= F(4, 2))
+        self.assertFalsch(2 <= F(3, 2))
+        self.assertWahr(F(4, 2) <= 2)
+        self.assertFalsch(F(5, 2) <= 2)
 
-        self.assertFalse(float('inf') <= F(1, 2))
-        self.assertTrue(float('-inf') <= F(0, 10))
-        self.assertFalse(float('nan') <= F(-3, 7))
-        self.assertTrue(F(1, 2) <= float('inf'))
-        self.assertFalse(F(17, 12) <= float('-inf'))
-        self.assertFalse(F(144, -89) <= float('nan'))
+        self.assertFalsch(float('inf') <= F(1, 2))
+        self.assertWahr(float('-inf') <= F(0, 10))
+        self.assertFalsch(float('nan') <= F(-3, 7))
+        self.assertWahr(F(1, 2) <= float('inf'))
+        self.assertFalsch(F(17, 12) <= float('-inf'))
+        self.assertFalsch(F(144, -89) <= float('nan'))
 
     def testBigFloatComparisons(self):
         # Because 10**23 can't be represented exactly as a float:
-        self.assertFalse(F(10**23) == float(10**23))
+        self.assertFalsch(F(10**23) == float(10**23))
         # The first test demonstrates why these are important.
-        self.assertFalse(1e23 < float(F(math.trunc(1e23) + 1)))
-        self.assertTrue(1e23 < F(math.trunc(1e23) + 1))
-        self.assertFalse(1e23 <= F(math.trunc(1e23) - 1))
-        self.assertTrue(1e23 > F(math.trunc(1e23) - 1))
-        self.assertFalse(1e23 >= F(math.trunc(1e23) + 1))
+        self.assertFalsch(1e23 < float(F(math.trunc(1e23) + 1)))
+        self.assertWahr(1e23 < F(math.trunc(1e23) + 1))
+        self.assertFalsch(1e23 <= F(math.trunc(1e23) - 1))
+        self.assertWahr(1e23 > F(math.trunc(1e23) - 1))
+        self.assertFalsch(1e23 >= F(math.trunc(1e23) + 1))
 
     def testBigComplexComparisons(self):
-        self.assertFalse(F(10**23) == complex(10**23))
+        self.assertFalsch(F(10**23) == complex(10**23))
         self.assertRaises(TypeError, operator.gt, F(10**23), complex(10**23))
         self.assertRaises(TypeError, operator.le, F(10**23), complex(10**23))
 
         x = F(3, 8)
         z = complex(0.375, 0.0)
         w = complex(0.375, 0.2)
-        self.assertTrue(x == z)
-        self.assertFalse(x != z)
-        self.assertFalse(x == w)
-        self.assertTrue(x != w)
+        self.assertWahr(x == z)
+        self.assertFalsch(x != z)
+        self.assertFalsch(x == w)
+        self.assertWahr(x != w)
         fuer op in operator.lt, operator.le, operator.gt, operator.ge:
             self.assertRaises(TypeError, op, x, z)
             self.assertRaises(TypeError, op, z, x)
@@ -1122,18 +1122,18 @@ klasse FractionTest(unittest.TestCase):
             self.assertRaises(TypeError, op, w, x)
 
     def testMixedEqual(self):
-        self.assertTrue(0.5 == F(1, 2))
-        self.assertFalse(0.6 == F(1, 2))
-        self.assertTrue(F(1, 2) == 0.5)
-        self.assertFalse(F(1, 2) == 0.4)
-        self.assertTrue(2 == F(4, 2))
-        self.assertFalse(2 == F(3, 2))
-        self.assertTrue(F(4, 2) == 2)
-        self.assertFalse(F(5, 2) == 2)
-        self.assertFalse(F(5, 2) == float('nan'))
-        self.assertFalse(float('nan') == F(3, 7))
-        self.assertFalse(F(5, 2) == float('inf'))
-        self.assertFalse(float('-inf') == F(2, 5))
+        self.assertWahr(0.5 == F(1, 2))
+        self.assertFalsch(0.6 == F(1, 2))
+        self.assertWahr(F(1, 2) == 0.5)
+        self.assertFalsch(F(1, 2) == 0.4)
+        self.assertWahr(2 == F(4, 2))
+        self.assertFalsch(2 == F(3, 2))
+        self.assertWahr(F(4, 2) == 2)
+        self.assertFalsch(F(5, 2) == 2)
+        self.assertFalsch(F(5, 2) == float('nan'))
+        self.assertFalsch(float('nan') == F(3, 7))
+        self.assertFalsch(F(5, 2) == float('inf'))
+        self.assertFalsch(float('-inf') == F(2, 5))
 
     def testStringification(self):
         self.assertEqual("Fraction(7, 3)", repr(F(7, 3)))
@@ -1601,7 +1601,7 @@ klasse FractionTest(unittest.TestCase):
     def test_invalid_formats(self):
         fraction = F(2, 3)
         with self.assertRaises(TypeError):
-            format(fraction, None)
+            format(fraction, Nichts)
 
         invalid_specs = [
             'Q6f',  # regression test

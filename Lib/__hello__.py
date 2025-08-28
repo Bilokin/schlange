@@ -1,4 +1,4 @@
-initialized = True
+initialized = Wahr
 
 klasse TestFrozenUtf8_1:
     """\u00b6"""

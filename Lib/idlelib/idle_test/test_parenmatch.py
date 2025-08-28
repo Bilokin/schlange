@@ -42,7 +42,7 @@ klasse ParenMatchTest(unittest.TestCase):
 
     def get_parenmatch(self):
         pm = ParenMatch(self.editwin)
-        pm.bell = lambda: None
+        pm.bell = lambda: Nichts
         return pm
 
     def test_paren_styles(self):
@@ -102,10 +102,10 @@ klasse ParenMatchTest(unittest.TestCase):
         pm = self.get_parenmatch()
         pm.restore_event = Mock()
         pm.handle_restore_timer(0)
-        self.assertTrue(pm.restore_event.called)
+        self.assertWahr(pm.restore_event.called)
         pm.restore_event.reset_mock()
         pm.handle_restore_timer(1)
-        self.assertFalse(pm.restore_event.called)
+        self.assertFalsch(pm.restore_event.called)
 
 
 wenn __name__ == '__main__':

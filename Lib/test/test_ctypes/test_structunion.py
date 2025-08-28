@@ -80,8 +80,8 @@ klasse StructUnionTestBase:
     def test_type_flags(self):
         fuer cls in self.cls, self.metacls:
             with self.subTest(cls=cls):
-                self.assertTrue(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
-                self.assertFalse(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
+                self.assertWahr(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
+                self.assertFalsch(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Abstract classes (whose metaclass __init__ was not called) can't be
@@ -147,8 +147,8 @@ klasse StructUnionTestBase:
             _fields_ = []
 
         # Is this really the correct alignment, or should it be 0?
-        self.assertTrue(alignment(X) == 1)
-        self.assertTrue(sizeof(X) == 0)
+        self.assertWahr(alignment(X) == 1)
+        self.assertWahr(sizeof(X) == 0)
 
         klasse XX(self.cls):
             _fields_ = [("a", X),
@@ -252,7 +252,7 @@ klasse StructUnionTestBase:
         fuer name in field_names:
             with self.subTest(name=name):
                 wenn info := expected_bitfield_info.get(name):
-                    self.assertEqual(getattr(X, name).is_bitfield, True)
+                    self.assertEqual(getattr(X, name).is_bitfield, Wahr)
                     expected_bit_size, expected_bit_offset = info
                     self.assertEqual(getattr(X, name).bit_size,
                                      expected_bit_size)
@@ -262,7 +262,7 @@ klasse StructUnionTestBase:
                                      (expected_bit_size << 16)
                                      | expected_bit_offset)
                 sonst:
-                    self.assertEqual(getattr(X, name).is_bitfield, False)
+                    self.assertEqual(getattr(X, name).is_bitfield, Falsch)
                     type_size = sizeof(expected_types[name])
                     self.assertEqual(getattr(X, name).bit_size, type_size * 8)
                     self.assertEqual(getattr(X, name).bit_offset, 0)
@@ -282,7 +282,7 @@ klasse StructUnionTestBase:
 
     def test_invalid_name(self):
         # field name must be string
-        fuer name in b"x", 3, None:
+        fuer name in b"x", 3, Nichts:
             with self.subTest(name=name):
                 with self.assertRaises(TypeError):
                     klasse S(self.cls):
@@ -424,7 +424,7 @@ klasse PointerMemberTestCase_Struct(unittest.TestCase, PointerMemberTestBase):
 
         s = S()
         s.x = 12345678
-        s.p = None
+        s.p = Nichts
         self.assertEqual(s.x, 12345678)
 
 klasse PointerMemberTestCase_Union(unittest.TestCase, PointerMemberTestBase):
@@ -437,8 +437,8 @@ klasse PointerMemberTestCase_Union(unittest.TestCase, PointerMemberTestBase):
 
         s = S()
         s.x = 12345678
-        s.p = None
-        self.assertFalse(s.p)  # NULL pointers are falsy
+        s.p = Nichts
+        self.assertFalsch(s.p)  # NULL pointers are falsy
 
 
 klasse TestRecursiveBase:

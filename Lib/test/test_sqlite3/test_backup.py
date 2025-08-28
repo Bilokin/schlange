@@ -21,7 +21,7 @@ klasse BackupTests(unittest.TestCase):
 
     def test_bad_target(self):
         with self.assertRaises(TypeError):
-            self.cx.backup(None)
+            self.cx.backup(Nichts)
         with self.assertRaises(TypeError):
             self.cx.backup()
 

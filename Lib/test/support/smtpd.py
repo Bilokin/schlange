@@ -122,7 +122,7 @@ klasse SMTPChannel(asynchat.async_chat):
             return self.command_size_limit
 
     def __init__(self, server, conn, addr, data_size_limit=DATA_SIZE_DEFAULT,
-                 map=None, enable_SMTPUTF8=False, decode_data=False):
+                 map=Nichts, enable_SMTPUTF8=Falsch, decode_data=Falsch):
         asynchat.async_chat.__init__(self, conn, map=map)
         self.smtp_server = server
         self.conn = conn
@@ -132,7 +132,7 @@ klasse SMTPChannel(asynchat.async_chat):
         self._decode_data = decode_data
         wenn enable_SMTPUTF8 and decode_data:
             raise ValueError("decode_data and enable_SMTPUTF8 cannot"
-                             " be set to True at the same time")
+                             " be set to Wahr at the same time")
         wenn decode_data:
             self._emptystring = ''
             self._linesep = '\r\n'
@@ -145,7 +145,7 @@ klasse SMTPChannel(asynchat.async_chat):
             self._newline = b'\n'
         self._set_rset_state()
         self.seen_greeting = ''
-        self.extended_smtp = False
+        self.extended_smtp = Falsch
         self.command_size_limits.clear()
         self.fqdn = socket.getfqdn()
         try:
@@ -163,9 +163,9 @@ klasse SMTPChannel(asynchat.async_chat):
     def _set_post_data_state(self):
         """Reset state variables to their post-DATA state."""
         self.smtp_state = self.COMMAND
-        self.mailfrom = None
+        self.mailfrom = Nichts
         self.rcpttos = []
-        self.require_SMTPUTF8 = False
+        self.require_SMTPUTF8 = Falsch
         self.num_bytes = 0
         self.set_terminator(b'\r\n')
 
@@ -305,7 +305,7 @@ klasse SMTPChannel(asynchat.async_chat):
 
     # Implementation of base klasse abstract method
     def collect_incoming_data(self, data):
-        limit = None
+        limit = Nichts
         wenn self.smtp_state == self.COMMAND:
             limit = self.max_command_size_limit
         sowenn self.smtp_state == self.DATA:
@@ -334,7 +334,7 @@ klasse SMTPChannel(asynchat.async_chat):
             i = line.find(' ')
             wenn i < 0:
                 command = line.upper()
-                arg = None
+                arg = Nichts
             sonst:
                 command = line[:i].upper()
                 arg = line[i+1:].strip()
@@ -343,7 +343,7 @@ klasse SMTPChannel(asynchat.async_chat):
             wenn sz > max_sz:
                 self.push('500 Error: line too long')
                 return
-            method = getattr(self, 'smtp_' + command, None)
+            method = getattr(self, 'smtp_' + command, Nichts)
             wenn not method:
                 self.push('500 Error: command "%s" not recognized' % command)
                 return
@@ -404,7 +404,7 @@ klasse SMTPChannel(asynchat.async_chat):
             return
         self._set_rset_state()
         self.seen_greeting = arg
-        self.extended_smtp = True
+        self.extended_smtp = Wahr
         self.push('250-%s' % self.fqdn)
         wenn self.data_size_limit:
             self.push('250-SIZE %s' % self.data_size_limit)
@@ -445,14 +445,14 @@ klasse SMTPChannel(asynchat.async_chat):
         return address.addr_spec, rest
 
     def _getparams(self, params):
-        # Return params as dictionary. Return None wenn not all parameters
+        # Return params as dictionary. Return Nichts wenn not all parameters
         # appear to be syntactically valid according to RFC 1869.
         result = {}
         fuer param in params:
             param, eq, value = param.partition('=')
             wenn not param.isalnum() or eq and not value:
-                return None
-            result[param] = value wenn eq sonst True
+                return Nichts
+            result[param] = value wenn eq sonst Wahr
         return result
 
     def smtp_HELP(self, arg):
@@ -509,7 +509,7 @@ klasse SMTPChannel(asynchat.async_chat):
         syntaxerr = '501 Syntax: MAIL FROM: <address>'
         wenn self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
-        wenn arg is None:
+        wenn arg is Nichts:
             self.push(syntaxerr)
             return
         arg = self._strip_command_keyword('FROM:', arg)
@@ -525,7 +525,7 @@ klasse SMTPChannel(asynchat.async_chat):
             return
         self.mail_options = params.upper().split()
         params = self._getparams(self.mail_options)
-        wenn params is None:
+        wenn params is Nichts:
             self.push(syntaxerr)
             return
         wenn not self._decode_data:
@@ -534,13 +534,13 @@ klasse SMTPChannel(asynchat.async_chat):
                 self.push('501 Error: BODY can only be one of 7BIT, 8BITMIME')
                 return
         wenn self.enable_SMTPUTF8:
-            smtputf8 = params.pop('SMTPUTF8', False)
-            wenn smtputf8 is True:
-                self.require_SMTPUTF8 = True
-            sowenn smtputf8 is not False:
+            smtputf8 = params.pop('SMTPUTF8', Falsch)
+            wenn smtputf8 is Wahr:
+                self.require_SMTPUTF8 = Wahr
+            sowenn smtputf8 is not Falsch:
                 self.push('501 Error: SMTPUTF8 takes no arguments')
                 return
-        size = params.pop('SIZE', None)
+        size = params.pop('SIZE', Nichts)
         wenn size:
             wenn not size.isdigit():
                 self.push(syntaxerr)
@@ -566,7 +566,7 @@ klasse SMTPChannel(asynchat.async_chat):
         syntaxerr = '501 Syntax: RCPT TO: <address>'
         wenn self.extended_smtp:
             syntaxerr += ' [SP <mail-parameters>]'
-        wenn arg is None:
+        wenn arg is Nichts:
             self.push(syntaxerr)
             return
         arg = self._strip_command_keyword('TO:', arg)
@@ -579,7 +579,7 @@ klasse SMTPChannel(asynchat.async_chat):
             return
         self.rcpt_options = params.upper().split()
         params = self._getparams(self.rcpt_options)
-        wenn params is None:
+        wenn params is Nichts:
             self.push(syntaxerr)
             return
         # XXX currently there are no options we recognize.
@@ -621,8 +621,8 @@ klasse SMTPServer(asyncore.dispatcher):
     channel_class = SMTPChannel
 
     def __init__(self, localaddr, remoteaddr,
-                 data_size_limit=DATA_SIZE_DEFAULT, map=None,
-                 enable_SMTPUTF8=False, decode_data=False):
+                 data_size_limit=DATA_SIZE_DEFAULT, map=Nichts,
+                 enable_SMTPUTF8=Falsch, decode_data=Falsch):
         self._localaddr = localaddr
         self._remoteaddr = remoteaddr
         self.data_size_limit = data_size_limit
@@ -630,7 +630,7 @@ klasse SMTPServer(asyncore.dispatcher):
         self._decode_data = decode_data
         wenn enable_SMTPUTF8 and decode_data:
             raise ValueError("decode_data and enable_SMTPUTF8 cannot"
-                             " be set to True at the same time")
+                             " be set to Wahr at the same time")
         asyncore.dispatcher.__init__(self, map=map)
         try:
             family = 0 wenn socket.has_ipv6 sonst socket.AF_INET
@@ -679,14 +679,14 @@ klasse SMTPServer(asyncore.dispatcher):
         removed.
 
         kwargs is a dictionary containing additional information.  It is
-        empty wenn decode_data=True was given as init parameter, otherwise
+        empty wenn decode_data=Wahr was given as init parameter, otherwise
         it will contain the following keys:
             'mail_options': list of parameters to the mail command.  All
                             elements are uppercase strings.  Example:
                             ['BODY=8BITMIME', 'SMTPUTF8'].
             'rcpt_options': same, fuer the rcpt command.
 
-        This function should return None fuer a normal '250 Ok' response;
+        This function should return Nichts fuer a normal '250 Ok' response;
         otherwise, it should return the desired response string in RFC 821
         format.
 
@@ -770,10 +770,10 @@ klasse PureProxy(SMTPServer):
 
 
 klasse Options:
-    setuid = True
+    setuid = Wahr
     classname = 'PureProxy'
-    size_limit = None
-    enable_SMTPUTF8 = False
+    size_limit = Nichts
+    enable_SMTPUTF8 = Falsch
 
 
 def parseargs():
@@ -794,13 +794,13 @@ def parseargs():
             print(__version__)
             sys.exit(0)
         sowenn opt in ('-n', '--nosetuid'):
-            options.setuid = False
+            options.setuid = Falsch
         sowenn opt in ('-c', '--class'):
             options.classname = arg
         sowenn opt in ('-d', '--debug'):
             DEBUGSTREAM = sys.stderr
         sowenn opt in ('-u', '--smtputf8'):
-            options.enable_SMTPUTF8 = True
+            options.enable_SMTPUTF8 = Wahr
         sowenn opt in ('-s', '--size'):
             try:
                 int_size = int(arg)

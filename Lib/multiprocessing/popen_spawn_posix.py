@@ -46,9 +46,9 @@ klasse Popen(popen_fork.Popen):
             reduction.dump(prep_data, fp)
             reduction.dump(process_obj, fp)
         finally:
-            set_spawning_popen(None)
+            set_spawning_popen(Nichts)
 
-        parent_r = child_w = child_r = parent_w = None
+        parent_r = child_w = child_r = parent_w = Nichts
         try:
             parent_r, child_w = os.pipe()
             child_r, parent_w = os.pipe()
@@ -58,15 +58,15 @@ klasse Popen(popen_fork.Popen):
             self.pid = util.spawnv_passfds(spawn.get_executable(),
                                            cmd, self._fds)
             self.sentinel = parent_r
-            with open(parent_w, 'wb', closefd=False) as f:
+            with open(parent_w, 'wb', closefd=Falsch) as f:
                 f.write(fp.getbuffer())
         finally:
             fds_to_close = []
             fuer fd in (parent_r, parent_w):
-                wenn fd is not None:
+                wenn fd is not Nichts:
                     fds_to_close.append(fd)
             self.finalizer = util.Finalize(self, util.close_fds, fds_to_close)
 
             fuer fd in (child_r, child_w):
-                wenn fd is not None:
+                wenn fd is not Nichts:
                     os.close(fd)

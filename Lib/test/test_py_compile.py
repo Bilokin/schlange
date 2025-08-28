@@ -75,8 +75,8 @@ klasse PyCompileTestsBase:
 
     def test_absolute_path(self):
         py_compile.compile(self.source_path, self.pyc_path)
-        self.assertTrue(os.path.exists(self.pyc_path))
-        self.assertFalse(os.path.exists(self.cache_path))
+        self.assertWahr(os.path.exists(self.pyc_path))
+        self.assertFalsch(os.path.exists(self.cache_path))
 
     def test_do_not_overwrite_symlinks(self):
         # In the face of a cfile argument being a symlink, bail out.
@@ -100,20 +100,20 @@ klasse PyCompileTestsBase:
 
     def test_cache_path(self):
         py_compile.compile(self.source_path)
-        self.assertTrue(os.path.exists(self.cache_path))
+        self.assertWahr(os.path.exists(self.cache_path))
 
     def test_cwd(self):
         with os_helper.change_cwd(self.directory):
             py_compile.compile(os.path.basename(self.source_path),
                                os.path.basename(self.pyc_path))
-        self.assertTrue(os.path.exists(self.pyc_path))
-        self.assertFalse(os.path.exists(self.cache_path))
+        self.assertWahr(os.path.exists(self.pyc_path))
+        self.assertFalsch(os.path.exists(self.cache_path))
 
     def test_relative_path(self):
         py_compile.compile(os.path.relpath(self.source_path),
                            os.path.relpath(self.pyc_path))
-        self.assertTrue(os.path.exists(self.pyc_path))
-        self.assertFalse(os.path.exists(self.cache_path))
+        self.assertWahr(os.path.exists(self.pyc_path))
+        self.assertFalsch(os.path.exists(self.cache_path))
 
     @os_helper.skip_if_dac_override
     @unittest.skipIf(os.name == 'nt',
@@ -136,14 +136,14 @@ klasse PyCompileTestsBase:
                                   'tokenizedata',
                                   'bad_coding2.py')
         with support.captured_stderr():
-            self.assertIsNone(py_compile.compile(bad_coding, doraise=False))
-        self.assertFalse(os.path.exists(
+            self.assertIsNichts(py_compile.compile(bad_coding, doraise=Falsch))
+        self.assertFalsch(os.path.exists(
             importlib.util.cache_from_source(bad_coding)))
 
     def test_source_date_epoch(self):
         py_compile.compile(self.source_path, self.pyc_path)
-        self.assertTrue(os.path.exists(self.pyc_path))
-        self.assertFalse(os.path.exists(self.cache_path))
+        self.assertWahr(os.path.exists(self.pyc_path))
+        self.assertFalsch(os.path.exists(self.cache_path))
         with open(self.pyc_path, 'rb') as fp:
             flags = importlib._bootstrap_external._classify_pyc(
                 fp.read(), 'test', {})
@@ -171,8 +171,8 @@ klasse PyCompileTestsBase:
         with open(weird_path, 'w') as file:
             file.write('x = 123\n')
         py_compile.compile(weird_path)
-        self.assertTrue(os.path.exists(cache_path))
-        self.assertFalse(os.path.exists(pyc_path))
+        self.assertWahr(os.path.exists(cache_path))
+        self.assertFalsch(os.path.exists(pyc_path))
 
     def test_optimization_path(self):
         # Specifying optimized bytecode should lead to a path reflecting that.
@@ -201,24 +201,24 @@ klasse PyCompileTestsBase:
                                   'tokenizedata',
                                   'bad_coding2.py')
         with support.captured_stderr() as stderr:
-            self.assertIsNone(py_compile.compile(bad_coding, doraise=False, quiet=2))
-            self.assertIsNone(py_compile.compile(bad_coding, doraise=True, quiet=2))
+            self.assertIsNichts(py_compile.compile(bad_coding, doraise=Falsch, quiet=2))
+            self.assertIsNichts(py_compile.compile(bad_coding, doraise=Wahr, quiet=2))
             self.assertEqual(stderr.getvalue(), '')
             with self.assertRaises(py_compile.PyCompileError):
-                py_compile.compile(bad_coding, doraise=True, quiet=1)
+                py_compile.compile(bad_coding, doraise=Wahr, quiet=1)
 
 
 klasse PyCompileTestsWithSourceEpoch(PyCompileTestsBase,
                                     unittest.TestCase,
                                     metaclass=SourceDateEpochTestMeta,
-                                    source_date_epoch=True):
+                                    source_date_epoch=Wahr):
     pass
 
 
 klasse PyCompileTestsWithoutSourceEpoch(PyCompileTestsBase,
                                        unittest.TestCase,
                                        metaclass=SourceDateEpochTestMeta,
-                                       source_date_epoch=False):
+                                       source_date_epoch=Falsch):
     pass
 
 
@@ -244,26 +244,26 @@ klasse PyCompileCLITestCase(unittest.TestCase):
         wenn args and args[0] == '-' and 'input' in kwargs:
             return subprocess.run([sys.executable, opts, 'py_compile', '-'],
                                   input=kwargs['input'].encode(),
-                                  capture_output=True)
+                                  capture_output=Wahr)
         return script_helper.assert_python_ok(opts, 'py_compile', *args, **kwargs)
 
     def pycompilecmd_failure(self, *args):
         return script_helper.assert_python_failure('-m', 'py_compile', *args)
 
     def test_stdin(self):
-        self.assertFalse(os.path.exists(self.cache_path))
+        self.assertFalsch(os.path.exists(self.cache_path))
         result = self.pycompilecmd('-', input=self.source_path)
         self.assertEqual(result.returncode, 0)
         self.assertEqual(result.stdout, b'')
         self.assertEqual(result.stderr, b'')
-        self.assertTrue(os.path.exists(self.cache_path))
+        self.assertWahr(os.path.exists(self.cache_path))
 
     def test_with_files(self):
         rc, stdout, stderr = self.pycompilecmd(self.source_path, self.source_path)
         self.assertEqual(rc, 0)
         self.assertEqual(stdout, b'')
         self.assertEqual(stderr, b'')
-        self.assertTrue(os.path.exists(self.cache_path))
+        self.assertWahr(os.path.exists(self.cache_path))
 
     def test_bad_syntax(self):
         bad_syntax = os.path.join(os.path.dirname(__file__),

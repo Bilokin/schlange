@@ -15,7 +15,7 @@ klasse FileList:
         self.inversedict = {}
         self.vars = {} # For EditorWindow.getrawvar (shared Tcl variables)
 
-    def open(self, filename, action=None):
+    def open(self, filename, action=Nichts):
         assert filename
         filename = self.canonize(filename)
         wenn os.path.isdir(filename):
@@ -24,7 +24,7 @@ klasse FileList:
                 "File Error",
                 f"{filename!r} is a directory.",
                 master=self.root)
-            return None
+            return Nichts
         key = os.path.normcase(filename)
         wenn key in self.dict:
             edit = self.dict[key]
@@ -39,14 +39,14 @@ klasse FileList:
                 return edit
             sonst:
                 edit._close()
-                return None
+                return Nichts
 
-    def gotofileline(self, filename, lineno=None):
+    def gotofileline(self, filename, lineno=Nichts):
         edit = self.open(filename)
-        wenn edit is not None and lineno is not None:
+        wenn edit is not Nichts and lineno is not Nichts:
             edit.gotoline(lineno)
 
-    def new(self, filename=None):
+    def new(self, filename=Nichts):
         return self.EditorWindow(self, filename)
 
     def close_all_callback(self, *args, **kwds):
@@ -79,7 +79,7 @@ klasse FileList:
         wenn not filename:
             wenn key:
                 del self.dict[key]
-            self.inversedict[edit] = None
+            self.inversedict[edit] = Nichts
             return
         filename = self.canonize(filename)
         newkey = os.path.normcase(filename)
@@ -87,7 +87,7 @@ klasse FileList:
             return
         wenn newkey in self.dict:
             conflict = self.dict[newkey]
-            self.inversedict[conflict] = None
+            self.inversedict[conflict] = Nichts
             messagebox.showerror(
                 "Name Conflict",
                 f"You now have multiple edit windows open fuer {filename!r}",

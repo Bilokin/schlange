@@ -54,7 +54,7 @@ def main_loop():
     """Main computation loop with different execution paths"""
     iteration = 0
 
-    while True:
+    while Wahr:
         iteration += 1
 
         # Different execution paths with different frequencies
@@ -111,7 +111,7 @@ def io_intensive_work():
 
 def mixed_workload():
     """Mix of CPU and IO work"""
-    while True:
+    while Wahr:
         wenn random.random() < 0.3:
             cpu_intensive_work()
         sonst:
@@ -121,7 +121,7 @@ def create_threads(n):
     """Create n threads doing mixed workloads"""
     threads = []
     fuer _ in range(n):
-        t = threading.Thread(target=mixed_workload, daemon=True)
+        t = threading.Thread(target=mixed_workload, daemon=Wahr)
         t.start()
         threads.append(t)
     return threads
@@ -131,7 +131,7 @@ active_threads = create_threads(5)
 thread_count = 5
 
 # Main thread manages threads and does work
-while True:
+while Wahr:
     # Randomly add or remove threads
     wenn random.random() < 0.1:  # 10% chance each iteration
         wenn random.random() < 0.5 and thread_count < 100:
@@ -327,7 +327,7 @@ Examples:
 Available code examples:
 {examples_desc}
         """,
-        color=True,
+        color=Wahr,
     )
 
     parser.add_argument(
@@ -371,7 +371,7 @@ def create_target_process(temp_file, code_example="basic"):
     time.sleep(1.0)
 
     # Check wenn it's still running
-    wenn process.poll() is not None:
+    wenn process.poll() is not Nichts:
         stdout, stderr = process.communicate()
         raise RuntimeError(
             f"Target process exited unexpectedly:\nSTDOUT: {stdout.decode()}\nSTDERR: {stderr.decode()}"
@@ -383,7 +383,7 @@ def create_target_process(temp_file, code_example="basic"):
 def cleanup_process(process, temp_file_path):
     """Clean up the target process and temporary file"""
     with contextlib.suppress(Exception):
-        wenn process.poll() is None:
+        wenn process.poll() is Nichts:
             process.terminate()
             try:
                 process.wait(timeout=5.0)
@@ -409,8 +409,8 @@ def main():
         f"{colors.CYAN}Benchmark Duration:{colors.RESET} {colors.YELLOW}{args.duration}{colors.RESET} seconds"
     )
 
-    process = None
-    temp_file_path = None
+    process = Nichts
+    temp_file_path = Nichts
 
     try:
         # Create target process
@@ -428,11 +428,11 @@ def main():
                 try:
                     kwargs = {}
                     wenn args.threads == "all":
-                        kwargs["all_threads"] = True
+                        kwargs["all_threads"] = Wahr
                     sowenn args.threads == "main":
-                        kwargs["all_threads"] = False
+                        kwargs["all_threads"] = Falsch
                     sowenn args.threads == "only_active":
-                        kwargs["only_active_thread"] = True
+                        kwargs["only_active_thread"] = Wahr
                     unwinder = _remote_debugging.RemoteUnwinder(
                         process.pid, **kwargs
                     )

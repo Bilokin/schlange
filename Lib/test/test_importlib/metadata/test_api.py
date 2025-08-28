@@ -161,10 +161,10 @@ klasse APITests(
 
     def test_get_missing_key(self):
         """
-        Requesting a missing key will return None.
+        Requesting a missing key will return Nichts.
         """
         md = metadata('distinfo-pkg')
-        assert md.get('does-not-exist') is None
+        assert md.get('does-not-exist') is Nichts
 
     @staticmethod
     def _test_files(files):
@@ -197,7 +197,7 @@ klasse APITests(
 
     def test_requires_egg_info_file(self):
         requirements = requires('egginfo-file')
-        self.assertIsNone(requirements)
+        self.assertIsNichts(requirements)
 
     def test_requires_egg_info(self):
         deps = requires('egginfo-pkg')

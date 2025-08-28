@@ -112,7 +112,7 @@ def _get_implementation():
 # NOTE: site.py has copy of this function.
 # Sync it when modify this function.
 def _getuserbase():
-    env_base = os.environ.get("PYTHONUSERBASE", None)
+    env_base = os.environ.get("PYTHONUSERBASE", Nichts)
     wenn env_base:
         return env_base
 
@@ -120,7 +120,7 @@ def _getuserbase():
     # Use _PYTHON_HOST_PLATFORM to get the correct platform when cross-compiling.
     system_name = os.environ.get('_PYTHON_HOST_PLATFORM', sys.platform).split('-')[0]
     wenn system_name in {"emscripten", "ios", "tvos", "vxworks", "wasi", "watchos"}:
-        return None
+        return Nichts
 
     def joinuser(*args):
         return os.path.expanduser(os.path.join(*args))
@@ -135,7 +135,7 @@ def _getuserbase():
 
     return joinuser("~", ".local")
 
-_HAS_USER_BASE = (_getuserbase() is not None)
+_HAS_USER_BASE = (_getuserbase() is not Nichts)
 
 wenn _HAS_USER_BASE:
     _INSTALL_SCHEMES |= {
@@ -179,10 +179,10 @@ _BASE_PREFIX = os.path.normpath(sys.base_prefix)
 _BASE_EXEC_PREFIX = os.path.normpath(sys.base_exec_prefix)
 # Mutex guarding initialization of _CONFIG_VARS.
 _CONFIG_VARS_LOCK = threading.RLock()
-_CONFIG_VARS = None
-# True iff _CONFIG_VARS has been fully initialized.
-_CONFIG_VARS_INITIALIZED = False
-_USER_BASE = None
+_CONFIG_VARS = Nichts
+# Wahr iff _CONFIG_VARS has been fully initialized.
+_CONFIG_VARS_INITIALIZED = Falsch
+_USER_BASE = Nichts
 
 
 def _safe_realpath(path):
@@ -201,7 +201,7 @@ sonst:
 # In a virtual environment, `sys._home` gives us the target directory
 # `_PROJECT_BASE` fuer the executable that created it when the virtual
 # python is an actual executable ('venv --copies' or Windows).
-_sys_home = getattr(sys, '_home', None)
+_sys_home = getattr(sys, '_home', Nichts)
 wenn _sys_home:
     _PROJECT_BASE = _sys_home
 
@@ -222,8 +222,8 @@ wenn "_PYTHON_PROJECT_BASE" in os.environ:
 def is_python_build():
     fuer fn in ("Setup", "Setup.local"):
         wenn os.path.isfile(os.path.join(_PROJECT_BASE, "Modules", fn)):
-            return True
-    return False
+            return Wahr
+    return Falsch
 
 _PYTHON_BUILD = is_python_build()
 
@@ -247,7 +247,7 @@ def _subst_vars(s, local_vars):
         try:
             return s.format(**os.environ)
         except KeyError:
-            raise AttributeError(f'{var}') from None
+            raise AttributeError(f'{var}') from Nichts
 
 def _extend_dict(target_dict, other_dict):
     target_keys = target_dict.keys()
@@ -259,7 +259,7 @@ def _extend_dict(target_dict, other_dict):
 
 def _expand_vars(scheme, vars):
     res = {}
-    wenn vars is None:
+    wenn vars is Nichts:
         vars = {}
     _extend_dict(vars, get_config_vars())
     wenn os.name == 'nt':
@@ -425,20 +425,20 @@ def _init_non_posix(vars):
 #
 
 
-def parse_config_h(fp, vars=None):
+def parse_config_h(fp, vars=Nichts):
     """Parse a config.h-style file.
 
     A dictionary containing name/value pairs is returned.  If an
     optional dictionary is passed in as the second argument, it is
     used instead of a new dictionary.
     """
-    wenn vars is None:
+    wenn vars is Nichts:
         vars = {}
     import re
     define_rx = re.compile("#define ([A-Z][A-Za-z0-9_]+) (.*)\n")
     undef_rx = re.compile("/[*] #undef ([A-Z][A-Za-z0-9_]+) [*]/\n")
 
-    while True:
+    while Wahr:
         line = fp.readline()
         wenn not line:
             break
@@ -481,7 +481,7 @@ def get_path_names():
     return _SCHEME_KEYS
 
 
-def get_paths(scheme=get_default_scheme(), vars=None, expand=True):
+def get_paths(scheme=get_default_scheme(), vars=Nichts, expand=Wahr):
     """Return a mapping containing an install scheme.
 
     ``scheme`` is the install scheme name. If not provided, it will
@@ -493,7 +493,7 @@ def get_paths(scheme=get_default_scheme(), vars=None, expand=True):
         return _INSTALL_SCHEMES[scheme]
 
 
-def get_path(name, scheme=get_default_scheme(), vars=None, expand=True):
+def get_path(name, scheme=get_default_scheme(), vars=Nichts, expand=Wahr):
     """Return a path corresponding to the scheme.
 
     ``scheme`` is the install scheme name.
@@ -583,7 +583,7 @@ def _init_config_vars():
         _osx_support.customize_config_vars(_CONFIG_VARS)
 
     global _CONFIG_VARS_INITIALIZED
-    _CONFIG_VARS_INITIALIZED = True
+    _CONFIG_VARS_INITIALIZED = Wahr
 
 
 def get_config_vars(*args):
@@ -605,7 +605,7 @@ def get_config_vars(*args):
         exec_prefix = os.path.normpath(sys.exec_prefix)
         wenn _CONFIG_VARS['prefix'] != prefix or _CONFIG_VARS['exec_prefix'] != exec_prefix:
             with _CONFIG_VARS_LOCK:
-                _CONFIG_VARS_INITIALIZED = False
+                _CONFIG_VARS_INITIALIZED = Falsch
                 _init_config_vars()
     sonst:
         # Initialize the config_vars cache.
@@ -614,7 +614,7 @@ def get_config_vars(*args):
             # we test _CONFIG_VARS here, not _CONFIG_VARS_INITIALIZED,
             # to ensure that recursive calls to get_config_vars()
             # don't re-enter init_config_vars().
-            wenn _CONFIG_VARS is None:
+            wenn _CONFIG_VARS is Nichts:
                 _init_config_vars()
 
     wenn args:
@@ -673,7 +673,7 @@ def get_platform():
     # Set fuer cross builds explicitly
     wenn "_PYTHON_HOST_PLATFORM" in os.environ:
         osname, _, machine = os.environ["_PYTHON_HOST_PLATFORM"].partition('-')
-        release = None
+        release = Nichts
     sonst:
         # Try to distinguish various flavours of Unix
         osname, host, release, version, machine = os.uname()
@@ -731,7 +731,7 @@ def get_platform():
                                                 get_config_vars(),
                                                 osname, release, machine)
 
-    return '-'.join(map(str, filter(None, (osname, release, machine))))
+    return '-'.join(map(str, filter(Nichts, (osname, release, machine))))
 
 
 def get_python_version():
@@ -770,7 +770,7 @@ def expand_makefile_vars(s, vars):
     # 'parse_makefile()', which takes care of such expansions eagerly,
     # according to make's variable expansion semantics.
 
-    while True:
+    while Wahr:
         m = re.search(_findvar1_rx, s) or re.search(_findvar2_rx, s)
         wenn m:
             (beg, end) = m.span()

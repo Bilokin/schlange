@@ -124,7 +124,7 @@ klasse ThreadSignals(unittest.TestCase):
             with threading_helper.wait_threads_exit():
                 thread.start_new_thread(other_thread, ())
                 # Wait until we can't acquire it without blocking...
-                while rlock.acquire(blocking=False):
+                while rlock.acquire(blocking=Falsch):
                     rlock.release()
                     time.sleep(0.01)
                 signal.alarm(1)
@@ -138,9 +138,9 @@ klasse ThreadSignals(unittest.TestCase):
             signal.signal(signal.SIGALRM, oldalrm)
 
     def acquire_retries_on_intr(self, lock):
-        self.sig_recvd = False
+        self.sig_recvd = Falsch
         def my_handler(signal, frame):
-            self.sig_recvd = True
+            self.sig_recvd = Wahr
 
         old_handler = signal.signal(signal.SIGUSR1, my_handler)
         try:
@@ -160,12 +160,12 @@ klasse ThreadSignals(unittest.TestCase):
             with threading_helper.wait_threads_exit():
                 thread.start_new_thread(other_thread, ())
                 # Wait until we can't acquire it without blocking...
-                while lock.acquire(blocking=False):
+                while lock.acquire(blocking=Falsch):
                     lock.release()
                     time.sleep(0.01)
                 result = lock.acquire()  # Block while we receive a signal.
-                self.assertTrue(self.sig_recvd)
-                self.assertTrue(result)
+                self.assertWahr(self.sig_recvd)
+                self.assertWahr(result)
         finally:
             signal.signal(signal.SIGUSR1, old_handler)
 
@@ -183,8 +183,8 @@ klasse ThreadSignals(unittest.TestCase):
         # NOTE: this test only behaves as expected wenn C signals get delivered
         # to the main thread.  Otherwise lock.acquire() itself doesn't get
         # interrupted and the test trivially succeeds.
-        self.start = None
-        self.end = None
+        self.start = Nichts
+        self.end = Nichts
         self.sigs_recvd = 0
         done = thread.allocate_lock()
         done.acquire()

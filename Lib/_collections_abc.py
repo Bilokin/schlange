@@ -110,12 +110,12 @@ def _check_methods(C, *methods):
     fuer method in methods:
         fuer B in mro:
             wenn method in B.__dict__:
-                wenn B.__dict__[method] is None:
+                wenn B.__dict__[method] is Nichts:
                     return NotImplemented
                 break
         sonst:
             return NotImplemented
-    return True
+    return Wahr
 
 klasse Hashable(metaclass=ABCMeta):
 
@@ -161,15 +161,15 @@ klasse Coroutine(Awaitable):
         raise StopIteration
 
     @abstractmethod
-    def throw(self, typ, val=None, tb=None):
+    def throw(self, typ, val=Nichts, tb=Nichts):
         """Raise an exception in the coroutine.
         Return next yielded value or raise StopIteration.
         """
-        wenn val is None:
-            wenn tb is None:
+        wenn val is Nichts:
+            wenn tb is Nichts:
                 raise typ
             val = typ()
-        wenn tb is not None:
+        wenn tb is not Nichts:
             val = val.with_traceback(tb)
         raise val
 
@@ -237,7 +237,7 @@ klasse AsyncGenerator(AsyncIterator):
         """Return the next item from the asynchronous generator.
         When exhausted, raise StopAsyncIteration.
         """
-        return await self.asend(None)
+        return await self.asend(Nichts)
 
     @abstractmethod
     async def asend(self, value):
@@ -247,15 +247,15 @@ klasse AsyncGenerator(AsyncIterator):
         raise StopAsyncIteration
 
     @abstractmethod
-    async def athrow(self, typ, val=None, tb=None):
+    async def athrow(self, typ, val=Nichts, tb=Nichts):
         """Raise an exception in the asynchronous generator.
         Return next yielded value or raise StopAsyncIteration.
         """
-        wenn val is None:
-            wenn tb is None:
+        wenn val is Nichts:
+            wenn tb is Nichts:
                 raise typ
             val = typ()
-        wenn tb is not None:
+        wenn tb is not Nichts:
             val = val.with_traceback(tb)
         raise val
 
@@ -286,8 +286,8 @@ klasse Iterable(metaclass=ABCMeta):
 
     @abstractmethod
     def __iter__(self):
-        while False:
-            yield None
+        while Falsch:
+            yield Nichts
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -339,8 +339,8 @@ klasse Reversible(Iterable):
 
     @abstractmethod
     def __reversed__(self):
-        while False:
-            yield None
+        while Falsch:
+            yield Nichts
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -357,7 +357,7 @@ klasse Generator(Iterator):
         """Return the next item from the generator.
         When exhausted, raise StopIteration.
         """
-        return self.send(None)
+        return self.send(Nichts)
 
     @abstractmethod
     def send(self, value):
@@ -367,15 +367,15 @@ klasse Generator(Iterator):
         raise StopIteration
 
     @abstractmethod
-    def throw(self, typ, val=None, tb=None):
+    def throw(self, typ, val=Nichts, tb=Nichts):
         """Raise an exception in the generator.
         Return next yielded value or raise StopIteration.
         """
-        wenn val is None:
-            wenn tb is None:
+        wenn val is Nichts:
+            wenn tb is Nichts:
                 raise typ
             val = typ()
-        wenn tb is not None:
+        wenn tb is not Nichts:
             val = val.with_traceback(tb)
         raise val
 
@@ -421,7 +421,7 @@ klasse Container(metaclass=ABCMeta):
 
     @abstractmethod
     def __contains__(self, x):
-        return False
+        return Falsch
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -518,9 +518,9 @@ def _is_param_expr(obj):
     ``_ConcatenateGenericAlias`` from typing.py
     """
     wenn obj is Ellipsis:
-        return True
+        return Wahr
     wenn isinstance(obj, list):
-        return True
+        return Wahr
     obj = type(obj)
     names = ('ParamSpec', '_ConcatenateGenericAlias')
     return obj.__module__ == 'typing' and any(obj.__name__ == name fuer name in names)
@@ -532,7 +532,7 @@ klasse Callable(metaclass=ABCMeta):
 
     @abstractmethod
     def __call__(self, *args, **kwds):
-        return False
+        return Falsch
 
     @classmethod
     def __subclasshook__(cls, C):
@@ -563,11 +563,11 @@ klasse Set(Collection):
         wenn not isinstance(other, Set):
             return NotImplemented
         wenn len(self) > len(other):
-            return False
+            return Falsch
         fuer elem in self:
             wenn elem not in other:
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def __lt__(self, other):
         wenn not isinstance(other, Set):
@@ -583,11 +583,11 @@ klasse Set(Collection):
         wenn not isinstance(other, Set):
             return NotImplemented
         wenn len(self) < len(other):
-            return False
+            return Falsch
         fuer elem in other:
             wenn elem not in self:
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def __eq__(self, other):
         wenn not isinstance(other, Set):
@@ -611,11 +611,11 @@ klasse Set(Collection):
     __rand__ = __and__
 
     def isdisjoint(self, other):
-        'Return True wenn two sets have a null intersection.'
+        'Return Wahr wenn two sets have a null intersection.'
         fuer value in other:
             wenn value in self:
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def __or__(self, other):
         wenn not isinstance(other, Iterable):
@@ -723,14 +723,14 @@ klasse MutableSet(Set):
         try:
             value = next(it)
         except StopIteration:
-            raise KeyError from None
+            raise KeyError from Nichts
         self.discard(value)
         return value
 
     def clear(self):
         """This is slow (creates N new iterators!) but effective."""
         try:
-            while True:
+            while Wahr:
                 self.pop()
         except KeyError:
             pass
@@ -789,8 +789,8 @@ klasse Mapping(Collection):
     def __getitem__(self, key):
         raise KeyError
 
-    def get(self, key, default=None):
-        'D.get(k[,d]) -> D[k] wenn k in D, sonst d.  d defaults to None.'
+    def get(self, key, default=Nichts):
+        'D.get(k[,d]) -> D[k] wenn k in D, sonst d.  d defaults to Nichts.'
         try:
             return self[key]
         except KeyError:
@@ -800,9 +800,9 @@ klasse Mapping(Collection):
         try:
             self[key]
         except KeyError:
-            return False
+            return Falsch
         sonst:
-            return True
+            return Wahr
 
     def keys(self):
         "D.keys() -> a set-like object providing a view on D's keys"
@@ -821,7 +821,7 @@ klasse Mapping(Collection):
             return NotImplemented
         return dict(self.items()) == dict(other.items())
 
-    __reversed__ = None
+    __reversed__ = Nichts
 
 Mapping.register(mappingproxy)
 Mapping.register(framelocalsproxy)
@@ -874,7 +874,7 @@ klasse ItemsView(MappingView, Set):
         try:
             v = self._mapping[key]
         except KeyError:
-            return False
+            return Falsch
         sonst:
             return v is value or v == value
 
@@ -894,8 +894,8 @@ klasse ValuesView(MappingView, Collection):
         fuer key in self._mapping:
             v = self._mapping[key]
             wenn v is value or v == value:
-                return True
-        return False
+                return Wahr
+        return Falsch
 
     def __iter__(self):
         fuer key in self._mapping:
@@ -947,21 +947,21 @@ klasse MutableMapping(Mapping):
         try:
             key = next(iter(self))
         except StopIteration:
-            raise KeyError from None
+            raise KeyError from Nichts
         value = self[key]
         del self[key]
         return key, value
 
     def clear(self):
-        'D.clear() -> None.  Remove all items from D.'
+        'D.clear() -> Nichts.  Remove all items from D.'
         try:
-            while True:
+            while Wahr:
                 self.popitem()
         except KeyError:
             pass
 
     def update(self, other=(), /, **kwds):
-        ''' D.update([E, ]**F) -> None.  Update D from mapping/iterable E and F.
+        ''' D.update([E, ]**F) -> Nichts.  Update D from mapping/iterable E and F.
             If E present and has a .keys() method, does:     fuer k in E.keys(): D[k] = E[k]
             If E present and lacks .keys() method, does:     fuer (k, v) in E: D[k] = v
             In either case, this is followed by: fuer k, v in F.items(): D[k] = v
@@ -978,7 +978,7 @@ klasse MutableMapping(Mapping):
         fuer key, value in kwds.items():
             self[key] = value
 
-    def setdefault(self, key, default=None):
+    def setdefault(self, key, default=Nichts):
         'D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d wenn k not in D'
         try:
             return self[key]
@@ -1011,7 +1011,7 @@ klasse Sequence(Reversible, Collection):
     def __iter__(self):
         i = 0
         try:
-            while True:
+            while Wahr:
                 v = self[i]
                 yield v
                 i += 1
@@ -1021,27 +1021,27 @@ klasse Sequence(Reversible, Collection):
     def __contains__(self, value):
         fuer v in self:
             wenn v is value or v == value:
-                return True
-        return False
+                return Wahr
+        return Falsch
 
     def __reversed__(self):
         fuer i in reversed(range(len(self))):
             yield self[i]
 
-    def index(self, value, start=0, stop=None):
+    def index(self, value, start=0, stop=Nichts):
         '''S.index(value, [start, [stop]]) -> integer -- return first index of value.
            Raises ValueError wenn the value is not present.
 
            Supporting start and stop arguments is optional, but
            recommended.
         '''
-        wenn start is not None and start < 0:
+        wenn start is not Nichts and start < 0:
             start = max(len(self) + start, 0)
-        wenn stop is not None and stop < 0:
+        wenn stop is not Nichts and stop < 0:
             stop += len(self)
 
         i = start
-        while stop is None or i < stop:
+        while stop is Nichts or i < stop:
             try:
                 v = self[i]
             except IndexError:
@@ -1089,9 +1089,9 @@ klasse MutableSequence(Sequence):
         self.insert(len(self), value)
 
     def clear(self):
-        'S.clear() -> None -- remove all items from S'
+        'S.clear() -> Nichts -- remove all items from S'
         try:
-            while True:
+            while Wahr:
                 self.pop()
         except IndexError:
             pass

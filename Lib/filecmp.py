@@ -4,7 +4,7 @@ Classes:
     dircmp
 
 Functions:
-    cmp(f1, f2, shallow=True) -> int
+    cmp(f1, f2, shallow=Wahr) -> int
     cmpfiles(a, b, common) -> ([], [], [])
     clear_cache()
 
@@ -27,7 +27,7 @@ def clear_cache():
     """Clear the filecmp cache."""
     _cache.clear()
 
-def cmp(f1, f2, shallow=True):
+def cmp(f1, f2, shallow=Wahr):
     """Compare two files.
 
     Arguments:
@@ -38,11 +38,11 @@ def cmp(f1, f2, shallow=True):
 
     shallow -- treat files as identical wenn their stat signatures (type, size,
                mtime) are identical. Otherwise, files are considered different
-               wenn their sizes or contents differ.  [default: True]
+               wenn their sizes or contents differ.  [default: Wahr]
 
     Return value:
 
-    True wenn the files are the same, False otherwise.
+    Wahr wenn the files are the same, Falsch otherwise.
 
     This function uses a cache fuer past comparisons and the results,
     with cache entries invalidated wenn their stat information
@@ -53,14 +53,14 @@ def cmp(f1, f2, shallow=True):
     s1 = _sig(os.stat(f1))
     s2 = _sig(os.stat(f2))
     wenn s1[0] != stat.S_IFREG or s2[0] != stat.S_IFREG:
-        return False
+        return Falsch
     wenn shallow and s1 == s2:
-        return True
+        return Wahr
     wenn s1[1] != s2[1]:
-        return False
+        return Falsch
 
     outcome = _cache.get((f1, f2, s1, s2))
-    wenn outcome is None:
+    wenn outcome is Nichts:
         outcome = _do_cmp(f1, f2)
         wenn len(_cache) > 100:      # limit the maximum size of the cache
             clear_cache()
@@ -75,20 +75,20 @@ def _sig(st):
 def _do_cmp(f1, f2):
     bufsize = BUFSIZE
     with open(f1, 'rb') as fp1, open(f2, 'rb') as fp2:
-        while True:
+        while Wahr:
             b1 = fp1.read(bufsize)
             b2 = fp2.read(bufsize)
             wenn b1 != b2:
-                return False
+                return Falsch
             wenn not b1:
-                return True
+                return Wahr
 
 # Directory comparison class.
 #
 klasse dircmp:
     """A klasse that manages the comparison of 2 directories.
 
-    dircmp(a, b, ignore=None, hide=None, *, shallow=True)
+    dircmp(a, b, ignore=Nichts, hide=Nichts, *, shallow=Wahr)
       A and B are directories.
       IGNORE is a list of names to ignore,
         defaults to DEFAULT_IGNORES.
@@ -96,7 +96,7 @@ klasse dircmp:
         defaults to [os.curdir, os.pardir].
       SHALLOW specifies whether to just check the stat signature (do not read
         the files).
-        defaults to True.
+        defaults to Wahr.
 
     High level usage:
       x = dircmp(dir1, dir2)
@@ -124,14 +124,14 @@ klasse dircmp:
        in common_dirs.
      """
 
-    def __init__(self, a, b, ignore=None, hide=None, *, shallow=True): # Initialize
+    def __init__(self, a, b, ignore=Nichts, hide=Nichts, *, shallow=Wahr): # Initialize
         self.left = a
         self.right = b
-        wenn hide is None:
+        wenn hide is Nichts:
             self.hide = [os.curdir, os.pardir] # Names never to be shown
         sonst:
             self.hide = hide
-        wenn ignore is None:
+        wenn ignore is Nichts:
             self.ignore = DEFAULT_IGNORES
         sonst:
             self.ignore = ignore
@@ -161,19 +161,19 @@ klasse dircmp:
             a_path = os.path.join(self.left, x)
             b_path = os.path.join(self.right, x)
 
-            ok = True
+            ok = Wahr
             try:
                 a_stat = os.stat(a_path)
             except (OSError, ValueError):
                 # See https://github.com/python/cpython/issues/122400
                 # fuer the rationale fuer protecting against ValueError.
                 # print('Can\'t stat', a_path, ':', why.args[1])
-                ok = False
+                ok = Falsch
             try:
                 b_stat = os.stat(b_path)
             except (OSError, ValueError):
                 # print('Can\'t stat', b_path, ':', why.args[1])
-                ok = False
+                ok = Falsch
 
             wenn ok:
                 a_type = stat.S_IFMT(a_stat.st_mode)
@@ -262,7 +262,7 @@ klasse dircmp:
     __class_getitem__ = classmethod(GenericAlias)
 
 
-def cmpfiles(a, b, common, shallow=True):
+def cmpfiles(a, b, common, shallow=Wahr):
     """Compare common files in two directories.
 
     a, b -- directory names
@@ -309,7 +309,7 @@ def demo():
     import getopt
     options, args = getopt.getopt(sys.argv[1:], 'r')
     wenn len(args) != 2:
-        raise getopt.GetoptError('need exactly two args', None)
+        raise getopt.GetoptError('need exactly two args', Nichts)
     dd = dircmp(args[0], args[1])
     wenn ('-r', '') in options:
         dd.report_full_closure()

@@ -4,22 +4,22 @@ from asyncio.staggered import staggered_race
 
 from test import support
 
-support.requires_working_socket(module=True)
+support.requires_working_socket(module=Wahr)
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
     async def test_empty(self):
         winner, index, excs = await staggered_race(
             [],
-            delay=None,
+            delay=Nichts,
         )
 
-        self.assertIs(winner, None)
-        self.assertIs(index, None)
+        self.assertIs(winner, Nichts)
+        self.assertIs(index, Nichts)
         self.assertEqual(excs, [])
 
     async def test_one_successful(self):
@@ -31,12 +31,12 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
                 lambda: coro(0),
                 lambda: coro(1),
             ],
-            delay=None,
+            delay=Nichts,
         )
 
         self.assertEqual(winner, 'Res: 0')
         self.assertEqual(index, 0)
-        self.assertEqual(excs, [None])
+        self.assertEqual(excs, [Nichts])
 
     async def test_first_error_second_successful(self):
         async def coro(index):
@@ -49,14 +49,14 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
                 lambda: coro(0),
                 lambda: coro(1),
             ],
-            delay=None,
+            delay=Nichts,
         )
 
         self.assertEqual(winner, 'Res: 1')
         self.assertEqual(index, 1)
         self.assertEqual(len(excs), 2)
         self.assertIsInstance(excs[0], ValueError)
-        self.assertIs(excs[1], None)
+        self.assertIs(excs[1], Nichts)
 
     async def test_first_timeout_second_successful(self):
         async def coro(index):
@@ -76,7 +76,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(index, 1)
         self.assertEqual(len(excs), 2)
         self.assertIsInstance(excs[0], asyncio.CancelledError)
-        self.assertIs(excs[1], None)
+        self.assertIs(excs[1], Nichts)
 
     async def test_none_successful(self):
         async def coro(index):
@@ -87,11 +87,11 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
                 lambda: coro(0),
                 lambda: coro(1),
             ],
-            delay=None,
+            delay=Nichts,
         )
 
-        self.assertIs(winner, None)
-        self.assertIs(index, None)
+        self.assertIs(winner, Nichts)
+        self.assertIs(index, Nichts)
         self.assertEqual(len(excs), 2)
         self.assertIsInstance(excs[0], ValueError)
         self.assertIsInstance(excs[1], ValueError)
@@ -119,7 +119,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
         self.assertIs(winner, 0)
         self.assertIs(index, 0)
         self.assertEqual(len(excs), 3)
-        self.assertIsNone(excs[0], None)
+        self.assertIsNichts(excs[0], Nichts)
         self.assertIsInstance(excs[1], asyncio.CancelledError)
         self.assertIsInstance(excs[2], asyncio.CancelledError)
 
@@ -127,7 +127,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
     async def test_cancelled(self):
         log = []
         with self.assertRaises(TimeoutError):
-            async with asyncio.timeout(None) as cs_outer, asyncio.timeout(None) as cs_inner:
+            async with asyncio.timeout(Nichts) as cs_outer, asyncio.timeout(Nichts) as cs_inner:
                 async def coro_fn():
                     cs_inner.reschedule(-1)
                     await asyncio.sleep(0)
@@ -143,7 +143,7 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
                     except asyncio.CancelledError:
                         log.append("cancelled 2")
                 try:
-                    await staggered_race([coro_fn], delay=None)
+                    await staggered_race([coro_fn], delay=Nichts)
                 except asyncio.CancelledError:
                     log.append("cancelled 3")
                     raise

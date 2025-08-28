@@ -27,7 +27,7 @@ klasse samplecmdclass(cmd.Cmd):
 
     Test fuer the function parseline():
     >>> mycmd.parseline("")
-    (None, None, '')
+    (Nichts, Nichts, '')
     >>> mycmd.parseline("?")
     ('help', '', 'help ')
     >>> mycmd.parseline("?help")
@@ -199,7 +199,7 @@ klasse samplecmdclass(cmd.Cmd):
         return
 
     def do_exit(self, arg):
-        return True
+        return Wahr
 
 
 klasse TestAlternateInput(unittest.TestCase):
@@ -210,21 +210,21 @@ klasse TestAlternateInput(unittest.TestCase):
             print(args, file=self.stdout)
 
         def do_EOF(self, args):
-            return True
+            return Wahr
 
 
     klasse simplecmd2(simplecmd):
 
         def do_EOF(self, args):
             print('*** Unknown syntax: EOF', file=self.stdout)
-            return True
+            return Wahr
 
 
     def test_file_with_missing_final_nl(self):
         input = io.StringIO("print test\nprint test2")
         output = io.StringIO()
         cmd = self.simplecmd(stdin=input, stdout=output)
-        cmd.use_rawinput = False
+        cmd.use_rawinput = Falsch
         cmd.cmdloop()
         self.assertMultiLineEqual(output.getvalue(),
             ("(Cmd) test\n"
@@ -236,7 +236,7 @@ klasse TestAlternateInput(unittest.TestCase):
         input = io.StringIO("print test\nprint test2")
         output = io.StringIO()
         cmd = self.simplecmd2(stdin=input, stdout=output)
-        cmd.use_rawinput = False
+        cmd.use_rawinput = Falsch
         cmd.cmdloop()
         self.assertMultiLineEqual(output.getvalue(),
             ("(Cmd) test\n"
@@ -282,7 +282,7 @@ klasse CmdTestReadline(unittest.TestCase):
             klasse simplecmd(cmd.Cmd):
                 def do_tab_completion_test(self, args):
                     print('tab completion success')
-                    return True
+                    return Wahr
 
             simplecmd().cmdloop()
         """)
@@ -307,7 +307,7 @@ klasse CmdTestReadline(unittest.TestCase):
                         print('tab completion success')
                     sonst:
                         print('tab completion failure')
-                    return True
+                    return Wahr
 
             simplecmd().cmdloop()
         """)

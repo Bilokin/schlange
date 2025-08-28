@@ -30,7 +30,7 @@ from test.test_asyncio import utils as test_utils
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 MOCK_ANY = mock.ANY
@@ -49,10 +49,10 @@ def SIGNAL(signum):
 def close_pipe_transport(transport):
     # Don't call transport.close() because the event loop and the selector
     # are mocked
-    wenn transport._pipe is None:
+    wenn transport._pipe is Nichts:
         return
     transport._pipe.close()
-    transport._pipe = None
+    transport._pipe = Nichts
 
 
 @unittest.skipUnless(signal, 'Signals are not supported')
@@ -90,7 +90,7 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         self.assertRaises(
             RuntimeError,
             self.loop.add_signal_handler,
-            signal.SIGINT, lambda: True)
+            signal.SIGINT, lambda: Wahr)
 
     @mock.patch('asyncio.unix_events.signal')
     def test_add_signal_handler_coroutine_error(self, m_signal):
@@ -114,7 +114,7 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         m_signal.NSIG = signal.NSIG
         m_signal.valid_signals = signal.valid_signals
 
-        cb = lambda: True
+        cb = lambda: Wahr
         self.loop.add_signal_handler(signal.SIGHUP, cb)
         h = self.loop._signal_handlers.get(signal.SIGHUP)
         self.assertIsInstance(h, asyncio.Handle)
@@ -137,7 +137,7 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         self.assertRaises(
             Err,
             self.loop.add_signal_handler,
-            signal.SIGINT, lambda: True)
+            signal.SIGINT, lambda: Wahr)
 
     @mock.patch('asyncio.unix_events.signal')
     @mock.patch('asyncio.base_events.logger')
@@ -149,12 +149,12 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
             errno = errno.EINVAL
         m_signal.signal.side_effect = Err
 
-        self.loop._signal_handlers[signal.SIGHUP] = lambda: True
+        self.loop._signal_handlers[signal.SIGHUP] = lambda: Wahr
         self.assertRaises(
             RuntimeError,
             self.loop.add_signal_handler,
-            signal.SIGINT, lambda: True)
-        self.assertFalse(m_logging.info.called)
+            signal.SIGINT, lambda: Wahr)
+        self.assertFalsch(m_logging.info.called)
         self.assertEqual(1, m_signal.set_wakeup_fd.call_count)
 
     @mock.patch('asyncio.unix_events.signal')
@@ -169,8 +169,8 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         self.assertRaises(
             RuntimeError,
             self.loop.add_signal_handler,
-            signal.SIGINT, lambda: True)
-        self.assertFalse(m_logging.info.called)
+            signal.SIGINT, lambda: Wahr)
+        self.assertFalsch(m_logging.info.called)
         self.assertEqual(2, m_signal.set_wakeup_fd.call_count)
 
     @mock.patch('asyncio.unix_events.signal')
@@ -178,12 +178,12 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         m_signal.NSIG = signal.NSIG
         m_signal.valid_signals = signal.valid_signals
 
-        self.loop.add_signal_handler(signal.SIGHUP, lambda: True)
+        self.loop.add_signal_handler(signal.SIGHUP, lambda: Wahr)
 
-        self.assertTrue(
+        self.assertWahr(
             self.loop.remove_signal_handler(signal.SIGHUP))
-        self.assertTrue(m_signal.set_wakeup_fd.called)
-        self.assertTrue(m_signal.signal.called)
+        self.assertWahr(m_signal.set_wakeup_fd.called)
+        self.assertWahr(m_signal.signal.called)
         self.assertEqual(
             (signal.SIGHUP, m_signal.SIG_DFL), m_signal.signal.call_args[0])
 
@@ -193,14 +193,14 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         m_signal.SIGINT = signal.SIGINT
         m_signal.valid_signals = signal.valid_signals
 
-        self.loop.add_signal_handler(signal.SIGINT, lambda: True)
+        self.loop.add_signal_handler(signal.SIGINT, lambda: Wahr)
         self.loop._signal_handlers[signal.SIGHUP] = object()
         m_signal.set_wakeup_fd.reset_mock()
 
-        self.assertTrue(
+        self.assertWahr(
             self.loop.remove_signal_handler(signal.SIGINT))
-        self.assertFalse(m_signal.set_wakeup_fd.called)
-        self.assertTrue(m_signal.signal.called)
+        self.assertFalsch(m_signal.set_wakeup_fd.called)
+        self.assertWahr(m_signal.signal.called)
         self.assertEqual(
             (signal.SIGINT, m_signal.default_int_handler),
             m_signal.signal.call_args[0])
@@ -210,18 +210,18 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
     def test_remove_signal_handler_cleanup_error(self, m_logging, m_signal):
         m_signal.NSIG = signal.NSIG
         m_signal.valid_signals = signal.valid_signals
-        self.loop.add_signal_handler(signal.SIGHUP, lambda: True)
+        self.loop.add_signal_handler(signal.SIGHUP, lambda: Wahr)
 
         m_signal.set_wakeup_fd.side_effect = ValueError
 
         self.loop.remove_signal_handler(signal.SIGHUP)
-        self.assertTrue(m_logging.info)
+        self.assertWahr(m_logging.info)
 
     @mock.patch('asyncio.unix_events.signal')
     def test_remove_signal_handler_error(self, m_signal):
         m_signal.NSIG = signal.NSIG
         m_signal.valid_signals = signal.valid_signals
-        self.loop.add_signal_handler(signal.SIGHUP, lambda: True)
+        self.loop.add_signal_handler(signal.SIGHUP, lambda: Wahr)
 
         m_signal.signal.side_effect = OSError
 
@@ -232,7 +232,7 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
     def test_remove_signal_handler_error2(self, m_signal):
         m_signal.NSIG = signal.NSIG
         m_signal.valid_signals = signal.valid_signals
-        self.loop.add_signal_handler(signal.SIGHUP, lambda: True)
+        self.loop.add_signal_handler(signal.SIGHUP, lambda: Wahr)
 
         klasse Err(OSError):
             errno = errno.EINVAL
@@ -246,8 +246,8 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         m_signal.NSIG = signal.NSIG
         m_signal.valid_signals = signal.valid_signals
 
-        self.loop.add_signal_handler(signal.SIGHUP, lambda: True)
-        self.loop.add_signal_handler(signal.SIGCHLD, lambda: True)
+        self.loop.add_signal_handler(signal.SIGHUP, lambda: Wahr)
+        self.loop.add_signal_handler(signal.SIGCHLD, lambda: Wahr)
 
         self.assertEqual(len(self.loop._signal_handlers), 2)
 
@@ -263,10 +263,10 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
     def test_close_on_finalizing(self, m_signal, m_sys):
         m_signal.NSIG = signal.NSIG
         m_signal.valid_signals = signal.valid_signals
-        self.loop.add_signal_handler(signal.SIGHUP, lambda: True)
+        self.loop.add_signal_handler(signal.SIGHUP, lambda: Wahr)
 
         self.assertEqual(len(self.loop._signal_handlers), 1)
-        m_sys.is_finalizing.return_value = True
+        m_sys.is_finalizing.return_value = Wahr
         m_signal.signal.reset_mock()
 
         with self.assertWarnsRegex(ResourceWarning,
@@ -274,7 +274,7 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
             self.loop.close()
 
         self.assertEqual(len(self.loop._signal_handlers), 0)
-        self.assertFalse(m_signal.signal.called)
+        self.assertFalsch(m_signal.signal.called)
 
 
 @unittest.skipUnless(hasattr(socket, 'AF_UNIX'),
@@ -294,7 +294,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
             sock.listen(1)
             sock.close()
 
-            coro = self.loop.create_unix_server(lambda: None, path)
+            coro = self.loop.create_unix_server(lambda: Nichts, path)
             srv = self.loop.run_until_complete(coro)
             srv.close()
             self.loop.run_until_complete(srv.wait_closed())
@@ -303,7 +303,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     def test_create_unix_server_pathlike(self):
         with test_utils.unix_socket_path() as path:
             path = os_helper.FakePath(path)
-            srv_coro = self.loop.create_unix_server(lambda: None, path)
+            srv_coro = self.loop.create_unix_server(lambda: Nichts, path)
             srv = self.loop.run_until_complete(srv_coro)
             srv.close()
             self.loop.run_until_complete(srv.wait_closed())
@@ -311,7 +311,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     def test_create_unix_connection_pathlike(self):
         with test_utils.unix_socket_path() as path:
             path = os_helper.FakePath(path)
-            coro = self.loop.create_unix_connection(lambda: None, path)
+            coro = self.loop.create_unix_connection(lambda: Nichts, path)
             with self.assertRaises(FileNotFoundError):
                 # If path-like object weren't supported, the exception would be
                 # different.
@@ -323,20 +323,20 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
         # create the file
         open(path, "wb").close()
 
-        coro = self.loop.create_unix_server(lambda: None, path)
+        coro = self.loop.create_unix_server(lambda: Nichts, path)
         with self.assertRaisesRegex(OSError,
                                     'Address.*is already in use'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_server_ssl_bool(self):
-        coro = self.loop.create_unix_server(lambda: None, path='spam',
-                                            ssl=True)
+        coro = self.loop.create_unix_server(lambda: Nichts, path='spam',
+                                            ssl=Wahr)
         with self.assertRaisesRegex(TypeError,
                                     'ssl argument must be an SSLContext'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_server_nopath_nosock(self):
-        coro = self.loop.create_unix_server(lambda: None, path=None)
+        coro = self.loop.create_unix_server(lambda: Nichts, path=Nichts)
         with self.assertRaisesRegex(ValueError,
                                     'path was not specified, and no sock'):
             self.loop.run_until_complete(coro)
@@ -344,7 +344,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     def test_create_unix_server_path_inetsock(self):
         sock = socket.socket()
         with sock:
-            coro = self.loop.create_unix_server(lambda: None, path=None,
+            coro = self.loop.create_unix_server(lambda: Nichts, path=Nichts,
                                                 sock=sock)
             with self.assertRaisesRegex(ValueError,
                                         'A UNIX Domain Stream.*was expected'):
@@ -353,7 +353,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     def test_create_unix_server_path_dgram(self):
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
         with sock:
-            coro = self.loop.create_unix_server(lambda: None, path=None,
+            coro = self.loop.create_unix_server(lambda: Nichts, path=Nichts,
                                                 sock=sock)
             with self.assertRaisesRegex(ValueError,
                                         'A UNIX Domain Stream.*was expected'):
@@ -370,14 +370,14 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
                              socket.SOCK_STREAM | socket.SOCK_NONBLOCK)
         with sock:
             sock.bind(fn)
-            coro = self.loop.create_unix_server(lambda: None, path=None,
+            coro = self.loop.create_unix_server(lambda: Nichts, path=Nichts,
                                                 sock=sock)
             srv = self.loop.run_until_complete(coro)
             srv.close()
             self.loop.run_until_complete(srv.wait_closed())
 
     def test_create_unix_server_ssl_timeout_with_plain_sock(self):
-        coro = self.loop.create_unix_server(lambda: None, path='spam',
+        coro = self.loop.create_unix_server(lambda: Nichts, path='spam',
                                             ssl_handshake_timeout=1)
         with self.assertRaisesRegex(
                 ValueError,
@@ -387,7 +387,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     def test_create_unix_connection_path_inetsock(self):
         sock = socket.socket()
         with sock:
-            coro = self.loop.create_unix_connection(lambda: None,
+            coro = self.loop.create_unix_connection(lambda: Nichts,
                                                     sock=sock)
             with self.assertRaisesRegex(ValueError,
                                         'A UNIX Domain Stream.*was expected'):
@@ -400,40 +400,40 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
         m_socket.socket.return_value = sock
 
         sock.bind.side_effect = OSError
-        coro = self.loop.create_unix_server(lambda: None, path="/test")
+        coro = self.loop.create_unix_server(lambda: Nichts, path="/test")
         with self.assertRaises(OSError):
             self.loop.run_until_complete(coro)
-        self.assertTrue(sock.close.called)
+        self.assertWahr(sock.close.called)
 
         sock.bind.side_effect = MemoryError
-        coro = self.loop.create_unix_server(lambda: None, path="/test")
+        coro = self.loop.create_unix_server(lambda: Nichts, path="/test")
         with self.assertRaises(MemoryError):
             self.loop.run_until_complete(coro)
-        self.assertTrue(sock.close.called)
+        self.assertWahr(sock.close.called)
 
     def test_create_unix_connection_path_sock(self):
         coro = self.loop.create_unix_connection(
-            lambda: None, os.devnull, sock=object())
+            lambda: Nichts, os.devnull, sock=object())
         with self.assertRaisesRegex(ValueError, 'path and sock can not be'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_nopath_nosock(self):
         coro = self.loop.create_unix_connection(
-            lambda: None, None)
+            lambda: Nichts, Nichts)
         with self.assertRaisesRegex(ValueError,
                                     'no path and sock were specified'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_nossl_serverhost(self):
         coro = self.loop.create_unix_connection(
-            lambda: None, os.devnull, server_hostname='spam')
+            lambda: Nichts, os.devnull, server_hostname='spam')
         with self.assertRaisesRegex(ValueError,
                                     'server_hostname is only meaningful'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_ssl_noserverhost(self):
         coro = self.loop.create_unix_connection(
-            lambda: None, os.devnull, ssl=True)
+            lambda: Nichts, os.devnull, ssl=Wahr)
 
         with self.assertRaisesRegex(
             ValueError, 'you have to pass server_hostname when using ssl'):
@@ -441,7 +441,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_ssl_timeout_with_plain_sock(self):
-        coro = self.loop.create_unix_connection(lambda: None, path='spam',
+        coro = self.loop.create_unix_connection(lambda: Nichts, path='spam',
                                             ssl_handshake_timeout=1)
         with self.assertRaisesRegex(
                 ValueError,
@@ -457,24 +457,24 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     klasse MyProto(asyncio.Protocol):
 
         def __init__(self, loop):
-            self.started = False
-            self.closed = False
+            self.started = Falsch
+            self.closed = Falsch
             self.data = bytearray()
             self.fut = loop.create_future()
-            self.transport = None
+            self.transport = Nichts
             self._ready = loop.create_future()
 
         def connection_made(self, transport):
-            self.started = True
+            self.started = Wahr
             self.transport = transport
-            self._ready.set_result(None)
+            self._ready.set_result(Nichts)
 
         def data_received(self, data):
             self.data.extend(data)
 
         def connection_lost(self, exc):
-            self.closed = True
-            self.fut.set_result(None)
+            self.closed = Wahr
+            self.fut.set_result(Nichts)
 
         async def wait_closed(self):
             await self.fut
@@ -497,9 +497,9 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         self.addCleanup(self.file.close)
         super().setUp()
 
-    def make_socket(self, cleanup=True):
+    def make_socket(self, cleanup=Wahr):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.setblocking(False)
+        sock.setblocking(Falsch)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1024)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1024)
         wenn cleanup:
@@ -513,7 +513,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock = self.make_socket()
         proto = self.MyProto(self.loop)
         port = socket_helper.find_unused_port()
-        srv_sock = self.make_socket(cleanup=False)
+        srv_sock = self.make_socket(cleanup=Falsch)
         srv_sock.bind((socket_helper.HOST, port))
         server = self.run_loop(self.loop.create_server(
             lambda: proto, sock=srv_sock))
@@ -537,7 +537,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
             with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                         "os[.]sendfile[(][)] is not available"):
                 self.run_loop(self.loop._sock_sendfile_native(sock, self.file,
-                                                              0, None))
+                                                              0, Nichts))
         self.assertEqual(self.file.tell(), 0)
 
     def test_sock_sendfile_not_a_file(self):
@@ -546,7 +546,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
-                                                          0, None))
+                                                          0, Nichts))
         self.assertEqual(self.file.tell(), 0)
 
     def test_sock_sendfile_iobuffer(self):
@@ -555,7 +555,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
-                                                          0, None))
+                                                          0, Nichts))
         self.assertEqual(self.file.tell(), 0)
 
     def test_sock_sendfile_not_regular_file(self):
@@ -565,7 +565,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
-                                                          0, None))
+                                                          0, Nichts))
         self.assertEqual(self.file.tell(), 0)
 
     def test_sock_sendfile_cancel1(self):
@@ -573,8 +573,8 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
         fut = self.loop.create_future()
         fileno = self.file.fileno()
-        self.loop._sock_sendfile_native_impl(fut, None, sock, fileno,
-                                             0, None, len(self.DATA), 0)
+        self.loop._sock_sendfile_native_impl(fut, Nichts, sock, fileno,
+                                             0, Nichts, len(self.DATA), 0)
         fut.cancel()
         with contextlib.suppress(asyncio.CancelledError):
             self.run_loop(fut)
@@ -586,11 +586,11 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
         fut = self.loop.create_future()
         fileno = self.file.fileno()
-        self.loop._sock_sendfile_native_impl(fut, None, sock, fileno,
-                                             0, None, len(self.DATA), 0)
+        self.loop._sock_sendfile_native_impl(fut, Nichts, sock, fileno,
+                                             0, Nichts, len(self.DATA), 0)
         fut.cancel()
         self.loop._sock_sendfile_native_impl(fut, sock.fileno(), sock, fileno,
-                                             0, None, len(self.DATA), 0)
+                                             0, Nichts, len(self.DATA), 0)
         with self.assertRaises(KeyError):
             self.loop._selector.get_key(sock)
 
@@ -599,12 +599,12 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
         fileno = self.file.fileno()
         fut = mock.Mock()
-        fut.cancelled.return_value = False
+        fut.cancelled.return_value = Falsch
         with mock.patch('os.sendfile', side_effect=BlockingIOError()):
-            self.loop._sock_sendfile_native_impl(fut, None, sock, fileno,
-                                                 0, None, len(self.DATA), 0)
+            self.loop._sock_sendfile_native_impl(fut, Nichts, sock, fileno,
+                                                 0, Nichts, len(self.DATA), 0)
         key = self.loop._selector.get_key(sock)
-        self.assertIsNotNone(key)
+        self.assertIsNotNichts(key)
         fut.add_done_callback.assert_called_once_with(mock.ANY)
 
     def test_sock_sendfile_os_error_first_call(self):
@@ -613,8 +613,8 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         fileno = self.file.fileno()
         fut = self.loop.create_future()
         with mock.patch('os.sendfile', side_effect=OSError()):
-            self.loop._sock_sendfile_native_impl(fut, None, sock, fileno,
-                                                 0, None, len(self.DATA), 0)
+            self.loop._sock_sendfile_native_impl(fut, Nichts, sock, fileno,
+                                                 0, Nichts, len(self.DATA), 0)
         with self.assertRaises(KeyError):
             self.loop._selector.get_key(sock)
         exc = fut.exception()
@@ -630,7 +630,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         with mock.patch('os.sendfile', side_effect=err):
             self.loop._sock_sendfile_native_impl(fut, sock.fileno(),
                                                  sock, fileno,
-                                                 1000, None, len(self.DATA),
+                                                 1000, Nichts, len(self.DATA),
                                                  1000)
         with self.assertRaises(KeyError):
             self.loop._selector.get_key(sock)
@@ -647,7 +647,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         with mock.patch('os.sendfile', side_effect=err):
             self.loop._sock_sendfile_native_impl(fut, sock.fileno(),
                                                  sock, fileno,
-                                                 1000, None, len(self.DATA),
+                                                 1000, Nichts, len(self.DATA),
                                                  1000)
         with self.assertRaises(KeyError):
             self.loop._selector.get_key(sock)
@@ -676,7 +676,7 @@ klasse UnixReadPipeTransportTests(test_utils.TestCase):
         m_fstat.return_value = st
         self.addCleanup(fstat_patcher.stop)
 
-    def read_pipe_transport(self, waiter=None):
+    def read_pipe_transport(self, waiter=Nichts):
         transport = unix_events._UnixReadPipeTransport(self.loop, self.pipe,
                                                        self.protocol,
                                                        waiter=waiter)
@@ -690,7 +690,7 @@ klasse UnixReadPipeTransportTests(test_utils.TestCase):
 
         self.protocol.connection_made.assert_called_with(tr)
         self.loop.assert_reader(5, tr._read_ready)
-        self.assertIsNone(waiter.result())
+        self.assertIsNichts(waiter.result())
 
     @mock.patch('os.read')
     def test__read_ready(self, m_read):
@@ -708,10 +708,10 @@ klasse UnixReadPipeTransportTests(test_utils.TestCase):
         tr._read_ready()
 
         m_read.assert_called_with(5, tr.max_size)
-        self.assertFalse(self.loop.readers)
+        self.assertFalsch(self.loop.readers)
         test_utils.run_briefly(self.loop)
         self.protocol.eof_received.assert_called_with()
-        self.protocol.connection_lost.assert_called_with(None)
+        self.protocol.connection_lost.assert_called_with(Nichts)
 
     @mock.patch('os.read')
     def test__read_ready_blocked(self, m_read):
@@ -721,7 +721,7 @@ klasse UnixReadPipeTransportTests(test_utils.TestCase):
 
         m_read.assert_called_with(5, tr.max_size)
         test_utils.run_briefly(self.loop)
-        self.assertFalse(self.protocol.data_received.called)
+        self.assertFalsch(self.protocol.data_received.called)
 
     @mock.patch('asyncio.log.logger.error')
     @mock.patch('os.read')
@@ -746,7 +746,7 @@ klasse UnixReadPipeTransportTests(test_utils.TestCase):
         m = mock.Mock()
         self.loop.add_reader(5, m)
         tr.pause_reading()
-        self.assertFalse(self.loop.readers)
+        self.assertFalsch(self.loop.readers)
 
     @mock.patch('os.read')
     def test_resume_reading(self, m_read):
@@ -760,57 +760,57 @@ klasse UnixReadPipeTransportTests(test_utils.TestCase):
         tr = self.read_pipe_transport()
         tr._close = mock.Mock()
         tr.close()
-        tr._close.assert_called_with(None)
+        tr._close.assert_called_with(Nichts)
 
     @mock.patch('os.read')
     def test_close_already_closing(self, m_read):
         tr = self.read_pipe_transport()
-        tr._closing = True
+        tr._closing = Wahr
         tr._close = mock.Mock()
         tr.close()
-        self.assertFalse(tr._close.called)
+        self.assertFalsch(tr._close.called)
 
     @mock.patch('os.read')
     def test__close(self, m_read):
         tr = self.read_pipe_transport()
         err = object()
         tr._close(err)
-        self.assertTrue(tr.is_closing())
-        self.assertFalse(self.loop.readers)
+        self.assertWahr(tr.is_closing())
+        self.assertFalsch(self.loop.readers)
         test_utils.run_briefly(self.loop)
         self.protocol.connection_lost.assert_called_with(err)
 
     def test__call_connection_lost(self):
         tr = self.read_pipe_transport()
-        self.assertIsNotNone(tr._protocol)
-        self.assertIsNotNone(tr._loop)
+        self.assertIsNotNichts(tr._protocol)
+        self.assertIsNotNichts(tr._loop)
 
-        err = None
+        err = Nichts
         tr._call_connection_lost(err)
         self.protocol.connection_lost.assert_called_with(err)
         self.pipe.close.assert_called_with()
 
-        self.assertIsNone(tr._protocol)
-        self.assertIsNone(tr._loop)
+        self.assertIsNichts(tr._protocol)
+        self.assertIsNichts(tr._loop)
 
     def test__call_connection_lost_with_err(self):
         tr = self.read_pipe_transport()
-        self.assertIsNotNone(tr._protocol)
-        self.assertIsNotNone(tr._loop)
+        self.assertIsNotNichts(tr._protocol)
+        self.assertIsNotNichts(tr._loop)
 
         err = OSError()
         tr._call_connection_lost(err)
         self.protocol.connection_lost.assert_called_with(err)
         self.pipe.close.assert_called_with()
 
-        self.assertIsNone(tr._protocol)
-        self.assertIsNone(tr._loop)
+        self.assertIsNichts(tr._protocol)
+        self.assertIsNichts(tr._loop)
 
     def test_pause_reading_on_closed_pipe(self):
         tr = self.read_pipe_transport()
         tr.close()
         test_utils.run_briefly(self.loop)
-        self.assertIsNone(tr._loop)
+        self.assertIsNichts(tr._loop)
         tr.pause_reading()
 
     def test_pause_reading_on_paused_pipe(self):
@@ -823,7 +823,7 @@ klasse UnixReadPipeTransportTests(test_utils.TestCase):
         tr = self.read_pipe_transport()
         tr.close()
         test_utils.run_briefly(self.loop)
-        self.assertIsNone(tr._loop)
+        self.assertIsNichts(tr._loop)
         tr.resume_reading()
 
     def test_resume_reading_on_paused_pipe(self):
@@ -853,7 +853,7 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
         m_fstat.return_value = st
         self.addCleanup(fstat_patcher.stop)
 
-    def write_pipe_transport(self, waiter=None):
+    def write_pipe_transport(self, waiter=Nichts):
         transport = unix_events._UnixWritePipeTransport(self.loop, self.pipe,
                                                         self.protocol,
                                                         waiter=waiter)
@@ -867,11 +867,11 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
 
         self.protocol.connection_made.assert_called_with(tr)
         self.loop.assert_reader(5, tr._read_ready)
-        self.assertEqual(None, waiter.result())
+        self.assertEqual(Nichts, waiter.result())
 
     def test_can_write_eof(self):
         tr = self.write_pipe_transport()
-        self.assertTrue(tr.can_write_eof())
+        self.assertWahr(tr.can_write_eof())
 
     @mock.patch('os.write')
     def test_write(self, m_write):
@@ -879,15 +879,15 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
         m_write.return_value = 4
         tr.write(b'data')
         m_write.assert_called_with(5, b'data')
-        self.assertFalse(self.loop.writers)
+        self.assertFalsch(self.loop.writers)
         self.assertEqual(bytearray(), tr._buffer)
 
     @mock.patch('os.write')
     def test_write_no_data(self, m_write):
         tr = self.write_pipe_transport()
         tr.write(b'')
-        self.assertFalse(m_write.called)
-        self.assertFalse(self.loop.writers)
+        self.assertFalsch(m_write.called)
+        self.assertFalsch(self.loop.writers)
         self.assertEqual(bytearray(b''), tr._buffer)
 
     @mock.patch('os.write')
@@ -904,7 +904,7 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
         self.loop.add_writer(5, tr._write_ready)
         tr._buffer = bytearray(b'previous')
         tr.write(b'data')
-        self.assertFalse(m_write.called)
+        self.assertFalsch(m_write.called)
         self.loop.assert_writer(5, tr._write_ready)
         self.assertEqual(bytearray(b'previousdata'), tr._buffer)
 
@@ -926,7 +926,7 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
         tr._fatal_error = mock.Mock()
         tr.write(b'data')
         m_write.assert_called_with(5, b'data')
-        self.assertFalse(self.loop.writers)
+        self.assertFalsch(self.loop.writers)
         self.assertEqual(bytearray(), tr._buffer)
         tr._fatal_error.assert_called_with(
                             err,
@@ -957,11 +957,11 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
     def test__read_ready(self):
         tr = self.write_pipe_transport()
         tr._read_ready()
-        self.assertFalse(self.loop.readers)
-        self.assertFalse(self.loop.writers)
-        self.assertTrue(tr.is_closing())
+        self.assertFalsch(self.loop.readers)
+        self.assertFalsch(self.loop.writers)
+        self.assertWahr(tr.is_closing())
         test_utils.run_briefly(self.loop)
-        self.protocol.connection_lost.assert_called_with(None)
+        self.protocol.connection_lost.assert_called_with(Nichts)
 
     @mock.patch('os.write')
     def test__write_ready(self, m_write):
@@ -970,7 +970,7 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
         tr._buffer = bytearray(b'data')
         m_write.return_value = 4
         tr._write_ready()
-        self.assertFalse(self.loop.writers)
+        self.assertFalsch(self.loop.writers)
         self.assertEqual(bytearray(), tr._buffer)
 
     @mock.patch('os.write')
@@ -1013,10 +1013,10 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
         tr._buffer = bytearray(b'data')
         m_write.side_effect = err = OSError()
         tr._write_ready()
-        self.assertFalse(self.loop.writers)
-        self.assertFalse(self.loop.readers)
+        self.assertFalsch(self.loop.writers)
+        self.assertFalsch(self.loop.readers)
         self.assertEqual(bytearray(), tr._buffer)
-        self.assertTrue(tr.is_closing())
+        self.assertWahr(tr.is_closing())
         m_logexc.assert_not_called()
         self.assertEqual(1, tr._conn_lost)
         test_utils.run_briefly(self.loop)
@@ -1026,14 +1026,14 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
     def test__write_ready_closing(self, m_write):
         tr = self.write_pipe_transport()
         self.loop.add_writer(5, tr._write_ready)
-        tr._closing = True
+        tr._closing = Wahr
         tr._buffer = bytearray(b'data')
         m_write.return_value = 4
         tr._write_ready()
-        self.assertFalse(self.loop.writers)
-        self.assertFalse(self.loop.readers)
+        self.assertFalsch(self.loop.writers)
+        self.assertFalsch(self.loop.readers)
         self.assertEqual(bytearray(), tr._buffer)
-        self.protocol.connection_lost.assert_called_with(None)
+        self.protocol.connection_lost.assert_called_with(Nichts)
         self.pipe.close.assert_called_with()
 
     @mock.patch('os.write')
@@ -1043,39 +1043,39 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
         self.loop.add_reader(5, tr._read_ready)
         tr._buffer = [b'da', b'ta']
         tr.abort()
-        self.assertFalse(m_write.called)
-        self.assertFalse(self.loop.readers)
-        self.assertFalse(self.loop.writers)
+        self.assertFalsch(m_write.called)
+        self.assertFalsch(self.loop.readers)
+        self.assertFalsch(self.loop.writers)
         self.assertEqual([], tr._buffer)
-        self.assertTrue(tr.is_closing())
+        self.assertWahr(tr.is_closing())
         test_utils.run_briefly(self.loop)
-        self.protocol.connection_lost.assert_called_with(None)
+        self.protocol.connection_lost.assert_called_with(Nichts)
 
     def test__call_connection_lost(self):
         tr = self.write_pipe_transport()
-        self.assertIsNotNone(tr._protocol)
-        self.assertIsNotNone(tr._loop)
+        self.assertIsNotNichts(tr._protocol)
+        self.assertIsNotNichts(tr._loop)
 
-        err = None
+        err = Nichts
         tr._call_connection_lost(err)
         self.protocol.connection_lost.assert_called_with(err)
         self.pipe.close.assert_called_with()
 
-        self.assertIsNone(tr._protocol)
-        self.assertIsNone(tr._loop)
+        self.assertIsNichts(tr._protocol)
+        self.assertIsNichts(tr._loop)
 
     def test__call_connection_lost_with_err(self):
         tr = self.write_pipe_transport()
-        self.assertIsNotNone(tr._protocol)
-        self.assertIsNotNone(tr._loop)
+        self.assertIsNotNichts(tr._protocol)
+        self.assertIsNotNichts(tr._loop)
 
         err = OSError()
         tr._call_connection_lost(err)
         self.protocol.connection_lost.assert_called_with(err)
         self.pipe.close.assert_called_with()
 
-        self.assertIsNone(tr._protocol)
-        self.assertIsNone(tr._loop)
+        self.assertIsNichts(tr._protocol)
+        self.assertIsNichts(tr._loop)
 
     def test_close(self):
         tr = self.write_pipe_transport()
@@ -1089,24 +1089,24 @@ klasse UnixWritePipeTransportTests(test_utils.TestCase):
     def test_close_closing(self):
         tr = self.write_pipe_transport()
         tr.write_eof = mock.Mock()
-        tr._closing = True
+        tr._closing = Wahr
         tr.close()
-        self.assertFalse(tr.write_eof.called)
+        self.assertFalsch(tr.write_eof.called)
 
     def test_write_eof(self):
         tr = self.write_pipe_transport()
         tr.write_eof()
-        self.assertTrue(tr.is_closing())
-        self.assertFalse(self.loop.readers)
+        self.assertWahr(tr.is_closing())
+        self.assertFalsch(self.loop.readers)
         test_utils.run_briefly(self.loop)
-        self.protocol.connection_lost.assert_called_with(None)
+        self.protocol.connection_lost.assert_called_with(Nichts)
 
     def test_write_eof_pending(self):
         tr = self.write_pipe_transport()
         tr._buffer = [b'data']
         tr.write_eof()
-        self.assertTrue(tr.is_closing())
-        self.assertFalse(self.protocol.connection_lost.called)
+        self.assertWahr(tr.is_closing())
+        self.assertFalsch(self.protocol.connection_lost.called)
 
 
 klasse TestFunctional(unittest.TestCase):
@@ -1117,13 +1117,13 @@ klasse TestFunctional(unittest.TestCase):
 
     def tearDown(self):
         self.loop.close()
-        asyncio.set_event_loop(None)
+        asyncio.set_event_loop(Nichts)
 
     def test_add_reader_invalid_argument(self):
         def assert_raises():
             return self.assertRaisesRegex(ValueError, r'Invalid file object')
 
-        cb = lambda: None
+        cb = lambda: Nichts
 
         with assert_raises():
             self.loop.add_reader(object(), cb)
@@ -1146,7 +1146,7 @@ klasse TestFunctional(unittest.TestCase):
                 lambda: asyncio.Protocol(), sock=rsock)
 
             try:
-                cb = lambda: None
+                cb = lambda: Nichts
 
                 with assert_raises():
                     self.loop.add_reader(rsock, cb)
@@ -1209,7 +1209,7 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @hashlib_helper.requires_hashdigest('md5')
-    @support.skip_if_sanitizer("TSAN doesn't support threads after fork", thread=True)
+    @support.skip_if_sanitizer("TSAN doesn't support threads after fork", thread=Wahr)
     def test_fork_signal_handling(self):
         self.addCleanup(multiprocessing_cleanup_tests)
 
@@ -1229,7 +1229,7 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
 
             signal.signal(signal.SIGTERM, on_sigterm)
             child_started.set()
-            while True:
+            while Wahr:
                 time.sleep(1)
 
         async def main():
@@ -1252,12 +1252,12 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
         asyncio.run(main())
 
         child_handled.wait(timeout=support.SHORT_TIMEOUT)
-        self.assertFalse(parent_handled.is_set())
-        self.assertTrue(child_handled.is_set())
+        self.assertFalsch(parent_handled.is_set())
+        self.assertWahr(child_handled.is_set())
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @hashlib_helper.requires_hashdigest('md5')
-    @support.skip_if_sanitizer("TSAN doesn't support threads after fork", thread=True)
+    @support.skip_if_sanitizer("TSAN doesn't support threads after fork", thread=Wahr)
     def test_fork_asyncio_run(self):
         self.addCleanup(multiprocessing_cleanup_tests)
 
@@ -1278,7 +1278,7 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @hashlib_helper.requires_hashdigest('md5')
-    @support.skip_if_sanitizer("TSAN doesn't support threads after fork", thread=True)
+    @support.skip_if_sanitizer("TSAN doesn't support threads after fork", thread=Wahr)
     def test_fork_asyncio_subprocess(self):
         self.addCleanup(multiprocessing_cleanup_tests)
 

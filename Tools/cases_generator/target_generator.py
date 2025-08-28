@@ -20,7 +20,7 @@ from cwriter import CWriter
 DEFAULT_OUTPUT = ROOT / "Python/opcode_targets.h"
 
 
-def write_opcode_targets(analysis: Analysis, out: CWriter) -> None:
+def write_opcode_targets(analysis: Analysis, out: CWriter) -> Nichts:
     """Write header file that defines the jump target table"""
     targets = ["&&_unknown_opcode,\n"] * 256
     fuer name, op in analysis.opmap.items():
@@ -37,7 +37,7 @@ def function_proto(name: str) -> str:
     return f"Py_PRESERVE_NONE_CC static PyObject *_TAIL_CALL_{name}(TAIL_CALL_PARAMS)"
 
 
-def write_tailcall_dispatch_table(analysis: Analysis, out: CWriter) -> None:
+def write_tailcall_dispatch_table(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("static py_tail_call_funcptr INSTRUCTION_TABLE[256];\n")
     out.emit("\n")
 
@@ -89,6 +89,6 @@ wenn __name__ == "__main__":
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
     with open(args.output, "w") as outfile:
-        out = CWriter(outfile, 0, False)
+        out = CWriter(outfile, 0, Falsch)
         write_opcode_targets(data, out)
         write_tailcall_dispatch_table(data, out)

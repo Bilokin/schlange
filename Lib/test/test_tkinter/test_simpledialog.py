@@ -17,14 +17,14 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
             w.destroy()
 
         with swap_attr(Dialog, 'wait_window', mock_wait_window):
-            ismapped = None
+            ismapped = Nichts
             askinteger("Go To Line", "Line number")
-            self.assertEqual(ismapped, False)
+            self.assertEqual(ismapped, Falsch)
 
             root = tkinter.Tk()
-            ismapped = None
+            ismapped = Nichts
             askinteger("Go To Line", "Line number")
-            self.assertEqual(ismapped, True)
+            self.assertEqual(ismapped, Wahr)
             root.destroy()
 
             tkinter.NoDefaultRoot()

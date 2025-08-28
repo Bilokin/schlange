@@ -50,9 +50,9 @@ def parse_file(
         filename: str,
         *,
         limited_capi: bool,
-        output: str | None = None,
-        verify: bool = True,
-) -> None:
+        output: str | Nichts = Nichts,
+        verify: bool = Wahr,
+) -> Nichts:
     wenn not output:
         output = filename
 
@@ -74,7 +74,7 @@ def parse_file(
         return
 
     wenn LIMITED_CAPI_REGEX.search(raw):
-        limited_capi = True
+        limited_capi = Wahr
 
     assert isinstance(language, CLanguage)
     clinic = Clinic(language,
@@ -119,7 +119,7 @@ For more information see https://devguide.python.org/development-tools/clinic/""
     return cmdline
 
 
-def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> None:
+def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nichts:
     wenn ns.converters:
         wenn ns.filename:
             parser.error(
@@ -160,7 +160,7 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> None:
                 longest = max(longest, len(name))
 
             fuer name, cls in ids:
-                callable = getattr(cls, attribute, None)
+                callable = getattr(cls, attribute, Nichts)
                 wenn not callable:
                     continue
                 signature = inspect.signature(callable)
@@ -174,8 +174,8 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> None:
                         parameters.append(s)
                 print('    {}({})'.format(name, ', '.join(parameters)))
             print()
-        print("All converters also accept (c_default=None, py_default=None, annotation=None).")
-        print("All return converters also accept (py_default=None).")
+        print("All converters also accept (c_default=Nichts, py_default=Nichts, annotation=Nichts).")
+        print("All return converters also accept (py_default=Nichts).")
         return
 
     wenn ns.make:
@@ -219,7 +219,7 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> None:
                    verify=not ns.force, limited_capi=ns.limited_capi)
 
 
-def main(argv: list[str] | None = None) -> NoReturn:
+def main(argv: list[str] | Nichts = Nichts) -> NoReturn:
     parser = create_cli()
     args = parser.parse_args(argv)
     try:

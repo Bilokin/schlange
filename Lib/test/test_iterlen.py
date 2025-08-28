@@ -79,7 +79,7 @@ klasse TestTemporarilyImmutable(TestInvariantWithoutMutations):
 klasse TestRepeat(TestInvariantWithoutMutations, unittest.TestCase):
 
     def setUp(self):
-        self.it = repeat(None, n)
+        self.it = repeat(Nichts, n)
 
 klasse TestXrange(TestInvariantWithoutMutations, unittest.TestCase):
 
@@ -200,7 +200,7 @@ klasse BadLengthHint(object):
         raise RuntimeError('hello')
 
 
-klasse NoneLengthHint(object):
+klasse NichtsLengthHint(object):
     def __iter__(self):
         return iter(range(10))
 
@@ -221,7 +221,7 @@ klasse TestLengthHintExceptions(unittest.TestCase):
 
     def test_invalid_hint(self):
         # Make sure an invalid result doesn't muck-up the works
-        self.assertEqual(list(NoneLengthHint()), list(range(10)))
+        self.assertEqual(list(NichtsLengthHint()), list(range(10)))
 
 
 wenn __name__ == "__main__":

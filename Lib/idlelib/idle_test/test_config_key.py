@@ -2,7 +2,7 @@
 
 Coverage is effectively 100%.  Tkinter dialog is mocked, Mac-only line
 may be skipped, and dummy function in bind test should not be called.
-Not tested: exit with 'self.advanced or self.keys_ok(keys) ...' False.
+Not tested: exit with 'self.advanced or self.keys_ok(keys) ...' Falsch.
 """
 
 from idlelib import config_key
@@ -60,23 +60,23 @@ klasse ValidationTest(unittest.TestCase):
         self.assertEqual(self.dialog.showerror.message, '')
 
     def test_keys_no_ending(self):
-        self.assertFalse(self.dialog.keys_ok('<Control-Shift'))
+        self.assertFalsch(self.dialog.keys_ok('<Control-Shift'))
         self.assertIn('Missing the final', self.dialog.showerror.message)
 
     def test_keys_no_modifier_bad(self):
         self.dialog.list_keys_final.get.result = 'A'
-        self.assertFalse(self.dialog.keys_ok('<Key-A>'))
+        self.assertFalsch(self.dialog.keys_ok('<Key-A>'))
         self.assertIn('No modifier', self.dialog.showerror.message)
 
     def test_keys_no_modifier_ok(self):
         self.dialog.list_keys_final.get.result = 'F11'
-        self.assertTrue(self.dialog.keys_ok('<Key-F11>'))
+        self.assertWahr(self.dialog.keys_ok('<Key-F11>'))
         self.assertEqual(self.dialog.showerror.message, '')
 
     def test_keys_shift_bad(self):
         self.dialog.list_keys_final.get.result = 'a'
         self.dialog.get_modifiers.result = ['Shift']
-        self.assertFalse(self.dialog.keys_ok('<a>'))
+        self.assertFalsch(self.dialog.keys_ok('<a>'))
         self.assertIn('shift modifier', self.dialog.showerror.message)
         self.dialog.get_modifiers.result = []
 
@@ -87,16 +87,16 @@ klasse ValidationTest(unittest.TestCase):
             with self.subTest(m=mods, f=final, s=seq):
                 self.dialog.list_keys_final.get.result = final
                 self.dialog.get_modifiers.result = mods
-                self.assertFalse(self.dialog.keys_ok(seq))
+                self.assertFalsch(self.dialog.keys_ok(seq))
                 self.assertIn('already in use', self.dialog.showerror.message)
         self.dialog.get_modifiers.result = []
 
     def test_bind_ok(self):
-        self.assertTrue(self.dialog.bind_ok('<Control-Shift-Key-a>'))
+        self.assertWahr(self.dialog.bind_ok('<Control-Shift-Key-a>'))
         self.assertEqual(self.dialog.showerror.message, '')
 
     def test_bind_not_ok(self):
-        self.assertFalse(self.dialog.bind_ok('<Control-Shift>'))
+        self.assertFalsch(self.dialog.bind_ok('<Control-Shift>'))
         self.assertIn('not accepted', self.dialog.showerror.message)
 
 
@@ -135,21 +135,21 @@ klasse ToggleLevelTest(unittest.TestCase):
             return basic, advanced
 
         # New window starts at basic level.
-        self.assertFalse(dialog.advanced)
+        self.assertFalsch(dialog.advanced)
         self.assertIn('Advanced', dialog.button_level['text'])
         basic, advanced = stackorder()
         self.assertGreater(basic, advanced)
 
         # Toggle to advanced.
         dialog.toggle_level()
-        self.assertTrue(dialog.advanced)
+        self.assertWahr(dialog.advanced)
         self.assertIn('Basic', dialog.button_level['text'])
         basic, advanced = stackorder()
         self.assertGreater(advanced, basic)
 
         # Toggle to basic.
         dialog.button_level.invoke()
-        self.assertFalse(dialog.advanced)
+        self.assertFalsch(dialog.advanced)
         self.assertIn('Advanced', dialog.button_level['text'])
         basic, advanced = stackorder()
         self.assertGreater(basic, advanced)
@@ -246,7 +246,7 @@ klasse CancelWindowTest(unittest.TestCase):
         cls.root = Tk()
         cls.root.withdraw()
         cls.dialog = config_key.GetKeysWindow(
-            cls.root, 'Title', '<<Test>>', [], _utest=True)
+            cls.root, 'Title', '<<Test>>', [], _utest=Wahr)
 
     @classmethod
     def tearDownClass(cls):
@@ -275,7 +275,7 @@ klasse OKWindowTest(unittest.TestCase):
         cls.root = Tk()
         cls.root.withdraw()
         cls.dialog = config_key.GetKeysWindow(
-            cls.root, 'Title', '<<Test>>', [], _utest=True)
+            cls.root, 'Title', '<<Test>>', [], _utest=Wahr)
 
     @classmethod
     def tearDownClass(cls):
@@ -303,7 +303,7 @@ klasse WindowResultTest(unittest.TestCase):
         cls.root = Tk()
         cls.root.withdraw()
         cls.dialog = config_key.GetKeysWindow(
-            cls.root, 'Title', '<<Test>>', [], _utest=True)
+            cls.root, 'Title', '<<Test>>', [], _utest=Wahr)
 
     @classmethod
     def tearDownClass(cls):

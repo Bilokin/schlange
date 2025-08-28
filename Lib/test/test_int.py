@@ -11,12 +11,12 @@ from test.support.numbers import (
 try:
     import _pylong
 except ImportError:
-    _pylong = None
+    _pylong = Nichts
 
 try:
     import _decimal
 except ImportError:
-    _decimal = None
+    _decimal = Nichts
 
 L = [
         ('0', 0),
@@ -441,19 +441,19 @@ klasse IntTestCases(unittest.TestCase):
     def test_int_returns_int_subclass(self):
         klasse BadIndex:
             def __index__(self):
-                return True
+                return Wahr
 
         klasse BadIndex2(int):
             def __index__(self):
-                return True
+                return Wahr
 
         klasse BadInt:
             def __int__(self):
-                return True
+                return Wahr
 
         klasse BadInt2(int):
             def __int__(self):
-                return True
+                return Wahr
 
         bad_int = BadIndex()
         with self.assertWarns(DeprecationWarning):
@@ -479,16 +479,16 @@ klasse IntTestCases(unittest.TestCase):
         self.assertIs(type(n), int)
 
     def test_error_message(self):
-        def check(s, base=None):
+        def check(s, base=Nichts):
             with self.assertRaises(ValueError,
                                    msg="int(%r, %r)" % (s, base)) as cm:
-                wenn base is None:
+                wenn base is Nichts:
                     int(s)
                 sonst:
                     int(s, base)
             self.assertEqual(cm.exception.args[0],
                 "invalid literal fuer int() with base %d: %r" %
-                (10 wenn base is None sonst base, s))
+                (10 wenn base is Nichts sonst base, s))
 
         check('\xbd')
         check('123\xbd')
@@ -520,9 +520,9 @@ klasse IntTestCases(unittest.TestCase):
 
     @support.cpython_only
     def test_round_with_none_arg_direct_call(self):
-        fuer val in [(1).__round__(None),
+        fuer val in [(1).__round__(Nichts),
                     round(1),
-                    round(1, None)]:
+                    round(1, Nichts)]:
             self.assertEqual(val, 1)
             self.assertIs(type(val), int)
 
@@ -560,9 +560,9 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         int_class('-' + '1' * maxdigits)
         self.assertEqual(len(str(10 ** (maxdigits - 1))), maxdigits)
 
-    def check(self, i, base=None):
+    def check(self, i, base=Nichts):
         with self.assertRaises(ValueError):
-            wenn base is None:
+            wenn base is Nichts:
                 self.int_class(i)
             sonst:
                 self.int_class(i, base)
@@ -801,7 +801,7 @@ klasse PyLongModuleTests(unittest.TestCase):
             self, mock_int_to_str):
         with support.adjust_int_max_str_digits(20_000):
             big_value = int('7'*19_999)
-            mock_int_to_str.return_value = None  # not a str
+            mock_int_to_str.return_value = Nichts  # not a str
             with self.assertRaises(TypeError) as ctx:
                 str(big_value)
             self.assertIn('_pylong.int_to_decimal_string did not',
@@ -917,7 +917,7 @@ klasse PyLongModuleTests(unittest.TestCase):
                 self.assertEqual(v, base ** k)
 
         fuer base in 2, 5:
-            fuer need_hi in False, True:
+            fuer need_hi in Falsch, Wahr:
                 fuer limit in 1, 11:
                     fuer w in range(250, 550):
                         consumer(w, base, limit, need_hi)

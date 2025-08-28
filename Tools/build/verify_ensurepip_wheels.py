@@ -20,13 +20,13 @@ ENSURE_PIP_INIT_PY_TEXT = (ENSURE_PIP_ROOT / "__init__.py").read_text(encoding="
 GITHUB_ACTIONS = os.getenv("GITHUB_ACTIONS") == "true"
 
 
-def print_notice(file_path: str | Path, message: str) -> None:
+def print_notice(file_path: str | Path, message: str) -> Nichts:
     wenn GITHUB_ACTIONS:
         message = f"::notice file={file_path}::{message}"
     print(message, end="\n\n")
 
 
-def print_error(file_path: str | Path, message: str) -> None:
+def print_error(file_path: str | Path, message: str) -> Nichts:
     wenn GITHUB_ACTIONS:
         message = f"::error file={file_path}::{message}"
     print(message, end="\n\n")
@@ -41,7 +41,7 @@ def verify_wheel(package_name: str) -> bool:
                 print_error(p, f"Found more than one wheel fuer package {package_name}.")
         sonst:
             print_error("", f"Could not find a {package_name} wheel on disk.")
-        return False
+        return Falsch
 
     package_path = package_paths[0]
 
@@ -56,7 +56,7 @@ def verify_wheel(package_name: str) -> bool:
             package_path,
             f"No {package_name} version found in Lib/ensurepip/__init__.py.",
         )
-        return False
+        return Falsch
     package_version = package_version_match[1]
 
     # Get the SHA 256 digest from the Cheeseshop
@@ -64,7 +64,7 @@ def verify_wheel(package_name: str) -> bool:
         raw_text = urlopen(f"https://pypi.org/pypi/{package_name}/json").read()
     except (OSError, ValueError):
         print_error(package_path, f"Could not fetch JSON metadata fuer {package_name}.")
-        return False
+        return Falsch
 
     release_files = json.loads(raw_text)["releases"][package_version]
     expected_digest = ""
@@ -75,7 +75,7 @@ def verify_wheel(package_name: str) -> bool:
         break
     sonst:
         print_error(package_path, f"No digest fuer {package_name} found from PyPI.")
-        return False
+        return Falsch
 
     # Compute the SHA 256 digest of the wheel on disk
     actual_digest = hashlib.sha256(package_path.read_bytes()).hexdigest()
@@ -87,13 +87,13 @@ def verify_wheel(package_name: str) -> bool:
         print_error(
             package_path, f"Failed to verify the checksum of the {package_name} wheel."
         )
-        return False
+        return Falsch
 
     print_notice(
         package_path,
         f"Successfully verified the checksum of the {package_name} wheel.",
     )
-    return True
+    return Wahr
 
 
 

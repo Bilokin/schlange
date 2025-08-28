@@ -82,7 +82,7 @@ def create_shelllink_persist(typ):
     # https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-cocreateinstance
     ole32.CoCreateInstance(
         byref(CLSID_ShellLink),
-        None,
+        Nichts,
         CLSCTX_SERVER,
         byref(IID_IPersist),
         byref(ppst),
@@ -93,7 +93,7 @@ def create_shelllink_persist(typ):
 klasse ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
     def setUp(self):
         # https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coinitializeex
-        ole32.CoInitializeEx(None, COINIT_APARTMENTTHREADED)
+        ole32.CoInitializeEx(Nichts, COINIT_APARTMENTTHREADED)
 
     def tearDown(self):
         # https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-couninitialize
@@ -134,7 +134,7 @@ klasse ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
 
     def test_with_paramflags_and_without_iid(self):
         klasse IUnknown(c_void_p):
-            QueryInterface = proto_query_interface(None)
+            QueryInterface = proto_query_interface(Nichts)
             AddRef = proto_add_ref()
             Release = proto_release()
 
@@ -159,7 +159,7 @@ klasse ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
 
     def test_with_paramflags_and_iid(self):
         klasse IUnknown(c_void_p):
-            QueryInterface = proto_query_interface(None, IID_IUnknown)
+            QueryInterface = proto_query_interface(Nichts, IID_IUnknown)
             AddRef = proto_add_ref()
             Release = proto_release()
 
@@ -185,10 +185,10 @@ klasse ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
 
 klasse CopyComPointerTests(unittest.TestCase):
     def setUp(self):
-        ole32.CoInitializeEx(None, COINIT_APARTMENTTHREADED)
+        ole32.CoInitializeEx(Nichts, COINIT_APARTMENTTHREADED)
 
         klasse IUnknown(c_void_p):
-            QueryInterface = proto_query_interface(None, IID_IUnknown)
+            QueryInterface = proto_query_interface(Nichts, IID_IUnknown)
             AddRef = proto_add_ref()
             Release = proto_release()
 
@@ -210,8 +210,8 @@ klasse CopyComPointerTests(unittest.TestCase):
 
         self.assertEqual(S_OK, hr)
 
-        self.assertIsNone(src.value)
-        self.assertIsNone(dst.value)
+        self.assertIsNichts(src.value)
+        self.assertIsNichts(dst.value)
 
     def test_src_is_nonnull_and_dest_is_null(self):
         # The reference count of the COM pointer created by `CoCreateInstance`
@@ -248,7 +248,7 @@ klasse CopyComPointerTests(unittest.TestCase):
         hr = CopyComPointer(src, byref(dst))
 
         self.assertEqual(S_OK, hr)
-        self.assertIsNone(dst.value)
+        self.assertIsNichts(dst.value)
 
         with self.assertRaises(ValueError):
             dst.GetClassID()  # NULL COM pointer access

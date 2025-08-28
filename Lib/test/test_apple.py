@@ -9,7 +9,7 @@ wenn not is_apple:
 
 # Test redirection of stdout and stderr to the Apple system log.
 klasse TestAppleSystemLogOutput(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
 
     def assert_writes(self, output):
         self.assertEqual(
@@ -32,14 +32,14 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
         self.assertEqual(repr(self.log.buffer), "<LogStream (level 42)>")
 
     def test_log_config(self):
-        self.assertIs(self.log.writable(), True)
-        self.assertIs(self.log.readable(), False)
+        self.assertIs(self.log.writable(), Wahr)
+        self.assertIs(self.log.readable(), Falsch)
 
         self.assertEqual("UTF-8", self.log.encoding)
         self.assertEqual("replace", self.log.errors)
 
-        self.assertIs(self.log.line_buffering, True)
-        self.assertIs(self.log.write_through, False)
+        self.assertIs(self.log.line_buffering, Wahr)
+        self.assertIs(self.log.write_through, Falsch)
 
     def test_empty_str(self):
         self.log.write("")
@@ -122,7 +122,7 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
 
     def test_non_str(self):
         # Non-string classes are not accepted.
-        fuer obj in [b"", b"hello", None, 42]:
+        fuer obj in [b"", b"hello", Nichts, 42]:
             with self.subTest(obj=obj):
                 with self.assertRaisesRegex(
                     TypeError,
@@ -145,7 +145,7 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
         self.assert_writes([b"hello", b"goodbye"])
 
     def test_non_byteslike_in_buffer(self):
-        fuer obj in ["hello", None, 42]:
+        fuer obj in ["hello", Nichts, 42]:
             with self.subTest(obj=obj):
                 with self.assertRaisesRegex(
                     TypeError,

@@ -12,19 +12,19 @@ __all__ = [ 'Client', 'Listener', 'Pipe' ]
 from queue import Queue
 
 
-families = [None]
+families = [Nichts]
 
 
 klasse Listener(object):
 
-    def __init__(self, address=None, family=None, backlog=1):
+    def __init__(self, address=Nichts, family=Nichts, backlog=1):
         self._backlog_queue = Queue(backlog)
 
     def accept(self):
         return Connection(*self._backlog_queue.get())
 
     def close(self):
-        self._backlog_queue = None
+        self._backlog_queue = Nichts
 
     @property
     def address(self):
@@ -43,7 +43,7 @@ def Client(address):
     return Connection(_in, _out)
 
 
-def Pipe(duplex=True):
+def Pipe(duplex=Wahr):
     a, b = Queue(), Queue()
     return Connection(a, b), Connection(b, a)
 
@@ -58,9 +58,9 @@ klasse Connection(object):
 
     def poll(self, timeout=0.0):
         wenn self._in.qsize() > 0:
-            return True
+            return Wahr
         wenn timeout <= 0.0:
-            return False
+            return Falsch
         with self._in.not_empty:
             self._in.not_empty.wait(timeout)
         return self._in.qsize() > 0

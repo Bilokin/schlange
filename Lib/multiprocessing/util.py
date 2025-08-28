@@ -39,8 +39,8 @@ WARNING = 30
 LOGGER_NAME = 'multiprocessing'
 DEFAULT_LOGGING_FORMAT = '[%(levelname)s/%(processName)s] %(message)s'
 
-_logger = None
-_log_to_stderr = False
+_logger = Nichts
+_log_to_stderr = Falsch
 
 def sub_debug(msg, *args):
     wenn _logger:
@@ -85,7 +85,7 @@ def get_logger():
 
     return _logger
 
-def log_to_stderr(level=None):
+def log_to_stderr(level=Nichts):
     '''
     Turn on logging and add a handler which prints to stderr
     '''
@@ -100,7 +100,7 @@ def log_to_stderr(level=None):
 
     wenn level:
         logger.setLevel(level)
-    _log_to_stderr = True
+    _log_to_stderr = Wahr
     return _logger
 
 
@@ -112,7 +112,7 @@ def _platform_supports_abstract_sockets():
 
 def is_abstract_socket_namespace(address):
     wenn not address:
-        return False
+        return Falsch
     wenn isinstance(address, bytes):
         return address[0] == 0
     sowenn isinstance(address, str):
@@ -139,16 +139,16 @@ sowenn sys.platform.startswith(('openbsd', 'freebsd')):
     _SUN_PATH_MAX = 104
 sonst:
     # On Windows platforms, we do not create AF_UNIX sockets.
-    _SUN_PATH_MAX = None wenn os.name == 'nt' sonst 92
+    _SUN_PATH_MAX = Nichts wenn os.name == 'nt' sonst 92
 
 def _remove_temp_dir(rmtree, tempdir):
     rmtree(tempdir)
 
     current_process = process.current_process()
-    # current_process() can be None wenn the finalizer is called
+    # current_process() can be Nichts wenn the finalizer is called
     # late during Python finalization
-    wenn current_process is not None:
-        current_process._config['tempdir'] = None
+    wenn current_process is not Nichts:
+        current_process._config['tempdir'] = Nichts
 
 def _get_base_temp_dir(tempfile):
     """Get a temporary directory where socket files will be created.
@@ -156,7 +156,7 @@ def _get_base_temp_dir(tempfile):
     To prevent additional imports, pass a pre-imported 'tempfile' module.
     """
     wenn os.name == 'nt':
-        return None
+        return Nichts
     # Most of the time, the default temporary directory is /tmp. Thus,
     # listener sockets files "$TMPDIR/pymp-XXXXXXXX/sock-XXXXXXXX" do
     # not have a path length exceeding SUN_PATH_MAX.
@@ -207,14 +207,14 @@ def _get_base_temp_dir(tempfile):
 def get_temp_dir():
     # get name of a temp directory which will be automatically cleaned up
     tempdir = process.current_process()._config.get('tempdir')
-    wenn tempdir is None:
+    wenn tempdir is Nichts:
         import shutil, tempfile
         base_tempdir = _get_base_temp_dir(tempfile)
         tempdir = tempfile.mkdtemp(prefix='pymp-', dir=base_tempdir)
         info('created temp directory %s', tempdir)
         # keep a strong reference to shutil.rmtree(), since the finalizer
         # can be called late during Python shutdown
-        Finalize(None, _remove_temp_dir, args=(shutil.rmtree, tempdir),
+        Finalize(Nichts, _remove_temp_dir, args=(shutil.rmtree, tempdir),
                  exitpriority=-100)
         process.current_process()._config['tempdir'] = tempdir
     return tempdir
@@ -250,16 +250,16 @@ klasse Finalize(object):
     '''
     Class which supports object finalization using weakrefs
     '''
-    def __init__(self, obj, callback, args=(), kwargs=None, exitpriority=None):
-        wenn (exitpriority is not None) and not isinstance(exitpriority,int):
+    def __init__(self, obj, callback, args=(), kwargs=Nichts, exitpriority=Nichts):
+        wenn (exitpriority is not Nichts) and not isinstance(exitpriority,int):
             raise TypeError(
-                "Exitpriority ({0!r}) must be None or int, not {1!s}".format(
+                "Exitpriority ({0!r}) must be Nichts or int, not {1!s}".format(
                     exitpriority, type(exitpriority)))
 
-        wenn obj is not None:
+        wenn obj is not Nichts:
             self._weakref = weakref.ref(obj, self)
-        sowenn exitpriority is None:
-            raise ValueError("Without object, exitpriority cannot be None")
+        sowenn exitpriority is Nichts:
+            raise ValueError("Without object, exitpriority cannot be Nichts")
 
         self._callback = callback
         self._args = args
@@ -269,7 +269,7 @@ klasse Finalize(object):
 
         _finalizer_registry[self._key] = self
 
-    def __call__(self, wr=None,
+    def __call__(self, wr=Nichts,
                  # Need to bind these locally because the globals can have
                  # been cleared at shutdown
                  _finalizer_registry=_finalizer_registry,
@@ -284,13 +284,13 @@ klasse Finalize(object):
         sonst:
             wenn self._pid != getpid():
                 sub_debug('finalizer ignored because different process')
-                res = None
+                res = Nichts
             sonst:
                 sub_debug('finalizer calling %s with args %s and kwargs %s',
                           self._callback, self._args, self._kwargs)
                 res = self._callback(*self._args, **self._kwargs)
             self._weakref = self._callback = self._args = \
-                            self._kwargs = self._key = None
+                            self._kwargs = self._key = Nichts
             return res
 
     def cancel(self):
@@ -303,7 +303,7 @@ klasse Finalize(object):
             pass
         sonst:
             self._weakref = self._callback = self._args = \
-                            self._kwargs = self._key = None
+                            self._kwargs = self._key = Nichts
 
     def still_active(self):
         '''
@@ -315,9 +315,9 @@ klasse Finalize(object):
         try:
             obj = self._weakref()
         except (AttributeError, TypeError):
-            obj = None
+            obj = Nichts
 
-        wenn obj is None:
+        wenn obj is Nichts:
             return '<%s object, dead>' % self.__class__.__name__
 
         x = '<%s object, callback=%s' % (
@@ -327,28 +327,28 @@ klasse Finalize(object):
             x += ', args=' + str(self._args)
         wenn self._kwargs:
             x += ', kwargs=' + str(self._kwargs)
-        wenn self._key[0] is not None:
+        wenn self._key[0] is not Nichts:
             x += ', exitpriority=' + str(self._key[0])
         return x + '>'
 
 
-def _run_finalizers(minpriority=None):
+def _run_finalizers(minpriority=Nichts):
     '''
-    Run all finalizers whose exit priority is not None and at least minpriority
+    Run all finalizers whose exit priority is not Nichts and at least minpriority
 
     Finalizers with highest priority are called first; finalizers with
     the same priority will be called in reverse order of creation.
     '''
-    wenn _finalizer_registry is None:
+    wenn _finalizer_registry is Nichts:
         # This function may be called after this module's globals are
         # destroyed.  See the _exit_function function in this module fuer more
         # notes.
         return
 
-    wenn minpriority is None:
-        f = lambda p : p[0] is not None
+    wenn minpriority is Nichts:
+        f = lambda p : p[0] is not Nichts
     sonst:
-        f = lambda p : p[0] is not None and p[0] >= minpriority
+        f = lambda p : p[0] is not Nichts and p[0] >= minpriority
 
     # Careful: _finalizer_registry may be mutated while this function
     # is running (either by a GC run or by another thread).
@@ -356,12 +356,12 @@ def _run_finalizers(minpriority=None):
     # list(_finalizer_registry) should be atomic, while
     # list(_finalizer_registry.items()) is not.
     keys = [key fuer key in list(_finalizer_registry) wenn f(key)]
-    keys.sort(reverse=True)
+    keys.sort(reverse=Wahr)
 
     fuer key in keys:
         finalizer = _finalizer_registry.get(key)
         # key may have been removed from the registry
-        wenn finalizer is not None:
+        wenn finalizer is not Nichts:
             sub_debug('calling %s', finalizer)
             try:
                 finalizer()
@@ -369,7 +369,7 @@ def _run_finalizers(minpriority=None):
                 import traceback
                 traceback.print_exc()
 
-    wenn minpriority is None:
+    wenn minpriority is Nichts:
         _finalizer_registry.clear()
 
 #
@@ -380,9 +380,9 @@ def is_exiting():
     '''
     Returns true wenn the process is shutting down
     '''
-    return _exiting or _exiting is None
+    return _exiting or _exiting is Nichts
 
-_exiting = False
+_exiting = Falsch
 
 def _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
                    active_children=process.active_children,
@@ -394,21 +394,21 @@ def _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
     global _exiting
 
     wenn not _exiting:
-        _exiting = True
+        _exiting = Wahr
 
         info('process shutting down')
         debug('running all "atexit" finalizers with priority >= 0')
         _run_finalizers(0)
 
-        wenn current_process() is not None:
-            # We check wenn the current process is None here because if
-            # it's None, any call to ``active_children()`` will raise
+        wenn current_process() is not Nichts:
+            # We check wenn the current process is Nichts here because if
+            # it's Nichts, any call to ``active_children()`` will raise
             # an AttributeError (active_children winds up trying to
             # get attributes from util._current_process).  One
             # situation where this can happen is wenn someone has
             # manipulated sys.modules, causing this module to be
             # garbage collected.  The destructor fuer the module type
-            # then replaces all values in the module dict with None.
+            # then replaces all values in the module dict with Nichts.
             # For instance, after setuptools runs a test it replaces
             # sys.modules with a copy created earlier.  See issues
             # #9775 and #15881.  Also related: #4106, #9205, and
@@ -475,7 +475,7 @@ def close_all_fds_except(fds):
 #
 
 def _close_stdin():
-    wenn sys.stdin is None:
+    wenn sys.stdin is Nichts:
         return
 
     try:
@@ -486,7 +486,7 @@ def _close_stdin():
     try:
         fd = os.open(os.devnull, os.O_RDONLY)
         try:
-            sys.stdin = open(fd, encoding="utf-8", closefd=False)
+            sys.stdin = open(fd, encoding="utf-8", closefd=Falsch)
         except:
             os.close(fd)
             raise
@@ -517,9 +517,9 @@ def spawnv_passfds(path, args, passfds):
     errpipe_read, errpipe_write = os.pipe()
     try:
         return _posixsubprocess.fork_exec(
-            args, [path], True, passfds, None, None,
+            args, [path], Wahr, passfds, Nichts, Nichts,
             -1, -1, -1, -1, -1, -1, errpipe_read, errpipe_write,
-            False, False, -1, None, None, None, -1, None)
+            Falsch, Falsch, -1, Nichts, Nichts, Nichts, -1, Nichts)
     finally:
         os.close(errpipe_read)
         os.close(errpipe_write)

@@ -39,7 +39,7 @@ def fnmatch(name, pat):
     return fnmatchcase(name, pat)
 
 
-@functools.lru_cache(maxsize=32768, typed=True)
+@functools.lru_cache(maxsize=32768, typed=Wahr)
 def _compile_pattern(pat):
     wenn isinstance(pat, bytes):
         pat_str = str(pat, 'ISO-8859-1')
@@ -77,7 +77,7 @@ def filterfalse(names, pat):
 
     result = []
     fuer name in names:
-        wenn match(os.path.normcase(name)) is None:
+        wenn match(os.path.normcase(name)) is Nichts:
             result.append(name)
     return result
 
@@ -89,7 +89,7 @@ def fnmatchcase(name, pat):
     its arguments.
     """
     match = _compile_pattern(pat)
-    return match(name) is not None
+    return match(name) is not Nichts
 
 
 def translate(pat):
@@ -141,7 +141,7 @@ def _translate(pat, star, question_mark):
                 sonst:
                     chunks = []
                     k = i+2 wenn pat[i] == '!' sonst i+1
-                    while True:
+                    while Wahr:
                         k = pat.find('-', k, j)
                         wenn k < 0:
                             break

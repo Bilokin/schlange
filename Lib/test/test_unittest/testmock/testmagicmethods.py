@@ -166,21 +166,21 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
     def test_nonzero(self):
         m = Mock()
-        self.assertTrue(bool(m))
+        self.assertWahr(bool(m))
 
-        m.__bool__ = lambda s: False
-        self.assertFalse(bool(m))
+        m.__bool__ = lambda s: Falsch
+        self.assertFalsch(bool(m))
 
 
     def test_comparison(self):
         mock = Mock()
         def comp(s, o):
-            return True
+            return Wahr
         mock.__lt__ = mock.__gt__ = mock.__le__ = mock.__ge__ = comp
-        self. assertTrue(mock < 3)
-        self. assertTrue(mock > 3)
-        self. assertTrue(mock <= 3)
-        self. assertTrue(mock >= 3)
+        self. assertWahr(mock < 3)
+        self. assertWahr(mock > 3)
+        self. assertWahr(mock <= 3)
+        self. assertWahr(mock >= 3)
 
         self.assertRaises(TypeError, lambda: MagicMock() < object())
         self.assertRaises(TypeError, lambda: object() < MagicMock())
@@ -198,33 +198,33 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
     def test_equality(self):
         fuer mock in Mock(), MagicMock():
-            self.assertEqual(mock == mock, True)
+            self.assertEqual(mock == mock, Wahr)
             self.assertIsInstance(mock == mock, bool)
-            self.assertEqual(mock != mock, False)
+            self.assertEqual(mock != mock, Falsch)
             self.assertIsInstance(mock != mock, bool)
-            self.assertEqual(mock == object(), False)
-            self.assertEqual(mock != object(), True)
+            self.assertEqual(mock == object(), Falsch)
+            self.assertEqual(mock != object(), Wahr)
 
             def eq(self, other):
                 return other == 3
             mock.__eq__ = eq
-            self.assertTrue(mock == 3)
-            self.assertFalse(mock == 4)
+            self.assertWahr(mock == 3)
+            self.assertFalsch(mock == 4)
 
             def ne(self, other):
                 return other == 3
             mock.__ne__ = ne
-            self.assertTrue(mock != 3)
-            self.assertFalse(mock != 4)
+            self.assertWahr(mock != 3)
+            self.assertFalsch(mock != 4)
 
         mock = MagicMock()
-        mock.__eq__.return_value = True
+        mock.__eq__.return_value = Wahr
         self.assertIsInstance(mock == 3, bool)
-        self.assertEqual(mock == 3, True)
+        self.assertEqual(mock == 3, Wahr)
 
-        mock.__ne__.return_value = False
+        mock.__ne__.return_value = Falsch
         self.assertIsInstance(mock != 3, bool)
-        self.assertEqual(mock != 3, False)
+        self.assertEqual(mock != 3, Falsch)
 
 
     def test_len_contains_iter(self):
@@ -251,9 +251,9 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         mock.__iter__.return_value = iter([1, 2, 3])
         self.assertEqual(list(mock), [1, 2, 3])
 
-        getattr(mock, '__bool__').return_value = False
+        getattr(mock, '__bool__').return_value = Falsch
         self.assertNotHasAttr(mock, '__nonzero__')
-        self.assertFalse(bool(mock))
+        self.assertFalsch(bool(mock))
 
         fuer entry in _magics:
             self.assertHasAttr(mock, entry)
@@ -265,10 +265,10 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertIsInstance(mock == object(), bool)
         self.assertIsInstance(mock != object(), bool)
 
-        self.assertEqual(mock == object(), False)
-        self.assertEqual(mock != object(), True)
-        self.assertEqual(mock == mock, True)
-        self.assertEqual(mock != mock, False)
+        self.assertEqual(mock == object(), Falsch)
+        self.assertEqual(mock != object(), Wahr)
+        self.assertEqual(mock == mock, Wahr)
+        self.assertEqual(mock != mock, Falsch)
 
     def test_asyncmock_defaults(self):
         mock = AsyncMock()
@@ -280,13 +280,13 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(list(mock), [])
         self.assertEqual(hash(mock), object.__hash__(mock))
         self.assertEqual(str(mock), object.__str__(mock))
-        self.assertTrue(bool(mock))
+        self.assertWahr(bool(mock))
         self.assertEqual(round(mock), mock.__round__())
         self.assertEqual(math.trunc(mock), mock.__trunc__())
         self.assertEqual(math.floor(mock), mock.__floor__())
         self.assertEqual(math.ceil(mock), mock.__ceil__())
-        self.assertTrue(iscoroutinefunction(mock.__aexit__))
-        self.assertTrue(iscoroutinefunction(mock.__aenter__))
+        self.assertWahr(iscoroutinefunction(mock.__aexit__))
+        self.assertWahr(iscoroutinefunction(mock.__aenter__))
         self.assertIsInstance(mock.__aenter__, AsyncMock)
         self.assertIsInstance(mock.__aexit__, AsyncMock)
 
@@ -306,13 +306,13 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(list(mock), [])
         self.assertEqual(hash(mock), object.__hash__(mock))
         self.assertEqual(str(mock), object.__str__(mock))
-        self.assertTrue(bool(mock))
+        self.assertWahr(bool(mock))
         self.assertEqual(round(mock), mock.__round__())
         self.assertEqual(math.trunc(mock), mock.__trunc__())
         self.assertEqual(math.floor(mock), mock.__floor__())
         self.assertEqual(math.ceil(mock), mock.__ceil__())
-        self.assertTrue(iscoroutinefunction(mock.__aexit__))
-        self.assertTrue(iscoroutinefunction(mock.__aenter__))
+        self.assertWahr(iscoroutinefunction(mock.__aexit__))
+        self.assertWahr(iscoroutinefunction(mock.__aenter__))
         self.assertIsInstance(mock.__aenter__, AsyncMock)
         self.assertIsInstance(mock.__aexit__, AsyncMock)
 
@@ -333,7 +333,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
 
     def test_magic_mock_does_not_reset_magic_returns(self):
         # https://github.com/python/cpython/issues/123934
-        fuer reset in (True, False):
+        fuer reset in (Wahr, Falsch):
             with self.subTest(reset=reset):
                 mm = MagicMock()
                 self.assertIs(type(mm.__str__()), str)
@@ -359,7 +359,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(list(iter(mm)), [1])
         self.assertEqual(mm.custom(), 2)
 
-        mm.reset_mock(return_value=True)
+        mm.reset_mock(return_value=Wahr)
         self.assertEqual(list(iter(mm)), [])
         self.assertIsInstance(mm.custom(), MagicMock)
 
@@ -368,7 +368,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
         mm.__iter__.return_value = []
         self.assertEqual(list(iter(mm)), [])
 
-        mm.reset_mock(return_value=True)
+        mm.reset_mock(return_value=Wahr)
         self.assertEqual(list(iter(mm)), [])
 
     def test_magic_methods_and_spec(self):
@@ -422,7 +422,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
     def test_setting_unsupported_magic_method(self):
         mock = MagicMock()
         def set_setattr():
-            mock.__setattr__ = lambda self, name: None
+            mock.__setattr__ = lambda self, name: Nichts
         self.assertRaisesRegex(AttributeError,
             "Attempting to set unsupported magic method '__setattr__'.",
             set_setattr
@@ -453,9 +453,9 @@ klasse TestMockingMagicMethods(unittest.TestCase):
     def test_magic_method_reset_mock(self):
         mock = MagicMock()
         str(mock)
-        self.assertTrue(mock.__str__.called)
+        self.assertWahr(mock.__str__.called)
         mock.reset_mock()
-        self.assertFalse(mock.__str__.called)
+        self.assertFalsch(mock.__str__.called)
 
 
     def test_dir(self):

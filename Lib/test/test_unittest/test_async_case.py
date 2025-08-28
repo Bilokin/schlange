@@ -4,7 +4,7 @@ import unittest
 from test import support
 from test.support import force_not_colorized
 
-support.requires_working_socket(module=True)
+support.requires_working_socket(module=Wahr)
 
 
 klasse MyException(Exception):
@@ -12,11 +12,11 @@ klasse MyException(Exception):
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse TestCM:
-    def __init__(self, ordering, enter_result=None):
+    def __init__(self, ordering, enter_result=Nichts):
         self.ordering = ordering
         self.enter_result = enter_result
 
@@ -42,7 +42,7 @@ VAR = contextvars.ContextVar('VAR', default=())
 
 
 klasse TestAsyncCase(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
 
     def setUp(self):
         # Ensure that IsolatedAsyncioTestCase instances are destroyed before
@@ -297,10 +297,10 @@ klasse TestAsyncCase(unittest.TestCase):
         self.assertEqual(events, ['asyncSetUp', 'test', 'asyncTearDown', 'cleanup2', 'cleanup1'])
 
     def test_deprecation_of_return_val_from_test(self):
-        # Issue 41322 - deprecate return of value that is not None from a test
+        # Issue 41322 - deprecate return of value that is not Nichts from a test
         klasse Nothing:
             def __eq__(self, o):
-                return o is None
+                return o is Nichts
         klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test1(self):
                 return 1
@@ -311,21 +311,21 @@ klasse TestAsyncCase(unittest.TestCase):
 
         with self.assertWarns(DeprecationWarning) as w:
             Test('test1').run()
-        self.assertIn('It is deprecated to return a value that is not None', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
         with self.assertWarns(DeprecationWarning) as w:
             Test('test2').run()
-        self.assertIn('It is deprecated to return a value that is not None', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'async_generator'", str(w.warning))
 
         with self.assertWarns(DeprecationWarning) as w:
             Test('test3').run()
-        self.assertIn('It is deprecated to return a value that is not None', str(w.warning))
+        self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn(f'returned {Nothing.__name__!r}', str(w.warning))
@@ -369,7 +369,7 @@ klasse TestAsyncCase(unittest.TestCase):
 
         test = Test("test_base")
         output = test.run()
-        self.assertFalse(output.wasSuccessful())
+        self.assertFalsch(output.wasSuccessful())
 
         test = Test("test_no_err")
         test.run()
@@ -377,10 +377,10 @@ klasse TestAsyncCase(unittest.TestCase):
 
         test = Test("test_cancel")
         output = test.run()
-        self.assertFalse(output.wasSuccessful())
+        self.assertFalsch(output.wasSuccessful())
 
     def test_cancellation_hanging_tasks(self):
-        cancelled = False
+        cancelled = Falsch
         klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_leaking_task(self):
                 async def coro():
@@ -388,7 +388,7 @@ klasse TestAsyncCase(unittest.TestCase):
                     try:
                         await asyncio.sleep(1)
                     except asyncio.CancelledError:
-                        cancelled = True
+                        cancelled = Wahr
                         raise
 
                 # Leave this running in the background
@@ -396,7 +396,7 @@ klasse TestAsyncCase(unittest.TestCase):
 
         test = Test("test_leaking_task")
         output = test.run()
-        self.assertTrue(cancelled)
+        self.assertWahr(cancelled)
 
     def test_enterAsyncContext(self):
         events = []
@@ -411,7 +411,7 @@ klasse TestAsyncCase(unittest.TestCase):
 
         test = Test('test_func')
         output = test.run()
-        self.assertTrue(output.wasSuccessful(), output)
+        self.assertWahr(output.wasSuccessful(), output)
         self.assertEqual(events, ['enter', 'test', 'cleanup2', 'exit', 'cleanup1'])
 
     def test_enterAsyncContext_arg_errors(self):
@@ -426,7 +426,7 @@ klasse TestAsyncCase(unittest.TestCase):
 
         test = Test('test_func')
         output = test.run()
-        self.assertTrue(output.wasSuccessful())
+        self.assertWahr(output.wasSuccessful())
 
     def test_debug_cleanup_same_loop(self):
         klasse Test(unittest.IsolatedAsyncioTestCase):
@@ -476,7 +476,7 @@ klasse TestAsyncCase(unittest.TestCase):
     def test_setup_get_event_loop(self):
         # See https://github.com/python/cpython/issues/95736
         # Make sure the default event loop is not used
-        asyncio.set_event_loop(None)
+        asyncio.set_event_loop(Nichts)
 
         klasse TestCase1(unittest.IsolatedAsyncioTestCase):
             def setUp(self):
@@ -487,10 +487,10 @@ klasse TestAsyncCase(unittest.TestCase):
 
         test = TestCase1('test_demo1')
         result = test.run()
-        self.assertTrue(result.wasSuccessful())
+        self.assertWahr(result.wasSuccessful())
 
     def test_loop_factory(self):
-        asyncio.events._set_event_loop_policy(None)
+        asyncio.events._set_event_loop_policy(Nichts)
 
         klasse TestCase1(unittest.IsolatedAsyncioTestCase):
             loop_factory = asyncio.EventLoop
@@ -500,8 +500,8 @@ klasse TestAsyncCase(unittest.TestCase):
 
         test = TestCase1('test_demo1')
         result = test.run()
-        self.assertTrue(result.wasSuccessful())
-        self.assertIsNone(support.maybe_get_event_loop_policy())
+        self.assertWahr(result.wasSuccessful())
+        self.assertIsNichts(support.maybe_get_event_loop_policy())
 
 wenn __name__ == "__main__":
     unittest.main()

@@ -71,7 +71,7 @@ def build(
 
 @functools.singledispatch
 def create(content: Union[str, bytes, FilesSpec], path):
-    path.mkdir(exist_ok=True)
+    path.mkdir(exist_ok=Wahr)
     build(content, prefix=path)  # type: ignore[arg-type]
 
 

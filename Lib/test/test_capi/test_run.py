@@ -4,7 +4,7 @@ from collections import UserDict
 from test.support import import_helper
 from test.support.os_helper import unlink, TESTFN, TESTFN_ASCII, TESTFN_UNDECODABLE
 
-NULL = None
+NULL = Nichts
 _testcapi = import_helper.import_module('_testcapi')
 Py_single_input = _testcapi.Py_single_input
 Py_file_input = _testcapi.Py_file_input
@@ -44,21 +44,21 @@ klasse CAPITest(unittest.TestCase):
             return _testcapi.run_stringflags(s, Py_file_input, *args)
         source = b'a\n'
 
-        self.assertIsNone(run(b'a\n', dict(a=1)))
-        self.assertIsNone(run(b'a\n', dict(a=1), {}))
-        self.assertIsNone(run(b'a\n', {}, dict(a=1)))
-        self.assertIsNone(run(b'a\n', {}, UserDict(a=1)))
+        self.assertIsNichts(run(b'a\n', dict(a=1)))
+        self.assertIsNichts(run(b'a\n', dict(a=1), {}))
+        self.assertIsNichts(run(b'a\n', {}, dict(a=1)))
+        self.assertIsNichts(run(b'a\n', {}, UserDict(a=1)))
 
         self.assertRaises(NameError, run, b'a\n', {})
         self.assertRaises(NameError, run, b'a\n', {}, {})
         self.assertRaises(TypeError, run, b'a\n', dict(a=1), [])
         self.assertRaises(TypeError, run, b'a\n', dict(a=1), 1)
 
-        self.assertIsNone(run(b'a\n', DictSubclass(a=1)))
-        self.assertIsNone(run(b'a\n', DictSubclass(), dict(a=1)))
+        self.assertIsNichts(run(b'a\n', DictSubclass(a=1)))
+        self.assertIsNichts(run(b'a\n', DictSubclass(), dict(a=1)))
         self.assertRaises(NameError, run, b'a\n', DictSubclass())
 
-        self.assertIsNone(run(b'\xc3\xa4\n', {'\xe4': 1}))
+        self.assertIsNichts(run(b'\xc3\xa4\n', {'\xe4': 1}))
         self.assertRaises(SyntaxError, run, b'\xe4\n', {})
 
         self.assertRaises(SystemError, run, b'a\n', NULL)
@@ -79,19 +79,19 @@ klasse CAPITest(unittest.TestCase):
         def run(*args):
             return _testcapi.run_fileexflags(filename, Py_file_input, *args)
 
-        self.assertIsNone(run(dict(a=1)))
-        self.assertIsNone(run(dict(a=1), {}))
-        self.assertIsNone(run({}, dict(a=1)))
-        self.assertIsNone(run({}, UserDict(a=1)))
-        self.assertIsNone(run(dict(a=1), {}, 1))  # closeit = True
+        self.assertIsNichts(run(dict(a=1)))
+        self.assertIsNichts(run(dict(a=1), {}))
+        self.assertIsNichts(run({}, dict(a=1)))
+        self.assertIsNichts(run({}, UserDict(a=1)))
+        self.assertIsNichts(run(dict(a=1), {}, 1))  # closeit = Wahr
 
         self.assertRaises(NameError, run, {})
         self.assertRaises(NameError, run, {}, {})
         self.assertRaises(TypeError, run, dict(a=1), [])
         self.assertRaises(TypeError, run, dict(a=1), 1)
 
-        self.assertIsNone(run(DictSubclass(a=1)))
-        self.assertIsNone(run(DictSubclass(), dict(a=1)))
+        self.assertIsNichts(run(DictSubclass(a=1)))
+        self.assertIsNichts(run(DictSubclass(), dict(a=1)))
         self.assertRaises(NameError, run, DictSubclass())
 
         self.assertRaises(SystemError, run, NULL)
@@ -111,7 +111,7 @@ klasse CAPITest(unittest.TestCase):
             self.addCleanup(unlink, TESTFN_UNDECODABLE)
         except OSError:
             self.skipTest('undecodable paths are not supported')
-        self.assertIsNone(run(TESTFN_UNDECODABLE, Py_file_input, dict(a=1)))
+        self.assertIsNichts(run(TESTFN_UNDECODABLE, Py_file_input, dict(a=1)))
 
 
 wenn __name__ == '__main__':

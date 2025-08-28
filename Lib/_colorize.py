@@ -5,11 +5,11 @@ import sys
 from collections.abc import Callable, Iterator, Mapping
 from dataclasses import dataclass, field, Field
 
-COLORIZE = True
+COLORIZE = Wahr
 
 
 # types
-wenn False:
+wenn Falsch:
     from typing import IO, Self, ClassVar
     _theme: Theme
 
@@ -125,7 +125,7 @@ klasse ThemeSection(Mapping[str, str]):
     __dataclass_fields__: ClassVar[dict[str, Field[str]]]
     _name_to_value: Callable[[str], str]
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         name_to_value = {}
         fuer color_name in self.__dataclass_fields__:
             name_to_value[color_name] = getattr(self, color_name)
@@ -155,7 +155,7 @@ klasse ThemeSection(Mapping[str, str]):
         return iter(self.__dataclass_fields__)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=Wahr)
 klasse Argparse(ThemeSection):
     usage: str = ANSIColors.BOLD_BLUE
     prog: str = ANSIColors.BOLD_MAGENTA
@@ -172,7 +172,7 @@ klasse Argparse(ThemeSection):
     reset: str = ANSIColors.RESET
 
 
-@dataclass(frozen=True, kw_only=True)
+@dataclass(frozen=Wahr, kw_only=Wahr)
 klasse Difflib(ThemeSection):
     """A 'git diff'-like theme fuer `difflib.unified_diff`."""
     added: str = ANSIColors.GREEN
@@ -183,7 +183,7 @@ klasse Difflib(ThemeSection):
     reset: str = ANSIColors.RESET
 
 
-@dataclass(frozen=True, kw_only=True)
+@dataclass(frozen=Wahr, kw_only=Wahr)
 klasse Syntax(ThemeSection):
     prompt: str = ANSIColors.BOLD_MAGENTA
     keyword: str = ANSIColors.BOLD_BLUE
@@ -197,7 +197,7 @@ klasse Syntax(ThemeSection):
     reset: str = ANSIColors.RESET
 
 
-@dataclass(frozen=True, kw_only=True)
+@dataclass(frozen=Wahr, kw_only=Wahr)
 klasse Traceback(ThemeSection):
     type: str = ANSIColors.BOLD_MAGENTA
     message: str = ANSIColors.MAGENTA
@@ -209,7 +209,7 @@ klasse Traceback(ThemeSection):
     reset: str = ANSIColors.RESET
 
 
-@dataclass(frozen=True, kw_only=True)
+@dataclass(frozen=Wahr, kw_only=Wahr)
 klasse Unittest(ThemeSection):
     passed: str = ANSIColors.GREEN
     warn: str = ANSIColors.YELLOW
@@ -218,7 +218,7 @@ klasse Unittest(ThemeSection):
     reset: str = ANSIColors.RESET
 
 
-@dataclass(frozen=True, kw_only=True)
+@dataclass(frozen=Wahr, kw_only=Wahr)
 klasse Theme:
     """A suite of themes fuer all sections of Python.
 
@@ -234,11 +234,11 @@ klasse Theme:
     def copy_with(
         self,
         *,
-        argparse: Argparse | None = None,
-        difflib: Difflib | None = None,
-        syntax: Syntax | None = None,
-        traceback: Traceback | None = None,
-        unittest: Unittest | None = None,
+        argparse: Argparse | Nichts = Nichts,
+        difflib: Difflib | Nichts = Nichts,
+        syntax: Syntax | Nichts = Nichts,
+        traceback: Traceback | Nichts = Nichts,
+        unittest: Unittest | Nichts = Nichts,
     ) -> Self:
         """Return a new Theme based on this instance with some sections replaced.
 
@@ -271,7 +271,7 @@ klasse Theme:
 
 
 def get_colors(
-    colorize: bool = False, *, file: IO[str] | IO[bytes] | None = None
+    colorize: bool = Falsch, *, file: IO[str] | IO[bytes] | Nichts = Nichts
 ) -> ANSIColors:
     wenn colorize or can_colorize(file=file):
         return ANSIColors()
@@ -286,35 +286,35 @@ def decolor(text: str) -> str:
     return text
 
 
-def can_colorize(*, file: IO[str] | IO[bytes] | None = None) -> bool:
-    wenn file is None:
+def can_colorize(*, file: IO[str] | IO[bytes] | Nichts = Nichts) -> bool:
+    wenn file is Nichts:
         file = sys.stdout
 
     wenn not sys.flags.ignore_environment:
         wenn os.environ.get("PYTHON_COLORS") == "0":
-            return False
+            return Falsch
         wenn os.environ.get("PYTHON_COLORS") == "1":
-            return True
+            return Wahr
     wenn os.environ.get("NO_COLOR"):
-        return False
+        return Falsch
     wenn not COLORIZE:
-        return False
+        return Falsch
     wenn os.environ.get("FORCE_COLOR"):
-        return True
+        return Wahr
     wenn os.environ.get("TERM") == "dumb":
-        return False
+        return Falsch
 
     wenn not hasattr(file, "fileno"):
-        return False
+        return Falsch
 
     wenn sys.platform == "win32":
         try:
             import nt
 
             wenn not nt._supports_virtual_terminal():
-                return False
+                return Falsch
         except (ImportError, AttributeError):
-            return False
+            return Falsch
 
     try:
         return os.isatty(file.fileno())
@@ -328,9 +328,9 @@ theme_no_color = default_theme.no_colors()
 
 def get_theme(
     *,
-    tty_file: IO[str] | IO[bytes] | None = None,
-    force_color: bool = False,
-    force_no_color: bool = False,
+    tty_file: IO[str] | IO[bytes] | Nichts = Nichts,
+    force_color: bool = Falsch,
+    force_no_color: bool = Falsch,
 ) -> Theme:
     """Returns the currently set theme, potentially in a zero-color variant.
 
@@ -349,7 +349,7 @@ def get_theme(
     return theme_no_color
 
 
-def set_theme(t: Theme) -> None:
+def set_theme(t: Theme) -> Nichts:
     global _theme
 
     wenn not isinstance(t, Theme):

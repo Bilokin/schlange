@@ -267,7 +267,7 @@ klasse TestFuncs(unittest.TestCase):
         self._saved_tracefunc = sys.gettrace()
 
     def tearDown(self):
-        wenn self._saved_tracefunc is not None:
+        wenn self._saved_tracefunc is not Nichts:
             sys.settrace(self._saved_tracefunc)
 
     def test_simple_caller(self):
@@ -361,7 +361,7 @@ klasse TestCoverage(unittest.TestCase):
         rmtree(TESTFN)
         unlink(TESTFN)
 
-    DEFAULT_SCRIPT = '''if True:
+    DEFAULT_SCRIPT = '''if Wahr:
         import unittest
         from test.test_pprint import QueryTestCase
         loader = unittest.TestLoader()
@@ -371,7 +371,7 @@ klasse TestCoverage(unittest.TestCase):
     def _coverage(self, tracer, cmd=DEFAULT_SCRIPT):
         tracer.run(cmd)
         r = tracer.results()
-        r.write_results(show_missing=True, summary=True, coverdir=TESTFN)
+        r.write_results(show_missing=Wahr, summary=Wahr, coverdir=TESTFN)
 
     @requires_resource('cpu')
     def test_coverage(self):
@@ -434,13 +434,13 @@ klasse Test_Ignore(unittest.TestCase):
     def test_ignored(self):
         jn = os.path.join
         ignore = trace._Ignore(['x', 'y.z'], [jn('foo', 'bar')])
-        self.assertTrue(ignore.names('x.py', 'x'))
-        self.assertFalse(ignore.names('xy.py', 'xy'))
-        self.assertFalse(ignore.names('y.py', 'y'))
-        self.assertTrue(ignore.names(jn('foo', 'bar', 'baz.py'), 'baz'))
-        self.assertFalse(ignore.names(jn('bar', 'z.py'), 'z'))
+        self.assertWahr(ignore.names('x.py', 'x'))
+        self.assertFalsch(ignore.names('xy.py', 'xy'))
+        self.assertFalsch(ignore.names('y.py', 'y'))
+        self.assertWahr(ignore.names(jn('foo', 'bar', 'baz.py'), 'baz'))
+        self.assertFalsch(ignore.names(jn('bar', 'z.py'), 'z'))
         # Matched before.
-        self.assertTrue(ignore.names(jn('bar', 'baz.py'), 'baz'))
+        self.assertWahr(ignore.names(jn('bar', 'baz.py'), 'baz'))
 
 # Created fuer Issue 31908 -- CLI utility not writing cover files
 klasse TestCoverageCommandLineOutput(unittest.TestCase):
@@ -471,8 +471,8 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
         argv = '-m trace --count'.split() + [self.codefile]
         status, stdout, stderr = assert_python_ok(*argv)
         self.assertEqual(stderr, b'')
-        self.assertFalse(os.path.exists(tracecoverpath))
-        self.assertTrue(os.path.exists(self.coverfile))
+        self.assertFalsch(os.path.exists(tracecoverpath))
+        self.assertWahr(os.path.exists(self.coverfile))
         with open(self.coverfile, encoding='iso-8859-15') as f:
             self.assertEqual(f.read(),
                 "       # coding: iso-8859-15\n"
@@ -484,7 +484,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
     def test_cover_files_written_with_highlight(self):
         argv = '-m trace --count --missing'.split() + [self.codefile]
         status, stdout, stderr = assert_python_ok(*argv)
-        self.assertTrue(os.path.exists(self.coverfile))
+        self.assertWahr(os.path.exists(self.coverfile))
         with open(self.coverfile, encoding='iso-8859-15') as f:
             self.assertEqual(f.read(), textwrap.dedent('''\
                        # coding: iso-8859-15

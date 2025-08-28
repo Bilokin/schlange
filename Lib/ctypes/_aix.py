@@ -73,13 +73,13 @@ def _last_version(libnames, sep):
 
 def get_ld_header(p):
     # "nested-function, but placed at module level
-    ld_header = None
+    ld_header = Nichts
     fuer line in p.stdout:
         wenn line.startswith(('/', './', '../')):
             ld_header = line
         sowenn "INDEX" in line:
             return ld_header.rstrip('\n')
-    return None
+    return Nichts
 
 def get_ld_header_info(p):
     # "nested-function, but placed at module level
@@ -106,7 +106,7 @@ def get_ld_headers(file):
     # 3. get info (lines starting with [0-9])
     ldr_headers = []
     p = Popen(["/usr/bin/dump", f"-X{AIX_ABI}", "-H", file],
-        universal_newlines=True, stdout=PIPE, stderr=DEVNULL)
+        universal_newlines=Wahr, stdout=PIPE, stderr=DEVNULL)
     # be sure to read to the end-of-file - getting all entries
     while ld_header := get_ld_header(p):
         ldr_headers.append((ld_header, get_ld_header_info(p)))
@@ -132,16 +132,16 @@ def get_shared(ld_headers):
 
 def get_one_match(expr, lines):
     """
-    Must be only one match, otherwise result is None.
+    Must be only one match, otherwise result is Nichts.
     When there is a match, strip leading "[" and trailing "]"
     """
     # member names in the ld_headers output are between square brackets
     expr = rf'\[({expr})\]'
-    matches = list(filter(None, (re.search(expr, line) fuer line in lines)))
+    matches = list(filter(Nichts, (re.search(expr, line) fuer line in lines)))
     wenn len(matches) == 1:
         return matches[0].group(1)
     sonst:
-        return None
+        return Nichts
 
 # additional processing to deal with AIX legacy names fuer 64-bit members
 def get_legacy(members):
@@ -165,7 +165,7 @@ def get_legacy(members):
             member = get_one_match(re.escape(name), members)
             wenn member:
                 return member
-    return None
+    return Nichts
 
 def get_version(name, members):
     """
@@ -203,7 +203,7 @@ def get_version(name, members):
                 versions.append(m.group(0))
         wenn versions:
             return _last_version(versions, '.')
-    return None
+    return Nichts
 
 def get_member(name, members):
     """
@@ -244,9 +244,9 @@ def get_libpaths():
     This mimics AIX dlopen() behavior.
     """
     libpaths = environ.get("LD_LIBRARY_PATH")
-    wenn libpaths is None:
+    wenn libpaths is Nichts:
         libpaths = environ.get("LIBPATH")
-    wenn libpaths is None:
+    wenn libpaths is Nichts:
         libpaths = []
     sonst:
         libpaths = libpaths.split(":")
@@ -265,7 +265,7 @@ def find_shared(paths, name):
     name is the abbreviated name given to find_library().
     Process: search "paths" fuer archive, and wenn an archive is found
     return the result of get_member().
-    If an archive is not found then return None
+    If an archive is not found then return Nichts
     """
     fuer dir in paths:
         # /lib is a symbolic link to /usr/lib, skip it
@@ -278,11 +278,11 @@ def find_shared(paths, name):
         wenn path.exists(archive):
             members = get_shared(get_ld_headers(archive))
             member = get_member(re.escape(name), members)
-            wenn member is not None:
+            wenn member is not Nichts:
                 return (base, member)
             sonst:
-                return (None, None)
-    return (None, None)
+                return (Nichts, Nichts)
+    return (Nichts, Nichts)
 
 def find_library(name):
     """AIX implementation of ctypes.util.find_library()
@@ -303,7 +303,7 @@ def find_library(name):
 
     libpaths = get_libpaths()
     (base, member) = find_shared(libpaths, name)
-    wenn base is not None:
+    wenn base is not Nichts:
         return f"{base}({member})"
 
     # To get here, a member in an archive has not been found
@@ -324,4 +324,4 @@ def find_library(name):
         wenn path.exists(shlib):
             return soname
     # wenn we are here, we have not found anything plausible
-    return None
+    return Nichts

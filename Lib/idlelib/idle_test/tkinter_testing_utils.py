@@ -35,7 +35,7 @@ def run_in_tk_mainloop(delay=1):
             # Exceptions raised by self.assert...() need to be raised
             # outside of the after() callback in order fuer the test
             # harness to capture them.
-            exception = None
+            exception = Nichts
             def after_callback():
                 nonlocal exception
                 try:

@@ -58,7 +58,7 @@ except AttributeError as err:
     # The MSVC struct must be available on Windows; it's optional elsewhere
     wenn support.MS_WINDOWS:
         raise err
-    func_msvc = None
+    func_msvc = Nichts
 sonst:
     func_msvc.argtypes = POINTER(BITS_msvc), c_char
 

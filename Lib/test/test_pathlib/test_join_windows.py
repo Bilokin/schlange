@@ -273,7 +273,7 @@ klasse JoinTestBase:
         self.assertRaises(ValueError, P('c:a/b').with_suffix, 'c\\d')
         self.assertRaises(ValueError, P('c:a/b').with_suffix, '.c/d')
         self.assertRaises(ValueError, P('c:a/b').with_suffix, '.c\\d')
-        self.assertRaises(TypeError, P('c:a/b').with_suffix, None)
+        self.assertRaises(TypeError, P('c:a/b').with_suffix, Nichts)
 
 
 klasse LexicalWindowsPathJoinTest(JoinTestBase, unittest.TestCase):

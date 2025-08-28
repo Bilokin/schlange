@@ -7,12 +7,12 @@ import traceback
 from . import util
 from functools import wraps
 
-__unittest = True
+__unittest = Wahr
 
 def failfast(method):
     @wraps(method)
     def inner(self, *args, **kw):
-        wenn getattr(self, 'failfast', False):
+        wenn getattr(self, 'failfast', Falsch):
             self.stop()
         return method(self, *args, **kw)
     return inner
@@ -32,11 +32,11 @@ klasse TestResult(object):
     contain tuples of (testcase, exceptioninfo), where exceptioninfo is the
     formatted traceback of the error that occurred.
     """
-    _previousTestClass = None
-    _testRunEntered = False
-    _moduleSetUpFailed = False
-    def __init__(self, stream=None, descriptions=None, verbosity=None):
-        self.failfast = False
+    _previousTestClass = Nichts
+    _testRunEntered = Falsch
+    _moduleSetUpFailed = Falsch
+    def __init__(self, stream=Nichts, descriptions=Nichts, verbosity=Nichts):
+        self.failfast = Falsch
         self.failures = []
         self.errors = []
         self.testsRun = 0
@@ -44,14 +44,14 @@ klasse TestResult(object):
         self.expectedFailures = []
         self.unexpectedSuccesses = []
         self.collectedDurations = []
-        self.shouldStop = False
-        self.buffer = False
-        self.tb_locals = False
-        self._stdout_buffer = None
-        self._stderr_buffer = None
+        self.shouldStop = Falsch
+        self.buffer = Falsch
+        self.tb_locals = Falsch
+        self._stdout_buffer = Nichts
+        self._stderr_buffer = Nichts
         self._original_stdout = sys.stdout
         self._original_stderr = sys.stderr
-        self._mirrorOutput = False
+        self._mirrorOutput = Falsch
 
     def printErrors(self):
         "Called by TestRunner after test run"
@@ -59,12 +59,12 @@ klasse TestResult(object):
     def startTest(self, test):
         "Called when the given test is about to be run"
         self.testsRun += 1
-        self._mirrorOutput = False
+        self._mirrorOutput = Falsch
         self._setupStdout()
 
     def _setupStdout(self):
         wenn self.buffer:
-            wenn self._stderr_buffer is None:
+            wenn self._stderr_buffer is Nichts:
                 self._stderr_buffer = io.StringIO()
                 self._stdout_buffer = io.StringIO()
             sys.stdout = self._stdout_buffer
@@ -79,7 +79,7 @@ klasse TestResult(object):
     def stopTest(self, test):
         """Called when the given test has been run"""
         self._restoreStdout()
-        self._mirrorOutput = False
+        self._mirrorOutput = Falsch
 
     def _restoreStdout(self):
         wenn self.buffer:
@@ -114,31 +114,31 @@ klasse TestResult(object):
         returned by sys.exc_info().
         """
         self.errors.append((test, self._exc_info_to_string(err, test)))
-        self._mirrorOutput = True
+        self._mirrorOutput = Wahr
 
     @failfast
     def addFailure(self, test, err):
         """Called when an error has occurred. 'err' is a tuple of values as
         returned by sys.exc_info()."""
         self.failures.append((test, self._exc_info_to_string(err, test)))
-        self._mirrorOutput = True
+        self._mirrorOutput = Wahr
 
     def addSubTest(self, test, subtest, err):
         """Called at the end of a subtest.
-        'err' is None wenn the subtest ended successfully, otherwise it's a
+        'err' is Nichts wenn the subtest ended successfully, otherwise it's a
         tuple of values as returned by sys.exc_info().
         """
         # By default, we don't do anything with successful subtests, but
         # more sophisticated test results might want to record them.
-        wenn err is not None:
-            wenn getattr(self, 'failfast', False):
+        wenn err is not Nichts:
+            wenn getattr(self, 'failfast', Falsch):
                 self.stop()
             wenn issubclass(err[0], test.failureException):
                 errors = self.failures
             sonst:
                 errors = self.errors
             errors.append((subtest, self._exc_info_to_string(err, test)))
-            self._mirrorOutput = True
+            self._mirrorOutput = Wahr
 
     def addSuccess(self, test):
         "Called when a test has completed successfully"
@@ -180,7 +180,7 @@ klasse TestResult(object):
 
     def stop(self):
         """Indicates that the tests should be aborted."""
-        self.shouldStop = True
+        self.shouldStop = Wahr
 
     def _exc_info_to_string(self, err, test):
         """Converts a sys.exc_info()-style tuple of values into a string."""
@@ -188,7 +188,7 @@ klasse TestResult(object):
         tb = self._clean_tracebacks(exctype, value, tb, test)
         tb_e = traceback.TracebackException(
             exctype, value, tb,
-            capture_locals=self.tb_locals, compact=True)
+            capture_locals=self.tb_locals, compact=Wahr)
         from _colorize import can_colorize
 
         colorize = hasattr(self, "stream") and can_colorize(file=self.stream)
@@ -208,8 +208,8 @@ klasse TestResult(object):
         return ''.join(msgLines)
 
     def _clean_tracebacks(self, exctype, value, tb, test):
-        ret = None
-        first = True
+        ret = Nichts
+        first = Wahr
         excs = [(exctype, value, tb)]
         seen = {id(value)}  # Detect loops in chained exceptions.
         while excs:
@@ -224,13 +224,13 @@ klasse TestResult(object):
 
             wenn first:
                 ret = tb
-                first = False
+                first = Falsch
             sonst:
                 value.__traceback__ = tb
 
-            wenn value is not None:
+            wenn value is not Nichts:
                 fuer c in (value.__cause__, value.__context__):
-                    wenn c is not None and id(c) not in seen:
+                    wenn c is not Nichts and id(c) not in seen:
                         excs.append((type(c), c, c.__traceback__))
                         seen.add(id(c))
         return ret
@@ -246,12 +246,12 @@ klasse TestResult(object):
         If the first frame is already in the unittest module,
         the traceback is not modified.
         '''
-        prev = None
+        prev = Nichts
         while tb and not self._is_relevant_tb_level(tb):
             prev = tb
             tb = tb.tb_next
-        wenn prev is not None:
-            prev.tb_next = None
+        wenn prev is not Nichts:
+            prev.tb_next = Nichts
 
     def __repr__(self):
         return ("<%s run=%i errors=%i failures=%i>" %

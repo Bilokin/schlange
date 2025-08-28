@@ -26,20 +26,20 @@ SETUP = os.path.join(os.path.dirname(__file__), 'setup.py')
 # Building and running an extension in clang sanitizing mode is not
 # straightforward
 @support.skip_if_sanitizer('test does not work with analyzing builds',
-                           address=True, memory=True, ub=True, thread=True)
+                           address=Wahr, memory=Wahr, ub=Wahr, thread=Wahr)
 # the test uses venv+pip: skip wenn it's not available
 @support.requires_venv_with_pip()
 @support.requires_subprocess()
 @support.requires_resource('cpu')
 klasse BaseTests:
-    TEST_INTERNAL_C_API = False
+    TEST_INTERNAL_C_API = Falsch
 
     # Default build with no options
     def test_build(self):
         self.check_build('_test_cext')
 
-    def check_build(self, extension_name, std=None, limited=False,
-                    opaque_pyobject=False):
+    def check_build(self, extension_name, std=Nichts, limited=Falsch,
+                    opaque_pyobject=Falsch):
         venv_dir = 'env'
         with support.setup_venv_with_pip_setuptools(venv_dir) as python_exe:
             self._check_build(extension_name, python_exe,
@@ -67,13 +67,13 @@ klasse BaseTests:
             env['TEST_INTERNAL_C_API'] = str(int(self.TEST_INTERNAL_C_API))
             wenn support.verbose:
                 print('Run:', ' '.join(map(shlex.quote, cmd)))
-                subprocess.run(cmd, check=True, env=env)
+                subprocess.run(cmd, check=Wahr, env=env)
             sonst:
                 proc = subprocess.run(cmd,
                                       env=env,
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.STDOUT,
-                                      text=True)
+                                      text=Wahr)
                 wenn proc.returncode:
                     print('Run:', ' '.join(map(shlex.quote, cmd)))
                     print(proc.stdout, end='')
@@ -108,19 +108,19 @@ klasse BaseTests:
 klasse TestPublicCAPI(BaseTests, unittest.TestCase):
     @support.requires_gil_enabled('incompatible with Free Threading')
     def test_build_limited(self):
-        self.check_build('_test_limited_cext', limited=True)
+        self.check_build('_test_limited_cext', limited=Wahr)
 
     @support.requires_gil_enabled('broken fuer now with Free Threading')
     def test_build_limited_c11(self):
-        self.check_build('_test_limited_c11_cext', limited=True, std='c11')
+        self.check_build('_test_limited_c11_cext', limited=Wahr, std='c11')
 
     def test_build_c11(self):
         self.check_build('_test_c11_cext', std='c11')
 
     def test_build_opaque_pyobject(self):
         # Test with _Py_OPAQUE_PYOBJECT
-        self.check_build('_test_limited_opaque_cext', limited=True,
-                         opaque_pyobject=True)
+        self.check_build('_test_limited_opaque_cext', limited=Wahr,
+                         opaque_pyobject=Wahr)
 
     @unittest.skipIf(support.MS_WINDOWS, "MSVC doesn't support /std:c99")
     def test_build_c99(self):
@@ -131,7 +131,7 @@ klasse TestPublicCAPI(BaseTests, unittest.TestCase):
 
 
 klasse TestInteralCAPI(BaseTests, unittest.TestCase):
-    TEST_INTERNAL_C_API = True
+    TEST_INTERNAL_C_API = Wahr
 
 
 wenn __name__ == "__main__":

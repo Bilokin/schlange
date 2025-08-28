@@ -24,7 +24,7 @@ def negate(condition: str) -> str:
 is_a_simple_defined = re.compile(r'^defined\s*\(\s*[A-Za-z0-9_]+\s*\)$').match
 
 
-@dc.dataclass(repr=False)
+@dc.dataclass(repr=Falsch)
 klasse Monitor:
     """
     A simple C preprocessor that scans C source and computes, line by line,
@@ -39,12 +39,12 @@ klasse Monitor:
     """
     filename: str
     _: dc.KW_ONLY
-    verbose: bool = False
+    verbose: bool = Falsch
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         self.stack: TokenStack = []
-        self.in_comment = False
-        self.continuation: str | None = None
+        self.in_comment = Falsch
+        self.continuation: str | Nichts = Nichts
         self.line_number = 0
 
     def __repr__(self) -> str:
@@ -67,7 +67,7 @@ klasse Monitor:
     def fail(self, msg: str) -> NoReturn:
         raise ParseError(msg, filename=self.filename, lineno=self.line_number)
 
-    def writeline(self, line: str) -> None:
+    def writeline(self, line: str) -> Nichts:
         self.line_number += 1
         line = line.strip()
 
@@ -78,7 +78,7 @@ klasse Monitor:
 
         wenn self.continuation:
             line = self.continuation + line
-            self.continuation = None
+            self.continuation = Nichts
 
         wenn not line:
             return
@@ -108,9 +108,9 @@ klasse Monitor:
                 #    */ #include <stdio.h>
                 # maybe other compilers too?
                 _, _, line = line.partition('*/')
-                self.in_comment = False
+                self.in_comment = Falsch
 
-        while True:
+        while Wahr:
             wenn '/*' in line:
                 wenn self.in_comment:
                     self.fail("Nested block comment!")
@@ -122,7 +122,7 @@ klasse Monitor:
                     line = before.rstrip() + ' ' + after.lstrip()
                     continue
                 # comment continues to eol
-                self.in_comment = True
+                self.in_comment = Wahr
                 line = before.rstrip()
             break
 
@@ -182,11 +182,11 @@ klasse Monitor:
             print(self.status())
 
 
-def _main(filenames: list[str] | None = None) -> None:
+def _main(filenames: list[str] | Nichts = Nichts) -> Nichts:
     filenames = filenames or sys.argv[1:]
     fuer filename in filenames:
         with open(filename) as f:
-            cpp = Monitor(filename, verbose=True)
+            cpp = Monitor(filename, verbose=Wahr)
             print()
             print(filename)
             fuer line in f:

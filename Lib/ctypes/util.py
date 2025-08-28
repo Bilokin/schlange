@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import sys
 
-# find_library(name) returns the pathname of a library, or None.
+# find_library(name) returns the pathname of a library, or Nichts.
 wenn os.name == "nt":
 
     def _get_build_version():
@@ -29,14 +29,14 @@ wenn os.name == "nt":
         wenn majorVersion >= 6:
             return majorVersion + minorVersion
         # sonst we don't know what version of the compiler this is
-        return None
+        return Nichts
 
     def find_msvcrt():
         """Return the name of the VC runtime dll"""
         version = _get_build_version()
-        wenn version is None:
+        wenn version is Nichts:
             # better be safe than sorry
-            return None
+            return Nichts
         wenn version <= 6:
             clibname = 'msvcrt'
         sowenn version <= 13:
@@ -44,7 +44,7 @@ wenn os.name == "nt":
         sonst:
             # CRT is no longer directly loadable. See issue23606 fuer the
             # discussion about alternative approaches.
-            return None
+            return Nichts
 
         # If python was built with in debug mode
         import importlib.machinery
@@ -65,7 +65,7 @@ wenn os.name == "nt":
             fname = fname + ".dll"
             wenn os.path.isfile(fname):
                 return fname
-        return None
+        return Nichts
 
     # Listing loaded DLLs on Windows relies on the following APIs:
     # https://learn.microsoft.com/windows/win32/api/psapi/nf-psapi-enumprocessmodules
@@ -73,7 +73,7 @@ wenn os.name == "nt":
     import ctypes
     from ctypes import wintypes
 
-    _kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+    _kernel32 = ctypes.WinDLL('kernel32', use_last_error=Wahr)
     _get_current_process = _kernel32["GetCurrentProcess"]
     _get_current_process.restype = wintypes.HANDLE
 
@@ -85,7 +85,7 @@ wenn os.name == "nt":
         wintypes.DWORD,
     )
 
-    _psapi = ctypes.WinDLL('psapi', use_last_error=True)
+    _psapi = ctypes.WinDLL('psapi', use_last_error=Wahr)
     _enum_process_modules = _psapi["EnumProcessModules"]
     _enum_process_modules.restype = wintypes.BOOL
     _enum_process_modules.argtypes = (
@@ -99,14 +99,14 @@ wenn os.name == "nt":
         name = (wintypes.WCHAR * 32767)() # UNICODE_STRING_MAX_CHARS
         wenn _k32_get_module_file_name(module, name, len(name)):
             return name.value
-        return None
+        return Nichts
 
 
     def _get_module_handles():
         process = _get_current_process()
         space_needed = wintypes.DWORD()
         n = 1024
-        while True:
+        while Wahr:
             modules = (wintypes.HMODULE * n)()
             wenn not _enum_process_modules(process,
                                          modules,
@@ -123,7 +123,7 @@ wenn os.name == "nt":
         """Return a list of loaded shared libraries in the current process."""
         modules = _get_module_handles()
         libraries = [name fuer h in modules
-                        wenn (name := _get_module_filename(h)) is not None]
+                        wenn (name := _get_module_filename(h)) is not Nichts]
         return libraries
 
 sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos"}:
@@ -137,7 +137,7 @@ sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos
                 return _dyld_find(name)
             except ValueError:
                 continue
-        return None
+        return Nichts
 
     # Listing loaded libraries on Apple systems relies on the following API:
     # https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/dyld.3.html
@@ -151,7 +151,7 @@ sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos
         """Return a list of loaded shared libraries in the current process."""
         num_images = _libc._dyld_image_count()
         libraries = [os.fsdecode(name) fuer i in range(num_images)
-                        wenn (name := _dyld_get_image_name(i)) is not None]
+                        wenn (name := _dyld_get_image_name(i)) is not Nichts]
 
         return libraries
 
@@ -171,20 +171,20 @@ sowenn sys.platform == "android":
             directory += "64"
 
         fname = f"{directory}/lib{name}.so"
-        return fname wenn os.path.isfile(fname) sonst None
+        return fname wenn os.path.isfile(fname) sonst Nichts
 
 sowenn os.name == "posix":
     # Andreas Degert's find functions, using gcc, /sbin/ldconfig, objdump
     import re, tempfile
 
     def _is_elf(filename):
-        "Return True wenn the given file is an ELF file"
+        "Return Wahr wenn the given file is an ELF file"
         elf_header = b'\x7fELF'
         try:
             with open(filename, 'br') as thefile:
                 return thefile.read(4) == elf_header
         except FileNotFoundError:
-            return False
+            return Falsch
 
     def _findLib_gcc(name):
         # Run GCC's linker with the -t (aka --trace) option and examine the
@@ -198,7 +198,7 @@ sowenn os.name == "posix":
             c_compiler = shutil.which('cc')
         wenn not c_compiler:
             # No C compiler available, give up
-            return None
+            return Nichts
 
         temp = tempfile.NamedTemporaryFile()
         try:
@@ -213,7 +213,7 @@ sowenn os.name == "posix":
                                         stderr=subprocess.STDOUT,
                                         env=env)
             except OSError:  # E.g. bad executable
-                return None
+                return Nichts
             with proc:
                 trace = proc.stdout.read()
         finally:
@@ -225,7 +225,7 @@ sowenn os.name == "posix":
                 pass
         res = re.findall(expr, trace)
         wenn not res:
-            return None
+            return Nichts
 
         fuer file in res:
             # Check wenn the given file is an elf file: gcc can report
@@ -240,41 +240,41 @@ sowenn os.name == "posix":
         # use /usr/ccs/bin/dump on solaris
         def _get_soname(f):
             wenn not f:
-                return None
+                return Nichts
 
             try:
                 proc = subprocess.Popen(("/usr/ccs/bin/dump", "-Lpv", f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
             except OSError:  # E.g. command not found
-                return None
+                return Nichts
             with proc:
                 data = proc.stdout.read()
             res = re.search(br'\[.*\]\sSONAME\s+([^\s]+)', data)
             wenn not res:
-                return None
+                return Nichts
             return os.fsdecode(res.group(1))
     sonst:
         def _get_soname(f):
             # assuming GNU binutils / ELF
             wenn not f:
-                return None
+                return Nichts
             objdump = shutil.which('objdump')
             wenn not objdump:
                 # objdump is not available, give up
-                return None
+                return Nichts
 
             try:
                 proc = subprocess.Popen((objdump, '-p', '-j', '.dynamic', f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
             except OSError:  # E.g. bad executable
-                return None
+                return Nichts
             with proc:
                 dump = proc.stdout.read()
             res = re.search(br'\sSONAME\s+([^\s]+)', dump)
             wenn not res:
-                return None
+                return Nichts
             return os.fsdecode(res.group(1))
 
     wenn sys.platform.startswith(("freebsd", "openbsd", "dragonfly")):
@@ -315,7 +315,7 @@ sowenn os.name == "posix":
 
         def _findLib_crle(name, is64):
             wenn not os.path.exists('/usr/bin/crle'):
-                return None
+                return Nichts
 
             env = dict(os.environ)
             env['LC_ALL'] = 'C'
@@ -325,14 +325,14 @@ sowenn os.name == "posix":
             sonst:
                 args = ('/usr/bin/crle',)
 
-            paths = None
+            paths = Nichts
             try:
                 proc = subprocess.Popen(args,
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL,
                                         env=env)
             except OSError:  # E.g. bad executable
-                return None
+                return Nichts
             with proc:
                 fuer line in proc.stdout:
                     line = line.strip()
@@ -340,16 +340,16 @@ sowenn os.name == "posix":
                         paths = os.fsdecode(line).split()[4]
 
             wenn not paths:
-                return None
+                return Nichts
 
             fuer dir in paths.split(":"):
                 libfile = os.path.join(dir, "lib%s.so" % name)
                 wenn os.path.exists(libfile):
                     return libfile
 
-            return None
+            return Nichts
 
-        def find_library(name, is64 = False):
+        def find_library(name, is64 = Falsch):
             return _get_soname(_findLib_crle(name, is64) or _findLib_gcc(name))
 
     sonst:
@@ -393,11 +393,11 @@ sowenn os.name == "posix":
                 fuer d in libpath.split(':'):
                     cmd.extend(['-L', d])
             cmd.extend(['-o', os.devnull, '-l%s' % name])
-            result = None
+            result = Nichts
             try:
                 p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE,
-                                     universal_newlines=True)
+                                     universal_newlines=Wahr)
                 out, _ = p.communicate()
                 res = re.findall(expr, os.fsdecode(out))
                 fuer file in res:
@@ -408,7 +408,7 @@ sowenn os.name == "posix":
                         continue
                     return os.fsdecode(file)
             except Exception:
-                pass  # result will be None
+                pass  # result will be Nichts
             return result
 
         def find_library(name):
@@ -427,7 +427,7 @@ sowenn os.name == "posix":
 wenn (os.name == "posix" and
     sys.platform not in {"darwin", "ios", "tvos", "watchos"}):
     import ctypes
-    wenn hasattr((_libc := ctypes.CDLL(None)), "dl_iterate_phdr"):
+    wenn hasattr((_libc := ctypes.CDLL(Nichts)), "dl_iterate_phdr"):
 
         klasse _dl_phdr_info(ctypes.Structure):
             _fields_ = [

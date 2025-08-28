@@ -26,13 +26,13 @@ klasse TestPackages(unittest.TestCase):
 
     def test_version_no_dir(self):
         # Test version() without a wheel package directory
-        with unittest.mock.patch.object(ensurepip, '_WHEEL_PKG_DIR', None):
+        with unittest.mock.patch.object(ensurepip, '_WHEEL_PKG_DIR', Nichts):
             # when the bundled pip wheel is used, we get _PIP_VERSION
             self.assertEqual(ensurepip._PIP_VERSION, ensurepip.version())
 
     def test_selected_wheel_path_no_dir(self):
         pip_filename = f'pip-{ensurepip._PIP_VERSION}-py3-none-any.whl'
-        with unittest.mock.patch.object(ensurepip, '_WHEEL_PKG_DIR', None):
+        with unittest.mock.patch.object(ensurepip, '_WHEEL_PKG_DIR', Nichts):
             with ensurepip._get_pip_whl_path_ctx() as bundled_wheel_path:
                 self.assertEqual(pip_filename, bundled_wheel_path.name)
 
@@ -101,7 +101,7 @@ klasse TestBootstrap(EnsurepipMixin, unittest.TestCase):
         )
 
     def test_bootstrapping_with_user(self):
-        ensurepip.bootstrap(user=True)
+        ensurepip.bootstrap(user=Wahr)
 
         self.run_pip.assert_called_once_with(
             [
@@ -112,7 +112,7 @@ klasse TestBootstrap(EnsurepipMixin, unittest.TestCase):
         )
 
     def test_bootstrapping_with_upgrade(self):
-        ensurepip.bootstrap(upgrade=True)
+        ensurepip.bootstrap(upgrade=Wahr)
 
         self.run_pip.assert_called_once_with(
             [
@@ -160,17 +160,17 @@ klasse TestBootstrap(EnsurepipMixin, unittest.TestCase):
         self.assertEqual(self.os_environ["ENSUREPIP_OPTIONS"], "install")
 
     def test_bootstrapping_with_alt_install(self):
-        ensurepip.bootstrap(altinstall=True)
+        ensurepip.bootstrap(altinstall=Wahr)
         self.assertEqual(self.os_environ["ENSUREPIP_OPTIONS"], "altinstall")
 
     def test_bootstrapping_with_default_pip(self):
-        ensurepip.bootstrap(default_pip=True)
+        ensurepip.bootstrap(default_pip=Wahr)
         self.assertNotIn("ENSUREPIP_OPTIONS", self.os_environ)
 
     def test_altinstall_default_pip_conflict(self):
         with self.assertRaises(ValueError):
-            ensurepip.bootstrap(altinstall=True, default_pip=True)
-        self.assertFalse(self.run_pip.called)
+            ensurepip.bootstrap(altinstall=Wahr, default_pip=Wahr)
+        self.assertFalsch(self.run_pip.called)
 
     def test_pip_environment_variables_removed(self):
         # ensurepip deliberately ignores all pip environment variables
@@ -187,8 +187,8 @@ klasse TestBootstrap(EnsurepipMixin, unittest.TestCase):
 
 @contextlib.contextmanager
 def fake_pip(version=ensurepip.version()):
-    wenn version is None:
-        pip = None
+    wenn version is Nichts:
+        pip = Nichts
     sonst:
         klasse FakePip():
             __version__ = version
@@ -207,9 +207,9 @@ def fake_pip(version=ensurepip.version()):
 klasse TestUninstall(EnsurepipMixin, unittest.TestCase):
 
     def test_uninstall_skipped_when_not_installed(self):
-        with fake_pip(None):
+        with fake_pip(Nichts):
             ensurepip._uninstall_helper()
-        self.assertFalse(self.run_pip.called)
+        self.assertFalsch(self.run_pip.called)
 
     def test_uninstall_skipped_with_warning_for_wrong_version(self):
         with fake_pip("not a valid version"):
@@ -217,7 +217,7 @@ klasse TestUninstall(EnsurepipMixin, unittest.TestCase):
                 ensurepip._uninstall_helper()
         warning = stderr.getvalue().strip()
         self.assertIn("only uninstall a matching version", warning)
-        self.assertFalse(self.run_pip.called)
+        self.assertFalsch(self.run_pip.called)
 
 
     def test_uninstall(self):
@@ -289,7 +289,7 @@ klasse TestBootstrappingMainFunction(EnsurepipMixin, unittest.TestCase):
                 ensurepip._main(["--version"])
         result = stdout.getvalue().strip()
         self.assertEqual(result, EXPECTED_VERSION_OUTPUT)
-        self.assertFalse(self.run_pip.called)
+        self.assertFalsch(self.run_pip.called)
 
     def test_basic_bootstrapping(self):
         exit_code = ensurepip._main([])
@@ -320,7 +320,7 @@ klasse TestUninstallationMainFunction(EnsurepipMixin, unittest.TestCase):
                 ensurepip._uninstall._main(["--version"])
         result = stdout.getvalue().strip()
         self.assertEqual(result, EXPECTED_VERSION_OUTPUT)
-        self.assertFalse(self.run_pip.called)
+        self.assertFalsch(self.run_pip.called)
 
     def test_basic_uninstall(self):
         with fake_pip():

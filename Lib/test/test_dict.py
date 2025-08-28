@@ -61,21 +61,21 @@ klasse DictTest(unittest.TestCase):
 
         self.assertEqual(c, {0: 0, 1: 1, 2: 2, 3: 3})
 
-        self.assertIs(a.__or__(None), NotImplemented)
+        self.assertIs(a.__or__(Nichts), NotImplemented)
         self.assertIs(a.__or__(()), NotImplemented)
         self.assertIs(a.__or__("BAD"), NotImplemented)
         self.assertIs(a.__or__(""), NotImplemented)
 
-        self.assertRaises(TypeError, a.__ior__, None)
+        self.assertRaises(TypeError, a.__ior__, Nichts)
         self.assertEqual(a.__ior__(()), {0: 0, 1: 1, 2: 1})
         self.assertRaises(ValueError, a.__ior__, "BAD")
         self.assertEqual(a.__ior__(""), {0: 0, 1: 1, 2: 1})
 
     def test_bool(self):
-        self.assertIs(not {}, True)
-        self.assertTrue({1: 2})
-        self.assertIs(bool({}), False)
-        self.assertIs(bool({1: 2}), True)
+        self.assertIs(not {}, Wahr)
+        self.assertWahr({1: 2})
+        self.assertIs(bool({}), Falsch)
+        self.assertIs(bool({1: 2}), Wahr)
 
     def test_keys(self):
         d = {}
@@ -87,7 +87,7 @@ klasse DictTest(unittest.TestCase):
         self.assertIn('b', k)
         self.assertIn('a', d)
         self.assertIn('b', d)
-        self.assertRaises(TypeError, d.keys, None)
+        self.assertRaises(TypeError, d.keys, Nichts)
         self.assertEqual(repr(dict(a=1).keys()), "dict_keys(['a'])")
 
     def test_values(self):
@@ -95,7 +95,7 @@ klasse DictTest(unittest.TestCase):
         self.assertEqual(set(d.values()), set())
         d = {1:2}
         self.assertEqual(set(d.values()), {2})
-        self.assertRaises(TypeError, d.values, None)
+        self.assertRaises(TypeError, d.values, Nichts)
         self.assertEqual(repr(dict(a=1).values()), "dict_values([1])")
 
     def test_items(self):
@@ -104,7 +104,7 @@ klasse DictTest(unittest.TestCase):
 
         d = {1:2}
         self.assertEqual(set(d.items()), {(1, 2)})
-        self.assertRaises(TypeError, d.items, None)
+        self.assertRaises(TypeError, d.items, Nichts)
         self.assertEqual(repr(dict(a=1).items()), "dict_items([('a', 1)])")
 
     def test_views_mapping(self):
@@ -130,8 +130,8 @@ klasse DictTest(unittest.TestCase):
     def test_contains(self):
         d = {}
         self.assertNotIn('a', d)
-        self.assertFalse('a' in d)
-        self.assertTrue('a' not in d)
+        self.assertFalsch('a' in d)
+        self.assertWahr('a' not in d)
         d = {'a': 1, 'b': 2}
         self.assertIn('a', d)
         self.assertIn('b', d)
@@ -171,7 +171,7 @@ klasse DictTest(unittest.TestCase):
         klasse Exc(Exception): pass
 
         klasse BadHash(object):
-            fail = False
+            fail = Falsch
             def __hash__(self):
                 wenn self.fail:
                     raise Exc()
@@ -180,7 +180,7 @@ klasse DictTest(unittest.TestCase):
 
         x = BadHash()
         d[x] = 42
-        x.fail = True
+        x.fail = Wahr
         self.assertRaises(Exc, d.__getitem__, x)
 
     def test_clear(self):
@@ -188,7 +188,7 @@ klasse DictTest(unittest.TestCase):
         d.clear()
         self.assertEqual(d, {})
 
-        self.assertRaises(TypeError, d.clear, None)
+        self.assertRaises(TypeError, d.clear, Nichts)
 
     def test_update(self):
         d = {}
@@ -200,7 +200,7 @@ klasse DictTest(unittest.TestCase):
         d.update()
         self.assertEqual(d, {1:1, 2:2, 3:3})
 
-        self.assertRaises((TypeError, AttributeError), d.update, None)
+        self.assertRaises((TypeError, AttributeError), d.update, Nichts)
 
         klasse SimpleUserDict:
             def __init__(self):
@@ -324,26 +324,26 @@ klasse DictTest(unittest.TestCase):
         })
 
     def test_fromkeys(self):
-        self.assertEqual(dict.fromkeys('abc'), {'a':None, 'b':None, 'c':None})
+        self.assertEqual(dict.fromkeys('abc'), {'a':Nichts, 'b':Nichts, 'c':Nichts})
         d = {}
         self.assertIsNot(d.fromkeys('abc'), d)
-        self.assertEqual(d.fromkeys('abc'), {'a':None, 'b':None, 'c':None})
+        self.assertEqual(d.fromkeys('abc'), {'a':Nichts, 'b':Nichts, 'c':Nichts})
         self.assertEqual(d.fromkeys((4,5),0), {4:0, 5:0})
         self.assertEqual(d.fromkeys([]), {})
         def g():
             yield 1
-        self.assertEqual(d.fromkeys(g()), {1:None})
+        self.assertEqual(d.fromkeys(g()), {1:Nichts})
         self.assertRaises(TypeError, {}.fromkeys, 3)
         klasse dictlike(dict): pass
-        self.assertEqual(dictlike.fromkeys('a'), {'a':None})
-        self.assertEqual(dictlike().fromkeys('a'), {'a':None})
+        self.assertEqual(dictlike.fromkeys('a'), {'a':Nichts})
+        self.assertEqual(dictlike().fromkeys('a'), {'a':Nichts})
         self.assertIsInstance(dictlike.fromkeys('a'), dictlike)
         self.assertIsInstance(dictlike().fromkeys('a'), dictlike)
         klasse mydict(dict):
             def __new__(cls):
                 return collections.UserDict()
         ud = mydict.fromkeys('ab')
-        self.assertEqual(ud, {'a':None, 'b':None})
+        self.assertEqual(ud, {'a':Nichts, 'b':Nichts})
         self.assertIsInstance(ud, collections.UserDict)
         self.assertRaises(TypeError, dict.fromkeys)
 
@@ -386,7 +386,7 @@ klasse DictTest(unittest.TestCase):
                 return d
         d = {i : i fuer i in range(1000)}
         res = d.copy()
-        res.update(a=None, b=None, c=None)
+        res.update(a=Nichts, b=Nichts, c=Nichts)
         self.assertEqual(baddict3.fromkeys({"a", "b", "c"}), res)
 
         # test slow path when object is a proper subclass of dict
@@ -395,7 +395,7 @@ klasse DictTest(unittest.TestCase):
                 dict.__init__(self, d)
         d = {i : i fuer i in range(1000)}
         res = d.copy()
-        res.update(a=None, b=None, c=None)
+        res.update(a=Nichts, b=Nichts, c=Nichts)
         self.assertEqual(baddict4.fromkeys({"a", "b", "c"}), res)
 
     def test_copy(self):
@@ -409,7 +409,7 @@ klasse DictTest(unittest.TestCase):
         self.assertNotEqual(copy, d)
 
         self.assertEqual({}.copy(), {})
-        self.assertRaises(TypeError, d.copy, None)
+        self.assertRaises(TypeError, d.copy, Nichts)
 
     def test_copy_fuzz(self):
         fuer dict_size in [10, 100, 1000, 10000, 100000]:
@@ -452,22 +452,22 @@ klasse DictTest(unittest.TestCase):
 
     def test_get(self):
         d = {}
-        self.assertIs(d.get('c'), None)
+        self.assertIs(d.get('c'), Nichts)
         self.assertEqual(d.get('c', 3), 3)
         d = {'a': 1, 'b': 2}
-        self.assertIs(d.get('c'), None)
+        self.assertIs(d.get('c'), Nichts)
         self.assertEqual(d.get('c', 3), 3)
         self.assertEqual(d.get('a'), 1)
         self.assertEqual(d.get('a', 3), 1)
         self.assertRaises(TypeError, d.get)
-        self.assertRaises(TypeError, d.get, None, None, None)
+        self.assertRaises(TypeError, d.get, Nichts, Nichts, Nichts)
 
     def test_setdefault(self):
         # dict.setdefault()
         d = {}
-        self.assertIs(d.setdefault('key0'), None)
+        self.assertIs(d.setdefault('key0'), Nichts)
         d.setdefault('key0', [])
-        self.assertIs(d.setdefault('key0'), None)
+        self.assertIs(d.setdefault('key0'), Nichts)
         d.setdefault('key', []).append(3)
         self.assertEqual(d['key'][0], 3)
         d.setdefault('key', []).append(4)
@@ -477,7 +477,7 @@ klasse DictTest(unittest.TestCase):
         klasse Exc(Exception): pass
 
         klasse BadHash(object):
-            fail = False
+            fail = Falsch
             def __hash__(self):
                 wenn self.fail:
                     raise Exc()
@@ -486,7 +486,7 @@ klasse DictTest(unittest.TestCase):
 
         x = BadHash()
         d[x] = 42
-        x.fail = True
+        x.fail = Wahr
         self.assertRaises(Exc, d.setdefault, x, [])
 
     def test_setdefault_atomic(self):
@@ -550,9 +550,9 @@ klasse DictTest(unittest.TestCase):
                     self.assertEqual(va, int(ka))
                     kb, vb = tb = b.popitem()
                     self.assertEqual(vb, int(kb))
-                    self.assertFalse(copymode < 0 and ta != tb)
-                self.assertFalse(a)
-                self.assertFalse(b)
+                    self.assertFalsch(copymode < 0 and ta != tb)
+                self.assertFalsch(a)
+                self.assertFalsch(b)
 
         d = {}
         self.assertRaises(KeyError, d.popitem)
@@ -578,7 +578,7 @@ klasse DictTest(unittest.TestCase):
         klasse Exc(Exception): pass
 
         klasse BadHash(object):
-            fail = False
+            fail = Falsch
             def __hash__(self):
                 wenn self.fail:
                     raise Exc()
@@ -587,7 +587,7 @@ klasse DictTest(unittest.TestCase):
 
         x = BadHash()
         d[x] = 42
-        x.fail = True
+        x.fail = Wahr
         self.assertRaises(Exc, d.pop, x)
 
     def test_mutating_iteration(self):
@@ -628,7 +628,7 @@ klasse DictTest(unittest.TestCase):
     def test_mutating_lookup(self):
         # changing dict during a lookup (issue #14417)
         klasse NastyKey:
-            mutate_dict = None
+            mutate_dict = Nichts
 
             def __init__(self, value):
                 self.value = value
@@ -640,7 +640,7 @@ klasse DictTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn NastyKey.mutate_dict:
                     mydict, key = NastyKey.mutate_dict
-                    NastyKey.mutate_dict = None
+                    NastyKey.mutate_dict = Nichts
                     del mydict[key]
                 return self.value == other.value
 
@@ -709,39 +709,39 @@ klasse DictTest(unittest.TestCase):
         larger2 = fn({1:1, 2:2, 3:3})
         larger3 = fn({4:1, 2:2, 3:3})
 
-        self.assertTrue(smaller <  larger)
-        self.assertTrue(smaller <= larger)
-        self.assertTrue(larger >  smaller)
-        self.assertTrue(larger >= smaller)
+        self.assertWahr(smaller <  larger)
+        self.assertWahr(smaller <= larger)
+        self.assertWahr(larger >  smaller)
+        self.assertWahr(larger >= smaller)
 
-        self.assertFalse(smaller >= larger)
-        self.assertFalse(smaller >  larger)
-        self.assertFalse(larger  <= smaller)
-        self.assertFalse(larger  <  smaller)
+        self.assertFalsch(smaller >= larger)
+        self.assertFalsch(smaller >  larger)
+        self.assertFalsch(larger  <= smaller)
+        self.assertFalsch(larger  <  smaller)
 
-        self.assertFalse(smaller <  larger3)
-        self.assertFalse(smaller <= larger3)
-        self.assertFalse(larger3 >  smaller)
-        self.assertFalse(larger3 >= smaller)
+        self.assertFalsch(smaller <  larger3)
+        self.assertFalsch(smaller <= larger3)
+        self.assertFalsch(larger3 >  smaller)
+        self.assertFalsch(larger3 >= smaller)
 
         # Inequality strictness
-        self.assertTrue(larger2 >= larger)
-        self.assertTrue(larger2 <= larger)
-        self.assertFalse(larger2 > larger)
-        self.assertFalse(larger2 < larger)
+        self.assertWahr(larger2 >= larger)
+        self.assertWahr(larger2 <= larger)
+        self.assertFalsch(larger2 > larger)
+        self.assertFalsch(larger2 < larger)
 
-        self.assertTrue(larger == larger2)
-        self.assertTrue(smaller != larger)
+        self.assertWahr(larger == larger2)
+        self.assertWahr(smaller != larger)
 
         # There is an optimization on the zero-element case.
-        self.assertTrue(empty == empty2)
-        self.assertFalse(empty != empty2)
-        self.assertFalse(empty == smaller)
-        self.assertTrue(empty != smaller)
+        self.assertWahr(empty == empty2)
+        self.assertFalsch(empty != empty2)
+        self.assertFalsch(empty == smaller)
+        self.assertWahr(empty != smaller)
 
         # With the same size, an elementwise compare happens
-        self.assertTrue(larger != larger3)
-        self.assertFalse(larger == larger3)
+        self.assertWahr(larger != larger3)
+        self.assertFalsch(larger == larger3)
 
     def test_errors_in_view_containment_check(self):
         klasse C:
@@ -807,13 +807,13 @@ klasse DictTest(unittest.TestCase):
 
     def test_dictview_mixed_set_operations(self):
         # Just a few fuer .keys()
-        self.assertTrue({1:1}.keys() == {1})
-        self.assertTrue({1} == {1:1}.keys())
+        self.assertWahr({1:1}.keys() == {1})
+        self.assertWahr({1} == {1:1}.keys())
         self.assertEqual({1:1}.keys() | {2}, {1, 2})
         self.assertEqual({2} | {1:1}.keys(), {1, 2})
         # And a few fuer .items()
-        self.assertTrue({1:1}.items() == {(1,1)})
-        self.assertTrue({(1,1)} == {1:1}.items())
+        self.assertWahr({1:1}.items() == {(1,1)})
+        self.assertWahr({(1,1)} == {1:1}.items())
         self.assertEqual({1:1}.items() | {2}, {(1,1), 2})
         self.assertEqual({2} | {1:1}.items(), {(1,1), 2})
 
@@ -847,7 +847,7 @@ klasse DictTest(unittest.TestCase):
         klasse F(dict):
             def __init__(self):
                 # An instance variable __missing__ should have no effect
-                self.__missing__ = lambda key: None
+                self.__missing__ = lambda key: Nichts
         f = F()
         with self.assertRaises(KeyError) as c:
             f[42]
@@ -921,24 +921,24 @@ klasse DictTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn resizing:
                     d.clear()
-                return False
+                return Falsch
         d = {}
-        resizing = False
+        resizing = Falsch
         d[X()] = 1
         d[X()] = 2
         d[X()] = 3
         d[X()] = 4
         d[X()] = 5
         # now trigger a resize
-        resizing = True
+        resizing = Wahr
         d[9] = 6
 
     def test_empty_presized_dict_in_freelist(self):
         # Bug #3537: wenn an empty but presized dict with a size larger
         # than 7 was in the freelist, it triggered an assertion failure
         with self.assertRaises(ZeroDivisionError):
-            d = {'a': 1 // 0, 'b': None, 'c': None, 'd': None, 'e': None,
-                 'f': None, 'g': None, 'h': None}
+            d = {'a': 1 // 0, 'b': Nichts, 'c': Nichts, 'd': Nichts, 'e': Nichts,
+                 'f': Nichts, 'g': Nichts, 'h': Nichts}
         d = {}
 
     def test_container_iterator(self):
@@ -955,7 +955,7 @@ klasse DictTest(unittest.TestCase):
             obj.x = iter(obj.v)
             del obj, container
             gc.collect()
-            self.assertIs(ref(), None, "Cycle was not collected")
+            self.assertIs(ref(), Nichts, "Cycle was not collected")
 
     def make_shared_key_dict(self, n):
         klasse C:
@@ -1054,8 +1054,8 @@ klasse DictTest(unittest.TestCase):
                     self.a, self.b, self.c = 1, 2, 3
                 sonst:
                     self.c, self.b, self.a = 1, 2, 3
-        o = C(True)
-        o = C(False)  # o.__dict__ has reversed order.
+        o = C(Wahr)
+        o = C(Falsch)  # o.__dict__ has reversed order.
         self.assertEqual(list(o.__dict__), ["c", "b", "a"])
 
         d = {}
@@ -1239,7 +1239,7 @@ klasse DictTest(unittest.TestCase):
 
             def __eq__(self, o):
                 other.clear()
-                return False
+                return Falsch
 
         l = [(i,0) fuer i in range(1, 1337)]
         other = dict(l)
@@ -1261,24 +1261,24 @@ klasse DictTest(unittest.TestCase):
 
             def __eq__(self, other):
                 dict_a.clear()
-                return True
+                return Wahr
 
             def __hash__(self):
                 return 13
 
         dict_a = {X(): 0}
         dict_b = {X(): X()}
-        self.assertTrue(dict_a == dict_b)
+        self.assertWahr(dict_a == dict_b)
 
         # test fix fuer seg fault reported in bpo-38588 part 1.
         klasse Y:
             def __eq__(self, other):
                 dict_d.clear()
-                return True
+                return Wahr
 
         dict_c = {0: Y()}
         dict_d = {0: set()}
-        self.assertTrue(dict_c == dict_d)
+        self.assertWahr(dict_c == dict_d)
 
     def test_fromkeys_operator_modifying_dict_operand(self):
         # test fix fuer seg fault reported in issue 27945 part 4a.
@@ -1289,7 +1289,7 @@ klasse DictTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn len(d) > 1:
                     d.clear()
-                return False
+                return Falsch
 
         d = {}  # this is required to exist so that d can be constructed!
         d = {X(1): 1, X(2): 2}
@@ -1307,7 +1307,7 @@ klasse DictTest(unittest.TestCase):
             def __eq__(self, other):
                 wenn len(d) > 1:
                     d.clear()
-                return False
+                return Falsch
 
         d = {}  # this is required to exist so that d can be constructed!
         d = {X(1), X(2)}
@@ -1336,7 +1336,7 @@ klasse DictTest(unittest.TestCase):
                 return hash('test')
 
         d = {S(): 'value'}
-        self.assertFalse('test' in d)
+        self.assertFalsch('test' in d)
 
     def test_init_use_after_free(self):
         klasse X:
@@ -1357,7 +1357,7 @@ klasse DictTest(unittest.TestCase):
         def iter_and_mutate():
             fuer result in d.items():
                 wenn result[0] == 2:
-                    d[2] = None # free d[2] --> X(2).__del__ was called
+                    d[2] = Nichts # free d[2] --> X(2).__del__ was called
 
         self.assertRaises(RuntimeError, iter_and_mutate)
 
@@ -1428,19 +1428,19 @@ klasse DictTest(unittest.TestCase):
         # bpo-42536: dict.items's tuple-reuse speed trick breaks the GC's
         # assumptions about what can be untracked. Make sure we re-track result
         # tuples whenever we reuse them.
-        it = iter({None: []}.items())
+        it = iter({Nichts: []}.items())
         gc.collect()
         # That GC collection probably untracked the recycled internal result
-        # tuple, which is initialized to (None, None). Make sure it's re-tracked
+        # tuple, which is initialized to (Nichts, Nichts). Make sure it's re-tracked
         # when it's mutated and returned from __next__:
-        self.assertTrue(gc.is_tracked(next(it)))
+        self.assertWahr(gc.is_tracked(next(it)))
 
     @support.cpython_only
     def test_dict_items_result_gc_reversed(self):
         # Same as test_dict_items_result_gc above, but reversed.
-        it = reversed({None: []}.items())
+        it = reversed({Nichts: []}.items())
         gc.collect()
-        self.assertTrue(gc.is_tracked(next(it)))
+        self.assertWahr(gc.is_tracked(next(it)))
 
     def test_store_evilattr(self):
         klasse EvilAttr:
@@ -1478,8 +1478,8 @@ klasse DictTest(unittest.TestCase):
                 nonlocal eq_count
                 wenn isinstance(other, Key3) or isinstance(other, str) and other == 'key3':
                     eq_count += 1
-                    return True
-                return False
+                    return Wahr
+                return Falsch
 
         key3_1 = StrSub('key3')
         key3_2 = Key3()
@@ -1539,10 +1539,10 @@ klasse DictTest(unittest.TestCase):
                 # `'key1'`, but (at least on cpython) is a different object.
                 noninterned_key1 = 'ke'
                 noninterned_key1 += 'y1'
-                wenn support.check_impl_detail(cpython=True):
+                wenn support.check_impl_detail(cpython=Wahr):
                     # suppress a SyntaxWarning
                     interned_key1 = 'key1'
-                    self.assertFalse(noninterned_key1 is interned_key1)
+                    self.assertFalsch(noninterned_key1 is interned_key1)
                 self.assertEqual(d.get(noninterned_key1), 42)
 
                 self.assertEqual(d.get('key3'), 44)

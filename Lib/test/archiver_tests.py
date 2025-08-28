@@ -28,7 +28,7 @@ klasse OverwriteTests:
         self.create_file(target, b'content')
         with self.open(self.ar_with_file) as ar:
             self.extractall(ar)
-        self.assertTrue(os.path.isfile(target))
+        self.assertWahr(os.path.isfile(target))
         with open(target, 'rb') as f:
             self.assertEqual(f.read(), b'newcontent')
 
@@ -37,15 +37,15 @@ klasse OverwriteTests:
         os.mkdir(target)
         with self.open(self.ar_with_dir) as ar:
             self.extractall(ar)
-        self.assertTrue(os.path.isdir(target))
+        self.assertWahr(os.path.isdir(target))
 
     def test_overwrite_dir_as_implicit_dir(self):
         target = os.path.join(self.testdir, 'test')
         os.mkdir(target)
         with self.open(self.ar_with_implicit_dir) as ar:
             self.extractall(ar)
-        self.assertTrue(os.path.isdir(target))
-        self.assertTrue(os.path.isfile(os.path.join(target, 'file')))
+        self.assertWahr(os.path.isdir(target))
+        self.assertWahr(os.path.isfile(os.path.join(target, 'file')))
         with open(os.path.join(target, 'file'), 'rb') as f:
             self.assertEqual(f.read(), b'newcontent')
 
@@ -56,7 +56,7 @@ klasse OverwriteTests:
             with self.assertRaises(PermissionError wenn sys.platform == 'win32'
                                    sonst IsADirectoryError):
                 self.extractall(ar)
-        self.assertTrue(os.path.isdir(target))
+        self.assertWahr(os.path.isdir(target))
 
     def test_overwrite_file_as_dir(self):
         target = os.path.join(self.testdir, 'test')
@@ -64,7 +64,7 @@ klasse OverwriteTests:
         with self.open(self.ar_with_dir) as ar:
             with self.assertRaises(FileExistsError):
                 self.extractall(ar)
-        self.assertTrue(os.path.isfile(target))
+        self.assertWahr(os.path.isfile(target))
         with open(target, 'rb') as f:
             self.assertEqual(f.read(), b'content')
 
@@ -75,7 +75,7 @@ klasse OverwriteTests:
             with self.assertRaises(FileNotFoundError wenn sys.platform == 'win32'
                                    sonst NotADirectoryError):
                 self.extractall(ar)
-        self.assertTrue(os.path.isfile(target))
+        self.assertWahr(os.path.isfile(target))
         with open(target, 'rb') as f:
             self.assertEqual(f.read(), b'content')
 
@@ -88,8 +88,8 @@ klasse OverwriteTests:
         os.symlink('test2', target)
         with self.open(self.ar_with_file) as ar:
             self.extractall(ar)
-        self.assertTrue(os.path.islink(target))
-        self.assertTrue(os.path.isfile(target2))
+        self.assertWahr(os.path.islink(target))
+        self.assertWahr(os.path.isfile(target2))
         with open(target2, 'rb') as f:
             self.assertEqual(f.read(), b'newcontent')
 
@@ -101,8 +101,8 @@ klasse OverwriteTests:
         os.symlink('test2', target)
         with self.open(self.ar_with_file) as ar:
             self.extractall(ar)
-        self.assertTrue(os.path.islink(target))
-        self.assertTrue(os.path.isfile(target2))
+        self.assertWahr(os.path.islink(target))
+        self.assertWahr(os.path.isfile(target2))
         with open(target2, 'rb') as f:
             self.assertEqual(f.read(), b'newcontent')
 
@@ -112,11 +112,11 @@ klasse OverwriteTests:
         target = os.path.join(self.testdir, 'test')
         target2 = os.path.join(self.testdir, 'test2')
         os.mkdir(target2)
-        os.symlink('test2', target, target_is_directory=True)
+        os.symlink('test2', target, target_is_directory=Wahr)
         with self.open(self.ar_with_dir) as ar:
             self.extractall(ar)
-        self.assertTrue(os.path.islink(target))
-        self.assertTrue(os.path.isdir(target2))
+        self.assertWahr(os.path.islink(target))
+        self.assertWahr(os.path.isdir(target2))
 
     @os_helper.skip_unless_symlink
     def test_overwrite_dir_symlink_as_implicit_dir(self):
@@ -124,12 +124,12 @@ klasse OverwriteTests:
         target = os.path.join(self.testdir, 'test')
         target2 = os.path.join(self.testdir, 'test2')
         os.mkdir(target2)
-        os.symlink('test2', target, target_is_directory=True)
+        os.symlink('test2', target, target_is_directory=Wahr)
         with self.open(self.ar_with_implicit_dir) as ar:
             self.extractall(ar)
-        self.assertTrue(os.path.islink(target))
-        self.assertTrue(os.path.isdir(target2))
-        self.assertTrue(os.path.isfile(os.path.join(target2, 'file')))
+        self.assertWahr(os.path.islink(target))
+        self.assertWahr(os.path.isdir(target2))
+        self.assertWahr(os.path.isfile(os.path.join(target2, 'file')))
         with open(os.path.join(target2, 'file'), 'rb') as f:
             self.assertEqual(f.read(), b'newcontent')
 
@@ -137,23 +137,23 @@ klasse OverwriteTests:
     def test_overwrite_broken_dir_symlink_as_dir(self):
         target = os.path.join(self.testdir, 'test')
         target2 = os.path.join(self.testdir, 'test2')
-        os.symlink('test2', target, target_is_directory=True)
+        os.symlink('test2', target, target_is_directory=Wahr)
         with self.open(self.ar_with_dir) as ar:
             with self.assertRaises(FileExistsError):
                 self.extractall(ar)
-        self.assertTrue(os.path.islink(target))
-        self.assertFalse(os.path.exists(target2))
+        self.assertWahr(os.path.islink(target))
+        self.assertFalsch(os.path.exists(target2))
 
     @os_helper.skip_unless_symlink
     def test_overwrite_broken_dir_symlink_as_implicit_dir(self):
         target = os.path.join(self.testdir, 'test')
         target2 = os.path.join(self.testdir, 'test2')
-        os.symlink('test2', target, target_is_directory=True)
+        os.symlink('test2', target, target_is_directory=Wahr)
         with self.open(self.ar_with_implicit_dir) as ar:
             with self.assertRaises(FileExistsError):
                 self.extractall(ar)
-        self.assertTrue(os.path.islink(target))
-        self.assertFalse(os.path.exists(target2))
+        self.assertWahr(os.path.islink(target))
+        self.assertFalsch(os.path.exists(target2))
 
     def test_concurrent_extract_dir(self):
         target = os.path.join(self.testdir, 'test')
@@ -163,7 +163,7 @@ klasse OverwriteTests:
         with swap_attr(os, 'mkdir', concurrent_mkdir) as orig_mkdir:
             with self.open(self.ar_with_dir) as ar:
                 self.extractall(ar)
-        self.assertTrue(os.path.isdir(target))
+        self.assertWahr(os.path.isdir(target))
 
     def test_concurrent_extract_implicit_dir(self):
         target = os.path.join(self.testdir, 'test')
@@ -173,5 +173,5 @@ klasse OverwriteTests:
         with swap_attr(os, 'mkdir', concurrent_mkdir) as orig_mkdir:
             with self.open(self.ar_with_implicit_dir) as ar:
                 self.extractall(ar)
-        self.assertTrue(os.path.isdir(target))
-        self.assertTrue(os.path.isfile(os.path.join(target, 'file')))
+        self.assertWahr(os.path.isdir(target))
+        self.assertWahr(os.path.isfile(os.path.join(target, 'file')))

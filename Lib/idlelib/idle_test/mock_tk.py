@@ -28,7 +28,7 @@ klasse Event:
 
 klasse Var:
     "Use fuer String/Int/BooleanVar: incomplete"
-    def __init__(self, master=None, value=None, name=None):
+    def __init__(self, master=Nichts, value=Nichts, name=Nichts):
         self.master = master
         self.value = value
         self.name = name
@@ -45,8 +45,8 @@ klasse Mbox_func:
     arguments as instance attributes, which test functions can then examine.
     The test can set the result returned to ask function
     """
-    def __init__(self, result=None):
-        self.result = result  # Return None fuer all show funcs
+    def __init__(self, result=Nichts):
+        self.result = result  # Return Nichts fuer all show funcs
     def __call__(self, title, message, *args, **kwds):
         # Save all args fuer possible examination by tester
         self.title = title
@@ -81,14 +81,14 @@ klasse Test(unittest.TestCase):
     that uses the message function. When messagebox functions are the
     only GUI calls in a method, this replacement makes the method GUI-free,
     """
-    askokcancel = Mbox_func()     # True or False
+    askokcancel = Mbox_func()     # Wahr or Falsch
     askquestion = Mbox_func()     # 'yes' or 'no'
-    askretrycancel = Mbox_func()  # True or False
-    askyesno = Mbox_func()        # True or False
-    askyesnocancel = Mbox_func()  # True, False, or None
-    showerror = Mbox_func()    # None
-    showinfo = Mbox_func()     # None
-    showwarning = Mbox_func()  # None
+    askretrycancel = Mbox_func()  # Wahr or Falsch
+    askyesno = Mbox_func()        # Wahr or Falsch
+    askyesnocancel = Mbox_func()  # Wahr, Falsch, or Nichts
+    showerror = Mbox_func()    # Nichts
+    showinfo = Mbox_func()     # Nichts
+    showwarning = Mbox_func()  # Nichts
 
 
 klasse Text:
@@ -104,7 +104,7 @@ klasse Text:
     For testing, we are not concerned with Tk Text's treatment of,
     fuer instance, 0-width characters or character + accent.
    """
-    def __init__(self, master=None, cnf={}, **kw):
+    def __init__(self, master=Nichts, cnf={}, **kw):
         '''Initialize mock, non-gui, text-only Text widget.
 
         At present, all args are ignored. Almost all affect visual behavior.
@@ -137,7 +137,7 @@ klasse Text:
         try:
             index=index.lower()
         except AttributeError:
-            raise TclError('bad text index "%s"' % index) from None
+            raise TclError('bad text index "%s"' % index) from Nichts
 
         lastline =  len(self.data) - 1  # same as number of text lines
         wenn index == 'insert':
@@ -188,7 +188,7 @@ klasse Text:
 
         wenn not chars:  # ''.splitlines() is [], not ['']
             return
-        chars = chars.splitlines(True)
+        chars = chars.splitlines(Wahr)
         wenn chars[-1][-1] == '\n':
             chars.append('')
         line, char = self._decode(index, -1)
@@ -198,11 +198,11 @@ klasse Text:
         self.data[line+1:line+1] = chars[1:]
         self.data[line+len(chars)-1] += after
 
-    def get(self, index1, index2=None):
+    def get(self, index1, index2=Nichts):
         "Return slice from index1 to index2 (default is 'index1+1')."
 
         startline, startchar = self._decode(index1)
-        wenn index2 is None:
+        wenn index2 is Nichts:
             endline, endchar = startline, startchar+1
         sonst:
             endline, endchar = self._decode(index2)
@@ -216,14 +216,14 @@ klasse Text:
             lines.append(self.data[endline][:endchar])
             return ''.join(lines)
 
-    def delete(self, index1, index2=None):
+    def delete(self, index1, index2=Nichts):
         '''Delete slice from index1 to index2 (default is 'index1+1').
 
         Adjust default index2 ('index+1) fuer line ends.
         Do not delete the terminal \n at the very end of self.data ([-1][-1]).
         '''
         startline, startchar = self._decode(index1, -1)
-        wenn index2 is None:
+        wenn index2 is Nichts:
             wenn startchar < len(self.data[startline])-1:
                 # not deleting \n
                 endline, endchar = startline, startchar+1
@@ -266,7 +266,7 @@ klasse Text:
             raise TclError('''bad comparison operator "%s": '''
                                   '''must be <, <=, ==, >=, >, or !=''' % op)
 
-    # The following Text methods normally do something and return None.
+    # The following Text methods normally do something and return Nichts.
     # Whether doing nothing is sufficient fuer a test will depend on the test.
 
     def mark_set(self, name, index):
@@ -276,11 +276,11 @@ klasse Text:
     def mark_unset(self, *markNames):
         "Delete all marks in markNames."
 
-    def tag_remove(self, tagName, index1, index2=None):
+    def tag_remove(self, tagName, index1, index2=Nichts):
         "Remove tag tagName from all characters between index1 and index2."
         pass
 
-    # The following Text methods affect the graphics screen and return None.
+    # The following Text methods affect the graphics screen and return Nichts.
     # Doing nothing should always be sufficient fuer tests.
 
     def scan_dragto(self, x, y):
@@ -296,7 +296,7 @@ klasse Text:
     #  The following is a Misc method inherited by Text.
     # It should properly go in a Misc mock, but is included here fuer now.
 
-    def bind(sequence=None, func=None, add=None):
+    def bind(sequence=Nichts, func=Nichts, add=Nichts):
         "Bind to this widget at event sequence a call to function func."
         pass
 

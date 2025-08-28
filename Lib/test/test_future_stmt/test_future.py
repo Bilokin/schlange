@@ -36,9 +36,9 @@ klasse FutureTest(unittest.TestCase):
                           *,
                           lineno=1,
                           message=TOP_LEVEL_MSG, offset=1,
-                          parametrize_docstring=True):
+                          parametrize_docstring=Wahr):
         code = dedent(code.lstrip('\n'))
-        fuer add_docstring in ([False, True] wenn parametrize_docstring sonst [False]):
+        fuer add_docstring in ([Falsch, Wahr] wenn parametrize_docstring sonst [Falsch]):
             with self.subTest(code=code, add_docstring=add_docstring):
                 wenn add_docstring:
                     code = '"""Docstring"""\n' + code
@@ -117,7 +117,7 @@ klasse FutureTest(unittest.TestCase):
             "this isn't a doc string"
             from __future__ import nested_scopes
         """
-        self.assertSyntaxError(code, lineno=3, parametrize_docstring=False)
+        self.assertSyntaxError(code, lineno=3, parametrize_docstring=Falsch)
 
     def test_multiple_import_statements_on_same_line(self):
         # With `\`:
@@ -208,17 +208,17 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         from __future__ import annotations
         def f() -> {ann}:
             ...
-        def g(arg: {ann}) -> None:
+        def g(arg: {ann}) -> Nichts:
             ...
         async def f2() -> {ann}:
             ...
-        async def g2(arg: {ann}) -> None:
+        async def g2(arg: {ann}) -> Nichts:
             ...
         klasse H:
             var: {ann}
             object.attr: {ann}
         var: {ann}
-        var2: {ann} = None
+        var2: {ann} = Nichts
         object.attr: {ann}
         """
     )
@@ -240,10 +240,10 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         return func_ret_ann
 
     def assertAnnotationEqual(
-        self, annotation, expected=None, drop_parens=False, is_tuple=False,
+        self, annotation, expected=Nichts, drop_parens=Falsch, is_tuple=Falsch,
     ):
         actual = self.getActual(annotation)
-        wenn expected is None:
+        wenn expected is Nichts:
             expected = annotation wenn not is_tuple sonst annotation[1:-1]
         wenn drop_parens:
             self.assertNotEqual(actual, expected)
@@ -266,16 +266,16 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("u'some_string'")
         eq("b'\\xa3'")
         eq('Name')
-        eq('None')
-        eq('True')
-        eq('False')
+        eq('Nichts')
+        eq('Wahr')
+        eq('Falsch')
         eq('1')
         eq('1.0')
         eq('1j')
-        eq('True or False')
-        eq('True or False or None')
-        eq('True and False')
-        eq('True and False and None')
+        eq('Wahr or Falsch')
+        eq('Wahr or Falsch or Nichts')
+        eq('Wahr and Falsch')
+        eq('Wahr and Falsch and Nichts')
         eq('Name1 and Name2 or Name3')
         eq('Name1 and (Name2 or Name3)')
         eq('Name1 or Name2 and Name3')
@@ -295,15 +295,15 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq('+value')
         eq('++value')
         eq('-1')
-        eq('~int and not v1 ^ 123 + v2 | True')
+        eq('~int and not v1 ^ 123 + v2 | Wahr')
         eq('a + (not b)')
-        eq('lambda: None')
-        eq('lambda arg: None')
-        eq('lambda a=True: a')
-        eq('lambda a, b, c=True: a')
-        eq("lambda a, b, c=True, *, d=1 << v2, e='str': a")
-        eq("lambda a, b, c=True, *vararg, d, e='str', **kwargs: a + b")
-        eq("lambda a, /, b, c=True, *vararg, d, e='str', **kwargs: a + b")
+        eq('lambda: Nichts')
+        eq('lambda arg: Nichts')
+        eq('lambda a=Wahr: a')
+        eq('lambda a, b, c=Wahr: a')
+        eq("lambda a, b, c=Wahr, *, d=1 << v2, e='str': a")
+        eq("lambda a, b, c=Wahr, *vararg, d, e='str', **kwargs: a + b")
+        eq("lambda a, /, b, c=Wahr, *vararg, d, e='str', **kwargs: a + b")
         eq('lambda x, /: x')
         eq('lambda x=1, /: x')
         eq('lambda x, /, y: x + y')
@@ -316,9 +316,9 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq('lambda x=1, y=2, z=3, /, w=4, *, l, l2, **kwargs: x + y + z + w + l + l2')
         eq('lambda x, /, y=1, *, z: x + y + z')
         eq('lambda x: lambda y: x + y')
-        eq('1 wenn True sonst 2')
-        eq('str or None wenn int or True sonst str or bytes or None')
-        eq('str or None wenn (1 wenn True sonst 2) sonst str or bytes or None')
+        eq('1 wenn Wahr sonst 2')
+        eq('str or Nichts wenn int or Wahr sonst str or bytes or Nichts')
+        eq('str or Nichts wenn (1 wenn Wahr sonst 2) sonst str or bytes or Nichts')
         eq("0 wenn not x sonst 1 wenn x > 0 sonst -1")
         eq("(1 wenn x > 0 sonst -1) wenn x sonst 0")
         eq("{'2.7': dead, '3.7': long_live or die_hard}")
@@ -326,7 +326,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("{**a, **b, **c}")
         eq("{'2.7', '3.6', '3.7', '3.8', '3.9', '4.0' wenn gilectomy sonst '3.10'}")
         eq("{*a, *b, *c}")
-        eq("({'a': 'b'}, True or False, +value, 'string', b'bytes') or None")
+        eq("({'a': 'b'}, Wahr or Falsch, +value, 'string', b'bytes') or Nichts")
         eq("()")
         eq("(a,)")
         eq("(a, b)")
@@ -403,14 +403,14 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("slice[1:2, *Ts, 3:4]")
         eq("slice[a, b:c, d:e:f]")
         eq("slice[(x fuer x in a)]")
-        eq('str or None wenn sys.version_info[0] > (3,) sonst str or bytes or None')
+        eq('str or Nichts wenn sys.version_info[0] > (3,) sonst str or bytes or Nichts')
         eq("f'f-string without formatted values is just a string'")
         eq("f'{{NOT a formatted value}}'")
         eq("f'some f-string with {a} {few():.2f} {formatted.values!r}'")
         eq('''f"{f'{nested} inner'} outer"''')
         eq("f'space between opening braces: { {a fuer a in (1, 2, 3)}}'")
         eq("f'{(lambda x: x)}'")
-        eq("f'{(None wenn a sonst lambda x: x)}'")
+        eq("f'{(Nichts wenn a sonst lambda x: x)}'")
         eq("f'{x}'")
         eq("f'{x!r}'")
         eq("f'{x!a}'")
@@ -469,7 +469,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         """))
 
         foo = namespace.pop("foo")
-        self.assertIsNone(foo().__closure__)
+        self.assertIsNichts(foo().__closure__)
         self.assertEqual(foo.__code__.co_cellvars, ())
         self.assertEqual(foo().__code__.co_freevars, ())
 
@@ -493,7 +493,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
             self._exec_future("async def test() -> something((a := b)): pass")
 
         with self.assertRaises(SyntaxError):
-            self._exec_future("test: await some.complicated[0].call(with_args=True or 1 is not 1)")
+            self._exec_future("test: await some.complicated[0].call(with_args=Wahr or 1 is not 1)")
 
         with self.assertRaises(SyntaxError):
             self._exec_future("test: f'{(x := 10):=10}'")

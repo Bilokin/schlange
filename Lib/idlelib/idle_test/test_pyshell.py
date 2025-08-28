@@ -48,14 +48,14 @@ klasse PyShellFileListTest(unittest.TestCase):
     def test_init(self):
         psfl = pyshell.PyShellFileList(self.root)
         self.assertEqual(psfl.EditorWindow, pyshell.PyShellEditorWindow)
-        self.assertIsNone(psfl.pyshell)
+        self.assertIsNichts(psfl.pyshell)
 
 # The following sometimes causes 'invalid command name "109734456recolorize"'.
 # Uncommenting after_cancel above prevents this, but results in
 # TclError: bad window path name ".!listedtoplevel.!frame.text"
 # which is normally prevented by after_cancel.
 ##    def test_openshell(self):
-##        pyshell.use_subprocess = False
+##        pyshell.use_subprocess = Falsch
 ##        ps = pyshell.PyShellFileList(self.root).open_shell()
 ##        self.assertIsInstance(ps, pyshell.PyShell)
 

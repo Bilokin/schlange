@@ -50,7 +50,7 @@ def _write_file_prefix(f, interpreter):
         f.write(shebang)
 
 
-def _copy_archive(archive, new_archive, interpreter=None):
+def _copy_archive(archive, new_archive, interpreter=Nichts):
     """Copy an application archive, modifying the shebang line."""
     with _maybe_open(archive, 'rb') as src:
         # Skip the shebang line from the source.
@@ -73,8 +73,8 @@ def _copy_archive(archive, new_archive, interpreter=None):
         os.chmod(new_archive, os.stat(new_archive).st_mode | stat.S_IEXEC)
 
 
-def create_archive(source, target=None, interpreter=None, main=None,
-                   filter=None, compressed=False):
+def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
+                   filter=Nichts, compressed=Falsch):
     """Create an application archive from SOURCE.
 
     The SOURCE can be the name of a directory, or a filename or a file-like
@@ -87,20 +87,20 @@ def create_archive(source, target=None, interpreter=None, main=None,
 
     The created application archive will have a shebang line specifying
     that it should run with INTERPRETER (there will be no shebang line if
-    INTERPRETER is None), and a __main__.py which runs MAIN (if MAIN is
+    INTERPRETER is Nichts), and a __main__.py which runs MAIN (if MAIN is
     not specified, an existing __main__.py will be used).  It is an error
     to specify MAIN fuer anything other than a directory source with no
     __main__.py, and it is an error to omit MAIN wenn the directory has no
     __main__.py.
     """
     # Are we copying an existing archive?
-    source_is_file = False
+    source_is_file = Falsch
     wenn hasattr(source, 'read') and hasattr(source, 'readline'):
-        source_is_file = True
+        source_is_file = Wahr
     sonst:
         source = pathlib.Path(source)
         wenn source.is_file():
-            source_is_file = True
+            source_is_file = Wahr
 
     wenn source_is_file:
         _copy_archive(source, target, interpreter)
@@ -116,7 +116,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
     wenn not (main or has_main):
         raise ZipAppError("Archive has no entry point")
 
-    main_py = None
+    main_py = Nichts
     wenn main:
         # Check that main has the right format.
         mod, sep, fn = main.partition(':')
@@ -126,7 +126,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
             raise ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
 
-    wenn target is None:
+    wenn target is Nichts:
         target = source.with_suffix('.pyz')
     sowenn not hasattr(target, 'write'):
         target = pathlib.Path(target)
@@ -137,7 +137,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
     files_to_add = {}
     fuer path in sorted(source.rglob('*')):
         relative_path = path.relative_to(source)
-        wenn filter is None or filter(relative_path):
+        wenn filter is Nichts or filter(relative_path):
             files_to_add[path] = relative_path
 
     # The target cannot be in the list of files to add. If it were, we'd
@@ -178,29 +178,29 @@ def get_interpreter(archive):
             return f.readline().strip().decode(shebang_encoding)
 
 
-def main(args=None):
+def main(args=Nichts):
     """Run the zipapp command line interface.
 
     The ARGS parameter lets you specify the argument list directly.
-    Omitting ARGS (or setting it to None) works as fuer argparse, using
+    Omitting ARGS (or setting it to Nichts) works as fuer argparse, using
     sys.argv[1:] as the argument list.
     """
     import argparse
 
-    parser = argparse.ArgumentParser(color=True)
-    parser.add_argument('--output', '-o', default=None,
+    parser = argparse.ArgumentParser(color=Wahr)
+    parser.add_argument('--output', '-o', default=Nichts,
             help="The name of the output archive. "
                  "Required wenn SOURCE is an archive.")
-    parser.add_argument('--python', '-p', default=None,
+    parser.add_argument('--python', '-p', default=Nichts,
             help="The name of the Python interpreter to use "
                  "(default: no shebang line).")
-    parser.add_argument('--main', '-m', default=None,
+    parser.add_argument('--main', '-m', default=Nichts,
             help="The main function of the application "
                  "(default: use an existing __main__.py).")
     parser.add_argument('--compress', '-c', action='store_true',
             help="Compress files with the deflate method. "
                  "Files are stored uncompressed by default.")
-    parser.add_argument('--info', default=False, action='store_true',
+    parser.add_argument('--info', default=Falsch, action='store_true',
             help="Display the interpreter from the archive.")
     parser.add_argument('source',
             help="Source directory (or existing archive).")
@@ -216,7 +216,7 @@ def main(args=None):
         sys.exit(0)
 
     wenn os.path.isfile(args.source):
-        wenn args.output is None or (os.path.exists(args.output) and
+        wenn args.output is Nichts or (os.path.exists(args.output) and
                                    os.path.samefile(args.source, args.output)):
             raise SystemExit("In-place editing of archives is not supported")
         wenn args.main:

@@ -61,9 +61,9 @@ klasse ResourceTest(unittest.TestCase):
         try:
             try:
                 resource.setrlimit(resource.RLIMIT_FSIZE, (1024, max))
-                limit_set = True
+                limit_set = Wahr
             except ValueError:
-                limit_set = False
+                limit_set = Falsch
             f = open(os_helper.TESTFN, "wb")
             try:
                 f.write(b"X" * 1024)

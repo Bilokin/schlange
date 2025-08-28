@@ -82,7 +82,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         wenn x == 0:
             return abs(y) < eps
         # check that relative difference < eps
-        self.assertTrue(abs((x-y)/y) < eps)
+        self.assertWahr(abs((x-y)/y) < eps)
 
     def assertClose(self, x, y, eps=1e-9):
         """Return true iff complexes x and y "are close"."""
@@ -121,16 +121,16 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                            complex(random(), random()))
 
         self.assertAlmostEqual(complex.__truediv__(2+0j, 1+1j), 1-1j)
-        self.assertRaises(TypeError, operator.truediv, 1j, None)
-        self.assertRaises(TypeError, operator.truediv, None, 1j)
+        self.assertRaises(TypeError, operator.truediv, 1j, Nichts)
+        self.assertRaises(TypeError, operator.truediv, Nichts, 1j)
 
         fuer denom_real, denom_imag in [(0, NAN), (NAN, 0), (NAN, NAN)]:
             z = complex(0, 0) / complex(denom_real, denom_imag)
-            self.assertTrue(isnan(z.real))
-            self.assertTrue(isnan(z.imag))
+            self.assertWahr(isnan(z.real))
+            self.assertWahr(isnan(z.imag))
             z = float(0) / complex(denom_real, denom_imag)
-            self.assertTrue(isnan(z.real))
-            self.assertTrue(isnan(z.imag))
+            self.assertWahr(isnan(z.real))
+            self.assertWahr(isnan(z.imag))
 
         self.assertComplexesAreIdentical(complex(INF, NAN) / 2,
                                          complex(INF, NAN))
@@ -218,19 +218,19 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 a // b
 
     def test_richcompare(self):
-        self.assertIs(complex.__eq__(1+1j, 1<<10000), False)
-        self.assertIs(complex.__lt__(1+1j, None), NotImplemented)
-        self.assertIs(complex.__eq__(1+1j, None), NotImplemented)
-        self.assertIs(complex.__eq__(1+1j, 1+1j), True)
-        self.assertIs(complex.__eq__(1+1j, 2+2j), False)
-        self.assertIs(complex.__ne__(1+1j, 1+1j), False)
-        self.assertIs(complex.__ne__(1+1j, 2+2j), True)
+        self.assertIs(complex.__eq__(1+1j, 1<<10000), Falsch)
+        self.assertIs(complex.__lt__(1+1j, Nichts), NotImplemented)
+        self.assertIs(complex.__eq__(1+1j, Nichts), NotImplemented)
+        self.assertIs(complex.__eq__(1+1j, 1+1j), Wahr)
+        self.assertIs(complex.__eq__(1+1j, 2+2j), Falsch)
+        self.assertIs(complex.__ne__(1+1j, 1+1j), Falsch)
+        self.assertIs(complex.__ne__(1+1j, 2+2j), Wahr)
         fuer i in range(1, 100):
             f = i / 100.0
-            self.assertIs(complex.__eq__(f+0j, f), True)
-            self.assertIs(complex.__ne__(f+0j, f), False)
-            self.assertIs(complex.__eq__(complex(f, f), f), False)
-            self.assertIs(complex.__ne__(complex(f, f), f), True)
+            self.assertIs(complex.__eq__(f+0j, f), Wahr)
+            self.assertIs(complex.__ne__(f+0j, f), Falsch)
+            self.assertIs(complex.__eq__(complex(f, f), f), Falsch)
+            self.assertIs(complex.__ne__(complex(f, f), f), Wahr)
         self.assertIs(complex.__lt__(1+1j, 2+2j), NotImplemented)
         self.assertIs(complex.__le__(1+1j, 2+2j), NotImplemented)
         self.assertIs(complex.__gt__(1+1j, 2+2j), NotImplemented)
@@ -239,11 +239,11 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, operator.le, 1+1j, 2+2j)
         self.assertRaises(TypeError, operator.gt, 1+1j, 2+2j)
         self.assertRaises(TypeError, operator.ge, 1+1j, 2+2j)
-        self.assertIs(operator.eq(1+1j, 1+1j), True)
-        self.assertIs(operator.eq(1+1j, 2+2j), False)
-        self.assertIs(operator.ne(1+1j, 1+1j), False)
-        self.assertIs(operator.ne(1+1j, 2+2j), True)
-        self.assertIs(operator.eq(1+1j, 2.0), False)
+        self.assertIs(operator.eq(1+1j, 1+1j), Wahr)
+        self.assertIs(operator.eq(1+1j, 2+2j), Falsch)
+        self.assertIs(operator.ne(1+1j, 1+1j), Falsch)
+        self.assertIs(operator.ne(1+1j, 2+2j), Wahr)
+        self.assertIs(operator.eq(1+1j, 2.0), Falsch)
 
     def test_richcompare_boundaries(self):
         def check(n, deltas, is_equal, imag = 0.0):
@@ -259,8 +259,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             pow = 52 + i
             mult = 2 ** i
             check(2 ** pow, range(1, 101), lambda delta: delta % mult == 0)
-            check(2 ** pow, range(1, 101), lambda delta: False, float(i))
-        check(2 ** 53, range(-100, 0), lambda delta: True)
+            check(2 ** pow, range(1, 101), lambda delta: Falsch, float(i))
+        check(2 ** 53, range(-100, 0), lambda delta: Wahr)
 
     def test_add(self):
         self.assertEqual(1j + int(+1), complex(+1, 1))
@@ -270,8 +270,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertComplexesAreIdentical((-0.0) + complex(-0.0, -0.0),
                                          complex(-0.0, -0.0))
         self.assertRaises(OverflowError, operator.add, 1j, 10**1000)
-        self.assertRaises(TypeError, operator.add, 1j, None)
-        self.assertRaises(TypeError, operator.add, None, 1j)
+        self.assertRaises(TypeError, operator.add, 1j, Nichts)
+        self.assertRaises(TypeError, operator.add, Nichts, 1j)
 
     def test_sub(self):
         self.assertEqual(1j - int(+1), complex(-1, 1))
@@ -285,8 +285,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertComplexesAreIdentical(complex(2, 1) - complex(1, 2),
                                          complex(1, -1))
         self.assertRaises(OverflowError, operator.sub, 1j, 10**1000)
-        self.assertRaises(TypeError, operator.sub, 1j, None)
-        self.assertRaises(TypeError, operator.sub, None, 1j)
+        self.assertRaises(TypeError, operator.sub, 1j, Nichts)
+        self.assertRaises(TypeError, operator.sub, Nichts, 1j)
 
     def test_mul(self):
         self.assertEqual(1j * int(20), complex(0, 20))
@@ -298,8 +298,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.assertComplexesAreIdentical(complex(INF, 1) * c, r)
                 self.assertComplexesAreIdentical(c * complex(INF, 1), r)
         self.assertRaises(OverflowError, operator.mul, 1j, 10**1000)
-        self.assertRaises(TypeError, operator.mul, 1j, None)
-        self.assertRaises(TypeError, operator.mul, None, 1j)
+        self.assertRaises(TypeError, operator.mul, 1j, Nichts)
+        self.assertRaises(TypeError, operator.mul, Nichts, 1j)
 
         fuer z, w, r in [(1e300+1j, complex(INF, INF), complex(NAN, INF)),
                         (1e300+1j, complex(NAN, INF), complex(-INF, INF)),
@@ -359,8 +359,8 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(ValueError, pow, 1+1j, 1+1j, 1+1j)
         self.assertRaises(OverflowError, pow, 1e200+1j, 1e200+1j)
         self.assertRaises(OverflowError, pow, 1e200+1j, 5)
-        self.assertRaises(TypeError, pow, 1j, None)
-        self.assertRaises(TypeError, pow, None, 1j)
+        self.assertRaises(TypeError, pow, 1j, Nichts)
+        self.assertRaises(TypeError, pow, Nichts, 1j)
         self.assertAlmostEqual(pow(1j, 0.5), 0.7071067811865476+0.7071067811865475j)
 
         a = 3.33+4.43j
@@ -449,9 +449,9 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
     def test_boolcontext(self):
         fuer i in range(100):
-            self.assertTrue(complex(random() + 1e-6, random() + 1e-6))
-        self.assertTrue(not complex(0.0, 0.0))
-        self.assertTrue(1j)
+            self.assertWahr(complex(random() + 1e-6, random() + 1e-6))
+        self.assertWahr(not complex(0.0, 0.0))
+        self.assertWahr(1j)
 
     def test_conjugate(self):
         self.assertClose(complex(5.3, 9.8).conjugate(), 5.3-9.8j)
@@ -548,7 +548,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             complex, {})
         self.assertRaisesRegex(TypeError,
             "argument must be a string or a number, not NoneType",
-            complex, None)
+            complex, Nichts)
         self.assertRaisesRegex(TypeError,
             "argument 'real' must be a real number, not dict",
             complex, {1:2}, 0)
@@ -564,11 +564,11 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         self.assertRaises(TypeError, complex, WithComplex(1.5))
         self.assertRaises(TypeError, complex, WithComplex(1))
-        self.assertRaises(TypeError, complex, WithComplex(None))
+        self.assertRaises(TypeError, complex, WithComplex(Nichts))
         self.assertRaises(TypeError, complex, WithComplex(4.25+0j), object())
         self.assertRaises(TypeError, complex, WithComplex(1.5), object())
         self.assertRaises(TypeError, complex, WithComplex(1), object())
-        self.assertRaises(TypeError, complex, WithComplex(None), object())
+        self.assertRaises(TypeError, complex, WithComplex(Nichts), object())
 
         klasse EvilExc(Exception):
             pass
@@ -585,9 +585,9 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(TypeError, complex, WithFloat(42))
         self.assertRaises(TypeError, complex, WithFloat(42), 1.5)
         self.assertRaises(TypeError, complex, 1.5, WithFloat(42))
-        self.assertRaises(TypeError, complex, WithFloat(None))
-        self.assertRaises(TypeError, complex, WithFloat(None), 1.5)
-        self.assertRaises(TypeError, complex, 1.5, WithFloat(None))
+        self.assertRaises(TypeError, complex, WithFloat(Nichts))
+        self.assertRaises(TypeError, complex, WithFloat(Nichts), 1.5)
+        self.assertRaises(TypeError, complex, 1.5, WithFloat(Nichts))
 
         check(complex(WithIndex(42)), 42.0, 0.0)
         check(complex(WithIndex(42), 1.5), 42.0, 1.5)
@@ -595,9 +595,9 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(OverflowError, complex, WithIndex(2**2000))
         self.assertRaises(OverflowError, complex, WithIndex(2**2000), 1.5)
         self.assertRaises(OverflowError, complex, 1.5, WithIndex(2**2000))
-        self.assertRaises(TypeError, complex, WithIndex(None))
-        self.assertRaises(TypeError, complex, WithIndex(None), 1.5)
-        self.assertRaises(TypeError, complex, 1.5, WithIndex(None))
+        self.assertRaises(TypeError, complex, WithIndex(Nichts))
+        self.assertRaises(TypeError, complex, WithIndex(Nichts), 1.5)
+        self.assertRaises(TypeError, complex, 1.5, WithIndex(Nichts))
 
         klasse MyInt:
             def __int__(self):
@@ -623,7 +623,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             """Make sure that __complex__() calls fail wenn anything other than a
             complex is returned"""
             def __complex__(self):
-                return None
+                return Nichts
 
         check(complex(complex0(1j)), 0.0, 42.0)
         with self.assertWarns(DeprecationWarning):
@@ -755,7 +755,7 @@ klasse ComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
 
         cNAN = complex(NAN, NAN)
         x = cls.from_number(cNAN)
-        self.assertTrue(x != x)
+        self.assertWahr(x != x)
         self.assertIs(type(x), cls)
         wenn cls is complex:
             self.assertIs(cls.from_number(cNAN), cNAN)

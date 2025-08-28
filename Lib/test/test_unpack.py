@@ -9,33 +9,33 @@ Unpack tuple
     >>> t = (1, 2, 3)
     >>> a, b, c = t
     >>> a == 1 and b == 2 and c == 3
-    True
+    Wahr
 
 Unpack list
 
     >>> l = [4, 5, 6]
     >>> a, b, c = l
     >>> a == 4 and b == 5 and c == 6
-    True
+    Wahr
 
 Unpack dict
 
     >>> d = {4: 'four', 5: 'five', 6: 'six'}
     >>> a, b, c = d
     >>> a == 4 and b == 5 and c == 6
-    True
+    Wahr
 
 Unpack implied tuple
 
     >>> a, b, c = 7, 8, 9
     >>> a == 7 and b == 8 and c == 9
-    True
+    Wahr
 
 Unpack string... fun!
 
     >>> a, b, c = 'one'
     >>> a == 'o' and b == 'n' and c == 'e'
-    True
+    Wahr
 
 Unpack generic sequence
 
@@ -46,7 +46,7 @@ Unpack generic sequence
     ...
     >>> a, b, c = Seq()
     >>> a == 0 and b == 1 and c == 2
-    True
+    Wahr
 
 Single element unpacking, with extra syntax
 

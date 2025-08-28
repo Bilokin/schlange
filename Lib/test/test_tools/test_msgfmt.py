@@ -29,7 +29,7 @@ def compile_messages(po_file, mo_file):
 klasse CompilationTest(unittest.TestCase):
 
     def test_compilation(self):
-        self.maxDiff = None
+        self.maxDiff = Nichts
         with temp_cwd():
             fuer po_file in data_dir.glob('*.po'):
                 with self.subTest(po_file=po_file):

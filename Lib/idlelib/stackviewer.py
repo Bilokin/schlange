@@ -8,29 +8,29 @@ import tkinter as tk
 from idlelib.debugobj import ObjectTreeItem, make_objecttreeitem
 from idlelib.tree import TreeNode, TreeItem, ScrolledCanvas
 
-def StackBrowser(root, exc, flist=None, top=None):
+def StackBrowser(root, exc, flist=Nichts, top=Nichts):
     global sc, item, node  # For testing.
-    wenn top is None:
+    wenn top is Nichts:
         top = tk.Toplevel(root)
     sc = ScrolledCanvas(top, bg="white", highlightthickness=0)
     sc.frame.pack(expand=1, fill="both")
     item = StackTreeItem(exc, flist)
-    node = TreeNode(sc.canvas, None, item)
+    node = TreeNode(sc.canvas, Nichts, item)
     node.expand()
 
 
 klasse StackTreeItem(TreeItem):
 
-    def __init__(self, exc, flist=None):
+    def __init__(self, exc, flist=Nichts):
         self.flist = flist
-        self.stack = self.get_stack(None wenn exc is None sonst exc.__traceback__)
+        self.stack = self.get_stack(Nichts wenn exc is Nichts sonst exc.__traceback__)
         self.text = f"{type(exc).__name__}: {str(exc)}"
 
     def get_stack(self, tb):
         stack = []
-        wenn tb and tb.tb_frame is None:
+        wenn tb and tb.tb_frame is Nichts:
             tb = tb.tb_next
-        while tb is not None:
+        while tb is not Nichts:
             stack.append((tb.tb_frame, tb.tb_lineno))
             tb = tb.tb_next
         return stack
@@ -63,7 +63,7 @@ klasse FrameTreeItem(TreeItem):
         funcname = code.co_name
         sourceline = linecache.getline(filename, lineno)
         sourceline = sourceline.strip()
-        wenn funcname in ("?", "", None):
+        wenn funcname in ("?", "", Nichts):
             item = "%s, line %d: %s" % (modname, lineno, sourceline)
         sonst:
             item = "%s.%s(...), line %d: %s" % (modname, funcname,
@@ -94,7 +94,7 @@ klasse VariablesTreeItem(ObjectTreeItem):
         return self.labeltext
 
     def GetLabelText(self):
-        return None
+        return Nichts
 
     def IsExpandable(self):
         return len(self.object) > 0
@@ -128,7 +128,7 @@ def _stackbrowser(parent):  # htest #
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_stackviewer', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_stackviewer', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_stackbrowser)

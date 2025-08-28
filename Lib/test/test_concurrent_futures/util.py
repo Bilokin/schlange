@@ -13,7 +13,7 @@ from test import support
 from test.support import threading_helper, warnings_helper
 
 
-def create_future(state=PENDING, exception=None, result=None):
+def create_future(state=PENDING, exception=Nichts, result=Nichts):
     f = Future()
     f._state = state
     f._exception = exception
@@ -57,14 +57,14 @@ klasse ExecutorMixin:
             self.executor = self.executor_type(
                 max_workers=self.worker_count,
                 **self.executor_kwargs)
-            self.manager = None
+            self.manager = Nichts
 
     def tearDown(self):
-        self.executor.shutdown(wait=True)
-        self.executor = None
-        wenn self.manager is not None:
+        self.executor.shutdown(wait=Wahr)
+        self.executor = Nichts
+        wenn self.manager is not Nichts:
             self.manager.shutdown()
-            self.manager = None
+            self.manager = Nichts
 
         dt = time.monotonic() - self.t1
         wenn support.verbose:
@@ -84,7 +84,7 @@ klasse ThreadPoolMixin(ExecutorMixin):
         return threading.Event()
 
 
-@support.skip_if_sanitizer("gh-129824: data races in InterpreterPool tests", thread=True)
+@support.skip_if_sanitizer("gh-129824: data races in InterpreterPool tests", thread=Wahr)
 klasse InterpreterPoolMixin(ExecutorMixin):
     executor_type = futures.InterpreterPoolExecutor
 
@@ -103,7 +103,7 @@ klasse ProcessPoolForkMixin(ExecutorMixin):
             self.skipTest("ProcessPoolExecutor unavailable on this system")
         wenn sys.platform == "win32":
             self.skipTest("require unix system")
-        wenn support.check_sanitizer(thread=True):
+        wenn support.check_sanitizer(thread=Wahr):
             self.skipTest("TSAN doesn't support threads after fork")
         return super().get_context()
 
@@ -137,7 +137,7 @@ klasse ProcessPoolForkserverMixin(ExecutorMixin):
             self.skipTest("ProcessPoolExecutor unavailable on this system")
         wenn sys.platform == "win32":
             self.skipTest("require unix system")
-        wenn support.check_sanitizer(thread=True):
+        wenn support.check_sanitizer(thread=Wahr):
             self.skipTest("TSAN doesn't support threads after fork")
         return super().get_context()
 

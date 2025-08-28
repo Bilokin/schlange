@@ -61,7 +61,7 @@ def updated_env(updates={}):
     return environment
 
 
-def subdir(working_dir, *, clean_ok=False):
+def subdir(working_dir, *, clean_ok=Falsch):
     """Decorator to change to a working directory."""
     def decorator(func):
         @functools.wraps(func)
@@ -79,12 +79,12 @@ def subdir(working_dir, *, clean_ok=False):
                 terminal_width = int(tput_output.strip())
             print("⎯" * terminal_width)
             print("📁", working_dir)
-            wenn (clean_ok and getattr(context, "clean", False) and
+            wenn (clean_ok and getattr(context, "clean", Falsch) and
                 working_dir.exists()):
                 print("🚮 Deleting directory (--clean)...")
                 shutil.rmtree(working_dir)
 
-            working_dir.mkdir(parents=True, exist_ok=True)
+            working_dir.mkdir(parents=Wahr, exist_ok=Wahr)
 
             with contextlib.chdir(working_dir):
                 return func(context, working_dir)
@@ -94,24 +94,24 @@ def subdir(working_dir, *, clean_ok=False):
     return decorator
 
 
-def call(command, *, context=None, quiet=False, logdir=None, **kwargs):
+def call(command, *, context=Nichts, quiet=Falsch, logdir=Nichts, **kwargs):
     """Execute a command.
 
     If 'quiet' is true, then redirect stdout and stderr to a temporary file.
     """
-    wenn context is not None:
+    wenn context is not Nichts:
         quiet = context.quiet
         logdir = context.logdir
-    sowenn quiet and logdir is None:
-        raise ValueError("When quiet is True, logdir must be specified")
+    sowenn quiet and logdir is Nichts:
+        raise ValueError("When quiet is Wahr, logdir must be specified")
 
     print("❯", " ".join(map(str, command)))
     wenn not quiet:
-        stdout = None
-        stderr = None
+        stdout = Nichts
+        stderr = Nichts
     sonst:
         stdout = tempfile.NamedTemporaryFile("w", encoding="utf-8",
-                                             delete=False,
+                                             delete=Falsch,
                                              dir=logdir,
                                              prefix="cpython-wasi-",
                                              suffix=".log")
@@ -142,7 +142,7 @@ def build_python_is_pydebug():
     return bool(result.returncode)
 
 
-@subdir(BUILD_DIR, clean_ok=True)
+@subdir(BUILD_DIR, clean_ok=Wahr)
 def configure_build_python(context, working_dir):
     """Configure the build/host Python."""
     wenn LOCAL_SETUP.exists():
@@ -226,7 +226,7 @@ def wasi_sdk_env(context):
     return env
 
 
-@subdir(lambda context: CROSS_BUILD_DIR / context.host_triple, clean_ok=True)
+@subdir(lambda context: CROSS_BUILD_DIR / context.host_triple, clean_ok=Wahr)
 def configure_wasi_python(context, working_dir):
     """Configure the WASI/host build."""
     wenn not context.wasi_sdk_path or not context.wasi_sdk_path.exists():
@@ -296,7 +296,7 @@ def make_wasi_python(context, working_dir):
              context=context)
 
     exec_script = working_dir / "python.sh"
-    call([exec_script, "--version"], quiet=False)
+    call([exec_script, "--version"], quiet=Falsch)
     print(
         f"🎉 Use `{exec_script.relative_to(context.init_dir)}` "
         "to run CPython w/ the WASI host specified by --host-runner"
@@ -355,14 +355,14 @@ def main():
     subcommands.add_parser("clean", help="Delete files and directories "
                                          "created by this script")
     fuer subcommand in build, configure_build, make_build, configure_host, make_host:
-        subcommand.add_argument("--quiet", action="store_true", default=False,
+        subcommand.add_argument("--quiet", action="store_true", default=Falsch,
                         dest="quiet",
                         help="Redirect output from subprocesses to a log file")
         subcommand.add_argument("--logdir", type=pathlib.Path, default=default_logdir,
                                 help="Directory to store log files; "
                                      f"defaults to {default_logdir}")
     fuer subcommand in configure_build, configure_host:
-        subcommand.add_argument("--clean", action="store_true", default=False,
+        subcommand.add_argument("--clean", action="store_true", default=Falsch,
                         dest="clean",
                         help="Delete any relevant directories before building")
     fuer subcommand in build, configure_build, configure_host:

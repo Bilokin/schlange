@@ -7,7 +7,7 @@ which use a depth-first-algorithm.
 Uses:
 (1) a tree-generator, where the drawing is
 quasi the side-effect, whereas the generator
-always yields None.
+always yields Nichts.
 (2) Turtle-cloning: At each branching point
 the current pen is cloned. So in the end
 there are 1024 turtles.
@@ -31,11 +31,11 @@ def tree(plist, l, a, f):
             lst.append(p)
             lst.append(q)
         fuer x in tree(lst, l*f, a, f):
-            yield None
+            yield Nichts
 
 def maketree():
     p = Turtle()
-    p.setundobuffer(None)
+    p.setundobuffer(Nichts)
     p.hideturtle()
     p.speed(0)
     p.getscreen().tracer(30,0)

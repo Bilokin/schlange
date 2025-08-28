@@ -8,7 +8,7 @@ import unittest
 klasse TestUntestedModules(unittest.TestCase):
     def test_untested_modules_can_be_imported(self):
         untested = ('encodings',)
-        with warnings_helper.check_warnings(quiet=True):
+        with warnings_helper.check_warnings(quiet=Wahr):
             fuer name in untested:
                 try:
                     import_helper.import_module('test.test_{}'.format(name))

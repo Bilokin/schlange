@@ -22,9 +22,9 @@ klasse DictComprehensionTest(unittest.TestCase):
     def test_scope_isolation(self):
         k = "Local Variable"
 
-        expected = {0: None, 1: None, 2: None, 3: None, 4: None, 5: None,
-                    6: None, 7: None, 8: None, 9: None}
-        actual = {k: None fuer k in range(10)}
+        expected = {0: Nichts, 1: Nichts, 2: Nichts, 3: Nichts, 4: Nichts, 5: Nichts,
+                    6: Nichts, 7: Nichts, 8: Nichts, 9: Nichts}
+        actual = {k: Nichts fuer k in range(10)}
         self.assertEqual(actual, expected)
         self.assertEqual(k, "Local Variable")
 
@@ -39,9 +39,9 @@ klasse DictComprehensionTest(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_scope_isolation_from_global(self):
-        expected = {0: None, 1: None, 2: None, 3: None, 4: None, 5: None,
-                    6: None, 7: None, 8: None, 9: None}
-        actual = {g: None fuer g in range(10)}
+        expected = {0: Nichts, 1: Nichts, 2: Nichts, 3: Nichts, 4: Nichts, 5: Nichts,
+                    6: Nichts, 7: Nichts, 8: Nichts, 9: Nichts}
+        actual = {g: Nichts fuer g in range(10)}
         self.assertEqual(actual, expected)
         self.assertEqual(g, "Global variable")
 
@@ -135,25 +135,25 @@ klasse DictComprehensionTest(unittest.TestCase):
         # __next__ should be the iterator expression
         def init_raises():
             try:
-                {x:x fuer x in BrokenIter(init_raises=True)}
+                {x:x fuer x in BrokenIter(init_raises=Wahr)}
             except Exception as e:
                 return e
 
         def next_raises():
             try:
-                {x:x fuer x in BrokenIter(next_raises=True)}
+                {x:x fuer x in BrokenIter(next_raises=Wahr)}
             except Exception as e:
                 return e
 
         def iter_raises():
             try:
-                {x:x fuer x in BrokenIter(iter_raises=True)}
+                {x:x fuer x in BrokenIter(iter_raises=Wahr)}
             except Exception as e:
                 return e
 
-        fuer func, expected in [(init_raises, "BrokenIter(init_raises=True)"),
-                               (next_raises, "BrokenIter(next_raises=True)"),
-                               (iter_raises, "BrokenIter(iter_raises=True)"),
+        fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
+                               (next_raises, "BrokenIter(next_raises=Wahr)"),
+                               (iter_raises, "BrokenIter(iter_raises=Wahr)"),
                               ]:
             with self.subTest(func):
                 exc = func()

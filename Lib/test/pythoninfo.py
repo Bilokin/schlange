@@ -9,8 +9,8 @@ import warnings
 
 
 def normalize_text(text):
-    wenn text is None:
-        return None
+    wenn text is Nichts:
+        return Nichts
     text = str(text)
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
@@ -24,7 +24,7 @@ klasse PythonInfo:
         wenn key in self.info:
             raise ValueError("duplicate key: %r" % key)
 
-        wenn value is None:
+        wenn value is Nichts:
             return
 
         wenn not isinstance(value, int):
@@ -45,13 +45,13 @@ klasse PythonInfo:
         return {key: str(value) fuer key, value in self.info.items()}
 
 
-def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=None):
+def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=Nichts):
     fuer attr in attributes:
-        value = getattr(obj, attr, None)
-        wenn value is None:
+        value = getattr(obj, attr, Nichts)
+        wenn value is Nichts:
             continue
         name = name_fmt % attr
-        wenn formatter is not None:
+        wenn formatter is not Nichts:
             value = formatter(attr, value)
         info_add(name, value)
 
@@ -64,13 +64,13 @@ def copy_attr(info_add, name, mod, attr_name):
     info_add(name, value)
 
 
-def call_func(info_add, name, mod, func_name, *, formatter=None):
+def call_func(info_add, name, mod, func_name, *, formatter=Nichts):
     try:
         func = getattr(mod, func_name)
     except AttributeError:
         return
     value = func()
-    wenn formatter is not None:
+    wenn formatter is not Nichts:
         value = formatter(value)
     info_add(name, value)
 
@@ -120,12 +120,12 @@ def collect_sys(info_add):
 
     fuer name in ('stdin', 'stdout', 'stderr'):
         stream = getattr(sys, name)
-        wenn stream is None:
+        wenn stream is Nichts:
             continue
-        encoding = getattr(stream, 'encoding', None)
+        encoding = getattr(stream, 'encoding', Nichts)
         wenn not encoding:
             continue
-        errors = getattr(stream, 'errors', None)
+        errors = getattr(stream, 'errors', Nichts)
         wenn errors:
             encoding = '%s/%s' % (encoding, errors)
         info_add('sys.%s.encoding' % name, encoding)
@@ -159,7 +159,7 @@ def collect_platform(info_add):
     info_add('platform.python_implementation',
              platform.python_implementation())
     info_add('platform.platform',
-             platform.platform(aliased=True))
+             platform.platform(aliased=Wahr))
 
     libc_ver = ('%s %s' % platform.libc_ver()).strip()
     wenn libc_ver:
@@ -373,12 +373,12 @@ def collect_pwd(info_add):
     try:
         entry = pwd.getpwuid(uid)
     except KeyError:
-        entry = None
+        entry = Nichts
 
     info_add('pwd.getpwuid(%s)'% uid,
-             entry wenn entry is not None sonst '<KeyError>')
+             entry wenn entry is not Nichts sonst '<KeyError>')
 
-    wenn entry is None:
+    wenn entry is Nichts:
         # there is nothing interesting to read wenn the current user identifier
         # is not the password database
         return
@@ -425,7 +425,7 @@ def collect_gdb(info_add):
         proc = subprocess.Popen(["gdb", "-nx", "--version"],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
-                                universal_newlines=True)
+                                universal_newlines=Wahr)
         version = proc.communicate()[0]
         wenn proc.returncode:
             # ignore gdb failure: test_gdb will log the error
@@ -475,7 +475,7 @@ def collect_time(info_add):
                       'process_time', 'thread_time', 'time'):
             try:
                 # prevent DeprecatingWarning on get_clock_info('clock')
-                with warnings.catch_warnings(record=True):
+                with warnings.catch_warnings(record=Wahr):
                     clock_info = time.get_clock_info(clock)
             except ValueError:
                 # missing clock like time.thread_time()
@@ -578,7 +578,7 @@ def collect_ssl(info_add):
     try:
         import _ssl
     except ImportError:
-        _ssl = None
+        _ssl = Nichts
 
     def format_attr(attr, value):
         wenn attr.startswith('OP_'):
@@ -610,7 +610,7 @@ def collect_ssl(info_add):
         copy_attributes(info_add, ctx, f'ssl.{name}.%s', attributes)
 
     env_names = ["OPENSSL_CONF", "SSLKEYLOGFILE"]
-    wenn _ssl is not None and hasattr(_ssl, 'get_default_verify_paths'):
+    wenn _ssl is not Nichts and hasattr(_ssl, 'get_default_verify_paths'):
         parts = _ssl.get_default_verify_paths()
         env_names.extend((parts[0], parts[2]))
 
@@ -769,12 +769,12 @@ def collect_support(info_add):
     call_func(info_add, 'support._is_gui_available', support, '_is_gui_available')
     call_func(info_add, 'support.python_is_optimized', support, 'python_is_optimized')
 
-    info_add('support.check_sanitizer(address=True)',
-             support.check_sanitizer(address=True))
-    info_add('support.check_sanitizer(memory=True)',
-             support.check_sanitizer(memory=True))
-    info_add('support.check_sanitizer(ub=True)',
-             support.check_sanitizer(ub=True))
+    info_add('support.check_sanitizer(address=Wahr)',
+             support.check_sanitizer(address=Wahr))
+    info_add('support.check_sanitizer(memory=Wahr)',
+             support.check_sanitizer(memory=Wahr))
+    info_add('support.check_sanitizer(ub=Wahr)',
+             support.check_sanitizer(ub=Wahr))
 
 
 def collect_support_os_helper(info_add):
@@ -842,7 +842,7 @@ def collect_cc(info_add):
         proc = subprocess.Popen(args,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT,
-                                universal_newlines=True)
+                                universal_newlines=Wahr)
     except OSError:
         # Cannot run the compiler, fuer example when Python has been
         # cross-compiled and installed on the target platform where the
@@ -942,7 +942,7 @@ def collect_windows(info_add):
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
                                 encoding="oem",
-                                text=True)
+                                text=Wahr)
         output, stderr = proc.communicate()
         wenn proc.returncode:
             output = ""
@@ -962,10 +962,10 @@ def collect_windows(info_add):
 
     # windows.ver: "ver" command
     try:
-        proc = subprocess.Popen(["ver"], shell=True,
+        proc = subprocess.Popen(["ver"], shell=Wahr,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
-                                text=True)
+                                text=Wahr)
         output = proc.communicate()[0]
         wenn proc.returncode == 0xc0000142:
             return
@@ -1000,9 +1000,9 @@ def collect_fips(info_add):
     try:
         import _hashlib
     except ImportError:
-        _hashlib = None
+        _hashlib = Nichts
 
-    wenn _hashlib is not None:
+    wenn _hashlib is not Nichts:
         call_func(info_add, 'fips.openssl_fips_mode', _hashlib, 'get_fips_mode')
 
     try:
@@ -1031,7 +1031,7 @@ def collect_libregrtest_utils(info_add):
 
 
 def collect_info(info):
-    error = False
+    error = Falsch
     info_add = info.add
 
     fuer collect_func in (
@@ -1082,7 +1082,7 @@ def collect_info(info):
         try:
             collect_func(info_add)
         except Exception:
-            error = True
+            error = Wahr
             print("ERROR: %s() failed" % (collect_func.__name__),
                   file=sys.stderr)
             traceback.print_exc(file=sys.stderr)
@@ -1092,7 +1092,7 @@ def collect_info(info):
     return error
 
 
-def dump_info(info, file=None):
+def dump_info(info, file=Nichts):
     title = "Python debug information"
     print(title)
     print("=" * len(title))

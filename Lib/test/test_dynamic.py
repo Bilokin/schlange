@@ -72,7 +72,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
                 modifier()
                 l.append(len(range(7)))
                 return l
-            self.configure_func(foo, lambda: None)
+            self.configure_func(foo, lambda: Nichts)
 
             self.assertEqual(foo(bar), [7, 4])
 
@@ -156,14 +156,14 @@ klasse TestTracing(unittest.TestCase):
 
     def setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
-        sys.settrace(None)
+        sys.settrace(Nichts)
 
     def test_after_specialization(self):
 
         def trace(frame, event, arg):
             return trace
 
-        turn_on_trace = False
+        turn_on_trace = Falsch
 
         klasse C:
             def __init__(self, x):
@@ -188,10 +188,10 @@ klasse TestTracing(unittest.TestCase):
             with self.subTest(func.__name__):
                 fuer _ in range(58):
                     func()
-                turn_on_trace = True
+                turn_on_trace = Wahr
                 func()
-                sys.settrace(None)
-                turn_on_trace = False
+                sys.settrace(Nichts)
+                turn_on_trace = Falsch
 
 
 wenn __name__ == "__main__":

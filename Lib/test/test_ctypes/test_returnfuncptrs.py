@@ -13,9 +13,9 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
         get_strchr.restype = CFUNCTYPE(c_char_p, c_char_p, c_char)
         strchr = get_strchr()
         self.assertEqual(strchr(b"abcdef", b"b"), b"bcdef")
-        self.assertEqual(strchr(b"abcdef", b"x"), None)
+        self.assertEqual(strchr(b"abcdef", b"x"), Nichts)
         self.assertEqual(strchr(b"abcdef", 98), b"bcdef")
-        self.assertEqual(strchr(b"abcdef", 107), None)
+        self.assertEqual(strchr(b"abcdef", 107), Nichts)
         self.assertRaises(ArgumentError, strchr, b"abcdef", 3.0)
         self.assertRaises(TypeError, strchr, b"abcdef")
 
@@ -28,8 +28,8 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
         # _CFuncPtr instances are now callable with an integer argument
         # which denotes a function address:
         strchr = CFUNCTYPE(c_char_p, c_char_p, c_char)(addr)
-        self.assertTrue(strchr(b"abcdef", b"b"), "bcdef")
-        self.assertEqual(strchr(b"abcdef", b"x"), None)
+        self.assertWahr(strchr(b"abcdef", b"b"), "bcdef")
+        self.assertEqual(strchr(b"abcdef", b"x"), Nichts)
         self.assertRaises(ArgumentError, strchr, b"abcdef", 3.0)
         self.assertRaises(TypeError, strchr, b"abcdef")
 
@@ -38,8 +38,8 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
         # _CFuncPtr instances are now callable with a tuple argument
         # which denotes a function name and a dll:
         strchr = CFUNCTYPE(c_char_p, c_char_p, c_char)(("my_strchr", dll))
-        self.assertTrue(strchr(b"abcdef", b"b"), "bcdef")
-        self.assertEqual(strchr(b"abcdef", b"x"), None)
+        self.assertWahr(strchr(b"abcdef", b"b"), "bcdef")
+        self.assertEqual(strchr(b"abcdef", b"x"), Nichts)
         self.assertRaises(ArgumentError, strchr, b"abcdef", 3.0)
         self.assertRaises(TypeError, strchr, b"abcdef")
 
@@ -57,8 +57,8 @@ klasse ReturnFuncPtrTestCase(unittest.TestCase):
         # which denotes a function name and a dll:
         strchr = CFUNCTYPE(c_char_p, c_char_p, c_char)(
                 BadSequence(("my_strchr", CDLL(_ctypes_test.__file__))))
-        self.assertTrue(strchr(b"abcdef", b"b"), "bcdef")
-        self.assertEqual(strchr(b"abcdef", b"x"), None)
+        self.assertWahr(strchr(b"abcdef", b"b"), "bcdef")
+        self.assertEqual(strchr(b"abcdef", b"x"), Nichts)
         self.assertRaises(ArgumentError, strchr, b"abcdef", 3.0)
         self.assertRaises(TypeError, strchr, b"abcdef")
 

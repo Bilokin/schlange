@@ -48,7 +48,7 @@ print('__cached__==%a' % __cached__)
 print('__package__==%r' % __package__)
 # Check PEP 451 details
 import os.path
-wenn __package__ is not None:
+wenn __package__ is not Nichts:
     print('__main__ was located through the import system')
     assertIdentical(__spec__.loader, __loader__)
     expected_spec_name = os.path.splitext(os.path.basename(__file__))[0]
@@ -56,14 +56,14 @@ wenn __package__ is not None:
         expected_spec_name = __package__ + "." + expected_spec_name
     assertEqual(__spec__.name, expected_spec_name)
     assertEqual(__spec__.parent, __package__)
-    assertIdentical(__spec__.submodule_search_locations, None)
+    assertIdentical(__spec__.submodule_search_locations, Nichts)
     assertEqual(__spec__.origin, __file__)
-    wenn __spec__.cached is not None:
+    wenn __spec__.cached is not Nichts:
         assertEqual(__spec__.cached, __cached__)
 # Check the sys module
 import sys
 assertIdentical(globals(), sys.modules[__name__].__dict__)
-wenn __spec__ is not None:
+wenn __spec__ is not Nichts:
     # XXX: We're not currently making __main__ available under its real name
     pass # assertIdentical(globals(), sys.modules[__spec__.name].__dict__)
 from test import test_cmd_line_script
@@ -94,7 +94,7 @@ klasse CmdLineTest(unittest.TestCase):
     def _check_output(self, script_name, exit_code, data,
                              expected_file, expected_argv0,
                              expected_path0, expected_package,
-                             expected_loader, expected_cwd=None):
+                             expected_loader, expected_cwd=Nichts):
         wenn verbose > 1:
             print("Output from test script %r:" % script_name)
             print(repr(data))
@@ -104,7 +104,7 @@ klasse CmdLineTest(unittest.TestCase):
         printed_package = '__package__==%r' % expected_package
         printed_argv0 = 'sys.argv[0]==%a' % expected_argv0
         printed_path0 = 'sys.path[0]==%a' % expected_path0
-        wenn expected_cwd is None:
+        wenn expected_cwd is Nichts:
             expected_cwd = os.getcwd()
         printed_cwd = 'cwd==%a' % expected_cwd
         wenn verbose > 1:
@@ -125,27 +125,27 @@ klasse CmdLineTest(unittest.TestCase):
     def _check_script(self, script_exec_args, expected_file,
                             expected_argv0, expected_path0,
                             expected_package, expected_loader,
-                            *cmd_line_switches, cwd=None, **env_vars):
+                            *cmd_line_switches, cwd=Nichts, **env_vars):
         wenn isinstance(script_exec_args, str):
             script_exec_args = [script_exec_args]
         run_args = [*support.optim_args_from_interpreter_flags(),
                     *cmd_line_switches, *script_exec_args, *example_args]
         rc, out, err = assert_python_ok(
-            *run_args, __isolated=False, __cwd=cwd, **env_vars
+            *run_args, __isolated=Falsch, __cwd=cwd, **env_vars
         )
         self._check_output(script_exec_args, rc, out + err, expected_file,
                            expected_argv0, expected_path0,
                            expected_package, expected_loader, cwd)
 
     def _check_import_error(self, script_exec_args, expected_msg,
-                            *cmd_line_switches, cwd=None, **env_vars):
+                            *cmd_line_switches, cwd=Nichts, **env_vars):
         wenn isinstance(script_exec_args, str):
             script_exec_args = (script_exec_args,)
         sonst:
             script_exec_args = tuple(script_exec_args)
         run_args = cmd_line_switches + script_exec_args
         rc, out, err = assert_python_failure(
-            *run_args, __isolated=False, __cwd=cwd, **env_vars
+            *run_args, __isolated=Falsch, __cwd=cwd, **env_vars
         )
         wenn verbose > 1:
             print(f'Output from test script {script_exec_args!r:}')
@@ -172,7 +172,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertIn(expected, out)
 
     @contextlib.contextmanager
-    def interactive_python(self, separate_stderr=False):
+    def interactive_python(self, separate_stderr=Falsch):
         wenn separate_stderr:
             p = spawn_python('-i', stderr=subprocess.PIPE)
             stderr = p.stderr
@@ -181,7 +181,7 @@ klasse CmdLineTest(unittest.TestCase):
             stderr = p.stdout
         try:
             # Drain stderr until prompt
-            while True:
+            while Wahr:
                 data = stderr.read(4)
                 wenn data == b">>> ":
                     break
@@ -191,13 +191,13 @@ klasse CmdLineTest(unittest.TestCase):
             kill_python(p)
             stderr.close()
 
-    def check_repl_stdout_flush(self, separate_stderr=False):
+    def check_repl_stdout_flush(self, separate_stderr=Falsch):
         with self.interactive_python(separate_stderr) as p:
             p.stdin.write(b"print('foo')\n")
             p.stdin.flush()
             self.assertEqual(b'foo', p.stdout.readline().strip())
 
-    def check_repl_stderr_flush(self, separate_stderr=False):
+    def check_repl_stderr_flush(self, separate_stderr=Falsch):
         with self.interactive_python(separate_stderr) as p:
             p.stdin.write(b"1/0\n")
             p.stdin.flush()
@@ -212,19 +212,19 @@ klasse CmdLineTest(unittest.TestCase):
         self.check_repl_stdout_flush()
 
     def test_repl_stdout_flush_separate_stderr(self):
-        self.check_repl_stdout_flush(True)
+        self.check_repl_stdout_flush(Wahr)
 
     def test_repl_stderr_flush(self):
         self.check_repl_stderr_flush()
 
     def test_repl_stderr_flush_separate_stderr(self):
-        self.check_repl_stderr_flush(True)
+        self.check_repl_stderr_flush(Wahr)
 
     def test_basic_script(self):
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script')
             self._check_script(script_name, script_name, script_name,
-                               script_dir, None,
+                               script_dir, Nichts,
                                importlib.machinery.SourceFileLoader,
                                expected_cwd=script_dir)
 
@@ -232,22 +232,22 @@ klasse CmdLineTest(unittest.TestCase):
         # pass the script using the relative path, expect the absolute path
         # in __file__
         with os_helper.temp_cwd() as script_dir:
-            self.assertTrue(os.path.isabs(script_dir), script_dir)
+            self.assertWahr(os.path.isabs(script_dir), script_dir)
 
             script_name = _make_test_script(script_dir, 'script')
             relative_name = os.path.basename(script_name)
             self._check_script(relative_name, script_name, relative_name,
-                               script_dir, None,
+                               script_dir, Nichts,
                                importlib.machinery.SourceFileLoader)
 
     def test_script_compiled(self):
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script')
-            py_compile.compile(script_name, doraise=True)
+            py_compile.compile(script_name, doraise=Wahr)
             os.remove(script_name)
             pyc_file = import_helper.make_legacy_pyc(script_name)
             self._check_script(pyc_file, pyc_file,
-                               pyc_file, script_dir, None,
+                               pyc_file, script_dir, Nichts,
                                importlib.machinery.SourcelessFileLoader)
 
     def test_directory(self):
@@ -260,7 +260,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_directory_compiled(self):
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
-            py_compile.compile(script_name, doraise=True)
+            py_compile.compile(script_name, doraise=Wahr)
             os.remove(script_name)
             pyc_file = import_helper.make_legacy_pyc(script_name)
             self._check_script(script_dir, pyc_file, script_dir,
@@ -283,7 +283,7 @@ klasse CmdLineTest(unittest.TestCase):
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
             compiled_name = py_compile.compile(
-                script_name, doraise=True,
+                script_name, doraise=Wahr,
                 invalidation_mode=py_compile.PycInvalidationMode.TIMESTAMP)
             zip_name, run_name = make_zip_script(script_dir, 'test_zip', compiled_name)
             self._check_script(zip_name, run_name, zip_name, zip_name, '',
@@ -293,7 +293,7 @@ klasse CmdLineTest(unittest.TestCase):
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
             compiled_name = py_compile.compile(
-                script_name, doraise=True,
+                script_name, doraise=Wahr,
                 invalidation_mode=py_compile.PycInvalidationMode.CHECKED_HASH)
             zip_name, run_name = make_zip_script(script_dir, 'test_zip', compiled_name)
             self._check_script(zip_name, run_name, zip_name, zip_name, '',
@@ -303,7 +303,7 @@ klasse CmdLineTest(unittest.TestCase):
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
             compiled_name = py_compile.compile(
-                script_name, doraise=True,
+                script_name, doraise=Wahr,
                 invalidation_mode=py_compile.PycInvalidationMode.UNCHECKED_HASH)
             zip_name, run_name = make_zip_script(script_dir, 'test_zip', compiled_name)
             self._check_script(zip_name, run_name, zip_name, zip_name, '',
@@ -356,7 +356,7 @@ klasse CmdLineTest(unittest.TestCase):
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
             script_name = _make_test_script(pkg_dir, '__main__')
-            compiled_name = py_compile.compile(script_name, doraise=True)
+            compiled_name = py_compile.compile(script_name, doraise=Wahr)
             os.remove(script_name)
             pyc_file = import_helper.make_legacy_pyc(script_name)
             self._check_script(["-m", "test_pkg"], pyc_file,
@@ -391,7 +391,7 @@ klasse CmdLineTest(unittest.TestCase):
                 pkg_dir = os.path.join(script_dir, 'test_pkg')
                 make_pkg(pkg_dir, "import sys; print('init_argv0==%r' % sys.argv[0])")
                 script_name = _make_test_script(pkg_dir, 'script')
-                rc, out, err = assert_python_ok('-m', 'test_pkg.script', *example_args, __isolated=False)
+                rc, out, err = assert_python_ok('-m', 'test_pkg.script', *example_args, __isolated=Falsch)
                 wenn verbose > 1:
                     print(repr(out))
                 expected = "init_argv0==%r" % '-m'
@@ -409,7 +409,7 @@ klasse CmdLineTest(unittest.TestCase):
                     f.write("data")
                     rc, out, err = assert_python_ok('-c',
                         'import sys; print("sys.path[0]==%r" % sys.path[0])',
-                        __isolated=False)
+                        __isolated=Falsch)
                     wenn verbose > 1:
                         print(repr(out))
                     expected = "sys.path[0]==%r" % ''
@@ -424,7 +424,7 @@ klasse CmdLineTest(unittest.TestCase):
                 with open("-m", "w", encoding="utf-8") as f:
                     f.write("data")
                     rc, out, err = assert_python_ok('-m', 'other', *example_args,
-                                                    __isolated=False)
+                                                    __isolated=Falsch)
                     self._check_output(script_name, rc, out,
                                       script_name, script_name, script_dir, '',
                                       importlib.machinery.SourceFileLoader)
@@ -455,7 +455,7 @@ klasse CmdLineTest(unittest.TestCase):
             yield pkg_dir
 
     def check_dash_m_failure(self, *args):
-        rc, out, err = assert_python_failure('-m', *args, __isolated=False)
+        rc, out, err = assert_python_failure('-m', *args, __isolated=Falsch)
         wenn verbose > 1:
             print(repr(out))
         self.assertEqual(rc, 1)
@@ -546,7 +546,7 @@ klasse CmdLineTest(unittest.TestCase):
             try:
                 raise ValueError
             except ValueError:
-                raise NameError from None
+                raise NameError from Nichts
             """)
         with os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script', script)
@@ -589,7 +589,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_issue20500_exit_with_exception_value(self):
         script = textwrap.dedent("""\
             import sys
-            error = None
+            error = Nichts
             try:
                 raise ValueError('some text')
             except ValueError as err:
@@ -615,7 +615,7 @@ klasse CmdLineTest(unittest.TestCase):
 
     def test_syntaxerror_indented_caret_position(self):
         script = textwrap.dedent("""\
-            wenn True:
+            wenn Wahr:
                 1 + 1 = 2
             """)
         with os_helper.temp_dir() as script_dir:
@@ -627,7 +627,7 @@ klasse CmdLineTest(unittest.TestCase):
 
             # Try the same with a form feed at the start of the indented line
             script = (
-                "if True:\n"
+                "if Wahr:\n"
                 "\f    1 + 1 = 2\n"
             )
             script_name = _make_test_script(script_dir, "script", script)
@@ -724,7 +724,7 @@ klasse CmdLineTest(unittest.TestCase):
                 print(entry)
             """)
         # Always show full path diffs on errors
-        self.maxDiff = None
+        self.maxDiff = Nichts
         with os_helper.temp_dir() as work_dir, os_helper.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__', script)
             # Reference output comes from directly executing __main__.py
@@ -756,7 +756,7 @@ klasse CmdLineTest(unittest.TestCase):
                 print(entry)
             """)
         # Always show full path diffs on errors
-        self.maxDiff = None
+        self.maxDiff = Nichts
         with os_helper.temp_dir() as work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
@@ -785,9 +785,9 @@ klasse CmdLineTest(unittest.TestCase):
         # (Skip test fuer macOS framework builds because sys.executable name
         #  is not the actual Python executable file name.
         script = 'nonexistingscript.py'
-        self.assertFalse(os.path.exists(script))
+        self.assertFalsch(os.path.exists(script))
 
-        proc = spawn_python(script, text=True,
+        proc = spawn_python(script, text=Wahr,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
         out, err = proc.communicate()
@@ -806,7 +806,7 @@ klasse CmdLineTest(unittest.TestCase):
         with os_helper.temp_dir() as work_dir:
             script_name = _make_test_script(work_dir, 'script.py', script)
             with open(script_name, "r") as fp:
-                p = spawn_python(f"/dev/fd/{fp.fileno()}", close_fds=True, pass_fds=(0,1,2,fp.fileno()))
+                p = spawn_python(f"/dev/fd/{fp.fileno()}", close_fds=Wahr, pass_fds=(0,1,2,fp.fileno()))
                 out, err = p.communicate()
                 self.assertEqual(out, b"12345678912345678912345\n")
 

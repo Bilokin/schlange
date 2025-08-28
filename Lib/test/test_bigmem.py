@@ -107,19 +107,19 @@ klasse BaseStrTest:
         _ = self.from_latin1
         SUBSTR = _(' abc def ghi')
         s = _('-') * size + SUBSTR
-        self.assertTrue(s.endswith(SUBSTR))
-        self.assertTrue(s.endswith(s))
+        self.assertWahr(s.endswith(SUBSTR))
+        self.assertWahr(s.endswith(s))
         s2 = _('...') + s
-        self.assertTrue(s2.endswith(s))
-        self.assertFalse(s.endswith(_('a') + SUBSTR))
-        self.assertFalse(SUBSTR.endswith(s))
+        self.assertWahr(s2.endswith(s))
+        self.assertFalsch(s.endswith(_('a') + SUBSTR))
+        self.assertFalsch(SUBSTR.endswith(s))
 
     @bigmemtest(size=_2G + 10, memuse=2)
     def test_expandtabs(self, size):
         _ = self.from_latin1
         s = _('-') * size
         tabsize = 8
-        self.assertTrue(s.expandtabs() == s)
+        self.assertWahr(s.expandtabs() == s)
         del s
         slen, remainder = divmod(size, tabsize)
         s = _('       \t') * slen
@@ -166,27 +166,27 @@ klasse BaseStrTest:
         _ = self.from_latin1
         SUBSTR = _('123456')
         s = _('a') * size + SUBSTR
-        self.assertTrue(s.isalnum())
+        self.assertWahr(s.isalnum())
         s += _('.')
-        self.assertFalse(s.isalnum())
+        self.assertFalsch(s.isalnum())
 
     @bigmemtest(size=_2G, memuse=2)
     def test_isalpha(self, size):
         _ = self.from_latin1
         SUBSTR = _('zzzzzzz')
         s = _('a') * size + SUBSTR
-        self.assertTrue(s.isalpha())
+        self.assertWahr(s.isalpha())
         s += _('.')
-        self.assertFalse(s.isalpha())
+        self.assertFalsch(s.isalpha())
 
     @bigmemtest(size=_2G, memuse=2)
     def test_isdigit(self, size):
         _ = self.from_latin1
         SUBSTR = _('123456')
         s = _('9') * size + SUBSTR
-        self.assertTrue(s.isdigit())
+        self.assertWahr(s.isdigit())
         s += _('z')
-        self.assertFalse(s.isdigit())
+        self.assertFalsch(s.isdigit())
 
     @bigmemtest(size=_2G, memuse=2)
     def test_islower(self, size):
@@ -195,9 +195,9 @@ klasse BaseStrTest:
             chr(c) fuer c in range(255) wenn not chr(c).isupper()))
         repeats = size // len(chars) + 2
         s = chars * repeats
-        self.assertTrue(s.islower())
+        self.assertWahr(s.islower())
         s += _('A')
-        self.assertFalse(s.islower())
+        self.assertFalsch(s.islower())
 
     @bigmemtest(size=_2G, memuse=2)
     def test_isspace(self, size):
@@ -205,20 +205,20 @@ klasse BaseStrTest:
         whitespace = _(' \f\n\r\t\v')
         repeats = size // len(whitespace) + 2
         s = whitespace * repeats
-        self.assertTrue(s.isspace())
+        self.assertWahr(s.isspace())
         s += _('j')
-        self.assertFalse(s.isspace())
+        self.assertFalsch(s.isspace())
 
     @bigmemtest(size=_2G, memuse=2)
     def test_istitle(self, size):
         _ = self.from_latin1
         SUBSTR = _('123456')
         s = _('').join([_('A'), _('a') * size, SUBSTR])
-        self.assertTrue(s.istitle())
+        self.assertWahr(s.istitle())
         s += _('A')
-        self.assertTrue(s.istitle())
+        self.assertWahr(s.istitle())
         s += _('aA')
-        self.assertFalse(s.istitle())
+        self.assertFalsch(s.istitle())
 
     @bigmemtest(size=_2G, memuse=2)
     def test_isupper(self, size):
@@ -227,9 +227,9 @@ klasse BaseStrTest:
             chr(c) fuer c in range(255) wenn not chr(c).islower()))
         repeats = size // len(chars) + 2
         s = chars * repeats
-        self.assertTrue(s.isupper())
+        self.assertWahr(s.isupper())
         s += _('a')
-        self.assertFalse(s.isupper())
+        self.assertFalsch(s.isupper())
 
     @bigmemtest(size=_2G, memuse=2)
     def test_join(self, size):
@@ -238,15 +238,15 @@ klasse BaseStrTest:
         x = s.join([_('aaaaa'), _('bbbbb')])
         self.assertEqual(x.count(_('a')), 5)
         self.assertEqual(x.count(_('b')), 5)
-        self.assertTrue(x.startswith(_('aaaaaA')))
-        self.assertTrue(x.endswith(_('Abbbbb')))
+        self.assertWahr(x.startswith(_('aaaaaA')))
+        self.assertWahr(x.endswith(_('Abbbbb')))
 
     @bigmemtest(size=_2G + 10, memuse=1)
     def test_ljust(self, size):
         _ = self.from_latin1
         SUBSTR = _(' abc def ghi')
         s = SUBSTR.ljust(size)
-        self.assertTrue(s.startswith(SUBSTR + _('  ')))
+        self.assertWahr(s.startswith(SUBSTR + _('  ')))
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
 
@@ -271,7 +271,7 @@ klasse BaseStrTest:
         # Type-specific optimization
         wenn isinstance(s, (str, bytes)):
             stripped = s.lstrip()
-            self.assertTrue(stripped is s)
+            self.assertWahr(stripped is s)
 
     @bigmemtest(size=_2G + 10, memuse=2)
     def test_replace(self, size):
@@ -326,7 +326,7 @@ klasse BaseStrTest:
         _ = self.from_latin1
         SUBSTR = _(' abc def ghi')
         s = SUBSTR.ljust(size)
-        self.assertTrue(s.startswith(SUBSTR + _('  ')))
+        self.assertWahr(s.startswith(SUBSTR + _('  ')))
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
 
@@ -343,7 +343,7 @@ klasse BaseStrTest:
         # Type-specific optimization
         wenn isinstance(s, (str, bytes)):
             stripped = s.rstrip()
-            self.assertTrue(stripped is s)
+            self.assertWahr(stripped is s)
 
     # The test takes about size bytes to build a string, and then about
     # sqrt(size) substrings of sqrt(size) in size and a list to
@@ -365,7 +365,7 @@ klasse BaseStrTest:
         l = s.split(_('a'))
         self.assertEqual(len(l), chunksize + 1)
         expected = _(' ') * chunksize
-        fuer item in filter(None, l):
+        fuer item in filter(Nichts, l):
             self.assertEqual(item, expected)
 
     # Allocates a string of twice size (and briefly two) and a list of
@@ -405,9 +405,9 @@ klasse BaseStrTest:
         _ = self.from_latin1
         SUBSTR = _(' abc def ghi')
         s = _('-') * size + SUBSTR
-        self.assertTrue(s.startswith(s))
-        self.assertTrue(s.startswith(_('-') * size))
-        self.assertFalse(s.startswith(SUBSTR))
+        self.assertWahr(s.startswith(s))
+        self.assertWahr(s.startswith(_('-') * size))
+        self.assertFalsch(s.startswith(SUBSTR))
 
     @bigmemtest(size=_2G, memuse=1)
     def test_strip(self, size):
@@ -437,8 +437,8 @@ klasse BaseStrTest:
         SUBSTR = _('SpaaHAaaAaham')
         s = SUBSTR * (size // len(SUBSTR) + 2)
         s = s.title()
-        self.assertTrue(s.startswith((SUBSTR * 3).title()))
-        self.assertTrue(s.endswith(SUBSTR.lower() * 3))
+        self.assertWahr(s.startswith((SUBSTR * 3).title()))
+        self.assertWahr(s.endswith(SUBSTR.lower() * 3))
 
     @bigmemtest(size=_2G, memuse=2)
     def test_translate(self, size):
@@ -469,8 +469,8 @@ klasse BaseStrTest:
         _ = self.from_latin1
         SUBSTR = _('-568324723598234')
         s = SUBSTR.zfill(size)
-        self.assertTrue(s.endswith(_('0') + SUBSTR[1:]))
-        self.assertTrue(s.startswith(_('-0')))
+        self.assertWahr(s.endswith(_('0') + SUBSTR[1:]))
+        self.assertWahr(s.startswith(_('-0')))
         self.assertEqual(len(s), size)
         self.assertEqual(s.count(_('0')), size - len(SUBSTR))
 
@@ -537,25 +537,25 @@ klasse BaseStrTest:
         edge = _('-') * (size // 2)
         s = _('').join([edge, SUBSTR, edge])
         del edge
-        self.assertTrue(SUBSTR in s)
-        self.assertFalse(SUBSTR * 2 in s)
-        self.assertTrue(_('-') in s)
-        self.assertFalse(_('a') in s)
+        self.assertWahr(SUBSTR in s)
+        self.assertFalsch(SUBSTR * 2 in s)
+        self.assertWahr(_('-') in s)
+        self.assertFalsch(_('a') in s)
         s += _('a')
-        self.assertTrue(_('a') in s)
+        self.assertWahr(_('a') in s)
 
     @bigmemtest(size=_2G + 10, memuse=2)
     def test_compare(self, size):
         _ = self.from_latin1
         s1 = _('-') * size
         s2 = _('-') * size
-        self.assertTrue(s1 == s2)
+        self.assertWahr(s1 == s2)
         del s2
         s2 = s1 + _('a')
-        self.assertFalse(s1 == s2)
+        self.assertFalsch(s1 == s2)
         del s2
         s2 = _('.') * size
-        self.assertFalse(s1 == s2)
+        self.assertFalsch(s1 == s2)
 
     @bigmemtest(size=_2G + 10, memuse=1)
     def test_hash(self, size):
@@ -578,14 +578,14 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
     def from_latin1(self, s):
         return s
 
-    def basic_encode_test(self, size, enc, c='.', expectedsize=None):
-        wenn expectedsize is None:
+    def basic_encode_test(self, size, enc, c='.', expectedsize=Nichts):
+        wenn expectedsize is Nichts:
             expectedsize = size
         try:
             s = c * size
             self.assertEqual(len(s.encode(enc)), expectedsize)
         finally:
-            s = None
+            s = Nichts
 
     def setUp(self):
         # HACK: adjust memory use of tests inherited from BaseStrTest
@@ -656,12 +656,12 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
     def test_format(self, size):
         s = '-' * size
         sf = '%s' % (s,)
-        self.assertTrue(s == sf)
+        self.assertWahr(s == sf)
         del sf
         sf = '..%s..' % (s,)
         self.assertEqual(len(sf), len(s) + 4)
-        self.assertTrue(sf.startswith('..-'))
-        self.assertTrue(sf.endswith('-..'))
+        self.assertWahr(sf.startswith('..-'))
+        self.assertWahr(sf.endswith('-..'))
         del s, sf
 
         size //= 2
@@ -720,10 +720,10 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
             fuer f in (repr, ascii):
                 r = f(s)
                 self.assertEqual(len(r), 2 + (len(f(char)) - 2) * size)
-                self.assertTrue(r.endswith(r"\udcba'"), r[-10:])
-                r = None
+                self.assertWahr(r.endswith(r"\udcba'"), r[-10:])
+                r = Nichts
         finally:
-            r = s = None
+            r = s = Nichts
 
     @bigmemtest(size=_2G // 5 + 1, memuse=ucs4_char_size * 2 + ascii_char_size * 10)
     def test_unicode_repr_wide(self, size):
@@ -733,10 +733,10 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
             fuer f in (repr, ascii):
                 r = f(s)
                 self.assertEqual(len(r), 2 + (len(f(char)) - 2) * size)
-                self.assertTrue(r.endswith(r"\U0001dcba'"), r[-12:])
-                r = None
+                self.assertWahr(r.endswith(r"\U0001dcba'"), r[-12:])
+                r = Nichts
         finally:
-            r = s = None
+            r = s = Nichts
 
     # The original test_translate is overridden here, so as to get the
     # correct size estimate: str.translate() uses an intermediate Py_UCS4
@@ -808,8 +808,8 @@ klasse BytearrayTest(unittest.TestCase, BaseStrTest):
     def test_swapcase(self, size):
         self._test_swapcase(size)
 
-    test_hash = None
-    test_split_large = None
+    test_hash = Nichts
+    test_split_large = Nichts
 
 klasse TupleTest(unittest.TestCase):
 
@@ -826,13 +826,13 @@ klasse TupleTest(unittest.TestCase):
     def test_compare(self, size):
         t1 = ('',) * size
         t2 = ('',) * size
-        self.assertTrue(t1 == t2)
+        self.assertWahr(t1 == t2)
         del t2
         t2 = ('',) * (size + 1)
-        self.assertFalse(t1 == t2)
+        self.assertFalsch(t1 == t2)
         del t2
         t2 = (1,) * size
-        self.assertFalse(t1 == t2)
+        self.assertFalsch(t1 == t2)
 
     # Test concatenating into a single tuple of more than 2G in length,
     # and concatenating a tuple of more than 2G in length separately, so
@@ -857,9 +857,9 @@ klasse TupleTest(unittest.TestCase):
     def test_contains(self, size):
         t = (1, 2, 3, 4, 5) * size
         self.assertEqual(len(t), size * 5)
-        self.assertTrue(5 in t)
-        self.assertFalse((1, 2, 3, 4, 5) in t)
-        self.assertFalse(0 in t)
+        self.assertWahr(5 in t)
+        self.assertFalsch((1, 2, 3, 4, 5) in t)
+        self.assertFalsch(0 in t)
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
     def test_hash(self, size):
@@ -867,23 +867,23 @@ klasse TupleTest(unittest.TestCase):
         h1 = hash(t1)
         del t1
         t2 = (0,) * (size + 1)
-        self.assertFalse(h1 == hash(t2))
+        self.assertFalsch(h1 == hash(t2))
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
     def test_index_and_slice(self, size):
-        t = (None,) * size
+        t = (Nichts,) * size
         self.assertEqual(len(t), size)
-        self.assertEqual(t[-1], None)
-        self.assertEqual(t[5], None)
-        self.assertEqual(t[size - 1], None)
+        self.assertEqual(t[-1], Nichts)
+        self.assertEqual(t[5], Nichts)
+        self.assertEqual(t[size - 1], Nichts)
         self.assertRaises(IndexError, operator.getitem, t, size)
-        self.assertEqual(t[:5], (None,) * 5)
-        self.assertEqual(t[-5:], (None,) * 5)
-        self.assertEqual(t[20:25], (None,) * 5)
-        self.assertEqual(t[-25:-20], (None,) * 5)
-        self.assertEqual(t[size - 5:], (None,) * 5)
-        self.assertEqual(t[size - 5:size], (None,) * 5)
-        self.assertEqual(t[size - 6:size - 2], (None,) * 4)
+        self.assertEqual(t[:5], (Nichts,) * 5)
+        self.assertEqual(t[-5:], (Nichts,) * 5)
+        self.assertEqual(t[20:25], (Nichts,) * 5)
+        self.assertEqual(t[-25:-20], (Nichts,) * 5)
+        self.assertEqual(t[size - 5:], (Nichts,) * 5)
+        self.assertEqual(t[size - 5:size], (Nichts,) * 5)
+        self.assertEqual(t[size - 6:size - 2], (Nichts,) * 4)
         self.assertEqual(t[size:size], ())
         self.assertEqual(t[size:size+5], ())
 
@@ -930,12 +930,12 @@ klasse TupleTest(unittest.TestCase):
 
     # Like test_concat, split in two.
     def basic_test_repr(self, size):
-        t = (False,) * size
+        t = (Falsch,) * size
         s = repr(t)
-        # The repr of a tuple of Falses is exactly 7 times the tuple length.
+        # The repr of a tuple of Falschs is exactly 7 times the tuple length.
         self.assertEqual(len(s), size * 7)
-        self.assertEqual(s[:10], '(False, Fa')
-        self.assertEqual(s[-10:], 'se, False)')
+        self.assertEqual(s[:10], '(Falsch, Fa')
+        self.assertEqual(s[-10:], 'se, Falsch)')
 
     @bigmemtest(size=_2G // 7 + 2, memuse=pointer_size + ascii_char_size * 7)
     def test_repr_small(self, size):
@@ -956,13 +956,13 @@ klasse ListTest(unittest.TestCase):
     def test_compare(self, size):
         l1 = [''] * size
         l2 = [''] * size
-        self.assertTrue(l1 == l2)
+        self.assertWahr(l1 == l2)
         del l2
         l2 = [''] * (size + 1)
-        self.assertFalse(l1 == l2)
+        self.assertFalsch(l1 == l2)
         del l2
         l2 = [2] * size
-        self.assertFalse(l1 == l2)
+        self.assertFalsch(l1 == l2)
 
     # Test concatenating into a single list of more than 2G in length,
     # and concatenating a list of more than 2G in length separately, so
@@ -989,8 +989,8 @@ klasse ListTest(unittest.TestCase):
         l = [sys.stdout] * size
         l += l
         self.assertEqual(len(l), size * 2)
-        self.assertTrue(l[0] is l[-1])
-        self.assertTrue(l[size - 1] is l[size + 1])
+        self.assertWahr(l[0] is l[-1])
+        self.assertWahr(l[size - 1] is l[size + 1])
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
     def test_inplace_concat_small(self, size):
@@ -1004,9 +1004,9 @@ klasse ListTest(unittest.TestCase):
     def test_contains(self, size):
         l = [1, 2, 3, 4, 5] * size
         self.assertEqual(len(l), size * 5)
-        self.assertTrue(5 in l)
-        self.assertFalse([1, 2, 3, 4, 5] in l)
-        self.assertFalse(0 in l)
+        self.assertWahr(5 in l)
+        self.assertFalsch([1, 2, 3, 4, 5] in l)
+        self.assertFalsch(0 in l)
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
     def test_hash(self, size):
@@ -1015,25 +1015,25 @@ klasse ListTest(unittest.TestCase):
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
     def test_index_and_slice(self, size):
-        l = [None] * size
+        l = [Nichts] * size
         self.assertEqual(len(l), size)
-        self.assertEqual(l[-1], None)
-        self.assertEqual(l[5], None)
-        self.assertEqual(l[size - 1], None)
+        self.assertEqual(l[-1], Nichts)
+        self.assertEqual(l[5], Nichts)
+        self.assertEqual(l[size - 1], Nichts)
         self.assertRaises(IndexError, operator.getitem, l, size)
-        self.assertEqual(l[:5], [None] * 5)
-        self.assertEqual(l[-5:], [None] * 5)
-        self.assertEqual(l[20:25], [None] * 5)
-        self.assertEqual(l[-25:-20], [None] * 5)
-        self.assertEqual(l[size - 5:], [None] * 5)
-        self.assertEqual(l[size - 5:size], [None] * 5)
-        self.assertEqual(l[size - 6:size - 2], [None] * 4)
+        self.assertEqual(l[:5], [Nichts] * 5)
+        self.assertEqual(l[-5:], [Nichts] * 5)
+        self.assertEqual(l[20:25], [Nichts] * 5)
+        self.assertEqual(l[-25:-20], [Nichts] * 5)
+        self.assertEqual(l[size - 5:], [Nichts] * 5)
+        self.assertEqual(l[size - 5:size], [Nichts] * 5)
+        self.assertEqual(l[size - 6:size - 2], [Nichts] * 4)
         self.assertEqual(l[size:size], [])
         self.assertEqual(l[size:size+5], [])
 
         l[size - 2] = 5
         self.assertEqual(len(l), size)
-        self.assertEqual(l[-3:], [None, 5, None])
+        self.assertEqual(l[-3:], [Nichts, 5, Nichts])
         self.assertEqual(l.count(5), 1)
         self.assertRaises(IndexError, operator.setitem, l, size, 6)
         self.assertEqual(len(l), size)
@@ -1041,12 +1041,12 @@ klasse ListTest(unittest.TestCase):
         l[size - 7:] = [1, 2, 3, 4, 5]
         size -= 2
         self.assertEqual(len(l), size)
-        self.assertEqual(l[-7:], [None, None, 1, 2, 3, 4, 5])
+        self.assertEqual(l[-7:], [Nichts, Nichts, 1, 2, 3, 4, 5])
 
         l[:7] = [1, 2, 3, 4, 5]
         size -= 2
         self.assertEqual(len(l), size)
-        self.assertEqual(l[:7], [1, 2, 3, 4, 5, None, None])
+        self.assertEqual(l[:7], [1, 2, 3, 4, 5, Nichts, Nichts])
 
         del l[size - 1]
         size -= 1
@@ -1071,7 +1071,7 @@ klasse ListTest(unittest.TestCase):
     # Like test_concat, split in two.
     def basic_test_repeat(self, size):
         l = [] * size
-        self.assertFalse(l)
+        self.assertFalsch(l)
         l = [''] * size
         self.assertEqual(len(l), size)
         l = l * 2
@@ -1091,13 +1091,13 @@ klasse ListTest(unittest.TestCase):
         l = ['']
         l *= size
         self.assertEqual(len(l), size)
-        self.assertTrue(l[0] is l[-1])
+        self.assertWahr(l[0] is l[-1])
         del l
 
         l = [''] * size
         l *= 2
         self.assertEqual(len(l), size * 2)
-        self.assertTrue(l[size - 1] is l[-1])
+        self.assertWahr(l[size - 1] is l[-1])
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
     def test_inplace_repeat_small(self, size):
@@ -1108,12 +1108,12 @@ klasse ListTest(unittest.TestCase):
         return self.basic_test_inplace_repeat(size)
 
     def basic_test_repr(self, size):
-        l = [False] * size
+        l = [Falsch] * size
         s = repr(l)
-        # The repr of a list of Falses is exactly 7 times the list length.
+        # The repr of a list of Falschs is exactly 7 times the list length.
         self.assertEqual(len(s), size * 7)
-        self.assertEqual(s[:10], '[False, Fa')
-        self.assertEqual(s[-10:], 'se, False]')
+        self.assertEqual(s[:10], '[Falsch, Fa')
+        self.assertEqual(s[-10:], 'se, Falsch]')
         self.assertEqual(s.count('F'), size)
 
     @bigmemtest(size=_2G // 7 + 2, memuse=pointer_size + ascii_char_size * 7)
@@ -1131,8 +1131,8 @@ klasse ListTest(unittest.TestCase):
         l = [object()] * size
         l.append(object())
         self.assertEqual(len(l), size+1)
-        self.assertTrue(l[-3] is l[-2])
-        self.assertFalse(l[-2] is l[-1])
+        self.assertWahr(l[-3] is l[-2])
+        self.assertFalsch(l[-2] is l[-1])
 
     @bigmemtest(size=_2G // 5 + 2, memuse=pointer_size * 5)
     def test_count(self, size):
@@ -1146,8 +1146,8 @@ klasse ListTest(unittest.TestCase):
         l = [object] * size
         l.extend(l)
         self.assertEqual(len(l), size * 2)
-        self.assertTrue(l[0] is l[-1])
-        self.assertTrue(l[size - 1] is l[size + 1])
+        self.assertWahr(l[0] is l[-1])
+        self.assertWahr(l[size - 1] is l[size + 1])
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
     def test_extend_small(self, size):
@@ -1269,14 +1269,14 @@ klasse ImmortalityTest(unittest.TestCase):
             return
         o1 = o2 = o3 = o4 = o5 = o6 = o7 = o8 = object()
         l = [o1] * (size-20)
-        self.assertFalse(_testcapi.is_immortal(o1))
+        self.assertFalsch(_testcapi.is_immortal(o1))
         fuer _ in range(30):
             l.append(l[0])
-        self.assertTrue(_testcapi.is_immortal(o1))
+        self.assertWahr(_testcapi.is_immortal(o1))
         del o2, o3, o4, o5, o6, o7, o8
-        self.assertTrue(_testcapi.is_immortal(o1))
+        self.assertWahr(_testcapi.is_immortal(o1))
         del l
-        self.assertTrue(_testcapi.is_immortal(o1))
+        self.assertWahr(_testcapi.is_immortal(o1))
 
 
 wenn __name__ == '__main__':

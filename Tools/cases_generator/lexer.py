@@ -242,7 +242,7 @@ __all__.extend(kwds)
 
 def make_syntax_error(
     message: str,
-    filename: str | None,
+    filename: str | Nichts,
     line: int,
     column: int,
     line_text: str,
@@ -250,7 +250,7 @@ def make_syntax_error(
     return SyntaxError(message, (filename, line, column, line_text))
 
 
-@dataclass(slots=True, frozen=True)
+@dataclass(slots=Wahr, frozen=Wahr)
 klasse Token:
     filename: str
     kind: str

@@ -19,7 +19,7 @@ _is_coroutine = object()
 
 def iscoroutinefunction(func):
     import warnings
-    """Return True wenn func is a decorated coroutine function."""
+    """Return Wahr wenn func is a decorated coroutine function."""
     warnings._deprecated("asyncio.iscoroutinefunction",
                          f"{warnings._DEPRECATED_MSG}; "
                          "use inspect.iscoroutinefunction() instead",
@@ -29,7 +29,7 @@ def iscoroutinefunction(func):
 
 def _iscoroutinefunction(func):
     return (inspect.iscoroutinefunction(func) or
-            getattr(func, '_is_coroutine', None) is _is_coroutine)
+            getattr(func, '_is_coroutine', Nichts) is _is_coroutine)
 
 
 # Prioritize native coroutine check to speed-up
@@ -39,9 +39,9 @@ _iscoroutine_typecache = set()
 
 
 def iscoroutine(obj):
-    """Return True wenn obj is a coroutine object."""
+    """Return Wahr wenn obj is a coroutine object."""
     wenn type(obj) in _iscoroutine_typecache:
-        return True
+        return Wahr
 
     wenn isinstance(obj, _COROUTINE_TYPES):
         # Just in case we don't want to cache more than 100
@@ -49,9 +49,9 @@ def iscoroutine(obj):
         # someone stressing the system on purpose.
         wenn len(_iscoroutine_typecache) < 100:
             _iscoroutine_typecache.add(type(obj))
-        return True
+        return Wahr
     sonst:
-        return False
+        return Falsch
 
 
 def _format_coroutine(coro):
@@ -78,9 +78,9 @@ def _format_coroutine(coro):
             try:
                 return coro.gi_running
             except AttributeError:
-                return False
+                return Falsch
 
-    coro_code = None
+    coro_code = Nichts
     wenn hasattr(coro, 'cr_code') and coro.cr_code:
         coro_code = coro.cr_code
     sowenn hasattr(coro, 'gi_code') and coro.gi_code:
@@ -95,7 +95,7 @@ def _format_coroutine(coro):
         sonst:
             return coro_name
 
-    coro_frame = None
+    coro_frame = Nichts
     wenn hasattr(coro, 'gi_frame') and coro.gi_frame:
         coro_frame = coro.gi_frame
     sowenn hasattr(coro, 'cr_frame') and coro.cr_frame:
@@ -107,7 +107,7 @@ def _format_coroutine(coro):
 
     lineno = 0
 
-    wenn coro_frame is not None:
+    wenn coro_frame is not Nichts:
         lineno = coro_frame.f_lineno
         coro_repr = f'{coro_name} running at {filename}:{lineno}'
 

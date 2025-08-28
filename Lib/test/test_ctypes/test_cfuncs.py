@@ -186,11 +186,11 @@ klasse CFunctions(unittest.TestCase):
         self.assertEqual(self.S(), -42)
 
     def test_void(self):
-        self._dll.tv_i.restype = None
+        self._dll.tv_i.restype = Nichts
         self._dll.tv_i.argtypes = (c_int,)
-        self.assertEqual(self._dll.tv_i(42), None)
+        self.assertEqual(self._dll.tv_i(42), Nichts)
         self.assertEqual(self.S(), 42)
-        self.assertEqual(self._dll.tv_i(-42), None)
+        self.assertEqual(self._dll.tv_i(-42), Nichts)
         self.assertEqual(self.S(), -42)
 
     @threading_helper.requires_working_threading()
@@ -208,7 +208,7 @@ klasse CFunctions(unittest.TestCase):
             with threading_helper.start_threads((Thread(target=concurrent) fuer _ in range(10))):
                 pass
 
-            self.assertIsNone(exc.exc_value)
+            self.assertIsNichts(exc.exc_value)
 
 
 # The following repeats the above tests with stdcall functions (where

@@ -83,7 +83,7 @@ klasse FieldsTestBase(StructCheckMixin):
                 byte_size=2,  # Wrong size: c_byte is only 1 byte
                 byte_offset=2,
                 index=1,
-                _internal_use=True
+                _internal_use=Wahr
             )
 
     def test_max_field_size_gh126937(self):
@@ -149,7 +149,7 @@ klasse StructFieldsTestCase(unittest.TestCase, FieldsTestBase):
     cls = Structure
 
     def test_cfield_type_flags(self):
-        self.assertTrue(CField.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
+        self.assertWahr(CField.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
 
     def test_cfield_inheritance_hierarchy(self):
         self.assertEqual(CField.mro(), [CField, object])

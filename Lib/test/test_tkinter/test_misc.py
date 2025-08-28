@@ -15,7 +15,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertIn("Widget", tkinter.__all__)
         # Check that variables from tkinter.constants are also in tkinter.__all__
         self.assertIn("CASCADE", tkinter.__all__)
-        self.assertIsNotNone(tkinter.CASCADE)
+        self.assertIsNotNichts(tkinter.CASCADE)
         # Check that sys, re, and constants are not in tkinter.__all__
         self.assertNotIn("re", tkinter.__all__)
         self.assertNotIn("sys", tkinter.__all__)
@@ -41,7 +41,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         b = tkinter.Button(f2)
         b2 = Button2(f2)
         fuer name in str(b).split('.') + str(b2).split('.'):
-            self.assertFalse(name.isidentifier(), msg=repr(name))
+            self.assertFalsch(name.isidentifier(), msg=repr(name))
         b3 = tkinter.Button(f2)
         b4 = Button2(f2)
         self.assertEqual(len({str(b), str(b2), str(b3), str(b4)}), 4)
@@ -64,17 +64,17 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
             f.tk_busy_configure('spam')
         self.assertIsInstance(f.tk_busy_configure(), dict)
 
-        self.assertTrue(f.tk_busy_status())
-        self.assertFalse(root.tk_busy_status())
-        self.assertFalse(f2.tk_busy_status())
-        self.assertFalse(b.tk_busy_status())
+        self.assertWahr(f.tk_busy_status())
+        self.assertFalsch(root.tk_busy_status())
+        self.assertFalsch(f2.tk_busy_status())
+        self.assertFalsch(b.tk_busy_status())
         self.assertIn(f, f.tk_busy_current())
         self.assertIn(f, f.tk_busy_current('*.m?f*me'))
         self.assertNotIn(f, f.tk_busy_current('*spam'))
 
         f.tk_busy_forget()
-        self.assertFalse(f.tk_busy_status())
-        self.assertFalse(f.tk_busy_current())
+        self.assertFalsch(f.tk_busy_status())
+        self.assertFalsch(f.tk_busy_current())
         errmsg = r"can(no|')t find busy window.*"
         with self.assertRaisesRegex(TclError, errmsg):
             f.tk_busy_configure()
@@ -137,7 +137,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
             count = start + step + end
 
         # Without function, sleeps fuer ms.
-        self.assertIsNone(root.after(1))
+        self.assertIsNichts(root.after(1))
 
         # Set up with callback with no args.
         count = 0
@@ -226,7 +226,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
 
         # No value fuer id raises a ValueError.
         with self.assertRaises(ValueError):
-            root.after_cancel(None)
+            root.after_cancel(Nichts)
 
         # Cancel timer event.
         count = 0
@@ -350,10 +350,10 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         wid = w.winfo_id()
         self.assertIsInstance(wid, int)
         self.assertEqual(self.root.winfo_pathname(hex(wid)), str(w))
-        self.assertEqual(self.root.winfo_pathname(hex(wid), displayof=None), str(w))
+        self.assertEqual(self.root.winfo_pathname(hex(wid), displayof=Nichts), str(w))
         self.assertEqual(self.root.winfo_pathname(hex(wid), displayof=t), str(w))
         self.assertEqual(self.root.winfo_pathname(wid), str(w))
-        self.assertEqual(self.root.winfo_pathname(wid, displayof=None), str(w))
+        self.assertEqual(self.root.winfo_pathname(wid, displayof=Nichts), str(w))
         self.assertEqual(self.root.winfo_pathname(wid, displayof=t), str(w))
 
     def test_event_repr_defaults(self):
@@ -381,7 +381,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         e = tkinter.Event()
         e.serial = 12345
         e.num = 3
-        e.focus = True
+        e.focus = Wahr
         e.height = 200
         e.keycode = 65
         e.state = 0x30405
@@ -390,7 +390,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         e.x = 10
         e.y = 20
         e.char = 'A'
-        e.send_event = True
+        e.send_event = Wahr
         e.keysym = 'Key-A'
         e.keysym_num = ord('A')
         e.type = tkinter.EventType.Configure
@@ -399,10 +399,10 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         e.y_root = 1020
         e.delta = -1
         self.assertEqual(repr(e),
-                         "<Configure event send_event=True"
+                         "<Configure event send_event=Wahr"
                          " state=Shift|Control|Button3|0x30000"
                          " keysym=Key-A keycode=65 char='A'"
-                         " num=3 delta=-1 focus=True"
+                         " num=3 delta=-1 focus=Wahr"
                          " x=10 y=20 width=300 height=200>")
 
     def test_eventtype_enum(self):
@@ -449,13 +449,13 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         enum._test_simple_enum(CheckedEventType, tkinter.EventType)
 
     def test_getboolean(self):
-        fuer v in 'true', 'yes', 'on', '1', 't', 'y', 1, True:
-            self.assertIs(self.root.getboolean(v), True)
-        fuer v in 'false', 'no', 'off', '0', 'f', 'n', 0, False:
-            self.assertIs(self.root.getboolean(v), False)
+        fuer v in 'true', 'yes', 'on', '1', 't', 'y', 1, Wahr:
+            self.assertIs(self.root.getboolean(v), Wahr)
+        fuer v in 'false', 'no', 'off', '0', 'f', 'n', 0, Falsch:
+            self.assertIs(self.root.getboolean(v), Falsch)
         self.assertRaises(ValueError, self.root.getboolean, 'yea')
         self.assertRaises(ValueError, self.root.getboolean, '')
-        self.assertRaises(TypeError, self.root.getboolean, None)
+        self.assertRaises(TypeError, self.root.getboolean, Nichts)
         self.assertRaises(TypeError, self.root.getboolean, ())
 
     def test_mainloop(self):
@@ -468,7 +468,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(log, [])
         self.root.mainloop(0)
         self.assertEqual(log, [1])
-        self.assertTrue(self.root.winfo_exists())
+        self.assertWahr(self.root.winfo_exists())
 
     def test_info_patchlevel(self):
         vi = self.root.info_patchlevel()
@@ -492,7 +492,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(vi[2], vi.micro)
         self.assertEqual(vi[3], vi.releaselevel)
         self.assertEqual(vi[4], vi.serial)
-        self.assertTrue(vi > (1,0,0))
+        self.assertWahr(vi > (1,0,0))
         wenn vi.releaselevel == 'final':
             self.assertEqual(vi.serial, 0)
         sonst:
@@ -513,7 +513,7 @@ klasse WmTest(AbstractTkTest, unittest.TestCase):
 
     def test_wm_attribute(self):
         w = self.root
-        attributes = w.wm_attributes(return_python_dict=True)
+        attributes = w.wm_attributes(return_python_dict=Wahr)
         self.assertIsInstance(attributes, dict)
         attributes2 = w.wm_attributes()
         self.assertIsInstance(attributes2, tuple)
@@ -521,7 +521,7 @@ klasse WmTest(AbstractTkTest, unittest.TestCase):
                          tuple('-' + k fuer k in attributes))
         self.assertEqual(attributes2[1::2], tuple(attributes.values()))
         # silently deprecated
-        attributes3 = w.wm_attributes(None)
+        attributes3 = w.wm_attributes(Nichts)
         wenn self.wantobjects:
             self.assertEqual(attributes3, attributes2)
         sonst:
@@ -567,12 +567,12 @@ klasse WmTest(AbstractTkTest, unittest.TestCase):
         t = tkinter.Toplevel(self.root)
         self.assertEqual(t.wm_iconbitmap(), '')
         t.wm_iconbitmap('hourglass')
-        bug = False
+        bug = Falsch
         wenn t._windowingsystem == 'aqua':
             # Tk bug 13ac26b35dc55f7c37f70b39d59d7ef3e63017c8.
             patchlevel = get_tk_patchlevel(t)
             wenn patchlevel < (8, 6, 17) or (9, 0) <= patchlevel < (9, 0, 2):
-                bug = True
+                bug = Wahr
         wenn not bug:
             self.assertEqual(t.wm_iconbitmap(), 'hourglass')
         self.assertEqual(self.root.wm_iconbitmap(), '')
@@ -608,7 +608,7 @@ klasse EventTest(AbstractTkTest, unittest.TestCase):
         self.assertIs(e.widget, f)
         self.assertIsInstance(e.serial, int)
         self.assertEqual(e.time, '??')
-        self.assertIs(e.send_event, False)
+        self.assertIs(e.send_event, Falsch)
         self.assertNotHasAttr(e, 'focus')
         self.assertEqual(e.num, '??')
         self.assertEqual(e.state, '??')
@@ -641,7 +641,7 @@ klasse EventTest(AbstractTkTest, unittest.TestCase):
         self.assertIs(e.widget, f)
         self.assertIsInstance(e.serial, int)
         self.assertEqual(e.time, '??')
-        self.assertIs(e.send_event, False)
+        self.assertIs(e.send_event, Falsch)
         self.assertNotHasAttr(e, 'focus')
         self.assertEqual(e.num, '??')
         self.assertEqual(e.state, '??')
@@ -675,7 +675,7 @@ klasse EventTest(AbstractTkTest, unittest.TestCase):
         self.assertIs(e.widget, f)
         self.assertIsInstance(e.serial, int)
         self.assertEqual(e.time, 0)
-        self.assertIs(e.send_event, False)
+        self.assertIs(e.send_event, Falsch)
         self.assertNotHasAttr(e, 'focus')
         self.assertEqual(e.num, '??')
         self.assertIsInstance(e.state, int)
@@ -712,8 +712,8 @@ klasse EventTest(AbstractTkTest, unittest.TestCase):
         self.assertIs(e.widget, f)
         self.assertIsInstance(e.serial, int)
         self.assertEqual(e.time, 0)
-        self.assertIs(e.send_event, False)
-        self.assertIs(e.focus, False)
+        self.assertIs(e.send_event, Falsch)
+        self.assertIs(e.focus, Falsch)
         self.assertEqual(e.num, '??')
         self.assertEqual(e.state, 0)
         self.assertEqual(e.char, '??')
@@ -727,7 +727,7 @@ klasse EventTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(e.x_root, 100 + f.winfo_rootx())
         self.assertEqual(e.y_root, 50 + f.winfo_rooty())
         self.assertEqual(e.delta, 0)
-        self.assertEqual(repr(e), '<Enter event focus=False x=100 y=50>')
+        self.assertEqual(repr(e), '<Enter event focus=Falsch x=100 y=50>')
 
     def test_event_generate_button_press(self):
         f = tkinter.Frame(self.root, width=150, height=100)
@@ -746,7 +746,7 @@ klasse EventTest(AbstractTkTest, unittest.TestCase):
         self.assertIs(e.widget, f)
         self.assertIsInstance(e.serial, int)
         self.assertEqual(e.time, 0)
-        self.assertIs(e.send_event, False)
+        self.assertIs(e.send_event, Falsch)
         self.assertNotHasAttr(e, 'focus')
         self.assertEqual(e.num, 1)
         self.assertEqual(e.state, 0)
@@ -780,7 +780,7 @@ klasse EventTest(AbstractTkTest, unittest.TestCase):
         self.assertIs(e.widget, f)
         self.assertIsInstance(e.serial, int)
         self.assertEqual(e.time, 0)
-        self.assertIs(e.send_event, False)
+        self.assertIs(e.send_event, Falsch)
         self.assertNotHasAttr(e, 'focus')
         self.assertEqual(e.num, '??')
         self.assertEqual(e.state, 0x100)
@@ -813,7 +813,7 @@ klasse EventTest(AbstractTkTest, unittest.TestCase):
         self.assertIs(e.type, tkinter.EventType.MouseWheel)
         self.assertIs(e.widget, f)
         self.assertIsInstance(e.serial, int)
-        self.assertIs(e.send_event, False)
+        self.assertIs(e.send_event, Falsch)
         self.assertNotHasAttr(e, 'focus')
         self.assertEqual(e.time, 0)
         self.assertEqual(e.num, '??')
@@ -848,7 +848,7 @@ klasse EventTest(AbstractTkTest, unittest.TestCase):
         self.assertIs(e.widget, f)
         self.assertIsInstance(e.serial, int)
         self.assertEqual(e.time, 0)
-        self.assertIs(e.send_event, False)
+        self.assertIs(e.send_event, Falsch)
         self.assertNotHasAttr(e, 'focus')
         self.assertEqual(e.num, '??')
         self.assertEqual(e.state, 0)
@@ -896,7 +896,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         self.assertIn(funcid, script)
         self.assertCommandExist(funcid)
 
-        funcid2 = f.bind(event, test2, add=True)
+        funcid2 = f.bind(event, test2, add=Wahr)
         script = f.bind(event)
         self.assertIn(funcid, script)
         self.assertIn(funcid2, script)
@@ -912,7 +912,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         def test2(e): pass
 
         funcid = f.bind(event, test1)
-        funcid2 = f.bind(event, test2, add=True)
+        funcid2 = f.bind(event, test2, add=Wahr)
 
         self.assertRaises(TypeError, f.unbind)
         f.unbind(event)
@@ -932,8 +932,8 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         def test3(e): events.append('c')
 
         funcid = f.bind(event, test1)
-        funcid2 = f.bind(event, test2, add=True)
-        funcid3 = f.bind(event, test3, add=True)
+        funcid2 = f.bind(event, test2, add=Wahr)
+        funcid3 = f.bind(event, test3, add=Wahr)
         events = []
         f.event_generate(event)
         self.assertEqual(events, ['a', 'b', 'c'])
@@ -975,7 +975,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         def test3(e): pass
 
         funcid = f.bind(event, test1)
-        funcid2 = f.bind(event, test2, add=True)
+        funcid2 = f.bind(event, test2, add=Wahr)
         script = f.bind(event)
         self.assertIn(funcid2, script)
         self.assertIn(funcid, script)
@@ -1006,7 +1006,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         self.assertIn(funcid, script)
         self.assertCommandExist(funcid)
 
-        funcid2 = bind_class('Test', event, test2, add=True)
+        funcid2 = bind_class('Test', event, test2, add=Wahr)
         script = bind_class('Test', event)
         self.assertIn(funcid, script)
         self.assertIn(funcid2, script)
@@ -1024,7 +1024,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         def test2(e): pass
 
         funcid = bind_class('Test', event, test1)
-        funcid2 = bind_class('Test', event, test2, add=True)
+        funcid2 = bind_class('Test', event, test2, add=Wahr)
 
         self.assertRaises(TypeError, unbind_class)
         self.assertRaises(TypeError, unbind_class, 'Test')
@@ -1048,7 +1048,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         def test3(e): pass
 
         funcid = bind_class('Test', event, test1)
-        funcid2 = bind_class('Test', event, test2, add=True)
+        funcid2 = bind_class('Test', event, test2, add=Wahr)
         script = bind_class('Test', event)
         self.assertIn(funcid2, script)
         self.assertIn(funcid, script)
@@ -1080,7 +1080,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         self.assertIn(funcid, script)
         self.assertCommandExist(funcid)
 
-        funcid2 = bind_all(event, test2, add=True)
+        funcid2 = bind_all(event, test2, add=Wahr)
         script = bind_all(event)
         self.assertIn(funcid, script)
         self.assertIn(funcid2, script)
@@ -1098,7 +1098,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         def test2(e): pass
 
         funcid = bind_all(event, test1)
-        funcid2 = bind_all(event, test2, add=True)
+        funcid2 = bind_all(event, test2, add=Wahr)
 
         unbind_all(event)
         self.assertEqual(bind_all(event), '')
@@ -1120,7 +1120,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         def test3(e): pass
 
         funcid = bind_all(event, test1)
-        funcid2 = bind_all(event, test2, add=True)
+        funcid2 = bind_all(event, test2, add=Wahr)
         script = bind_all(event)
         self.assertIn(funcid2, script)
         self.assertIn(funcid, script)
@@ -1156,7 +1156,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         self.assertIn(funcid, script)
         self.assertCommandExist(funcid)
 
-        funcid2 = w.tag_bind(tag, event, test2, add=True)
+        funcid2 = w.tag_bind(tag, event, test2, add=Wahr)
         script = tag_bind(tag, event)
         self.assertIn(funcid, script)
         self.assertIn(funcid2, script)
@@ -1174,7 +1174,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         def test2(e): pass
 
         funcid = w.tag_bind(tag, event, test1)
-        funcid2 = w.tag_bind(tag, event, test2, add=True)
+        funcid2 = w.tag_bind(tag, event, test2, add=Wahr)
 
         self.assertRaises(TypeError, w.tag_unbind, tag)
         w.tag_unbind(tag, event)
@@ -1193,7 +1193,7 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
         def test3(e): pass
 
         funcid = w.tag_bind(tag, event, test1)
-        funcid2 = w.tag_bind(tag, event, test2, add=True)
+        funcid2 = w.tag_bind(tag, event, test2, add=Wahr)
         script = tag_bind(tag, event)
         self.assertIn(funcid2, script)
         self.assertIn(funcid, script)
@@ -1288,8 +1288,8 @@ klasse BindTest(AbstractTkTest, unittest.TestCase):
 klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
 
     def test_default_root(self):
-        self.assertIs(tkinter._support_default_root, True)
-        self.assertIsNone(tkinter._default_root)
+        self.assertIs(tkinter._support_default_root, Wahr)
+        self.assertIsNichts(tkinter._default_root)
         root = tkinter.Tk()
         root2 = tkinter.Tk()
         root3 = tkinter.Tk()
@@ -1297,34 +1297,34 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         root2.destroy()
         self.assertIs(tkinter._default_root, root)
         root.destroy()
-        self.assertIsNone(tkinter._default_root)
+        self.assertIsNichts(tkinter._default_root)
         root3.destroy()
-        self.assertIsNone(tkinter._default_root)
+        self.assertIsNichts(tkinter._default_root)
 
     def test_no_default_root(self):
-        self.assertIs(tkinter._support_default_root, True)
-        self.assertIsNone(tkinter._default_root)
+        self.assertIs(tkinter._support_default_root, Wahr)
+        self.assertIsNichts(tkinter._default_root)
         root = tkinter.Tk()
         self.assertIs(tkinter._default_root, root)
         tkinter.NoDefaultRoot()
-        self.assertIs(tkinter._support_default_root, False)
+        self.assertIs(tkinter._support_default_root, Falsch)
         self.assertNotHasAttr(tkinter, '_default_root')
         # repeated call is no-op
         tkinter.NoDefaultRoot()
-        self.assertIs(tkinter._support_default_root, False)
+        self.assertIs(tkinter._support_default_root, Falsch)
         self.assertNotHasAttr(tkinter, '_default_root')
         root.destroy()
-        self.assertIs(tkinter._support_default_root, False)
+        self.assertIs(tkinter._support_default_root, Falsch)
         self.assertNotHasAttr(tkinter, '_default_root')
         root = tkinter.Tk()
-        self.assertIs(tkinter._support_default_root, False)
+        self.assertIs(tkinter._support_default_root, Falsch)
         self.assertNotHasAttr(tkinter, '_default_root')
         root.destroy()
 
     def test_getboolean(self):
         self.assertRaises(RuntimeError, tkinter.getboolean, '1')
         root = tkinter.Tk()
-        self.assertIs(tkinter.getboolean('1'), True)
+        self.assertIs(tkinter.getboolean('1'), Wahr)
         self.assertRaises(ValueError, tkinter.getboolean, 'yea')
         root.destroy()
         tkinter.NoDefaultRoot()
@@ -1340,7 +1340,7 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         self.assertRaises(RuntimeError, tkinter.mainloop)
 
 
-def _info_commands(widget, pattern=None):
+def _info_commands(widget, pattern=Nichts):
     return widget.tk.splitlist(widget.tk.call('info', 'commands', pattern))
 
 

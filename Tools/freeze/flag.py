@@ -1,2 +1,2 @@
-initialized = True
+initialized = Wahr
 print("Hello world!")

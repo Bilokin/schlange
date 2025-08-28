@@ -27,7 +27,7 @@ shape = circle
 pencolor  = red
 fillcolor  = blue
 resizemode  = auto
-visible  = None
+visible  = Nichts
 language = english
 exampleturtle = turtle
 examplescreen = screen
@@ -40,17 +40,17 @@ test_config_two = """\
 # Testing comments!
 pencolor  = red
 fillcolor  = blue
-visible  = False
+visible  = Falsch
 language = english
 # Some more
 # comments
-using_IDLE = False
+using_IDLE = Falsch
 """
 
 invalid_test_config = """
 pencolor = red
 fillcolor: blue
-visible = False
+visible = Falsch
 """
 
 
@@ -97,7 +97,7 @@ klasse TurtleConfigTest(unittest.TestCase):
             'pencolor' : 'red',
             'fillcolor' : 'blue',
             'resizemode' : 'auto',
-            'visible' : None,
+            'visible' : Nichts,
             'language': 'english',
             'exampleturtle': 'turtle',
             'examplescreen': 'screen',
@@ -115,9 +115,9 @@ klasse TurtleConfigTest(unittest.TestCase):
         expected = {
             'pencolor': 'red',
             'fillcolor': 'blue',
-            'visible': False,
+            'visible': Falsch,
             'language': 'english',
-            'using_IDLE': False,
+            'using_IDLE': Falsch,
         }
 
         self.assertEqual(parsed_cfg, expected)
@@ -136,7 +136,7 @@ klasse TurtleConfigTest(unittest.TestCase):
 
         self.assertEqual(parsed_cfg, {
             'pencolor': 'red',
-            'visible': False,
+            'visible': Falsch,
         })
 
 
@@ -288,10 +288,10 @@ klasse TestTNavigator(VectorComparisonMixin, unittest.TestCase):
         self.assertAlmostEqual(self.nav.ycor(), -100)
 
     def test_teleport(self):
-        self.nav.teleport(20, -30, fill_gap=True)
+        self.nav.teleport(20, -30, fill_gap=Wahr)
         self.assertAlmostEqual(self.nav.xcor(), 20)
         self.assertAlmostEqual(self.nav.ycor(), -30)
-        self.nav.teleport(-20, 30, fill_gap=False)
+        self.nav.teleport(-20, 30, fill_gap=Falsch)
         self.assertAlmostEqual(self.nav.xcor(), -20)
         self.assertAlmostEqual(self.nav.ycor(), 30)
 
@@ -452,37 +452,37 @@ klasse TestTPen(unittest.TestCase):
 
         tpen = turtle.TPen()
 
-        self.assertTrue(tpen.isdown())
+        self.assertWahr(tpen.isdown())
         tpen.penup()
-        self.assertFalse(tpen.isdown())
+        self.assertFalsch(tpen.isdown())
         tpen.pendown()
-        self.assertTrue(tpen.isdown())
+        self.assertWahr(tpen.isdown())
 
     def test_showturtle_hideturtle_and_isvisible(self):
 
         tpen = turtle.TPen()
 
-        self.assertTrue(tpen.isvisible())
+        self.assertWahr(tpen.isvisible())
         tpen.hideturtle()
-        self.assertFalse(tpen.isvisible())
+        self.assertFalsch(tpen.isvisible())
         tpen.showturtle()
-        self.assertTrue(tpen.isvisible())
+        self.assertWahr(tpen.isvisible())
 
     def test_teleport(self):
 
         tpen = turtle.TPen()
 
-        fuer fill_gap_value in [True, False]:
+        fuer fill_gap_value in [Wahr, Falsch]:
             tpen.penup()
             tpen.teleport(100, 100, fill_gap=fill_gap_value)
-            self.assertFalse(tpen.isdown())
+            self.assertFalsch(tpen.isdown())
             tpen.pendown()
             tpen.teleport(-100, -100, fill_gap=fill_gap_value)
-            self.assertTrue(tpen.isdown())
+            self.assertWahr(tpen.isdown())
 
 
 klasse TestTurtleScreen(unittest.TestCase):
-    def test_save_raises_if_wrong_extension(self) -> None:
+    def test_save_raises_if_wrong_extension(self) -> Nichts:
         screen = unittest.mock.Mock()
 
         msg = "Unknown file extension: '.png', must be one of {'.ps', '.eps'}"
@@ -492,7 +492,7 @@ klasse TestTurtleScreen(unittest.TestCase):
         ):
             turtle.TurtleScreen.save(screen, os.path.join(tmpdir, "file.png"))
 
-    def test_save_raises_if_parent_not_found(self) -> None:
+    def test_save_raises_if_parent_not_found(self) -> Nichts:
         screen = unittest.mock.Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -502,7 +502,7 @@ klasse TestTurtleScreen(unittest.TestCase):
             with self.assertRaisesRegex(FileNotFoundError, re.escape(msg)):
                 turtle.TurtleScreen.save(screen, os.path.join(parent, "a.ps"))
 
-    def test_save_raises_if_file_found(self) -> None:
+    def test_save_raises_if_file_found(self) -> Nichts:
         screen = unittest.mock.Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -512,12 +512,12 @@ klasse TestTurtleScreen(unittest.TestCase):
 
             msg = (
                 f"The file '{file_path}' already exists. To overwrite it use"
-                " the 'overwrite=True' argument of the save function."
+                " the 'overwrite=Wahr' argument of the save function."
             )
             with self.assertRaisesRegex(FileExistsError, re.escape(msg)):
                 turtle.TurtleScreen.save(screen, file_path)
 
-    def test_save_overwrites_if_specified(self) -> None:
+    def test_save_overwrites_if_specified(self) -> Nichts:
         screen = unittest.mock.Mock()
         screen.cv.postscript.return_value = "postscript"
 
@@ -526,11 +526,11 @@ klasse TestTurtleScreen(unittest.TestCase):
             with open(file_path, "w") as f:
                 f.write("some text")
 
-            turtle.TurtleScreen.save(screen, file_path, overwrite=True)
+            turtle.TurtleScreen.save(screen, file_path, overwrite=Wahr)
             with open(file_path) as f:
                 self.assertEqual(f.read(), "postscript")
 
-    def test_save(self) -> None:
+    def test_save(self) -> Nichts:
         screen = unittest.mock.Mock()
         screen.cv.postscript.return_value = "postscript"
 
@@ -571,69 +571,69 @@ klasse TestTurtle(unittest.TestCase):
             self.turtle = turtle.Turtle()
 
         # Reset the Screen singleton to avoid reference leaks
-        self.addCleanup(setattr, turtle.Turtle, '_screen', None)
+        self.addCleanup(setattr, turtle.Turtle, '_screen', Nichts)
 
     def test_begin_end_fill(self):
-        self.assertFalse(self.turtle.filling())
+        self.assertFalsch(self.turtle.filling())
         self.turtle.begin_fill()
-        self.assertTrue(self.turtle.filling())
+        self.assertWahr(self.turtle.filling())
         self.turtle.end_fill()
-        self.assertFalse(self.turtle.filling())
+        self.assertFalsch(self.turtle.filling())
 
     def test_fill(self):
         # The context manager behaves like begin_fill and end_fill.
-        self.assertFalse(self.turtle.filling())
+        self.assertFalsch(self.turtle.filling())
         with self.turtle.fill():
-            self.assertTrue(self.turtle.filling())
-        self.assertFalse(self.turtle.filling())
+            self.assertWahr(self.turtle.filling())
+        self.assertFalsch(self.turtle.filling())
 
     def test_fill_resets_after_exception(self):
         # The context manager cleans up correctly after exceptions.
         try:
             with self.turtle.fill():
-                self.assertTrue(self.turtle.filling())
+                self.assertWahr(self.turtle.filling())
                 raise ValueError
         except ValueError:
-            self.assertFalse(self.turtle.filling())
+            self.assertFalsch(self.turtle.filling())
 
     def test_fill_context_when_filling(self):
         # The context manager works even when the turtle is already filling.
         self.turtle.begin_fill()
-        self.assertTrue(self.turtle.filling())
+        self.assertWahr(self.turtle.filling())
         with self.turtle.fill():
-            self.assertTrue(self.turtle.filling())
-        self.assertFalse(self.turtle.filling())
+            self.assertWahr(self.turtle.filling())
+        self.assertFalsch(self.turtle.filling())
 
     def test_begin_end_poly(self):
-        self.assertFalse(self.turtle._creatingPoly)
+        self.assertFalsch(self.turtle._creatingPoly)
         self.turtle.begin_poly()
-        self.assertTrue(self.turtle._creatingPoly)
+        self.assertWahr(self.turtle._creatingPoly)
         self.turtle.end_poly()
-        self.assertFalse(self.turtle._creatingPoly)
+        self.assertFalsch(self.turtle._creatingPoly)
 
     def test_poly(self):
         # The context manager behaves like begin_poly and end_poly.
-        self.assertFalse(self.turtle._creatingPoly)
+        self.assertFalsch(self.turtle._creatingPoly)
         with self.turtle.poly():
-            self.assertTrue(self.turtle._creatingPoly)
-        self.assertFalse(self.turtle._creatingPoly)
+            self.assertWahr(self.turtle._creatingPoly)
+        self.assertFalsch(self.turtle._creatingPoly)
 
     def test_poly_resets_after_exception(self):
         # The context manager cleans up correctly after exceptions.
         try:
             with self.turtle.poly():
-                self.assertTrue(self.turtle._creatingPoly)
+                self.assertWahr(self.turtle._creatingPoly)
                 raise ValueError
         except ValueError:
-            self.assertFalse(self.turtle._creatingPoly)
+            self.assertFalsch(self.turtle._creatingPoly)
 
     def test_poly_context_when_creating_poly(self):
         # The context manager works when the turtle is already creating poly.
         self.turtle.begin_poly()
-        self.assertTrue(self.turtle._creatingPoly)
+        self.assertWahr(self.turtle._creatingPoly)
         with self.turtle.poly():
-            self.assertTrue(self.turtle._creatingPoly)
-        self.assertFalse(self.turtle._creatingPoly)
+            self.assertWahr(self.turtle._creatingPoly)
+        self.assertFalsch(self.turtle._creatingPoly)
 
 
 klasse TestModuleLevel(unittest.TestCase):
@@ -642,11 +642,11 @@ klasse TestModuleLevel(unittest.TestCase):
 
         known_signatures = {
             'teleport':
-                '(x=None, y=None, *, fill_gap: bool = False) -> None',
+                '(x=Nichts, y=Nichts, *, fill_gap: bool = Falsch) -> Nichts',
             'undo': '()',
-            'goto': '(x, y=None)',
+            'goto': '(x, y=Nichts)',
             'bgcolor': '(*args)',
-            'pen': '(pen=None, **pendict)',
+            'pen': '(pen=Nichts, **pendict)',
         }
 
         fuer name in known_signatures:

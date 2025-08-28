@@ -121,7 +121,7 @@ import itertools
 try:
     import _wmi
 except ImportError:
-    _wmi = None
+    _wmi = Nichts
 
 ### Globals & Constants
 
@@ -157,7 +157,7 @@ def _comparable_version(version):
 ### Platform specific APIs
 
 
-def libc_ver(executable=None, lib='', version='', chunksize=16384):
+def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
 
     """ Tries to determine the libc version that the file executable
         (which defaults to the Python interpreter) is linked against.
@@ -202,7 +202,7 @@ def libc_ver(executable=None, lib='', version='', chunksize=16384):
     # here to work around problems with Cygwin not being
     # able to open symlinks fuer reading
     executable = os.path.realpath(executable)
-    ver = None
+    ver = Nichts
     with open(executable, 'rb') as f:
         binary = f.read(chunksize)
         pos = 0
@@ -210,7 +210,7 @@ def libc_ver(executable=None, lib='', version='', chunksize=16384):
             wenn b'libc' in binary or b'GLIBC' in binary or b'musl' in binary:
                 m = libc_search.search(binary, pos)
             sonst:
-                m = None
+                m = Nichts
             wenn not m or m.end() == len(binary):
                 chunk = f.read(chunksize)
                 wenn chunk:
@@ -220,7 +220,7 @@ def libc_ver(executable=None, lib='', version='', chunksize=16384):
                 wenn not m:
                     break
             libcinit, glibc, glibcversion, so, threads, soversion, musl, muslversion = [
-                s.decode('latin1') wenn s is not None sonst s
+                s.decode('latin1') wenn s is not Nichts sonst s
                 fuer s in m.groups()]
             wenn libcinit and not lib:
                 lib = 'libc'
@@ -242,7 +242,7 @@ def libc_ver(executable=None, lib='', version='', chunksize=16384):
                 wenn not ver or V(muslversion) > V(ver):
                     ver = muslversion
             pos = m.end()
-    return lib, version wenn ver is None sonst ver
+    return lib, version wenn ver is Nichts sonst ver
 
 def _norm_version(version, build=''):
 
@@ -293,9 +293,9 @@ def _syscmd_ver(system='', release='', version='',
             info = subprocess.check_output(cmd,
                                            stdin=subprocess.DEVNULL,
                                            stderr=subprocess.DEVNULL,
-                                           text=True,
+                                           text=Wahr,
                                            encoding="locale",
-                                           shell=True)
+                                           shell=Wahr)
         except (OSError, subprocess.CalledProcessError) as why:
             #print('Command %s failed: %s' % (cmd, why))
             continue
@@ -311,7 +311,7 @@ def _syscmd_ver(system='', release='', version='',
     # Parse the output
     info = info.strip()
     m = ver_output.match(info)
-    wenn m is not None:
+    wenn m is not Nichts:
         system, release, version = m.groups()
         # Strip trailing dots from version and release
         wenn release[-1] == '.':
@@ -338,7 +338,7 @@ def _wmi_query(table, *keys):
             table,
         )).split("\0")
     except OSError:
-        _wmi = None
+        _wmi = Nichts
         raise OSError("not supported")
     split_data = (i.partition("=") fuer i in data)
     dict_data = {i[0]: i[2] fuer i in split_data}
@@ -389,7 +389,7 @@ def win32_edition():
         except OSError:
             pass
 
-    return None
+    return Nichts
 
 def _win32_ver(version, csd, ptype):
     # Try using WMI first, as this is the canonical source of data
@@ -415,7 +415,7 @@ def _win32_ver(version, csd, ptype):
     try:
         from sys import getwindowsversion
     except ImportError:
-        return version, csd, ptype, True
+        return version, csd, ptype, Wahr
 
     winver = getwindowsversion()
     is_client = (getattr(winver, 'product_type', 1) == 1)
@@ -451,7 +451,7 @@ def _win32_ver(version, csd, ptype):
     return version, csd, ptype, is_client
 
 def win32_ver(release='', version='', csd='', ptype=''):
-    is_client = False
+    is_client = Falsch
 
     version, csd, ptype, is_client = _win32_ver(version, csd, ptype)
 
@@ -466,12 +466,12 @@ def win32_ver(release='', version='', csd='', ptype=''):
 def _mac_ver_xml():
     fn = '/System/Library/CoreServices/SystemVersion.plist'
     wenn not os.path.exists(fn):
-        return None
+        return Nichts
 
     try:
         import plistlib
     except ImportError:
-        return None
+        return Nichts
 
     with open(fn, 'rb') as f:
         pl = plistlib.load(f)
@@ -498,7 +498,7 @@ def mac_ver(release='', versioninfo=('', '', ''), machine=''):
     # First try reading the information from an XML file which should
     # always be present
     info = _mac_ver_xml()
-    wenn info is not None:
+    wenn info is not Nichts:
         return info
 
     # If that also doesn't work return the default values
@@ -512,7 +512,7 @@ IOSVersionInfo = collections.namedtuple(
 )
 
 
-def ios_ver(system="", release="", model="", is_simulator=False):
+def ios_ver(system="", release="", model="", is_simulator=Falsch):
     """Get iOS version information, and return it as a namedtuple:
         (system, release, model, is_simulator).
 
@@ -522,7 +522,7 @@ def ios_ver(system="", release="", model="", is_simulator=False):
     wenn sys.platform == "ios":
         import _ios_support
         result = _ios_support.get_platform_ios()
-        wenn result is not None:
+        wenn result is not Nichts:
             return IOSVersionInfo(*result)
 
     return IOSVersionInfo(system, release, model, is_simulator)
@@ -532,7 +532,7 @@ AndroidVer = collections.namedtuple(
     "AndroidVer", "release api_level manufacturer model device is_emulator")
 
 def android_ver(release="", api_level=0, manufacturer="", model="", device="",
-                is_emulator=False):
+                is_emulator=Falsch):
     wenn sys.platform == "android":
         try:
             from ctypes import CDLL, c_char_p, create_string_buffer
@@ -794,9 +794,9 @@ def _get_machine_win32():
         pass
     sonst:
         try:
-            arch = ['x86', 'MIPS', 'Alpha', 'PowerPC', None,
-                    'ARM', 'ia64', None, None,
-                    'AMD64', None, None, 'ARM64',
+            arch = ['x86', 'MIPS', 'Alpha', 'PowerPC', Nichts,
+                    'ARM', 'ia64', Nichts, Nichts,
+                    'AMD64', Nichts, Nichts, 'ARM64',
             ][int(arch)]
         except (ValueError, IndexError):
             pass
@@ -847,12 +847,12 @@ klasse _Processor:
         try:
             import subprocess
         except ImportError:
-            return None
+            return Nichts
         try:
             return subprocess.check_output(
                 ['uname', '-p'],
                 stderr=subprocess.DEVNULL,
-                text=True,
+                text=Wahr,
                 encoding="utf8",
             ).strip()
         except (OSError, subprocess.CalledProcessError):
@@ -909,7 +909,7 @@ klasse uname_result(
         return uname_result, tuple(self)[:len(self._fields) - 1]
 
 
-_uname_cache = None
+_uname_cache = Nichts
 
 
 def uname():
@@ -926,7 +926,7 @@ def uname():
     """
     global _uname_cache
 
-    wenn _uname_cache is not None:
+    wenn _uname_cache is not Nichts:
         return _uname_cache
 
     # Get some infos from the builtin os.uname API...
@@ -1065,7 +1065,7 @@ def processor():
 
 _sys_version_cache = {}
 
-def _sys_version(sys_version=None):
+def _sys_version(sys_version=Nichts):
 
     """ Returns a parsed version of Python's sys.version as tuple
         (name, version, branch, revision, buildno, builddate, compiler)
@@ -1086,12 +1086,12 @@ def _sys_version(sys_version=None):
 
     """
     # Get the Python version
-    wenn sys_version is None:
+    wenn sys_version is Nichts:
         sys_version = sys.version
 
     # Try the cache first
-    result = _sys_version_cache.get(sys_version, None)
-    wenn result is not None:
+    result = _sys_version_cache.get(sys_version, Nichts)
+    wenn result is not Nichts:
         return result
 
     wenn sys.platform.startswith('java'):
@@ -1104,12 +1104,12 @@ def _sys_version(sys_version=None):
             r'\[([^\]]+)\]?', re.ASCII)  # "[compiler]"
         name = 'Jython'
         match = jython_sys_version_parser.match(sys_version)
-        wenn match is None:
+        wenn match is Nichts:
             raise ValueError(
                 'failed to parse Jython sys.version: %s' %
                 repr(sys_version))
         version, buildno, builddate, buildtime, _ = match.groups()
-        wenn builddate is None:
+        wenn builddate is Nichts:
             builddate = ''
         compiler = sys.platform
 
@@ -1122,7 +1122,7 @@ def _sys_version(sys_version=None):
 
         name = "PyPy"
         match = pypy_sys_version_parser.match(sys_version)
-        wenn match is None:
+        wenn match is Nichts:
             raise ValueError("failed to parse PyPy sys.version: %s" %
                              repr(sys_version))
         version, buildno, builddate, buildtime = match.groups()
@@ -1138,14 +1138,14 @@ def _sys_version(sys_version=None):
             r'(?:,\s*([\w :]*))?)?\)\s*'  # ", buildtime)<space>"
             r'\[([^\]]+)\]?', re.ASCII)  # "[compiler]"
         match = cpython_sys_version_parser.match(sys_version)
-        wenn match is None:
+        wenn match is Nichts:
             raise ValueError(
                 'failed to parse CPython sys.version: %s' %
                 repr(sys_version))
         version, buildno, builddate, buildtime, compiler = \
               match.groups()
         name = 'CPython'
-        wenn builddate is None:
+        wenn builddate is Nichts:
             builddate = ''
         sowenn buildtime:
             builddate = builddate + ' ' + buildtime
@@ -1249,7 +1249,7 @@ def python_compiler():
 
 _platform_cache = {}
 
-def platform(aliased=False, terse=False):
+def platform(aliased=Falsch, terse=Falsch):
 
     """ Returns a single string identifying the underlying platform
         with as much useful information as possible (but no more :).
@@ -1268,8 +1268,8 @@ def platform(aliased=False, terse=False):
         absolute minimum information needed to identify the platform.
 
     """
-    result = _platform_cache.get((aliased, terse), None)
-    wenn result is not None:
+    result = _platform_cache.get((aliased, terse), Nichts)
+    wenn result is not Nichts:
         return result
 
     # Get uname information and then apply platform specific cosmetics
@@ -1322,7 +1322,7 @@ def platform(aliased=False, terse=False):
 
 # /etc takes precedence over /usr/lib
 _os_release_candidates = ("/etc/os-release", "/usr/lib/os-release")
-_os_release_cache = None
+_os_release_cache = Nichts
 
 
 def _parse_os_release(lines):
@@ -1344,7 +1344,7 @@ def _parse_os_release(lines):
 
     fuer line in lines:
         mo = os_release_line.match(line)
-        wenn mo is not None:
+        wenn mo is not Nichts:
             info[mo.group('name')] = os_release_unescape.sub(
                 r"\1", mo.group('value')
             )
@@ -1357,8 +1357,8 @@ def freedesktop_os_release():
     """
     global _os_release_cache
 
-    wenn _os_release_cache is None:
-        errno = None
+    wenn _os_release_cache is Nichts:
+        errno = Nichts
         fuer candidate in _os_release_candidates:
             try:
                 with open(candidate, encoding="utf-8") as f:
@@ -1378,10 +1378,10 @@ def freedesktop_os_release():
 def invalidate_caches():
     """Invalidate the cached results."""
     global _uname_cache
-    _uname_cache = None
+    _uname_cache = Nichts
 
     global _os_release_cache
-    _os_release_cache = None
+    _os_release_cache = Nichts
 
     _sys_version_cache.clear()
     _platform_cache.clear()
@@ -1389,10 +1389,10 @@ def invalidate_caches():
 
 ### Command line interface
 
-def _parse_args(args: list[str] | None):
+def _parse_args(args: list[str] | Nichts):
     import argparse
 
-    parser = argparse.ArgumentParser(color=True)
+    parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument("args", nargs="*", choices=["nonaliased", "terse"])
     parser.add_argument(
         "--terse",
@@ -1416,7 +1416,7 @@ def _parse_args(args: list[str] | None):
     return parser.parse_args(args)
 
 
-def _main(args: list[str] | None = None):
+def _main(args: list[str] | Nichts = Nichts):
     args = _parse_args(args)
 
     terse = args.terse or ("terse" in args.args)

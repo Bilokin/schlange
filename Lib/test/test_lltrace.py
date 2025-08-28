@@ -75,7 +75,7 @@ klasse TestLLTrace(unittest.TestCase):
         self.assertIn('this is an example', stdout)
 
         # check that offsets match the output of dis.dis()
-        instr_map = {i.offset: i fuer i in dis.get_instructions(example, adaptive=True)}
+        instr_map = {i.offset: i fuer i in dis.get_instructions(example, adaptive=Wahr)}
         fuer line in stdout.splitlines():
             offset, colon, opname_oparg = line.partition(":")
             wenn not colon:
@@ -87,7 +87,7 @@ klasse TestLLTrace(unittest.TestCase):
                 oparg = int(oparg)
             sonst:
                 (opname,) = opname_oparg
-                oparg = None
+                oparg = Nichts
             self.assertEqual(instr_map[offset].opname, opname)
             self.assertEqual(instr_map[offset].arg, oparg)
 

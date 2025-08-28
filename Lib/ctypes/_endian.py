@@ -48,14 +48,14 @@ wenn sys.byteorder == "little":
     klasse BigEndianStructure(Structure, metaclass=_swapped_struct_meta):
         """Structure with big endian byte order"""
         __slots__ = ()
-        _swappedbytes_ = None
+        _swappedbytes_ = Nichts
 
     LittleEndianUnion = Union
 
     klasse BigEndianUnion(Union, metaclass=_swapped_union_meta):
         """Union with big endian byte order"""
         __slots__ = ()
-        _swappedbytes_ = None
+        _swappedbytes_ = Nichts
 
 sowenn sys.byteorder == "big":
     _OTHER_ENDIAN = "__ctype_le__"
@@ -65,14 +65,14 @@ sowenn sys.byteorder == "big":
     klasse LittleEndianStructure(Structure, metaclass=_swapped_struct_meta):
         """Structure with little endian byte order"""
         __slots__ = ()
-        _swappedbytes_ = None
+        _swappedbytes_ = Nichts
 
     BigEndianUnion = Union
 
     klasse LittleEndianUnion(Union, metaclass=_swapped_union_meta):
         """Union with little endian byte order"""
         __slots__ = ()
-        _swappedbytes_ = None
+        _swappedbytes_ = Nichts
 
 sonst:
     raise RuntimeError("Invalid byteorder")

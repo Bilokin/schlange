@@ -61,7 +61,7 @@ klasse TestMiscellaneous(unittest.TestCase):
             actual_val = obj[k]
             self.assertIsInstance(actual_val, D)
             wenn actual_val.is_nan():
-                self.assertTrue(expected_val.is_nan())
+                self.assertWahr(expected_val.is_nan())
             sonst:
                 self.assertEqual(actual_val, expected_val)
 

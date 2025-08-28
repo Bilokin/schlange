@@ -65,7 +65,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
             x = ttk.LabeledScale(self.root, from_=pair[0])
             self.assertEqual(x.value, pair[1])
             x.destroy()
-        x = ttk.LabeledScale(self.root, from_=None)
+        x = ttk.LabeledScale(self.root, from_=Nichts)
         self.assertRaises((ValueError, tkinter.TclError), x._variable.get)
         x.destroy()
         # variable should have its default value set to the from_ value
@@ -174,7 +174,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
 
     def test_resize(self):
         x = ttk.LabeledScale(self.root)
-        x.pack(expand=True, fill='both')
+        x.pack(expand=Wahr, fill='both')
         gc_collect()  # For PyPy or other GCs.
         x.update()
 
@@ -222,8 +222,8 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         optmenu = ttk.OptionMenu(self.root, self.textvar, 'b', 'a', 'b')
         self.assertEqual(optmenu._variable.get(), 'b')
 
-        self.assertTrue(optmenu['menu'])
-        self.assertTrue(optmenu['textvariable'])
+        self.assertWahr(optmenu['menu'])
+        self.assertWahr(optmenu['textvariable'])
 
         optmenu.destroy()
 
@@ -232,21 +232,21 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         items = ('a', 'b', 'c')
         default = 'a'
         optmenu = ttk.OptionMenu(self.root, self.textvar, default, *items)
-        found_default = False
+        found_default = Falsch
         fuer i in range(len(items)):
             value = optmenu['menu'].entrycget(i, 'value')
             self.assertEqual(value, items[i])
             wenn value == default:
-                found_default = True
-        self.assertTrue(found_default)
+                found_default = Wahr
+        self.assertWahr(found_default)
         optmenu.destroy()
 
         # default shouldn't be in menu wenn it is not part of values
         default = 'd'
         optmenu = ttk.OptionMenu(self.root, self.textvar, default, *items)
-        curr = None
+        curr = Nichts
         i = 0
-        while True:
+        while Wahr:
             last, curr = curr, optmenu['menu'].entryconfigure(i, 'value')
             wenn last == curr:
                 # no more menu entries
@@ -271,7 +271,7 @@ klasse OptionMenuTest(AbstractTkTest, unittest.TestCase):
         success = []
         def cb_test(item):
             self.assertEqual(item, items[1])
-            success.append(True)
+            success.append(Wahr)
         optmenu = ttk.OptionMenu(self.root, self.textvar, 'a', command=cb_test,
             *items)
         optmenu['menu'].invoke(1)

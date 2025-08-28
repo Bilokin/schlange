@@ -119,7 +119,7 @@ klasse ParseError(SyntaxError):
 
 
 def iselement(element):
-    """Return True wenn *element* appears to be an Element."""
+    """Return Wahr wenn *element* appears to be an Element."""
     return hasattr(element, 'tag')
 
 
@@ -144,25 +144,25 @@ klasse Element:
 
     """
 
-    tag = None
+    tag = Nichts
     """The element's name."""
 
-    attrib = None
+    attrib = Nichts
     """Dictionary of the element's attributes."""
 
-    text = None
+    text = Nichts
     """
-    Text before first subelement. This is either a string or the value None.
+    Text before first subelement. This is either a string or the value Nichts.
     Note that wenn there is no text, this attribute may be either
-    None or the empty string, depending on the parser.
+    Nichts or the empty string, depending on the parser.
 
     """
 
-    tail = None
+    tail = Nichts
     """
     Text after this element's end tag, but before the next sibling element's
-    start tag.  This is either a string or the value None.  Note that wenn there
-    was no text, this attribute may be either None or an empty string,
+    start tag.  This is either a string or the value Nichts.  Note that wenn there
+    was no text, this attribute may be either Nichts or an empty string,
     depending on the parser.
 
     """
@@ -201,9 +201,9 @@ klasse Element:
 
     def __bool__(self):
         warnings.warn(
-            "Testing an element's truth value will always return True in "
+            "Testing an element's truth value will always return Wahr in "
             "future versions.  "
-            "Use specific 'len(elem)' or 'elem is not None' test instead.",
+            "Use specific 'len(elem)' or 'elem is not Nichts' test instead.",
             DeprecationWarning, stacklevel=2
             )
         return len(self._children) != 0 # emulate old behaviour, fuer now
@@ -271,20 +271,20 @@ klasse Element:
             self._children.remove(subelement)
         except ValueError:
             # to align the error message with the C implementation
-            raise ValueError("Element.remove(x): element not found") from None
+            raise ValueError("Element.remove(x): element not found") from Nichts
 
-    def find(self, path, namespaces=None):
+    def find(self, path, namespaces=Nichts):
         """Find first matching element by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping from namespace prefix to full name.
 
-        Return the first matching element, or None wenn no element was found.
+        Return the first matching element, or Nichts wenn no element was found.
 
         """
         return ElementPath.find(self, path, namespaces)
 
-    def findtext(self, path, default=None, namespaces=None):
+    def findtext(self, path, default=Nichts, namespaces=Nichts):
         """Find text fuer first matching element by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
@@ -298,7 +298,7 @@ klasse Element:
         """
         return ElementPath.findtext(self, path, default, namespaces)
 
-    def findall(self, path, namespaces=None):
+    def findall(self, path, namespaces=Nichts):
         """Find all matching subelements by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
@@ -309,7 +309,7 @@ klasse Element:
         """
         return ElementPath.findall(self, path, namespaces)
 
-    def iterfind(self, path, namespaces=None):
+    def iterfind(self, path, namespaces=Nichts):
         """Find all matching subelements by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
@@ -324,14 +324,14 @@ klasse Element:
         """Reset element.
 
         This function removes all subelements, clears all attributes, and sets
-        the text and tail attributes to None.
+        the text and tail attributes to Nichts.
 
         """
         self.attrib.clear()
         self._children = []
-        self.text = self.tail = None
+        self.text = self.tail = Nichts
 
-    def get(self, key, default=None):
+    def get(self, key, default=Nichts):
         """Get element attribute.
 
         Equivalent to attrib.get, but some implementations may handle this a
@@ -374,7 +374,7 @@ klasse Element:
         """
         return self.attrib.items()
 
-    def iter(self, tag=None):
+    def iter(self, tag=Nichts):
         """Create tree iterator.
 
         The iterator loops over the element and all subelements in document
@@ -390,8 +390,8 @@ klasse Element:
 
         """
         wenn tag == "*":
-            tag = None
-        wenn tag is None or self.tag == tag:
+            tag = Nichts
+        wenn tag is Nichts or self.tag == tag:
             yield self
         fuer e in self._children:
             yield from e.iter(tag)
@@ -404,7 +404,7 @@ klasse Element:
 
         """
         tag = self.tag
-        wenn not isinstance(tag, str) and tag is not None:
+        wenn not isinstance(tag, str) and tag is not Nichts:
             return
         t = self.text
         wenn t:
@@ -434,7 +434,7 @@ def SubElement(parent, tag, attrib={}, **extra):
     return element
 
 
-def Comment(text=None):
+def Comment(text=Nichts):
     """Comment element factory.
 
     This function creates a special element which the standard serializer
@@ -448,7 +448,7 @@ def Comment(text=None):
     return element
 
 
-def ProcessingInstruction(target, text=None):
+def ProcessingInstruction(target, text=Nichts):
     """Processing Instruction element factory.
 
     This function creates a special element which the standard serializer
@@ -481,7 +481,7 @@ klasse QName:
     be interpreted as a local name.
 
     """
-    def __init__(self, text_or_uri, tag=None):
+    def __init__(self, text_or_uri, tag=Nichts):
         wenn tag:
             text_or_uri = "{%s}%s" % (text_or_uri, tag)
         self.text = text_or_uri
@@ -526,8 +526,8 @@ klasse ElementTree:
     contents will be used to initialize the tree with.
 
     """
-    def __init__(self, element=None, file=None):
-        wenn element is not None and not iselement(element):
+    def __init__(self, element=Nichts, file=Nichts):
+        wenn element is not Nichts and not iselement(element):
             raise TypeError('expected an Element, not %s' %
                             type(element).__name__)
         self._root = element # first node
@@ -550,7 +550,7 @@ klasse ElementTree:
                             % type(element).__name__)
         self._root = element
 
-    def parse(self, source, parser=None):
+    def parse(self, source, parser=Nichts):
         """Load external XML document into element tree.
 
         *source* is a file name or file object, *parser* is an optional parser
@@ -561,12 +561,12 @@ klasse ElementTree:
         Returns the root element of the given source document.
 
         """
-        close_source = False
+        close_source = Falsch
         wenn not hasattr(source, "read"):
             source = open(source, "rb")
-            close_source = True
+            close_source = Wahr
         try:
-            wenn parser is None:
+            wenn parser is Nichts:
                 # If no parser was specified, create a default XMLParser
                 parser = XMLParser()
                 wenn hasattr(parser, '_parse_whole'):
@@ -584,7 +584,7 @@ klasse ElementTree:
             wenn close_source:
                 source.close()
 
-    def iter(self, tag=None):
+    def iter(self, tag=Nichts):
         """Create and return tree iterator fuer the root element.
 
         The iterator loops over all elements in this tree, in document order.
@@ -593,10 +593,10 @@ klasse ElementTree:
         (default is to return all elements).
 
         """
-        # assert self._root is not None
+        # assert self._root is not Nichts
         return self._root.iter(tag)
 
-    def find(self, path, namespaces=None):
+    def find(self, path, namespaces=Nichts):
         """Find first matching element by tag name or path.
 
         Same as getroot().find(path), which is Element.find()
@@ -604,10 +604,10 @@ klasse ElementTree:
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping from namespace prefix to full name.
 
-        Return the first matching element, or None wenn no element was found.
+        Return the first matching element, or Nichts wenn no element was found.
 
         """
-        # assert self._root is not None
+        # assert self._root is not Nichts
         wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
@@ -618,7 +618,7 @@ klasse ElementTree:
                 )
         return self._root.find(path, namespaces)
 
-    def findtext(self, path, default=None, namespaces=None):
+    def findtext(self, path, default=Nichts, namespaces=Nichts):
         """Find first matching element by tag name or path.
 
         Same as getroot().findtext(path),  which is Element.findtext()
@@ -626,10 +626,10 @@ klasse ElementTree:
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping from namespace prefix to full name.
 
-        Return the first matching element, or None wenn no element was found.
+        Return the first matching element, or Nichts wenn no element was found.
 
         """
-        # assert self._root is not None
+        # assert self._root is not Nichts
         wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
@@ -640,7 +640,7 @@ klasse ElementTree:
                 )
         return self._root.findtext(path, default, namespaces)
 
-    def findall(self, path, namespaces=None):
+    def findall(self, path, namespaces=Nichts):
         """Find all matching subelements by tag name or path.
 
         Same as getroot().findall(path), which is Element.findall().
@@ -651,7 +651,7 @@ klasse ElementTree:
         Return list containing all matching elements in document order.
 
         """
-        # assert self._root is not None
+        # assert self._root is not Nichts
         wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
@@ -662,7 +662,7 @@ klasse ElementTree:
                 )
         return self._root.findall(path, namespaces)
 
-    def iterfind(self, path, namespaces=None):
+    def iterfind(self, path, namespaces=Nichts):
         """Find all matching subelements by tag name or path.
 
         Same as getroot().iterfind(path), which is element.iterfind()
@@ -673,7 +673,7 @@ klasse ElementTree:
         Return an iterable yielding all matching elements in document order.
 
         """
-        # assert self._root is not None
+        # assert self._root is not Nichts
         wenn path[:1] == "/":
             path = "." + path
             warnings.warn(
@@ -685,11 +685,11 @@ klasse ElementTree:
         return self._root.iterfind(path, namespaces)
 
     def write(self, file_or_filename,
-              encoding=None,
-              xml_declaration=None,
-              default_namespace=None,
-              method=None, *,
-              short_empty_elements=True):
+              encoding=Nichts,
+              xml_declaration=Nichts,
+              default_namespace=Nichts,
+              method=Nichts, *,
+              short_empty_elements=Wahr):
         """Write element tree to a file as XML.
 
         Arguments:
@@ -698,7 +698,7 @@ klasse ElementTree:
           *encoding* -- the output encoding (default: US-ASCII)
 
           *xml_declaration* -- bool indicating wenn an XML declaration should be
-                               added to the output. If None, an XML declaration
+                               added to the output. If Nichts, an XML declaration
                                is added wenn encoding IS NOT either of:
                                US-ASCII, UTF-8, or Unicode
 
@@ -707,13 +707,13 @@ klasse ElementTree:
           *method* -- either "xml" (default), "html, "text", or "c14n"
 
           *short_empty_elements* -- controls the formatting of elements
-                                    that contain no content. If True (default)
+                                    that contain no content. If Wahr (default)
                                     they are emitted as a single self-closed
                                     tag, otherwise they are emitted as a pair
                                     of start/end tags
 
         """
-        wenn self._root is None:
+        wenn self._root is Nichts:
             raise TypeError('ElementTree not initialized')
         wenn not method:
             method = "xml"
@@ -726,7 +726,7 @@ klasse ElementTree:
                 encoding = "us-ascii"
         with _get_writer(file_or_filename, encoding) as (write, declared_encoding):
             wenn method == "xml" and (xml_declaration or
-                    (xml_declaration is None and
+                    (xml_declaration is Nichts and
                      encoding.lower() != "unicode" and
                      declared_encoding.lower() not in ("utf-8", "us-ascii"))):
                 write("<?xml version='1.0' encoding='%s'?>\n" % (
@@ -763,7 +763,7 @@ def _get_writer(file_or_filename, encoding):
         # encoding determines wenn it is a text or binary writer
         wenn encoding.lower() == "unicode":
             # use a text writer as is
-            yield write, getattr(file_or_filename, "encoding", None) or "utf-8"
+            yield write, getattr(file_or_filename, "encoding", Nichts) or "utf-8"
         sonst:
             # wrap a binary writer with TextIOWrapper
             with contextlib.ExitStack() as stack:
@@ -778,7 +778,7 @@ def _get_writer(file_or_filename, encoding):
                     # This is to handle passed objects that aren't in the
                     # IOBase hierarchy, but just have a write method
                     file = io.BufferedIOBase()
-                    file.writable = lambda: True
+                    file.writable = lambda: Wahr
                     file.write = write
                     try:
                         # TextIOWrapper uses this methods to determine
@@ -796,11 +796,11 @@ def _get_writer(file_or_filename, encoding):
                 stack.callback(file.detach)
                 yield file.write, encoding
 
-def _namespaces(elem, default_namespace=None):
+def _namespaces(elem, default_namespace=Nichts):
     # identify namespaces used in this tree
 
     # maps qnames to *encoded* prefix:local names
-    qnames = {None: None}
+    qnames = {Nichts: Nichts}
 
     # maps uri:s to prefixes
     namespaces = {}
@@ -813,9 +813,9 @@ def _namespaces(elem, default_namespace=None):
             wenn qname[:1] == "{":
                 uri, tag = qname[1:].rsplit("}", 1)
                 prefix = namespaces.get(uri)
-                wenn prefix is None:
+                wenn prefix is Nichts:
                     prefix = _namespace_map.get(uri)
-                    wenn prefix is None:
+                    wenn prefix is Nichts:
                         prefix = "ns%d" % len(namespaces)
                     wenn prefix != "xml":
                         namespaces[uri] = prefix
@@ -843,7 +843,7 @@ def _namespaces(elem, default_namespace=None):
         sowenn isinstance(tag, str):
             wenn tag not in qnames:
                 add_qname(tag)
-        sowenn tag is not None and tag is not Comment and tag is not PI:
+        sowenn tag is not Nichts and tag is not Comment and tag is not PI:
             _raise_serialization_error(tag)
         fuer key, value in elem.items():
             wenn isinstance(key, QName):
@@ -867,11 +867,11 @@ def _serialize_xml(write, elem, qnames, namespaces,
         write("<?%s?>" % text)
     sonst:
         tag = qnames[tag]
-        wenn tag is None:
+        wenn tag is Nichts:
             wenn text:
                 write(_escape_cdata(text))
             fuer e in elem:
-                _serialize_xml(write, e, qnames, None,
+                _serialize_xml(write, e, qnames, Nichts,
                                short_empty_elements=short_empty_elements)
         sonst:
             write("<" + tag)
@@ -899,7 +899,7 @@ def _serialize_xml(write, elem, qnames, namespaces,
                 wenn text:
                     write(_escape_cdata(text))
                 fuer e in elem:
-                    _serialize_xml(write, e, qnames, None,
+                    _serialize_xml(write, e, qnames, Nichts,
                                    short_empty_elements=short_empty_elements)
                 write("</" + tag + ">")
             sonst:
@@ -920,11 +920,11 @@ def _serialize_html(write, elem, qnames, namespaces, **kwargs):
         write("<?%s?>" % _escape_cdata(text))
     sonst:
         tag = qnames[tag]
-        wenn tag is None:
+        wenn tag is Nichts:
             wenn text:
                 write(_escape_cdata(text))
             fuer e in elem:
-                _serialize_html(write, e, qnames, None)
+                _serialize_html(write, e, qnames, Nichts)
         sonst:
             write("<" + tag)
             items = list(elem.items())
@@ -955,7 +955,7 @@ def _serialize_html(write, elem, qnames, namespaces, **kwargs):
                 sonst:
                     write(_escape_cdata(text))
             fuer e in elem:
-                _serialize_html(write, e, qnames, None)
+                _serialize_html(write, e, qnames, Nichts)
             wenn ltag not in HTML_EMPTY:
                 write("</" + tag + ">")
     wenn elem.tail:
@@ -1074,9 +1074,9 @@ def _escape_attrib_html(text):
 
 # --------------------------------------------------------------------
 
-def tostring(element, encoding=None, method=None, *,
-             xml_declaration=None, default_namespace=None,
-             short_empty_elements=True):
+def tostring(element, encoding=Nichts, method=Nichts, *,
+             xml_declaration=Nichts, default_namespace=Nichts,
+             short_empty_elements=Wahr):
     """Generate string representation of XML element.
 
     All subelements are included.  If encoding is "unicode", a string
@@ -1104,10 +1104,10 @@ klasse _ListDataStream(io.BufferedIOBase):
         self.lst = lst
 
     def writable(self):
-        return True
+        return Wahr
 
     def seekable(self):
-        return True
+        return Wahr
 
     def write(self, b):
         self.lst.append(b)
@@ -1115,9 +1115,9 @@ klasse _ListDataStream(io.BufferedIOBase):
     def tell(self):
         return len(self.lst)
 
-def tostringlist(element, encoding=None, method=None, *,
-                 xml_declaration=None, default_namespace=None,
-                 short_empty_elements=True):
+def tostringlist(element, encoding=Nichts, method=Nichts, *,
+                 xml_declaration=Nichts, default_namespace=Nichts,
+                 short_empty_elements=Wahr):
     lst = []
     stream = _ListDataStream(lst)
     ElementTree(element).write(stream, encoding,
@@ -1201,7 +1201,7 @@ def indent(tree, space="  ", level=0):
 # parsing
 
 
-def parse(source, parser=None):
+def parse(source, parser=Nichts):
     """Parse XML document into element tree.
 
     *source* is a filename or file object containing XML data,
@@ -1215,7 +1215,7 @@ def parse(source, parser=None):
     return tree
 
 
-def iterparse(source, events=None, parser=None):
+def iterparse(source, events=Nichts, parser=Nichts):
     """Incrementally parse XML document into ElementTree.
 
     This klasse also reports what's going on to the user based on the
@@ -1236,13 +1236,13 @@ def iterparse(source, events=None, parser=None):
 
     wenn not hasattr(source, "read"):
         source = open(source, "rb")
-        close_source = True
+        close_source = Wahr
     sonst:
-        close_source = False
+        close_source = Falsch
 
     def iterator(source):
         try:
-            while True:
+            while Wahr:
                 yield from pullparser.read_events()
                 # load event buffer
                 data = source.read(16 * 1024)
@@ -1252,7 +1252,7 @@ def iterparse(source, events=None, parser=None):
             root = pullparser._close_and_return_root()
             yield from pullparser.read_events()
             it = wr()
-            wenn it is not None:
+            wenn it is not Nichts:
                 it.root = root
         finally:
             wenn close_source:
@@ -1273,14 +1273,14 @@ def iterparse(source, events=None, parser=None):
                 source.close()
 
     it = IterParseIterator()
-    it.root = None
+    it.root = Nichts
     wr = weakref.ref(it)
     return it
 
 
 klasse XMLPullParser:
 
-    def __init__(self, events=None, *, _parser=None):
+    def __init__(self, events=Nichts, *, _parser=Nichts):
         # The _parser argument is fuer internal use only and must not be relied
         # upon in user code. It will be removed in a future release.
         # See https://bugs.python.org/issue17741 fuer more details.
@@ -1288,13 +1288,13 @@ klasse XMLPullParser:
         self._events_queue = collections.deque()
         self._parser = _parser or XMLParser(target=TreeBuilder())
         # wire up the parser fuer event reporting
-        wenn events is None:
+        wenn events is Nichts:
             events = ("end",)
         self._parser._setevents(self._events_queue, events)
 
     def feed(self, data):
         """Feed encoded data to parser."""
-        wenn self._parser is None:
+        wenn self._parser is Nichts:
             raise ValueError("feed() called after end of stream")
         wenn data:
             try:
@@ -1305,7 +1305,7 @@ klasse XMLPullParser:
     def _close_and_return_root(self):
         # iterparse needs this to set its root attribute properly :(
         root = self._parser.close()
-        self._parser = None
+        self._parser = Nichts
         return root
 
     def close(self):
@@ -1331,12 +1331,12 @@ klasse XMLPullParser:
                 yield event
 
     def flush(self):
-        wenn self._parser is None:
+        wenn self._parser is Nichts:
             raise ValueError("flush() called after end of stream")
         self._parser.flush()
 
 
-def XML(text, parser=None):
+def XML(text, parser=Nichts):
     """Parse XML document from string constant.
 
     This function can be used to embed "XML Literals" in Python code.
@@ -1353,7 +1353,7 @@ def XML(text, parser=None):
     return parser.close()
 
 
-def XMLID(text, parser=None):
+def XMLID(text, parser=Nichts):
     """Parse XML document from string constant fuer its IDs.
 
     *text* is a string containing XML data, *parser* is an
@@ -1377,7 +1377,7 @@ def XMLID(text, parser=None):
 # Parse XML document from string constant.  Alias fuer XML().
 fromstring = XML
 
-def fromstringlist(sequence, parser=None):
+def fromstringlist(sequence, parser=Nichts):
     """Parse XML document from sequence of string fragments.
 
     *sequence* is a list of other sequence, *parser* is an optional parser
@@ -1415,41 +1415,41 @@ klasse TreeBuilder:
     instead of the standard factory.  If *insert_pis* is false (the default),
     processing instructions will not be inserted into the tree.
     """
-    def __init__(self, element_factory=None, *,
-                 comment_factory=None, pi_factory=None,
-                 insert_comments=False, insert_pis=False):
+    def __init__(self, element_factory=Nichts, *,
+                 comment_factory=Nichts, pi_factory=Nichts,
+                 insert_comments=Falsch, insert_pis=Falsch):
         self._data = [] # data collector
         self._elem = [] # element stack
-        self._last = None # last element
-        self._root = None # root element
-        self._tail = None # true wenn we're after an end tag
-        wenn comment_factory is None:
+        self._last = Nichts # last element
+        self._root = Nichts # root element
+        self._tail = Nichts # true wenn we're after an end tag
+        wenn comment_factory is Nichts:
             comment_factory = Comment
         self._comment_factory = comment_factory
         self.insert_comments = insert_comments
-        wenn pi_factory is None:
+        wenn pi_factory is Nichts:
             pi_factory = ProcessingInstruction
         self._pi_factory = pi_factory
         self.insert_pis = insert_pis
-        wenn element_factory is None:
+        wenn element_factory is Nichts:
             element_factory = Element
         self._factory = element_factory
 
     def close(self):
         """Flush builder buffers and return toplevel document Element."""
         assert len(self._elem) == 0, "missing end tags"
-        assert self._root is not None, "missing toplevel element"
+        assert self._root is not Nichts, "missing toplevel element"
         return self._root
 
     def _flush(self):
         wenn self._data:
-            wenn self._last is not None:
+            wenn self._last is not Nichts:
                 text = "".join(self._data)
                 wenn self._tail:
-                    assert self._last.tail is None, "internal error (tail)"
+                    assert self._last.tail is Nichts, "internal error (tail)"
                     self._last.tail = text
                 sonst:
-                    assert self._last.text is None, "internal error (text)"
+                    assert self._last.text is Nichts, "internal error (text)"
                     self._last.text = text
             self._data = []
 
@@ -1468,7 +1468,7 @@ klasse TreeBuilder:
         self._last = elem = self._factory(tag, attrs)
         wenn self._elem:
             self._elem[-1].append(elem)
-        sowenn self._root is None:
+        sowenn self._root is Nichts:
             self._root = elem
         self._elem.append(elem)
         self._tail = 0
@@ -1496,7 +1496,7 @@ klasse TreeBuilder:
         return self._handle_single(
             self._comment_factory, self.insert_comments, text)
 
-    def pi(self, target, text=None):
+    def pi(self, target, text=Nichts):
         """Create a processing instruction using the pi_factory.
 
         *target* is the target name of the processing instruction.
@@ -1527,7 +1527,7 @@ klasse XMLParser:
 
     """
 
-    def __init__(self, *, target=None, encoding=None):
+    def __init__(self, *, target=Nichts, encoding=Nichts):
         try:
             from xml.parsers import expat
         except ImportError:
@@ -1538,7 +1538,7 @@ klasse XMLParser:
                     "No module named expat; use SimpleXMLTreeBuilder instead"
                     )
         parser = expat.ParserCreate(encoding, "}")
-        wenn target is None:
+        wenn target is Nichts:
             target = TreeBuilder()
         # underscored names are provided fuer compatibility only
         self.parser = self._parser = parser
@@ -1565,7 +1565,7 @@ klasse XMLParser:
         # Configure pyexpat: buffering, new-style attribute handling.
         parser.buffer_text = 1
         parser.ordered_attributes = 1
-        self._doctype = None
+        self._doctype = Nichts
         self.entity = {}
         try:
             self.version = "Expat %d.%d.%d" % expat.version_info
@@ -1611,7 +1611,7 @@ klasse XMLParser:
                         append((event, end_ns(prefix)))
                 sonst:
                     def handler(prefix, event=event_name, append=append):
-                        append((event, None))
+                        append((event, Nichts))
                 parser.EndNamespaceDeclHandler = handler
             sowenn event_name == 'comment':
                 def handler(text, event=event_name, append=append, self=self):
@@ -1686,10 +1686,10 @@ klasse XMLParser:
                 raise err
         sowenn prefix == "<" and text[:9] == "<!DOCTYPE":
             self._doctype = [] # inside a doctype declaration
-        sowenn self._doctype is not None:
+        sowenn self._doctype is not Nichts:
             # parse doctype contents
             wenn prefix == ">":
-                self._doctype = None
+                self._doctype = Nichts
                 return
             text = text.strip()
             wenn not text:
@@ -1704,7 +1704,7 @@ klasse XMLParser:
                         pubid = pubid[1:-1]
                 sowenn type == "SYSTEM" and n == 3:
                     name, type, system = self._doctype
-                    pubid = None
+                    pubid = Nichts
                 sonst:
                     return
                 wenn hasattr(self.target, "doctype"):
@@ -1715,19 +1715,19 @@ klasse XMLParser:
                         "Define doctype() method on the TreeBuilder target.",
                         RuntimeWarning)
 
-                self._doctype = None
+                self._doctype = Nichts
 
     def feed(self, data):
         """Feed encoded data to parser."""
         try:
-            self.parser.Parse(data, False)
+            self.parser.Parse(data, Falsch)
         except self._error as v:
             self._raiseerror(v)
 
     def close(self):
         """Finish feeding data to parser and return element structure."""
         try:
-            self.parser.Parse(b"", True) # end of data
+            self.parser.Parse(b"", Wahr) # end of data
         except self._error as v:
             self._raiseerror(v)
         try:
@@ -1744,8 +1744,8 @@ klasse XMLParser:
     def flush(self):
         was_enabled = self.parser.GetReparseDeferralEnabled()
         try:
-            self.parser.SetReparseDeferralEnabled(False)
-            self.parser.Parse(b"", False)
+            self.parser.SetReparseDeferralEnabled(Falsch)
+            self.parser.Parse(b"", Falsch)
         except self._error as v:
             self._raiseerror(v)
         finally:
@@ -1754,7 +1754,7 @@ klasse XMLParser:
 # --------------------------------------------------------------------
 # C14N 2.0
 
-def canonicalize(xml_data=None, *, out=None, from_file=None, **options):
+def canonicalize(xml_data=Nichts, *, out=Nichts, from_file=Nichts, **options):
     """Convert XML to its C14N 2.0 serialised form.
 
     If *out* is provided, it must be a file or file-like object that receives
@@ -1767,21 +1767,21 @@ def canonicalize(xml_data=None, *, out=None, from_file=None, **options):
 
     The configuration options are the same as fuer the ``C14NWriterTarget``.
     """
-    wenn xml_data is None and from_file is None:
+    wenn xml_data is Nichts and from_file is Nichts:
         raise ValueError("Either 'xml_data' or 'from_file' must be provided as input")
-    sio = None
-    wenn out is None:
+    sio = Nichts
+    wenn out is Nichts:
         sio = out = io.StringIO()
 
     parser = XMLParser(target=C14NWriterTarget(out.write, **options))
 
-    wenn xml_data is not None:
+    wenn xml_data is not Nichts:
         parser.feed(xml_data)
         parser.close()
-    sowenn from_file is not None:
+    sowenn from_file is not Nichts:
         parse(from_file, parser=parser)
 
-    return sio.getvalue() wenn sio is not None sonst None
+    return sio.getvalue() wenn sio is not Nichts sonst Nichts
 
 
 _looks_like_prefix_name = re.compile(r'^\w+:\w+$', re.UNICODE).match
@@ -1810,25 +1810,25 @@ klasse C14NWriterTarget:
     - *exclude_tags*: a set of tag names that should not be serialised
     """
     def __init__(self, write, *,
-                 with_comments=False, strip_text=False, rewrite_prefixes=False,
-                 qname_aware_tags=None, qname_aware_attrs=None,
-                 exclude_attrs=None, exclude_tags=None):
+                 with_comments=Falsch, strip_text=Falsch, rewrite_prefixes=Falsch,
+                 qname_aware_tags=Nichts, qname_aware_attrs=Nichts,
+                 exclude_attrs=Nichts, exclude_tags=Nichts):
         self._write = write
         self._data = []
         self._with_comments = with_comments
         self._strip_text = strip_text
-        self._exclude_attrs = set(exclude_attrs) wenn exclude_attrs sonst None
-        self._exclude_tags = set(exclude_tags) wenn exclude_tags sonst None
+        self._exclude_attrs = set(exclude_attrs) wenn exclude_attrs sonst Nichts
+        self._exclude_tags = set(exclude_tags) wenn exclude_tags sonst Nichts
 
         self._rewrite_prefixes = rewrite_prefixes
         wenn qname_aware_tags:
             self._qname_aware_tags = set(qname_aware_tags)
         sonst:
-            self._qname_aware_tags = None
+            self._qname_aware_tags = Nichts
         wenn qname_aware_attrs:
             self._find_qname_aware_attrs = set(qname_aware_attrs).intersection
         sonst:
-            self._find_qname_aware_attrs = None
+            self._find_qname_aware_attrs = Nichts
 
         # Stack with globally and newly declared namespaces as (uri, prefix) pairs.
         self._declared_ns_stack = [[
@@ -1840,10 +1840,10 @@ klasse C14NWriterTarget:
             self._ns_stack.append(list(_namespace_map.items()))
         self._ns_stack.append([])
         self._prefix_map = {}
-        self._preserve_space = [False]
-        self._pending_start = None
-        self._root_seen = False
-        self._root_done = False
+        self._preserve_space = [Falsch]
+        self._pending_start = Nichts
+        self._root_seen = Falsch
+        self._root_done = Falsch
         self._ignored_depth = 0
 
     def _iter_namespaces(self, ns_stack, _reversed=reversed):
@@ -1858,8 +1858,8 @@ klasse C14NWriterTarget:
                 return f'{{{uri}}}{name}'
         raise ValueError(f'Prefix {prefix} of QName "{prefixed_name}" is not declared in scope')
 
-    def _qname(self, qname, uri=None):
-        wenn uri is None:
+    def _qname(self, qname, uri=Nichts):
+        wenn uri is Nichts:
             uri, tag = qname[1:].rsplit('}', 1) wenn qname[:1] == '{' sonst ('', qname)
         sonst:
             tag = qname
@@ -1904,11 +1904,11 @@ klasse C14NWriterTarget:
         del self._data[:]
         wenn self._strip_text and not self._preserve_space[-1]:
             data = data.strip()
-        wenn self._pending_start is not None:
-            args, self._pending_start = self._pending_start, None
-            qname_text = data wenn data and _looks_like_prefix_name(data) sonst None
+        wenn self._pending_start is not Nichts:
+            args, self._pending_start = self._pending_start, Nichts
+            qname_text = data wenn data and _looks_like_prefix_name(data) sonst Nichts
             self._start(*args, qname_text)
-            wenn qname_text is not None:
+            wenn qname_text is not Nichts:
                 return
         wenn data and self._root_seen:
             self._write(_escape_cdata_c14n(data))
@@ -1922,7 +1922,7 @@ klasse C14NWriterTarget:
         self._ns_stack[-1].append((uri, prefix))
 
     def start(self, tag, attrs):
-        wenn self._exclude_tags is not None and (
+        wenn self._exclude_tags is not Nichts and (
                 self._ignored_depth or tag in self._exclude_tags):
             self._ignored_depth += 1
             return
@@ -1932,24 +1932,24 @@ klasse C14NWriterTarget:
         new_namespaces = []
         self._declared_ns_stack.append(new_namespaces)
 
-        wenn self._qname_aware_tags is not None and tag in self._qname_aware_tags:
+        wenn self._qname_aware_tags is not Nichts and tag in self._qname_aware_tags:
             # Need to parse text first to see wenn it requires a prefix declaration.
             self._pending_start = (tag, attrs, new_namespaces)
             return
         self._start(tag, attrs, new_namespaces)
 
-    def _start(self, tag, attrs, new_namespaces, qname_text=None):
-        wenn self._exclude_attrs is not None and attrs:
+    def _start(self, tag, attrs, new_namespaces, qname_text=Nichts):
+        wenn self._exclude_attrs is not Nichts and attrs:
             attrs = {k: v fuer k, v in attrs.items() wenn k not in self._exclude_attrs}
 
         qnames = {tag, *attrs}
         resolved_names = {}
 
         # Resolve prefixes in attribute and tag text.
-        wenn qname_text is not None:
+        wenn qname_text is not Nichts:
             qname = resolved_names[qname_text] = self._resolve_prefix_name(qname_text)
             qnames.add(qname)
-        wenn self._find_qname_aware_attrs is not None and attrs:
+        wenn self._find_qname_aware_attrs is not Nichts and attrs:
             qattrs = self._find_qname_aware_attrs(attrs)
             wenn qattrs:
                 fuer attr_name in qattrs:
@@ -1958,9 +1958,9 @@ klasse C14NWriterTarget:
                         qname = resolved_names[value] = self._resolve_prefix_name(value)
                         qnames.add(qname)
             sonst:
-                qattrs = None
+                qattrs = Nichts
         sonst:
-            qattrs = None
+            qattrs = Nichts
 
         # Assign prefixes in lexicographical order of used URIs.
         parse_qname = self._qname
@@ -1981,7 +1981,7 @@ klasse C14NWriterTarget:
         # ... followed by attributes in URI+name order
         wenn attrs:
             fuer k, v in sorted(attrs.items()):
-                wenn qattrs is not None and k in qattrs and v in resolved_names:
+                wenn qattrs is not Nichts and k in qattrs and v in resolved_names:
                     v = parsed_qnames[resolved_names[v]][0]
                 attr_qname, attr_name, uri = parsed_qnames[k]
                 # No prefix fuer attributes in default ('') namespace.
@@ -2001,10 +2001,10 @@ klasse C14NWriterTarget:
         write('>')
 
         # Write the resolved qname text content.
-        wenn qname_text is not None:
+        wenn qname_text is not Nichts:
             write(_escape_cdata_c14n(parsed_qnames[resolved_names[qname_text]][0]))
 
-        self._root_seen = True
+        self._root_seen = Wahr
         self._ns_stack.append([])
 
     def end(self, tag):

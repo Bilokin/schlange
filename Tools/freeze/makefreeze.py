@@ -29,8 +29,8 @@ main(int argc, char **argv)
 
 """
 
-def makefreeze(base, dict, debug=0, entry_point=None, fail_import=()):
-    wenn entry_point is None: entry_point = default_entry_point
+def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
+    wenn entry_point is Nichts: entry_point = default_entry_point
     done = []
     files = []
     mods = sorted(dict.keys())

@@ -10,7 +10,7 @@ from functools import wraps
 
 klasse C:
 
-    x = 5; y: Optional['C'] = None
+    x = 5; y: Optional['C'] = Nichts
 
 from typing import Tuple
 x: int = 5; y: str = x; f: Tuple[int, int]
@@ -18,7 +18,7 @@ x: int = 5; y: str = x; f: Tuple[int, int]
 klasse M(type):
     o: type = object
 
-(pars): bool = True
+(pars): bool = Wahr
 
 klasse D(C):
     j: str = 'hi'; k: str= 'bye'

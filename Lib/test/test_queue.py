@@ -11,7 +11,7 @@ from test.support import import_helper
 from test.support import threading_helper
 
 # queue module depends on threading primitives
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 py_queue = import_helper.import_fresh_module('queue', blocked=['_queue'])
 c_queue = import_helper.import_fresh_module('queue', fresh=['_queue'])
@@ -97,8 +97,8 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
     def basic_queue_test(self, q):
         wenn q.qsize():
             raise RuntimeError("Call this function with an empty queue")
-        self.assertTrue(q.empty())
-        self.assertFalse(q.full())
+        self.assertWahr(q.empty())
+        self.assertFalsch(q.full())
         # I guess we better check things actually queue correctly a little :)
         q.put(111)
         q.put(333)
@@ -111,14 +111,14 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
                          "Didn't seem to queue the correct data!")
         fuer i in range(QUEUE_SIZE-1):
             q.put(i)
-            self.assertTrue(q.qsize(), "Queue should not be empty")
-        self.assertTrue(not qfull(q), "Queue should not be full")
+            self.assertWahr(q.qsize(), "Queue should not be empty")
+        self.assertWahr(not qfull(q), "Queue should not be full")
         last = 2 * QUEUE_SIZE
         full = 3 * 2 * QUEUE_SIZE
         q.put(last)
-        self.assertTrue(qfull(q), "Queue should be full")
-        self.assertFalse(q.empty())
-        self.assertTrue(q.full())
+        self.assertWahr(qfull(q), "Queue should be full")
+        self.assertFalsch(q.empty())
+        self.assertWahr(q.full())
         try:
             q.put(full, block=0)
             self.fail("Didn't appear to block with a full queue")
@@ -131,11 +131,11 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             pass
         # Test a blocking put
         self.do_blocking_test(q.put, (full,), q.get, ())
-        self.do_blocking_test(q.put, (full, True, 10), q.get, ())
+        self.do_blocking_test(q.put, (full, Wahr, 10), q.get, ())
         # Empty it
         fuer i in range(QUEUE_SIZE):
             q.get()
-        self.assertTrue(not q.qsize(), "Queue should be empty")
+        self.assertWahr(not q.qsize(), "Queue should be empty")
         try:
             q.get(block=0)
             self.fail("Didn't appear to block with an empty queue")
@@ -148,11 +148,11 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             pass
         # Test a blocking get
         self.do_blocking_test(q.get, (), q.put, ('empty',))
-        self.do_blocking_test(q.get, (True, 10), q.put, ('empty',))
+        self.do_blocking_test(q.get, (Wahr, 10), q.put, ('empty',))
 
 
     def worker(self, q):
-        while True:
+        while Wahr:
             x = q.get()
             wenn x < 0:
                 q.task_done()
@@ -260,22 +260,22 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
     def test_shutdown_immediate(self):
         q = self.type2test()
         q.put("data")
-        q.shutdown(immediate=True)
+        q.shutdown(immediate=Wahr)
         with self.assertRaises(self.queue.ShutDown):
             q.get()
 
     def test_shutdown_allowed_transitions(self):
         # allowed transitions would be from alive via shutdown to immediate
         q = self.type2test()
-        self.assertFalse(q.is_shutdown)
+        self.assertFalsch(q.is_shutdown)
 
         q.shutdown()
-        self.assertTrue(q.is_shutdown)
+        self.assertWahr(q.is_shutdown)
 
-        q.shutdown(immediate=True)
-        self.assertTrue(q.is_shutdown)
+        q.shutdown(immediate=Wahr)
+        self.assertWahr(q.is_shutdown)
 
-        q.shutdown(immediate=False)
+        q.shutdown(immediate=Falsch)
 
     def _shutdown_all_methods_in_one_thread(self, immediate):
         q = self.type2test(2)
@@ -301,20 +301,20 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             self.assertIn(q.get(), "LO")
             q.task_done()
             q.join()
-            # on shutdown(immediate=False)
+            # on shutdown(immediate=Falsch)
             # when queue is empty, should raise ShutDown Exception
             with self.assertRaises(self.queue.ShutDown):
-                q.get() # p.get(True)
+                q.get() # p.get(Wahr)
             with self.assertRaises(self.queue.ShutDown):
-                q.get_nowait() # p.get(False)
+                q.get_nowait() # p.get(Falsch)
             with self.assertRaises(self.queue.ShutDown):
-                q.get(True, 1.0)
+                q.get(Wahr, 1.0)
 
     def test_shutdown_all_methods_in_one_thread(self):
-        return self._shutdown_all_methods_in_one_thread(False)
+        return self._shutdown_all_methods_in_one_thread(Falsch)
 
     def test_shutdown_immediate_all_methods_in_one_thread(self):
-        return self._shutdown_all_methods_in_one_thread(True)
+        return self._shutdown_all_methods_in_one_thread(Wahr)
 
     def _write_msg_thread(self, q, n, results,
                             i_when_exec_shutdown, event_shutdown,
@@ -330,7 +330,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             try:
                 q.put((i, "YDLO"))
             except self.queue.ShutDown:
-                results.append(False)
+                results.append(Falsch)
                 break
 
             # Trigger queue shutdown.
@@ -338,20 +338,20 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
                 # Only one thread should call shutdown().
                 wenn not event_shutdown.is_set():
                     event_shutdown.set()
-                    results.append(True)
+                    results.append(Wahr)
 
     def _read_msg_thread(self, q, results, barrier_start):
         # Get at least one item.
-        q.get(True)
+        q.get(Wahr)
         q.task_done()
         # Wait fuer the barrier to be complete.
         barrier_start.wait()
-        while True:
+        while Wahr:
             try:
-                q.get(False)
+                q.get(Falsch)
                 q.task_done()
             except self.queue.ShutDown:
-                results.append(True)
+                results.append(Wahr)
                 break
             except self.queue.Empty:
                 pass
@@ -408,19 +408,19 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         fuer thread in ps:
             thread.join()
 
-        self.assertTrue(True in res_puts)
-        self.assertEqual(res_gets.count(True), read_threads)
+        self.assertWahr(Wahr in res_puts)
+        self.assertEqual(res_gets.count(Wahr), read_threads)
         wenn immediate:
-            self.assertListEqual(res_shutdown, [True])
-            self.assertTrue(q.empty())
+            self.assertListEqual(res_shutdown, [Wahr])
+            self.assertWahr(q.empty())
 
     def test_shutdown_all_methods_in_many_threads(self):
-        return self._shutdown_all_methods_in_many_threads(False)
+        return self._shutdown_all_methods_in_many_threads(Falsch)
 
     def test_shutdown_immediate_all_methods_in_many_threads(self):
-        return self._shutdown_all_methods_in_many_threads(True)
+        return self._shutdown_all_methods_in_many_threads(Wahr)
 
-    def _get(self, q, go, results, shutdown=False):
+    def _get(self, q, go, results, shutdown=Falsch):
         go.wait()
         try:
             msg = q.get()
@@ -431,20 +431,20 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             return shutdown
 
     def _get_shutdown(self, q, go, results):
-        return self._get(q, go, results, True)
+        return self._get(q, go, results, Wahr)
 
     def _get_task_done(self, q, go, results):
         go.wait()
         try:
             msg = q.get()
             q.task_done()
-            results.append(True)
+            results.append(Wahr)
             return msg
         except self.queue.ShutDown:
-            results.append(False)
-            return False
+            results.append(Falsch)
+            return Falsch
 
-    def _put(self, q, msg, go, results, shutdown=False):
+    def _put(self, q, msg, go, results, shutdown=Falsch):
         go.wait()
         try:
             q.put(msg)
@@ -455,9 +455,9 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             return shutdown
 
     def _put_shutdown(self, q, msg, go, results):
-        return self._put(q, msg, go, results, True)
+        return self._put(q, msg, go, results, Wahr)
 
-    def _join(self, q, results, shutdown=False):
+    def _join(self, q, results, shutdown=Falsch):
         try:
             q.join()
             results.append(not shutdown)
@@ -467,7 +467,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             return shutdown
 
     def _join_shutdown(self, q, results):
-        return self._join(q, results, True)
+        return self._join(q, results, Wahr)
 
     def _shutdown_get(self, immediate):
         q = self.type2test(2)
@@ -484,7 +484,7 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             )
         sonst:
             thrds = (
-                # on shutdown(immediate=False)
+                # on shutdown(immediate=Falsch)
                 # one of these threads should raise Shutdown
                 (self._get, (q, go, results)),
                 (self._get, (q, go, results)),
@@ -499,15 +499,15 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         fuer t in threads:
             t.join()
         wenn immediate:
-            self.assertListEqual(results, [True, True])
+            self.assertListEqual(results, [Wahr, Wahr])
         sonst:
-            self.assertListEqual(sorted(results), [False] + [True]*(len(thrds)-1))
+            self.assertListEqual(sorted(results), [Falsch] + [Wahr]*(len(thrds)-1))
 
     def test_shutdown_get(self):
-        return self._shutdown_get(False)
+        return self._shutdown_get(Falsch)
 
     def test_shutdown_immediate_get(self):
-        return self._shutdown_get(True)
+        return self._shutdown_get(Wahr)
 
     def _shutdown_put(self, immediate):
         q = self.type2test(2)
@@ -530,13 +530,13 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         fuer t in threads:
             t.join()
 
-        self.assertEqual(results, [True]*len(thrds))
+        self.assertEqual(results, [Wahr]*len(thrds))
 
     def test_shutdown_put(self):
-        return self._shutdown_put(False)
+        return self._shutdown_put(Falsch)
 
     def test_shutdown_immediate_put(self):
-        return self._shutdown_put(True)
+        return self._shutdown_put(Wahr)
 
     def _shutdown_join(self, immediate):
         q = self.type2test()
@@ -563,13 +563,13 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         fuer t in threads:
             t.join()
 
-        self.assertEqual(results, [True]*len(thrds))
+        self.assertEqual(results, [Wahr]*len(thrds))
 
     def test_shutdown_immediate_join(self):
-        return self._shutdown_join(True)
+        return self._shutdown_join(Wahr)
 
     def test_shutdown_join(self):
-        return self._shutdown_join(False)
+        return self._shutdown_join(Falsch)
 
     def _shutdown_put_join(self, immediate):
         q = self.type2test(2)
@@ -602,13 +602,13 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         fuer t in threads:
             t.join()
 
-        self.assertEqual(results, [True]*len(thrds))
+        self.assertEqual(results, [Wahr]*len(thrds))
 
     def test_shutdown_immediate_put_join(self):
-        return self._shutdown_put_join(True)
+        return self._shutdown_put_join(Wahr)
 
     def test_shutdown_put_join(self):
-        return self._shutdown_put_join(False)
+        return self._shutdown_put_join(Falsch)
 
     def test_shutdown_get_task_done_join(self):
         q = self.type2test(2)
@@ -629,11 +629,11 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
             threads.append(threading.Thread(target=func, args=params))
             threads[-1].start()
         go.set()
-        q.shutdown(False)
+        q.shutdown(Falsch)
         fuer t in threads:
             t.join()
 
-        self.assertEqual(results, [True]*len(thrds))
+        self.assertEqual(results, [Wahr]*len(thrds))
 
     def test_shutdown_pending_get(self):
         def get():
@@ -646,9 +646,9 @@ klasse BaseQueueTestMixin(BlockingTestMixin):
         results = []
         get_thread = threading.Thread(target=get)
         get_thread.start()
-        q.shutdown(immediate=False)
+        q.shutdown(immediate=Falsch)
         get_thread.join(timeout=10.0)
-        self.assertFalse(get_thread.is_alive())
+        self.assertFalsch(get_thread.is_alive())
         self.assertEqual(len(results), 1)
         self.assertIsInstance(results[0], self.queue.ShutDown)
 
@@ -712,17 +712,17 @@ klasse FailingQueueTest(BlockingTestMixin):
 
         klasse FailingQueue(Queue):
             def __init__(self, *args):
-                self.fail_next_put = False
-                self.fail_next_get = False
+                self.fail_next_put = Falsch
+                self.fail_next_get = Falsch
                 Queue.__init__(self, *args)
             def _put(self, item):
                 wenn self.fail_next_put:
-                    self.fail_next_put = False
+                    self.fail_next_put = Falsch
                     raise FailingQueueException("You Lose")
                 return Queue._put(self, item)
             def _get(self):
                 wenn self.fail_next_get:
-                    self.fail_next_get = False
+                    self.fail_next_get = Falsch
                     raise FailingQueueException("You Lose")
                 return Queue._get(self)
 
@@ -736,22 +736,22 @@ klasse FailingQueueTest(BlockingTestMixin):
         fuer i in range(QUEUE_SIZE-1):
             q.put(i)
         # Test a failing non-blocking put.
-        q.fail_next_put = True
+        q.fail_next_put = Wahr
         try:
             q.put("oops", block=0)
             self.fail("The queue didn't fail when it should have")
         except FailingQueueException:
             pass
-        q.fail_next_put = True
+        q.fail_next_put = Wahr
         try:
             q.put("oops", timeout=0.1)
             self.fail("The queue didn't fail when it should have")
         except FailingQueueException:
             pass
         q.put("last")
-        self.assertTrue(qfull(q), "Queue should be full")
+        self.assertWahr(qfull(q), "Queue should be full")
         # Test a failing blocking put
-        q.fail_next_put = True
+        q.fail_next_put = Wahr
         try:
             self.do_blocking_test(q.put, ("full",), q.get, ())
             self.fail("The queue didn't fail when it should have")
@@ -761,9 +761,9 @@ klasse FailingQueueTest(BlockingTestMixin):
         # put failed, but get succeeded - re-add
         q.put("last")
         # Test a failing timeout put
-        q.fail_next_put = True
+        q.fail_next_put = Wahr
         try:
-            self.do_exceptional_blocking_test(q.put, ("full", True, 10), q.get, (),
+            self.do_exceptional_blocking_test(q.put, ("full", Wahr, 10), q.get, (),
                                               FailingQueueException)
             self.fail("The queue didn't fail when it should have")
         except FailingQueueException:
@@ -771,35 +771,35 @@ klasse FailingQueueTest(BlockingTestMixin):
         # Check the Queue isn't damaged.
         # put failed, but get succeeded - re-add
         q.put("last")
-        self.assertTrue(qfull(q), "Queue should be full")
+        self.assertWahr(qfull(q), "Queue should be full")
         q.get()
-        self.assertTrue(not qfull(q), "Queue should not be full")
+        self.assertWahr(not qfull(q), "Queue should not be full")
         q.put("last")
-        self.assertTrue(qfull(q), "Queue should be full")
+        self.assertWahr(qfull(q), "Queue should be full")
         # Test a blocking put
         self.do_blocking_test(q.put, ("full",), q.get, ())
         # Empty it
         fuer i in range(QUEUE_SIZE):
             q.get()
-        self.assertTrue(not q.qsize(), "Queue should be empty")
+        self.assertWahr(not q.qsize(), "Queue should be empty")
         q.put("first")
-        q.fail_next_get = True
+        q.fail_next_get = Wahr
         try:
             q.get()
             self.fail("The queue didn't fail when it should have")
         except FailingQueueException:
             pass
-        self.assertTrue(q.qsize(), "Queue should not be empty")
-        q.fail_next_get = True
+        self.assertWahr(q.qsize(), "Queue should not be empty")
+        q.fail_next_get = Wahr
         try:
             q.get(timeout=0.1)
             self.fail("The queue didn't fail when it should have")
         except FailingQueueException:
             pass
-        self.assertTrue(q.qsize(), "Queue should not be empty")
+        self.assertWahr(q.qsize(), "Queue should not be empty")
         q.get()
-        self.assertTrue(not q.qsize(), "Queue should be empty")
-        q.fail_next_get = True
+        self.assertWahr(not q.qsize(), "Queue should be empty")
+        q.fail_next_get = Wahr
         try:
             self.do_exceptional_blocking_test(q.get, (), q.put, ('empty',),
                                               FailingQueueException)
@@ -807,9 +807,9 @@ klasse FailingQueueTest(BlockingTestMixin):
         except FailingQueueException:
             pass
         # put succeeded, but get failed.
-        self.assertTrue(q.qsize(), "Queue should not be empty")
+        self.assertWahr(q.qsize(), "Queue should not be empty")
         q.get()
-        self.assertTrue(not q.qsize(), "Queue should be empty")
+        self.assertWahr(not q.qsize(), "Queue should be empty")
 
     def test_failing_queue(self):
 
@@ -836,7 +836,7 @@ klasse BaseSimpleQueueTest:
         self.q = self.type2test()
 
     def feed(self, q, seq, rnd, sentinel):
-        while True:
+        while Wahr:
             try:
                 val = seq.pop()
             except IndexError:
@@ -847,17 +847,17 @@ klasse BaseSimpleQueueTest:
                 time.sleep(rnd.random() * 1e-3)
 
     def consume(self, q, results, sentinel):
-        while True:
+        while Wahr:
             val = q.get()
             wenn val == sentinel:
                 return
             results.append(val)
 
     def consume_nonblock(self, q, results, sentinel):
-        while True:
-            while True:
+        while Wahr:
+            while Wahr:
                 try:
-                    val = q.get(block=False)
+                    val = q.get(block=Falsch)
                 except self.queue.Empty:
                     time.sleep(1e-5)
                 sonst:
@@ -867,8 +867,8 @@ klasse BaseSimpleQueueTest:
             results.append(val)
 
     def consume_timeout(self, q, results, sentinel):
-        while True:
-            while True:
+        while Wahr:
+            while Wahr:
                 try:
                     val = q.get(timeout=1e-5)
                 except self.queue.Empty:
@@ -881,7 +881,7 @@ klasse BaseSimpleQueueTest:
 
     def run_threads(self, n_threads, q, inputs, feed_func, consume_func):
         results = []
-        sentinel = None
+        sentinel = Nichts
         seq = inputs.copy()
         seq.reverse()
         rnd = random.Random(42)
@@ -905,8 +905,8 @@ klasse BaseSimpleQueueTest:
         with threading_helper.start_threads(feeders + consumers):
             pass
 
-        self.assertFalse(exceptions)
-        self.assertTrue(q.empty())
+        self.assertFalsch(exceptions)
+        self.assertWahr(q.empty())
         self.assertEqual(q.qsize(), 0)
 
         return results
@@ -914,15 +914,15 @@ klasse BaseSimpleQueueTest:
     def test_basic(self):
         # Basic tests fuer get(), put() etc.
         q = self.q
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         self.assertEqual(q.qsize(), 0)
         q.put(1)
-        self.assertFalse(q.empty())
+        self.assertFalsch(q.empty())
         self.assertEqual(q.qsize(), 1)
         q.put(2)
         q.put_nowait(3)
         q.put(4)
-        self.assertFalse(q.empty())
+        self.assertFalsch(q.empty())
         self.assertEqual(q.qsize(), 4)
 
         self.assertEqual(q.get(), 1)
@@ -931,21 +931,21 @@ klasse BaseSimpleQueueTest:
         self.assertEqual(q.get_nowait(), 2)
         self.assertEqual(q.qsize(), 2)
 
-        self.assertEqual(q.get(block=False), 3)
-        self.assertFalse(q.empty())
+        self.assertEqual(q.get(block=Falsch), 3)
+        self.assertFalsch(q.empty())
         self.assertEqual(q.qsize(), 1)
 
         self.assertEqual(q.get(timeout=0.1), 4)
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         self.assertEqual(q.qsize(), 0)
 
         with self.assertRaises(self.queue.Empty):
-            q.get(block=False)
+            q.get(block=Falsch)
         with self.assertRaises(self.queue.Empty):
             q.get(timeout=1e-3)
         with self.assertRaises(self.queue.Empty):
             q.get_nowait()
-        self.assertTrue(q.empty())
+        self.assertWahr(q.empty())
         self.assertEqual(q.qsize(), 0)
 
     def test_negative_timeout_raises_exception(self):
@@ -963,7 +963,7 @@ klasse BaseSimpleQueueTest:
         # One producer, one consumer => results appended in well-defined order
         self.assertEqual(results, inputs)
 
-    @bigmemtest(size=50, memuse=100*2**20, dry_run=False)
+    @bigmemtest(size=50, memuse=100*2**20, dry_run=Falsch)
     def test_many_threads(self, size):
         # Test multiple concurrent put() and get()
         q = self.q
@@ -974,9 +974,9 @@ klasse BaseSimpleQueueTest:
         # results in random order
         self.assertEqual(sorted(results), inputs)
 
-    @bigmemtest(size=50, memuse=100*2**20, dry_run=False)
+    @bigmemtest(size=50, memuse=100*2**20, dry_run=Falsch)
     def test_many_threads_nonblock(self, size):
-        # Test multiple concurrent put() and get(block=False)
+        # Test multiple concurrent put() and get(block=Falsch)
         q = self.q
         inputs = list(range(10000))
         results = self.run_threads(size, q, inputs,
@@ -984,7 +984,7 @@ klasse BaseSimpleQueueTest:
 
         self.assertEqual(sorted(results), inputs)
 
-    @bigmemtest(size=50, memuse=100*2**20, dry_run=False)
+    @bigmemtest(size=50, memuse=100*2**20, dry_run=Falsch)
     def test_many_threads_timeout(self, size):
         # Test multiple concurrent put() and get(timeout=...)
         q = self.q
@@ -1007,7 +1007,7 @@ klasse BaseSimpleQueueTest:
         fuer i in range(N):
             wr = weakref.ref(q.get())
             gc_collect()  # For PyPy or other GCs.
-            self.assertIsNone(wr())
+            self.assertIsNichts(wr())
 
 
 klasse PySimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
@@ -1049,7 +1049,7 @@ klasse CSimpleQueueTest(BaseSimpleQueueTest, unittest.TestCase):
             def __del__(self):
                 q.put(next(gen))
 
-        while True:
+        while Wahr:
             o = Circular()
             q.put(next(gen))
             del o

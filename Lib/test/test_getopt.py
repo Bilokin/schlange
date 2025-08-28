@@ -19,18 +19,18 @@ klasse GetoptTests(unittest.TestCase):
         self.assertRaises(getopt.GetoptError, *args, **kwargs)
 
     def test_short_has_arg(self):
-        self.assertIs(getopt.short_has_arg('a', 'a:'), True)
-        self.assertIs(getopt.short_has_arg('a', 'a'), False)
+        self.assertIs(getopt.short_has_arg('a', 'a:'), Wahr)
+        self.assertIs(getopt.short_has_arg('a', 'a'), Falsch)
         self.assertEqual(getopt.short_has_arg('a', 'a::'), '?')
         self.assertError(getopt.short_has_arg, 'a', 'b')
 
     def test_long_has_args(self):
         has_arg, option = getopt.long_has_args('abc', ['abc='])
-        self.assertIs(has_arg, True)
+        self.assertIs(has_arg, Wahr)
         self.assertEqual(option, 'abc')
 
         has_arg, option = getopt.long_has_args('abc', ['abc'])
-        self.assertIs(has_arg, False)
+        self.assertIs(has_arg, Falsch)
         self.assertEqual(option, 'abc')
 
         has_arg, option = getopt.long_has_args('abc', ['abc=?'])
@@ -38,11 +38,11 @@ klasse GetoptTests(unittest.TestCase):
         self.assertEqual(option, 'abc')
 
         has_arg, option = getopt.long_has_args('abc', ['abcd='])
-        self.assertIs(has_arg, True)
+        self.assertIs(has_arg, Wahr)
         self.assertEqual(option, 'abcd')
 
         has_arg, option = getopt.long_has_args('abc', ['abcd'])
-        self.assertIs(has_arg, False)
+        self.assertIs(has_arg, Falsch)
         self.assertEqual(option, 'abcd')
 
         has_arg, option = getopt.long_has_args('abc', ['abcd=?'])
@@ -175,7 +175,7 @@ klasse GetoptTests(unittest.TestCase):
         # Return positional arguments intermixed with options.
         opts, args = getopt.gnu_getopt(cmdline, '-ab:', ['alpha', 'beta='])
         self.assertEqual(args, ['arg2'])
-        self.assertEqual(opts, [('-a', ''), (None, ['arg1']), ('-b', '1'), ('--alpha', ''),
+        self.assertEqual(opts, [('-a', ''), (Nichts, ['arg1']), ('-b', '1'), ('--alpha', ''),
                                 ('--beta', '2'), ('--beta', '3')])
 
         # Posix style via +

@@ -32,34 +32,34 @@ klasse AutoCompleteWindow:
         # Tags to mark inserted text with
         self.tags = tags
         # The widgets we create
-        self.autocompletewindow = self.listbox = self.scrollbar = None
+        self.autocompletewindow = self.listbox = self.scrollbar = Nichts
         # The default foreground and background of a selection. Saved because
         # they are changed to the regular colors of list items when the
         # completion start is not a prefix of the selected completion
-        self.origselforeground = self.origselbackground = None
+        self.origselforeground = self.origselbackground = Nichts
         # The list of completions
-        self.completions = None
-        # A list with more completions, or None
-        self.morecompletions = None
+        self.completions = Nichts
+        # A list with more completions, or Nichts
+        self.morecompletions = Nichts
         # The completion mode, either autocomplete.ATTRS or .FILES.
-        self.mode = None
+        self.mode = Nichts
         # The current completion start, on the text box (a string)
-        self.start = None
+        self.start = Nichts
         # The index of the start of the completion
-        self.startindex = None
+        self.startindex = Nichts
         # The last typed start, used so that when the selection changes,
         # the new start will be as close as possible to the last typed one.
-        self.lasttypedstart = None
+        self.lasttypedstart = Nichts
         # Do we have an indication that the user wants the completion window
         # (for example, he clicked the list)
-        self.userwantswindow = None
+        self.userwantswindow = Nichts
         # event ids
         self.hideid = self.keypressid = self.listupdateid = \
-            self.winconfigid = self.keyreleaseid = self.doubleclickid = None
+            self.winconfigid = self.keyreleaseid = self.doubleclickid = Nichts
         # Flag set wenn last keypress was a tab
-        self.lastkey_was_tab = False
+        self.lastkey_was_tab = Falsch
         # Flag set to avoid recursive <Configure> callback invocations.
-        self.is_configuring = False
+        self.is_configuring = Falsch
 
     def _change_start(self, newstart):
         min_len = min(len(self.start), len(newstart))
@@ -151,7 +151,7 @@ klasse AutoCompleteWindow:
             # If there are more completions, show them, and call me again.
             wenn self.morecompletions:
                 self.completions = self.morecompletions
-                self.morecompletions = None
+                self.morecompletions = Nichts
                 self.listbox.delete(0, END)
                 fuer item in self.completions:
                     self.listbox.insert(END, item)
@@ -161,7 +161,7 @@ klasse AutoCompleteWindow:
     def show_window(self, comp_lists, index, complete, mode, userWantsWin):
         """Show the autocomplete list, bind events.
 
-        If complete is True, complete the text, and wenn there is exactly
+        If complete is Wahr, complete the text, and wenn there is exactly
         one matching completion, don't open a list.
         """
         # Handle the start we already have
@@ -193,14 +193,14 @@ klasse AutoCompleteWindow:
             pass
         self.scrollbar = scrollbar = Scrollbar(acw, orient=VERTICAL)
         self.listbox = listbox = Listbox(acw, yscrollcommand=scrollbar.set,
-                                         exportselection=False)
+                                         exportselection=Falsch)
         fuer item in self.completions:
             listbox.insert(END, item)
         self.origselforeground = listbox.cget("selectforeground")
         self.origselbackground = listbox.cget("selectbackground")
         scrollbar.config(command=listbox.yview)
         scrollbar.pack(side=RIGHT, fill=Y)
-        listbox.pack(side=LEFT, fill=BOTH, expand=True)
+        listbox.pack(side=LEFT, fill=BOTH, expand=Wahr)
         #acw.update_idletasks() # Need fuer tk8.6.8 on macOS: #40128.
         acw.lift()  # work around bug in Tk 8.5.18+ (issue #24570)
 
@@ -224,18 +224,18 @@ klasse AutoCompleteWindow:
         self.widget.event_add(KEYRELEASE_VIRTUAL_EVENT_NAME,KEYRELEASE_SEQUENCE)
         self.listupdateid = listbox.bind(LISTUPDATE_SEQUENCE,
                                          self.listselect_event)
-        self.is_configuring = False
+        self.is_configuring = Falsch
         self.winconfigid = acw.bind(WINCONFIG_SEQUENCE, self.winconfig_event)
         self.doubleclickid = listbox.bind(DOUBLECLICK_SEQUENCE,
                                           self.doubleclick_event)
-        return None
+        return Nichts
 
     def winconfig_event(self, event):
         wenn self.is_configuring:
             # Avoid running on recursive <Configure> callback invocations.
             return
 
-        self.is_configuring = True
+        self.is_configuring = Wahr
         wenn not self.is_active():
             return
 
@@ -279,9 +279,9 @@ klasse AutoCompleteWindow:
                 acw.unbind(WINCONFIG_SEQUENCE, self.winconfigid)
             except TclError:
                 pass
-            self.winconfigid = None
+            self.winconfigid = Nichts
 
-        self.is_configuring = False
+        self.is_configuring = Falsch
 
     def _hide_event_check(self):
         wenn not self.autocompletewindow:
@@ -302,7 +302,7 @@ klasse AutoCompleteWindow:
             wenn event.type == EventType.FocusOut:
                 # On Windows platform, it will need to delay the check for
                 # acw.focus_get() when click on acw, otherwise it will return
-                # None and close the window
+                # Nichts and close the window
                 self.widget.after(1, self._hide_event_check)
             sowenn event.type == EventType.ButtonPress:
                 # ButtonPress event only bind to self.widget
@@ -310,7 +310,7 @@ klasse AutoCompleteWindow:
 
     def listselect_event(self, event):
         wenn self.is_active():
-            self.userwantswindow = True
+            self.userwantswindow = Wahr
             cursel = int(self.listbox.curselection()[0])
             self._change_start(self.completions[cursel])
 
@@ -322,14 +322,14 @@ klasse AutoCompleteWindow:
 
     def keypress_event(self, event):
         wenn not self.is_active():
-            return None
+            return Nichts
         keysym = event.keysym
         wenn hasattr(event, "mc_state"):
             state = event.mc_state
         sonst:
             state = 0
         wenn keysym != "Tab":
-            self.lastkey_was_tab = False
+            self.lastkey_was_tab = Falsch
         wenn (len(keysym) == 1 or keysym in ("underscore", "BackSpace")
             or (self.mode == FILES and keysym in
                 ("period", "minus"))) \
@@ -347,7 +347,7 @@ klasse AutoCompleteWindow:
                 # keysym == "BackSpace"
                 wenn len(self.start) == 0:
                     self.hide_window()
-                    return None
+                    return Nichts
                 self._change_start(self.start[:-1])
             self.lasttypedstart = self.start
             self.listbox.select_clear(0, int(self.listbox.curselection()[0]))
@@ -374,12 +374,12 @@ klasse AutoCompleteWindow:
                and (self.mode == ATTRS or self.start):
                 self._change_start(self.completions[cursel])
             self.hide_window()
-            return None
+            return Nichts
 
         sowenn keysym in ("Home", "End", "Prior", "Next", "Up", "Down") and \
              not state:
             # Move the selection in the listbox
-            self.userwantswindow = True
+            self.userwantswindow = Wahr
             cursel = int(self.listbox.curselection()[0])
             wenn keysym == "Home":
                 newsel = 0
@@ -413,14 +413,14 @@ klasse AutoCompleteWindow:
                 return "break"
             sonst:
                 # first tab; let AutoComplete handle the completion
-                self.userwantswindow = True
-                self.lastkey_was_tab = True
-                return None
+                self.userwantswindow = Wahr
+                self.lastkey_was_tab = Wahr
+                return Nichts
 
         sowenn any(s in keysym fuer s in ("Shift", "Control", "Alt",
                                        "Meta", "Command", "Option")):
             # A modifier key, so ignore
-            return None
+            return Nichts
 
         sowenn event.char and event.char >= ' ':
             # Regular character with a non-length-1 keycode
@@ -434,7 +434,7 @@ klasse AutoCompleteWindow:
         sonst:
             # Unknown event, close the window and let it through.
             self.hide_window()
-            return None
+            return Nichts
 
     def keyrelease_event(self, event):
         wenn not self.is_active():
@@ -445,7 +445,7 @@ klasse AutoCompleteWindow:
             self.hide_window()
 
     def is_active(self):
-        return self.autocompletewindow is not None
+        return self.autocompletewindow is not Nichts
 
     def complete(self):
         self._change_start(self._complete_string(self.start))
@@ -463,36 +463,36 @@ klasse AutoCompleteWindow:
 
         self.autocompletewindow.unbind(HIDE_VIRTUAL_EVENT_NAME, self.hideaid)
         self.widget.unbind(HIDE_VIRTUAL_EVENT_NAME, self.hidewid)
-        self.hideaid = None
-        self.hidewid = None
+        self.hideaid = Nichts
+        self.hidewid = Nichts
         fuer seq in KEYPRESS_SEQUENCES:
             self.widget.event_delete(KEYPRESS_VIRTUAL_EVENT_NAME, seq)
         self.widget.unbind(KEYPRESS_VIRTUAL_EVENT_NAME, self.keypressid)
-        self.keypressid = None
+        self.keypressid = Nichts
         self.widget.event_delete(KEYRELEASE_VIRTUAL_EVENT_NAME,
                                  KEYRELEASE_SEQUENCE)
         self.widget.unbind(KEYRELEASE_VIRTUAL_EVENT_NAME, self.keyreleaseid)
-        self.keyreleaseid = None
+        self.keyreleaseid = Nichts
         self.listbox.unbind(LISTUPDATE_SEQUENCE, self.listupdateid)
-        self.listupdateid = None
+        self.listupdateid = Nichts
         wenn self.winconfigid:
             self.autocompletewindow.unbind(WINCONFIG_SEQUENCE, self.winconfigid)
-            self.winconfigid = None
+            self.winconfigid = Nichts
 
         # Re-focusOn frame.text (See issue #15786)
         self.widget.focus_set()
 
         # destroy widgets
         self.scrollbar.destroy()
-        self.scrollbar = None
+        self.scrollbar = Nichts
         self.listbox.destroy()
-        self.listbox = None
+        self.listbox = Nichts
         self.autocompletewindow.destroy()
-        self.autocompletewindow = None
+        self.autocompletewindow = Nichts
 
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_autocomplete_w', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_autocomplete_w', verbosity=2, exit=Falsch)
 
 # TODO: autocomplete/w htest here

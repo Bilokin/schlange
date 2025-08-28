@@ -19,7 +19,7 @@ from test.support.import_helper import forget, mock_register_at_fork
 from test.support.os_helper import (TESTFN, unlink, rmtree)
 from test.support import script_helper, threading_helper
 
-threading_helper.requires_working_threading(module=True)
+threading_helper.requires_working_threading(module=Wahr)
 
 def task(N, done, done_tasks, errors):
     try:
@@ -34,7 +34,7 @@ def task(N, done, done_tasks, errors):
         # This will fail wenn random is not completely initialized
         x = random.randrange(1, 3)
     except Exception as e:
-        errors.append(e.with_traceback(None))
+        errors.append(e.with_traceback(Nichts))
     finally:
         done_tasks.append(threading.get_ident())
         finished = len(done_tasks) == N
@@ -70,7 +70,7 @@ klasse Finder:
         self.x = 0
         self.lock = threading.Lock()
 
-    def find_spec(self, name, path=None, target=None):
+    def find_spec(self, name, path=Nichts, target=Nichts):
         # Simulate some thread-unsafe behaviour. If calls to find_spec()
         # are properly serialized, `x` will end up the same as `numcalls`.
         # Otherwise not.
@@ -85,20 +85,20 @@ klasse FlushingFinder:
     """A dummy finder which flushes sys.path_importer_cache when it gets
     called."""
 
-    def find_spec(self, name, path=None, target=None):
+    def find_spec(self, name, path=Nichts, target=Nichts):
         sys.path_importer_cache.clear()
 
 
 klasse ThreadedImportTests(unittest.TestCase):
 
     def setUp(self):
-        self.old_random = sys.modules.pop('random', None)
+        self.old_random = sys.modules.pop('random', Nichts)
 
     def tearDown(self):
         # If the `random` module was already initialized, we restore the
         # old module at the end so that pickling tests don't fail.
         # See http://bugs.python.org/issue3657#msg110461
-        wenn self.old_random is not None:
+        wenn self.old_random is not Nichts:
             sys.modules['random'] = self.old_random
 
     @mock_register_at_fork
@@ -128,18 +128,18 @@ klasse ThreadedImportTests(unittest.TestCase):
             completed = done.wait(10 * 60)
             dt = time.monotonic() - t0
             wenn verbose:
-                print("%.1f ms" % (dt*1e3), flush=True, end=" ")
+                print("%.1f ms" % (dt*1e3), flush=Wahr, end=" ")
             dbg_info = 'done: %s/%s' % (len(done_tasks), N)
-            self.assertFalse(errors, dbg_info)
-            self.assertTrue(completed, dbg_info)
+            self.assertFalsch(errors, dbg_info)
+            self.assertWahr(completed, dbg_info)
             wenn verbose:
                 print("OK.")
 
-    @support.bigmemtest(size=50, memuse=76*2**20, dry_run=False)
+    @support.bigmemtest(size=50, memuse=76*2**20, dry_run=Falsch)
     def test_parallel_module_init(self, size):
         self.check_parallel_module_init()
 
-    @support.bigmemtest(size=50, memuse=76*2**20, dry_run=False)
+    @support.bigmemtest(size=50, memuse=76*2**20, dry_run=Falsch)
     def test_parallel_meta_path(self, size):
         finder = Finder()
         sys.meta_path.insert(0, finder)
@@ -150,7 +150,7 @@ klasse ThreadedImportTests(unittest.TestCase):
         finally:
             sys.meta_path.remove(finder)
 
-    @support.bigmemtest(size=50, memuse=76*2**20, dry_run=False)
+    @support.bigmemtest(size=50, memuse=76*2**20, dry_run=Falsch)
     def test_parallel_path_hooks(self, size):
         # Here the Finder instance is only used to check concurrent calls
         # to path_hook().
@@ -182,7 +182,7 @@ klasse ThreadedImportTests(unittest.TestCase):
         except KeyError:
             pass
         import test.test_importlib.threaded_import_hangers
-        self.assertFalse(test.test_importlib.threaded_import_hangers.errors)
+        self.assertFalsch(test.test_importlib.threaded_import_hangers.errors)
 
     def test_circular_imports(self):
         # The goal of this test is to exercise implementations of the import
@@ -210,10 +210,10 @@ klasse ThreadedImportTests(unittest.TestCase):
         results = []
         def import_ab():
             import A
-            results.append(getattr(A, 'x', None))
+            results.append(getattr(A, 'x', Nichts))
         def import_ba():
             import B
-            results.append(getattr(B, 'x', None))
+            results.append(getattr(B, 'x', Nichts))
         t1 = threading.Thread(target=import_ab)
         t2 = threading.Thread(target=import_ba)
         t1.start()
@@ -231,7 +231,7 @@ klasse ThreadedImportTests(unittest.TestCase):
             t = threading.Thread(target=target)
             t.start()
             t.join()
-            t = None"""
+            t = Nichts"""
         sys.path.insert(0, os.curdir)
         self.addCleanup(sys.path.remove, os.curdir)
         filename = TESTFN + ".py"
@@ -245,14 +245,14 @@ klasse ThreadedImportTests(unittest.TestCase):
             __import__(TESTFN)
         del sys.modules[TESTFN]
 
-    @support.bigmemtest(size=1, memuse=1.8*2**30, dry_run=False)
+    @support.bigmemtest(size=1, memuse=1.8*2**30, dry_run=Falsch)
     def test_concurrent_futures_circular_import(self, size):
         # Regression test fuer bpo-43515
         fn = os.path.join(os.path.dirname(__file__),
                           'partial', 'cfimport.py')
         script_helper.assert_python_ok(fn)
 
-    @support.bigmemtest(size=1, memuse=1.8*2**30, dry_run=False)
+    @support.bigmemtest(size=1, memuse=1.8*2**30, dry_run=Falsch)
     def test_multiprocessing_pool_circular_import(self, size):
         # Regression test fuer bpo-41567
         fn = os.path.join(os.path.dirname(__file__),

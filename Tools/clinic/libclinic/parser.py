@@ -15,8 +15,8 @@ wenn TYPE_CHECKING:
 
 
 klasse Parser(Protocol):
-    def __init__(self, clinic: Clinic) -> None: ...
-    def parse(self, block: Block) -> None: ...
+    def __init__(self, clinic: Clinic) -> Nichts: ...
+    def parse(self, block: Block) -> Nichts: ...
 
 
 @functools.cache
@@ -43,10 +43,10 @@ def create_parser_namespace() -> dict[str, Any]:
 
 
 klasse PythonParser:
-    def __init__(self, clinic: Clinic) -> None:
+    def __init__(self, clinic: Clinic) -> Nichts:
         pass
 
-    def parse(self, block: Block) -> None:
+    def parse(self, block: Block) -> Nichts:
         namespace = create_parser_namespace()
         with contextlib.redirect_stdout(io.StringIO()) as s:
             exec(block.input, namespace)

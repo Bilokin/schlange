@@ -49,7 +49,7 @@ PGO_TESTS = [
     'test_xml_etree_c',
 ]
 
-def setup_pgo_tests(cmdline_args, pgo_extended: bool) -> None:
+def setup_pgo_tests(cmdline_args, pgo_extended: bool) -> Nichts:
     wenn not cmdline_args and not pgo_extended:
         # run default set of tests fuer PGO training
         cmdline_args[:] = PGO_TESTS[:]

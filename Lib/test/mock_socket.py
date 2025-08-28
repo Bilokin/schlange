@@ -5,8 +5,8 @@
 import socket as socket_module
 
 # Mock socket module
-_defaulttimeout = None
-_reply_data = None
+_defaulttimeout = Nichts
+_reply_data = Nichts
 
 # This is used to queue up data to be read through socket.makefile, typically
 # *before* the socket object is even created. It is intended to handle a single
@@ -35,21 +35,21 @@ klasse MockFile:
 klasse MockSocket:
     """Mock socket object used by the smtplib tests.
     """
-    def __init__(self, family=None):
+    def __init__(self, family=Nichts):
         global _reply_data
         self.family = family
         self.output = []
         self.lines = []
         wenn _reply_data:
             self.lines.append(_reply_data)
-            _reply_data = None
-        self.conn = None
-        self.timeout = None
+            _reply_data = Nichts
+        self.conn = Nichts
+        self.timeout = Nichts
 
     def queue_recv(self, line):
         self.lines.append(line)
 
-    def recv(self, bufsize, flags=None):
+    def recv(self, bufsize, flags=Nichts):
         data = self.lines.pop(0) + b'\r\n'
         return data
 
@@ -57,7 +57,7 @@ klasse MockSocket:
         return 0
 
     def settimeout(self, timeout):
-        wenn timeout is None:
+        wenn timeout is Nichts:
             self.timeout = _defaulttimeout
         sonst:
             self.timeout = timeout
@@ -68,7 +68,7 @@ klasse MockSocket:
     def setsockopt(self, level, optname, value):
         pass
 
-    def getsockopt(self, level, optname, buflen=None):
+    def getsockopt(self, level, optname, buflen=Nichts):
         return 0
 
     def bind(self, address):
@@ -91,12 +91,12 @@ klasse MockSocket:
         handle = MockFile(self.lines)
         return handle
 
-    def sendall(self, data, flags=None):
+    def sendall(self, data, flags=Nichts):
         self.last = data
         self.output.append(data)
         return len(data)
 
-    def send(self, data, flags=None):
+    def send(self, data, flags=Nichts):
         self.last = data
         self.output.append(data)
         return len(data)
@@ -111,11 +111,11 @@ klasse MockSocket:
         pass
 
 
-def socket(family=None, type=None, proto=None):
+def socket(family=Nichts, type=Nichts, proto=Nichts):
     return MockSocket(family)
 
 def create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
-                      source_address=None):
+                      source_address=Nichts):
     try:
         int_port = int(address[1])
     except ValueError:
@@ -159,8 +159,8 @@ _GLOBAL_DEFAULT_TIMEOUT = socket_module._GLOBAL_DEFAULT_TIMEOUT
 AF_INET = socket_module.AF_INET
 AF_INET6 = socket_module.AF_INET6
 SOCK_STREAM = socket_module.SOCK_STREAM
-SOL_SOCKET = None
-SO_REUSEADDR = None
+SOL_SOCKET = Nichts
+SO_REUSEADDR = Nichts
 
 wenn hasattr(socket_module, 'AF_UNIX'):
     AF_UNIX = socket_module.AF_UNIX

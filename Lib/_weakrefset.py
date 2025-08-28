@@ -9,22 +9,22 @@ __all__ = ['WeakSet']
 
 
 klasse WeakSet:
-    def __init__(self, data=None):
+    def __init__(self, data=Nichts):
         self.data = set()
 
         def _remove(item, selfref=ref(self)):
             self = selfref()
-            wenn self is not None:
+            wenn self is not Nichts:
                 self.data.discard(item)
 
         self._remove = _remove
-        wenn data is not None:
+        wenn data is not Nichts:
             self.update(data)
 
     def __iter__(self):
         fuer itemref in self.data.copy():
             item = itemref()
-            wenn item is not None:
+            wenn item is not Nichts:
                 # Caveat: the iterator will keep a strong reference to
                 # `item` until it is resumed or closed.
                 yield item
@@ -36,7 +36,7 @@ klasse WeakSet:
         try:
             wr = ref(item)
         except TypeError:
-            return False
+            return Falsch
         return wr in self.data
 
     def __reduce__(self):
@@ -52,13 +52,13 @@ klasse WeakSet:
         return self.__class__(self)
 
     def pop(self):
-        while True:
+        while Wahr:
             try:
                 itemref = self.data.pop()
             except KeyError:
-                raise KeyError('pop from empty WeakSet') from None
+                raise KeyError('pop from empty WeakSet') from Nichts
             item = itemref()
-            wenn item is not None:
+            wenn item is not Nichts:
                 return item
 
     def remove(self, item):

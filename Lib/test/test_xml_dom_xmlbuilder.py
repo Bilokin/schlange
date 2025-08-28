@@ -31,23 +31,23 @@ klasse XMLBuilderTest(unittest.TestCase):
 
         with mock.patch("urllib.request.build_opener") as mock_build:
             mock_build.return_value = opener
-            source = resolver.resolveEntity(None, "http://example.com/2000/svg")
+            source = resolver.resolveEntity(Nichts, "http://example.com/2000/svg")
 
         self.assertIsInstance(source, xmlbuilder.DOMInputSource)
-        self.assertIsNone(source.publicId)
+        self.assertIsNichts(source.publicId)
         self.assertEqual(source.systemId, "http://example.com/2000/svg")
         self.assertEqual(source.baseURI, "http://example.com/2000/")
         self.assertEqual(source.encoding, "utf-8")
         self.assertIs(source.byteStream, response)
 
-        self.assertIsNone(source.characterStream)
-        self.assertIsNone(source.stringData)
+        self.assertIsNichts(source.characterStream)
+        self.assertIsNichts(source.stringData)
 
     def test_builder(self):
         imp = getDOMImplementation()
         self.assertIsInstance(imp, xmlbuilder.DOMImplementationLS)
 
-        builder = imp.createDOMBuilder(imp.MODE_SYNCHRONOUS, None)
+        builder = imp.createDOMBuilder(imp.MODE_SYNCHRONOUS, Nichts)
         self.assertIsInstance(builder, xmlbuilder.DOMBuilder)
 
     def test_parse_uri(self):
@@ -66,7 +66,7 @@ klasse XMLBuilderTest(unittest.TestCase):
             mock_build.return_value = opener
 
             imp = getDOMImplementation()
-            builder = imp.createDOMBuilder(imp.MODE_SYNCHRONOUS, None)
+            builder = imp.createDOMBuilder(imp.MODE_SYNCHRONOUS, Nichts)
             document = builder.parseURI("http://example.com/2000/svg")
 
         self.assertIsInstance(document, minidom.Document)
@@ -80,7 +80,7 @@ klasse XMLBuilderTest(unittest.TestCase):
 
             imp = getDOMImplementation()
             source = imp.createDOMInputSource()
-            builder = imp.createDOMBuilder(imp.MODE_SYNCHRONOUS, None)
+            builder = imp.createDOMBuilder(imp.MODE_SYNCHRONOUS, Nichts)
             source.systemId = "http://example.com/2000/svg"
             document = builder.parse(source)
 

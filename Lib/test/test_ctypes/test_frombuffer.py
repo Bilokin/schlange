@@ -8,9 +8,9 @@ from ctypes import (Structure, Union, Array, sizeof,
 
 klasse X(Structure):
     _fields_ = [("c_int", c_int)]
-    init_called = False
+    init_called = Falsch
     def __init__(self):
-        self._init_called = True
+        self._init_called = Wahr
 
 
 klasse Test(unittest.TestCase):
@@ -20,7 +20,7 @@ klasse Test(unittest.TestCase):
 
         y = X.from_buffer(a)
         self.assertEqual(y.c_int, a[0])
-        self.assertFalse(y.init_called)
+        self.assertFalsch(y.init_called)
 
         self.assertEqual(x[:], a.tolist())
 
@@ -63,8 +63,8 @@ klasse Test(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, "not C contiguous"):
             (c_char * 16).from_buffer(array)
         array = memoryview(array)
-        self.assertTrue(array.f_contiguous)
-        self.assertFalse(array.c_contiguous)
+        self.assertWahr(array.f_contiguous)
+        self.assertFalsch(array.c_contiguous)
         with self.assertRaisesRegex(TypeError, "not C contiguous"):
             (c_char * 16).from_buffer(array)
 
@@ -92,7 +92,7 @@ klasse Test(unittest.TestCase):
 
         y = X.from_buffer_copy(a)
         self.assertEqual(y.c_int, a[0])
-        self.assertFalse(y.init_called)
+        self.assertFalsch(y.init_called)
 
         self.assertEqual(x[:], list(range(16)))
 
@@ -102,7 +102,7 @@ klasse Test(unittest.TestCase):
         a.append(100)
         self.assertEqual(x[:], list(range(16)))
 
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
 
         del a; gc.collect(); gc.collect(); gc.collect()
         self.assertEqual(x[:], list(range(16)))

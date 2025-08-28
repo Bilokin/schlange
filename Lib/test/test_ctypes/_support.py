@@ -32,17 +32,17 @@ def is_underaligned(ctype):
 klasse StructCheckMixin:
     def check_struct(self, structure):
         """Assert that a structure is well-formed"""
-        self._check_struct_or_union(structure, is_struct=True)
+        self._check_struct_or_union(structure, is_struct=Wahr)
 
     def check_union(self, union):
         """Assert that a union is well-formed"""
-        self._check_struct_or_union(union, is_struct=False)
+        self._check_struct_or_union(union, is_struct=Falsch)
 
     def check_struct_or_union(self, cls):
         wenn issubclass(cls, Structure):
-            self._check_struct_or_union(cls, is_struct=True)
+            self._check_struct_or_union(cls, is_struct=Wahr)
         sowenn issubclass(cls, Union):
-            self._check_struct_or_union(cls, is_struct=False)
+            self._check_struct_or_union(cls, is_struct=Falsch)
         sonst:
             raise TypeError(cls)
 

@@ -13,7 +13,7 @@ def checkextensions(unknown, extensions):
         setup = os.path.join(e, 'Setup')
         liba = os.path.join(e, 'lib.a')
         wenn not os.path.isfile(liba):
-            liba = None
+            liba = Nichts
         edict[e] = parsesetup.getsetupinfo(setup), liba
     fuer mod in unknown:
         fuer e in extensions:
@@ -59,7 +59,7 @@ cc_exts = ['.c', '.C', '.cc', '.c++']
 
 def treatword(w):
     wenn w[:2] in cc_flags:
-        return None
+        return Nichts
     wenn w[:1] == '-':
         return w # Assume loader flag
     head, tail = os.path.split(w)

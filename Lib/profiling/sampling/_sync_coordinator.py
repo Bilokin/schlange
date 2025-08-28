@@ -76,7 +76,7 @@ _SOCKET_TIMEOUT = 2.0
 _READY_MESSAGE = b"ready"
 
 
-def _signal_readiness(sync_port: int) -> None:
+def _signal_readiness(sync_port: int) -> Nichts:
     """
     Signal readiness to the profiler via TCP socket.
 
@@ -86,7 +86,7 @@ def _signal_readiness(sync_port: int) -> None:
     Raises:
         SyncError: If unable to signal readiness
     """
-    last_error = None
+    last_error = Nichts
 
     fuer attempt in range(_MAX_RETRIES):
         try:
@@ -104,7 +104,7 @@ def _signal_readiness(sync_port: int) -> None:
     raise SyncError(f"Failed to signal readiness after {_MAX_RETRIES} attempts: {last_error}") from last_error
 
 
-def _setup_environment(cwd: str) -> None:
+def _setup_environment(cwd: str) -> Nichts:
     """
     Set up the execution environment.
 
@@ -124,7 +124,7 @@ def _setup_environment(cwd: str) -> None:
         sys.path.insert(0, cwd)
 
 
-def _execute_module(module_name: str, module_args: List[str]) -> None:
+def _execute_module(module_name: str, module_args: List[str]) -> Nichts:
     """
     Execute a Python module.
 
@@ -140,7 +140,7 @@ def _execute_module(module_name: str, module_args: List[str]) -> None:
     sys.argv = [f"__main__.py"] + module_args
 
     try:
-        runpy.run_module(module_name, run_name="__main__", alter_sys=True)
+        runpy.run_module(module_name, run_name="__main__", alter_sys=Wahr)
     except ImportError as e:
         raise TargetError(f"Module '{module_name}' not found: {e}") from e
     except SystemExit:
@@ -150,7 +150,7 @@ def _execute_module(module_name: str, module_args: List[str]) -> None:
         raise TargetError(f"Error executing module '{module_name}': {e}") from e
 
 
-def _execute_script(script_path: str, script_args: List[str], cwd: str) -> None:
+def _execute_script(script_path: str, script_args: List[str], cwd: str) -> Nichts:
     """
     Execute a Python script.
 

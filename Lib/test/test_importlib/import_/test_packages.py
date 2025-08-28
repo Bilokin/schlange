@@ -54,7 +54,7 @@ klasse ParentModuleTests:
                 with self.assertRaises((ZeroDivisionError, ImportError)):
                     self.__import__('pkg.module')
                 self.assertNotIn('pkg', sys.modules)
-                # XXX False
+                # XXX Falsch
                 #self.assertIn('pkg.module', sys.modules)
 
     def test_raising_parent_after_double_relative_importing_child(self):
@@ -74,7 +74,7 @@ klasse ParentModuleTests:
                 with self.assertRaises((ZeroDivisionError, ImportError)):
                     self.__import__('pkg.subpkg.module')
                 self.assertNotIn('pkg.subpkg', sys.modules)
-                # XXX False
+                # XXX Falsch
                 #self.assertIn('pkg.subpkg.module', sys.modules)
 
     def test_module_not_package(self):

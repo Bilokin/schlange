@@ -14,9 +14,9 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
     def setUpClass(cls):
         AbstractTkTest.setUpClass.__func__(cls)
         try:
-            cls.font = font.Font(root=cls.root, name=fontname, exists=True)
+            cls.font = font.Font(root=cls.root, name=fontname, exists=Wahr)
         except tkinter.TclError:
-            cls.font = font.Font(root=cls.root, name=fontname, exists=False)
+            cls.font = font.Font(root=cls.root, name=fontname, exists=Falsch)
 
     def test_configure(self):
         options = self.font.configure()
@@ -38,9 +38,9 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
     def test_unicode_family(self):
         family = 'MS \u30b4\u30b7\u30c3\u30af'
         try:
-            f = font.Font(root=self.root, family=family, exists=True)
+            f = font.Font(root=self.root, family=family, exists=Wahr)
         except tkinter.TclError:
-            f = font.Font(root=self.root, family=family, exists=False)
+            f = font.Font(root=self.root, family=family, exists=Falsch)
         self.assertEqual(f.cget('family'), family)
         del f
         gc_collect()
@@ -64,8 +64,8 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(str(self.font), fontname)
 
     def test_equality(self):
-        font1 = font.Font(root=self.root, name=fontname, exists=True)
-        font2 = font.Font(root=self.root, name=fontname, exists=True)
+        font1 = font.Font(root=self.root, name=fontname, exists=Wahr)
+        font2 = font.Font(root=self.root, name=fontname, exists=Wahr)
         self.assertIsNot(font1, font2)
         self.assertEqual(font1, font2)
         self.assertNotEqual(font1, font1.copy())
@@ -75,7 +75,7 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
 
         root2 = tkinter.Tk()
         self.addCleanup(root2.destroy)
-        font3 = font.Font(root=root2, name=fontname, exists=True)
+        font3 = font.Font(root=root2, name=fontname, exists=Wahr)
         self.assertEqual(str(font1), str(font3))
         self.assertNotEqual(font1, font3)
 
@@ -94,18 +94,18 @@ klasse FontTest(AbstractTkTest, unittest.TestCase):
     def test_families(self):
         families = font.families(self.root)
         self.assertIsInstance(families, tuple)
-        self.assertTrue(families)
+        self.assertWahr(families)
         fuer family in families:
             self.assertIsInstance(family, str)
-            self.assertTrue(family)
+            self.assertWahr(family)
 
     def test_names(self):
         names = font.names(self.root)
         self.assertIsInstance(names, tuple)
-        self.assertTrue(names)
+        self.assertWahr(names)
         fuer name in names:
             self.assertIsInstance(name, str)
-            self.assertTrue(name)
+            self.assertWahr(name)
         self.assertIn(fontname, names)
 
     def test_nametofont(self):
@@ -126,10 +126,10 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         root = tkinter.Tk()
         families = font.families()
         self.assertIsInstance(families, tuple)
-        self.assertTrue(families)
+        self.assertWahr(families)
         fuer family in families:
             self.assertIsInstance(family, str)
-            self.assertTrue(family)
+            self.assertWahr(family)
         root.destroy()
         tkinter.NoDefaultRoot()
         self.assertRaises(RuntimeError, font.families)
@@ -139,10 +139,10 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
         root = tkinter.Tk()
         names = font.names()
         self.assertIsInstance(names, tuple)
-        self.assertTrue(names)
+        self.assertWahr(names)
         fuer name in names:
             self.assertIsInstance(name, str)
-            self.assertTrue(name)
+            self.assertWahr(name)
         self.assertIn(fontname, names)
         root.destroy()
         tkinter.NoDefaultRoot()

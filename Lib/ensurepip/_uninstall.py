@@ -5,7 +5,7 @@ import ensurepip
 import sys
 
 
-def _main(argv=None):
+def _main(argv=Nichts):
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--version",

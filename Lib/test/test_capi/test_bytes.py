@@ -5,7 +5,7 @@ _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
 _testcapi = import_helper.import_module('_testcapi')
 from _testcapi import PY_SSIZE_T_MIN, PY_SSIZE_T_MAX
 
-NULL = None
+NULL = Nichts
 
 klasse BytesSubclass(bytes):
     pass
@@ -21,30 +21,30 @@ klasse CAPITest(unittest.TestCase):
     def test_check(self):
         # Test PyBytes_Check()
         check = _testlimitedcapi.bytes_check
-        self.assertTrue(check(b'abc'))
-        self.assertTrue(check(b''))
-        self.assertFalse(check('abc'))
-        self.assertFalse(check(bytearray(b'abc')))
-        self.assertTrue(check(BytesSubclass(b'abc')))
-        self.assertFalse(check(BytesLike(b'abc')))
-        self.assertFalse(check(3))
-        self.assertFalse(check([]))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(b'abc'))
+        self.assertWahr(check(b''))
+        self.assertFalsch(check('abc'))
+        self.assertFalsch(check(bytearray(b'abc')))
+        self.assertWahr(check(BytesSubclass(b'abc')))
+        self.assertFalsch(check(BytesLike(b'abc')))
+        self.assertFalsch(check(3))
+        self.assertFalsch(check([]))
+        self.assertFalsch(check(object()))
 
         # CRASHES check(NULL)
 
     def test_checkexact(self):
         # Test PyBytes_CheckExact()
         check = _testlimitedcapi.bytes_checkexact
-        self.assertTrue(check(b'abc'))
-        self.assertTrue(check(b''))
-        self.assertFalse(check('abc'))
-        self.assertFalse(check(bytearray(b'abc')))
-        self.assertFalse(check(BytesSubclass(b'abc')))
-        self.assertFalse(check(BytesLike(b'abc')))
-        self.assertFalse(check(3))
-        self.assertFalse(check([]))
-        self.assertFalse(check(object()))
+        self.assertWahr(check(b'abc'))
+        self.assertWahr(check(b''))
+        self.assertFalsch(check('abc'))
+        self.assertFalsch(check(bytearray(b'abc')))
+        self.assertFalsch(check(BytesSubclass(b'abc')))
+        self.assertFalsch(check(BytesLike(b'abc')))
+        self.assertFalsch(check(3))
+        self.assertFalsch(check([]))
+        self.assertFalsch(check(object()))
 
         # CRASHES check(NULL)
 
@@ -156,9 +156,9 @@ klasse CAPITest(unittest.TestCase):
         # UDEFINED bytes_repr(object(), 0)
         # CRASHES bytes_repr(NULL, 0)
 
-    def test_concat(self, concat=None):
+    def test_concat(self, concat=Nichts):
         """Test PyBytes_Concat()"""
-        wenn concat is None:
+        wenn concat is Nichts:
             concat = _testlimitedcapi.bytes_concat
 
         self.assertEqual(concat(b'abc', b'def'), b'abcdef')
@@ -171,10 +171,10 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(concat(b'abc', memoryview(b'xdefy')[1:4]), b'abcdef')
         self.assertEqual(concat(b'', b''), b'')
 
-        self.assertEqual(concat(b'abc', b'def', True), b'abcdef')
-        self.assertEqual(concat(b'abc', bytearray(b'def'), True), b'abcdef')
+        self.assertEqual(concat(b'abc', b'def', Wahr), b'abcdef')
+        self.assertEqual(concat(b'abc', bytearray(b'def'), Wahr), b'abcdef')
         # Check that it does not change the singleton
-        self.assertEqual(concat(bytes(), b'def', True), b'def')
+        self.assertEqual(concat(bytes(), b'def', Wahr), b'def')
         self.assertEqual(len(bytes()), 0)
 
         self.assertRaises(TypeError, concat, memoryview(b'axbycz')[::2], b'def')
@@ -233,7 +233,7 @@ klasse CAPITest(unittest.TestCase):
         """Test _PyBytes_Resize()"""
         resize = _testcapi.bytes_resize
 
-        fuer new in True, False:
+        fuer new in Wahr, Falsch:
             self.assertEqual(resize(b'abc', 0, new), b'')
             self.assertEqual(resize(b'abc', 1, new), b'a')
             self.assertEqual(resize(b'abc', 2, new), b'ab')
@@ -252,11 +252,11 @@ klasse CAPITest(unittest.TestCase):
             self.assertEqual(len(resize(b'', 1, new)), 1)
             self.assertEqual(len(resize(b'', 2, new)), 2)
 
-        self.assertRaises(SystemError, resize, b'abc', -1, False)
-        self.assertRaises(SystemError, resize, bytearray(b'abc'), 3, False)
+        self.assertRaises(SystemError, resize, b'abc', -1, Falsch)
+        self.assertRaises(SystemError, resize, bytearray(b'abc'), 3, Falsch)
 
-        # CRASHES resize(NULL, 0, False)
-        # CRASHES resize(NULL, 3, False)
+        # CRASHES resize(NULL, 0, Falsch)
+        # CRASHES resize(NULL, 3, Falsch)
 
     def test_join(self):
         """Test PyBytes_Join()"""

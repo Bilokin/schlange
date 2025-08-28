@@ -19,7 +19,7 @@ from test.test_asyncio import utils as test_utils
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 klasse UpperProto(asyncio.Protocol):
@@ -45,12 +45,12 @@ klasse WindowsEventsTestCase(test_utils.TestCase):
 
     def setUp(self):
         self._prev_unraisablehook = sys.unraisablehook
-        self._unraisable = None
+        self._unraisable = Nichts
         sys.unraisablehook = self._unraisablehook
 
     def tearDown(self):
         sys.unraisablehook = self._prev_unraisablehook
-        self.assertIsNone(self._unraisable)
+        self.assertIsNichts(self._unraisable)
 
 klasse ProactorLoopCtrlC(WindowsEventsTestCase):
 
@@ -76,7 +76,7 @@ klasse ProactorLoopCtrlC(WindowsEventsTestCase):
 
 klasse ProactorMultithreading(WindowsEventsTestCase):
     def test_run_from_nonmain_thread(self):
-        finished = False
+        finished = Falsch
 
         async def coro():
             await asyncio.sleep(0)
@@ -87,12 +87,12 @@ klasse ProactorMultithreading(WindowsEventsTestCase):
             loop.run_until_complete(coro())
             # close() must not call signal.set_wakeup_fd()
             loop.close()
-            finished = True
+            finished = Wahr
 
         thread = threading.Thread(target=func)
         thread.start()
         thread.join()
-        self.assertTrue(finished)
+        self.assertWahr(finished)
 
 
 klasse ProactorTests(WindowsEventsTestCase):
@@ -174,37 +174,37 @@ klasse ProactorTests(WindowsEventsTestCase):
                 self.loop.run_until_complete(task)
 
     def test_wait_for_handle(self):
-        event = _overlapped.CreateEvent(None, True, False, None)
+        event = _overlapped.CreateEvent(Nichts, Wahr, Falsch, Nichts)
         self.addCleanup(_winapi.CloseHandle, event)
 
         # Wait fuer unset event with 0.5s timeout;
-        # result should be False at timeout
+        # result should be Falsch at timeout
         timeout = 0.5
         fut = self.loop._proactor.wait_for_handle(event, timeout)
         start = self.loop.time()
         done = self.loop.run_until_complete(fut)
         elapsed = self.loop.time() - start
 
-        self.assertEqual(done, False)
-        self.assertFalse(fut.result())
+        self.assertEqual(done, Falsch)
+        self.assertFalsch(fut.result())
         self.assertGreaterEqual(elapsed, timeout - test_utils.CLOCK_RES)
 
         _overlapped.SetEvent(event)
 
         # Wait fuer set event;
-        # result should be True immediately
+        # result should be Wahr immediately
         fut = self.loop._proactor.wait_for_handle(event, 10)
         done = self.loop.run_until_complete(fut)
 
-        self.assertEqual(done, True)
-        self.assertTrue(fut.result())
+        self.assertEqual(done, Wahr)
+        self.assertWahr(fut.result())
 
         # asyncio issue #195: cancelling a done _WaitHandleFuture
         # must not crash
         fut.cancel()
 
     def test_wait_for_handle_cancel(self):
-        event = _overlapped.CreateEvent(None, True, False, None)
+        event = _overlapped.CreateEvent(Nichts, Wahr, Falsch, Nichts)
         self.addCleanup(_winapi.CloseHandle, event)
 
         # Wait fuer unset event with a cancelled future;
@@ -229,7 +229,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         # This is theoretically timing-dependent (the task in the executor
         # must complete before our start/stop cycles), but in practice it
         # seems to work every time.
-        f = self.loop.run_in_executor(None, lambda: None)
+        f = self.loop.run_in_executor(Nichts, lambda: Nichts)
         self.loop.stop()
         self.loop.run_forever()
         self.loop.stop()
@@ -246,13 +246,13 @@ klasse ProactorTests(WindowsEventsTestCase):
         # Now shut down the loop itself (self.close_loop also shuts down the
         # loop's default executor).
         self.close_loop(self.loop)
-        self.assertFalse(self.loop.call_exception_handler.called)
+        self.assertFalsch(self.loop.call_exception_handler.called)
 
     def test_address_argument_type_error(self):
         # Regression test fuer https://github.com/python/cpython/issues/98793
         proactor = self.loop._proactor
         sock = socket.socket(type=socket.SOCK_DGRAM)
-        bad_address = None
+        bad_address = Nichts
         with self.assertRaises(TypeError):
             proactor.connect(sock, bad_address)
         with self.assertRaises(TypeError):
@@ -305,7 +305,7 @@ klasse ProactorTests(WindowsEventsTestCase):
         stop = threading.Event()
         def threadMain():
             while not stop.is_set():
-                self.loop.call_soon_threadsafe(lambda: None)
+                self.loop.call_soon_threadsafe(lambda: Nichts)
                 time.sleep(0.01)
         thr = threading.Thread(target=threadMain)
 

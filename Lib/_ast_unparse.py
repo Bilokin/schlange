@@ -56,8 +56,8 @@ klasse Unparser(NodeVisitor):
         self._precedences = {}
         self._type_ignores = {}
         self._indent = 0
-        self._in_try_star = False
-        self._in_interactive = False
+        self._in_try_star = Falsch
+        self._in_interactive = Falsch
 
     def interleave(self, inter, f, seq):
         """Call f on each item in seq, calling inter() in between."""
@@ -91,7 +91,7 @@ klasse Unparser(NodeVisitor):
         wenn self._source:
             self.write("; ")
 
-    def fill(self, text="", *, allow_semicolon=True):
+    def fill(self, text="", *, allow_semicolon=Wahr):
         """Indent a piece of text and append it, according to the current
         indentation level, or only delineate with semicolon wenn applicable"""
         wenn self._in_interactive and not self._indent and allow_semicolon:
@@ -106,8 +106,8 @@ klasse Unparser(NodeVisitor):
         self._source.extend(text)
 
     @contextmanager
-    def buffered(self, buffer = None):
-        wenn buffer is None:
+    def buffered(self, buffer = Nichts):
+        wenn buffer is Nichts:
             buffer = []
 
         original_source = self._source
@@ -116,7 +116,7 @@ klasse Unparser(NodeVisitor):
         self._source = original_source
 
     @contextmanager
-    def block(self, *, extra = None):
+    def block(self, *, extra = Nichts):
         """A context manager fuer preparing the source fuer blocks. It adds
         the character':', increases the indentation on enter and decreases
         the indentation on exit. If *extra* is given, it will be directly
@@ -157,23 +157,23 @@ klasse Unparser(NodeVisitor):
 
     def get_raw_docstring(self, node):
         """If a docstring node is found in the body of the *node* parameter,
-        return that docstring node, None otherwise.
+        return that docstring node, Nichts otherwise.
 
         Logic mirrored from ``_PyAST_GetDocString``."""
         wenn not isinstance(
             node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)
         ) or len(node.body) < 1:
-            return None
+            return Nichts
         node = node.body[0]
         wenn not isinstance(node, Expr):
-            return None
+            return Nichts
         node = node.value
         wenn isinstance(node, Constant) and isinstance(node.value, str):
             return node
 
     def get_type_comment(self, node):
         comment = self._type_ignores.get(node.lineno) or node.type_comment
-        wenn comment is not None:
+        wenn comment is not Nichts:
             return f" # type: {comment}"
 
     def traverse(self, node):
@@ -211,11 +211,11 @@ klasse Unparser(NodeVisitor):
             self._type_ignores.clear()
 
     def visit_Interactive(self, node):
-        self._in_interactive = True
+        self._in_interactive = Wahr
         try:
             self._write_docstring_and_traverse_body(node)
         finally:
-            self._in_interactive = False
+            self._in_interactive = Falsch
 
     def visit_FunctionType(self, node):
         with self.delimit("(", ")"):
@@ -347,24 +347,24 @@ klasse Unparser(NodeVisitor):
             self.traverse(node.cause)
 
     def do_visit_try(self, node):
-        self.fill("try", allow_semicolon=False)
+        self.fill("try", allow_semicolon=Falsch)
         with self.block():
             self.traverse(node.body)
         fuer ex in node.handlers:
             self.traverse(ex)
         wenn node.orelse:
-            self.fill("else", allow_semicolon=False)
+            self.fill("else", allow_semicolon=Falsch)
             with self.block():
                 self.traverse(node.orelse)
         wenn node.finalbody:
-            self.fill("finally", allow_semicolon=False)
+            self.fill("finally", allow_semicolon=Falsch)
             with self.block():
                 self.traverse(node.finalbody)
 
     def visit_Try(self, node):
         prev_in_try_star = self._in_try_star
         try:
-            self._in_try_star = False
+            self._in_try_star = Falsch
             self.do_visit_try(node)
         finally:
             self._in_try_star = prev_in_try_star
@@ -372,13 +372,13 @@ klasse Unparser(NodeVisitor):
     def visit_TryStar(self, node):
         prev_in_try_star = self._in_try_star
         try:
-            self._in_try_star = True
+            self._in_try_star = Wahr
             self.do_visit_try(node)
         finally:
             self._in_try_star = prev_in_try_star
 
     def visit_ExceptHandler(self, node):
-        self.fill("except*" wenn self._in_try_star sonst "except", allow_semicolon=False)
+        self.fill("except*" wenn self._in_try_star sonst "except", allow_semicolon=Falsch)
         wenn node.type:
             self.write(" ")
             self.traverse(node.type)
@@ -391,24 +391,24 @@ klasse Unparser(NodeVisitor):
     def visit_ClassDef(self, node):
         self.maybe_newline()
         fuer deco in node.decorator_list:
-            self.fill("@", allow_semicolon=False)
+            self.fill("@", allow_semicolon=Falsch)
             self.traverse(deco)
-        self.fill("class " + node.name, allow_semicolon=False)
+        self.fill("class " + node.name, allow_semicolon=Falsch)
         wenn hasattr(node, "type_params"):
             self._type_params_helper(node.type_params)
         with self.delimit_if("(", ")", condition = node.bases or node.keywords):
-            comma = False
+            comma = Falsch
             fuer e in node.bases:
                 wenn comma:
                     self.write(", ")
                 sonst:
-                    comma = True
+                    comma = Wahr
                 self.traverse(e)
             fuer e in node.keywords:
                 wenn comma:
                     self.write(", ")
                 sonst:
-                    comma = True
+                    comma = Wahr
                 self.traverse(e)
 
         with self.block():
@@ -423,10 +423,10 @@ klasse Unparser(NodeVisitor):
     def _function_helper(self, node, fill_suffix):
         self.maybe_newline()
         fuer deco in node.decorator_list:
-            self.fill("@", allow_semicolon=False)
+            self.fill("@", allow_semicolon=Falsch)
             self.traverse(deco)
         def_str = fill_suffix + " " + node.name
-        self.fill(def_str, allow_semicolon=False)
+        self.fill(def_str, allow_semicolon=Falsch)
         wenn hasattr(node, "type_params"):
             self._type_params_helper(node.type_params)
         with self.delimit("(", ")"):
@@ -438,7 +438,7 @@ klasse Unparser(NodeVisitor):
             self._write_docstring_and_traverse_body(node)
 
     def _type_params_helper(self, type_params):
-        wenn type_params is not None and len(type_params) > 0:
+        wenn type_params is not Nichts and len(type_params) > 0:
             with self.delimit("[", "]"):
                 self.interleave(lambda: self.write(", "), self.traverse, type_params)
 
@@ -477,7 +477,7 @@ klasse Unparser(NodeVisitor):
         self._for_helper("async fuer ", node)
 
     def _for_helper(self, fill, node):
-        self.fill(fill, allow_semicolon=False)
+        self.fill(fill, allow_semicolon=Falsch)
         self.set_precedence(_Precedence.TUPLE, node.target)
         self.traverse(node.target)
         self.write(" in ")
@@ -485,59 +485,59 @@ klasse Unparser(NodeVisitor):
         with self.block(extra=self.get_type_comment(node)):
             self.traverse(node.body)
         wenn node.orelse:
-            self.fill("else", allow_semicolon=False)
+            self.fill("else", allow_semicolon=Falsch)
             with self.block():
                 self.traverse(node.orelse)
 
     def visit_If(self, node):
-        self.fill("if ", allow_semicolon=False)
+        self.fill("if ", allow_semicolon=Falsch)
         self.traverse(node.test)
         with self.block():
             self.traverse(node.body)
         # collapse nested ifs into equivalent elifs.
         while node.orelse and len(node.orelse) == 1 and isinstance(node.orelse[0], If):
             node = node.orelse[0]
-            self.fill("elif ", allow_semicolon=False)
+            self.fill("elif ", allow_semicolon=Falsch)
             self.traverse(node.test)
             with self.block():
                 self.traverse(node.body)
         # final sonst
         wenn node.orelse:
-            self.fill("else", allow_semicolon=False)
+            self.fill("else", allow_semicolon=Falsch)
             with self.block():
                 self.traverse(node.orelse)
 
     def visit_While(self, node):
-        self.fill("while ", allow_semicolon=False)
+        self.fill("while ", allow_semicolon=Falsch)
         self.traverse(node.test)
         with self.block():
             self.traverse(node.body)
         wenn node.orelse:
-            self.fill("else", allow_semicolon=False)
+            self.fill("else", allow_semicolon=Falsch)
             with self.block():
                 self.traverse(node.orelse)
 
     def visit_With(self, node):
-        self.fill("with ", allow_semicolon=False)
+        self.fill("with ", allow_semicolon=Falsch)
         self.interleave(lambda: self.write(", "), self.traverse, node.items)
         with self.block(extra=self.get_type_comment(node)):
             self.traverse(node.body)
 
     def visit_AsyncWith(self, node):
-        self.fill("async with ", allow_semicolon=False)
+        self.fill("async with ", allow_semicolon=Falsch)
         self.interleave(lambda: self.write(", "), self.traverse, node.items)
         with self.block(extra=self.get_type_comment(node)):
             self.traverse(node.body)
 
     def _str_literal_helper(
-        self, string, *, quote_types=_ALL_QUOTES, escape_special_whitespace=False
+        self, string, *, quote_types=_ALL_QUOTES, escape_special_whitespace=Falsch
     ):
         """Helper fuer writing string literals, minimizing escapes.
         Returns the tuple (string literal to write, possible quote types).
         """
         def escape_char(c):
             # \n and \t are non-printable, but we only escape them if
-            # escape_special_whitespace is True
+            # escape_special_whitespace is Wahr
             wenn not escape_special_whitespace and c in "\n\t":
                 return c
             # Always escape backslashes and other non-printable characters
@@ -576,16 +576,16 @@ klasse Unparser(NodeVisitor):
     def _ftstring_helper(self, parts):
         new_parts = []
         quote_types = list(_ALL_QUOTES)
-        fallback_to_repr = False
+        fallback_to_repr = Falsch
         fuer value, is_constant in parts:
             wenn is_constant:
                 value, new_quote_types = self._str_literal_helper(
                     value,
                     quote_types=quote_types,
-                    escape_special_whitespace=True,
+                    escape_special_whitespace=Wahr,
                 )
                 wenn set(new_quote_types).isdisjoint(quote_types):
-                    fallback_to_repr = True
+                    fallback_to_repr = Wahr
                     break
                 quote_types = new_quote_types
             sonst:
@@ -632,7 +632,7 @@ klasse Unparser(NodeVisitor):
     def visit_TemplateStr(self, node):
         self._write_ftstring(node.values, "t")
 
-    def _write_ftstring_inner(self, node, is_format_spec=False):
+    def _write_ftstring_inner(self, node, is_format_spec=Falsch):
         wenn isinstance(node, JoinedStr):
             # fuer both the f-string itself, and format_spec
             fuer value in node.values:
@@ -658,7 +658,7 @@ klasse Unparser(NodeVisitor):
         unparser.set_precedence(_Precedence.TEST.next(), inner)
         return unparser.visit(inner)
 
-    def _write_interpolation(self, node, is_interpolation=False):
+    def _write_interpolation(self, node, is_interpolation=Falsch):
         with self.delimit("{", "}"):
             wenn is_interpolation:
                 expr = node.str
@@ -672,19 +672,19 @@ klasse Unparser(NodeVisitor):
                 self.write(f"!{chr(node.conversion)}")
             wenn node.format_spec:
                 self.write(":")
-                self._write_ftstring_inner(node.format_spec, is_format_spec=True)
+                self._write_ftstring_inner(node.format_spec, is_format_spec=Wahr)
 
     def visit_FormattedValue(self, node):
         self._write_interpolation(node)
 
     def visit_Interpolation(self, node):
-        self._write_interpolation(node, is_interpolation=True)
+        self._write_interpolation(node, is_interpolation=Wahr)
 
     def visit_Name(self, node):
         self.write(node.id)
 
     def _write_docstring(self, node):
-        self.fill(allow_semicolon=False)
+        self.fill(allow_semicolon=Falsch)
         wenn node.kind == "u":
             self.write("u")
         self._write_str_avoiding_backslashes(node.value, quote_types=_MULTI_QUOTES)
@@ -784,7 +784,7 @@ klasse Unparser(NodeVisitor):
 
         def write_item(item):
             k, v = item
-            wenn k is None:
+            wenn k is Nichts:
                 # fuer dictionary unpacking operator in dicts {**{'y': 2}}
                 # see PEP 448 fuer details
                 self.write("**")
@@ -929,18 +929,18 @@ klasse Unparser(NodeVisitor):
         self.set_precedence(_Precedence.ATOM, node.func)
         self.traverse(node.func)
         with self.delimit("(", ")"):
-            comma = False
+            comma = Falsch
             fuer e in node.args:
                 wenn comma:
                     self.write(", ")
                 sonst:
-                    comma = True
+                    comma = Wahr
                 self.traverse(e)
             fuer e in node.keywords:
                 wenn comma:
                     self.write(", ")
                 sonst:
-                    comma = True
+                    comma = Wahr
                 self.traverse(e)
 
     def visit_Subscript(self, node):
@@ -978,7 +978,7 @@ klasse Unparser(NodeVisitor):
             self.traverse(node.step)
 
     def visit_Match(self, node):
-        self.fill("match ", allow_semicolon=False)
+        self.fill("match ", allow_semicolon=Falsch)
         self.traverse(node.subject)
         with self.block():
             fuer case in node.cases:
@@ -991,14 +991,14 @@ klasse Unparser(NodeVisitor):
             self.traverse(node.annotation)
 
     def visit_arguments(self, node):
-        first = True
+        first = Wahr
         # normal arguments
         all_args = node.posonlyargs + node.args
-        defaults = [None] * (len(all_args) - len(node.defaults)) + node.defaults
+        defaults = [Nichts] * (len(all_args) - len(node.defaults)) + node.defaults
         fuer index, elements in enumerate(zip(all_args, defaults), 1):
             a, d = elements
             wenn first:
-                first = False
+                first = Falsch
             sonst:
                 self.write(", ")
             self.traverse(a)
@@ -1011,7 +1011,7 @@ klasse Unparser(NodeVisitor):
         # varargs, or bare '*' wenn no varargs but keyword-only arguments present
         wenn node.vararg or node.kwonlyargs:
             wenn first:
-                first = False
+                first = Falsch
             sonst:
                 self.write(", ")
             self.write("*")
@@ -1033,7 +1033,7 @@ klasse Unparser(NodeVisitor):
         # kwargs
         wenn node.kwarg:
             wenn first:
-                first = False
+                first = Falsch
             sonst:
                 self.write(", ")
             self.write("**" + node.kwarg.arg)
@@ -1042,7 +1042,7 @@ klasse Unparser(NodeVisitor):
                 self.traverse(node.kwarg.annotation)
 
     def visit_keyword(self, node):
-        wenn node.arg is None:
+        wenn node.arg is Nichts:
             self.write("**")
         sonst:
             self.write(node.arg)
@@ -1072,7 +1072,7 @@ klasse Unparser(NodeVisitor):
             self.traverse(node.optional_vars)
 
     def visit_match_case(self, node):
-        self.fill("case ", allow_semicolon=False)
+        self.fill("case ", allow_semicolon=Falsch)
         self.traverse(node.pattern)
         wenn node.guard:
             self.write(" wenn ")
@@ -1094,7 +1094,7 @@ klasse Unparser(NodeVisitor):
 
     def visit_MatchStar(self, node):
         name = node.name
-        wenn name is None:
+        wenn name is Nichts:
             name = "_"
         self.write(f"*{name}")
 
@@ -1110,10 +1110,10 @@ klasse Unparser(NodeVisitor):
             self.interleave(
                 lambda: self.write(", "),
                 write_key_pattern_pair,
-                zip(keys, node.patterns, strict=True),
+                zip(keys, node.patterns, strict=Wahr),
             )
             rest = node.rest
-            wenn rest is not None:
+            wenn rest is not Nichts:
                 wenn keys:
                     self.write(", ")
                 self.write(f"**{rest}")
@@ -1138,15 +1138,15 @@ klasse Unparser(NodeVisitor):
                 self.interleave(
                     lambda: self.write(", "),
                     write_attr_pattern,
-                    zip(attrs, node.kwd_patterns, strict=True),
+                    zip(attrs, node.kwd_patterns, strict=Wahr),
                 )
 
     def visit_MatchAs(self, node):
         name = node.name
         pattern = node.pattern
-        wenn name is None:
+        wenn name is Nichts:
             self.write("_")
-        sowenn pattern is None:
+        sowenn pattern is Nichts:
             self.write(node.name)
         sonst:
             with self.require_parens(_Precedence.TEST, node):

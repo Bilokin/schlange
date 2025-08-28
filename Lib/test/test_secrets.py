@@ -20,18 +20,18 @@ klasse Compare_Digest_Tests(unittest.TestCase):
         fuer s in ("a", "bcd", "xyz123"):
             a = s*100
             b = s*100
-            self.assertTrue(secrets.compare_digest(a, b))
-            self.assertTrue(secrets.compare_digest(a.encode('utf-8'), b.encode('utf-8')))
+            self.assertWahr(secrets.compare_digest(a, b))
+            self.assertWahr(secrets.compare_digest(a.encode('utf-8'), b.encode('utf-8')))
 
     def test_unequal(self):
         # Test compare_digest functionality with unequal (byte/text) strings.
-        self.assertFalse(secrets.compare_digest("abc", "abcd"))
-        self.assertFalse(secrets.compare_digest(b"abc", b"abcd"))
+        self.assertFalsch(secrets.compare_digest("abc", "abcd"))
+        self.assertFalsch(secrets.compare_digest(b"abc", b"abcd"))
         fuer s in ("x", "mn", "a1b2c3"):
             a = s*100 + "q"
             b = s*100 + "k"
-            self.assertFalse(secrets.compare_digest(a, b))
-            self.assertFalse(secrets.compare_digest(a.encode('utf-8'), b.encode('utf-8')))
+            self.assertFalsch(secrets.compare_digest(a, b))
+            self.assertFalsch(secrets.compare_digest(a.encode('utf-8'), b.encode('utf-8')))
 
     def test_bad_types(self):
         # Test that compare_digest raises with mixed types.
@@ -57,13 +57,13 @@ klasse Random_Tests(unittest.TestCase):
         fuer numbits in (3, 12, 30):
             fuer i in range(6):
                 n = secrets.randbits(numbits)
-                self.assertTrue(0 <= n < 2**numbits, errmsg % (numbits, n))
+                self.assertWahr(0 <= n < 2**numbits, errmsg % (numbits, n))
 
     def test_choice(self):
         # Test choice.
         items = [1, 2, 4, 8, 16, 32, 64]
         fuer i in range(10):
-            self.assertTrue(secrets.choice(items) in items)
+            self.assertWahr(secrets.choice(items) in items)
 
     def test_randbelow(self):
         # Test randbelow.
@@ -87,12 +87,12 @@ klasse Token_Tests(unittest.TestCase):
                 except TypeError:
                     self.fail("%s cannot be called with no argument" % name)
                 try:
-                    func(None)
+                    func(Nichts)
                 except TypeError:
-                    self.fail("%s cannot be called with None" % name)
+                    self.fail("%s cannot be called with Nichts" % name)
         size = secrets.DEFAULT_ENTROPY
-        self.assertEqual(len(secrets.token_bytes(None)), size)
-        self.assertEqual(len(secrets.token_hex(None)), 2*size)
+        self.assertEqual(len(secrets.token_bytes(Nichts)), size)
+        self.assertEqual(len(secrets.token_hex(Nichts)), 2*size)
 
     def test_token_bytes(self):
         # Test token_bytes.
@@ -108,7 +108,7 @@ klasse Token_Tests(unittest.TestCase):
                 s = secrets.token_hex(n)
                 self.assertIsInstance(s, str)
                 self.assertEqual(len(s), 2*n)
-                self.assertTrue(all(c in string.hexdigits fuer c in s))
+                self.assertWahr(all(c in string.hexdigits fuer c in s))
 
     def test_token_urlsafe(self):
         # Test token_urlsafe.
@@ -117,7 +117,7 @@ klasse Token_Tests(unittest.TestCase):
             with self.subTest(n=n):
                 s = secrets.token_urlsafe(n)
                 self.assertIsInstance(s, str)
-                self.assertTrue(all(c in legal fuer c in s))
+                self.assertWahr(all(c in legal fuer c in s))
 
 
 wenn __name__ == '__main__':

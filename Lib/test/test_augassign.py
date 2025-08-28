@@ -62,7 +62,7 @@ klasse AugAssignTest(unittest.TestCase):
         y[1:2] += [1]
 
         self.assertEqual(x, [1, 2, 1, 2, 3])
-        self.assertTrue(x is y)
+        self.assertWahr(x is y)
 
     def testCustomMethods1(self):
 
@@ -85,21 +85,21 @@ klasse AugAssignTest(unittest.TestCase):
 
         klasse aug_test4(aug_test3):
             """Blocks inheritance, and fallback to __add__"""
-            __iadd__ = None
+            __iadd__ = Nichts
 
         x = aug_test(1)
         y = x
         x += 10
 
         self.assertIsInstance(x, aug_test)
-        self.assertTrue(y is not x)
+        self.assertWahr(y is not x)
         self.assertEqual(x.val, 11)
 
         x = aug_test2(2)
         y = x
         x += 10
 
-        self.assertTrue(y is x)
+        self.assertWahr(y is x)
         self.assertEqual(x.val, 12)
 
         x = aug_test3(3)
@@ -107,7 +107,7 @@ klasse AugAssignTest(unittest.TestCase):
         x += 10
 
         self.assertIsInstance(x, aug_test3)
-        self.assertTrue(y is not x)
+        self.assertWahr(y is not x)
         self.assertEqual(x.val, 13)
 
         x = aug_test4(4)

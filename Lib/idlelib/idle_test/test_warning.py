@@ -33,9 +33,9 @@ klasse RunWarnTest(unittest.TestCase):
     @unittest.skipIf(running_in_idle, "Does not work when run within Idle.")
     def test_showwarnings(self):
         self.assertIs(warnings.showwarning, showwarning)
-        run.capture_warnings(True)
+        run.capture_warnings(Wahr)
         self.assertIs(warnings.showwarning, run.idle_showwarning_subproc)
-        run.capture_warnings(False)
+        run.capture_warnings(Falsch)
         self.assertIs(warnings.showwarning, showwarning)
 
     def test_run_show(self):
@@ -51,9 +51,9 @@ klasse ShellWarnTest(unittest.TestCase):
     @unittest.skipIf(running_in_idle, "Does not work when run within Idle.")
     def test_showwarnings(self):
         self.assertIs(warnings.showwarning, showwarning)
-        shell.capture_warnings(True)
+        shell.capture_warnings(Wahr)
         self.assertIs(warnings.showwarning, shell.idle_showwarning)
-        shell.capture_warnings(False)
+        shell.capture_warnings(Falsch)
         self.assertIs(warnings.showwarning, showwarning)
 
     def test_idle_formatter(self):

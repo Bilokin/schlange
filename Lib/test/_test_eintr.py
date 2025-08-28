@@ -66,7 +66,7 @@ klasse EINTRBaseTest(unittest.TestCase):
 
         # Use faulthandler as watchdog to debug when a test hangs
         # (timeout of 10 minutes)
-        faulthandler.dump_traceback_later(10 * 60, exit=True,
+        faulthandler.dump_traceback_later(10 * 60, exit=Wahr,
                                           file=sys.__stderr__)
 
     @staticmethod
@@ -291,8 +291,8 @@ klasse SocketEINTRTest(EINTRBaseTest):
             written = 0
             while written < len(data):
                 sent = send_func(wr, memoryview(data)[written:])
-                # sendall() returns None
-                written += len(data) wenn sent is None sonst sent
+                # sendall() returns Nichts
+                written += len(data) wenn sent is Nichts sonst sent
             self.assertEqual(proc.wait(), 0)
 
     def test_send(self):
@@ -410,7 +410,7 @@ klasse SignalEINTRTest(EINTRBaseTest):
     def check_sigwait(self, wait_func):
         signum = signal.SIGUSR1
 
-        old_handler = signal.signal(signum, lambda *args: None)
+        old_handler = signal.signal(signum, lambda *args: Nichts)
         self.addCleanup(signal.signal, signum, old_handler)
 
         code = '\n'.join((
@@ -488,7 +488,7 @@ klasse SelectEINTRTest(EINTRBaseTest):
         self.addCleanup(kqueue.close)
 
         t0 = time.monotonic()
-        kqueue.control(None, 1, self.sleep_time)
+        kqueue.control(Nichts, 1, self.sleep_time)
         dt = time.monotonic() - t0
         self.stop_alarm()
         self.check_elapsed_time(dt)

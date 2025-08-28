@@ -21,9 +21,9 @@ klasse BareLoader:
 klasse ModuleTests(unittest.TestCase):
     def test_uninitialized(self):
         # An uninitialized module has no __dict__ or __name__,
-        # and __doc__ is None
+        # and __doc__ is Nichts
         foo = ModuleType.__new__(ModuleType)
-        self.assertTrue(isinstance(foo.__dict__, dict))
+        self.assertWahr(isinstance(foo.__dict__, dict))
         self.assertEqual(dir(foo), [])
         try:
             s = foo.__name__
@@ -52,13 +52,13 @@ klasse ModuleTests(unittest.TestCase):
         # Regularly initialized module, no docstring
         foo = ModuleType("foo")
         self.assertEqual(foo.__name__, "foo")
-        self.assertEqual(foo.__doc__, None)
-        self.assertIs(foo.__loader__, None)
-        self.assertIs(foo.__package__, None)
-        self.assertIs(foo.__spec__, None)
-        self.assertEqual(foo.__dict__, {"__name__": "foo", "__doc__": None,
-                                        "__loader__": None, "__package__": None,
-                                        "__spec__": None})
+        self.assertEqual(foo.__doc__, Nichts)
+        self.assertIs(foo.__loader__, Nichts)
+        self.assertIs(foo.__package__, Nichts)
+        self.assertIs(foo.__spec__, Nichts)
+        self.assertEqual(foo.__dict__, {"__name__": "foo", "__doc__": Nichts,
+                                        "__loader__": Nichts, "__package__": Nichts,
+                                        "__spec__": Nichts})
 
     def test_ascii_docstring(self):
         # ASCII docstring
@@ -67,8 +67,8 @@ klasse ModuleTests(unittest.TestCase):
         self.assertEqual(foo.__doc__, "foodoc")
         self.assertEqual(foo.__dict__,
                          {"__name__": "foo", "__doc__": "foodoc",
-                          "__loader__": None, "__package__": None,
-                          "__spec__": None})
+                          "__loader__": Nichts, "__package__": Nichts,
+                          "__spec__": Nichts})
 
     def test_unicode_docstring(self):
         # Unicode docstring
@@ -77,8 +77,8 @@ klasse ModuleTests(unittest.TestCase):
         self.assertEqual(foo.__doc__, "foodoc\u1234")
         self.assertEqual(foo.__dict__,
                          {"__name__": "foo", "__doc__": "foodoc\u1234",
-                          "__loader__": None, "__package__": None,
-                          "__spec__": None})
+                          "__loader__": Nichts, "__package__": Nichts,
+                          "__spec__": Nichts})
 
     def test_reinit(self):
         # Reinitialization should not replace the __dict__
@@ -91,8 +91,8 @@ klasse ModuleTests(unittest.TestCase):
         self.assertEqual(foo.bar, 42)
         self.assertEqual(foo.__dict__,
               {"__name__": "foo", "__doc__": "foodoc", "bar": 42,
-               "__loader__": None, "__package__": None, "__spec__": None})
-        self.assertTrue(foo.__dict__ is d)
+               "__loader__": Nichts, "__package__": Nichts, "__spec__": Nichts})
+        self.assertWahr(foo.__dict__ is d)
 
     def test_dont_clear_dict(self):
         # See issue 7140.
@@ -124,7 +124,7 @@ a = A(destroyed)"""
         self.assertIs(wr(), m)
         del m
         gc_collect()
-        self.assertIs(wr(), None)
+        self.assertIs(wr(), Nichts)
 
     def test_module_getattr(self):
         import test.test_module.good_getattr as gga
@@ -198,9 +198,9 @@ a = A(destroyed)"""
         m.__file__ = '/tmp/foo.py'
         self.assertEqual(repr(m), "<module '?' from '/tmp/foo.py'>")
 
-    def test_module_repr_with_loader_as_None(self):
+    def test_module_repr_with_loader_as_Nichts(self):
         m = ModuleType('foo')
-        assert m.__loader__ is None
+        assert m.__loader__ is Nichts
         self.assertEqual(repr(m), "<module 'foo'>")
 
     def test_module_repr_with_bare_loader_but_no_name(self):
@@ -297,7 +297,7 @@ a = A(destroyed)"""
     def test_module_finalization_at_shutdown(self):
         # Module globals and builtins should still be available during shutdown
         rc, out, err = assert_python_ok("-c", "from test.test_module import final_a")
-        self.assertFalse(err)
+        self.assertFalsch(err)
         lines = out.splitlines()
         self.assertEqual(set(lines), {
             b"x = a",
@@ -321,9 +321,9 @@ a = A(destroyed)"""
         # a freshly created module shouldn't have an annotations dict yet.
         foo = ModuleType("foo")
         fuer i in range(4):
-            self.assertFalse("__annotations__" in foo.__dict__)
+            self.assertFalsch("__annotations__" in foo.__dict__)
             d = foo.__annotations__
-            self.assertTrue("__annotations__" in foo.__dict__)
+            self.assertWahr("__annotations__" in foo.__dict__)
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations__'], d)
             wenn i % 2:
@@ -334,10 +334,10 @@ a = A(destroyed)"""
     def test_setting_annotations(self):
         foo = ModuleType("foo")
         fuer i in range(4):
-            self.assertFalse("__annotations__" in foo.__dict__)
+            self.assertFalsch("__annotations__" in foo.__dict__)
             d = {'a': int}
             foo.__annotations__ = d
-            self.assertTrue("__annotations__" in foo.__dict__)
+            self.assertWahr("__annotations__" in foo.__dict__)
             self.assertEqual(foo.__annotations__, d)
             self.assertEqual(foo.__dict__['__annotations__'], d)
             wenn i % 2:
@@ -357,11 +357,11 @@ a = A(destroyed)"""
         ann_module4 = import_helper.import_fresh_module(
             'test.typinganndata.ann_module4',
         )
-        self.assertFalse("__annotations__" in ann_module4.__dict__)
+        self.assertFalsch("__annotations__" in ann_module4.__dict__)
         self.assertEqual(ann_module4.__annotations__, {"a": int, "b": str})
-        self.assertTrue("__annotations__" in ann_module4.__dict__)
+        self.assertWahr("__annotations__" in ann_module4.__dict__)
         del ann_module4.__annotations__
-        self.assertFalse("__annotations__" in ann_module4.__dict__)
+        self.assertFalsch("__annotations__" in ann_module4.__dict__)
 
 
     def test_repeated_attribute_pops(self):

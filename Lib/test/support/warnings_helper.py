@@ -14,10 +14,10 @@ def import_deprecated(name):
 
 
 def check_syntax_warning(testcase, statement, errtext='',
-                         *, lineno=1, offset=None):
+                         *, lineno=1, offset=Nichts):
     # Test also that a warning is emitted only once.
     from test.support import check_syntax_error
-    with warnings.catch_warnings(record=True) as warns:
+    with warnings.catch_warnings(record=Wahr) as warns:
         warnings.simplefilter('always', SyntaxWarning)
         compile(statement, '<testcase>', 'exec')
     testcase.assertEqual(len(warns), 1, warns)
@@ -27,14 +27,14 @@ def check_syntax_warning(testcase, statement, errtext='',
     wenn errtext:
         testcase.assertRegex(str(warn.message), errtext)
     testcase.assertEqual(warn.filename, '<testcase>')
-    testcase.assertIsNotNone(warn.lineno)
-    wenn lineno is not None:
+    testcase.assertIsNotNichts(warn.lineno)
+    wenn lineno is not Nichts:
         testcase.assertEqual(warn.lineno, lineno)
 
     # SyntaxWarning should be converted to SyntaxError when raised,
     # since the latter contains more information and provides better
     # error report.
-    with warnings.catch_warnings(record=True) as warns:
+    with warnings.catch_warnings(record=Wahr) as warns:
         warnings.simplefilter('error', SyntaxWarning)
         check_syntax_error(testcase, statement, errtext,
                            lineno=lineno, offset=offset)
@@ -82,7 +82,7 @@ klasse WarningsRecorder(object):
         wenn len(self._warnings) > self._last:
             return getattr(self._warnings[-1], attr)
         sowenn attr in warnings.WarningMessage._WARNING_DETAILS:
-            return None
+            return Nichts
         raise AttributeError("%r has no attribute %r" % (self, attr))
 
     @property
@@ -101,38 +101,38 @@ def check_warnings(*filters, **kwargs):
         ("message regexp", WarningCategory)
 
     Optional argument:
-     - wenn 'quiet' is True, it does not fail wenn a filter catches nothing
-        (default True without argument,
-         default False wenn some filters are defined)
+     - wenn 'quiet' is Wahr, it does not fail wenn a filter catches nothing
+        (default Wahr without argument,
+         default Falsch wenn some filters are defined)
 
     Without argument, it defaults to:
-        check_warnings(("", Warning), quiet=True)
+        check_warnings(("", Warning), quiet=Wahr)
     """
     quiet = kwargs.get('quiet')
     wenn not filters:
         filters = (("", Warning),)
         # Preserve backward compatibility
-        wenn quiet is None:
-            quiet = True
+        wenn quiet is Nichts:
+            quiet = Wahr
     return _filterwarnings(filters, quiet)
 
 
 @contextlib.contextmanager
-def check_no_warnings(testcase, message='', category=Warning, force_gc=False):
+def check_no_warnings(testcase, message='', category=Warning, force_gc=Falsch):
     """Context manager to check that no warnings are emitted.
 
     This context manager enables a given warning within its scope
     and checks that no warnings are emitted even with that warning
     enabled.
 
-    If force_gc is True, a garbage collection is attempted before checking
+    If force_gc is Wahr, a garbage collection is attempted before checking
     fuer warnings. This may help to catch warnings emitted when objects
     are deleted, such as ResourceWarning.
 
     Other keyword arguments are passed to warnings.filterwarnings().
     """
     from test.support import gc_collect
-    with warnings.catch_warnings(record=True) as warns:
+    with warnings.catch_warnings(record=Wahr) as warns:
         warnings.filterwarnings('always',
                                 message=message,
                                 category=category)
@@ -156,14 +156,14 @@ def check_no_resource_warning(testcase):
     You must remove the object which may emit ResourceWarning before
     the end of the context manager.
     """
-    with check_no_warnings(testcase, category=ResourceWarning, force_gc=True):
+    with check_no_warnings(testcase, category=ResourceWarning, force_gc=Wahr):
         yield
 
 
-def _filterwarnings(filters, quiet=False):
+def _filterwarnings(filters, quiet=Falsch):
     """Catch the warnings, then check wenn all the expected
     warnings have been raised and re-raise unexpected warnings.
-    If 'quiet' is True, only re-raise the unexpected warnings.
+    If 'quiet' is Wahr, only re-raise the unexpected warnings.
     """
     # Clear the warning registry of the calling module
     # in order to re-raise the warnings.
@@ -174,7 +174,7 @@ def _filterwarnings(filters, quiet=False):
     # Because test_warnings swap the module, we need to look up in the
     # sys.modules dictionary.
     wmod = sys.modules['warnings']
-    with wmod.catch_warnings(record=True) as w:
+    with wmod.catch_warnings(record=Wahr) as w:
         # Set filter "always" to record all warnings.
         wmod.simplefilter("always")
         yield WarningsRecorder(w)
@@ -182,13 +182,13 @@ def _filterwarnings(filters, quiet=False):
     reraise = list(w)
     missing = []
     fuer msg, cat in filters:
-        seen = False
+        seen = Falsch
         fuer w in reraise[:]:
             warning = w.message
             # Filter out the matching messages
             wenn (re.match(msg, str(warning), re.I) and
                 issubclass(warning.__class__, cat)):
-                seen = True
+                seen = Wahr
                 reraise.remove(w)
         wenn not seen and not quiet:
             # This filter caught nothing

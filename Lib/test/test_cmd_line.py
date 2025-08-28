@@ -118,7 +118,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertEqual(opts, {})
 
         opts = get_xoptions('-Xa', '-Xb=c,d=e')
-        self.assertEqual(opts, {'a': True, 'b': 'c,d=e'})
+        self.assertEqual(opts, {'a': Wahr, 'b': 'c,d=e'})
 
     def test_showrefcount(self):
         def run_python(*args):
@@ -142,7 +142,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertEqual(err, b'')
         # "-X showrefcount" shows the refcount, but only in debug builds
         rc, out, err = run_python('-I', '-X', 'showrefcount', '-c', code)
-        self.assertEqual(out.rstrip(), b"{'showrefcount': True}")
+        self.assertEqual(out.rstrip(), b"{'showrefcount': Wahr}")
         wenn support.Py_DEBUG:
             # bpo-46417: Tolerate negative reference count which can occur
             # because of bugs in C extensions. This test is only about checking
@@ -198,8 +198,8 @@ klasse CmdLineTest(unittest.TestCase):
         p.stdin.write(b'Timer\n')
         p.stdin.write(b'exit()\n')
         data = kill_python(p)
-        self.assertTrue(data.find(b'1 loop') != -1)
-        self.assertTrue(data.find(b'__main__.Timer') != -1)
+        self.assertWahr(data.find(b'1 loop') != -1)
+        self.assertWahr(data.find(b'__main__.Timer') != -1)
 
     def test_relativedir_bug46421(self):
         # Test `python -m unittest` with a relative directory beginning with ./
@@ -287,22 +287,22 @@ klasse CmdLineTest(unittest.TestCase):
 
         def run_default(arg):
             cmd = [sys.executable, '-c', code, arg]
-            return subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+            return subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
 
         def run_c_locale(arg):
             cmd = [sys.executable, '-c', code, arg]
             env = dict(os.environ)
             env['LC_ALL'] = 'C'
             return subprocess.run(cmd, stdout=subprocess.PIPE,
-                                  text=True, env=env)
+                                  text=Wahr, env=env)
 
         def run_utf8_mode(arg):
             cmd = [sys.executable, '-X', 'utf8', '-c', code, arg]
-            return subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+            return subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
 
         def run_no_utf8_mode(arg):
             cmd = [sys.executable, '-X', 'utf8=0', '-c', code, arg]
-            return subprocess.run(cmd, stdout=subprocess.PIPE, text=True)
+            return subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
 
         valid_utf8 = 'e:\xe9, euro:\u20ac, non-bmp:\U0010ffff'.encode('utf-8')
         # invalid UTF-8 byte sequences with a valid UTF-8 sequence
@@ -357,10 +357,10 @@ klasse CmdLineTest(unittest.TestCase):
         """)
         args = [sys.executable, '-c', code]
         proc = subprocess.run(args, stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE, text=True, check=True)
+                              stderr=subprocess.PIPE, text=Wahr, check=Wahr)
         self.assertEqual(proc.stdout,
-                         'False False False\n'
-                         'False False True\n')
+                         'Falsch Falsch Falsch\n'
+                         'Falsch Falsch Wahr\n')
 
     def test_unbuffered_output(self):
         # Test expected operation of the '-u' switch
@@ -417,7 +417,7 @@ klasse CmdLineTest(unittest.TestCase):
             path = path.encode("ascii", "backslashreplace")
             sys.stdout.buffer.write(path)"""
         rc1, out1, err1 = assert_python_ok('-c', code, PYTHONPATH="")
-        rc2, out2, err2 = assert_python_ok('-c', code, __isolated=False)
+        rc2, out2, err2 = assert_python_ok('-c', code, __isolated=Falsch)
         # regarding to Posix specification, outputs should be equal
         # fuer empty and unset PYTHONPATH
         self.assertEqual(out1, out2)
@@ -521,7 +521,7 @@ klasse CmdLineTest(unittest.TestCase):
         code = """if 1:
             import os, sys
             fuer i, s in enumerate({streams}):
-                wenn getattr(sys, s) is not None:
+                wenn getattr(sys, s) is not Nichts:
                     os._exit(i + 1)
             os._exit(42)""".format(streams=streams)
         def preexec():
@@ -630,7 +630,7 @@ klasse CmdLineTest(unittest.TestCase):
             'print(f.no_user_site, f.ignore_environment, f.isolated, f.safe_path)',
             # dummyvar to prevent extraneous -E
             dummyvar="")
-        self.assertEqual(out.strip(), b'1 1 1 True')
+        self.assertEqual(out.strip(), b'1 1 1 Wahr')
         with os_helper.temp_cwd() as tmpdir:
             fake = os.path.join(tmpdir, "uuid.py")
             main = os.path.join(tmpdir, "main.py")
@@ -675,31 +675,31 @@ klasse CmdLineTest(unittest.TestCase):
         NO_VALUE = object()  # `-X pycache_prefix` with no `=PATH`
         cases = [
             # (PYTHONPYCACHEPREFIX, -X pycache_prefix, sys.pycache_prefix)
-            (None, None, None),
-            ('foo', None, 'foo'),
-            (None, 'bar', 'bar'),
+            (Nichts, Nichts, Nichts),
+            ('foo', Nichts, 'foo'),
+            (Nichts, 'bar', 'bar'),
             ('foo', 'bar', 'bar'),
-            ('foo', '', None),
-            ('foo', NO_VALUE, None),
+            ('foo', '', Nichts),
+            ('foo', NO_VALUE, Nichts),
         ]
         fuer envval, opt, expected in cases:
-            exp_clause = "is None" wenn expected is None sonst f'== "{expected}"'
+            exp_clause = "is Nichts" wenn expected is Nichts sonst f'== "{expected}"'
             code = f"import sys; sys.exit(not sys.pycache_prefix {exp_clause})"
             args = ['-c', code]
-            env = {} wenn envval is None sonst {'PYTHONPYCACHEPREFIX': envval}
+            env = {} wenn envval is Nichts sonst {'PYTHONPYCACHEPREFIX': envval}
             wenn opt is NO_VALUE:
                 args[:0] = ['-X', 'pycache_prefix']
-            sowenn opt is not None:
+            sowenn opt is not Nichts:
                 args[:0] = ['-X', f'pycache_prefix={opt}']
             with self.subTest(envval=envval, opt=opt):
                 with os_helper.temp_cwd():
                     assert_python_ok(*args, **env)
 
-    def run_xdev(self, *args, check_exitcode=True, xdev=True):
+    def run_xdev(self, *args, check_exitcode=Wahr, xdev=Wahr):
         env = dict(os.environ)
-        env.pop('PYTHONWARNINGS', None)
-        env.pop('PYTHONDEVMODE', None)
-        env.pop('PYTHONMALLOC', None)
+        env.pop('PYTHONWARNINGS', Nichts)
+        env.pop('PYTHONDEVMODE', Nichts)
+        env.pop('PYTHONMALLOC', Nichts)
 
         wenn xdev:
             args = (sys.executable, '-X', 'dev', *args)
@@ -708,7 +708,7 @@ klasse CmdLineTest(unittest.TestCase):
         proc = subprocess.run(args,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT,
-                              universal_newlines=True,
+                              universal_newlines=Wahr,
                               env=env)
         wenn check_exitcode:
             self.assertEqual(proc.returncode, 0, proc)
@@ -718,10 +718,10 @@ klasse CmdLineTest(unittest.TestCase):
     def test_xdev(self):
         # sys.flags.dev_mode
         code = "import sys; print(sys.flags.dev_mode)"
-        out = self.run_xdev("-c", code, xdev=False)
-        self.assertEqual(out, "False")
+        out = self.run_xdev("-c", code, xdev=Falsch)
+        self.assertEqual(out, "Falsch")
         out = self.run_xdev("-c", code)
-        self.assertEqual(out, "True")
+        self.assertEqual(out, "Wahr")
 
         # Warnings
         code = ("import warnings; "
@@ -757,7 +757,7 @@ klasse CmdLineTest(unittest.TestCase):
         sonst:
             code = "import _testinternalcapi; print(_testinternalcapi.pymem_getallocatorsname())"
             with support.SuppressCrashReport():
-                out = self.run_xdev("-c", code, check_exitcode=False)
+                out = self.run_xdev("-c", code, check_exitcode=Falsch)
             wenn support.with_pymalloc():
                 alloc_name = "pymalloc_debug"
             sowenn support.Py_GIL_DISABLED:
@@ -774,9 +774,9 @@ klasse CmdLineTest(unittest.TestCase):
         sonst:
             code = "import faulthandler; print(faulthandler.is_enabled())"
             out = self.run_xdev("-c", code)
-            self.assertEqual(out, "True")
+            self.assertEqual(out, "Wahr")
 
-    def check_warnings_filters(self, cmdline_option, envvar, use_pywarning=False):
+    def check_warnings_filters(self, cmdline_option, envvar, use_pywarning=Falsch):
         wenn use_pywarning:
             code = ("import sys; from test.support.import_helper import "
                     "import_fresh_module; "
@@ -787,12 +787,12 @@ klasse CmdLineTest(unittest.TestCase):
                                 "for f in warnings.filters))")
         args = (sys.executable, '-W', cmdline_option, '-bb', '-c', code)
         env = dict(os.environ)
-        env.pop('PYTHONDEVMODE', None)
+        env.pop('PYTHONDEVMODE', Nichts)
         env["PYTHONWARNINGS"] = envvar
         proc = subprocess.run(args,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT,
-                              universal_newlines=True,
+                              universal_newlines=Wahr,
                               env=env)
         self.assertEqual(proc.returncode, 0, proc)
         return proc.stdout.rstrip()
@@ -815,22 +815,22 @@ klasse CmdLineTest(unittest.TestCase):
 
         out = self.check_warnings_filters("once::UserWarning",
                                           "always::UserWarning",
-                                          use_pywarning=True)
+                                          use_pywarning=Wahr)
         self.assertEqual(out, expected_filters)
 
     def check_pythonmalloc(self, env_var, name):
         code = 'import _testinternalcapi; print(_testinternalcapi.pymem_getallocatorsname())'
         env = dict(os.environ)
-        env.pop('PYTHONDEVMODE', None)
-        wenn env_var is not None:
+        env.pop('PYTHONDEVMODE', Nichts)
+        wenn env_var is not Nichts:
             env['PYTHONMALLOC'] = env_var
         sonst:
-            env.pop('PYTHONMALLOC', None)
+            env.pop('PYTHONMALLOC', Nichts)
         args = (sys.executable, '-c', code)
         proc = subprocess.run(args,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT,
-                              universal_newlines=True,
+                              universal_newlines=Wahr,
                               env=env)
         self.assertEqual(proc.stdout.rstrip(), name)
         self.assertEqual(proc.returncode, 0)
@@ -852,7 +852,7 @@ klasse CmdLineTest(unittest.TestCase):
             default_name_debug = 'malloc_debug'
 
         tests = [
-            (None, default_name),
+            (Nichts, default_name),
             ('debug', default_name_debug),
         ]
         wenn malloc:
@@ -879,41 +879,41 @@ klasse CmdLineTest(unittest.TestCase):
         # Test the PYTHONDEVMODE environment variable
         code = "import sys; print(sys.flags.dev_mode)"
         env = dict(os.environ)
-        env.pop('PYTHONDEVMODE', None)
+        env.pop('PYTHONDEVMODE', Nichts)
         args = (sys.executable, '-c', code)
 
         proc = subprocess.run(args, stdout=subprocess.PIPE,
-                              universal_newlines=True, env=env)
-        self.assertEqual(proc.stdout.rstrip(), 'False')
+                              universal_newlines=Wahr, env=env)
+        self.assertEqual(proc.stdout.rstrip(), 'Falsch')
         self.assertEqual(proc.returncode, 0, proc)
 
         env['PYTHONDEVMODE'] = '1'
         proc = subprocess.run(args, stdout=subprocess.PIPE,
-                              universal_newlines=True, env=env)
-        self.assertEqual(proc.stdout.rstrip(), 'True')
+                              universal_newlines=Wahr, env=env)
+        self.assertEqual(proc.stdout.rstrip(), 'Wahr')
         self.assertEqual(proc.returncode, 0, proc)
 
     def test_python_gil(self):
         cases = [
             # (env, opt, expected, msg)
-            ('1', None, '1', "PYTHON_GIL=1"),
-            (None, '1', '1', "-X gil=1"),
+            ('1', Nichts, '1', "PYTHON_GIL=1"),
+            (Nichts, '1', '1', "-X gil=1"),
         ]
 
         wenn support.Py_GIL_DISABLED:
             cases.extend(
                 [
-                    (None, None, 'None', "no options set"),
-                    ('0', None, '0', "PYTHON_GIL=0"),
+                    (Nichts, Nichts, 'Nichts', "no options set"),
+                    ('0', Nichts, '0', "PYTHON_GIL=0"),
                     ('1', '0', '0', "-X gil=0 overrides PYTHON_GIL=1"),
-                    (None, '0', '0', "-X gil=0"),
+                    (Nichts, '0', '0', "-X gil=0"),
                 ]
             )
         sonst:
             cases.extend(
                 [
-                    (None, None, '1', '-X gil=0 (unsupported by this build)'),
-                    ('1', None, '1', 'PYTHON_GIL=0 (unsupported by this build)'),
+                    (Nichts, Nichts, '1', '-X gil=0 (unsupported by this build)'),
+                    ('1', Nichts, '1', 'PYTHON_GIL=0 (unsupported by this build)'),
                 ]
             )
         code = "import sys; print(sys.flags.gil)"
@@ -921,17 +921,17 @@ klasse CmdLineTest(unittest.TestCase):
 
         fuer env, opt, expected, msg in cases:
             with self.subTest(msg, env=env, opt=opt):
-                environ.pop('PYTHON_GIL', None)
-                wenn env is not None:
+                environ.pop('PYTHON_GIL', Nichts)
+                wenn env is not Nichts:
                     environ['PYTHON_GIL'] = env
                 extra_args = []
-                wenn opt is not None:
+                wenn opt is not Nichts:
                     extra_args = ['-X', f'gil={opt}']
 
                 proc = subprocess.run([sys.executable, *extra_args, '-c', code],
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE,
-                                      text=True, env=environ)
+                                      text=Wahr, env=environ)
                 self.assertEqual(proc.returncode, 0, proc)
                 self.assertEqual(proc.stdout.rstrip(), expected)
                 self.assertEqual(proc.stderr, '')
@@ -939,7 +939,7 @@ klasse CmdLineTest(unittest.TestCase):
     def test_python_asyncio_debug(self):
         code = "import asyncio; print(asyncio.new_event_loop().get_debug())"
         rc, out, err = assert_python_ok('-c', code, PYTHONASYNCIODEBUG='1')
-        self.assertIn(b'True', out)
+        self.assertIn(b'Wahr', out)
 
     @unittest.skipUnless(sysconfig.get_config_var('Py_TRACE_REFS'), "Requires --with-trace-refs build option")
     def test_python_dump_refs(self):
@@ -1015,14 +1015,14 @@ klasse CmdLineTest(unittest.TestCase):
     def test_python_basic_repl(self):
         # Currently this only tests that the env var is set. See test_pyrepl.test_python_basic_repl.
         code = "import os; print('PYTHON_BASIC_REPL' in os.environ)"
-        expected = "True"
+        expected = "Wahr"
         rc, out, err = assert_python_ok('-c', code, PYTHON_BASIC_REPL='1')
         self.assertIn(expected.encode(), out)
 
     @unittest.skipUnless(sysconfig.get_config_var('HAVE_PERF_TRAMPOLINE'), "Requires HAVE_PERF_TRAMPOLINE support")
     def test_python_perf_jit_support(self):
         code = "import sys; print(sys.is_stack_trampoline_active())"
-        expected = "True"
+        expected = "Wahr"
         rc, out, err = assert_python_ok('-c', code, PYTHON_PERF_JIT_SUPPORT='1')
         self.assertIn(expected.encode(), out)
 
@@ -1044,7 +1044,7 @@ klasse CmdLineTest(unittest.TestCase):
         proc = subprocess.run(args,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
-                              text=True)
+                              text=Wahr)
         err_msg = "Unknown option: --unknown-option\nusage: "
         self.assertStartsWith(proc.stderr, err_msg)
         self.assertNotEqual(proc.returncode, 0)
@@ -1298,7 +1298,7 @@ klasse SyntaxErrorTests(unittest.TestCase):
         proc = subprocess.run([sys.executable, "-"], input=code,
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.assertNotEqual(proc.returncode, 0)
-        self.assertNotEqual(proc.stderr, None)
+        self.assertNotEqual(proc.stderr, Nichts)
         self.assertIn(b"\nSyntaxError", proc.stderr)
 
     def test_tokenizer_error_with_stdin(self):

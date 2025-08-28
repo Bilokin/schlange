@@ -23,7 +23,7 @@ from test.support import (
 @force_not_colorized_test_class
 klasse CommandLineInterface(unittest.TestCase):
 
-    def _do_test(self, *args, expect_success=True):
+    def _do_test(self, *args, expect_success=Wahr):
         with (
             captured_stdout() as out,
             captured_stderr() as err,
@@ -40,7 +40,7 @@ klasse CommandLineInterface(unittest.TestCase):
         return out
 
     def expect_failure(self, *args):
-        out, err, code = self._do_test(*args, expect_success=False)
+        out, err, code = self._do_test(*args, expect_success=Falsch)
         self.assertNotEqual(code, 0,
                             "\n".join([f"Unexpected failure: {args=}", out, err]))
         self.assertEqual(out, "")
@@ -200,7 +200,7 @@ klasse InteractiveSession(unittest.TestCase):
         self.assertIn("(0,)\n", out)
 
     def test_color(self):
-        with unittest.mock.patch("_colorize.can_colorize", return_value=True):
+        with unittest.mock.patch("_colorize.can_colorize", return_value=Wahr):
             out, err = self.run_cli(commands="TEXT\n")
             self.assertIn("\x1b[1;35msqlite> \x1b[0m", out)
             self.assertIn("\x1b[1;35m    ... \x1b[0m\x1b", out)
@@ -224,7 +224,7 @@ klasse Completion(unittest.TestCase):
         wenn readline.backend == "editline":
             raise unittest.SkipTest("libedit readline is not supported")
 
-    def write_input(self, input_, env=None):
+    def write_input(self, input_, env=Nichts):
         script = textwrap.dedent("""
             import readline
             from sqlite3.__main__ import main

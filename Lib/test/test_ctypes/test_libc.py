@@ -50,7 +50,7 @@ klasse LibTest(unittest.TestCase):
     def test_qsort(self):
         comparefunc = CFUNCTYPE(c_int, POINTER(c_char), POINTER(c_char))
         lib.my_qsort.argtypes = c_void_p, c_size_t, c_size_t, comparefunc
-        lib.my_qsort.restype = None
+        lib.my_qsort.restype = Nichts
 
         def sort(a, b):
             return three_way_cmp(a[0], b[0])

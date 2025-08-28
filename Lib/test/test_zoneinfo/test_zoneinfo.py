@@ -29,13 +29,13 @@ py_zoneinfo, c_zoneinfo = test_support.get_modules()
 
 try:
     importlib.metadata.metadata("tzdata")
-    HAS_TZDATA_PKG = True
+    HAS_TZDATA_PKG = Wahr
 except importlib.metadata.PackageNotFoundError:
-    HAS_TZDATA_PKG = False
+    HAS_TZDATA_PKG = Falsch
 
-ZONEINFO_DATA = None
-ZONEINFO_DATA_V1 = None
-TEMP_DIR = None
+ZONEINFO_DATA = Nichts
+ZONEINFO_DATA_V1 = Nichts
+TEMP_DIR = Nichts
 DATA_DIR = pathlib.Path(__file__).parent / "data"
 ZONEINFO_JSON = DATA_DIR / "zoneinfo_data.json"
 DRIVE = os.path.splitdrive('x:')[0]
@@ -52,7 +52,7 @@ def setUpModule():
 
     TEMP_DIR = pathlib.Path(tempfile.mkdtemp(prefix="zoneinfo"))
     ZONEINFO_DATA = ZoneInfoData(ZONEINFO_JSON, TEMP_DIR / "v2")
-    ZONEINFO_DATA_V1 = ZoneInfoData(ZONEINFO_JSON, TEMP_DIR / "v1", v1=True)
+    ZONEINFO_DATA_V1 = ZoneInfoData(ZONEINFO_JSON, TEMP_DIR / "v1", v1=Wahr)
 
 
 def tearDownModule():
@@ -75,11 +75,11 @@ klasse TzPathUserMixin:
 
     @property
     def tzpath(self):  # pragma: nocover
-        return None
+        return Nichts
 
     @property
     def block_tzdata(self):
-        return True
+        return Wahr
 
     def setUp(self):
         with contextlib.ExitStack() as stack:
@@ -206,7 +206,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
         constructors = (
             ("Primary constructor", self.klass, key),
             ("no_cache", self.klass.no_cache, key),
-            ("from_file", from_file_nokey, None),
+            ("from_file", from_file_nokey, Nichts),
         )
 
         fuer msg, constructor, expected in constructors:
@@ -327,7 +327,7 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
                     # Assign a random variable here to disable the peephole
                     # optimizer so that coverage can see this line.
                     # See bpo-2506 fuer more information.
-                    no_peephole_opt = None
+                    no_peephole_opt = Nichts
                     continue
 
                 # Cases are of the form key, dt, fold, offset
@@ -394,9 +394,9 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
             t = time(11, 15, 1, 34471, tzinfo=zi)
 
             with self.subTest(key=key):
-                self.assertIs(t.tzname(), None)
-                self.assertIs(t.utcoffset(), None)
-                self.assertIs(t.dst(), None)
+                self.assertIs(t.tzname(), Nichts)
+                self.assertIs(t.utcoffset(), Nichts)
+                self.assertIs(t.dst(), Nichts)
 
     def test_time_fixed_offset(self):
         fuer key, offset in self.fixed_offset_zones():
@@ -411,9 +411,9 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
 
     def test_cache_exception(self):
         klasse Incomparable(str):
-            eq_called = False
+            eq_called = Falsch
             def __eq__(self, other):
-                self.eq_called = True
+                self.eq_called = Wahr
                 raise CustomError
             __hash__ = str.__hash__
 
@@ -423,9 +423,9 @@ klasse ZoneInfoTest(TzPathUserMixin, ZoneInfoTestBase):
         try:
             tz2 = self.klass(key)
         except CustomError:
-            self.assertTrue(key.eq_called)
+            self.assertWahr(key.eq_called)
         sonst:
-            self.assertFalse(key.eq_called)
+            self.assertFalsch(key.eq_called)
             self.assertIs(tz2, tz1)
 
 
@@ -476,7 +476,7 @@ klasse CZoneInfoTest(ZoneInfoTest):
                 tzinfo=dt.tzinfo,
             )
 
-        subclass = [False, True]
+        subclass = [Falsch, Wahr]
 
         key = "Europe/London"
         zi = self.zone_from_key(key)
@@ -485,7 +485,7 @@ klasse CZoneInfoTest(ZoneInfoTest):
                 example = zt.transition_utc.replace(tzinfo=zi)
                 break
 
-        fuer subclass in [False, True]:
+        fuer subclass in [Falsch, Wahr]:
             wenn subclass:
                 dt = to_subclass(example)
             sonst:
@@ -571,7 +571,7 @@ klasse TZDataTests(ZoneInfoTest):
 
     @property
     def block_tzdata(self):
-        return False
+        return Falsch
 
     def zone_from_key(self, key):
         return self.klass(key=key)
@@ -690,12 +690,12 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
                 self.assertEqual(dt.utcoffset(), offset.utcoffset)
                 self.assertEqual(dt.dst(), offset.dst)
 
-        # Test that offsets return None when using a datetime.time
+        # Test that offsets return Nichts when using a datetime.time
         t = time(0, tzinfo=zi)
         with self.subTest("Testing datetime.time"):
-            self.assertIs(t.tzname(), None)
-            self.assertIs(t.utcoffset(), None)
-            self.assertIs(t.dst(), None)
+            self.assertIs(t.tzname(), Nichts)
+            self.assertIs(t.utcoffset(), Nichts)
+            self.assertIs(t.dst(), Nichts)
 
     def test_tz_before_only(self):
         # From RFC 8536 Section 3.2:
@@ -712,7 +712,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
         fuer offset in offsets:
             # Phantom transition to set time type 0.
             transitions = [
-                ZoneTransition(None, offset, offset),
+                ZoneTransition(Nichts, offset, offset),
             ]
 
             after = ""
@@ -821,7 +821,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
             self.assertEqual(t.utcoffset(), UTC.utcoffset)
             self.assertEqual(t.dst(), UTC.dst)
 
-    def construct_zone(self, transitions, after=None, version=3):
+    def construct_zone(self, transitions, after=Nichts, version=3):
         # These are not used fuer anything, so we're not going to include
         # them fuer now.
         isutc = []
@@ -847,7 +847,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
             wenn zt.transition:
                 trans_time = int(zt.transition_utc.timestamp())
             sonst:
-                trans_time = None
+                trans_time = Nichts
 
             return (trans_time, zt.offset_before, zt.offset_after)
 
@@ -861,7 +861,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
                 trans_times = trans_times_lists[v]
                 trans_idx = trans_idx_lists[v]
 
-                wenn trans_time is not None and not (
+                wenn trans_time is not Nichts and not (
                     dt_min <= trans_time <= dt_max
                 ):
                     continue
@@ -872,7 +872,7 @@ klasse WeirdZoneTest(ZoneInfoTestBase):
                 wenn offset_after not in offsets:
                     offsets.append(offset_after)
 
-                wenn trans_time is not None:
+                wenn trans_time is not Nichts:
                     trans_times.append(trans_time)
                     trans_idx.append(offsets.index(offset_after))
 
@@ -1496,7 +1496,7 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
 
     def test_clear_cache_explicit_none(self):
         la0 = self.klass("America/Los_Angeles")
-        self.klass.clear_cache(only_keys=None)
+        self.klass.clear_cache(only_keys=Nichts)
         la1 = self.klass("America/Los_Angeles")
 
         self.assertIsNot(la0, la1)
@@ -1533,7 +1533,7 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
 
     def test_clear_cache_refleak(self):
         klasse Stringy(str):
-            allow_comparisons = True
+            allow_comparisons = Wahr
             def __eq__(self, other):
                 wenn not self.allow_comparisons:
                     raise CustomError
@@ -1542,7 +1542,7 @@ klasse ZoneInfoCacheTest(TzPathUserMixin, ZoneInfoTestBase):
 
         key = Stringy("America/Los_Angeles")
         self.klass(key)
-        key.allow_comparisons = False
+        key.allow_comparisons = Falsch
         try:
             # Note: This is try/except rather than assertRaises because
             # there is no guarantee that the key is even still in the cache,
@@ -1843,7 +1843,7 @@ klasse TestModule(ZoneInfoTestBase):
 
         root_dir, *tail = key.rsplit("/", 1)
         wenn tail:  # If there's no tail, then the first component isn't a dir
-            os.makedirs(os.path.join(tz_root, root_dir), exist_ok=True)
+            os.makedirs(os.path.join(tz_root, root_dir), exist_ok=Wahr)
 
         zonefile_path = os.path.join(tz_root, key)
         with open(zonefile_path, "wb") as f:
@@ -1860,7 +1860,7 @@ klasse TestModule(ZoneInfoTestBase):
 
         difference = module_all_set - module_dir_set
 
-        self.assertFalse(difference)
+        self.assertFalsch(difference)
 
     def test_dir_unique(self):
         """Test that there are no duplicates in dir(self.module)"""
@@ -1871,7 +1871,7 @@ klasse TestModule(ZoneInfoTestBase):
 
     def test_available_timezones(self):
         with self.tzpath_context([self.zoneinfo_data.tzpath]):
-            self.assertTrue(self.zoneinfo_data.keys)  # Sanity check
+            self.assertWahr(self.zoneinfo_data.keys)  # Sanity check
 
             available_keys = self.module.available_timezones()
             zoneinfo_keys = set(self.zoneinfo_data.keys)
@@ -1958,7 +1958,7 @@ klasse MiscTests(unittest.TestCase):
         # _zoneinfo.
         assert_python_ok('-c', '''if 1:
             import sys
-            sys.modules['_datetime'] = None
+            sys.modules['_datetime'] = Nichts
             import datetime
             import zoneinfo
             tzinfo = zoneinfo.ZoneInfo('Europe/London')
@@ -1985,18 +1985,18 @@ klasse ExtensionBuiltTest(unittest.TestCase):
     def test_gc_tracked(self):
         import gc
 
-        self.assertTrue(gc.is_tracked(py_zoneinfo.ZoneInfo))
-        self.assertTrue(gc.is_tracked(c_zoneinfo.ZoneInfo))
+        self.assertWahr(gc.is_tracked(py_zoneinfo.ZoneInfo))
+        self.assertWahr(gc.is_tracked(c_zoneinfo.ZoneInfo))
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=Wahr)
 klasse ZoneOffset:
     tzname: str
     utcoffset: timedelta
     dst: timedelta = ZERO
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=Wahr)
 klasse ZoneTransition:
     transition: datetime
     offset_before: ZoneOffset
@@ -2038,7 +2038,7 @@ klasse ZoneTransition:
 
 
 klasse ZoneInfoData:
-    def __init__(self, source_json, tzpath, v1=False):
+    def __init__(self, source_json, tzpath, v1=Falsch):
         self.tzpath = pathlib.Path(tzpath)
         self.keys = []
         self.v1 = v1
@@ -2063,7 +2063,7 @@ klasse ZoneInfoData:
                 data = raw_data
 
             destination = self.path_from_key(key)
-            destination.parent.mkdir(exist_ok=True, parents=True)
+            destination.parent.mkdir(exist_ok=Wahr, parents=Wahr)
             with open(destination, "wb") as f:
                 f.write(data)
 
@@ -2302,8 +2302,8 @@ klasse ZoneDumpData:
             "Pacific/Kiritimati": _Pacific_Kiritimati(),
         }
 
-    _ZONEDUMP_DATA = None
-    _FIXED_OFFSET_ZONES = None
+    _ZONEDUMP_DATA = Nichts
+    _FIXED_OFFSET_ZONES = Nichts
 
 
 wenn __name__ == '__main__':

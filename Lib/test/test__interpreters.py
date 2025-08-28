@@ -37,13 +37,13 @@ def _run_output(interp, request):
         return rpipe.read()
 
 
-def _wait_for_interp_to_run(interp, timeout=None):
+def _wait_for_interp_to_run(interp, timeout=Nichts):
     # bpo-37224: Running this test file in multiprocesses will fail randomly.
     # The failure reason is that the thread can't acquire the cpu to
     # run subinterpreter earlier than the main thread in multiprocess.
-    wenn timeout is None:
+    wenn timeout is Nichts:
         timeout = support.SHORT_TIMEOUT
-    fuer _ in support.sleeping_retry(timeout, error=False):
+    fuer _ in support.sleeping_retry(timeout, error=Falsch):
         wenn _interpreters.is_running(interp):
             break
     sonst:
@@ -95,20 +95,20 @@ klasse IsShareableTests(unittest.TestCase):
     def test_default_shareables(self):
         shareables = [
                 # singletons
-                None,
+                Nichts,
                 # builtin objects
                 b'spam',
                 'spam',
                 10,
                 -10,
-                True,
-                False,
+                Wahr,
+                Falsch,
                 100.0,
                 (1, ('spam', 'eggs')),
                 ]
         fuer obj in shareables:
             with self.subTest(obj):
-                self.assertTrue(
+                self.assertWahr(
                     _interpreters.is_shareable(obj))
 
     def test_not_shareable(self):
@@ -137,7 +137,7 @@ klasse IsShareableTests(unittest.TestCase):
                 ]
         fuer obj in not_shareables:
             with self.subTest(repr(obj)):
-                self.assertFalse(
+                self.assertFalsch(
                     _interpreters.is_shareable(obj))
 
 
@@ -224,27 +224,27 @@ klasse IsRunningTests(TestBase):
 
     def test_main(self):
         main, *_ = _interpreters.get_main()
-        self.assertTrue(_interpreters.is_running(main))
+        self.assertWahr(_interpreters.is_running(main))
 
     @unittest.skip('Fails on FreeBSD')
     def test_subinterpreter(self):
         interp = _interpreters.create()
-        self.assertFalse(_interpreters.is_running(interp))
+        self.assertFalsch(_interpreters.is_running(interp))
 
         with _running(interp):
-            self.assertTrue(_interpreters.is_running(interp))
-        self.assertFalse(_interpreters.is_running(interp))
+            self.assertWahr(_interpreters.is_running(interp))
+        self.assertFalsch(_interpreters.is_running(interp))
 
     def test_from_subinterpreter(self):
         interp = _interpreters.create()
         out = _run_output(interp, dedent(f"""
             import _interpreters
             wenn _interpreters.is_running({interp}):
-                print(True)
+                print(Wahr)
             sonst:
-                print(False)
+                print(Falsch)
             """))
-        self.assertEqual(out.strip(), 'True')
+        self.assertEqual(out.strip(), 'Wahr')
 
     def test_already_destroyed(self):
         interp = _interpreters.create()
@@ -280,10 +280,10 @@ klasse CreateTests(TestBase):
 
         self.assertEqual(len(seen), 100)
 
-    @support.skip_if_sanitizer('gh-129824: race on tp_flags', thread=True)
+    @support.skip_if_sanitizer('gh-129824: race on tp_flags', thread=Wahr)
     def test_in_thread(self):
         lock = threading.Lock()
-        id = None
+        id = Nichts
         def f():
             nonlocal id
             id = _interpreters.create()
@@ -314,7 +314,7 @@ klasse CreateTests(TestBase):
     def test_in_threaded_subinterpreter(self):
         main, = [id fuer id, *_ in _interpreters.list_all()]
         id1 = _interpreters.create()
-        id2 = None
+        id2 = Nichts
         def f():
             nonlocal id2
             out = _run_output(id1, dedent("""
@@ -458,13 +458,13 @@ klasse DestroyTests(TestBase):
         main, = [id fuer id, *_ in _interpreters.list_all()]
         interp = _interpreters.create()
         with _running(interp):
-            self.assertTrue(_interpreters.is_running(interp),
+            self.assertWahr(_interpreters.is_running(interp),
                             msg=f"Interp {interp} should be running before destruction.")
 
             with self.assertRaises(_interpreters.InterpreterError,
                                    msg=f"Should not be able to destroy interp {interp} while it's still running."):
                 _interpreters.destroy(interp)
-            self.assertTrue(_interpreters.is_running(interp))
+            self.assertWahr(_interpreters.is_running(interp))
 
 
 klasse CommonTests(TestBase):
@@ -484,22 +484,22 @@ klasse CommonTests(TestBase):
             _interpreters.run_string(self.id, 'a', shared=1)
         msg = r"run_func\(\) argument 'shared' must be dict, not int"
         with self.assertRaisesRegex(TypeError, msg):
-            _interpreters.run_func(self.id, lambda: None, shared=1)
+            _interpreters.run_func(self.id, lambda: Nichts, shared=1)
         # See https://github.com/python/cpython/issues/135855
         msg = r"set___main___attrs\(\) argument 'updates' must be dict, not int"
         with self.assertRaisesRegex(TypeError, msg):
             _interpreters.set___main___attrs(self.id, 1)
 
     def test_invalid_shared_none(self):
-        msg = r'must be dict, not None'
+        msg = r'must be dict, not Nichts'
         with self.assertRaisesRegex(TypeError, msg):
-            _interpreters.exec(self.id, 'a', shared=None)
+            _interpreters.exec(self.id, 'a', shared=Nichts)
         with self.assertRaisesRegex(TypeError, msg):
-            _interpreters.run_string(self.id, 'a', shared=None)
+            _interpreters.run_string(self.id, 'a', shared=Nichts)
         with self.assertRaisesRegex(TypeError, msg):
-            _interpreters.run_func(self.id, lambda: None, shared=None)
+            _interpreters.run_func(self.id, lambda: Nichts, shared=Nichts)
         with self.assertRaisesRegex(TypeError, msg):
-            _interpreters.set___main___attrs(self.id, None)
+            _interpreters.set___main___attrs(self.id, Nichts)
 
     def test_invalid_shared_encoding(self):
         # See https://github.com/python/cpython/issues/127196
@@ -510,7 +510,7 @@ klasse CommonTests(TestBase):
         with self.assertRaisesRegex(UnicodeEncodeError, msg):
             _interpreters.run_string(self.id, 'a', shared=bad_shared)
         with self.assertRaisesRegex(UnicodeEncodeError, msg):
-            _interpreters.run_func(self.id, lambda: None, shared=bad_shared)
+            _interpreters.run_func(self.id, lambda: Nichts, shared=bad_shared)
 
 
 klasse RunStringTests(TestBase):
@@ -567,7 +567,7 @@ klasse RunStringTests(TestBase):
                     print('it worked!', end='')
 
                 try:
-                    t = threading.Thread(target=f, daemon=True)
+                    t = threading.Thread(target=f, daemon=Wahr)
                     t.start()
                     t.join()
                 except RuntimeError:
@@ -586,7 +586,7 @@ klasse RunStringTests(TestBase):
                 def f():
                     print('it worked!', end='')
 
-                t = threading.Thread(target=f, daemon=True)
+                t = threading.Thread(target=f, daemon=Wahr)
                 t.start()
                 t.join()
                 """)
@@ -599,7 +599,7 @@ klasse RunStringTests(TestBase):
     def test_shareable_types(self):
         interp = _interpreters.create()
         objects = [
-            None,
+            Nichts,
             'spam',
             b'spam',
             42,
@@ -690,7 +690,7 @@ klasse RunStringTests(TestBase):
         shared = {
                 'spam': b'ham',
                 'eggs': b'-1',
-                'cheddar': None,
+                'cheddar': Nichts,
                 }
         script = dedent(f"""
             eggs = int(eggs)
@@ -711,7 +711,7 @@ klasse RunStringTests(TestBase):
         self.assertEqual(ns['spam'], 42)
         self.assertEqual(ns['eggs'], -1)
         self.assertEqual(ns['result'], 41)
-        self.assertIsNone(ns['cheddar'])
+        self.assertIsNichts(ns['cheddar'])
 
     def test_shared_overwrites(self):
         _interpreters.run_string(self.id, dedent("""
@@ -767,7 +767,7 @@ klasse RunStringTests(TestBase):
     def test_main_reused(self):
         r, w = os.pipe()
         _interpreters.run_string(self.id, dedent(f"""
-            spam = True
+            spam = Wahr
 
             ns = dict(vars())
             del ns['__builtins__']
@@ -781,7 +781,7 @@ klasse RunStringTests(TestBase):
 
         r, w = os.pipe()
         _interpreters.run_string(self.id, dedent(f"""
-            eggs = False
+            eggs = Falsch
 
             ns = dict(vars())
             del ns['__builtins__']
@@ -817,9 +817,9 @@ klasse RunStringTests(TestBase):
         ns.pop('__loader__')
         self.assertEqual(ns, {
             '__name__': '__main__',
-            '__doc__': None,
-            '__package__': None,
-            '__spec__': None,
+            '__doc__': Nichts,
+            '__package__': Nichts,
+            '__spec__': Nichts,
             'spam': 42,
             })
 
@@ -865,7 +865,7 @@ klasse RunFailedTests(TestBase):
             """))
         return script_helper.make_script(tempdir, modname, text)
 
-    def run_script(self, text, *, fails=False):
+    def run_script(self, text, *, fails=Falsch):
         r, w = os.pipe()
         try:
             script = dedent(f"""
@@ -882,12 +882,12 @@ klasse RunFailedTests(TestBase):
                 """).format(dedent(text))
             wenn fails:
                 err = _interpreters.run_string(self.id, script)
-                self.assertIsNot(err, None)
+                self.assertIsNot(err, Nichts)
                 return err
             sonst:
                 err = _interpreters.run_string(self.id, script)
-                self.assertIs(err, None)
-                return None
+                self.assertIs(err, Nichts)
+                return Nichts
         except:
             raise  # re-raise
         sonst:
@@ -900,16 +900,16 @@ klasse RunFailedTests(TestBase):
     def _assert_run_failed(self, exctype, msg, script):
         wenn isinstance(exctype, str):
             exctype_name = exctype
-            exctype = None
+            exctype = Nichts
         sonst:
             exctype_name = exctype.__name__
 
         # Run the script.
-        excinfo = self.run_script(script, fails=True)
+        excinfo = self.run_script(script, fails=Wahr)
 
         # Check the wrapper exception.
         self.assertEqual(excinfo.type.__name__, exctype_name)
-        wenn msg is None:
+        wenn msg is Nichts:
             self.assertEqual(excinfo.formatted.split(':')[0],
                              exctype_name)
         sonst:
@@ -919,7 +919,7 @@ klasse RunFailedTests(TestBase):
         return excinfo
 
     def assert_run_failed(self, exctype, script):
-        self._assert_run_failed(exctype, None, script)
+        self._assert_run_failed(exctype, Nichts, script)
 
     def assert_run_failed_msg(self, exctype, msg, script):
         self._assert_run_failed(exctype, msg, script)
@@ -1037,7 +1037,7 @@ klasse RunFuncTests(TestBase):
             with open(w, 'w', encoding="utf-8") as spipe:
                 with contextlib.redirect_stdout(spipe):
                     print('it worked!', end='')
-        failed = None
+        failed = Nichts
         def f():
             nonlocal failed
             try:
@@ -1075,7 +1075,7 @@ klasse RunFuncTests(TestBase):
         self.assertEqual(out, 'it worked!')
 
     def test_closure(self):
-        spam = True
+        spam = Wahr
         def script():
             assert spam
         with self.assertRaises(ValueError):
@@ -1108,7 +1108,7 @@ klasse RunFuncTests(TestBase):
                 _interpreters.run_func(self.id, script)
 
         with self.subTest('kwonly'):
-            def script(*, spam=True):
+            def script(*, spam=Wahr):
                 assert spam
             with self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)

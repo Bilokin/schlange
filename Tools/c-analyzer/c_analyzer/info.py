@@ -21,18 +21,18 @@ UNKNOWN = _misc.Labeled('UNKNOWN')
 klasse SystemType(TypeDeclaration):
 
     def __init__(self, name):
-        super().__init__(None, name, None, None, _shortkey=name)
+        super().__init__(Nichts, name, Nichts, Nichts, _shortkey=name)
 
 
 klasse Analyzed:
-    _locked = False
+    _locked = Falsch
 
     @classonly
     def is_target(cls, raw):
         wenn isinstance(raw, HighlevelParsedItem):
-            return True
+            return Wahr
         sonst:
-            return False
+            return Falsch
 
     @classonly
     def from_raw(cls, raw, **extra):
@@ -64,48 +64,48 @@ klasse Analyzed:
     @classonly
     def _parse_raw_resolved(cls, item, resolved, extra_extra):
         wenn resolved in (UNKNOWN, IGNORED):
-            return resolved, None
+            return resolved, Nichts
         try:
             typedeps, extra = resolved
         except (TypeError, ValueError):
-            typedeps = extra = None
+            typedeps = extra = Nichts
         wenn extra:
             # The resolved data takes precedence.
             extra = dict(extra_extra, **extra)
         wenn isinstance(typedeps, TypeDeclaration):
             return typedeps, extra
-        sowenn typedeps in (None, UNKNOWN):
+        sowenn typedeps in (Nichts, UNKNOWN):
             # It is still effectively unresolved.
             return UNKNOWN, extra
-        sowenn None in typedeps or UNKNOWN in typedeps:
+        sowenn Nichts in typedeps or UNKNOWN in typedeps:
             # It is still effectively unresolved.
             return typedeps, extra
         sowenn any(not isinstance(td, TypeDeclaration) fuer td in typedeps):
             raise NotImplementedError((item, typedeps, extra))
         return typedeps, extra
 
-    def __init__(self, item, typedecl=None, **extra):
-        assert item is not None
+    def __init__(self, item, typedecl=Nichts, **extra):
+        assert item is not Nichts
         self.item = item
         wenn typedecl in (UNKNOWN, IGNORED):
             pass
         sowenn item.kind is KIND.STRUCT or item.kind is KIND.UNION:
             wenn isinstance(typedecl, TypeDeclaration):
                 raise NotImplementedError(item, typedecl)
-            sowenn typedecl is None:
+            sowenn typedecl is Nichts:
                 typedecl = UNKNOWN
             sonst:
-                typedecl = [UNKNOWN wenn d is None sonst d fuer d in typedecl]
-        sowenn typedecl is None:
+                typedecl = [UNKNOWN wenn d is Nichts sonst d fuer d in typedecl]
+        sowenn typedecl is Nichts:
             typedecl = UNKNOWN
         sowenn typedecl and not isinstance(typedecl, TypeDeclaration):
             # All the other decls have a single type decl.
             typedecl, = typedecl
-            wenn typedecl is None:
+            wenn typedecl is Nichts:
                 typedecl = UNKNOWN
         self.typedecl = typedecl
         self._extra = extra
-        self._locked = True
+        self._locked = Wahr
 
         self._validate()
 
@@ -215,9 +215,9 @@ klasse Analyzed:
     @property
     def is_known(self):
         wenn self.typedecl in (UNKNOWN, IGNORED):
-            return False
+            return Falsch
         sowenn isinstance(self.typedecl, TypeDeclaration):
-            return True
+            return Wahr
         sonst:
             return UNKNOWN not in self.typedecl
 
@@ -225,15 +225,15 @@ klasse Analyzed:
         self.item.fix_filename(relroot, **kwargs)
         return self
 
-    def as_rowdata(self, columns=None):
+    def as_rowdata(self, columns=Nichts):
         # XXX finish!
         return self.item.as_rowdata(columns)
 
-    def render_rowdata(self, columns=None):
+    def render_rowdata(self, columns=Nichts):
         # XXX finish!
         return self.item.render_rowdata(columns)
 
-    def render(self, fmt='line', *, itemonly=False):
+    def render(self, fmt='line', *, itemonly=Falsch):
         wenn fmt == 'raw':
             yield repr(self)
             return
@@ -269,8 +269,8 @@ klasse Analysis:
     _item_class = Analyzed
 
     @classonly
-    def build_item(cls, info, resolved=None, **extra):
-        wenn resolved is None:
+    def build_item(cls, info, resolved=Nichts, **extra):
+        wenn resolved is Nichts:
             return cls._item_class.from_raw(info, **extra)
         sonst:
             return cls._item_class.from_resolved(info, resolved, **extra)
@@ -282,8 +282,8 @@ klasse Analysis:
             self._add_result(info, resolved)
         return self
 
-    def __init__(self, items=None):
-        self._analyzed = {type(self).build_item(item): None
+    def __init__(self, items=Nichts):
+        self._analyzed = {type(self).build_item(item): Nichts
                           fuer item in items or ()}
 
     def __repr__(self):
@@ -312,9 +312,9 @@ klasse Analysis:
         wenn relroot and relroot is not fsutil.USE_CWD:
             relroot = os.path.abspath(relroot)
         fuer item in self._analyzed:
-            item.fix_filename(relroot, fixroot=False, **kwargs)
+            item.fix_filename(relroot, fixroot=Falsch, **kwargs)
 
     def _add_result(self, info, resolved):
         analyzed = type(self).build_item(info, resolved)
-        self._analyzed[analyzed] = None
+        self._analyzed[analyzed] = Nichts
         return analyzed

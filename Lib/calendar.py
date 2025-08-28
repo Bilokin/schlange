@@ -160,7 +160,7 @@ sonst:
 
 
 def isleap(year):
-    """Return True fuer leap years, False fuer non-leap years."""
+    """Return Wahr fuer leap years, Falsch fuer non-leap years."""
     return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
 
 
@@ -390,7 +390,7 @@ klasse TextCalendar(Calendar):
         """
         return ' '.join(self.formatweekday(i, width) fuer i in self.iterweekdays())
 
-    def formatmonthname(self, theyear, themonth, width, withyear=True):
+    def formatmonthname(self, theyear, themonth, width, withyear=Wahr):
         """
         Return a formatted month name.
         """
@@ -440,7 +440,7 @@ klasse TextCalendar(Calendar):
             # months in this row
             months = range(m*i+1, min(m*(i+1)+1, 13))
             a('\n'*l)
-            names = (self.formatmonthname(theyear, k, colwidth, False)
+            names = (self.formatmonthname(theyear, k, colwidth, Falsch)
                      fuer k in months)
             a(formatstring(names, colwidth, c).rstrip())
             a('\n'*l)
@@ -523,7 +523,7 @@ klasse HTMLCalendar(Calendar):
         s = ''.join(self.formatweekday(i) fuer i in self.iterweekdays())
         return '<tr>%s</tr>' % s
 
-    def formatmonthname(self, theyear, themonth, withyear=True):
+    def formatmonthname(self, theyear, themonth, withyear=Wahr):
         """
         Return a month name as a table row.
         """
@@ -535,7 +535,7 @@ klasse HTMLCalendar(Calendar):
         return '<tr><th colspan="7" class="%s">%s</th></tr>' % (
             self.cssclass_month_head, s)
 
-    def formatmonth(self, theyear, themonth, withyear=True):
+    def formatmonth(self, theyear, themonth, withyear=Wahr):
         """
         Return a formatted month as a table.
         """
@@ -573,17 +573,17 @@ klasse HTMLCalendar(Calendar):
             a('<tr>')
             fuer m in months:
                 a('<td>')
-                a(self.formatmonth(theyear, m, withyear=False))
+                a(self.formatmonth(theyear, m, withyear=Falsch))
                 a('</td>')
             a('</tr>')
         a('</table>')
         return ''.join(v)
 
-    def formatyearpage(self, theyear, width=3, css='calendar.css', encoding=None):
+    def formatyearpage(self, theyear, width=3, css='calendar.css', encoding=Nichts):
         """
         Return a formatted year as a complete HTML page.
         """
-        wenn encoding is None:
+        wenn encoding is Nichts:
             encoding = 'utf-8'
         v = []
         a = v.append
@@ -592,7 +592,7 @@ klasse HTMLCalendar(Calendar):
         a('<html>\n')
         a('<head>\n')
         a('<meta http-equiv="Content-Type" content="text/html; charset=%s" />\n' % encoding)
-        wenn css is not None:
+        wenn css is not Nichts:
             a('<link rel="stylesheet" type="text/css" href="%s" />\n' % css)
         a('<title>Calendar fuer %d</title>\n' % theyear)
         a('</head>\n')
@@ -606,10 +606,10 @@ klasse HTMLCalendar(Calendar):
 klasse different_locale:
     def __init__(self, locale):
         self.locale = locale
-        self.oldlocale = None
+        self.oldlocale = Nichts
 
     def __enter__(self):
-        self.oldlocale = _locale.setlocale(_locale.LC_TIME, None)
+        self.oldlocale = _locale.setlocale(_locale.LC_TIME, Nichts)
         _locale.setlocale(_locale.LC_TIME, self.locale)
 
     def __exit__(self, *args):
@@ -617,12 +617,12 @@ klasse different_locale:
 
 
 def _get_default_locale():
-    locale = _locale.setlocale(_locale.LC_TIME, None)
+    locale = _locale.setlocale(_locale.LC_TIME, Nichts)
     wenn locale == "C":
         with different_locale(""):
             # The LC_TIME locale does not seem to be configured:
             # get the user preferred locale.
-            locale = _locale.setlocale(_locale.LC_TIME, None)
+            locale = _locale.setlocale(_locale.LC_TIME, Nichts)
     return locale
 
 
@@ -632,9 +632,9 @@ klasse LocaleTextCalendar(TextCalendar):
     month and weekday names in the specified locale.
     """
 
-    def __init__(self, firstweekday=0, locale=None):
+    def __init__(self, firstweekday=0, locale=Nichts):
         TextCalendar.__init__(self, firstweekday)
-        wenn locale is None:
+        wenn locale is Nichts:
             locale = _get_default_locale()
         self.locale = locale
 
@@ -642,7 +642,7 @@ klasse LocaleTextCalendar(TextCalendar):
         with different_locale(self.locale):
             return super().formatweekday(day, width)
 
-    def formatmonthname(self, theyear, themonth, width, withyear=True):
+    def formatmonthname(self, theyear, themonth, width, withyear=Wahr):
         with different_locale(self.locale):
             return super().formatmonthname(theyear, themonth, width, withyear)
 
@@ -652,9 +652,9 @@ klasse LocaleHTMLCalendar(HTMLCalendar):
     This klasse can be passed a locale name in the constructor and will return
     month and weekday names in the specified locale.
     """
-    def __init__(self, firstweekday=0, locale=None):
+    def __init__(self, firstweekday=0, locale=Nichts):
         HTMLCalendar.__init__(self, firstweekday)
-        wenn locale is None:
+        wenn locale is Nichts:
             locale = _get_default_locale()
         self.locale = locale
 
@@ -662,17 +662,17 @@ klasse LocaleHTMLCalendar(HTMLCalendar):
         with different_locale(self.locale):
             return super().formatweekday(day)
 
-    def formatmonthname(self, theyear, themonth, withyear=True):
+    def formatmonthname(self, theyear, themonth, withyear=Wahr):
         with different_locale(self.locale):
             return super().formatmonthname(theyear, themonth, withyear)
 
 
 klasse _CLIDemoCalendar(TextCalendar):
-    def __init__(self, highlight_day=None, *args, **kwargs):
+    def __init__(self, highlight_day=Nichts, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.highlight_day = highlight_day
 
-    def formatweek(self, theweek, width, *, highlight_day=None):
+    def formatweek(self, theweek, width, *, highlight_day=Nichts):
         """
         Returns a single week in a string (no newline).
         """
@@ -705,7 +705,7 @@ klasse _CLIDemoCalendar(TextCalendar):
         ):
             highlight_day = self.highlight_day.day
         sonst:
-            highlight_day = None
+            highlight_day = Nichts
         w = max(2, w)
         l = max(1, l)
         s = self.formatmonthname(theyear, themonth, 7 * (w + 1) - 1)
@@ -735,7 +735,7 @@ klasse _CLIDemoCalendar(TextCalendar):
             # months in this row
             months = range(m*i+1, min(m*(i+1)+1, 13))
             a('\n'*l)
-            names = (self.formatmonthname(theyear, k, colwidth, False)
+            names = (self.formatmonthname(theyear, k, colwidth, Falsch)
                      fuer k in months)
             a(formatstring(names, colwidth, c).rstrip())
             a('\n'*l)
@@ -750,7 +750,7 @@ klasse _CLIDemoCalendar(TextCalendar):
             ):
                 month_pos = months.index(self.highlight_day.month)
             sonst:
-                month_pos = None
+                month_pos = Nichts
 
             # max number of weeks fuer this row
             height = max(len(cal) fuer cal in row)
@@ -761,7 +761,7 @@ klasse _CLIDemoCalendar(TextCalendar):
                         weeks.append('')
                     sonst:
                         day = (
-                            self.highlight_day.day wenn k == month_pos sonst None
+                            self.highlight_day.day wenn k == month_pos sonst Nichts
                         )
                         weeks.append(
                             self.formatweek(cal[j], w, highlight_day=day)
@@ -772,7 +772,7 @@ klasse _CLIDemoCalendar(TextCalendar):
 
 
 klasse _CLIDemoLocaleCalendar(LocaleTextCalendar, _CLIDemoCalendar):
-    def __init__(self, highlight_day=None, *args, **kwargs):
+    def __init__(self, highlight_day=Nichts, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.highlight_day = highlight_day
 
@@ -827,9 +827,9 @@ def timegm(tuple):
     return seconds
 
 
-def main(args=None):
+def main(args=Nichts):
     import argparse
-    parser = argparse.ArgumentParser(color=True)
+    parser = argparse.ArgumentParser(color=Wahr)
     textgroup = parser.add_argument_group('text only arguments')
     htmlgroup = parser.add_argument_group('html only arguments')
     textgroup.add_argument(
@@ -859,12 +859,12 @@ def main(args=None):
     )
     parser.add_argument(
         "-L", "--locale",
-        default=None,
+        default=Nichts,
         help="locale to use fuer month and weekday names"
     )
     parser.add_argument(
         "-e", "--encoding",
-        default=None,
+        default=Nichts,
         help="encoding to use fuer output (default utf-8)"
     )
     parser.add_argument(
@@ -908,11 +908,11 @@ def main(args=None):
             cal = HTMLCalendar()
         cal.setfirstweekday(options.first_weekday)
         encoding = options.encoding
-        wenn encoding is None:
+        wenn encoding is Nichts:
             encoding = 'utf-8'
         optdict = dict(encoding=encoding, css=options.css)
         write = sys.stdout.buffer.write
-        wenn options.year is None:
+        wenn options.year is Nichts:
             write(cal.formatyearpage(today.year, **optdict))
         sonst:
             write(cal.formatyearpage(options.year, **optdict))
@@ -923,14 +923,14 @@ def main(args=None):
             cal = _CLIDemoCalendar(highlight_day=today)
         cal.setfirstweekday(options.first_weekday)
         optdict = dict(w=options.width, l=options.lines)
-        wenn options.month is None:
+        wenn options.month is Nichts:
             optdict["c"] = options.spacing
             optdict["m"] = options.months
         sonst:
             _validate_month(options.month)
-        wenn options.year is None:
+        wenn options.year is Nichts:
             result = cal.formatyear(today.year, **optdict)
-        sowenn options.month is None:
+        sowenn options.month is Nichts:
             result = cal.formatyear(options.year, **optdict)
         sonst:
             result = cal.formatmonth(options.year, options.month, **optdict)

@@ -28,7 +28,7 @@ def tearDownModule():
     del root
 
 # If we call ViewWindow or wrapper functions with defaults
-# modal=True, _utest=False, test hangs on call to wait_window.
+# modal=Wahr, _utest=Falsch, test hangs on call to wait_window.
 # Have also gotten tk error 'can't invoke "event" command'.
 
 
@@ -48,23 +48,23 @@ klasse ViewWindowTest(unittest.TestCase):
 
     def test_init_modal(self):
         view = VW(root, 'Title', 'test text')
-        self.assertTrue(VW.transient.called)
-        self.assertTrue(VW.grab_set.called)
-        self.assertTrue(VW.wait_window.called)
+        self.assertWahr(VW.transient.called)
+        self.assertWahr(VW.grab_set.called)
+        self.assertWahr(VW.wait_window.called)
         view.ok()
 
     def test_init_nonmodal(self):
-        view = VW(root, 'Title', 'test text', modal=False)
-        self.assertFalse(VW.transient.called)
-        self.assertFalse(VW.grab_set.called)
-        self.assertFalse(VW.wait_window.called)
+        view = VW(root, 'Title', 'test text', modal=Falsch)
+        self.assertFalsch(VW.transient.called)
+        self.assertFalsch(VW.grab_set.called)
+        self.assertFalsch(VW.wait_window.called)
         view.ok()
 
     def test_ok(self):
-        view = VW(root, 'Title', 'test text', modal=False)
+        view = VW(root, 'Title', 'test text', modal=Falsch)
         view.destroy = Func()
         view.ok()
-        self.assertTrue(view.destroy.called)
+        self.assertWahr(view.destroy.called)
         del view.destroy  # Unmask real function.
         view.destroy()
 
@@ -111,14 +111,14 @@ klasse ScrollableTextFrameTest(unittest.TestCase):
         # wrap = NONE -> with horizontal scrolling
         frame = self.make_frame(wrap=NONE)
         self.assertEqual(frame.text.cget('wrap'), NONE)
-        self.assertIsNotNone(frame.xscroll)
+        self.assertIsNotNichts(frame.xscroll)
 
         # wrap != NONE -> no horizontal scrolling
         fuer wrap in [CHAR, WORD]:
             with self.subTest(wrap=wrap):
                 frame = self.make_frame(wrap=wrap)
                 self.assertEqual(frame.text.cget('wrap'), wrap)
-                self.assertIsNone(frame.xscroll)
+                self.assertIsNichts(frame.xscroll)
 
 
 klasse ViewFrameTest(unittest.TestCase):
@@ -141,7 +141,7 @@ klasse ViewFrameTest(unittest.TestCase):
         self.assertEqual(get('1.0', '1.end'), 'test text')
 
 
-# Call ViewWindow with modal=False.
+# Call ViewWindow with modal=Falsch.
 klasse ViewFunctionTest(unittest.TestCase):
 
     @classmethod
@@ -155,13 +155,13 @@ klasse ViewFunctionTest(unittest.TestCase):
         del cls.orig_error
 
     def test_view_text(self):
-        view = tv.view_text(root, 'Title', 'test text', modal=False)
+        view = tv.view_text(root, 'Title', 'test text', modal=Falsch)
         self.assertIsInstance(view, tv.ViewWindow)
         self.assertIsInstance(view.viewframe, tv.ViewFrame)
         view.viewframe.ok()
 
     def test_view_file(self):
-        view = tv.view_file(root, 'Title', __file__, 'ascii', modal=False)
+        view = tv.view_file(root, 'Title', __file__, 'ascii', modal=Falsch)
         self.assertIsInstance(view, tv.ViewWindow)
         self.assertIsInstance(view.viewframe, tv.ViewFrame)
         get = view.viewframe.textframe.text.get
@@ -169,30 +169,30 @@ klasse ViewFunctionTest(unittest.TestCase):
         view.ok()
 
     def test_bad_file(self):
-        # Mock showerror will be used; view_file will return None.
-        view = tv.view_file(root, 'Title', 'abc.xyz', 'ascii', modal=False)
-        self.assertIsNone(view)
+        # Mock showerror will be used; view_file will return Nichts.
+        view = tv.view_file(root, 'Title', 'abc.xyz', 'ascii', modal=Falsch)
+        self.assertIsNichts(view)
         self.assertEqual(tv.showerror.title, 'File Load Error')
 
     def test_bad_encoding(self):
         p = os.path
         fn = p.abspath(p.join(p.dirname(__file__), '..', 'CREDITS.txt'))
-        view = tv.view_file(root, 'Title', fn, 'ascii', modal=False)
-        self.assertIsNone(view)
+        view = tv.view_file(root, 'Title', fn, 'ascii', modal=Falsch)
+        self.assertIsNichts(view)
         self.assertEqual(tv.showerror.title, 'Unicode Decode Error')
 
     def test_nowrap(self):
-        view = tv.view_text(root, 'Title', 'test', modal=False, wrap='none')
+        view = tv.view_text(root, 'Title', 'test', modal=Falsch, wrap='none')
         text_widget = view.viewframe.textframe.text
         self.assertEqual(text_widget.cget('wrap'), 'none')
 
 
-# Call ViewWindow with _utest=True.
+# Call ViewWindow with _utest=Wahr.
 klasse ButtonClickTest(unittest.TestCase):
 
     def setUp(self):
-        self.view = None
-        self.called = False
+        self.view = Nichts
+        self.called = Falsch
 
     def tearDown(self):
         wenn self.view:
@@ -200,27 +200,27 @@ klasse ButtonClickTest(unittest.TestCase):
 
     def test_view_text_bind_with_button(self):
         def _command():
-            self.called = True
-            self.view = tv.view_text(root, 'TITLE_TEXT', 'COMMAND', _utest=True)
+            self.called = Wahr
+            self.view = tv.view_text(root, 'TITLE_TEXT', 'COMMAND', _utest=Wahr)
         button = Button(root, text='BUTTON', command=_command)
         button.invoke()
         self.addCleanup(button.destroy)
 
-        self.assertEqual(self.called, True)
+        self.assertEqual(self.called, Wahr)
         self.assertEqual(self.view.title(), 'TITLE_TEXT')
         self.assertEqual(self.view.viewframe.textframe.text.get('1.0', '1.end'),
                          'COMMAND')
 
     def test_view_file_bind_with_button(self):
         def _command():
-            self.called = True
+            self.called = Wahr
             self.view = tv.view_file(root, 'TITLE_FILE', __file__,
-                                     encoding='ascii', _utest=True)
+                                     encoding='ascii', _utest=Wahr)
         button = Button(root, text='BUTTON', command=_command)
         button.invoke()
         self.addCleanup(button.destroy)
 
-        self.assertEqual(self.called, True)
+        self.assertEqual(self.called, Wahr)
         self.assertEqual(self.view.title(), 'TITLE_FILE')
         get = self.view.viewframe.textframe.text.get
         with open(__file__) as f:

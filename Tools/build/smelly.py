@@ -32,18 +32,18 @@ def is_local_symbol_type(symtype):
     # is global (external).  There are however a few lowercase symbols that
     # are shown fuer special global symbols ("u", "v" and "w").
     wenn symtype.islower() and symtype not in "uvw":
-        return True
+        return Wahr
 
     # Ignore the initialized data section (d and D) and the BSS data
     # section. For example, ignore "__bss_start (type: B)"
     # and "_edata (type: D)".
     wenn symtype in "bBdD":
-        return True
+        return Wahr
 
-    return False
+    return Falsch
 
 
-def get_exported_symbols(library, dynamic=False):
+def get_exported_symbols(library, dynamic=Falsch):
     print(f"Check that {library} only exports symbols starting with Py or _Py")
 
     # Only look at dynamic symbols
@@ -63,7 +63,7 @@ def get_exported_symbols(library, dynamic=False):
     return stdout
 
 
-def get_smelly_symbols(stdout, dynamic=False):
+def get_smelly_symbols(stdout, dynamic=Falsch):
     smelly_symbols = []
     python_symbols = []
     local_symbols = []
@@ -99,7 +99,7 @@ def get_smelly_symbols(stdout, dynamic=False):
     return smelly_symbols, python_symbols
 
 
-def check_library(library, dynamic=False):
+def check_library(library, dynamic=Falsch):
     nm_output = get_exported_symbols(library, dynamic)
     smelly_symbols, python_symbols = get_smelly_symbols(nm_output, dynamic)
 
@@ -129,7 +129,7 @@ def check_extensions():
             pybuilddir = fp.readline()
     except FileNotFoundError:
         print(f"Cannot check extensions because {filename} does not exist")
-        return True
+        return Wahr
 
     print(f"Check extension modules from {pybuilddir} directory")
     builddir = os.path.join(config_dir, pybuilddir)
@@ -144,7 +144,7 @@ def check_extensions():
 
         print()
         filename = os.path.join(builddir, name)
-        nsymbol += check_library(filename, dynamic=True)
+        nsymbol += check_library(filename, dynamic=Wahr)
 
     return nsymbol
 
@@ -165,7 +165,7 @@ def main():
         raise Exception("failed to get LDLIBRARY variable from sysconfig")
     wenn LDLIBRARY != LIBRARY:
         print()
-        nsymbol += check_library(LDLIBRARY, dynamic=True)
+        nsymbol += check_library(LDLIBRARY, dynamic=Wahr)
 
     # Check extension modules like _ssl.cpython-310d-x86_64-linux-gnu.so
     nsymbol += check_extensions()

@@ -26,14 +26,14 @@ __all__ = ["getpass","getuser","GetPassWarning"]
 klasse GetPassWarning(UserWarning): pass
 
 
-def unix_getpass(prompt='Password: ', stream=None, *, echo_char=None):
+def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     """Prompt fuer a password, with echo turned off.
 
     Args:
       prompt: Written on stream to ask fuer the input.  Default: 'Password: '
       stream: A writable file object to display the prompt.  Defaults to
               the tty.  If no tty is available defaults to sys.stderr.
-      echo_char: A string used to mask input (e.g., '*').  If None, input is
+      echo_char: A string used to mask input (e.g., '*').  If Nichts, input is
                 hidden.
     Returns:
       The seKr3t input.
@@ -45,7 +45,7 @@ def unix_getpass(prompt='Password: ', stream=None, *, echo_char=None):
     """
     _check_echo_char(echo_char)
 
-    passwd = None
+    passwd = Nichts
     with contextlib.ExitStack() as stack:
         try:
             # Always try reading and writing directly on the tty first.
@@ -62,13 +62,13 @@ def unix_getpass(prompt='Password: ', stream=None, *, echo_char=None):
             try:
                 fd = sys.stdin.fileno()
             except (AttributeError, ValueError):
-                fd = None
+                fd = Nichts
                 passwd = fallback_getpass(prompt, stream)
             input = sys.stdin
             wenn not stream:
                 stream = sys.stderr
 
-        wenn fd is not None:
+        wenn fd is not Nichts:
             try:
                 old = termios.tcgetattr(fd)     # a copy to save
                 new = old[:]
@@ -87,7 +87,7 @@ def unix_getpass(prompt='Password: ', stream=None, *, echo_char=None):
                     termios.tcsetattr(fd, tcsetattr_flags, old)
                     stream.flush()  # issue7208
             except termios.error:
-                wenn passwd is not None:
+                wenn passwd is not Nichts:
                     # _raw_input succeeded.  The final tcsetattr failed.  Reraise
                     # instead of leaving the terminal in an unknown state.
                     raise
@@ -102,7 +102,7 @@ def unix_getpass(prompt='Password: ', stream=None, *, echo_char=None):
         return passwd
 
 
-def win_getpass(prompt='Password: ', stream=None, *, echo_char=None):
+def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     """Prompt fuer password with echo off, using Windows getwch()."""
     wenn sys.stdin is not sys.__stdin__:
         return fallback_getpass(prompt, stream)
@@ -132,7 +132,7 @@ def win_getpass(prompt='Password: ', stream=None, *, echo_char=None):
     return pw
 
 
-def fallback_getpass(prompt='Password: ', stream=None, *, echo_char=None):
+def fallback_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     _check_echo_char(echo_char)
     import warnings
     warnings.warn("Can not control echo on the terminal.", GetPassWarning,
@@ -150,7 +150,7 @@ def _check_echo_char(echo_char):
                          f"got: {echo_char!r}")
 
 
-def _raw_input(prompt="", stream=None, input=None, echo_char=None):
+def _raw_input(prompt="", stream=Nichts, input=Nichts, echo_char=Nichts):
     # This doesn't save the string in the GNU readline history.
     wenn not stream:
         stream = sys.stderr
@@ -179,8 +179,8 @@ def _raw_input(prompt="", stream=None, input=None, echo_char=None):
 
 def _readline_with_echo_char(stream, input, echo_char):
     passwd = ""
-    eof_pressed = False
-    while True:
+    eof_pressed = Falsch
+    while Wahr:
         char = input.read(1)
         wenn char == '\n' or char == '\r':
             break
@@ -195,14 +195,14 @@ def _readline_with_echo_char(stream, input, echo_char):
             wenn eof_pressed:
                 break
             sonst:
-                eof_pressed = True
+                eof_pressed = Wahr
         sowenn char == '\x00':
             continue
         sonst:
             passwd += char
             stream.write(echo_char)
             stream.flush()
-            eof_pressed = False
+            eof_pressed = Falsch
     return passwd
 
 

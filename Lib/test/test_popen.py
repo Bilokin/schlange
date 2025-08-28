@@ -47,7 +47,7 @@ klasse PopenTest(unittest.TestCase):
         support.reap_children()
 
     def test_return_code(self):
-        self.assertEqual(os.popen("exit 0").close(), None)
+        self.assertEqual(os.popen("exit 0").close(), Nichts)
         status = os.popen("exit 42").close()
         wenn os.name == 'nt':
             self.assertEqual(status, 42)
@@ -57,20 +57,20 @@ klasse PopenTest(unittest.TestCase):
     def test_contextmanager(self):
         with os.popen("echo hello") as f:
             self.assertEqual(f.read(), "hello\n")
-            self.assertFalse(f.closed)
-        self.assertTrue(f.closed)
+            self.assertFalsch(f.closed)
+        self.assertWahr(f.closed)
 
     def test_iterating(self):
         with os.popen("echo hello") as f:
             self.assertEqual(list(f), ["hello\n"])
-            self.assertFalse(f.closed)
-        self.assertTrue(f.closed)
+            self.assertFalsch(f.closed)
+        self.assertWahr(f.closed)
 
     def test_keywords(self):
         with os.popen(cmd="echo hello", mode="r", buffering=-1) as f:
             self.assertEqual(f.read(), "hello\n")
-            self.assertFalse(f.closed)
-        self.assertTrue(f.closed)
+            self.assertFalsch(f.closed)
+        self.assertWahr(f.closed)
 
 
 wenn __name__ == "__main__":

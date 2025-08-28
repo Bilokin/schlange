@@ -32,7 +32,7 @@ klasse TestZip(fixtures.ZipFixtures, unittest.TestCase):
         self.assertEqual(entry_point.value, 'example:main')
 
     def test_missing_metadata(self):
-        self.assertIsNone(distribution('example').read_text('does not exist'))
+        self.assertIsNichts(distribution('example').read_text('does not exist'))
 
     def test_case_insensitive(self):
         self.assertEqual(version('Example'), '21.12')

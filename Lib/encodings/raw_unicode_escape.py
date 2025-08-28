@@ -18,7 +18,7 @@ klasse Codec(codecs.Codec):
     decode = codecs.raw_unicode_escape_decode
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return codecs.raw_unicode_escape_encode(input, self.errors)[0]
 
 klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
@@ -30,7 +30,7 @@ klasse StreamWriter(Codec,codecs.StreamWriter):
 
 klasse StreamReader(Codec,codecs.StreamReader):
     def decode(self, input, errors='strict'):
-        return codecs.raw_unicode_escape_decode(input, errors, False)
+        return codecs.raw_unicode_escape_decode(input, errors, Falsch)
 
 ### encodings module API
 

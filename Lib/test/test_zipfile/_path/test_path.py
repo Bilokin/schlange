@@ -417,7 +417,7 @@ klasse TestPath(unittest.TestCase):
 
     @pass_alpharep
     def test_suffix_no_filename(self, alpharep):
-        alpharep.filename = None
+        alpharep.filename = Nichts
         root = zipfile.Path(alpharep)
         assert root.joinpath('example').suffix == ""
         assert root.joinpath('example').suffixes == []
@@ -454,7 +454,7 @@ klasse TestPath(unittest.TestCase):
         It is an error to attempt to get the name
         or parent of an unnamed zipfile.
         """
-        alpharep.filename = None
+        alpharep.filename = Nichts
         root = zipfile.Path(alpharep)
         with self.assertRaises(TypeError):
             root.name

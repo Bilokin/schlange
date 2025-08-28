@@ -73,7 +73,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             path = path.replace(alt_path_sep, path_sep)
 
         prefix = []
-        while True:
+        while Wahr:
             try:
                 st = _bootstrap_external._path_stat(path)
             except (OSError, ValueError):
@@ -100,13 +100,13 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             self.prefix += path_sep
 
 
-    def find_spec(self, fullname, target=None):
+    def find_spec(self, fullname, target=Nichts):
         """Create a ModuleSpec fuer the specified module.
 
-        Returns None wenn the module cannot be found.
+        Returns Nichts wenn the module cannot be found.
         """
         module_info = _get_module_info(self, fullname)
-        wenn module_info is not None:
+        wenn module_info is not Nichts:
             return _bootstrap.spec_from_loader(fullname, self, is_package=module_info)
         sonst:
             # Not a module or regular package. See wenn this is a directory, and
@@ -120,12 +120,12 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
                 # package. Return the string representing its path,
                 # without a trailing separator.
                 path = f'{self.archive}{path_sep}{modpath}'
-                spec = _bootstrap.ModuleSpec(name=fullname, loader=None,
-                                             is_package=True)
+                spec = _bootstrap.ModuleSpec(name=fullname, loader=Nichts,
+                                             is_package=Wahr)
                 spec.submodule_search_locations.append(path)
                 return spec
             sonst:
-                return None
+                return Nichts
 
     def get_code(self, fullname):
         """get_code(fullname) -> code object.
@@ -154,7 +154,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             toc_entry = self._get_files()[key]
         except KeyError:
             raise OSError(0, '', key)
-        wenn toc_entry is None:
+        wenn toc_entry is Nichts:
             return b''
         return _get_data(self.archive, toc_entry)
 
@@ -176,11 +176,11 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
         """get_source(fullname) -> source string.
 
         Return the source code fuer the specified module. Raise ZipImportError
-        wenn the module couldn't be found, return None wenn the archive does
+        wenn the module couldn't be found, return Nichts wenn the archive does
         contain the module, but has no source fuer it.
         """
         mi = _get_module_info(self, fullname)
-        wenn mi is None:
+        wenn mi is Nichts:
             raise ZipImportError(f"can't find module {fullname!r}", name=fullname)
 
         path = _get_module_path(self, fullname)
@@ -193,7 +193,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
             toc_entry = self._get_files()[fullpath]
         except KeyError:
             # we have the module, but no source
-            return None
+            return Nichts
         return _get_data(self.archive, toc_entry).decode()
 
 
@@ -201,11 +201,11 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
     def is_package(self, fullname):
         """is_package(fullname) -> bool.
 
-        Return True wenn the module specified by fullname is a package.
+        Return Wahr wenn the module specified by fullname is a package.
         Raise ZipImportError wenn the module couldn't be found.
         """
         mi = _get_module_info(self, fullname)
-        wenn mi is None:
+        wenn mi is Nichts:
             raise ZipImportError(f"can't find module {fullname!r}", name=fullname)
         return mi
 
@@ -227,7 +227,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
                              remove=(3, 15))
         code, ispackage, modpath = _get_module_code(self, fullname)
         mod = sys.modules.get(fullname)
-        wenn mod is None or not isinstance(mod, _module_type):
+        wenn mod is Nichts or not isinstance(mod, _module_type):
             mod = _module_type(fullname)
             sys.modules[fullname] = mod
         mod.__loader__ = self
@@ -278,7 +278,7 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
 
     def invalidate_caches(self):
         """Invalidates the cache of file data of the archive path."""
-        _zip_directory_cache.pop(self.archive, None)
+        _zip_directory_cache.pop(self.archive, Nichts)
 
 
     def __repr__(self):
@@ -291,10 +291,10 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
 # are swapped by initzipimport() wenn we run in optimized mode. Also,
 # '/' is replaced by path_sep there.
 _zip_searchorder = (
-    (path_sep + '__init__.pyc', True, True),
-    (path_sep + '__init__.py', False, True),
-    ('.pyc', True, False),
-    ('.py', False, False),
+    (path_sep + '__init__.pyc', Wahr, Wahr),
+    (path_sep + '__init__.py', Falsch, Wahr),
+    ('.pyc', Wahr, Falsch),
+    ('.py', Falsch, Falsch),
 )
 
 # Given a module name, return the potential file path in the
@@ -318,7 +318,7 @@ def _get_module_info(self, fullname):
         fullpath = path + suffix
         wenn fullpath in self._get_files():
             return ispackage
-    return None
+    return Nichts
 
 
 # implementation
@@ -431,7 +431,7 @@ def _read_directory(archive):
                 fp.seek(header_position)
             except OSError:
                 raise ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
-            while True:
+            while Wahr:
                 buffer = fp.read(46)
                 wenn len(buffer) < 4:
                     raise EOFError('EOF read where not expected')
@@ -553,14 +553,14 @@ def _read_directory(archive):
     # Add implicit directories.
     count = 0
     fuer name in list(files):
-        while True:
+        while Wahr:
             i = name.rstrip(path_sep).rfind(path_sep)
             wenn i < 0:
                 break
             name = name[:i + 1]
             wenn name in files:
                 break
-            files[name] = None
+            files[name] = Nichts
             count += 1
     wenn count:
         _bootstrap._verbose_message('zipimport: added {} implicit directories in {!r}',
@@ -602,7 +602,7 @@ cp437_table = (
     '\xb0\u2219\xb7\u221a\u207f\xb2\u25a0\xa0'
 )
 
-_importing_zlib = False
+_importing_zlib = Falsch
 
 # Return the zlib.decompress function object, or NULL wenn zlib couldn't
 # be imported. The function is cached when found, so subsequent calls
@@ -615,14 +615,14 @@ def _get_decompress_func():
         _bootstrap._verbose_message('zipimport: zlib UNAVAILABLE')
         raise ZipImportError("can't decompress data; zlib not available")
 
-    _importing_zlib = True
+    _importing_zlib = Wahr
     try:
         from zlib import decompress
     except Exception:
         _bootstrap._verbose_message('zipimport: zlib UNAVAILABLE')
         raise ZipImportError("can't decompress data; zlib not available")
     finally:
-        _importing_zlib = False
+        _importing_zlib = Falsch
 
     _bootstrap._verbose_message('zipimport: zlib available')
     return decompress
@@ -696,7 +696,7 @@ def _unmarshal_code(self, pathname, fullpath, fullname, data):
         wenn (_imp.check_hash_based_pycs != 'never' and
                 (check_source or _imp.check_hash_based_pycs == 'always')):
             source_bytes = _get_pyc_source(self, fullpath)
-            wenn source_bytes is not None:
+            wenn source_bytes is not Nichts:
                 source_hash = _imp.source_hash(
                     _imp.pyc_magic_number_token,
                     source_bytes,
@@ -715,7 +715,7 @@ def _unmarshal_code(self, pathname, fullpath, fullname, data):
                     _unpack_uint32(data[12:16]) != source_size):
                 _bootstrap._verbose_message(
                     f'bytecode is stale fuer {fullname!r}')
-                return None
+                return Nichts
 
     code = marshal.loads(data[16:])
     wenn not isinstance(code, _code_type):
@@ -736,7 +736,7 @@ def _normalize_line_endings(source):
 # and return a code object.
 def _compile_source(pathname, source):
     source = _normalize_line_endings(source)
-    return compile(source, pathname, 'exec', dont_inherit=True)
+    return compile(source, pathname, 'exec', dont_inherit=Wahr)
 
 # Convert the date/time values found in the Zip archive to a value
 # that's compatible with the time stamp stored in .pyc files.
@@ -770,7 +770,7 @@ def _get_mtime_and_size_of_source(self, path):
 
 
 # Given a path to a .pyc file in the archive, return the
-# contents of the matching .py file, or None wenn no source
+# contents of the matching .py file, or Nichts wenn no source
 # is available.
 def _get_pyc_source(self, path):
     # strip 'c' or 'o' from *.py[co]
@@ -780,7 +780,7 @@ def _get_pyc_source(self, path):
     try:
         toc_entry = self._get_files()[path]
     except KeyError:
-        return None
+        return Nichts
     sonst:
         return _get_data(self.archive, toc_entry)
 
@@ -789,7 +789,7 @@ def _get_pyc_source(self, path):
 # 'fullname'.
 def _get_module_code(self, fullname):
     path = _get_module_path(self, fullname)
-    import_error = None
+    import_error = Nichts
     fuer suffix, isbytecode, ispackage in _zip_searchorder:
         fullpath = path + suffix
         _bootstrap._verbose_message('trying {}{}{}', self.archive, path_sep, fullpath, verbosity=2)
@@ -800,7 +800,7 @@ def _get_module_code(self, fullname):
         sonst:
             modpath = toc_entry[0]
             data = _get_data(self.archive, toc_entry)
-            code = None
+            code = Nichts
             wenn isbytecode:
                 try:
                     code = _unmarshal_code(self, modpath, fullpath, fullname, data)
@@ -808,7 +808,7 @@ def _get_module_code(self, fullname):
                     import_error = exc
             sonst:
                 code = _compile_source(modpath, data)
-            wenn code is None:
+            wenn code is Nichts:
                 # bad magic number or non-matching mtime
                 # in byte code, try next
                 continue

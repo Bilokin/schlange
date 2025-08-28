@@ -23,10 +23,10 @@ klasse UTF8ModeTests(unittest.TestCase):
     }
 
     def posix_locale(self):
-        loc = locale.setlocale(locale.LC_CTYPE, None)
+        loc = locale.setlocale(locale.LC_CTYPE, Nichts)
         return (loc in POSIX_LOCALES)
 
-    def get_output(self, *args, failure=False, **kw):
+    def get_output(self, *args, failure=Falsch, **kw):
         kw = dict(self.DEFAULT_ENV, **kw)
         wenn failure:
             out = assert_python_failure(*args, **kw)
@@ -93,7 +93,7 @@ klasse UTF8ModeTests(unittest.TestCase):
             self.assertEqual(out, '1')
 
         # invalid mode
-        out = self.get_output('-c', code, PYTHONUTF8='xxx', failure=True)
+        out = self.get_output('-c', code, PYTHONUTF8='xxx', failure=Wahr)
         self.assertIn('invalid PYTHONUTF8 environment variable value',
                       out.rstrip())
 
@@ -162,7 +162,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-c', code, filename, PYTHONUTF8='1')
         self.assertEqual(out.lower(), 'utf-8/strict')
 
-    def _check_io_encoding(self, module, encoding=None, errors=None):
+    def _check_io_encoding(self, module, encoding=Nichts, errors=Nichts):
         filename = __file__
 
         # Encoding explicitly set
@@ -200,7 +200,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         self.check_io_encoding('_pyio')
 
     def test_locale_getpreferredencoding(self):
-        code = 'import locale; print(locale.getpreferredencoding(False), locale.getpreferredencoding(True))'
+        code = 'import locale; print(locale.getpreferredencoding(Falsch), locale.getpreferredencoding(Wahr))'
         out = self.get_output('-X', 'utf8', '-c', code)
         self.assertEqual(out, 'utf-8 utf-8')
 
@@ -269,13 +269,13 @@ klasse UTF8ModeTests(unittest.TestCase):
                 f'out.close()')
         cmd = [sys.executable, '-X', 'utf8', '-c', code]
         # The stdout TTY is inherited to the child process
-        proc = subprocess.run(cmd, text=True)
+        proc = subprocess.run(cmd, text=Wahr)
         self.assertEqual(proc.returncode, 0, proc)
 
         # In UTF-8 Mode, device_encoding(fd) returns "UTF-8" wenn fd is a TTY
         with open(filename, encoding="utf8") as fp:
             out = fp.read().rstrip()
-        self.assertEqual(out, 'True utf-8')
+        self.assertEqual(out, 'Wahr utf-8')
 
 
 wenn __name__ == "__main__":

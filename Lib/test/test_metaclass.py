@@ -10,10 +10,10 @@ Basic klasse construction.
     ...     def meth(self): print("Hello")
     ...
     >>> C.__class__ is type
-    True
+    Wahr
     >>> a = C()
     >>> a.__class__ is C
-    True
+    Wahr
     >>> a.meth()
     Hello
     >>>
@@ -25,7 +25,7 @@ Use *args notation fuer the bases.
     >>> bases = (A, B)
     >>> klasse C(*bases): pass
     >>> C.__bases__ == bases
-    True
+    Wahr
     >>>
 
 Use a trivial metaclass.
@@ -37,10 +37,10 @@ Use a trivial metaclass.
     ...    def meth(self): print("Hello")
     ...
     >>> C.__class__ is M
-    True
+    Wahr
     >>> a = C()
     >>> a.__class__ is C
-    True
+    Wahr
     >>> a.meth()
     Hello
     >>>
@@ -51,10 +51,10 @@ Use **kwds notation fuer the metaclass keyword.
     >>> klasse C(**kwds): pass
     ...
     >>> C.__class__ is M
-    True
+    Wahr
     >>> a = C()
     >>> a.__class__ is C
-    True
+    Wahr
     >>>
 
 Use a metaclass with a __prepare__ static method.
@@ -85,12 +85,12 @@ Also pass another keyword.
     Prepare called: ('C', (<class 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
     >>> C.__class__ is M
-    True
+    Wahr
     >>> C.__bases__ == (object,)
-    True
+    Wahr
     >>> a = C()
     >>> a.__class__ is C
-    True
+    Wahr
     >>>
 
 Check that build_class doesn't mutate the kwds dict.
@@ -99,7 +99,7 @@ Check that build_class doesn't mutate the kwds dict.
     >>> klasse C(**kwds): pass
     ...
     >>> kwds == {'metaclass': type}
-    True
+    Wahr
     >>>
 
 Use various combinations of explicit keywords and **kwds.
@@ -111,9 +111,9 @@ Use various combinations of explicit keywords and **kwds.
     Prepare called: ('C', (<class 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
     >>> C.__class__ is M
-    True
+    Wahr
     >>> C.__bases__ == (object,)
-    True
+    Wahr
     >>> klasse B: pass
     >>> kwds = {'other': 'haha'}
     >>> klasse C(B, metaclass=M, *bases, **kwds): pass
@@ -121,9 +121,9 @@ Use various combinations of explicit keywords and **kwds.
     Prepare called: ('C', (<class 'test.test_metaclass.B'>, <class 'object'>)) {'other': 'haha'}
     New called: {'other': 'haha'}
     >>> C.__class__ is M
-    True
+    Wahr
     >>> C.__bases__ == (B, object)
-    True
+    Wahr
     >>>
 
 Check fuer duplicate keywords.
@@ -187,7 +187,7 @@ Use a metaclass that doesn't derive from type.
     ns: [('__firstlineno__', 1), ('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('__static_attributes__', ()), ('a', 42), ('b', 24)]
     kw: []
     >>> type(C) is dict
-    True
+    Wahr
     >>> print(sorted(C.items()))
     [('__firstlineno__', 1), ('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('__static_attributes__', ()), ('a', 42), ('b', 24)]
     >>>

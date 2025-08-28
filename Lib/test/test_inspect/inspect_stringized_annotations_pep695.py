@@ -28,7 +28,7 @@ klasse C[Eggs, **Spam]:
 
 def generic_function[T, *Ts, **P](
     x: T, *y: Unpack[Ts], z: P.args, zz: P.kwargs
-) -> None: ...
+) -> Nichts: ...
 
 
 def generic_function_2[Eggs, **Spam](x: Eggs, y: Spam): pass
@@ -40,7 +40,7 @@ klasse D:
 
     def generic_method[Foo, **Bar](
         self, x: Foo, y: Bar
-    ) -> None: ...
+    ) -> Nichts: ...
 
     def generic_method_2[Eggs, **Spam](self, x: Eggs, y: Spam): pass
 
@@ -79,9 +79,9 @@ def nested():
 
     return SimpleNamespace(
         F=F,
-        F_annotations=get_annotations(F, eval_str=True),
-        F_meth_annotations=get_annotations(F.generic_method, eval_str=True),
-        G_annotations=get_annotations(G, eval_str=True),
+        F_annotations=get_annotations(F, eval_str=Wahr),
+        F_meth_annotations=get_annotations(F.generic_method, eval_str=Wahr),
+        G_annotations=get_annotations(G, eval_str=Wahr),
         generic_func=generic_function,
-        generic_func_annotations=get_annotations(generic_function, eval_str=True)
+        generic_func_annotations=get_annotations(generic_function, eval_str=Wahr)
     )

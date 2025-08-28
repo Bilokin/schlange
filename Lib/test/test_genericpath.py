@@ -134,46 +134,46 @@ klasse GenericTest:
         bfilename = os.fsencode(filename)
         self.addCleanup(os_helper.unlink, filename)
 
-        self.assertIs(self.pathmodule.exists(filename), False)
-        self.assertIs(self.pathmodule.exists(bfilename), False)
+        self.assertIs(self.pathmodule.exists(filename), Falsch)
+        self.assertIs(self.pathmodule.exists(bfilename), Falsch)
 
-        self.assertIs(self.pathmodule.lexists(filename), False)
-        self.assertIs(self.pathmodule.lexists(bfilename), False)
+        self.assertIs(self.pathmodule.lexists(filename), Falsch)
+        self.assertIs(self.pathmodule.lexists(bfilename), Falsch)
 
         create_file(filename)
 
-        self.assertIs(self.pathmodule.exists(filename), True)
-        self.assertIs(self.pathmodule.exists(bfilename), True)
+        self.assertIs(self.pathmodule.exists(filename), Wahr)
+        self.assertIs(self.pathmodule.exists(bfilename), Wahr)
 
-        self.assertIs(self.pathmodule.exists(filename + '\udfff'), False)
-        self.assertIs(self.pathmodule.exists(bfilename + b'\xff'), False)
-        self.assertIs(self.pathmodule.exists(filename + '\x00'), False)
-        self.assertIs(self.pathmodule.exists(bfilename + b'\x00'), False)
+        self.assertIs(self.pathmodule.exists(filename + '\udfff'), Falsch)
+        self.assertIs(self.pathmodule.exists(bfilename + b'\xff'), Falsch)
+        self.assertIs(self.pathmodule.exists(filename + '\x00'), Falsch)
+        self.assertIs(self.pathmodule.exists(bfilename + b'\x00'), Falsch)
 
-        self.assertIs(self.pathmodule.lexists(filename), True)
-        self.assertIs(self.pathmodule.lexists(bfilename), True)
+        self.assertIs(self.pathmodule.lexists(filename), Wahr)
+        self.assertIs(self.pathmodule.lexists(bfilename), Wahr)
 
-        self.assertIs(self.pathmodule.lexists(filename + '\udfff'), False)
-        self.assertIs(self.pathmodule.lexists(bfilename + b'\xff'), False)
-        self.assertIs(self.pathmodule.lexists(filename + '\x00'), False)
-        self.assertIs(self.pathmodule.lexists(bfilename + b'\x00'), False)
+        self.assertIs(self.pathmodule.lexists(filename + '\udfff'), Falsch)
+        self.assertIs(self.pathmodule.lexists(bfilename + b'\xff'), Falsch)
+        self.assertIs(self.pathmodule.lexists(filename + '\x00'), Falsch)
+        self.assertIs(self.pathmodule.lexists(bfilename + b'\x00'), Falsch)
 
         # Keyword arguments are accepted
-        self.assertIs(self.pathmodule.exists(path=filename), True)
-        self.assertIs(self.pathmodule.lexists(path=filename), True)
+        self.assertIs(self.pathmodule.exists(path=filename), Wahr)
+        self.assertIs(self.pathmodule.lexists(path=filename), Wahr)
 
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_exists_fd(self):
         r, w = os.pipe()
         try:
-            self.assertTrue(self.pathmodule.exists(r))
+            self.assertWahr(self.pathmodule.exists(r))
         finally:
             os.close(r)
             os.close(w)
-        self.assertFalse(self.pathmodule.exists(r))
+        self.assertFalsch(self.pathmodule.exists(r))
 
     def test_exists_bool(self):
-        fuer fd in False, True:
+        fuer fd in Falsch, Wahr:
             with self.assertWarnsRegex(RuntimeWarning,
                     'bool is used as a file descriptor'):
                 self.pathmodule.exists(fd)
@@ -181,50 +181,50 @@ klasse GenericTest:
     def test_isdir(self):
         filename = os_helper.TESTFN
         bfilename = os.fsencode(filename)
-        self.assertIs(self.pathmodule.isdir(filename), False)
-        self.assertIs(self.pathmodule.isdir(bfilename), False)
+        self.assertIs(self.pathmodule.isdir(filename), Falsch)
+        self.assertIs(self.pathmodule.isdir(bfilename), Falsch)
 
-        self.assertIs(self.pathmodule.isdir(filename + '\udfff'), False)
-        self.assertIs(self.pathmodule.isdir(bfilename + b'\xff'), False)
-        self.assertIs(self.pathmodule.isdir(filename + '\x00'), False)
-        self.assertIs(self.pathmodule.isdir(bfilename + b'\x00'), False)
+        self.assertIs(self.pathmodule.isdir(filename + '\udfff'), Falsch)
+        self.assertIs(self.pathmodule.isdir(bfilename + b'\xff'), Falsch)
+        self.assertIs(self.pathmodule.isdir(filename + '\x00'), Falsch)
+        self.assertIs(self.pathmodule.isdir(bfilename + b'\x00'), Falsch)
 
         try:
             create_file(filename)
-            self.assertIs(self.pathmodule.isdir(filename), False)
-            self.assertIs(self.pathmodule.isdir(bfilename), False)
+            self.assertIs(self.pathmodule.isdir(filename), Falsch)
+            self.assertIs(self.pathmodule.isdir(bfilename), Falsch)
         finally:
             os_helper.unlink(filename)
 
         try:
             os.mkdir(filename)
-            self.assertIs(self.pathmodule.isdir(filename), True)
-            self.assertIs(self.pathmodule.isdir(bfilename), True)
+            self.assertIs(self.pathmodule.isdir(filename), Wahr)
+            self.assertIs(self.pathmodule.isdir(bfilename), Wahr)
         finally:
             os_helper.rmdir(filename)
 
     def test_isfile(self):
         filename = os_helper.TESTFN
         bfilename = os.fsencode(filename)
-        self.assertIs(self.pathmodule.isfile(filename), False)
-        self.assertIs(self.pathmodule.isfile(bfilename), False)
+        self.assertIs(self.pathmodule.isfile(filename), Falsch)
+        self.assertIs(self.pathmodule.isfile(bfilename), Falsch)
 
-        self.assertIs(self.pathmodule.isfile(filename + '\udfff'), False)
-        self.assertIs(self.pathmodule.isfile(bfilename + b'\xff'), False)
-        self.assertIs(self.pathmodule.isfile(filename + '\x00'), False)
-        self.assertIs(self.pathmodule.isfile(bfilename + b'\x00'), False)
+        self.assertIs(self.pathmodule.isfile(filename + '\udfff'), Falsch)
+        self.assertIs(self.pathmodule.isfile(bfilename + b'\xff'), Falsch)
+        self.assertIs(self.pathmodule.isfile(filename + '\x00'), Falsch)
+        self.assertIs(self.pathmodule.isfile(bfilename + b'\x00'), Falsch)
 
         try:
             create_file(filename)
-            self.assertIs(self.pathmodule.isfile(filename), True)
-            self.assertIs(self.pathmodule.isfile(bfilename), True)
+            self.assertIs(self.pathmodule.isfile(filename), Wahr)
+            self.assertIs(self.pathmodule.isfile(bfilename), Wahr)
         finally:
             os_helper.unlink(filename)
 
         try:
             os.mkdir(filename)
-            self.assertIs(self.pathmodule.isfile(filename), False)
-            self.assertIs(self.pathmodule.isfile(bfilename), False)
+            self.assertIs(self.pathmodule.isfile(filename), Falsch)
+            self.assertIs(self.pathmodule.isfile(bfilename), Falsch)
         finally:
             os_helper.rmdir(filename)
 
@@ -235,10 +235,10 @@ klasse GenericTest:
         self.addCleanup(os_helper.unlink, file2)
 
         create_file(file1)
-        self.assertTrue(self.pathmodule.samefile(file1, file1))
+        self.assertWahr(self.pathmodule.samefile(file1, file1))
 
         create_file(file2)
-        self.assertFalse(self.pathmodule.samefile(file1, file2))
+        self.assertFalsch(self.pathmodule.samefile(file1, file2))
 
         self.assertRaises(TypeError, self.pathmodule.samefile)
 
@@ -251,11 +251,11 @@ klasse GenericTest:
         create_file(test_fn1)
 
         func(test_fn1, test_fn2)
-        self.assertTrue(self.pathmodule.samefile(test_fn1, test_fn2))
+        self.assertWahr(self.pathmodule.samefile(test_fn1, test_fn2))
         os.remove(test_fn2)
 
         create_file(test_fn2)
-        self.assertFalse(self.pathmodule.samefile(test_fn1, test_fn2))
+        self.assertFalsch(self.pathmodule.samefile(test_fn1, test_fn2))
 
     @os_helper.skip_unless_symlink
     def test_samefile_on_symlink(self):
@@ -276,11 +276,11 @@ klasse GenericTest:
 
         create_file(test_fn1)
         stat1 = os.stat(test_fn1)
-        self.assertTrue(self.pathmodule.samestat(stat1, os.stat(test_fn1)))
+        self.assertWahr(self.pathmodule.samestat(stat1, os.stat(test_fn1)))
 
         create_file(test_fn2)
         stat2 = os.stat(test_fn2)
-        self.assertFalse(self.pathmodule.samestat(stat1, stat2))
+        self.assertFalsch(self.pathmodule.samestat(stat1, stat2))
 
         self.assertRaises(TypeError, self.pathmodule.samestat)
 
@@ -292,12 +292,12 @@ klasse GenericTest:
 
         create_file(test_fn1)
         func(test_fn1, test_fn2)
-        self.assertTrue(self.pathmodule.samestat(os.stat(test_fn1),
+        self.assertWahr(self.pathmodule.samestat(os.stat(test_fn1),
                                                  os.stat(test_fn2)))
         os.remove(test_fn2)
 
         create_file(test_fn2)
-        self.assertFalse(self.pathmodule.samestat(os.stat(test_fn1),
+        self.assertFalsch(self.pathmodule.samestat(os.stat(test_fn1),
                                                   os.stat(test_fn2)))
 
     @os_helper.skip_unless_symlink
@@ -320,7 +320,7 @@ klasse GenericTest:
             fd1 = fp1.fileno()
             with open(filename, "rb", 0) as fp2:
                 fd2 = fp2.fileno()
-                self.assertTrue(self.pathmodule.sameopenfile(fd1, fd2))
+                self.assertWahr(self.pathmodule.sameopenfile(fd1, fd2))
 
     def test_realpath_mode_values(self):
         fuer name in 'ALL_BUT_LAST', 'ALLOW_MISSING':
@@ -328,7 +328,7 @@ klasse GenericTest:
                 mode = getattr(self.pathmodule, name)
                 self.assertEqual(repr(mode), 'os.path.' + name)
                 self.assertEqual(str(mode), 'os.path.' + name)
-                self.assertTrue(mode)
+                self.assertWahr(mode)
                 self.assertIs(copy.copy(mode), mode)
                 self.assertIs(copy.deepcopy(mode), mode)
                 fuer proto in range(pickle.HIGHEST_PROTOCOL+1):
@@ -391,7 +391,7 @@ klasse CommonTest(GenericTest):
         self.assertEqual(normcase(b''), b'')
 
         # check that normcase raises a TypeError fuer invalid types
-        fuer path in (None, True, 0, 2.5, [], bytearray(b''), {'o','o'}):
+        fuer path in (Nichts, Wahr, 0, 2.5, [], bytearray(b''), {'o','o'}):
             self.assertRaises(TypeError, normcase, path)
 
     def test_splitdrive(self):
@@ -534,7 +534,7 @@ klasse CommonTest(GenericTest):
 
     def test_join_errors(self):
         # Check join() raises friendly TypeErrors.
-        with warnings_helper.check_warnings(('', BytesWarning), quiet=True):
+        with warnings_helper.check_warnings(('', BytesWarning), quiet=Wahr):
             errmsg = "Can't mix strings and bytes in path components"
             with self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.join(b'bytes', 'str')
@@ -555,7 +555,7 @@ klasse CommonTest(GenericTest):
     def test_relpath_errors(self):
         # Check relpath() raises friendly TypeErrors.
         with warnings_helper.check_warnings(
-                ('', (BytesWarning, DeprecationWarning)), quiet=True):
+                ('', (BytesWarning, DeprecationWarning)), quiet=Wahr):
             errmsg = "Can't mix strings and bytes in path components"
             with self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.relpath(b'bytes', 'str')
@@ -606,7 +606,7 @@ klasse PathLikeTests(unittest.TestCase):
         self.assertPathEqual(os.path.getctime)
 
     def test_path_samefile(self):
-        self.assertTrue(os.path.samefile(self.file_path, self.file_name))
+        self.assertWahr(os.path.samefile(self.file_path, self.file_name))
 
 
 wenn __name__ == "__main__":

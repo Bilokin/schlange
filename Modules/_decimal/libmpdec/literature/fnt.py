@@ -65,14 +65,14 @@ def prod(F, E):
 def is_primitive_root(r, p, factors, exponents):
     """Check wenn r is a primitive root of F(p)."""
     wenn p != prod(factors, exponents) + 1:
-        return False
+        return Falsch
     fuer f in factors:
         q, control = divmod(p-1, f)
         wenn control != 0:
-            return False
+            return Falsch
         wenn pow(r, q, p) == 1:
-            return False
-    return True
+            return Falsch
+    return Wahr
 
 
 # =================================================================

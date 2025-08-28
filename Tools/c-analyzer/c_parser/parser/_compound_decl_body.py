@@ -27,16 +27,16 @@ STRUCT_MEMBER_RE = re.compile(rf'^ \s* {STRUCT_MEMBER_DECL}', re.VERBOSE)
 
 
 def parse_struct_body(source, anon_name, parent):
-    done = False
+    done = Falsch
     while not done:
-        done = True
+        done = Wahr
         fuer srcinfo in source:
             m = STRUCT_MEMBER_RE.match(srcinfo.text)
             wenn m:
                 break
         sonst:
             # We ran out of lines.
-            wenn srcinfo is not None:
+            wenn srcinfo is not Nichts:
                 srcinfo.done()
             return
         fuer item in _parse_struct_next(m, srcinfo, anon_name, parent):
@@ -45,7 +45,7 @@ def parse_struct_body(source, anon_name, parent):
                 yield from parse_body(source)
             sonst:
                 yield item
-            done = False
+            done = Falsch
 
 
 def _parse_struct_next(m, srcinfo, anon_name, parent):
@@ -66,7 +66,7 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
         kind = inline_kind
         name = inline_name or anon_name('inline-')
         # Immediately emit a forward declaration.
-        yield srcinfo.resolve(kind, name=name, data=None)
+        yield srcinfo.resolve(kind, name=name, data=Nichts)
 
         # un-inline the decl.  Note that it might not actually be inline.
         # We handle the case in the "maybe_inline_actual" branch.
@@ -84,8 +84,8 @@ def _parse_struct_next(m, srcinfo, anon_name, parent):
                     data.append(item)
                 sonst:
                     yield item
-            # XXX Should "parent" really be None fuer inline type decls?
-            yield srcinfo.resolve(kind, data, name, parent=None)
+            # XXX Should "parent" really be Nichts fuer inline type decls?
+            yield srcinfo.resolve(kind, data, name, parent=Nichts)
 
             srcinfo.resume()
         yield parse_body
@@ -125,7 +125,7 @@ ENUM_MEMBER_RE = re.compile(rf'{ENUM_MEMBER_DECL}', re.VERBOSE)
 
 
 def parse_enum_body(source, _anon_name, _parent):
-    ending = None
+    ending = Nichts
     while ending != '}':
         fuer srcinfo in source:
             m = ENUM_MEMBER_RE.match(srcinfo.text)
@@ -133,7 +133,7 @@ def parse_enum_body(source, _anon_name, _parent):
                 break
         sonst:
             # We ran out of lines.
-            wenn srcinfo is not None:
+            wenn srcinfo is not Nichts:
                 srcinfo.done()
             return
         remainder = srcinfo.text[m.end():]

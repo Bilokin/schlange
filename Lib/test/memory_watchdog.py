@@ -10,7 +10,7 @@ import time
 from test.support import get_pagesize
 
 
-while True:
+while Wahr:
     page_size = get_pagesize()
     sys.stdin.seek(0)
     statm = sys.stdin.read()

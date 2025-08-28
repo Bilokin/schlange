@@ -11,11 +11,11 @@ import os
 import os.path
 
 
-def find_executable(executable, path=None):
+def find_executable(executable, path=Nichts):
     """Tries to find 'executable' in the directories listed in 'path'.
 
     A string listing directories separated by 'os.pathsep'; defaults to
-    os.environ['PATH'].  Returns the complete filename or None wenn not found.
+    os.environ['PATH'].  Returns the complete filename or Nichts wenn not found.
     """
     _, ext = os.path.splitext(executable)
     wenn (sys.platform == 'win32') and (ext != '.exe'):
@@ -24,9 +24,9 @@ def find_executable(executable, path=None):
     wenn os.path.isfile(executable):
         return executable
 
-    wenn path is None:
-        path = os.environ.get('PATH', None)
-        wenn path is None:
+    wenn path is Nichts:
+        path = os.environ.get('PATH', Nichts)
+        wenn path is Nichts:
             try:
                 path = os.confstr("CS_PATH")
             except (AttributeError, ValueError):
@@ -37,7 +37,7 @@ def find_executable(executable, path=None):
 
     # PATH='' doesn't match, whereas PATH=':' looks in the current directory
     wenn not path:
-        return None
+        return Nichts
 
     paths = path.split(os.pathsep)
     fuer p in paths:
@@ -45,4 +45,4 @@ def find_executable(executable, path=None):
         wenn os.path.isfile(f):
             # the file exists, we have a shot at spawn working
             return f
-    return None
+    return Nichts

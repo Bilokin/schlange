@@ -27,44 +27,44 @@ klasse SubInt(Integer):
 klasse TypeChecksTest(unittest.TestCase):
 
     def testIsSubclassInternal(self):
-        self.assertEqual(Integer.__subclasscheck__(int), True)
-        self.assertEqual(Integer.__subclasscheck__(float), False)
+        self.assertEqual(Integer.__subclasscheck__(int), Wahr)
+        self.assertEqual(Integer.__subclasscheck__(float), Falsch)
 
     def testIsSubclassBuiltin(self):
-        self.assertEqual(issubclass(int, Integer), True)
-        self.assertEqual(issubclass(int, (Integer,)), True)
-        self.assertEqual(issubclass(float, Integer), False)
-        self.assertEqual(issubclass(float, (Integer,)), False)
+        self.assertEqual(issubclass(int, Integer), Wahr)
+        self.assertEqual(issubclass(int, (Integer,)), Wahr)
+        self.assertEqual(issubclass(float, Integer), Falsch)
+        self.assertEqual(issubclass(float, (Integer,)), Falsch)
 
     def testIsInstanceBuiltin(self):
-        self.assertEqual(isinstance(42, Integer), True)
-        self.assertEqual(isinstance(42, (Integer,)), True)
-        self.assertEqual(isinstance(3.14, Integer), False)
-        self.assertEqual(isinstance(3.14, (Integer,)), False)
+        self.assertEqual(isinstance(42, Integer), Wahr)
+        self.assertEqual(isinstance(42, (Integer,)), Wahr)
+        self.assertEqual(isinstance(3.14, Integer), Falsch)
+        self.assertEqual(isinstance(3.14, (Integer,)), Falsch)
 
     def testIsInstanceActual(self):
-        self.assertEqual(isinstance(Integer(), Integer), True)
-        self.assertEqual(isinstance(Integer(), (Integer,)), True)
+        self.assertEqual(isinstance(Integer(), Integer), Wahr)
+        self.assertEqual(isinstance(Integer(), (Integer,)), Wahr)
 
     def testIsSubclassActual(self):
-        self.assertEqual(issubclass(Integer, Integer), True)
-        self.assertEqual(issubclass(Integer, (Integer,)), True)
+        self.assertEqual(issubclass(Integer, Integer), Wahr)
+        self.assertEqual(issubclass(Integer, (Integer,)), Wahr)
 
     def testSubclassBehavior(self):
-        self.assertEqual(issubclass(SubInt, Integer), True)
-        self.assertEqual(issubclass(SubInt, (Integer,)), True)
-        self.assertEqual(issubclass(SubInt, SubInt), True)
-        self.assertEqual(issubclass(SubInt, (SubInt,)), True)
-        self.assertEqual(issubclass(Integer, SubInt), False)
-        self.assertEqual(issubclass(Integer, (SubInt,)), False)
-        self.assertEqual(issubclass(int, SubInt), False)
-        self.assertEqual(issubclass(int, (SubInt,)), False)
-        self.assertEqual(isinstance(SubInt(), Integer), True)
-        self.assertEqual(isinstance(SubInt(), (Integer,)), True)
-        self.assertEqual(isinstance(SubInt(), SubInt), True)
-        self.assertEqual(isinstance(SubInt(), (SubInt,)), True)
-        self.assertEqual(isinstance(42, SubInt), False)
-        self.assertEqual(isinstance(42, (SubInt,)), False)
+        self.assertEqual(issubclass(SubInt, Integer), Wahr)
+        self.assertEqual(issubclass(SubInt, (Integer,)), Wahr)
+        self.assertEqual(issubclass(SubInt, SubInt), Wahr)
+        self.assertEqual(issubclass(SubInt, (SubInt,)), Wahr)
+        self.assertEqual(issubclass(Integer, SubInt), Falsch)
+        self.assertEqual(issubclass(Integer, (SubInt,)), Falsch)
+        self.assertEqual(issubclass(int, SubInt), Falsch)
+        self.assertEqual(issubclass(int, (SubInt,)), Falsch)
+        self.assertEqual(isinstance(SubInt(), Integer), Wahr)
+        self.assertEqual(isinstance(SubInt(), (Integer,)), Wahr)
+        self.assertEqual(isinstance(SubInt(), SubInt), Wahr)
+        self.assertEqual(isinstance(SubInt(), (SubInt,)), Wahr)
+        self.assertEqual(isinstance(42, SubInt), Falsch)
+        self.assertEqual(isinstance(42, (SubInt,)), Falsch)
 
 
 wenn __name__ == "__main__":

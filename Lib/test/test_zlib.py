@@ -78,7 +78,7 @@ klasse ChecksumTestCase(unittest.TestCase):
     # checksum test cases
     def test_crc32start(self):
         self.assertEqual(zlib.crc32(b""), zlib.crc32(b"", 0))
-        self.assertTrue(zlib.crc32(b"abc", 0xffffffff))
+        self.assertWahr(zlib.crc32(b"abc", 0xffffffff))
 
     def test_crc32empty(self):
         self.assertEqual(zlib.crc32(b"", 0), 0)
@@ -87,7 +87,7 @@ klasse ChecksumTestCase(unittest.TestCase):
 
     def test_adler32start(self):
         self.assertEqual(zlib.adler32(b""), zlib.adler32(b"", 1))
-        self.assertTrue(zlib.adler32(b"abc", 0xffffffff))
+        self.assertWahr(zlib.adler32(b"abc", 0xffffffff))
 
     def test_adler32empty(self):
         self.assertEqual(zlib.adler32(b"", 0), 0)
@@ -128,17 +128,17 @@ klasse ChecksumCombineMixin:
     def parse_iv(self, iv):
         """Parse an IV value.
 
-        - The default IV is returned wenn *iv* is None.
+        - The default IV is returned wenn *iv* is Nichts.
         - A random IV is returned wenn *iv* is -1.
         - Otherwise, *iv* is returned as is.
         """
-        wenn iv is None:
+        wenn iv is Nichts:
             return self.default_iv
         wenn iv == -1:
             return random.randint(1, 0x80000000)
         return iv
 
-    def checksum(self, data, init=None):
+    def checksum(self, data, init=Nichts):
         """Compute the checksum of data with a given initial value.
 
         The *init* value is parsed by ``parse_iv``.
@@ -153,7 +153,7 @@ klasse ChecksumCombineMixin:
         """Combine two checksums together."""
         raise NotImplementedError
 
-    def get_random_data(self, data_len, *, iv=None):
+    def get_random_data(self, data_len, *, iv=Nichts):
         """Get a triplet (data, iv, checksum)."""
         data = random.randbytes(data_len)
         init = self.parse_iv(iv)
@@ -230,7 +230,7 @@ klasse Adler32CombineTestCase(ChecksumCombineMixin, unittest.TestCase):
 # Issue #10276 - check that inputs >=4 GiB are handled correctly.
 klasse ChecksumBigBufferTestCase(unittest.TestCase):
 
-    @bigmemtest(size=_4G + 4, memuse=1, dry_run=False)
+    @bigmemtest(size=_4G + 4, memuse=1, dry_run=Falsch)
     def test_big_buffer(self, size):
         data = b"nyan" * (_1G + 1)
         self.assertEqual(zlib.crc32(data), 1044521549)
@@ -250,7 +250,7 @@ klasse ExceptionTestCase(unittest.TestCase):
         self.assertRaises(TypeError, zlib.crc32)
         self.assertRaises(TypeError, zlib.compress)
         self.assertRaises(TypeError, zlib.decompress)
-        fuer arg in (42, None, '', 'abc', (), []):
+        fuer arg in (42, Nichts, '', 'abc', (), []):
             self.assertRaises(TypeError, zlib.adler32, arg)
             self.assertRaises(TypeError, zlib.crc32, arg)
             self.assertRaises(TypeError, zlib.compress, arg)
@@ -300,7 +300,7 @@ klasse BaseCompressTestCase(object):
             compress_func(data)
         finally:
             # Release memory
-            data = None
+            data = Nichts
 
     def check_big_decompress_buffer(self, size, decompress_func):
         data = b'x' * size
@@ -308,14 +308,14 @@ klasse BaseCompressTestCase(object):
             compressed = zlib.compress(data, 1)
         finally:
             # Release memory
-            data = None
+            data = Nichts
         data = decompress_func(compressed)
         # Sanity check
         try:
             self.assertEqual(len(data), size)
             self.assertEqual(len(data.strip(b'x')), 0)
         finally:
-            data = None
+            data = Nichts
 
 
 klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
@@ -383,7 +383,7 @@ klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
             comp = zlib.compress(data, 0)
             self.assertEqual(zlib.decompress(comp), data)
         finally:
-            comp = data = None
+            comp = data = Nichts
 
 
 klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
@@ -461,7 +461,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         y2 = dco.flush()
         self.assertEqual(data, y1 + y2)
 
-    def test_decompinc(self, flush=False, source=None, cx=256, dcx=64):
+    def test_decompinc(self, flush=Falsch, source=Nichts, cx=256, dcx=64):
         # compress object in steps, decompress object in steps
         source = source or HAMLET_SCENE
         data = source * 128
@@ -489,7 +489,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         wenn flush:
             bufs.append(dco.flush())
         sonst:
-            while True:
+            while Wahr:
                 chunk = dco.decompress(b'')
                 wenn chunk:
                     bufs.append(chunk)
@@ -503,9 +503,9 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Failure means: "decompressobj with init options failed"
 
     def test_decompincflush(self):
-        self.test_decompinc(flush=True)
+        self.test_decompinc(flush=Wahr)
 
-    def test_decompimax(self, source=None, cx=256, dcx=64):
+    def test_decompimax(self, source=Nichts, cx=256, dcx=64):
         # compress in steps, decompress in length-restricted steps
         source = source or HAMLET_SCENE
         # Check a decompression object with max_length specified
@@ -525,14 +525,14 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         while cb:
             #max_length = 1 + len(cb)//10
             chunk = dco.decompress(cb, dcx)
-            self.assertFalse(len(chunk) > dcx,
+            self.assertFalsch(len(chunk) > dcx,
                     'chunk too big (%d>%d)' % (len(chunk), dcx))
             bufs.append(chunk)
             cb = dco.unconsumed_tail
         bufs.append(dco.flush())
         self.assertEqual(data, b''.join(bufs), 'Wrong data retrieved')
 
-    def test_decompressmaxlen(self, flush=False):
+    def test_decompressmaxlen(self, flush=Falsch):
         # Check a decompression object with max_length specified
         data = HAMLET_SCENE * 128
         co = zlib.compressobj()
@@ -550,7 +550,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         while cb:
             max_length = 1 + len(cb)//10
             chunk = dco.decompress(cb, max_length)
-            self.assertFalse(len(chunk) > max_length,
+            self.assertFalsch(len(chunk) > max_length,
                         'chunk too big (%d>%d)' % (len(chunk),max_length))
             bufs.append(chunk)
             cb = dco.unconsumed_tail
@@ -559,13 +559,13 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         sonst:
             while chunk:
                 chunk = dco.decompress(b'', max_length)
-                self.assertFalse(len(chunk) > max_length,
+                self.assertFalsch(len(chunk) > max_length,
                             'chunk too big (%d>%d)' % (len(chunk),max_length))
                 bufs.append(chunk)
         self.assertEqual(data, b''.join(bufs), 'Wrong data retrieved')
 
     def test_decompressmaxlenflush(self):
-        self.test_decompressmaxlen(flush=True)
+        self.test_decompressmaxlen(flush=Wahr)
 
     def test_maxlenmisc(self):
         # Misc tests of max_length
@@ -653,7 +653,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # caused a core dump.)
 
         co = zlib.compressobj(zlib.Z_BEST_COMPRESSION)
-        self.assertTrue(co.flush())  # Returns a zlib header
+        self.assertWahr(co.flush())  # Returns a zlib header
         dco = zlib.decompressobj()
         self.assertEqual(dco.flush(), b"") # Returns nothing
 
@@ -702,22 +702,22 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
     def test_decompress_eof(self):
         x = b'x\x9cK\xcb\xcf\x07\x00\x02\x82\x01E'  # 'foo'
         dco = zlib.decompressobj()
-        self.assertFalse(dco.eof)
+        self.assertFalsch(dco.eof)
         dco.decompress(x[:-5])
-        self.assertFalse(dco.eof)
+        self.assertFalsch(dco.eof)
         dco.decompress(x[-5:])
-        self.assertTrue(dco.eof)
+        self.assertWahr(dco.eof)
         dco.flush()
-        self.assertTrue(dco.eof)
+        self.assertWahr(dco.eof)
 
     def test_decompress_eof_incomplete_stream(self):
         x = b'x\x9cK\xcb\xcf\x07\x00\x02\x82\x01E'  # 'foo'
         dco = zlib.decompressobj()
-        self.assertFalse(dco.eof)
+        self.assertFalsch(dco.eof)
         dco.decompress(x[:-5])
-        self.assertFalse(dco.eof)
+        self.assertFalsch(dco.eof)
         dco.flush()
-        self.assertFalse(dco.eof)
+        self.assertFalsch(dco.eof)
 
     def test_decompress_unused_data(self):
         # Repeated calls to decompress() after EOF should accumulate data in
@@ -740,7 +740,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                         data += dco.decompress(
                                 dco.unconsumed_tail + x[i : i + step], maxlen)
                 data += dco.flush()
-                self.assertTrue(dco.eof)
+                self.assertWahr(dco.eof)
                 self.assertEqual(data, source)
                 self.assertEqual(dco.unconsumed_tail, b'')
                 self.assertEqual(dco.unused_data, remainder)
@@ -887,7 +887,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
             uncomp = do.decompress(comp) + do.flush()
             self.assertEqual(uncomp, data)
         finally:
-            comp = uncomp = data = None
+            comp = uncomp = data = Nichts
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
     @bigmemtest(size=_4G + 100, memuse=3)
@@ -901,7 +901,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
             self.assertEqual(unused, do.unused_data)
             self.assertEqual(uncomp, data)
         finally:
-            unused = comp = do = None
+            unused = comp = do = Nichts
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
     @bigmemtest(size=_4G + 100, memuse=5)
@@ -914,7 +914,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
             self.assertEqual(uncomp, data)
             self.assertEqual(do.unconsumed_tail, b'')
         finally:
-            comp = uncomp = data = None
+            comp = uncomp = data = Nichts
 
     def test_wbits(self):
         # wbits=0 only supported since zlib v1.2.3.5
@@ -972,9 +972,9 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                 )
                 self.assertEqual(expected, actual)
 
-def choose_lines(source, number, seed=None, generator=random):
+def choose_lines(source, number, seed=Nichts, generator=random):
     """Return a list of number lines randomly chosen from the source"""
-    wenn seed is not None:
+    wenn seed is not Nichts:
         generator.seed(seed)
     sources = source.split('\n')
     return [generator.choice(sources) fuer n in range(number)]
@@ -1068,7 +1068,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         zlibd = zlib._ZlibDecompressor()
         text = b''
         n = 0
-        while True:
+        while Wahr:
             str = self.DATA[n*10:(n+1)*10]
             wenn not str:
                 break
@@ -1100,11 +1100,11 @@ klasse ZlibDecompressorTest(unittest.TestCase):
             compressed = zlib.compress(data)
             zlibd = zlib._ZlibDecompressor()
             decompressed = zlibd.decompress(compressed)
-            self.assertTrue(decompressed == data)
+            self.assertWahr(decompressed == data)
         finally:
-            data = None
-            compressed = None
-            decompressed = None
+            data = Nichts
+            compressed = Nichts
+            decompressed = Nichts
 
     def testPickle(self):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1120,12 +1120,12 @@ klasse ZlibDecompressorTest(unittest.TestCase):
         len_ = len(self.BIG_DATA) - 64
         out.append(zlibd.decompress(self.BIG_DATA[:len_],
                                   max_length=max_length))
-        self.assertFalse(zlibd.needs_input)
+        self.assertFalsch(zlibd.needs_input)
         self.assertEqual(len(out[-1]), max_length)
 
         # Retrieve more data without providing more input
         out.append(zlibd.decompress(b'', max_length=max_length))
-        self.assertFalse(zlibd.needs_input)
+        self.assertFalsch(zlibd.needs_input)
         self.assertEqual(len(out[-1]), max_length)
 
         # Retrieve more data while providing more input

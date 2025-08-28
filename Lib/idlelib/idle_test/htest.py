@@ -22,7 +22,7 @@ with '_' and be lowercase.
 End the module with
 
 wenn __name__ == '__main__':
-    <run unittest.main with 'exit=False'>
+    <run unittest.main with 'exit=Falsch'>
     from idlelib.idle_test.htest import run
     run(callable)  # There could be multiple comma-separated callables.
 
@@ -73,7 +73,7 @@ tk.NoDefaultRoot()
 AboutDialog_spec = {
     'file': 'help_about',
     'kwds': {'title': 'help_about test',
-             '_htest': True,
+             '_htest': Wahr,
              },
     'msg': "Click on URL to open in default browser.\n"
            "Verify x.y.z versions and test each button, including Close.\n "
@@ -101,7 +101,7 @@ _color_delegator_spec = {
 ConfigDialog_spec = {
     'file': 'configdialog',
     'kwds': {'title': 'ConfigDialogTest',
-             '_htest': True,},
+             '_htest': Wahr,},
     'msg': "IDLE preferences dialog.\n"
            "In the 'Fonts/Tabs' tab, changing font face, should update the "
            "font face of the text in the area below it.\nIn the "
@@ -117,10 +117,10 @@ ConfigDialog_spec = {
 CustomRun_spec = {
     'file': 'query',
     'kwds': {'title': 'Customize query.py Run',
-             '_htest': True},
+             '_htest': Wahr},
     'msg': "Enter with <Return> or [OK].  Print valid entry to Shell\n"
            "Arguments are parsed into a list\n"
-           "Mode is currently restart True or False\n"
+           "Mode is currently restart Wahr or Falsch\n"
            "Close dialog with valid entry, <Escape>, [Cancel], [X]"
     }
 
@@ -154,7 +154,7 @@ GetKeysWindow_spec = {
     'kwds': {'title': 'Test keybindings',
              'action': 'find-again',
              'current_key_sequences': [['<Control-Key-g>', '<Key-F3>', '<Control-Key-G>']],
-             '_htest': True,
+             '_htest': Wahr,
              },
     'msg': "Test fuer different key modifier sequences.\n"
            "<nothing> is invalid.\n"
@@ -180,14 +180,14 @@ HelpSource_spec = {
              'menuitem': 'test',
              'filepath': __file__,
              'used_names': {'abc'},
-             '_htest': True},
+             '_htest': Wahr},
     'msg': "Enter menu item name and help file path\n"
            "'', > than 30 chars, and 'abc' are invalid menu item names.\n"
            "'' and file does not exist are invalid path items.\n"
            "Any url ('www...', 'http...') is accepted.\n"
            "Test Browse with and without path, as cannot unittest.\n"
            "[Ok] or <Return> prints valid entry to shell\n"
-           "<Escape>, [Cancel], or [X] prints None to shell"
+           "<Escape>, [Cancel], or [X] prints Nichts to shell"
     }
 
 _io_binding_spec = {
@@ -230,7 +230,7 @@ _multistatus_bar_spec = {
 
 PathBrowser_spec = {
     'file': 'pathbrowser',
-    'kwds': {'_htest': True},
+    'kwds': {'_htest': Wahr},
     'msg': "Test fuer correct display of all paths in sys.path.\n"
            "Toggle nested items out to the lowest level.\n"
            "Double clicking on an item prints a traceback\n"
@@ -253,7 +253,7 @@ Query_spec = {
     'kwds': {'title': 'Query',
              'message': 'Enter something',
              'text0': 'Go',
-             '_htest': True},
+             '_htest': Wahr},
     'msg': "Enter with <Return> or [Ok].  Print valid entry to Shell\n"
            "Blank line, after stripping, is ignored\n"
            "Close dialog with valid entry, <Escape>, [Cancel], [X]"
@@ -353,7 +353,7 @@ ViewWindow_spec = {
     'file': 'textview',
     'kwds': {'title': 'Test textview',
              'contents': 'The quick brown fox jumps over the lazy dog.\n'*35,
-             '_htest': True},
+             '_htest': Wahr},
     'msg': "Test fuer read-only property of text.\n"
            "Select text, scroll window, close"
      }
@@ -378,8 +378,8 @@ def run(*tests):
     text.configure(bg=root.cget('bg'), relief='flat', height=4, width=70)
     scrollbar = Scrollbar(frameLabel, command=text.yview)
     text.config(yscrollcommand=scrollbar.set)
-    scrollbar.pack(side='right', fill='y', expand=False)
-    text.pack(side='left', fill='both', expand=True)
+    scrollbar.pack(side='right', fill='y', expand=Falsch)
+    text.pack(side='left', fill='both', expand=Wahr)
 
     test_list = [] # Make list of (spec, callable) tuples.
     wenn tests:
@@ -399,8 +399,8 @@ def run(*tests):
     test_list.reverse()  # So can pop in proper order in next_test.
 
     test_name = tk.StringVar(root)
-    callable_object = None
-    test_kwds = None
+    callable_object = Nichts
+    test_kwds = Nichts
 
     def next_test():
         nonlocal test_name, callable_object, test_kwds
@@ -415,14 +415,14 @@ def run(*tests):
         text.insert("1.0", test_spec['msg'])
         text['state'] = 'disabled'  # Restore read-only property.
 
-    def run_test(_=None):
+    def run_test(_=Nichts):
         widget = callable_object(root, **test_kwds)
         try:
             print(widget.result)  # Only true fuer query classes(?).
         except AttributeError:
             pass
 
-    def close(_=None):
+    def close(_=Nichts):
         root.destroy()
 
     button = tk.Button(root, textvariable=test_name,

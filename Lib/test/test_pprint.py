@@ -83,8 +83,8 @@ klasse keysview_custom_repr(KeysView):
 klasse dataclass1:
     field1: str
     field2: int
-    field3: bool = False
-    field4: int = dataclasses.field(default=1, repr=False)
+    field3: bool = Falsch
+    field4: int = dataclasses.field(default=1, repr=Falsch)
 
 @dataclasses.dataclass
 klasse dataclass2:
@@ -92,7 +92,7 @@ klasse dataclass2:
     def __repr__(self):
         return "custom repr that doesn't fit within pprint width"
 
-@dataclasses.dataclass(repr=False)
+@dataclasses.dataclass(repr=Falsch)
 klasse dataclass3:
     a: int = 1
 
@@ -120,13 +120,13 @@ klasse Orderable:
     def __init__(self, hash):
         self._hash = hash
     def __lt__(self, other):
-        return False
+        return Falsch
     def __gt__(self, other):
         return self != other
     def __le__(self, other):
         return self == other
     def __ge__(self, other):
-        return True
+        return Wahr
     def __eq__(self, other):
         return self is other
     def __ne__(self, other):
@@ -148,11 +148,11 @@ klasse QueryTestCase(unittest.TestCase):
     def test_init(self):
         pp = pprint.PrettyPrinter()
         pp = pprint.PrettyPrinter(indent=4, width=40, depth=5,
-                                  stream=io.StringIO(), compact=True)
+                                  stream=io.StringIO(), compact=Wahr)
         pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO())
-        pp = pprint.PrettyPrinter(sort_dicts=False)
+        pp = pprint.PrettyPrinter(sort_dicts=Falsch)
         with self.assertRaises(TypeError):
-            pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO(), True)
+            pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO(), Wahr)
         self.assertRaises(ValueError, pprint.PrettyPrinter, indent=-1)
         self.assertRaises(ValueError, pprint.PrettyPrinter, depth=0)
         self.assertRaises(ValueError, pprint.PrettyPrinter, depth=-1)
@@ -162,21 +162,21 @@ klasse QueryTestCase(unittest.TestCase):
         # Verify .isrecursive() and .isreadable() w/o recursion
         pp = pprint.PrettyPrinter()
         fuer safe in (2, 2.0, 2j, "abc", [3], (2,2), {3: 3}, b"def",
-                     bytearray(b"ghi"), True, False, None, ...,
+                     bytearray(b"ghi"), Wahr, Falsch, Nichts, ...,
                      self.a, self.b):
             # module-level convenience functions
-            self.assertFalse(pprint.isrecursive(safe),
+            self.assertFalsch(pprint.isrecursive(safe),
                              "expected not isrecursive fuer %r" % (safe,))
-            self.assertTrue(pprint.isreadable(safe),
+            self.assertWahr(pprint.isreadable(safe),
                             "expected isreadable fuer %r" % (safe,))
             # PrettyPrinter methods
-            self.assertFalse(pp.isrecursive(safe),
+            self.assertFalsch(pp.isrecursive(safe),
                              "expected not isrecursive fuer %r" % (safe,))
-            self.assertTrue(pp.isreadable(safe),
+            self.assertWahr(pp.isreadable(safe),
                             "expected isreadable fuer %r" % (safe,))
 
-    def test_stdout_is_None(self):
-        with contextlib.redirect_stdout(None):
+    def test_stdout_is_Nichts(self):
+        with contextlib.redirect_stdout(Nichts):
             # smoke test - there is no output to check
             value = 'this should not fail'
             pprint.pprint(value)
@@ -200,10 +200,10 @@ klasse QueryTestCase(unittest.TestCase):
         pp = pprint.PrettyPrinter()
 
         fuer icky in self.a, self.b, self.d, (self.d, self.d), self.e, self.v, self.m, self.dv:
-            self.assertTrue(pprint.isrecursive(icky), "expected isrecursive")
-            self.assertFalse(pprint.isreadable(icky), "expected not isreadable")
-            self.assertTrue(pp.isrecursive(icky), "expected isrecursive")
-            self.assertFalse(pp.isreadable(icky), "expected not isreadable")
+            self.assertWahr(pprint.isrecursive(icky), "expected isrecursive")
+            self.assertFalsch(pprint.isreadable(icky), "expected not isreadable")
+            self.assertWahr(pp.isrecursive(icky), "expected isrecursive")
+            self.assertFalsch(pp.isreadable(icky), "expected not isreadable")
 
         # Break the cycles.
         self.d.clear()
@@ -213,14 +213,14 @@ klasse QueryTestCase(unittest.TestCase):
 
         fuer safe in self.a, self.b, self.d, (self.d, self.d), self.e, self.v, self.m, self.dv:
             # module-level convenience functions
-            self.assertFalse(pprint.isrecursive(safe),
+            self.assertFalsch(pprint.isrecursive(safe),
                              "expected not isrecursive fuer %r" % (safe,))
-            self.assertTrue(pprint.isreadable(safe),
+            self.assertWahr(pprint.isreadable(safe),
                             "expected isreadable fuer %r" % (safe,))
             # PrettyPrinter methods
-            self.assertFalse(pp.isrecursive(safe),
+            self.assertFalsch(pp.isrecursive(safe),
                              "expected not isrecursive fuer %r" % (safe,))
-            self.assertTrue(pp.isreadable(safe),
+            self.assertWahr(pp.isreadable(safe),
                             "expected isreadable fuer %r" % (safe,))
 
     def test_unreadable(self):
@@ -228,14 +228,14 @@ klasse QueryTestCase(unittest.TestCase):
         pp = pprint.PrettyPrinter()
         fuer unreadable in object(), int, pprint, pprint.isrecursive:
             # module-level convenience functions
-            self.assertFalse(pprint.isrecursive(unreadable),
+            self.assertFalsch(pprint.isrecursive(unreadable),
                              "expected not isrecursive fuer %r" % (unreadable,))
-            self.assertFalse(pprint.isreadable(unreadable),
+            self.assertFalsch(pprint.isreadable(unreadable),
                              "expected not isreadable fuer %r" % (unreadable,))
             # PrettyPrinter methods
-            self.assertFalse(pp.isrecursive(unreadable),
+            self.assertFalsch(pp.isrecursive(unreadable),
                              "expected not isrecursive fuer %r" % (unreadable,))
-            self.assertFalse(pp.isreadable(unreadable),
+            self.assertFalsch(pp.isreadable(unreadable),
                              "expected not isreadable fuer %r" % (unreadable,))
 
     def test_same_as_repr(self):
@@ -256,7 +256,7 @@ klasse QueryTestCase(unittest.TestCase):
                        {}, dict2(), dict3(),
                        {}.keys(), {}.values(), {}.items(),
                        MappingView({}), KeysView({}), ItemsView({}), ValuesView({}),
-                       self.assertTrue, pprint,
+                       self.assertWahr, pprint,
                        -6, -6, -6-6j, -1.5, "x", b"x", bytearray(b"x"),
                        (3,), [3], {3: 6},
                        (1,2), [3,4], {5: 6},
@@ -269,13 +269,13 @@ klasse QueryTestCase(unittest.TestCase):
                        MappingView({5: 6}), KeysView({5: 6}),
                        ItemsView({5: 6}), ValuesView({5: 6}),
                        range(10, -11, -1),
-                       True, False, None, ...,
+                       Wahr, Falsch, Nichts, ...,
                       ):
             native = repr(simple)
             self.assertEqual(pprint.pformat(simple), native)
             self.assertEqual(pprint.pformat(simple, width=1, indent=0)
                              .replace('\n', ' '), native)
-            self.assertEqual(pprint.pformat(simple, underscore_numbers=True), native)
+            self.assertEqual(pprint.pformat(simple, underscore_numbers=Wahr), native)
             self.assertEqual(pprint.saferepr(simple), native)
 
     def test_container_repr_override_called(self):
@@ -361,22 +361,22 @@ klasse QueryTestCase(unittest.TestCase):
         self.assertEqual(pprint.pformat(items), exp)
 
         o = range(100)
-        exp = 'KeysView({%s})' % (': None,\n '.join(map(str, o)) + ': None')
+        exp = 'KeysView({%s})' % (': Nichts,\n '.join(map(str, o)) + ': Nichts')
         keys_view = KeysView(dict.fromkeys(o))
         self.assertEqual(pprint.pformat(keys_view), exp)
 
         o = range(100)
-        exp = 'ItemsView({%s})' % (': None,\n '.join(map(str, o)) + ': None')
+        exp = 'ItemsView({%s})' % (': Nichts,\n '.join(map(str, o)) + ': Nichts')
         items_view = ItemsView(dict.fromkeys(o))
         self.assertEqual(pprint.pformat(items_view), exp)
 
         o = range(100)
-        exp = 'MappingView({%s})' % (': None,\n '.join(map(str, o)) + ': None')
+        exp = 'MappingView({%s})' % (': Nichts,\n '.join(map(str, o)) + ': Nichts')
         mapping_view = MappingView(dict.fromkeys(o))
         self.assertEqual(pprint.pformat(mapping_view), exp)
 
         o = range(100)
-        exp = 'ValuesView({%s})' % (': None,\n '.join(map(str, o)) + ': None')
+        exp = 'ValuesView({%s})' % (': Nichts,\n '.join(map(str, o)) + ': Nichts')
         values_view = ValuesView(dict.fromkeys(o))
         self.assertEqual(pprint.pformat(values_view), exp)
 
@@ -451,7 +451,7 @@ klasse QueryTestCase(unittest.TestCase):
 
     def test_integer(self):
         self.assertEqual(pprint.pformat(1234567), '1234567')
-        self.assertEqual(pprint.pformat(1234567, underscore_numbers=True), '1_234_567')
+        self.assertEqual(pprint.pformat(1234567, underscore_numbers=Wahr), '1_234_567')
 
         klasse Temperature(int):
             def __new__(cls, celsius_degrees):
@@ -481,9 +481,9 @@ klasse QueryTestCase(unittest.TestCase):
 
     def test_sort_dict(self):
         d = dict.fromkeys('cba')
-        self.assertEqual(pprint.pformat(d, sort_dicts=False), "{'c': None, 'b': None, 'a': None}")
-        self.assertEqual(pprint.pformat([d, d], sort_dicts=False),
-            "[{'c': None, 'b': None, 'a': None}, {'c': None, 'b': None, 'a': None}]")
+        self.assertEqual(pprint.pformat(d, sort_dicts=Falsch), "{'c': Nichts, 'b': Nichts, 'a': Nichts}")
+        self.assertEqual(pprint.pformat([d, d], sort_dicts=Falsch),
+            "[{'c': Nichts, 'b': Nichts, 'a': Nichts}, {'c': Nichts, 'b': Nichts, 'a': Nichts}]")
 
     def test_ordered_dict(self):
         d = collections.OrderedDict()
@@ -503,7 +503,7 @@ OrderedDict([('the', 0),
              ('a', 6),
              ('lazy', 7),
              ('dog', 8)])""")
-        self.assertEqual(pprint.pformat(d.keys(), sort_dicts=False),
+        self.assertEqual(pprint.pformat(d.keys(), sort_dicts=Falsch),
 """\
 odict_keys(['the',
  'quick',
@@ -514,7 +514,7 @@ odict_keys(['the',
  'a',
  'lazy',
  'dog'])""")
-        self.assertEqual(pprint.pformat(d.items(), sort_dicts=False),
+        self.assertEqual(pprint.pformat(d.items(), sort_dicts=Falsch),
 """\
 odict_items([('the', 0),
  ('quick', 1),
@@ -525,7 +525,7 @@ odict_items([('the', 0),
  ('a', 6),
  ('lazy', 7),
  ('dog', 8)])""")
-        self.assertEqual(pprint.pformat(d.values(), sort_dicts=False),
+        self.assertEqual(pprint.pformat(d.values(), sort_dicts=Falsch),
                          "odict_values([0, 1, 2, 3, 4, 5, 6, 7, 8])")
 
     def test_mapping_proxy(self):
@@ -569,22 +569,22 @@ mappingproxy(OrderedDict([('the', 0),
                     k = d.keys()
                     v = d.values()
                     i = d.items()
-                    self.assertEqual(pprint.pformat(k, sort_dicts=True),
+                    self.assertEqual(pprint.pformat(k, sort_dicts=Wahr),
                                      prefix + "_keys([%s])" %
                                      joiner.join(repr(key) fuer key in sorted(k)))
-                    self.assertEqual(pprint.pformat(v, sort_dicts=True),
+                    self.assertEqual(pprint.pformat(v, sort_dicts=Wahr),
                                      prefix + "_values([%s])" %
                                      joiner.join(repr(val) fuer val in sorted(v)))
-                    self.assertEqual(pprint.pformat(i, sort_dicts=True),
+                    self.assertEqual(pprint.pformat(i, sort_dicts=Wahr),
                                      prefix + "_items([%s])" %
                                      joiner.join(repr(item) fuer item in sorted(i)))
-                    self.assertEqual(pprint.pformat(k, sort_dicts=False),
+                    self.assertEqual(pprint.pformat(k, sort_dicts=Falsch),
                                      prefix + "_keys([%s])" %
                                      joiner.join(repr(key) fuer key in k))
-                    self.assertEqual(pprint.pformat(v, sort_dicts=False),
+                    self.assertEqual(pprint.pformat(v, sort_dicts=Falsch),
                                      prefix + "_values([%s])" %
                                      joiner.join(repr(val) fuer val in v))
-                    self.assertEqual(pprint.pformat(i, sort_dicts=False),
+                    self.assertEqual(pprint.pformat(i, sort_dicts=Falsch),
                                      prefix + "_items([%s])" %
                                      joiner.join(repr(item) fuer item in i))
 
@@ -604,25 +604,25 @@ mappingproxy(OrderedDict([('the', 0),
                 s = sorted(i)
                 joined_items = "({%s})" % joiner.join(["%r: %r" % (k, v) fuer (k, v) in i])
                 sorted_items = "({%s})" % joiner.join(["%r: %r" % (k, v) fuer (k, v) in s])
-                self.assertEqual(pprint.pformat(KeysView(d), sort_dicts=True),
+                self.assertEqual(pprint.pformat(KeysView(d), sort_dicts=Wahr),
                                  KeysView.__name__ + sorted_items)
-                self.assertEqual(pprint.pformat(ItemsView(d), sort_dicts=True),
+                self.assertEqual(pprint.pformat(ItemsView(d), sort_dicts=Wahr),
                                  ItemsView.__name__ + sorted_items)
-                self.assertEqual(pprint.pformat(MappingView(d), sort_dicts=True),
+                self.assertEqual(pprint.pformat(MappingView(d), sort_dicts=Wahr),
                                  MappingView.__name__ + sorted_items)
-                self.assertEqual(pprint.pformat(MV(d), sort_dicts=True),
+                self.assertEqual(pprint.pformat(MV(d), sort_dicts=Wahr),
                                  MV.__name__ + sorted_items)
-                self.assertEqual(pprint.pformat(ValuesView(d), sort_dicts=True),
+                self.assertEqual(pprint.pformat(ValuesView(d), sort_dicts=Wahr),
                                  ValuesView.__name__ + sorted_items)
-                self.assertEqual(pprint.pformat(KeysView(d), sort_dicts=False),
+                self.assertEqual(pprint.pformat(KeysView(d), sort_dicts=Falsch),
                                  KeysView.__name__ + joined_items)
-                self.assertEqual(pprint.pformat(ItemsView(d), sort_dicts=False),
+                self.assertEqual(pprint.pformat(ItemsView(d), sort_dicts=Falsch),
                                  ItemsView.__name__ + joined_items)
-                self.assertEqual(pprint.pformat(MappingView(d), sort_dicts=False),
+                self.assertEqual(pprint.pformat(MappingView(d), sort_dicts=Falsch),
                                  MappingView.__name__ + joined_items)
-                self.assertEqual(pprint.pformat(MV(d), sort_dicts=False),
+                self.assertEqual(pprint.pformat(MV(d), sort_dicts=Falsch),
                                  MV.__name__ + joined_items)
-                self.assertEqual(pprint.pformat(ValuesView(d), sort_dicts=False),
+                self.assertEqual(pprint.pformat(ValuesView(d), sort_dicts=Falsch),
                                  ValuesView.__name__ + joined_items)
 
     def test_nested_views(self):
@@ -644,15 +644,15 @@ mappingproxy(OrderedDict([('the', 0),
 
     def test_unorderable_items_views(self):
         """Check that views with unorderable items have stable sorting."""
-        d = dict((((3+1j), 3), ((1+1j), (1+0j)), (1j, 0j), (500, None), (499, None)))
+        d = dict((((3+1j), 3), ((1+1j), (1+0j)), (1j, 0j), (500, Nichts), (499, Nichts)))
         iv = ItemsView(d)
         self.assertEqual(pprint.pformat(iv),
                          pprint.pformat(iv))
-        self.assertTrue(pprint.pformat(iv).endswith(", 499: None, 500: None})"),
+        self.assertWahr(pprint.pformat(iv).endswith(", 499: Nichts, 500: Nichts})"),
                         pprint.pformat(iv))
         self.assertEqual(pprint.pformat(d.items()),  # Won't be equal unless _safe_tuple
                          pprint.pformat(d.items()))  # is used in _safe_repr
-        self.assertTrue(pprint.pformat(d.items()).endswith(", (499, None), (500, None)])"))
+        self.assertWahr(pprint.pformat(d.items()).endswith(", (499, Nichts), (500, Nichts)])"))
 
     def test_mapping_view_subclass_no_mapping(self):
         klasse BMV(MappingView):
@@ -666,8 +666,8 @@ mappingproxy(OrderedDict([('the', 0),
     def test_mapping_subclass_repr(self):
         """Test that mapping ABC views use their ._mapping's __repr__."""
         klasse MyMapping(Mapping):
-            def __init__(self, keys=None):
-                self._keys = {} wenn keys is None sonst dict.fromkeys(keys)
+            def __init__(self, keys=Nichts):
+                self._keys = {} wenn keys is Nichts sonst dict.fromkeys(keys)
 
             def __getitem__(self, item):
                 return self._keys[item]
@@ -768,18 +768,18 @@ AdvancedNamespace(the=0,
     def test_small_dataclass(self):
         dc = dataclass1("text", 123)
         formatted = pprint.pformat(dc)
-        self.assertEqual(formatted, "dataclass1(field1='text', field2=123, field3=False)")
+        self.assertEqual(formatted, "dataclass1(field1='text', field2=123, field3=Falsch)")
 
     def test_larger_dataclass(self):
-        dc = dataclass1("some fairly long text", int(1e10), True)
+        dc = dataclass1("some fairly long text", int(1e10), Wahr)
         formatted = pprint.pformat([dc, dc], width=60, indent=4)
         self.assertEqual(formatted, """\
 [   dataclass1(field1='some fairly long text',
                field2=10000000000,
-               field3=True),
+               field3=Wahr),
     dataclass1(field1='some fairly long text',
                field2=10000000000,
-               field3=True)]""")
+               field3=Wahr)]""")
 
     def test_dataclass_with_repr(self):
         dc = dataclass2()
@@ -795,7 +795,7 @@ AdvancedNamespace(the=0,
         )
 
     def test_recursive_dataclass(self):
-        dc = dataclass4(None)
+        dc = dataclass4(Nichts)
         dc.a = dc
         formatted = pprint.pformat(dc, width=10)
         self.assertEqual(formatted, """\
@@ -803,8 +803,8 @@ dataclass4(a=...,
            b=1)""")
 
     def test_cyclic_dataclass(self):
-        dc5 = dataclass5(None)
-        dc6 = dataclass6(None)
+        dc5 = dataclass5(Nichts)
+        dc6 = dataclass6(Nichts)
         dc5.a = dc6
         dc6.c = dc5
         formatted = pprint.pformat(dc5, width=10)
@@ -887,9 +887,9 @@ frozenset2({0,
         # list.sort() method is undefined fuer lists of sets."
         #
         # >>> frozenset({0}) < frozenset({1})
-        # False
+        # Falsch
         # >>> frozenset({1}) < frozenset({0})
-        # False
+        # Falsch
         #
         # In this test we list all possible invariants of the result
         # fuer unordered frozensets.
@@ -1015,18 +1015,18 @@ frozenset2({0,
         self.assertEqual(clean(pprint.pformat(frozenset(keys))),
             'frozenset({' + ','.join(map(repr, skeys)) + '})')
         self.assertEqual(clean(pprint.pformat(dict.fromkeys(keys))),
-            '{' + ','.join('%r:None' % k fuer k in skeys) + '}')
+            '{' + ','.join('%r:Nichts' % k fuer k in skeys) + '}')
         self.assertEqual(clean(pprint.pformat(dict.fromkeys(keys).keys())),
             'dict_keys([' + ','.join('%r' % k fuer k in skeys) + '])')
         self.assertEqual(clean(pprint.pformat(dict.fromkeys(keys).items())),
-            'dict_items([' + ','.join('(%r,None)' % k fuer k in skeys) + '])')
+            'dict_items([' + ','.join('(%r,Nichts)' % k fuer k in skeys) + '])')
 
         # Issue 10017: TypeError on user-defined types as dict keys.
         self.assertEqual(pprint.pformat({Unorderable: 0, 1: 0}),
                          '{1: 0, ' + repr(Unorderable) +': 0}')
 
         # Issue 14998: TypeError on tuples with NoneTypes as dict keys.
-        keys = [(1,), (None,)]
+        keys = [(1,), (Nichts,)]
         self.assertEqual(pprint.pformat(dict.fromkeys(keys, 0)),
                          '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id)))
 
@@ -1046,9 +1046,9 @@ frozenset2({0,
                          '{%r,\n %r}' % (a, b))
         # dict
         self.assertEqual(pprint.pformat(dict.fromkeys([b, a]), width=1),
-                         '{%r: None,\n %r: None}' % (a, b))
+                         '{%r: Nichts,\n %r: Nichts}' % (a, b))
         self.assertEqual(pprint.pformat(dict.fromkeys([a, b]), width=1),
-                         '{%r: None,\n %r: None}' % (a, b))
+                         '{%r: Nichts,\n %r: Nichts}' % (a, b))
 
     def test_str_wrap(self):
         # pprint tries to wrap strings intelligently
@@ -1120,7 +1120,7 @@ frozenset2({0,
   14, 15],
  [], [0], [0, 1], [0, 1, 2], [0, 1, 2, 3],
  [0, 1, 2, 3, 4]]"""
-        self.assertEqual(pprint.pformat(o, width=47, compact=True), expected)
+        self.assertEqual(pprint.pformat(o, width=47, compact=Wahr), expected)
 
     def test_compact_width(self):
         levels = 20
@@ -1129,7 +1129,7 @@ frozenset2({0,
         fuer i in range(levels - 1):
             o = [o]
         fuer w in range(levels * 2 + 1, levels + 3 * number - 1):
-            lines = pprint.pformat(o, width=w, compact=True).splitlines()
+            lines = pprint.pformat(o, width=w, compact=Wahr).splitlines()
             maxwidth = max(map(len, lines))
             self.assertLessEqual(maxwidth, w)
             self.assertGreater(maxwidth, w - 3)

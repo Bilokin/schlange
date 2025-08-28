@@ -16,7 +16,7 @@ from .test_misc import decode_stderr
 # Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 
-NULL = None
+NULL = Nichts
 
 klasse CustomError(Exception):
     pass
@@ -54,7 +54,7 @@ klasse Test_Exceptions(unittest.TestCase):
         except ValueError as e:
             tb = e.__traceback__
             orig_sys_exc_info = sys.exc_info()
-            orig_exc_info = _testcapi.set_exc_info(new_exc.__class__, new_exc, None)
+            orig_exc_info = _testcapi.set_exc_info(new_exc.__class__, new_exc, Nichts)
             new_sys_exc_info = sys.exc_info()
             new_exc_info = _testcapi.set_exc_info(*orig_exc_info)
             reset_sys_exc_info = sys.exc_info()
@@ -64,10 +64,10 @@ klasse Test_Exceptions(unittest.TestCase):
             self.assertSequenceEqual(orig_exc_info, (raised_exception.__class__, raised_exception, tb))
             self.assertSequenceEqual(orig_sys_exc_info, orig_exc_info)
             self.assertSequenceEqual(reset_sys_exc_info, orig_exc_info)
-            self.assertSequenceEqual(new_exc_info, (new_exc.__class__, new_exc, None))
+            self.assertSequenceEqual(new_exc_info, (new_exc.__class__, new_exc, Nichts))
             self.assertSequenceEqual(new_sys_exc_info, new_exc_info)
         sonst:
-            self.assertTrue(False)
+            self.assertWahr(Falsch)
 
     def test_warn_with_stacklevel(self):
         code = textwrap.dedent('''\
@@ -144,7 +144,7 @@ klasse Test_FatalError(unittest.TestCase):
         # Mark _testcapi as stdlib module, but not sys
         expected = ('sys',)
         not_expected = ('_testcapi',)
-        code = """if True:
+        code = """if Wahr:
             import _testcapi, sys
             sys.stdlib_module_names = frozenset({"_testcapi"})
             _testcapi.fatal_error(b"MESSAGE")
@@ -169,7 +169,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         with self.assertRaises(ValueError):
             _testcapi.err_restore(ValueError, 1)
         with self.assertRaises(ValueError):
-            _testcapi.err_restore(ValueError, 1, None)
+            _testcapi.err_restore(ValueError, 1, Nichts)
         with self.assertRaises(ValueError):
             _testcapi.err_restore(ValueError, ValueError())
         try:
@@ -300,7 +300,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
 
         with self.assertRaises(FileNotFoundError) as e:
             setfromerrnowithfilename(ENOENT, OSError, NULL)
-        self.assertIsNone(e.exception.filename)
+        self.assertIsNichts(e.exception.filename)
 
         with self.assertRaises(OSError) as e:
             setfromerrnowithfilename(0, OSError, b'file')
@@ -325,7 +325,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             self.assertEqual(str(cm.unraisable.exc_value), 'oops!')
             self.assertEqual(cm.unraisable.exc_traceback.tb_lineno,
                              firstline + 6)
-            self.assertIsNone(cm.unraisable.err_msg)
+            self.assertIsNichts(cm.unraisable.err_msg)
             self.assertEqual(cm.unraisable.object, hex)
 
         with support.catch_unraisable_exception() as cm:
@@ -334,14 +334,14 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             self.assertEqual(str(cm.unraisable.exc_value), 'oops!')
             self.assertEqual(cm.unraisable.exc_traceback.tb_lineno,
                              firstline + 15)
-            self.assertIsNone(cm.unraisable.err_msg)
-            self.assertIsNone(cm.unraisable.object)
+            self.assertIsNichts(cm.unraisable.err_msg)
+            self.assertIsNichts(cm.unraisable.object)
 
     @force_not_colorized
     def test_err_writeunraisable_lines(self):
         writeunraisable = _testcapi.err_writeunraisable
 
-        with (support.swap_attr(sys, 'unraisablehook', None),
+        with (support.swap_attr(sys, 'unraisablehook', Nichts),
               support.captured_stderr() as stderr):
             writeunraisable(CustomError('oops!'), hex)
         lines = stderr.getvalue().splitlines()
@@ -349,7 +349,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         self.assertEqual(lines[1], 'Traceback (most recent call last):')
         self.assertEqual(lines[-1], f'{__name__}.CustomError: oops!')
 
-        with (support.swap_attr(sys, 'unraisablehook', None),
+        with (support.swap_attr(sys, 'unraisablehook', Nichts),
               support.captured_stderr() as stderr):
             writeunraisable(CustomError('oops!'), NULL)
         lines = stderr.getvalue().splitlines()
@@ -371,7 +371,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             self.assertEqual(cm.unraisable.exc_traceback.tb_lineno,
                              firstline + 6)
             self.assertEqual(cm.unraisable.err_msg, 'Error in []')
-            self.assertIsNone(cm.unraisable.object)
+            self.assertIsNichts(cm.unraisable.object)
 
         with support.catch_unraisable_exception() as cm:
             formatunraisable(CustomError('oops!'), b'undecodable \xff')
@@ -379,8 +379,8 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             self.assertEqual(str(cm.unraisable.exc_value), 'oops!')
             self.assertEqual(cm.unraisable.exc_traceback.tb_lineno,
                              firstline + 15)
-            self.assertIsNone(cm.unraisable.err_msg)
-            self.assertIsNone(cm.unraisable.object)
+            self.assertIsNichts(cm.unraisable.err_msg)
+            self.assertIsNichts(cm.unraisable.object)
 
         with support.catch_unraisable_exception() as cm:
             formatunraisable(CustomError('oops!'), NULL)
@@ -388,14 +388,14 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             self.assertEqual(str(cm.unraisable.exc_value), 'oops!')
             self.assertEqual(cm.unraisable.exc_traceback.tb_lineno,
                              firstline + 24)
-            self.assertIsNone(cm.unraisable.err_msg)
-            self.assertIsNone(cm.unraisable.object)
+            self.assertIsNichts(cm.unraisable.err_msg)
+            self.assertIsNichts(cm.unraisable.object)
 
     @force_not_colorized
     def test_err_formatunraisable_lines(self):
         formatunraisable = _testcapi.err_formatunraisable
 
-        with (support.swap_attr(sys, 'unraisablehook', None),
+        with (support.swap_attr(sys, 'unraisablehook', Nichts),
               support.captured_stderr() as stderr):
             formatunraisable(CustomError('oops!'), b'Error in %R', [])
         lines = stderr.getvalue().splitlines()
@@ -403,14 +403,14 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         self.assertEqual(lines[1], 'Traceback (most recent call last):')
         self.assertEqual(lines[-1], f'{__name__}.CustomError: oops!')
 
-        with (support.swap_attr(sys, 'unraisablehook', None),
+        with (support.swap_attr(sys, 'unraisablehook', Nichts),
               support.captured_stderr() as stderr):
             formatunraisable(CustomError('oops!'), b'undecodable \xff')
         lines = stderr.getvalue().splitlines()
         self.assertEqual(lines[0], 'Traceback (most recent call last):')
         self.assertEqual(lines[-1], f'{__name__}.CustomError: oops!')
 
-        with (support.swap_attr(sys, 'unraisablehook', None),
+        with (support.swap_attr(sys, 'unraisablehook', Nichts),
               support.captured_stderr() as stderr):
             formatunraisable(CustomError('oops!'), NULL)
         lines = stderr.getvalue().splitlines()
@@ -582,7 +582,7 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
 
     def test_invalid_args(self):
         with self.assertRaisesRegex(TypeError, "orig must be an exception"):
-            _testcapi.unstable_exc_prep_reraise_star(42, [None])
+            _testcapi.unstable_exc_prep_reraise_star(42, [Nichts])
 
         with self.assertRaisesRegex(TypeError, "excs must be a list"):
             _testcapi.unstable_exc_prep_reraise_star(self.orig, 42)
@@ -600,14 +600,14 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
 
     def test_nothing_to_reraise(self):
         self.assertEqual(
-            _testcapi.unstable_exc_prep_reraise_star(self.orig, [None]), None)
+            _testcapi.unstable_exc_prep_reraise_star(self.orig, [Nichts]), Nichts)
 
         try:
             raise ValueError(42)
         except ValueError as e:
             orig = e
         self.assertEqual(
-            _testcapi.unstable_exc_prep_reraise_star(orig, [None]), None)
+            _testcapi.unstable_exc_prep_reraise_star(orig, [Nichts]), Nichts)
 
     def test_reraise_orig(self):
         orig = self.orig
@@ -623,7 +623,7 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
             ([rest, match], orig),
             ([match], match),
             ([rest], rest),
-            ([], None),
+            ([], Nichts),
         ]
 
         fuer input, expected in test_cases:

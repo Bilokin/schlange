@@ -13,7 +13,7 @@ klasse Slot:
 
     def __init__(self, initial=_NOT_SET, *,
                  default=_NOT_SET,
-                 readonly=False,
+                 readonly=Falsch,
                  ):
         self.initial = initial
         self.default = default
@@ -27,10 +27,10 @@ klasse Slot:
         # instead we monkey-patch __del__ on the attached klasse to clear
         # the instance.
         self.instances = {}
-        self.name = None
+        self.name = Nichts
 
     def __set_name__(self, cls, name):
-        wenn self.name is not None:
+        wenn self.name is not Nichts:
             raise TypeError('already used')
         self.name = name
         try:
@@ -41,7 +41,7 @@ klasse Slot:
         self._ensure___del__(cls, slotnames)
 
     def __get__(self, obj, cls):
-        wenn obj is None:  # called on the class
+        wenn obj is Nichts:  # called on the class
             return self
         try:
             value = self.instances[id(obj)]
@@ -71,16 +71,16 @@ klasse Slot:
         try:
             old___del__ = cls.__del__
         except AttributeError:
-            old___del__ = (lambda s: None)
+            old___del__ = (lambda s: Nichts)
         sonst:
-            wenn getattr(old___del__, '_slotted', False):
+            wenn getattr(old___del__, '_slotted', Falsch):
                 return
 
         def __del__(_self):
             fuer name in slotnames:
                 delattr(_self, name)
             old___del__(_self)
-        __del__._slotted = True
+        __del__._slotted = Wahr
         cls.__del__ = __del__
 
     def set(self, obj, value):
@@ -103,15 +103,15 @@ klasse classonly:
     def __init__(self, value):
         self.value = value
         self.getter = classmethod(value).__get__
-        self.name = None
+        self.name = Nichts
 
     def __set_name__(self, cls, name):
-        wenn self.name is not None:
+        wenn self.name is not Nichts:
             raise TypeError('already used')
         self.name = name
 
     def __get__(self, obj, cls):
-        wenn obj is not None:
+        wenn obj is not Nichts:
             raise AttributeError(self.name)
         # called on the class
-        return self.getter(None, cls)
+        return self.getter(Nichts, cls)

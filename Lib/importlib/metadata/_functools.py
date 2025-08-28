@@ -3,7 +3,7 @@ import functools
 
 
 # from jaraco.functools 3.3
-def method_cache(method, cache_wrapper=None):
+def method_cache(method, cache_wrapper=Nichts):
     """
     Wrap lru_cache to support storing the cache data in the object instances.
 
@@ -80,7 +80,7 @@ def method_cache(method, cache_wrapper=None):
         return cached_method(*args, **kwargs)
 
     # Support cache clear even before cache has been created.
-    wrapper.cache_clear = lambda: None
+    wrapper.cache_clear = lambda: Nichts
 
     return wrapper
 
@@ -88,17 +88,17 @@ def method_cache(method, cache_wrapper=None):
 # From jaraco.functools 3.3
 def pass_none(func):
     """
-    Wrap func so it's not called wenn its first param is None
+    Wrap func so it's not called wenn its first param is Nichts
 
     >>> print_text = pass_none(print)
     >>> print_text('text')
     text
-    >>> print_text(None)
+    >>> print_text(Nichts)
     """
 
     @functools.wraps(func)
     def wrapper(param, *args, **kwargs):
-        wenn param is not None:
+        wenn param is not Nichts:
             return func(param, *args, **kwargs)
 
     return wrapper

@@ -44,14 +44,14 @@ from pegen.grammar import (
 klasse RuleCollectorVisitor(GrammarVisitor):
     """Visitor that invokes a provided callmaker visitor with just the NamedItem nodes"""
 
-    def __init__(self, rules: Dict[str, Rule], callmakervisitor: GrammarVisitor) -> None:
+    def __init__(self, rules: Dict[str, Rule], callmakervisitor: GrammarVisitor) -> Nichts:
         self.rulses = rules
         self.callmaker = callmakervisitor
 
-    def visit_Rule(self, rule: Rule) -> None:
+    def visit_Rule(self, rule: Rule) -> Nichts:
         self.visit(rule.flatten())
 
-    def visit_NamedItem(self, item: NamedItem) -> None:
+    def visit_NamedItem(self, item: NamedItem) -> Nichts:
         self.callmaker.visit(item)
 
 
@@ -63,7 +63,7 @@ klasse KeywordCollectorVisitor(GrammarVisitor):
         self.keywords = keywords
         self.soft_keywords = soft_keywords
 
-    def visit_StringLeaf(self, node: StringLeaf) -> None:
+    def visit_StringLeaf(self, node: StringLeaf) -> Nichts:
         val = ast.literal_eval(node.value)
         wenn re.match(r"[a-zA-Z_]\w*\Z", val):  # This is a keyword
             wenn node.value.endswith("'") and node.value not in self.keywords:
@@ -87,11 +87,11 @@ klasse RuleCheckingVisitor(GrammarVisitor):
             self.tokens.add("TSTRING_END")
             self.tokens.add("TSTRING_MIDDLE")
 
-    def visit_NameLeaf(self, node: NameLeaf) -> None:
+    def visit_NameLeaf(self, node: NameLeaf) -> Nichts:
         wenn node.value not in self.rules and node.value not in self.tokens:
             raise GrammarError(f"Dangling reference to rule {node.value!r}")
 
-    def visit_NamedItem(self, node: NamedItem) -> None:
+    def visit_NamedItem(self, node: NamedItem) -> Nichts:
         wenn node.name and node.name.startswith("_"):
             raise GrammarError(f"Variable names cannot start with underscore: '{node.name}'")
         self.visit(node.item)
@@ -120,13 +120,13 @@ klasse ParserGenerator:
         self.all_rules: Dict[str, Rule] = self.rules.copy()  # Rules + temporal rules
         self._local_variable_stack: List[List[str]] = []
 
-    def validate_rule_names(self) -> None:
+    def validate_rule_names(self) -> Nichts:
         fuer rule in self.rules:
             wenn rule.startswith("_"):
                 raise GrammarError(f"Rule names cannot start with underscore: '{rule}'")
 
     @contextlib.contextmanager
-    def local_variable_context(self) -> Iterator[None]:
+    def local_variable_context(self) -> Iterator[Nichts]:
         self._local_variable_stack.append([])
         yield
         self._local_variable_stack.pop()
@@ -136,36 +136,36 @@ klasse ParserGenerator:
         return self._local_variable_stack[-1]
 
     @abstractmethod
-    def generate(self, filename: str) -> None:
+    def generate(self, filename: str) -> Nichts:
         raise NotImplementedError
 
     @contextlib.contextmanager
-    def indent(self) -> Iterator[None]:
+    def indent(self) -> Iterator[Nichts]:
         self.level += 1
         try:
             yield
         finally:
             self.level -= 1
 
-    def print(self, *args: object) -> None:
+    def print(self, *args: object) -> Nichts:
         wenn not args:
             print(file=self.file)
         sonst:
             print("    " * self.level, end="", file=self.file)
             print(*args, file=self.file)
 
-    def printblock(self, lines: str) -> None:
+    def printblock(self, lines: str) -> Nichts:
         fuer line in lines.splitlines():
             self.print(line)
 
-    def collect_rules(self) -> None:
+    def collect_rules(self) -> Nichts:
         keyword_collector = KeywordCollectorVisitor(self, self.keywords, self.soft_keywords)
         fuer rule in self.all_rules.values():
             keyword_collector.visit(rule)
 
         rule_collector = RuleCollectorVisitor(self.rules, self.callmakervisitor)
         done: Set[str] = set()
-        while True:
+        while Wahr:
             computed_rules = list(self.all_rules)
             todo = [i fuer i in computed_rules wenn i not in done]
             wenn not todo:
@@ -181,7 +181,7 @@ klasse ParserGenerator:
     def artificial_rule_from_rhs(self, rhs: Rhs) -> str:
         self.counter += 1
         name = f"_tmp_{self.counter}"  # TODO: Pick a nicer name.
-        self.all_rules[name] = Rule(name, None, rhs)
+        self.all_rules[name] = Rule(name, Nichts, rhs)
         return name
 
     def artificial_rule_from_repeat(self, node: Plain, is_repeat1: bool) -> str:
@@ -191,19 +191,19 @@ klasse ParserGenerator:
         sonst:
             prefix = "_loop0_"
         name = f"{prefix}{self.counter}"
-        self.all_rules[name] = Rule(name, None, Rhs([Alt([NamedItem(None, node)])]))
+        self.all_rules[name] = Rule(name, Nichts, Rhs([Alt([NamedItem(Nichts, node)])]))
         return name
 
     def artificial_rule_from_gather(self, node: Gather) -> str:
         self.counter += 1
         extra_function_name = f"_loop0_{self.counter}"
         extra_function_alt = Alt(
-            [NamedItem(None, node.separator), NamedItem("elem", node.node)],
+            [NamedItem(Nichts, node.separator), NamedItem("elem", node.node)],
             action="elem",
         )
         self.all_rules[extra_function_name] = Rule(
             extra_function_name,
-            None,
+            Nichts,
             Rhs([extra_function_alt]),
         )
         self.counter += 1
@@ -213,7 +213,7 @@ klasse ParserGenerator:
         )
         self.all_rules[name] = Rule(
             name,
-            None,
+            Nichts,
             Rhs([alt]),
         )
         return name
@@ -229,14 +229,14 @@ klasse ParserGenerator:
 
 
 klasse NullableVisitor(GrammarVisitor):
-    def __init__(self, rules: Dict[str, Rule]) -> None:
+    def __init__(self, rules: Dict[str, Rule]) -> Nichts:
         self.rules = rules
         self.visited: Set[Any] = set()
         self.nullables: Set[Union[Rule, NamedItem]] = set()
 
     def visit_Rule(self, rule: Rule) -> bool:
         wenn rule in self.visited:
-            return False
+            return Falsch
         self.visited.add(rule)
         wenn self.visit(rule.rhs):
             self.nullables.add(rule)
@@ -245,35 +245,35 @@ klasse NullableVisitor(GrammarVisitor):
     def visit_Rhs(self, rhs: Rhs) -> bool:
         fuer alt in rhs.alts:
             wenn self.visit(alt):
-                return True
-        return False
+                return Wahr
+        return Falsch
 
     def visit_Alt(self, alt: Alt) -> bool:
         fuer item in alt.items:
             wenn not self.visit(item):
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def visit_Forced(self, force: Forced) -> bool:
-        return True
+        return Wahr
 
     def visit_LookAhead(self, lookahead: Lookahead) -> bool:
-        return True
+        return Wahr
 
     def visit_Opt(self, opt: Opt) -> bool:
-        return True
+        return Wahr
 
     def visit_Repeat0(self, repeat: Repeat0) -> bool:
-        return True
+        return Wahr
 
     def visit_Repeat1(self, repeat: Repeat1) -> bool:
-        return False
+        return Falsch
 
     def visit_Gather(self, gather: Gather) -> bool:
-        return False
+        return Falsch
 
     def visit_Cut(self, cut: Cut) -> bool:
-        return False
+        return Falsch
 
     def visit_Group(self, group: Group) -> bool:
         return self.visit(group.rhs)
@@ -287,7 +287,7 @@ klasse NullableVisitor(GrammarVisitor):
         wenn node.value in self.rules:
             return self.visit(self.rules[node.value])
         # Token or unknown; never empty.
-        return False
+        return Falsch
 
     def visit_StringLeaf(self, node: StringLeaf) -> bool:
         # The string token '' is considered empty.
@@ -306,7 +306,7 @@ def compute_nullables(rules: Dict[str, Rule]) -> Set[Any]:
 
 
 klasse InitialNamesVisitor(GrammarVisitor):
-    def __init__(self, rules: Dict[str, Rule]) -> None:
+    def __init__(self, rules: Dict[str, Rule]) -> Nichts:
         self.rules = rules
         self.nullables = compute_nullables(rules)
 
@@ -352,7 +352,7 @@ def compute_left_recursives(
     fuer scc in sccs:
         wenn len(scc) > 1:
             fuer name in scc:
-                rules[name].left_recursive = True
+                rules[name].left_recursive = Wahr
             # Try to find a leader such that all cycles go through it.
             leaders = set(scc)
             fuer start in scc:
@@ -365,12 +365,12 @@ def compute_left_recursives(
                         )
             # print("Leaders:", leaders)
             leader = min(leaders)  # Pick an arbitrary leader from the candidates.
-            rules[leader].leader = True
+            rules[leader].leader = Wahr
         sonst:
             name = min(scc)  # The only element.
             wenn name in graph[name]:
-                rules[name].left_recursive = True
-                rules[name].leader = True
+                rules[name].left_recursive = Wahr
+                rules[name].leader = Wahr
     return graph, sccs
 
 

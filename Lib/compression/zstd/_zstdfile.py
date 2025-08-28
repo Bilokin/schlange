@@ -31,7 +31,7 @@ klasse ZstdFile(_streams.BaseStream):
     FLUSH_FRAME = ZstdCompressor.FLUSH_FRAME
 
     def __init__(self, file, /, mode='r', *,
-                 level=None, options=None, zstd_dict=None):
+                 level=Nichts, options=Nichts, zstd_dict=Nichts):
         """Open a Zstandard compressed file in binary mode.
 
         *file* can be either an file-like object, or a file name to open.
@@ -50,23 +50,23 @@ klasse ZstdFile(_streams.BaseStream):
         *zstd_dict* is an optional ZstdDict object, a pre-trained Zstandard
         dictionary. See train_dict() to train ZstdDict on sample data.
         """
-        self._fp = None
-        self._close_fp = False
+        self._fp = Nichts
+        self._close_fp = Falsch
         self._mode = _MODE_CLOSED
-        self._buffer = None
+        self._buffer = Nichts
 
         wenn not isinstance(mode, str):
             raise ValueError('mode must be a str')
-        wenn options is not None and not isinstance(options, dict):
-            raise TypeError('options must be a dict or None')
+        wenn options is not Nichts and not isinstance(options, dict):
+            raise TypeError('options must be a dict or Nichts')
         mode = mode.removesuffix('b')  # handle rb, wb, xb, ab
         wenn mode == 'r':
-            wenn level is not None:
+            wenn level is not Nichts:
                 raise TypeError('level is illegal in read mode')
             self._mode = _MODE_READ
         sowenn mode in {'w', 'a', 'x'}:
-            wenn level is not None and not isinstance(level, int):
-                raise TypeError('level must be int or None')
+            wenn level is not Nichts and not isinstance(level, int):
+                raise TypeError('level must be int or Nichts')
             self._mode = _MODE_WRITE
             self._compressor = ZstdCompressor(level=level, options=options,
                                               zstd_dict=zstd_dict)
@@ -76,7 +76,7 @@ klasse ZstdFile(_streams.BaseStream):
 
         wenn isinstance(file, (str, bytes, PathLike)):
             self._fp = io.open(file, f'{mode}b')
-            self._close_fp = True
+            self._close_fp = Wahr
         sowenn ((mode == 'r' and hasattr(file, 'read'))
                 or (mode != 'r' and hasattr(file, 'write'))):
             self._fp = file
@@ -99,24 +99,24 @@ klasse ZstdFile(_streams.BaseStream):
         May be called multiple times. Once the file has been closed,
         any other operation on it will raise ValueError.
         """
-        wenn self._fp is None:
+        wenn self._fp is Nichts:
             return
         try:
             wenn self._mode == _MODE_READ:
-                wenn getattr(self, '_buffer', None):
+                wenn getattr(self, '_buffer', Nichts):
                     self._buffer.close()
-                    self._buffer = None
+                    self._buffer = Nichts
             sowenn self._mode == _MODE_WRITE:
                 self.flush(self.FLUSH_FRAME)
-                self._compressor = None
+                self._compressor = Nichts
         finally:
             self._mode = _MODE_CLOSED
             try:
                 wenn self._close_fp:
                     self._fp.close()
             finally:
-                self._fp = None
-                self._close_fp = False
+                self._fp = Nichts
+                self._close_fp = Falsch
 
     def write(self, data, /):
         """Write a bytes-like object *data* to the file.
@@ -167,7 +167,7 @@ klasse ZstdFile(_streams.BaseStream):
         If size is negative or omitted, read until EOF is reached.
         Returns b'' wenn the file is already at EOF.
         """
-        wenn size is None:
+        wenn size is Nichts:
             size = -1
         self._check_can_read()
         return self._buffer.read(size)
@@ -274,7 +274,7 @@ klasse ZstdFile(_streams.BaseStream):
 
     @property
     def closed(self):
-        """True wenn this file is closed."""
+        """Wahr wenn this file is closed."""
         return self._mode == _MODE_CLOSED
 
     def seekable(self):
@@ -292,8 +292,8 @@ klasse ZstdFile(_streams.BaseStream):
         return self._mode == _MODE_WRITE
 
 
-def open(file, /, mode='rb', *, level=None, options=None, zstd_dict=None,
-         encoding=None, errors=None, newline=None):
+def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
+         encoding=Nichts, errors=Nichts, newline=Nichts):
     """Open a Zstandard compressed file in binary or text mode.
 
     file can be either a file name (given as a str, bytes, or PathLike object),
@@ -329,11 +329,11 @@ def open(file, /, mode='rb', *, level=None, options=None, zstd_dict=None,
         wenn 'b' in mode:
             raise ValueError(f'Invalid mode: {mode!r}')
     sonst:
-        wenn encoding is not None:
+        wenn encoding is not Nichts:
             raise ValueError('Argument "encoding" not supported in binary mode')
-        wenn errors is not None:
+        wenn errors is not Nichts:
             raise ValueError('Argument "errors" not supported in binary mode')
-        wenn newline is not None:
+        wenn newline is not Nichts:
             raise ValueError('Argument "newline" not supported in binary mode')
 
     binary_file = ZstdFile(file, mode, level=level, options=options,

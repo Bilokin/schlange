@@ -63,14 +63,14 @@ klasse TestCurses(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         wenn verbose:
-            print(f'TERM={term}', file=sys.stderr, flush=True)
+            print(f'TERM={term}', file=sys.stderr, flush=Wahr)
         # testing setupterm() inside initscr/endwin
         # causes terminal breakage
         stdout_fd = sys.__stdout__.fileno()
         curses.setupterm(fd=stdout_fd)
 
     def setUp(self):
-        self.isatty = True
+        self.isatty = Wahr
         self.output = sys.__stdout__
         stdout_fd = sys.__stdout__.fileno()
         wenn not sys.__stdout__.isatty():
@@ -97,19 +97,19 @@ klasse TestCurses(unittest.TestCase):
                     # least the garbage control sequences will not be mixed
                     # with the testing report.
                     tmp = tempfile.TemporaryFile(mode='wb', buffering=0)
-                    self.isatty = False
+                    self.isatty = Falsch
                 self.addCleanup(tmp.close)
-                self.output = None
+                self.output = Nichts
             os.dup2(tmp.fileno(), stdout_fd)
 
         self.save_signals = SaveSignals()
         self.save_signals.save()
         self.addCleanup(self.save_signals.restore)
-        wenn verbose and self.output is not None:
+        wenn verbose and self.output is not Nichts:
             # just to make the test output a little more readable
             sys.stderr.flush()
             sys.stdout.flush()
-            print(file=self.output, flush=True)
+            print(file=self.output, flush=Wahr)
         self.stdscr = curses.initscr()
         wenn self.isatty:
             curses.savetty()
@@ -127,8 +127,8 @@ klasse TestCurses(unittest.TestCase):
     def test_use_env(self):
         # TODO: Should be called before initscr() or newterm() are called.
         # TODO: use_tioctl()
-        curses.use_env(False)
-        curses.use_env(True)
+        curses.use_env(Falsch)
+        curses.use_env(Wahr)
 
     def test_error(self):
         self.assertIsSubclass(curses.error, Exception)
@@ -208,23 +208,23 @@ klasse TestCurses(unittest.TestCase):
         stdscr = self.stdscr
         # touchwin()/untouchwin()/is_wintouched()
         stdscr.refresh()
-        self.assertIs(stdscr.is_wintouched(), False)
+        self.assertIs(stdscr.is_wintouched(), Falsch)
         stdscr.touchwin()
-        self.assertIs(stdscr.is_wintouched(), True)
+        self.assertIs(stdscr.is_wintouched(), Wahr)
         stdscr.refresh()
-        self.assertIs(stdscr.is_wintouched(), False)
+        self.assertIs(stdscr.is_wintouched(), Falsch)
         stdscr.touchwin()
-        self.assertIs(stdscr.is_wintouched(), True)
+        self.assertIs(stdscr.is_wintouched(), Wahr)
         stdscr.untouchwin()
-        self.assertIs(stdscr.is_wintouched(), False)
+        self.assertIs(stdscr.is_wintouched(), Falsch)
 
         # touchline()/untouchline()/is_linetouched()
         stdscr.touchline(5, 2)
-        self.assertIs(stdscr.is_linetouched(5), True)
-        self.assertIs(stdscr.is_linetouched(6), True)
-        self.assertIs(stdscr.is_wintouched(), True)
-        stdscr.touchline(5, 1, False)
-        self.assertIs(stdscr.is_linetouched(5), False)
+        self.assertIs(stdscr.is_linetouched(5), Wahr)
+        self.assertIs(stdscr.is_linetouched(6), Wahr)
+        self.assertIs(stdscr.is_wintouched(), Wahr)
+        stdscr.touchline(5, 1, Falsch)
+        self.assertIs(stdscr.is_linetouched(5), Falsch)
 
         # syncup()
         win = stdscr.subwin(10, 15, 2, 5)
@@ -232,21 +232,21 @@ klasse TestCurses(unittest.TestCase):
         win2.touchwin()
         stdscr.untouchwin()
         win2.syncup()
-        self.assertIs(win.is_wintouched(), True)
-        self.assertIs(stdscr.is_wintouched(), True)
+        self.assertIs(win.is_wintouched(), Wahr)
+        self.assertIs(stdscr.is_wintouched(), Wahr)
 
         # syncdown()
         stdscr.touchwin()
         win.untouchwin()
         win2.untouchwin()
         win2.syncdown()
-        self.assertIs(win2.is_wintouched(), True)
+        self.assertIs(win2.is_wintouched(), Wahr)
 
         # syncok()
         wenn hasattr(stdscr, 'syncok') and not sys.platform.startswith("sunos"):
             win.untouchwin()
             stdscr.untouchwin()
-            fuer syncok in [False, True]:
+            fuer syncok in [Falsch, Wahr]:
                 win2.syncok(syncok)
                 win2.addch('a')
                 self.assertIs(win.is_wintouched(), syncok)
@@ -272,7 +272,7 @@ klasse TestCurses(unittest.TestCase):
         stdscr.addch('A', curses.A_BOLD)
         stdscr.addch(1, 2, 'A')
         stdscr.addch(2, 3, 'A', curses.A_BOLD)
-        self.assertIs(stdscr.is_wintouched(), True)
+        self.assertIs(stdscr.is_wintouched(), Wahr)
 
         # echochar()
         stdscr.refresh()
@@ -288,7 +288,7 @@ klasse TestCurses(unittest.TestCase):
             # a multibyte sequence.
             stdscr.echochar('\u0114')
         stdscr.echochar('A', curses.A_BOLD)
-        self.assertIs(stdscr.is_wintouched(), False)
+        self.assertIs(stdscr.is_wintouched(), Falsch)
 
     def test_output_string(self):
         stdscr = self.stdscr
@@ -452,7 +452,7 @@ klasse TestCurses(unittest.TestCase):
     def test_scroll(self):
         win = curses.newwin(5, 15, 5, 2)
         lorem_ipsum(win)
-        win.scrollok(True)
+        win.scrollok(Wahr)
         win.scroll()
         self.assertEqual(win.instr(0, 0), b'dolor sit amet,')
         win.scroll(2)
@@ -461,7 +461,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertEqual(win.instr(0, 0), b'               ')
         self.assertEqual(win.instr(2, 0), b'               ')
         self.assertEqual(win.instr(3, 0), b'adipiscing elit')
-        win.scrollok(False)
+        win.scrollok(Falsch)
 
     def test_attributes(self):
         # TODO: attr_get(), attr_set(), ...
@@ -585,12 +585,12 @@ klasse TestCurses(unittest.TestCase):
     @requires_curses_window_meth('enclose')
     def test_enclose(self):
         win = curses.newwin(5, 15, 2, 5)
-        self.assertIs(win.enclose(2, 5), True)
-        self.assertIs(win.enclose(1, 5), False)
-        self.assertIs(win.enclose(2, 4), False)
-        self.assertIs(win.enclose(6, 19), True)
-        self.assertIs(win.enclose(7, 19), False)
-        self.assertIs(win.enclose(6, 20), False)
+        self.assertIs(win.enclose(2, 5), Wahr)
+        self.assertIs(win.enclose(1, 5), Falsch)
+        self.assertIs(win.enclose(2, 4), Falsch)
+        self.assertIs(win.enclose(6, 19), Wahr)
+        self.assertIs(win.enclose(7, 19), Falsch)
+        self.assertIs(win.enclose(6, 20), Falsch)
 
     def test_putwin(self):
         win = curses.newwin(5, 12, 1, 2)
@@ -677,11 +677,11 @@ klasse TestCurses(unittest.TestCase):
     def test_endwin(self):
         wenn not self.isatty:
             self.skipTest('requires terminal')
-        self.assertIs(curses.isendwin(), False)
+        self.assertIs(curses.isendwin(), Falsch)
         curses.endwin()
-        self.assertIs(curses.isendwin(), True)
+        self.assertIs(curses.isendwin(), Wahr)
         curses.doupdate()
-        self.assertIs(curses.isendwin(), False)
+        self.assertIs(curses.isendwin(), Falsch)
 
     def test_terminfo(self):
         self.assertIsInstance(curses.tigetflag('hc'), int)
@@ -692,12 +692,12 @@ klasse TestCurses(unittest.TestCase):
         self.assertEqual(curses.tigetnum('hc'), -2)
         self.assertEqual(curses.tigetnum('cr'), -2)
 
-        self.assertIsInstance(curses.tigetstr('cr'), (bytes, type(None)))
-        self.assertIsNone(curses.tigetstr('hc'))
-        self.assertIsNone(curses.tigetstr('cols'))
+        self.assertIsInstance(curses.tigetstr('cr'), (bytes, type(Nichts)))
+        self.assertIsNichts(curses.tigetstr('hc'))
+        self.assertIsNichts(curses.tigetstr('cols'))
 
         cud = curses.tigetstr('cud')
-        wenn cud is not None:
+        wenn cud is not Nichts:
             # See issue10570.
             self.assertIsInstance(cud, bytes)
             curses.tparm(cud, 2)
@@ -712,7 +712,7 @@ klasse TestCurses(unittest.TestCase):
         curses.flushinp()
 
         curses.doupdate()
-        self.assertIs(curses.isendwin(), False)
+        self.assertIs(curses.isendwin(), Falsch)
 
         curses.napms(100)
 
@@ -737,30 +737,30 @@ klasse TestCurses(unittest.TestCase):
     def test_output_options(self):
         stdscr = self.stdscr
 
-        stdscr.clearok(True)
-        stdscr.clearok(False)
+        stdscr.clearok(Wahr)
+        stdscr.clearok(Falsch)
 
-        stdscr.idcok(True)
-        stdscr.idcok(False)
+        stdscr.idcok(Wahr)
+        stdscr.idcok(Falsch)
 
-        stdscr.idlok(False)
-        stdscr.idlok(True)
+        stdscr.idlok(Falsch)
+        stdscr.idlok(Wahr)
 
         wenn hasattr(stdscr, 'immedok'):
-            stdscr.immedok(True)
-            stdscr.immedok(False)
+            stdscr.immedok(Wahr)
+            stdscr.immedok(Falsch)
 
-        stdscr.leaveok(True)
-        stdscr.leaveok(False)
+        stdscr.leaveok(Wahr)
+        stdscr.leaveok(Falsch)
 
-        stdscr.scrollok(True)
-        stdscr.scrollok(False)
+        stdscr.scrollok(Wahr)
+        stdscr.scrollok(Falsch)
 
         stdscr.setscrreg(5, 10)
 
         curses.nonl()
-        curses.nl(True)
-        curses.nl(False)
+        curses.nl(Wahr)
+        curses.nl(Falsch)
         curses.nl()
 
     def test_input_options(self):
@@ -769,41 +769,41 @@ klasse TestCurses(unittest.TestCase):
         wenn self.isatty:
             curses.nocbreak()
             curses.cbreak()
-            curses.cbreak(False)
-            curses.cbreak(True)
+            curses.cbreak(Falsch)
+            curses.cbreak(Wahr)
 
-            curses.intrflush(True)
-            curses.intrflush(False)
+            curses.intrflush(Wahr)
+            curses.intrflush(Falsch)
 
             curses.raw()
-            curses.raw(False)
-            curses.raw(True)
+            curses.raw(Falsch)
+            curses.raw(Wahr)
             curses.noraw()
 
         curses.noecho()
         curses.echo()
-        curses.echo(False)
-        curses.echo(True)
+        curses.echo(Falsch)
+        curses.echo(Wahr)
 
         curses.halfdelay(255)
         curses.halfdelay(1)
 
-        stdscr.keypad(True)
-        stdscr.keypad(False)
+        stdscr.keypad(Wahr)
+        stdscr.keypad(Falsch)
 
-        curses.meta(True)
-        curses.meta(False)
+        curses.meta(Wahr)
+        curses.meta(Falsch)
 
-        stdscr.nodelay(True)
-        stdscr.nodelay(False)
+        stdscr.nodelay(Wahr)
+        stdscr.nodelay(Falsch)
 
         curses.noqiflush()
-        curses.qiflush(True)
-        curses.qiflush(False)
+        curses.qiflush(Wahr)
+        curses.qiflush(Falsch)
         curses.qiflush()
 
-        stdscr.notimeout(True)
-        stdscr.notimeout(False)
+        stdscr.notimeout(Wahr)
+        stdscr.notimeout(Falsch)
 
         stdscr.timeout(-1)
         stdscr.timeout(0)
@@ -821,8 +821,8 @@ klasse TestCurses(unittest.TestCase):
         curses.reset_prog_mode()
 
     def test_beep(self):
-        wenn (curses.tigetstr("bel") is not None
-            or curses.tigetstr("flash") is not None):
+        wenn (curses.tigetstr("bel") is not Nichts
+            or curses.tigetstr("flash") is not Nichts):
             curses.beep()
         sonst:
             try:
@@ -831,8 +831,8 @@ klasse TestCurses(unittest.TestCase):
                 self.skipTest('beep() failed')
 
     def test_flash(self):
-        wenn (curses.tigetstr("bel") is not None
-            or curses.tigetstr("flash") is not None):
+        wenn (curses.tigetstr("bel") is not Nichts
+            or curses.tigetstr("flash") is not Nichts):
             curses.flash()
         sonst:
             try:
@@ -842,7 +842,7 @@ klasse TestCurses(unittest.TestCase):
 
     def test_curs_set(self):
         fuer vis, cap in [(0, 'civis'), (2, 'cvvis'), (1, 'cnorm')]:
-            wenn curses.tigetstr(cap) is not None:
+            wenn curses.tigetstr(cap) is not Nichts:
                 curses.curs_set(vis)
             sonst:
                 try:
@@ -1061,7 +1061,7 @@ klasse TestCurses(unittest.TestCase):
         fuer i in range(100):
             p.set_userptr(obj)
 
-        p.set_userptr(None)
+        p.set_userptr(Nichts)
         self.assertEqual(sys.getrefcount(obj), nrefs,
                          "set_userptr leaked references")
 
@@ -1071,9 +1071,9 @@ klasse TestCurses(unittest.TestCase):
         panel = curses.panel.new_panel(w)
         klasse A:
             def __del__(self):
-                panel.set_userptr(None)
+                panel.set_userptr(Nichts)
         panel.set_userptr(A())
-        panel.set_userptr(None)
+        panel.set_userptr(Nichts)
 
     @cpython_only
     @requires_curses_func('panel')
@@ -1086,8 +1086,8 @@ klasse TestCurses(unittest.TestCase):
     @requires_curses_func('is_term_resized')
     def test_is_term_resized(self):
         lines, cols = curses.LINES, curses.COLS
-        self.assertIs(curses.is_term_resized(lines, cols), False)
-        self.assertIs(curses.is_term_resized(lines-1, cols-1), True)
+        self.assertIs(curses.is_term_resized(lines, cols), Falsch)
+        self.assertIs(curses.is_term_resized(lines-1, cols-1), Wahr)
 
     @requires_curses_func('resize_term')
     def test_resize_term(self):
@@ -1195,7 +1195,7 @@ klasse TestCurses(unittest.TestCase):
         # we will need to rewrite this test.
         try:
             signature = inspect.signature(stdscr.addch)
-            self.assertFalse(signature)
+            self.assertFalsch(signature)
         except ValueError:
             # not generating a signature is fine.
             pass
@@ -1213,7 +1213,7 @@ klasse TestCurses(unittest.TestCase):
     @requires_curses_window_meth('resize')
     def test_issue13051(self):
         win = curses.newwin(5, 15, 2, 5)
-        box = curses.textpad.Textbox(win, insert_mode=True)
+        box = curses.textpad.Textbox(win, insert_mode=Wahr)
         lines, cols = win.getmaxyx()
         win.resize(lines-2, cols-2)
         # this may cause infinite recursion, leading to a RuntimeError
@@ -1235,7 +1235,7 @@ klasse MiscTests(unittest.TestCase):
     def test_ncurses_version(self):
         v = curses.ncurses_version
         wenn verbose:
-            print(f'ncurses_version = {curses.ncurses_version}', flush=True)
+            print(f'ncurses_version = {curses.ncurses_version}', flush=Wahr)
         self.assertIsInstance(v[:], tuple)
         self.assertEqual(len(v), 3)
         self.assertIsInstance(v[0], int)
@@ -1289,23 +1289,23 @@ klasse TestAscii(unittest.TestCase):
             check(curses.ascii.isxdigit, c in string.hexdigits)
 
         fuer i in (-2, -1, 256, sys.maxunicode, sys.maxunicode+1):
-            self.assertFalse(curses.ascii.isalnum(i))
-            self.assertFalse(curses.ascii.isalpha(i))
-            self.assertFalse(curses.ascii.isdigit(i))
-            self.assertFalse(curses.ascii.islower(i))
-            self.assertFalse(curses.ascii.isspace(i))
-            self.assertFalse(curses.ascii.isupper(i))
+            self.assertFalsch(curses.ascii.isalnum(i))
+            self.assertFalsch(curses.ascii.isalpha(i))
+            self.assertFalsch(curses.ascii.isdigit(i))
+            self.assertFalsch(curses.ascii.islower(i))
+            self.assertFalsch(curses.ascii.isspace(i))
+            self.assertFalsch(curses.ascii.isupper(i))
 
-            self.assertFalse(curses.ascii.isascii(i))
-            self.assertFalse(curses.ascii.isctrl(i))
-            self.assertFalse(curses.ascii.iscntrl(i))
-            self.assertFalse(curses.ascii.isblank(i))
-            self.assertFalse(curses.ascii.isgraph(i))
-            self.assertFalse(curses.ascii.isprint(i))
-            self.assertFalse(curses.ascii.ispunct(i))
-            self.assertFalse(curses.ascii.isxdigit(i))
+            self.assertFalsch(curses.ascii.isascii(i))
+            self.assertFalsch(curses.ascii.isctrl(i))
+            self.assertFalsch(curses.ascii.iscntrl(i))
+            self.assertFalsch(curses.ascii.isblank(i))
+            self.assertFalsch(curses.ascii.isgraph(i))
+            self.assertFalsch(curses.ascii.isprint(i))
+            self.assertFalsch(curses.ascii.ispunct(i))
+            self.assertFalsch(curses.ascii.isxdigit(i))
 
-        self.assertFalse(curses.ascii.ismeta(-1))
+        self.assertFalsch(curses.ascii.ismeta(-1))
 
     def test_ascii(self):
         ascii = curses.ascii.ascii
@@ -1374,9 +1374,9 @@ klasse TextboxTest(unittest.TestCase):
         tb = curses.textpad.Textbox(self.mock_win)
         self.mock_win.getmaxyx.assert_called_once_with()
         self.mock_win.keypad.assert_called_once_with(1)
-        self.assertEqual(tb.insert_mode, False)
+        self.assertEqual(tb.insert_mode, Falsch)
         self.assertEqual(tb.stripspaces, 1)
-        self.assertIsNone(tb.lastcmd)
+        self.assertIsNichts(tb.lastcmd)
         self.mock_win.reset_mock()
 
     def test_insert(self):

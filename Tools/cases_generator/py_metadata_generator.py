@@ -29,7 +29,7 @@ def get_specialized(analysis: Analysis) -> set[str]:
     return specialized
 
 
-def generate_specializations(analysis: Analysis, out: CWriter) -> None:
+def generate_specializations(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("_specializations = {\n")
     fuer family in analysis.families.values():
         out.emit(f'"{family.name}": [\n')
@@ -39,7 +39,7 @@ def generate_specializations(analysis: Analysis, out: CWriter) -> None:
     out.emit("}\n\n")
 
 
-def generate_specialized_opmap(analysis: Analysis, out: CWriter) -> None:
+def generate_specialized_opmap(analysis: Analysis, out: CWriter) -> Nichts:
     out.emit("_specialized_opmap = {\n")
     names = []
     fuer family in analysis.families.values():
@@ -52,7 +52,7 @@ def generate_specialized_opmap(analysis: Analysis, out: CWriter) -> None:
     out.emit("}\n\n")
 
 
-def generate_opmap(analysis: Analysis, out: CWriter) -> None:
+def generate_opmap(analysis: Analysis, out: CWriter) -> Nichts:
     specialized = get_specialized(analysis)
     out.emit("opmap = {\n")
     fuer inst, op in analysis.opmap.items():
@@ -63,9 +63,9 @@ def generate_opmap(analysis: Analysis, out: CWriter) -> None:
 
 def generate_py_metadata(
     filenames: list[str], analysis: Analysis, outfile: TextIO
-) -> None:
+) -> Nichts:
     write_header(__file__, filenames, outfile, "#")
-    out = CWriter(outfile, 0, False)
+    out = CWriter(outfile, 0, Falsch)
     generate_specializations(analysis, out)
     generate_specialized_opmap(analysis, out)
     generate_opmap(analysis, out)

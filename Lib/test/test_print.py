@@ -12,21 +12,21 @@ NotDefined = object()
 # values to print, I'm either passing or not passing in the
 # arguments.
 dispatch = {
-    (False, False, False):
+    (Falsch, Falsch, Falsch):
         lambda args, sep, end, file: print(*args),
-    (False, False, True):
+    (Falsch, Falsch, Wahr):
         lambda args, sep, end, file: print(file=file, *args),
-    (False, True,  False):
+    (Falsch, Wahr,  Falsch):
         lambda args, sep, end, file: print(end=end, *args),
-    (False, True,  True):
+    (Falsch, Wahr,  Wahr):
         lambda args, sep, end, file: print(end=end, file=file, *args),
-    (True,  False, False):
+    (Wahr,  Falsch, Falsch):
         lambda args, sep, end, file: print(sep=sep, *args),
-    (True,  False, True):
+    (Wahr,  Falsch, Wahr):
         lambda args, sep, end, file: print(sep=sep, file=file, *args),
-    (True,  True,  False):
+    (Wahr,  Wahr,  Falsch):
         lambda args, sep, end, file: print(sep=sep, end=end, *args),
-    (True,  True,  True):
+    (Wahr,  Wahr,  Wahr):
         lambda args, sep, end, file: print(sep=sep, end=end, file=file, *args),
 }
 
@@ -76,7 +76,7 @@ klasse TestPrint(unittest.TestCase):
 
         x('\n', ())
         x('a\n', ('a',))
-        x('None\n', (None,))
+        x('Nichts\n', (Nichts,))
         x('1 2\n', (1, 2))
         x('1   2\n', (1, ' ', 2))
         x('1*2\n', (1, 2), sep='*')
@@ -88,9 +88,9 @@ klasse TestPrint(unittest.TestCase):
         x('\0+ +\0\n', ('\0', ' ', '\0'), sep='+')
 
         x('a\n b\n', ('a\n', 'b'))
-        x('a\n b\n', ('a\n', 'b'), sep=None)
-        x('a\n b\n', ('a\n', 'b'), end=None)
-        x('a\n b\n', ('a\n', 'b'), sep=None, end=None)
+        x('a\n b\n', ('a\n', 'b'), sep=Nichts)
+        x('a\n b\n', ('a\n', 'b'), end=Nichts)
+        x('a\n b\n', ('a\n', 'b'), sep=Nichts, end=Nichts)
 
         x('*\n', (ClassWith__str__('*'),))
         x('abc 1\n', (ClassWith__str__('abc'), 1))
@@ -114,9 +114,9 @@ klasse TestPrint(unittest.TestCase):
                 self.flushed += 1
 
         f = filelike()
-        print(1, file=f, end='', flush=True)
-        print(2, file=f, end='', flush=True)
-        print(3, file=f, flush=False)
+        print(1, file=f, end='', flush=Wahr)
+        print(2, file=f, end='', flush=Wahr)
+        print(3, file=f, flush=Falsch)
         self.assertEqual(f.written, '123\n')
         self.assertEqual(f.flushed, 2)
 
@@ -127,7 +127,7 @@ klasse TestPrint(unittest.TestCase):
 
             def flush(self):
                 raise RuntimeError
-        self.assertRaises(RuntimeError, print, 1, file=noflush(), flush=True)
+        self.assertRaises(RuntimeError, print, 1, file=noflush(), flush=Wahr)
 
     def test_gh130163(self):
         klasse X:
@@ -136,7 +136,7 @@ klasse TestPrint(unittest.TestCase):
                 support.gc_collect()
                 return 'foo'
 
-        with support.swap_attr(sys, 'stdout', None):
+        with support.swap_attr(sys, 'stdout', Nichts):
             sys.stdout = StringIO()  # the only reference
             print(X())  # should not crash
 

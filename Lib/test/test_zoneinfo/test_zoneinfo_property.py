@@ -30,7 +30,7 @@ def _valid_keys():
         fuer root in TZPATH:
             key_file = os.path.join(root, key)
             wenn os.path.exists(key_file):
-                return True
+                return Wahr
 
         components = key.split("/")
         package_name = ".".join(["tzdata.zoneinfo"] + components[:-1])
@@ -39,7 +39,7 @@ def _valid_keys():
         try:
             return resources.files(package_name).joinpath(resource_name).is_file()
         except ModuleNotFoundError:
-            return False
+            return Falsch
 
     # This relies on the fact that dictionaries maintain insertion order — for
     # shrinking purposes, it is preferable to start with the standard version,
@@ -286,8 +286,8 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         c_zi = c_zoneinfo.ZoneInfo(key)
 
         # Convert to UTC: This can overflow, but we just care about consistency
-        py_overflow_exc = None
-        c_overflow_exc = None
+        py_overflow_exc = Nichts
+        c_overflow_exc = Nichts
         try:
             py_dt = dt.astimezone(py_zi)
         except OverflowError as e:
@@ -298,14 +298,14 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         except OverflowError as e:
             c_overflow_exc = e
 
-        wenn (py_overflow_exc is not None) != (c_overflow_exc is not None):
+        wenn (py_overflow_exc is not Nichts) != (c_overflow_exc is not Nichts):
             raise py_overflow_exc or c_overflow_exc  # pragma: nocover
 
-        wenn py_overflow_exc is not None:
+        wenn py_overflow_exc is not Nichts:
             return  # Consistently raises the same exception
 
         # PEP 495 says that an inter-zone comparison between ambiguous
-        # datetimes is always False.
+        # datetimes is always Falsch.
         wenn py_dt != c_dt:
             self.assertEqual(
                 self._is_ambiguous(py_dt),
@@ -327,8 +327,8 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         c_dt = dt.replace(tzinfo=c_zoneinfo.ZoneInfo(key))
 
         # Convert from UTC: Overflow OK wenn it happens in both implementations
-        py_overflow_exc = None
-        c_overflow_exc = None
+        py_overflow_exc = Nichts
+        c_overflow_exc = Nichts
         try:
             py_utc = py_dt.astimezone(UTC)
         except OverflowError as e:
@@ -339,10 +339,10 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         except OverflowError as e:
             c_overflow_exc = e
 
-        wenn (py_overflow_exc is not None) != (c_overflow_exc is not None):
+        wenn (py_overflow_exc is not Nichts) != (c_overflow_exc is not Nichts):
             raise py_overflow_exc or c_overflow_exc  # pragma: nocover
 
-        wenn py_overflow_exc is not None:
+        wenn py_overflow_exc is not Nichts:
             return  # Consistently raises the same exception
 
         self.assertEqual(py_utc, c_utc)

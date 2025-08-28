@@ -5,7 +5,7 @@ from test import support
 
 
 def tearDownModule():
-    asyncio.events._set_event_loop_policy(None)
+    asyncio.events._set_event_loop_policy(Nichts)
 
 
 # The following value can be used as a very small timeout:
@@ -19,12 +19,12 @@ klasse SlowTask:
     TASK_TIMEOUT = 0.2
 
     def __init__(self):
-        self.exited = False
+        self.exited = Falsch
 
     async def run(self):
         exitat = time.monotonic() + self.TASK_TIMEOUT
 
-        while True:
+        while Wahr:
             tosleep = exitat - time.monotonic()
             wenn tosleep <= 0:
                 break
@@ -34,7 +34,7 @@ klasse SlowTask:
             except asyncio.CancelledError:
                 pass
 
-        self.exited = True
+        self.exited = Wahr
 
 
 klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
@@ -48,7 +48,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         waitfortask.cancel()
         await asyncio.wait({waitfortask})
 
-        self.assertTrue(t.exited)
+        self.assertWahr(t.exited)
 
     async def test_asyncio_wait_for_timeout(self):
         t = SlowTask()
@@ -58,7 +58,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         except asyncio.TimeoutError:
             pass
 
-        self.assertTrue(t.exited)
+        self.assertWahr(t.exited)
 
     async def test_wait_for_timeout_less_then_0_or_0_future_done(self):
         loop = asyncio.get_running_loop()
@@ -69,36 +69,36 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         ret = await asyncio.wait_for(fut, 0)
 
         self.assertEqual(ret, 'done')
-        self.assertTrue(fut.done())
+        self.assertWahr(fut.done())
 
     async def test_wait_for_timeout_less_then_0_or_0_coroutine_do_not_started(self):
-        foo_started = False
+        foo_started = Falsch
 
         async def foo():
             nonlocal foo_started
-            foo_started = True
+            foo_started = Wahr
 
         with self.assertRaises(asyncio.TimeoutError):
             await asyncio.wait_for(foo(), 0)
 
-        self.assertEqual(foo_started, False)
+        self.assertEqual(foo_started, Falsch)
 
     async def test_wait_for_timeout_less_then_0_or_0(self):
         loop = asyncio.get_running_loop()
 
         fuer timeout in [0, -1]:
             with self.subTest(timeout=timeout):
-                foo_running = None
+                foo_running = Nichts
                 started = loop.create_future()
 
                 async def foo():
                     nonlocal foo_running
-                    foo_running = True
-                    started.set_result(None)
+                    foo_running = Wahr
+                    started.set_result(Nichts)
                     try:
                         await asyncio.sleep(10)
                     finally:
-                        foo_running = False
+                        foo_running = Falsch
                     return 'done'
 
                 fut = asyncio.create_task(foo())
@@ -107,37 +107,37 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
                 with self.assertRaises(asyncio.TimeoutError):
                     await asyncio.wait_for(fut, timeout)
 
-                self.assertTrue(fut.done())
+                self.assertWahr(fut.done())
                 # it should have been cancelled due to the timeout
-                self.assertTrue(fut.cancelled())
-                self.assertEqual(foo_running, False)
+                self.assertWahr(fut.cancelled())
+                self.assertEqual(foo_running, Falsch)
 
     async def test_wait_for(self):
-        foo_running = None
+        foo_running = Nichts
 
         async def foo():
             nonlocal foo_running
-            foo_running = True
+            foo_running = Wahr
             try:
                 await asyncio.sleep(support.LONG_TIMEOUT)
             finally:
-                foo_running = False
+                foo_running = Falsch
             return 'done'
 
         fut = asyncio.create_task(foo())
 
         with self.assertRaises(asyncio.TimeoutError):
             await asyncio.wait_for(fut, 0.1)
-        self.assertTrue(fut.done())
+        self.assertWahr(fut.done())
         # it should have been cancelled due to the timeout
-        self.assertTrue(fut.cancelled())
-        self.assertEqual(foo_running, False)
+        self.assertWahr(fut.cancelled())
+        self.assertEqual(foo_running, Falsch)
 
     async def test_wait_for_blocking(self):
         async def coro():
             return 'done'
 
-        res = await asyncio.wait_for(coro(), timeout=None)
+        res = await asyncio.wait_for(coro(), timeout=Nichts)
         self.assertEqual(res, 'done')
 
     async def test_wait_for_race_condition(self):
@@ -159,7 +159,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result, 1)
 
     async def test_wait_for_waits_for_task_cancellation(self):
-        task_done = False
+        task_done = Falsch
 
         async def inner():
             nonlocal task_done
@@ -169,19 +169,19 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
                 await asyncio.sleep(_EPSILON)
                 raise
             finally:
-                task_done = True
+                task_done = Wahr
 
         inner_task = asyncio.create_task(inner())
 
         with self.assertRaises(asyncio.TimeoutError) as cm:
             await asyncio.wait_for(inner_task, timeout=_EPSILON)
 
-        self.assertTrue(task_done)
+        self.assertWahr(task_done)
         chained = cm.exception.__context__
         self.assertEqual(type(chained), asyncio.CancelledError)
 
     async def test_wait_for_waits_for_task_cancellation_w_timeout_0(self):
-        task_done = False
+        task_done = Falsch
 
         async def foo():
             async def inner():
@@ -192,7 +192,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
                     await asyncio.sleep(_EPSILON)
                     raise
                 finally:
-                    task_done = True
+                    task_done = Wahr
 
             inner_task = asyncio.create_task(inner())
             await asyncio.sleep(_EPSILON)
@@ -201,7 +201,7 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(asyncio.TimeoutError) as cm:
             await foo()
 
-        self.assertTrue(task_done)
+        self.assertWahr(task_done)
         chained = cm.exception.__context__
         self.assertEqual(type(chained), asyncio.CancelledError)
 
@@ -240,10 +240,10 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
             await wait
 
         # Python issue #23219: cancelling the wait must also cancel the task
-        self.assertTrue(task.cancelled())
+        self.assertWahr(task.cancelled())
 
     async def test_cancel_blocking_wait_for(self):
-        await self._test_cancel_wait_for(None)
+        await self._test_cancel_wait_for(Nichts)
 
     async def test_cancel_wait_for(self):
         await self._test_cancel_wait_for(60.0)
@@ -273,24 +273,24 @@ klasse AsyncioWaitForTest(unittest.IsolatedAsyncioTestCase):
             return 'done'
 
         inner_task = asyncio.create_task(inner())
-        reached_end = False
+        reached_end = Falsch
 
         async def wait_for_coro():
             await asyncio.wait_for(inner_task, timeout=100)
             await asyncio.sleep(1)
             nonlocal reached_end
-            reached_end = True
+            reached_end = Wahr
 
         task = asyncio.create_task(wait_for_coro())
-        self.assertFalse(task.done())
+        self.assertFalsch(task.done())
         # Run the task
         await asyncio.sleep(0)
         task.cancel()
         with self.assertRaises(asyncio.CancelledError):
             await task
-        self.assertTrue(inner_task.done())
+        self.assertWahr(inner_task.done())
         self.assertEqual(await inner_task, 'done')
-        self.assertFalse(reached_end)
+        self.assertFalsch(reached_end)
 
 
 klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
@@ -312,26 +312,26 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
             await asyncio.wait_for(shielded_task, timeout=0)
 
         # Task is running in background
-        self.assertFalse(task.done())
-        self.assertFalse(task.cancelled())
-        self.assertTrue(shielded_task.cancelled())
+        self.assertFalsch(task.done())
+        self.assertFalsch(task.cancelled())
+        self.assertWahr(shielded_task.cancelled())
 
         # Wait fuer the task to complete
         await asyncio.sleep(0.1)
-        self.assertTrue(task.done())
+        self.assertWahr(task.done())
 
 
     async def test_none_timeout(self):
-        # With timeout=None the timeout is disabled so it
+        # With timeout=Nichts the timeout is disabled so it
         # runs till completion.
         async def coro():
             await asyncio.sleep(0.1)
             return 'done'
 
         task = asyncio.create_task(coro())
-        await asyncio.wait_for(asyncio.shield(task), timeout=None)
+        await asyncio.wait_for(asyncio.shield(task), timeout=Nichts)
 
-        self.assertTrue(task.done())
+        self.assertWahr(task.done())
         self.assertEqual(await task, "done")
 
     async def test_shielded_timeout(self):
@@ -344,8 +344,8 @@ klasse WaitForShieldTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(asyncio.TimeoutError):
             await asyncio.wait_for(asyncio.shield(task), timeout=0.01)
 
-        self.assertFalse(task.done())
-        self.assertFalse(task.cancelled())
+        self.assertFalsch(task.done())
+        self.assertFalsch(task.cancelled())
         self.assertEqual(await task, "done")
 
 

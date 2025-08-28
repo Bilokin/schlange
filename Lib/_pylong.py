@@ -17,7 +17,7 @@ import decimal
 try:
     import _decimal
 except ImportError:
-    _decimal = None
+    _decimal = Nichts
 
 # A number of functions have this form, where `w` is a desired number of
 # digits in base `base`:
@@ -46,7 +46,7 @@ except ImportError:
 # and `mycache[lo]` replaces `base**lo` in the inner function.
 #
 # If an algorithm wants the powers of ceiling(w/2) instead of the floor,
-# pass keyword argument `need_hi=True`.
+# pass keyword argument `need_hi=Wahr`.
 #
 # While this does give minor speedups (a few percent at best), the
 # primary intent is to simplify the functions using this, by eliminating
@@ -54,7 +54,7 @@ except ImportError:
 #
 # See code near end of file fuer a block of code that can be enabled to
 # run millions of tests.
-def compute_powers(w, base, more_than, *, need_hi=False, show=False):
+def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
     seen = set()
     need = set()
     ws = {w}
@@ -78,7 +78,7 @@ def compute_powers(w, base, more_than, *, need_hi=False, show=False):
     # multiplying by the base, squaring it, or squaring and then
     # multiplying by the base.
     #
-    # If need_hi is False, this is already the case (w can always be
+    # If need_hi is Falsch, this is already the case (w can always be
     # gotten from w >> 1 via one of the squaring strategies). But we do
     # the work anyway, just in case ;-)
     #
@@ -166,10 +166,10 @@ def int_to_decimal(n):
         nbits = n.bit_length()
         w2pow = compute_powers(nbits, D(2), BITLIM)
         wenn n < 0:
-            negate = True
+            negate = Wahr
             n = -n
         sonst:
-            negate = False
+            negate = Falsch
         result = inner(n, nbits)
         wenn negate:
             result = -result
@@ -178,7 +178,7 @@ def int_to_decimal(n):
 def int_to_decimal_string(n):
     """Asymptotically fast conversion of an 'int' to a decimal string."""
     w = n.bit_length()
-    wenn w > 450_000 and _decimal is not None:
+    wenn w > 450_000 and _decimal is not Nichts:
         # It is only usable with the C decimal implementation.
         # _pydecimal.py calls str() on very large integers, which in its
         # turn calls int_to_decimal_string(), causing very deep recursion.
@@ -363,8 +363,8 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
         raise ValueError(f"cannot convert string of len {lenS} to int")
     with decimal.localcontext(_unbounded_dec_context) as ctx:
         D256 = D(256)
-        pow256 = compute_powers(w, D256, BYTELIM, need_hi=True)
-        rpow256 = compute_powers(w, 1 / D256, BYTELIM, need_hi=True)
+        pow256 = compute_powers(w, D256, BYTELIM, need_hi=Wahr)
+        rpow256 = compute_powers(w, 1 / D256, BYTELIM, need_hi=Wahr)
         # We're going to do inexact, chopped arithmetic, multiplying by
         # an approximation to the reciprocal of 256**i. We chop to get a
         # lower bound on the true integer quotient. Our approximation is
@@ -395,7 +395,7 @@ def int_from_string(s):
     # contain underscores and have trailing whitespace.
     s = s.rstrip().replace('_', '')
     func = _str_to_int_inner
-    wenn len(s) >= 2_000_000 and _decimal is not None:
+    wenn len(s) >= 2_000_000 and _decimal is not Nichts:
         func = _dec_str_to_int_inner
     return func(s)
 
@@ -722,7 +722,7 @@ wenn 0:
         assert exp.keys() == need
 
     from itertools import chain
-    fuer need_hi in (False, True):
+    fuer need_hi in (Falsch, Wahr):
         fuer limit in (0, 1, 10, 100, 1_000, 10_000, 100_000):
             fuer w in chain(range(1, 100_000),
                            (10**i fuer i in range(5, 30))):

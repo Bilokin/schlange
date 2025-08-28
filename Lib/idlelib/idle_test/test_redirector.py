@@ -81,7 +81,7 @@ klasse WidgetRedirectorTest(unittest.TestCase):
         self.assertEqual(self.text.get('1.0', 'end'), 'asdf\n')
 
     def test_unregister(self):
-        self.assertIsNone(self.redir.unregister('invalid operation name'))
+        self.assertIsNichts(self.redir.unregister('invalid operation name'))
         self.assertEqual(self.redir.unregister('insert'), self.func)
         self.assertNotIn('insert', self.redir._operations)
         self.assertNotIn('insert', self.text.__dict__)
@@ -91,19 +91,19 @@ klasse WidgetRedirectorTest(unittest.TestCase):
         self.assertEqual(self.redir.unregister('insert'), self.func)
 
     def test_dispatch_intercept(self):
-        self.func.__init__(True)
-        self.assertTrue(self.redir.dispatch('insert', False))
-        self.assertFalse(self.func.args[0])
+        self.func.__init__(Wahr)
+        self.assertWahr(self.redir.dispatch('insert', Falsch))
+        self.assertFalsch(self.func.args[0])
 
     def test_dispatch_bypass(self):
         self.orig_insert('insert', 'asdf')
-        # tk.call returns '' where Python would return None
+        # tk.call returns '' where Python would return Nichts
         self.assertEqual(self.redir.dispatch('delete', '1.0', 'end'), '')
         self.assertEqual(self.text.get('1.0', 'end'), '\n')
 
     def test_dispatch_error(self):
         self.func.__init__(TclError())
-        self.assertEqual(self.redir.dispatch('insert', False), '')
+        self.assertEqual(self.redir.dispatch('insert', Falsch), '')
         self.assertEqual(self.redir.dispatch('invalid'), '')
 
     def test_command_dispatch(self):

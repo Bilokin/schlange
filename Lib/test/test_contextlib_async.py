@@ -75,7 +75,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
             async def __aenter__(self):
                 return self
             async def __aexit__(self, exc_type, exc_value, traceback):
-                return None
+                return Nichts
 
         self.assertIsSubclass(ManagerFromScratch, AbstractAsyncContextManager)
 
@@ -85,15 +85,15 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
 
         self.assertIsSubclass(DefaultEnter, AbstractAsyncContextManager)
 
-        klasse NoneAenter(ManagerFromScratch):
-            __aenter__ = None
+        klasse NichtsAenter(ManagerFromScratch):
+            __aenter__ = Nichts
 
-        self.assertNotIsSubclass(NoneAenter, AbstractAsyncContextManager)
+        self.assertNotIsSubclass(NichtsAenter, AbstractAsyncContextManager)
 
-        klasse NoneAexit(ManagerFromScratch):
-            __aexit__ = None
+        klasse NichtsAexit(ManagerFromScratch):
+            __aexit__ = Nichts
 
-        self.assertNotIsSubclass(NoneAexit, AbstractAsyncContextManager)
+        self.assertNotIsSubclass(NichtsAexit, AbstractAsyncContextManager)
 
 
 klasse AsyncContextManagerTestCase(unittest.TestCase):
@@ -194,7 +194,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         ctx = whee()
         await ctx.__aenter__()
         # Calling __aexit__ should not result in an exception
-        self.assertFalse(await ctx.__aexit__(TypeError, TypeError("foo"), None))
+        self.assertFalsch(await ctx.__aexit__(TypeError, TypeError("foo"), Nichts))
 
     @_async_test
     async def test_contextmanager_trap_yield_after_throw(self):
@@ -207,16 +207,16 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         ctx = whoo()
         await ctx.__aenter__()
         with self.assertRaises(RuntimeError):
-            await ctx.__aexit__(TypeError, TypeError('foo'), None)
-        wenn support.check_impl_detail(cpython=True):
+            await ctx.__aexit__(TypeError, TypeError('foo'), Nichts)
+        wenn support.check_impl_detail(cpython=Wahr):
             # The "gen" attribute is an implementation detail.
-            self.assertFalse(ctx.gen.ag_suspended)
+            self.assertFalsch(ctx.gen.ag_suspended)
 
     @_async_test
     async def test_contextmanager_trap_no_yield(self):
         @asynccontextmanager
         async def whoo():
-            wenn False:
+            wenn Falsch:
                 yield
         ctx = whoo()
         with self.assertRaises(RuntimeError):
@@ -231,10 +231,10 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         ctx = whoo()
         await ctx.__aenter__()
         with self.assertRaises(RuntimeError):
-            await ctx.__aexit__(None, None, None)
-        wenn support.check_impl_detail(cpython=True):
+            await ctx.__aexit__(Nichts, Nichts, Nichts)
+        wenn support.check_impl_detail(cpython=Wahr):
             # The "gen" attribute is an implementation detail.
-            self.assertFalse(ctx.gen.ag_suspended)
+            self.assertFalsch(ctx.gen.ag_suspended)
 
     @_async_test
     async def test_contextmanager_non_normalised(self):
@@ -248,7 +248,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         ctx = whoo()
         await ctx.__aenter__()
         with self.assertRaises(SyntaxError):
-            await ctx.__aexit__(RuntimeError, None, None)
+            await ctx.__aexit__(RuntimeError, Nichts, Nichts)
 
     @_async_test
     async def test_contextmanager_except(self):
@@ -342,7 +342,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
     @support.requires_docstrings
     @_async_test
     async def test_instance_docstring_given_cm_docstring(self):
-        baz = self._create_contextmanager_attribs()(None)
+        baz = self._create_contextmanager_attribs()(Nichts)
         self.assertEqual(baz.__doc__, "Whee!")
         async with baz:
             pass  # suppress warning
@@ -385,45 +385,45 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
 
     @_async_test
     async def test_decorator(self):
-        entered = False
+        entered = Falsch
 
         @asynccontextmanager
         async def context():
             nonlocal entered
-            entered = True
+            entered = Wahr
             yield
-            entered = False
+            entered = Falsch
 
         @context()
         async def test():
-            self.assertTrue(entered)
+            self.assertWahr(entered)
 
-        self.assertFalse(entered)
+        self.assertFalsch(entered)
         await test()
-        self.assertFalse(entered)
+        self.assertFalsch(entered)
 
     @_async_test
     async def test_decorator_with_exception(self):
-        entered = False
+        entered = Falsch
 
         @asynccontextmanager
         async def context():
             nonlocal entered
             try:
-                entered = True
+                entered = Wahr
                 yield
             finally:
-                entered = False
+                entered = Falsch
 
         @context()
         async def test():
-            self.assertTrue(entered)
+            self.assertWahr(entered)
             raise NameError('foo')
 
-        self.assertFalse(entered)
+        self.assertFalsch(entered)
         with self.assertRaisesRegex(NameError, 'foo'):
             await test()
-        self.assertFalse(entered)
+        self.assertFalsch(entered)
 
     @_async_test
     async def test_decorating_method(self):
@@ -436,7 +436,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         klasse Test(object):
 
             @context()
-            async def method(self, a, b, c=None):
+            async def method(self, a, b, c=Nichts):
                 self.a = a
                 self.b = b
                 self.c = c
@@ -446,7 +446,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         await test.method(1, 2)
         self.assertEqual(test.a, 1)
         self.assertEqual(test.b, 2)
-        self.assertEqual(test.c, None)
+        self.assertEqual(test.c, Nichts)
 
         test = Test()
         await test.method('a', 'b', 'c')
@@ -465,7 +465,7 @@ klasse AclosingTestCase(unittest.TestCase):
     @support.requires_docstrings
     def test_instance_docs(self):
         cm_docstring = aclosing.__doc__
-        obj = aclosing(None)
+        obj = aclosing(Nichts)
         self.assertEqual(obj.__doc__, cm_docstring)
 
     @_async_test
@@ -535,7 +535,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
     exit_stack = SyncAsyncExitStack
     callback_error_internal_frames = [
         ('__exit__', 'return _run_async_fn(self.__aexit__, *exc_details)'),
-        ('run_no_yield_async_fn', 'coro.send(None)'),
+        ('run_no_yield_async_fn', 'coro.send(Nichts)'),
         ('__aexit__', 'raise exc'),
         ('__aexit__', 'cb_suppress = cb(*exc_details)'),
     ]
@@ -569,7 +569,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             fuer wrapper in stack._exit_callbacks:
                 self.assertIs(wrapper[1].__wrapped__, _exit)
                 self.assertNotEqual(wrapper[1].__name__, _exit.__name__)
-                self.assertIsNone(wrapper[1].__doc__, _exit.__doc__)
+                self.assertIsNichts(wrapper[1].__doc__, _exit.__doc__)
 
         self.assertEqual(result, expected)
 
@@ -589,11 +589,11 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         async def _expect_exc(exc_type, exc, exc_tb):
             self.assertIs(exc_type, exc_raised)
         async def _suppress_exc(*exc_details):
-            return True
+            return Wahr
         async def _expect_ok(exc_type, exc, exc_tb):
-            self.assertIsNone(exc_type)
-            self.assertIsNone(exc)
-            self.assertIsNone(exc_tb)
+            self.assertIsNichts(exc_type)
+            self.assertIsNichts(exc)
+            self.assertIsNichts(exc_tb)
         klasse ExitCM(object):
             def __init__(self, check_exc):
                 self.check_exc = check_exc
@@ -634,7 +634,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             @stack.push_async_callback  # Registered first => cleaned up last
             async def _exit():
                 result.append(4)
-            self.assertIsNotNone(_exit)
+            self.assertIsNotNichts(_exit)
             await stack.enter_async_context(cm)
             self.assertIs(stack._exit_callbacks[-1][1].__self__, cm)
             result.append(2)
@@ -659,7 +659,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
                 await stack.enter_async_context(LacksEnter())
             with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
                 await stack.enter_async_context(LacksExit())
-            self.assertFalse(stack._exit_callbacks)
+            self.assertFalsch(stack._exit_callbacks)
 
     @_async_test
     async def test_async_exit_exception_chaining(self):
@@ -667,11 +667,11 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         async def raise_exc(exc):
             raise exc
 
-        saved_details = None
+        saved_details = Nichts
         async def suppress_exc(*exc_details):
             nonlocal saved_details
             saved_details = exc_details
-            return True
+            return Wahr
 
         try:
             async with self.exit_stack() as stack:
@@ -685,7 +685,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
-            self.assertIsNone(exc.__context__.__context__.__context__)
+            self.assertIsNichts(exc.__context__.__context__.__context__)
         sonst:
             self.fail("Expected IndexError, but no exception was raised")
         # Check the inner exceptions
@@ -696,7 +696,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
     @_async_test
     async def test_async_exit_exception_explicit_none_context(self):
         # Ensure AsyncExitStack chaining matches actual nested `with` statements
-        # regarding explicit __context__ = None.
+        # regarding explicit __context__ = Nichts.
 
         klasse MyException(Exception):
             pass
@@ -710,7 +710,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
                 try:
                     raise exc
                 finally:
-                    exc.__context__ = None
+                    exc.__context__ = Nichts
 
         @asynccontextmanager
         async def my_cm_with_exit_stack():
@@ -724,7 +724,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
                     async with cm():
                         raise IndexError()
                 except MyException as exc:
-                    self.assertIsNone(exc.__context__)
+                    self.assertIsNichts(exc.__context__)
                 sonst:
                     self.fail("Expected IndexError, but no exception was raised")
 

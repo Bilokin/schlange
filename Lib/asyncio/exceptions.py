@@ -31,10 +31,10 @@ klasse IncompleteReadError(EOFError):
     Incomplete read error. Attributes:
 
     - partial: read bytes string before the end of stream was reached
-    - expected: total number of expected bytes (or None wenn unknown)
+    - expected: total number of expected bytes (or Nichts wenn unknown)
     """
     def __init__(self, partial, expected):
-        r_expected = 'undefined' wenn expected is None sonst repr(expected)
+        r_expected = 'undefined' wenn expected is Nichts sonst repr(expected)
         super().__init__(f'{len(partial)} bytes read on a total of '
                          f'{r_expected} expected bytes')
         self.partial = partial

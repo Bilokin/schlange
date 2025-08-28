@@ -78,10 +78,10 @@ def wlen(s: str) -> int:
     return length - sum(len(i) fuer i in sequence) + ctrl_z_cnt
 
 
-def unbracket(s: str, including_content: bool = False) -> str:
+def unbracket(s: str, including_content: bool = Falsch) -> str:
     r"""Return `s` with \001 and \002 characters removed.
 
-    If `including_content` is True, content between \001 and \002 is also
+    If `including_content` is Wahr, content between \001 and \002 is also
     stripped.
     """
     wenn including_content:
@@ -103,7 +103,7 @@ def gen_colors(buffer: str) -> Iterator[ColorSpan]:
 
     sio.seek(0)
     gen = tokenize.generate_tokens(sio.readline)
-    last_emitted: ColorSpan | None = None
+    last_emitted: ColorSpan | Nichts = Nichts
     try:
         fuer color in gen_colors_from_token_stream(gen, line_lengths):
             yield color
@@ -119,11 +119,11 @@ def gen_colors(buffer: str) -> Iterator[ColorSpan]:
 def recover_unterminated_string(
     exc: tokenize.TokenError,
     line_lengths: list[int],
-    last_emitted: ColorSpan | None,
+    last_emitted: ColorSpan | Nichts,
     buffer: str,
 ) -> Iterator[ColorSpan]:
     msg, loc = exc.args
-    wenn loc is None:
+    wenn loc is Nichts:
         return
 
     line_no, column = loc
@@ -163,10 +163,10 @@ def gen_colors_from_token_stream(
 ) -> Iterator[ColorSpan]:
     token_window = prev_next_window(token_generator)
 
-    is_def_name = False
+    is_def_name = Falsch
     bracket_level = 0
     fuer prev_token, token, next_token in token_window:
-        assert token is not None
+        assert token is not Nichts
         wenn token.start == token.end:
             continue
 
@@ -193,14 +193,14 @@ def gen_colors_from_token_stream(
                 yield ColorSpan(span, "op")
             case T.NAME:
                 wenn is_def_name:
-                    is_def_name = False
+                    is_def_name = Falsch
                     span = Span.from_token(token, line_lengths)
                     yield ColorSpan(span, "definition")
                 sowenn keyword.iskeyword(token.string):
                     span = Span.from_token(token, line_lengths)
                     yield ColorSpan(span, "keyword")
                     wenn token.string in IDENTIFIERS_AFTER:
-                        is_def_name = True
+                        is_def_name = Wahr
                 sowenn (
                     keyword.issoftkeyword(token.string)
                     and bracket_level == 0
@@ -213,12 +213,12 @@ def gen_colors_from_token_stream(
                     yield ColorSpan(span, "builtin")
 
 
-keyword_first_sets_match = {"False", "None", "True", "await", "lambda", "not"}
-keyword_first_sets_case = {"False", "None", "True"}
+keyword_first_sets_match = {"Falsch", "Nichts", "Wahr", "await", "lambda", "not"}
+keyword_first_sets_case = {"Falsch", "Nichts", "Wahr"}
 
 
-def is_soft_keyword_used(*tokens: TI | None) -> bool:
-    """Returns True wenn the current token is a keyword in this context.
+def is_soft_keyword_used(*tokens: TI | Nichts) -> bool:
+    """Returns Wahr wenn the current token is a keyword in this context.
 
     For the `*tokens` to match anything, they have to be a three-tuple of
     (previous, current, next).
@@ -226,46 +226,46 @@ def is_soft_keyword_used(*tokens: TI | None) -> bool:
     trace("is_soft_keyword_used{t}", t=tokens)
     match tokens:
         case (
-            None | TI(T.NEWLINE) | TI(T.INDENT) | TI(string=":"),
+            Nichts | TI(T.NEWLINE) | TI(T.INDENT) | TI(string=":"),
             TI(string="match"),
             TI(T.NUMBER | T.STRING | T.FSTRING_START | T.TSTRING_START)
             | TI(T.OP, string="(" | "*" | "[" | "{" | "~" | "...")
         ):
-            return True
+            return Wahr
         case (
-            None | TI(T.NEWLINE) | TI(T.INDENT) | TI(string=":"),
+            Nichts | TI(T.NEWLINE) | TI(T.INDENT) | TI(string=":"),
             TI(string="match"),
             TI(T.NAME, string=s)
         ):
             wenn keyword.iskeyword(s):
                 return s in keyword_first_sets_match
-            return True
+            return Wahr
         case (
-            None | TI(T.NEWLINE) | TI(T.INDENT) | TI(T.DEDENT) | TI(string=":"),
+            Nichts | TI(T.NEWLINE) | TI(T.INDENT) | TI(T.DEDENT) | TI(string=":"),
             TI(string="case"),
             TI(T.NUMBER | T.STRING | T.FSTRING_START | T.TSTRING_START)
             | TI(T.OP, string="(" | "*" | "-" | "[" | "{")
         ):
-            return True
+            return Wahr
         case (
-            None | TI(T.NEWLINE) | TI(T.INDENT) | TI(T.DEDENT) | TI(string=":"),
+            Nichts | TI(T.NEWLINE) | TI(T.INDENT) | TI(T.DEDENT) | TI(string=":"),
             TI(string="case"),
             TI(T.NAME, string=s)
         ):
             wenn keyword.iskeyword(s):
                 return s in keyword_first_sets_case
-            return True
+            return Wahr
         case (TI(string="case"), TI(string="_"), TI(string=":")):
-            return True
+            return Wahr
         case _:
-            return False
+            return Falsch
 
 
 def disp_str(
     buffer: str,
-    colors: list[ColorSpan] | None = None,
+    colors: list[ColorSpan] | Nichts = Nichts,
     start_index: int = 0,
-    force_color: bool = False,
+    force_color: bool = Falsch,
 ) -> tuple[CharBuffer, CharWidths]:
     r"""Decompose the input buffer into a printable variant with applied colors.
 
@@ -349,18 +349,18 @@ def disp_str(
 
 def prev_next_window[T](
     iterable: Iterable[T]
-) -> Iterator[tuple[T | None, ...]]:
+) -> Iterator[tuple[T | Nichts, ...]]:
     """Generates three-tuples of (previous, current, next) items.
 
-    On the first iteration previous is None. On the last iteration next
-    is None. In case of exception next is None and the exception is re-raised
+    On the first iteration previous is Nichts. On the last iteration next
+    is Nichts. In case of exception next is Nichts and the exception is re-raised
     on a subsequent next() call.
 
     Inspired by `sliding_window` from `itertools` recipes.
     """
 
     iterator = iter(iterable)
-    window = deque((None, next(iterator)), maxlen=3)
+    window = deque((Nichts, next(iterator)), maxlen=3)
     try:
         fuer x in iterator:
             window.append(x)
@@ -368,5 +368,5 @@ def prev_next_window[T](
     except Exception:
         raise
     finally:
-        window.append(None)
+        window.append(Nichts)
         yield tuple(window)

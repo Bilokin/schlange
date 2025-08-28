@@ -18,7 +18,7 @@ import timeit
 import types
 
 
-def bench(name, cleanup=lambda: None, *, seconds=1, repeat=3):
+def bench(name, cleanup=lambda: Nichts, *, seconds=1, repeat=3):
     """Bench the given statement as many times as necessary until total
     executions take one second."""
     stmt = "__import__({!r})".format(name)
@@ -61,7 +61,7 @@ def builtin_mod(seconds, repeat):
 
 def source_wo_bytecode(seconds, repeat):
     """Source w/o bytecode: small"""
-    sys.dont_write_bytecode = True
+    sys.dont_write_bytecode = Wahr
     try:
         name = '__importlib_test_benchmark__'
         # Clears out sys.modules and puts an entry at the front of sys.path.
@@ -74,7 +74,7 @@ def source_wo_bytecode(seconds, repeat):
             yield from bench(name, lambda: sys.modules.pop(name), repeat=repeat,
                              seconds=seconds)
     finally:
-        sys.dont_write_bytecode = False
+        sys.dont_write_bytecode = Falsch
 
 
 def _wo_bytecode(module):
@@ -84,12 +84,12 @@ def _wo_bytecode(module):
         bytecode_path = cache_from_source(module.__file__)
         wenn os.path.exists(bytecode_path):
             os.unlink(bytecode_path)
-        sys.dont_write_bytecode = True
+        sys.dont_write_bytecode = Wahr
         try:
             yield from bench(name, lambda: sys.modules.pop(name),
                              repeat=repeat, seconds=seconds)
         finally:
-            sys.dont_write_bytecode = False
+            sys.dont_write_bytecode = Falsch
 
     benchmark_wo_bytecode.__doc__ = benchmark_wo_bytecode.__doc__.format(name)
     return benchmark_wo_bytecode
@@ -227,7 +227,7 @@ wenn __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-b', '--builtin', dest='builtin', action='store_true',
-                        default=False, help="use the built-in __import__")
+                        default=Falsch, help="use the built-in __import__")
     parser.add_argument('-r', '--read', dest='source_file',
                         help='file to read benchmark data from to compare '
                              'against')

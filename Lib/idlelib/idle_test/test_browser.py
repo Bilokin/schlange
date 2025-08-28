@@ -22,7 +22,7 @@ klasse ModuleBrowserTest(unittest.TestCase):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
-        cls.mb = browser.ModuleBrowser(cls.root, __file__, _utest=True)
+        cls.mb = browser.ModuleBrowser(cls.root, __file__, _utest=Wahr)
 
     @classmethod
     def tearDownClass(cls):
@@ -37,7 +37,7 @@ klasse ModuleBrowserTest(unittest.TestCase):
         eq(mb.path, __file__)
         eq(pyclbr._modules, {})
         self.assertIsInstance(mb.node, TreeNode)
-        self.assertIsNotNone(browser.file_open)
+        self.assertIsNotNichts(browser.file_open)
 
     def test_settitle(self):
         mb = self.mb
@@ -54,8 +54,8 @@ klasse ModuleBrowserTest(unittest.TestCase):
         mb.top.destroy = Func()
         mb.node.destroy = Func()
         mb.close()
-        self.assertTrue(mb.top.destroy.called)
-        self.assertTrue(mb.node.destroy.called)
+        self.assertWahr(mb.top.destroy.called)
+        self.assertWahr(mb.node.destroy.called)
         del mb.top.destroy, mb.node.destroy
 
     def test_is_browseable_extension(self):
@@ -137,7 +137,7 @@ klasse ModuleBrowserTreeItemTest(unittest.TestCase):
         self.assertEqual(self.mbt.GetIconName(), 'python')
 
     def test_isexpandable(self):
-        self.assertTrue(self.mbt.IsExpandable())
+        self.assertWahr(self.mbt.IsExpandable())
 
     def test_listchildren(self):
         save_rex = browser.pyclbr.readmodule_ex
@@ -164,11 +164,11 @@ klasse ModuleBrowserTreeItemTest(unittest.TestCase):
     def test_ondoubleclick(self, fopen):
         mbt = self.mbt
 
-        with mock.patch('os.path.exists', return_value=False):
+        with mock.patch('os.path.exists', return_value=Falsch):
             mbt.OnDoubleClick()
             fopen.assert_not_called()
 
-        with mock.patch('os.path.exists', return_value=True):
+        with mock.patch('os.path.exists', return_value=Wahr):
             mbt.OnDoubleClick()
             fopen.assert_called_once_with(fname)
 
@@ -189,9 +189,9 @@ klasse ChildBrowserTreeItemTest(unittest.TestCase):
     def test_init(self):
         eq = self.assertEqual
         eq(self.cbt_C1.name, 'C1()')
-        self.assertFalse(self.cbt_C1.isfunction)
+        self.assertFalsch(self.cbt_C1.isfunction)
         eq(self.cbt_f1.name, 'f1')
-        self.assertTrue(self.cbt_f1.isfunction)
+        self.assertWahr(self.cbt_f1.isfunction)
 
     def test_gettext(self):
         self.assertEqual(self.cbt_C1.GetText(), 'class C1()')
@@ -202,9 +202,9 @@ klasse ChildBrowserTreeItemTest(unittest.TestCase):
         self.assertEqual(self.cbt_f1.GetIconName(), 'python')
 
     def test_isexpandable(self):
-        self.assertTrue(self.cbt_C1.IsExpandable())
-        self.assertTrue(self.cbt_f1.IsExpandable())
-        self.assertFalse(self.cbt_F1.IsExpandable())
+        self.assertWahr(self.cbt_C1.IsExpandable())
+        self.assertWahr(self.cbt_f1.IsExpandable())
+        self.assertFalsch(self.cbt_F1.IsExpandable())
 
     def test_getsublist(self):
         eq = self.assertEqual

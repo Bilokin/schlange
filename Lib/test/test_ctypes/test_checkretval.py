@@ -20,8 +20,8 @@ klasse Test(unittest.TestCase):
         dll._testfunc_p_p.restype = CHECKED
         self.assertEqual("42", dll._testfunc_p_p(42))
 
-        dll._testfunc_p_p.restype = None
-        self.assertEqual(None, dll._testfunc_p_p(42))
+        dll._testfunc_p_p.restype = Nichts
+        self.assertEqual(Nichts, dll._testfunc_p_p(42))
 
         del dll._testfunc_p_p.restype
         self.assertEqual(42, dll._testfunc_p_p(42))
@@ -30,7 +30,7 @@ klasse Test(unittest.TestCase):
                          'ctypes.oledll is required')
     def test_oledll(self):
         oleaut32 = ctypes.oledll.oleaut32
-        self.assertRaises(OSError, oleaut32.CreateTypeLib2, 0, None, None)
+        self.assertRaises(OSError, oleaut32.CreateTypeLib2, 0, Nichts, Nichts)
 
 
 wenn __name__ == "__main__":

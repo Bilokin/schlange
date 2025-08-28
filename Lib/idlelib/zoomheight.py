@@ -18,10 +18,10 @@ klasse ZoomHeight:
         self.editwin = editwin
         self.top = self.editwin.top
 
-    def zoom_height_event(self, event=None):
+    def zoom_height_event(self, event=Nichts):
         zoomed = self.zoom_height()
 
-        wenn zoomed is None:
+        wenn zoomed is Nichts:
             self.top.bell()
         sonst:
             menu_status = 'Restore' wenn zoomed sonst 'Zoom'
@@ -38,24 +38,24 @@ klasse ZoomHeight:
         wenn top.wm_state() != 'normal':
             # Can't zoom/restore window height fuer windows not in the 'normal'
             # state, e.g. maximized and full-screen windows.
-            return None
+            return Nichts
 
         try:
             maxheight, maxy = self.get_max_height_and_y_coord()
         except WmInfoGatheringError:
-            return None
+            return Nichts
 
         wenn height != maxheight:
             # Maximize the window's height.
             set_window_geometry(top, (width, maxheight, x, maxy))
-            return True
+            return Wahr
         sonst:
             # Restore the window's height.
             #
             # .wm_geometry('') makes the window revert to the size requested
             # by the widgets it contains.
             top.wm_geometry('')
-            return False
+            return Falsch
 
     def get_max_height_and_y_coord(self):
         top = self.top
@@ -119,6 +119,6 @@ def set_window_geometry(top, geometry):
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_zoomheight', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_zoomheight', verbosity=2, exit=Falsch)
 
     # Add htest?

@@ -71,10 +71,10 @@ klasse Reg:
         try:
             handle = RegOpenKeyEx(base, key)
         except RegError:
-            return None
+            return Nichts
         L = []
         i = 0
-        while True:
+        while Wahr:
             try:
                 k = RegEnumKey(handle, i)
             except RegError:
@@ -92,10 +92,10 @@ klasse Reg:
         try:
             handle = RegOpenKeyEx(base, key)
         except RegError:
-            return None
+            return Nichts
         d = {}
         i = 0
-        while True:
+        while Wahr:
             try:
                 name, value, type = RegEnumValue(handle, i)
             except RegError:
@@ -107,8 +107,8 @@ klasse Reg:
     read_values = classmethod(read_values)
 
     def convert_mbcs(s):
-        dec = getattr(s, "decode", None)
-        wenn dec is not None:
+        dec = getattr(s, "decode", Nichts)
+        wenn dec is not Nichts:
             try:
                 s = dec("mbcs")
             except UnicodeError:
@@ -185,7 +185,7 @@ def get_build_version():
     wenn majorVersion >= 6:
         return majorVersion + minorVersion
     # sonst we don't know what version of the compiler this is
-    return None
+    return Nichts
 
 def normalize_and_reduce_paths(paths):
     """Return a list of normalized paths with duplicates removed.
@@ -224,28 +224,28 @@ def find_vcvarsall(version):
                                    "productdir")
     except KeyError:
         log.debug("Unable to find productdir in registry")
-        productdir = None
+        productdir = Nichts
 
     wenn not productdir or not os.path.isdir(productdir):
         toolskey = "VS%0.f0COMNTOOLS" % version
-        toolsdir = os.environ.get(toolskey, None)
+        toolsdir = os.environ.get(toolskey, Nichts)
 
         wenn toolsdir and os.path.isdir(toolsdir):
             productdir = os.path.join(toolsdir, os.pardir, os.pardir, "VC")
             productdir = os.path.abspath(productdir)
             wenn not os.path.isdir(productdir):
                 log.debug("%s is not a valid directory" % productdir)
-                return None
+                return Nichts
         sonst:
             log.debug("Env var %s is not set or invalid" % toolskey)
     wenn not productdir:
         log.debug("No productdir found")
-        return None
+        return Nichts
     vcvarsall = os.path.join(productdir, "vcvarsall.bat")
     wenn os.path.isfile(vcvarsall):
         return vcvarsall
     log.debug("Unable to find vcvarsall.bat")
-    return None
+    return Nichts
 
 def query_vcvarsall(version, arch="x86"):
     """Launch vcvarsall.bat and read the settings from its environment
@@ -254,7 +254,7 @@ def query_vcvarsall(version, arch="x86"):
     interesting = {"include", "lib", "libpath", "path"}
     result = {}
 
-    wenn vcvarsall is None:
+    wenn vcvarsall is Nichts:
         raise DistutilsPlatformError("Unable to find vcvarsall.bat")
     log.debug("Calling 'vcvarsall.bat %s' (version=%s)", arch, version)
     popen = subprocess.Popen('"%s" %s & set' % (vcvarsall, arch),
@@ -330,9 +330,9 @@ klasse MSVCCompiler(CCompiler) :
         # self.__macros = MACROS
         self.__paths = []
         # target platform (.plat_name is consistent with 'bdist')
-        self.plat_name = None
-        self.__arch = None # deprecated name
-        self.initialized = False
+        self.plat_name = Nichts
+        self.__arch = Nichts # deprecated name
+        self.initialized = Falsch
 
     # -- Worker methods ------------------------------------------------
 
@@ -350,7 +350,7 @@ klasse MSVCCompiler(CCompiler) :
 
     def manifest_get_embed_info(self, target_desc, ld_args):
         # If a manifest should be embedded, return a tuple of
-        # (manifest_filename, resource_id).  Returns None wenn no manifest
+        # (manifest_filename, resource_id).  Returns Nichts wenn no manifest
         # should be embedded.  See http://bugs.python.org/issue7833 fuer why
         # we want to avoid any manifest fuer extension modules wenn we can.
         fuer arg in ld_args:
@@ -359,7 +359,7 @@ klasse MSVCCompiler(CCompiler) :
                 break
         sonst:
             # no /MANIFESTFILE so nothing to do.
-            return None
+            return Nichts
         wenn target_desc == CCompiler.EXECUTABLE:
             # by default, executables always get the manifest with the
             # CRT referenced.
@@ -368,8 +368,8 @@ klasse MSVCCompiler(CCompiler) :
             # Extension modules try and avoid any manifest wenn possible.
             mfid = 2
             temp_manifest = self._remove_visual_c_ref(temp_manifest)
-        wenn temp_manifest is None:
-            return None
+        wenn temp_manifest is Nichts:
+            return Nichts
         return temp_manifest, mfid
 
     def _remove_visual_c_ref(self, manifest_file):
@@ -381,7 +381,7 @@ klasse MSVCCompiler(CCompiler) :
             # folder), the runtimes do not need to be in every folder
             # with .pyd's.
             # Returns either the filename of the modified manifest or
-            # None wenn no manifest should be embedded.
+            # Nichts wenn no manifest should be embedded.
             manifest_f = open(manifest_file)
             try:
                 manifest_buf = manifest_f.read()
@@ -399,8 +399,8 @@ klasse MSVCCompiler(CCompiler) :
             pattern = re.compile(
                 r"""<assemblyIdentity.*?name=(?:"|')(.+?)(?:"|')"""
                 r""".*?(?:/>|</assemblyIdentity>)""", re.DOTALL)
-            wenn re.search(pattern, manifest_buf) is None:
-                return None
+            wenn re.search(pattern, manifest_buf) is Nichts:
+                return Nichts
 
             manifest_f = open(manifest_file, 'w')
             try:

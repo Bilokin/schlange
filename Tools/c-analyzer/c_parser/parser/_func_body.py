@@ -66,8 +66,8 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
 
         wenn empty:
             log_match('', m, depth)
-            resolve(None, None, None, text)
-            yield None, text
+            resolve(Nichts, Nichts, Nichts, text)
+            yield Nichts, text
         sowenn inline_kind:
             log_match('', m, depth)
             kind = inline_kind
@@ -77,7 +77,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             # start of the inline compound body,
             # Note that this is effectively like a forward reference that
             # we do not emit.
-            resolve(kind, None, name, text, None)
+            resolve(kind, Nichts, name, text, Nichts)
             _parse_body = DECL_BODY_PARSERS[kind]
             before = []
             ident = f'{kind} {name}'
@@ -89,32 +89,32 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             # un-inline the decl.  Note that it might not actually be inline.
             # We handle the case in the "maybe_inline_actual" branch.
             text = f'{inline_leading or ""} {inline_pre or ""} {kind} {name} {text}'
-            # XXX Should "parent" really be None fuer inline type decls?
-            yield resolve(kind, data, name, text, None), text
+            # XXX Should "parent" really be Nichts fuer inline type decls?
+            yield resolve(kind, data, name, text, Nichts), text
         sowenn block_close:
             log_match('', m, depth)
             depth -= 1
-            resolve(None, None, None, text)
+            resolve(Nichts, Nichts, Nichts, text)
             # XXX This isn't great.  Calling resolve() should have
             # cleared the closing bracket.  However, some code relies
             # on the yielded value instead of the resolved one.  That
             # needs to be fixed.
-            yield None, text
+            yield Nichts, text
         sowenn compound_bare:
             log_match('', m, depth)
-            yield resolve('statement', compound_bare, None, text, parent), text
+            yield resolve('statement', compound_bare, Nichts, text, parent), text
         sowenn compound_labeled:
             log_match('', m, depth)
-            yield resolve('statement', compound_labeled, None, text, parent), text
+            yield resolve('statement', compound_labeled, Nichts, text, parent), text
         sowenn compound_paren:
             log_match('', m, depth)
             try:
                 pos = match_paren(text)
             except ValueError:
                 text = f'{compound_paren} {text}'
-                #resolve(None, None, None, text)
+                #resolve(Nichts, Nichts, Nichts, text)
                 text, resolve = continue_text(source, text, resolve)
-                yield None, text
+                yield Nichts, text
             sonst:
                 head = text[:pos]
                 text = text[pos:]
@@ -130,7 +130,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
                         'compound': compound_paren,
                         'statement': head,
                     }
-                yield resolve('statement', data, None, text, parent), text
+                yield resolve('statement', data, Nichts, text, parent), text
         sowenn block_open:
             log_match('', m, depth)
             depth += 1
@@ -139,13 +139,13 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
                 # in place of the block.
                 # XXX Combine it with the remainder after the block close.
                 stmt = f'{block_open}{{<expr>}}...;'
-                yield resolve('statement', stmt, None, text, parent), text
+                yield resolve('statement', stmt, Nichts, text, parent), text
             sonst:
-                resolve(None, None, None, text)
-                yield None, text
+                resolve(Nichts, Nichts, Nichts, text)
+                yield Nichts, text
         sowenn simple_ending:
             log_match('', m, depth)
-            yield resolve('statement', simple_stmt, None, text, parent), text
+            yield resolve('statement', simple_stmt, Nichts, text, parent), text
         sowenn var_ending:
             log_match('', m, depth)
             kind = 'variable'
@@ -162,7 +162,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             yield resolve(kind, data, name, text, parent), text
             wenn var_init:
                 _data = f'{name} = {var_init.strip()}'
-                yield resolve('statement', _data, None, text, parent), text
+                yield resolve('statement', _data, Nichts, text, parent), text
         sonst:
             # This should be unreachable.
             raise NotImplementedError
@@ -197,7 +197,7 @@ def parse_function_statics(source, func, anon_name):
                 break
         sonst:
             # We ran out of lines.
-            wenn srcinfo is not None:
+            wenn srcinfo is not Nichts:
                 srcinfo.done()
             return
         fuer item, depth in _parse_next_local_static(m, srcinfo,
@@ -205,7 +205,7 @@ def parse_function_statics(source, func, anon_name):
             wenn callable(item):
                 parse_body = item
                 yield from parse_body(source)
-            sowenn item is not None:
+            sowenn item is not Nichts:
                 yield item
 
 
@@ -224,7 +224,7 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
         kind = inline_kind
         name = inline_name or anon_name('inline-')
         # Immediately emit a forward declaration.
-        yield srcinfo.resolve(kind, name=name, data=None), depth
+        yield srcinfo.resolve(kind, name=name, data=Nichts), depth
 
         # un-inline the decl.  Note that it might not actually be inline.
         # We handle the case in the "maybe_inline_actual" branch.
@@ -242,8 +242,8 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
                     data.append(item)
                 sonst:
                     yield item
-            # XXX Should "parent" really be None fuer inline type decls?
-            yield srcinfo.resolve(kind, data, name, parent=None)
+            # XXX Should "parent" really be Nichts fuer inline type decls?
+            yield srcinfo.resolve(kind, data, name, parent=Nichts)
 
             srcinfo.resume()
         yield parse_body, depth
@@ -266,16 +266,16 @@ def _parse_next_local_static(m, srcinfo, anon_name, func, depth):
     sonst:
         log_match('func other', m)
         wenn block_open:
-            log_match('func other', None, depth, depth + 1)
+            log_match('func other', Nichts, depth, depth + 1)
             depth += 1
         sowenn block_close:
-            log_match('func other', None, depth, depth - 1)
+            log_match('func other', Nichts, depth, depth - 1)
             depth -= 1
         sowenn stmt_end:
-            log_match('func other', None, depth, depth)
+            log_match('func other', Nichts, depth, depth)
             pass
         sonst:
             # This should be unreachable.
             raise NotImplementedError
         srcinfo.advance(remainder)
-        yield None, depth
+        yield Nichts, depth

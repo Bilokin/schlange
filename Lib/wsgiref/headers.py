@@ -10,12 +10,12 @@ written by Barry Warsaw.
 import re
 tspecials = re.compile(r'[ \(\)<>@,;:\\"/\[\]\?=]')
 
-def _formatparam(param, value=None, quote=1):
+def _formatparam(param, value=Nichts, quote=1):
     """Convenience function to format and return a key=value pair.
 
     This will quote the value wenn needed or wenn quote is true.
     """
-    wenn value is not None and len(value) > 0:
+    wenn value is not Nichts and len(value) > 0:
         wenn quote or tspecials.search(value):
             value = value.replace('\\', '\\\\').replace('"', r'\"')
             return '%s="%s"' % (param, value)
@@ -28,8 +28,8 @@ def _formatparam(param, value=None, quote=1):
 klasse Headers:
     """Manage a collection of HTTP response headers"""
 
-    def __init__(self, headers=None):
-        headers = headers wenn headers is not None sonst []
+    def __init__(self, headers=Nichts):
+        headers = headers wenn headers is not Nichts sonst []
         wenn type(headers) is not list:
             raise TypeError("Headers must be a list of name/value tuples")
         self._headers = headers
@@ -66,7 +66,7 @@ klasse Headers:
     def __getitem__(self,name):
         """Get the first header value fuer 'name'
 
-        Return None wenn the header is missing instead of raising an exception.
+        Return Nichts wenn the header is missing instead of raising an exception.
 
         Note that wenn the header appeared multiple times, the first exactly which
         occurrence gets returned is undefined.  Use getall() to get all
@@ -76,7 +76,7 @@ klasse Headers:
 
     def __contains__(self, name):
         """Return true wenn the message contains the header."""
-        return self.get(name) is not None
+        return self.get(name) is not Nichts
 
 
     def get_all(self, name):
@@ -91,7 +91,7 @@ klasse Headers:
         return [kv[1] fuer kv in self._headers wenn kv[0].lower()==name]
 
 
-    def get(self,name,default=None):
+    def get(self,name,default=Nichts):
         """Get the first header value fuer 'name', or return 'default'"""
         name = self._convert_string_type(name.lower())
         fuer k,v in self._headers:
@@ -147,7 +147,7 @@ klasse Headers:
         If there is no header named 'name', add a new header with name 'name'
         and value 'value'."""
         result = self.get(name)
-        wenn result is None:
+        wenn result is Nichts:
             self._headers.append((self._convert_string_type(name),
                 self._convert_string_type(value)))
             return value
@@ -160,7 +160,7 @@ klasse Headers:
         _name is the header field to add.  keyword arguments can be used to set
         additional parameters fuer the header field, with underscores converted
         to dashes.  Normally the parameter will be added as key="value" unless
-        value is None, in which case only the key will be added.
+        value is Nichts, in which case only the key will be added.
 
         Example:
 
@@ -168,15 +168,15 @@ klasse Headers:
 
         Note that unlike the corresponding 'email.message' method, this does
         *not* handle '(charset, language, value)' tuples: all values must be
-        strings or None.
+        strings or Nichts.
         """
         parts = []
-        wenn _value is not None:
+        wenn _value is not Nichts:
             _value = self._convert_string_type(_value)
             parts.append(_value)
         fuer k, v in _params.items():
             k = self._convert_string_type(k)
-            wenn v is None:
+            wenn v is Nichts:
                 parts.append(k.replace('_', '-'))
             sonst:
                 v = self._convert_string_type(v)

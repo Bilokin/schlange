@@ -87,16 +87,16 @@ Generators can call other generators:
     [0, 1, 2, 3, 4]
 
 
-Make sure that None is a valid return value
+Make sure that Nichts is a valid return value
 
-    >>> [None fuer i in range(10)]
-    [None, None, None, None, None, None, None, None, None, None]
+    >>> [Nichts fuer i in range(10)]
+    [Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts, Nichts]
 
 """
 
 
 klasse ListComprehensionTest(unittest.TestCase):
-    def _check_in_scopes(self, code, outputs=None, ns=None, scopes=None, raises=(),
+    def _check_in_scopes(self, code, outputs=Nichts, ns=Nichts, scopes=Nichts, raises=(),
                          exec_func=exec):
         code = textwrap.dedent(code)
         scopes = scopes or ["module", "class", "function"]
@@ -407,7 +407,7 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_unbound_local_after_comprehension(self):
         def f():
-            wenn False:
+            wenn Falsch:
                 x = 0
             [x fuer x in [1]]
             return x
@@ -417,7 +417,7 @@ klasse ListComprehensionTest(unittest.TestCase):
 
     def test_unbound_local_inside_comprehension(self):
         def f():
-            l = [None]
+            l = [Nichts]
             return [1 fuer (l[0], l) in [[1, 2]]]
 
         with self.assertRaises(UnboundLocalError):
@@ -558,9 +558,9 @@ klasse ListComprehensionTest(unittest.TestCase):
             d = func()
             assert d is func
             # must use "a" in this scope
-            e = a wenn False sonst None
+            e = a wenn Falsch sonst Nichts
         """
-        self._check_in_scopes(code, {"c": 1, "e": None})
+        self._check_in_scopes(code, {"c": 1, "e": Nichts})
 
     def test_assign_to_comp_iter_var_in_outer_function(self):
         code = """
@@ -577,8 +577,8 @@ klasse ListComprehensionTest(unittest.TestCase):
             x = r is b
             y = list(s.keys())
         """
-        self._check_in_scopes(code, {"x": True, "y": []}, scopes=["module"])
-        self._check_in_scopes(code, {"x": True, "y": ["b"]}, scopes=["function"])
+        self._check_in_scopes(code, {"x": Wahr, "y": []}, scopes=["module"])
+        self._check_in_scopes(code, {"x": Wahr, "y": ["b"]}, scopes=["function"])
         self._check_in_scopes(code, raises=NameError, scopes=["class"])
 
     def test_iter_var_available_in_locals(self):
@@ -597,7 +597,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             {
                 "items": [1, 2],
                 "items2": [1, 2],
-                "items3": [True, True],
+                "items3": [Wahr, Wahr],
                 "items4": [1, 2],
                 "y": 0
             }
@@ -606,7 +606,7 @@ klasse ListComprehensionTest(unittest.TestCase):
     def test_comp_in_try_except(self):
         template = """
             value = ["ab"]
-            result = snapshot = None
+            result = snapshot = Nichts
             try:
                 result = [{func}(value) fuer value in value]
             except ValueError:
@@ -615,16 +615,16 @@ klasse ListComprehensionTest(unittest.TestCase):
         """
         # No exception.
         code = template.format(func='len')
-        self._check_in_scopes(code, {"value": ["ab"], "result": [2], "snapshot": None})
+        self._check_in_scopes(code, {"value": ["ab"], "result": [2], "snapshot": Nichts})
         # Handles exception.
         code = template.format(func='int')
-        self._check_in_scopes(code, {"value": ["ab"], "result": None, "snapshot": ["ab"]},
+        self._check_in_scopes(code, {"value": ["ab"], "result": Nichts, "snapshot": ["ab"]},
                               raises=ValueError)
 
     def test_comp_in_try_finally(self):
         template = """
             value = ["ab"]
-            result = snapshot = None
+            result = snapshot = Nichts
             try:
                 result = [{func}(value) fuer value in value]
             finally:
@@ -635,25 +635,25 @@ klasse ListComprehensionTest(unittest.TestCase):
         self._check_in_scopes(code, {"value": ["ab"], "result": [2], "snapshot": ["ab"]})
         # Handles exception.
         code = template.format(func='int')
-        self._check_in_scopes(code, {"value": ["ab"], "result": None, "snapshot": ["ab"]},
+        self._check_in_scopes(code, {"value": ["ab"], "result": Nichts, "snapshot": ["ab"]},
                               raises=ValueError)
 
     def test_exception_in_post_comp_call(self):
         code = """
-            value = [1, None]
+            value = [1, Nichts]
             try:
                 [v fuer v in value].sort()
             except TypeError:
                 pass
         """
-        self._check_in_scopes(code, {"value": [1, None]})
+        self._check_in_scopes(code, {"value": [1, Nichts]})
 
     def test_frame_locals(self):
         code = """
             val = "a" in [sys._getframe().f_locals fuer a in [0]][0]
         """
         import sys
-        self._check_in_scopes(code, {"val": False}, ns={"sys": sys})
+        self._check_in_scopes(code, {"val": Falsch}, ns={"sys": sys})
 
         code = """
             val = [sys._getframe().f_locals["a"] fuer a in [0]][0]
@@ -720,25 +720,25 @@ klasse ListComprehensionTest(unittest.TestCase):
 
         def init_raises():
             try:
-                [x fuer x in BrokenIter(init_raises=True)]
+                [x fuer x in BrokenIter(init_raises=Wahr)]
             except Exception as e:
                 return e
 
         def next_raises():
             try:
-                [x fuer x in BrokenIter(next_raises=True)]
+                [x fuer x in BrokenIter(next_raises=Wahr)]
             except Exception as e:
                 return e
 
         def iter_raises():
             try:
-                [x fuer x in BrokenIter(iter_raises=True)]
+                [x fuer x in BrokenIter(iter_raises=Wahr)]
             except Exception as e:
                 return e
 
-        fuer func, expected in [(init_raises, "BrokenIter(init_raises=True)"),
-                               (next_raises, "BrokenIter(next_raises=True)"),
-                               (iter_raises, "BrokenIter(iter_raises=True)"),
+        fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
+                               (next_raises, "BrokenIter(next_raises=Wahr)"),
+                               (iter_raises, "BrokenIter(iter_raises=Wahr)"),
                               ]:
             with self.subTest(func):
                 exc = func()

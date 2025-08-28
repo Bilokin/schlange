@@ -36,16 +36,16 @@ klasse DateTimeTests(unittest.TestCase):
     def test_usegmt(self):
         utc_dt = datetime.datetime(*self.dateargs,
                                    tzinfo=datetime.timezone.utc)
-        self.assertEqual(utils.format_datetime(utc_dt, usegmt=True),
+        self.assertEqual(utils.format_datetime(utc_dt, usegmt=Wahr),
                          self.datestring + ' GMT')
 
     def test_usegmt_with_naive_datetime_raises(self):
         with self.assertRaises(ValueError):
-            utils.format_datetime(self.naive_dt, usegmt=True)
+            utils.format_datetime(self.naive_dt, usegmt=Wahr)
 
     def test_usegmt_with_non_utc_datetime_raises(self):
         with self.assertRaises(ValueError):
-            utils.format_datetime(self.aware_dt, usegmt=True)
+            utils.format_datetime(self.aware_dt, usegmt=Wahr)
 
     def test_parsedate_to_datetime(self):
         self.assertEqual(
@@ -58,7 +58,7 @@ klasse DateTimeTests(unittest.TestCase):
             self.naive_dt)
 
     def test_parsedate_to_datetime_with_invalid_raises_valueerror(self):
-        # See also test_parsedate_returns_None_for_invalid_strings in test_email.
+        # See also test_parsedate_returns_Nichts_for_invalid_strings in test_email.
         invalid_dates = [
             '',
             ' ',
@@ -80,24 +80,24 @@ klasse DateTimeTests(unittest.TestCase):
 klasse LocaltimeTests(unittest.TestCase):
 
     def test_localtime_is_tz_aware_daylight_true(self):
-        test.support.patch(self, time, 'daylight', True)
+        test.support.patch(self, time, 'daylight', Wahr)
         t = utils.localtime()
-        self.assertIsNotNone(t.tzinfo)
+        self.assertIsNotNichts(t.tzinfo)
 
     def test_localtime_is_tz_aware_daylight_false(self):
-        test.support.patch(self, time, 'daylight', False)
+        test.support.patch(self, time, 'daylight', Falsch)
         t = utils.localtime()
-        self.assertIsNotNone(t.tzinfo)
+        self.assertIsNotNichts(t.tzinfo)
 
     def test_localtime_daylight_true_dst_false(self):
-        test.support.patch(self, time, 'daylight', True)
+        test.support.patch(self, time, 'daylight', Wahr)
         t0 = datetime.datetime(2012, 3, 12, 1, 1)
         t1 = utils.localtime(t0)
         t2 = utils.localtime(t1)
         self.assertEqual(t1, t2)
 
     def test_localtime_daylight_false_dst_false(self):
-        test.support.patch(self, time, 'daylight', False)
+        test.support.patch(self, time, 'daylight', Falsch)
         t0 = datetime.datetime(2012, 3, 12, 1, 1)
         t1 = utils.localtime(t0)
         t2 = utils.localtime(t1)
@@ -105,7 +105,7 @@ klasse LocaltimeTests(unittest.TestCase):
 
     @test.support.run_with_tz('Europe/Minsk')
     def test_localtime_daylight_true_dst_true(self):
-        test.support.patch(self, time, 'daylight', True)
+        test.support.patch(self, time, 'daylight', Wahr)
         t0 = datetime.datetime(2012, 3, 12, 1, 1)
         t1 = utils.localtime(t0)
         t2 = utils.localtime(t1)
@@ -113,7 +113,7 @@ klasse LocaltimeTests(unittest.TestCase):
 
     @test.support.run_with_tz('Europe/Minsk')
     def test_localtime_daylight_false_dst_true(self):
-        test.support.patch(self, time, 'daylight', False)
+        test.support.patch(self, time, 'daylight', Falsch)
         t0 = datetime.datetime(2012, 3, 12, 1, 1)
         t1 = utils.localtime(t0)
         t2 = utils.localtime(t1)
@@ -121,7 +121,7 @@ klasse LocaltimeTests(unittest.TestCase):
 
     @test.support.run_with_tz('EST+05EDT,M3.2.0,M11.1.0')
     def test_localtime_epoch_utc_daylight_true(self):
-        test.support.patch(self, time, 'daylight', True)
+        test.support.patch(self, time, 'daylight', Wahr)
         t0 = datetime.datetime(1990, 1, 1, tzinfo = datetime.timezone.utc)
         t1 = utils.localtime(t0)
         t2 = t0 - datetime.timedelta(hours=5)
@@ -130,7 +130,7 @@ klasse LocaltimeTests(unittest.TestCase):
 
     @test.support.run_with_tz('EST+05EDT,M3.2.0,M11.1.0')
     def test_localtime_epoch_utc_daylight_false(self):
-        test.support.patch(self, time, 'daylight', False)
+        test.support.patch(self, time, 'daylight', Falsch)
         t0 = datetime.datetime(1990, 1, 1, tzinfo = datetime.timezone.utc)
         t1 = utils.localtime(t0)
         t2 = t0 - datetime.timedelta(hours=5)
@@ -138,17 +138,17 @@ klasse LocaltimeTests(unittest.TestCase):
         self.assertEqual(t1, t2)
 
     def test_localtime_epoch_notz_daylight_true(self):
-        test.support.patch(self, time, 'daylight', True)
+        test.support.patch(self, time, 'daylight', Wahr)
         t0 = datetime.datetime(1990, 1, 1)
         t1 = utils.localtime(t0)
-        t2 = utils.localtime(t0.replace(tzinfo=None))
+        t2 = utils.localtime(t0.replace(tzinfo=Nichts))
         self.assertEqual(t1, t2)
 
     def test_localtime_epoch_notz_daylight_false(self):
-        test.support.patch(self, time, 'daylight', False)
+        test.support.patch(self, time, 'daylight', Falsch)
         t0 = datetime.datetime(1990, 1, 1)
         t1 = utils.localtime(t0)
-        t2 = utils.localtime(t0.replace(tzinfo=None))
+        t2 = utils.localtime(t0.replace(tzinfo=Nichts))
         self.assertEqual(t1, t2)
 
     @test.support.run_with_tz('Europe/Kyiv')
@@ -171,19 +171,19 @@ klasse FormatDateTests(unittest.TestCase):
     @test.support.run_with_tz('Europe/Minsk')
     def test_formatdate(self):
         timeval = time.mktime((2011, 12, 1, 18, 0, 0, 4, 335, 0))
-        string = utils.formatdate(timeval, localtime=False, usegmt=False)
+        string = utils.formatdate(timeval, localtime=Falsch, usegmt=Falsch)
         self.assertEqual(string, 'Thu, 01 Dec 2011 15:00:00 -0000')
-        string = utils.formatdate(timeval, localtime=False, usegmt=True)
+        string = utils.formatdate(timeval, localtime=Falsch, usegmt=Wahr)
         self.assertEqual(string, 'Thu, 01 Dec 2011 15:00:00 GMT')
 
     @test.support.run_with_tz('Europe/Minsk')
     def test_formatdate_with_localtime(self):
         timeval = time.mktime((2011, 1, 1, 18, 0, 0, 6, 1, 0))
-        string = utils.formatdate(timeval, localtime=True)
+        string = utils.formatdate(timeval, localtime=Wahr)
         self.assertEqual(string, 'Sat, 01 Jan 2011 18:00:00 +0200')
         # Minsk moved from +0200 (with DST) to +0300 (without DST) in 2011
         timeval = time.mktime((2011, 12, 1, 18, 0, 0, 4, 335, 0))
-        string = utils.formatdate(timeval, localtime=True)
+        string = utils.formatdate(timeval, localtime=Wahr)
         self.assertEqual(string, 'Thu, 01 Dec 2011 18:00:00 +0300')
 
 wenn __name__ == '__main__':

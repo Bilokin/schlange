@@ -26,7 +26,7 @@ from test.support import SHORT_TIMEOUT
 try:
     from concurrent import interpreters
 except ImportError:
-    interpreters = None
+    interpreters = Nichts
 import textwrap
 import unittest
 import warnings
@@ -34,7 +34,7 @@ import warnings
 
 def requires_subinterpreters(meth):
     """Decorator to skip a test wenn subinterpreters are not supported."""
-    return unittest.skipIf(interpreters is None,
+    return unittest.skipIf(interpreters is Nichts,
                            'subinterpreters required')(meth)
 
 
@@ -54,7 +54,7 @@ klasse DisplayHookTest(unittest.TestCase):
         del builtins._
 
         with support.captured_stdout() as out:
-            dh(None)
+            dh(Nichts)
 
         self.assertEqual(out.getvalue(), "")
         self.assertNotHasAttr(builtins, "_")
@@ -93,17 +93,17 @@ klasse DisplayHookTest(unittest.TestCase):
                 support.gc_collect()
                 return 'foo'
 
-        with support.swap_attr(sys, 'stdout', None):
+        with support.swap_attr(sys, 'stdout', Nichts):
             sys.stdout = io.StringIO()  # the only reference
             sys.displayhook(X())  # should not crash
 
 
 klasse ActiveExceptionTests(unittest.TestCase):
     def test_exc_info_no_exception(self):
-        self.assertEqual(sys.exc_info(), (None, None, None))
+        self.assertEqual(sys.exc_info(), (Nichts, Nichts, Nichts))
 
     def test_sys_exception_no_exception(self):
-        self.assertEqual(sys.exception(), None)
+        self.assertEqual(sys.exception(), Nichts)
 
     def test_exc_info_with_exception_instance(self):
         def f():
@@ -198,7 +198,7 @@ klasse ExceptHookTest(unittest.TestCase):
         with test.support.captured_output("stderr") as stderr:
             with test.support.catch_unraisable_exception():
                 sys.excepthook(1, '1', 1)
-        self.assertTrue("TypeError: print_exception(): Exception expected fuer " \
+        self.assertWahr("TypeError: print_exception(): Exception expected fuer " \
                          "value, str found" in stderr.getvalue())
 
     # FIXME: testing the code fuer a lost or replaced excepthook in
@@ -217,7 +217,7 @@ klasse SysModuleTest(unittest.TestCase):
         # call without argument
         with self.assertRaises(SystemExit) as cm:
             sys.exit()
-        self.assertIsNone(cm.exception.code)
+        self.assertIsNichts(cm.exception.code)
 
         rc, out, err = assert_python_ok('-c', 'import sys; sys.exit()')
         self.assertEqual(rc, 0)
@@ -325,7 +325,7 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertRaises(ValueError, sys.setswitchinterval, 0.0)
         orig = sys.getswitchinterval()
         # sanity check
-        self.assertTrue(orig < 0.5, orig)
+        self.assertWahr(orig < 0.5, orig)
         try:
             fuer n in 0.00001, 0.05, 3.0, orig:
                 sys.setswitchinterval(n)
@@ -453,23 +453,23 @@ klasse SysModuleTest(unittest.TestCase):
         # While that no longer happens (due to PEP 667), this test case retains
         # its original global-based implementation
         # PEP 683's immortal objects also made this point moot, since the
-        # refcount fuer None doesn't change anyway. Maybe this test should be
+        # refcount fuer Nichts doesn't change anyway. Maybe this test should be
         # using a different constant value? (e.g. an integer)
         global n
         self.assertRaises(TypeError, sys.getrefcount)
-        c = sys.getrefcount(None)
-        n = None
+        c = sys.getrefcount(Nichts)
+        n = Nichts
         # Singleton refcnts don't change
-        self.assertEqual(sys.getrefcount(None), c)
+        self.assertEqual(sys.getrefcount(Nichts), c)
         del n
-        self.assertEqual(sys.getrefcount(None), c)
+        self.assertEqual(sys.getrefcount(Nichts), c)
         wenn hasattr(sys, "gettotalrefcount"):
             self.assertIsInstance(sys.gettotalrefcount(), int)
 
     def test_getframe(self):
         self.assertRaises(TypeError, sys._getframe, 42, 42)
         self.assertRaises(ValueError, sys._getframe, 2000000000)
-        self.assertTrue(
+        self.assertWahr(
             SysModuleTest.test_getframe.__code__ \
             is sys._getframe().f_code
         )
@@ -492,7 +492,7 @@ klasse SysModuleTest(unittest.TestCase):
             except ValueError:
                 break
             self.assertIs(f, f2)
-        self.assertIsNone(sys._getframemodulename(i))
+        self.assertIsNichts(sys._getframemodulename(i))
 
     # sys._current_frames() is a CPython-only gimmick.
     @threading_helper.reap_threads
@@ -538,7 +538,7 @@ klasse SysModuleTest(unittest.TestCase):
 
             # Verify that the captured main-thread frame is _this_ frame.
             frame = d.pop(main_id)
-            self.assertTrue(frame is sys._getframe())
+            self.assertWahr(frame is sys._getframe())
 
             # Verify that the captured thread frame is blocked in g456, called
             # from f123.  This is a little tricky, since various bits of
@@ -580,7 +580,7 @@ klasse SysModuleTest(unittest.TestCase):
 
         def g456():
             thread_info.append(threading.get_ident())
-            while True:
+            while Wahr:
                 try:
                     raise ValueError("oops")
                 except ValueError:
@@ -604,7 +604,7 @@ klasse SysModuleTest(unittest.TestCase):
             main_id = threading.get_ident()
             self.assertIn(main_id, d)
             self.assertIn(thread_id, d)
-            self.assertEqual(None, d.pop(main_id))
+            self.assertEqual(Nichts, d.pop(main_id))
 
             # Verify that the captured thread frame is blocked in g456, called
             # from f123.  This is a little tricky, since various bits of
@@ -645,8 +645,8 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertEqual(len(sys.float_info), 11)
         self.assertEqual(sys.float_info.radix, 2)
         self.assertEqual(len(sys.int_info), 4)
-        self.assertTrue(sys.int_info.bits_per_digit % 5 == 0)
-        self.assertTrue(sys.int_info.sizeof_digit >= 1)
+        self.assertWahr(sys.int_info.bits_per_digit % 5 == 0)
+        self.assertWahr(sys.int_info.sizeof_digit >= 1)
         self.assertGreaterEqual(sys.int_info.default_max_str_digits, 500)
         self.assertGreaterEqual(sys.int_info.str_digits_check_threshold, 100)
         self.assertGreater(sys.int_info.default_max_str_digits,
@@ -717,19 +717,19 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertEqual(vi[2], vi.micro)
         self.assertEqual(vi[3], vi.releaselevel)
         self.assertEqual(vi[4], vi.serial)
-        self.assertTrue(vi > (1,0,0))
+        self.assertWahr(vi > (1,0,0))
         self.assertIsInstance(sys.float_repr_style, str)
         self.assertIn(sys.float_repr_style, ('short', 'legacy'))
         wenn not sys.platform.startswith('win'):
             self.assertIsInstance(sys.abiflags, str)
         sonst:
-            self.assertFalse(hasattr(sys, 'abiflags'))
+            self.assertFalsch(hasattr(sys, 'abiflags'))
 
     def test_thread_info(self):
         info = sys.thread_info
         self.assertEqual(len(info), 3)
-        self.assertIn(info.name, ('nt', 'pthread', 'pthread-stubs', 'solaris', None))
-        self.assertIn(info.lock, ('pymutex', None))
+        self.assertIn(info.name, ('nt', 'pthread', 'pthread-stubs', 'solaris', Nichts))
+        self.assertIn(info.lock, ('pymutex', Nichts))
         wenn sys.platform.startswith(("linux", "android", "freebsd")):
             self.assertEqual(info.name, "pthread")
         sowenn sys.platform == "win32":
@@ -743,7 +743,7 @@ klasse SysModuleTest(unittest.TestCase):
     def test_emscripten_info(self):
         self.assertEqual(len(sys._emscripten_info), 4)
         self.assertIsInstance(sys._emscripten_info.emscripten_version, tuple)
-        self.assertIsInstance(sys._emscripten_info.runtime, (str, type(None)))
+        self.assertIsInstance(sys._emscripten_info.runtime, (str, type(Nichts)))
         self.assertIsInstance(sys._emscripten_info.pthreads, bool)
         self.assertIsInstance(sys._emscripten_info.shared_memory, bool)
 
@@ -753,7 +753,7 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertEqual(sys.__stdout__.encoding, sys.__stderr__.encoding)
 
     def test_intern(self):
-        has_is_interned = (test.support.check_impl_detail(cpython=True)
+        has_is_interned = (test.support.check_impl_detail(cpython=Wahr)
                            or hasattr(sys, '_is_interned'))
         self.assertRaises(TypeError, sys.intern)
         self.assertRaises(TypeError, sys.intern, b'abc')
@@ -761,15 +761,15 @@ klasse SysModuleTest(unittest.TestCase):
             self.assertRaises(TypeError, sys._is_interned)
             self.assertRaises(TypeError, sys._is_interned, b'abc')
         s = "never interned before" + str(random.randrange(0, 10**9))
-        self.assertTrue(sys.intern(s) is s)
+        self.assertWahr(sys.intern(s) is s)
         wenn has_is_interned:
-            self.assertIs(sys._is_interned(s), True)
+            self.assertIs(sys._is_interned(s), Wahr)
         s2 = s.swapcase().swapcase()
         wenn has_is_interned:
-            self.assertIs(sys._is_interned(s2), False)
-        self.assertTrue(sys.intern(s2) is s)
+            self.assertIs(sys._is_interned(s2), Falsch)
+        self.assertWahr(sys.intern(s2) is s)
         wenn has_is_interned:
-            self.assertIs(sys._is_interned(s2), False)
+            self.assertIs(sys._is_interned(s2), Falsch)
 
         # Subclasses of string can't be interned, because they
         # provide too much opportunity fuer insane things to happen.
@@ -782,7 +782,7 @@ klasse SysModuleTest(unittest.TestCase):
 
         self.assertRaises(TypeError, sys.intern, S("abc"))
         wenn has_is_interned:
-            self.assertIs(sys._is_interned(S("abc")), False)
+            self.assertIs(sys._is_interned(S("abc")), Falsch)
 
     @support.cpython_only
     @requires_subinterpreters
@@ -847,10 +847,10 @@ klasse SysModuleTest(unittest.TestCase):
                     assert id(s) == {id(s)}
                     t = sys.intern(s)
                     '''))
-                self.assertTrue(sys._is_interned(s))
+                self.assertWahr(sys._is_interned(s))
 
     def test_sys_flags(self):
-        self.assertTrue(sys.flags)
+        self.assertWahr(sys.flags)
         attrs = ("debug",
                  "inspect", "interactive", "optimize",
                  "dont_write_bytecode", "no_user_site", "no_site",
@@ -861,7 +861,7 @@ klasse SysModuleTest(unittest.TestCase):
             self.assertHasAttr(sys.flags, attr)
             attr_type = bool wenn attr in ("dev_mode", "safe_path") sonst int
             self.assertEqual(type(getattr(sys.flags, attr)), attr_type, attr)
-        self.assertTrue(repr(sys.flags))
+        self.assertWahr(repr(sys.flags))
         self.assertEqual(len(sys.flags), len(attrs))
 
         self.assertIn(sys.flags.utf8_mode, {0, 1, 2})
@@ -935,7 +935,7 @@ klasse SysModuleTest(unittest.TestCase):
 
     @unittest.skipUnless(os_helper.FS_NONASCII,
                          'requires OS support of non-ASCII encodings')
-    @unittest.skipUnless(sys.getfilesystemencoding() == locale.getpreferredencoding(False),
+    @unittest.skipUnless(sys.getfilesystemencoding() == locale.getpreferredencoding(Falsch),
                          'requires FS encoding to match locale')
     @support.requires_subprocess()
     def test_ioencoding_nonascii(self):
@@ -971,8 +971,8 @@ klasse SysModuleTest(unittest.TestCase):
         p.wait()
         self.assertIn(executable, ["b''", repr(sys.executable.encode("ascii", "backslashreplace"))])
 
-    def check_fsencoding(self, fs_encoding, expected=None):
-        self.assertIsNotNone(fs_encoding)
+    def check_fsencoding(self, fs_encoding, expected=Nichts):
+        self.assertIsNotNichts(fs_encoding)
         codecs.lookup(fs_encoding)
         wenn expected:
             self.assertEqual(fs_encoding, expected)
@@ -982,10 +982,10 @@ klasse SysModuleTest(unittest.TestCase):
         wenn sys.platform == 'darwin':
             expected = 'utf-8'
         sonst:
-            expected = None
+            expected = Nichts
         self.check_fsencoding(fs_encoding, expected)
 
-    def c_locale_get_error_handler(self, locale, isolated=False, encoding=None):
+    def c_locale_get_error_handler(self, locale, isolated=Falsch, encoding=Nichts):
         # Force the POSIX locale
         env = os.environ.copy()
         env["LC_ALL"] = locale
@@ -1002,20 +1002,20 @@ klasse SysModuleTest(unittest.TestCase):
         args = [sys.executable, "-X", "utf8=0", "-c", code]
         wenn isolated:
             args.append("-I")
-        wenn encoding is not None:
+        wenn encoding is not Nichts:
             env['PYTHONIOENCODING'] = encoding
         sonst:
-            env.pop('PYTHONIOENCODING', None)
+            env.pop('PYTHONIOENCODING', Nichts)
         p = subprocess.Popen(args,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT,
                               env=env,
-                              universal_newlines=True)
+                              universal_newlines=Wahr)
         stdout, stderr = p.communicate()
         return stdout
 
     def check_locale_surrogateescape(self, locale):
-        out = self.c_locale_get_error_handler(locale, isolated=True)
+        out = self.c_locale_get_error_handler(locale, isolated=Wahr)
         self.assertEqual(out,
                          'stdin: surrogateescape\n'
                          'stdout: surrogateescape\n'
@@ -1086,11 +1086,11 @@ klasse SysModuleTest(unittest.TestCase):
         # https://peps.python.org/pep-0734
         sii = sys.implementation.supports_isolated_interpreters
         self.assertIsInstance(sii, bool)
-        wenn test.support.check_impl_detail(cpython=True):
+        wenn test.support.check_impl_detail(cpython=Wahr):
             wenn test.support.is_emscripten or test.support.is_wasi:
-                self.assertFalse(sii)
+                self.assertFalsch(sii)
             sonst:
-                self.assertTrue(sii)
+                self.assertWahr(sii)
 
     @test.support.cpython_only
     def test_debugmallocstats(self):
@@ -1108,7 +1108,7 @@ klasse SysModuleTest(unittest.TestCase):
                 self.assertIn(b'Small block threshold', err)
 
         # The function has no parameter
-        self.assertRaises(TypeError, sys._debugmallocstats, True)
+        self.assertRaises(TypeError, sys._debugmallocstats, Wahr)
 
     @unittest.skipUnless(hasattr(sys, "getallocatedblocks"),
                          "sys.getallocatedblocks unavailable on this build")
@@ -1122,7 +1122,7 @@ klasse SysModuleTest(unittest.TestCase):
                 alloc_name = _testinternalcapi.pymem_getallocatorsname()
             except RuntimeError as exc:
                 # "cannot get allocators name" (ex: tracemalloc is used)
-                with_pymalloc = True
+                with_pymalloc = Wahr
             sonst:
                 with_pymalloc = (alloc_name in ('pymalloc', 'pymalloc_debug'))
 
@@ -1144,7 +1144,7 @@ klasse SysModuleTest(unittest.TestCase):
             # total ref count will not. This will sanity check that among all
             # other objects (those eligible fuer garbage collection) there
             # are more references being tracked than allocated blocks.
-            interned_immortal = sys.getunicodeinternedsize(_only_immortal=True)
+            interned_immortal = sys.getunicodeinternedsize(_only_immortal=Wahr)
             self.assertLess(a - interned_immortal, sys.gettotalrefcount())
         except AttributeError:
             # gettotalrefcount() not available
@@ -1157,10 +1157,10 @@ klasse SysModuleTest(unittest.TestCase):
         wenn support.Py_GIL_DISABLED:
             self.assertIs(type(sys._is_gil_enabled()), bool)
         sonst:
-            self.assertTrue(sys._is_gil_enabled())
+            self.assertWahr(sys._is_gil_enabled())
 
     def test_is_finalizing(self):
-        self.assertIs(sys.is_finalizing(), False)
+        self.assertIs(sys.is_finalizing(), Falsch)
         # Don't use the atexit module because _Py_Finalizing is only set
         # after calling atexit callbacks
         code = """if 1:
@@ -1171,14 +1171,14 @@ klasse SysModuleTest(unittest.TestCase):
                 print = print
 
                 def __del__(self):
-                    self.print(self.is_finalizing(), flush=True)
+                    self.print(self.is_finalizing(), flush=Wahr)
 
             # Keep a reference in the __main__ module namespace, so the
             # AtExit destructor will be called at Python exit
             ref = AtExit()
         """
         rc, stdout, stderr = assert_python_ok('-c', code)
-        self.assertEqual(stdout.rstrip(), b'True')
+        self.assertEqual(stdout.rstrip(), b'Wahr')
 
     def test_issue20602(self):
         # sys.flags and sys.float_info were wiped during shutdown.
@@ -1257,7 +1257,7 @@ klasse SysModuleTest(unittest.TestCase):
         check(-1, [traceback[-1]])
         check(1<<1000, traceback)
         check(-1<<1000, [traceback[-1]])
-        check(None, traceback)
+        check(Nichts, traceback)
 
     def test_no_duplicates_in_meta_path(self):
         self.assertEqual(len(sys.meta_path), len(set(sys.meta_path)))
@@ -1280,7 +1280,7 @@ klasse SysModuleTest(unittest.TestCase):
             print(sys.orig_argv)
         ''')
         args = [sys.executable, '-I', '-X', 'utf8', '-c', code, 'arg']
-        proc = subprocess.run(args, check=True, capture_output=True, text=True)
+        proc = subprocess.run(args, check=Wahr, capture_output=Wahr, text=Wahr)
         expected = [
             repr(['-c', 'arg']),  # sys.argv
             repr(args),  # sys.orig_argv
@@ -1296,10 +1296,10 @@ klasse SysModuleTest(unittest.TestCase):
     @unittest.skipUnless(hasattr(sys, '_stdlib_dir'), 'need sys._stdlib_dir')
     def test_stdlib_dir(self):
         os = import_helper.import_fresh_module('os')
-        marker = getattr(os, '__file__', None)
+        marker = getattr(os, '__file__', Nichts)
         wenn marker and not os.path.exists(marker):
-            marker = None
-        expected = os.path.dirname(marker) wenn marker sonst None
+            marker = Nichts
+        expected = os.path.dirname(marker) wenn marker sonst Nichts
         self.assertEqual(os.path.normpath(sys._stdlib_dir),
                          os.path.normpath(expected))
 
@@ -1357,7 +1357,7 @@ klasse UnraisableHookTest(unittest.TestCase):
             self.assertEqual(lines[-1], 'ValueError: 42')
 
             with support.captured_stderr() as stderr:
-                err_writeunraisable(ValueError(42), None)
+                err_writeunraisable(ValueError(42), Nichts)
             lines = stderr.getvalue().splitlines()
             self.assertEqual(lines[0], 'Traceback (most recent call last):')
             self.assertEqual(lines[-1], 'ValueError: 42')
@@ -1370,7 +1370,7 @@ klasse UnraisableHookTest(unittest.TestCase):
             self.assertEqual(lines[-1], 'ValueError: 42')
 
             with support.captured_stderr() as stderr:
-                err_formatunraisable(ValueError(42), None)
+                err_formatunraisable(ValueError(42), Nichts)
             lines = stderr.getvalue().splitlines()
             self.assertEqual(lines[0], 'Traceback (most recent call last):')
             self.assertEqual(lines[-1], 'ValueError: 42')
@@ -1451,7 +1451,7 @@ klasse UnraisableHookTest(unittest.TestCase):
     def test_custom_unraisablehook(self):
         _testcapi = import_helper.import_module('_testcapi')
         from _testcapi import err_writeunraisable, err_formatunraisable
-        hook_args = None
+        hook_args = Nichts
 
         def hook_func(args):
             nonlocal hook_args
@@ -1465,7 +1465,7 @@ klasse UnraisableHookTest(unittest.TestCase):
                 self.assertIs(hook_args.exc_type, type(exc))
                 self.assertIs(hook_args.exc_value, exc)
                 self.assertIs(hook_args.exc_traceback, exc.__traceback__)
-                self.assertIsNone(hook_args.err_msg)
+                self.assertIsNichts(hook_args.err_msg)
                 self.assertEqual(hook_args.object, obj)
 
                 err_formatunraisable(exc, "custom hook %R", obj)
@@ -1473,11 +1473,11 @@ klasse UnraisableHookTest(unittest.TestCase):
                 self.assertIs(hook_args.exc_value, exc)
                 self.assertIs(hook_args.exc_traceback, exc.__traceback__)
                 self.assertEqual(hook_args.err_msg, f'custom hook {obj!r}')
-                self.assertIsNone(hook_args.object)
+                self.assertIsNichts(hook_args.object)
         finally:
             # expected and hook_args contain an exception: break reference cycle
-            expected = None
-            hook_args = None
+            expected = Nichts
+            hook_args = Nichts
 
     def test_custom_unraisablehook_fail(self):
         _testcapi = import_helper.import_module('_testcapi')
@@ -1514,7 +1514,7 @@ klasse SizeofTest(unittest.TestCase):
         vsize = test.support.calcvobjsize
         gc_header_size = self.gc_headsize
         # bool objects are not gc tracked
-        self.assertEqual(sys.getsizeof(True), vsize('') + self.longdigit)
+        self.assertEqual(sys.getsizeof(Wahr), vsize('') + self.longdigit)
         # but lists are
         self.assertEqual(sys.getsizeof([]), vsize('Pn') + gc_header_size)
 
@@ -1526,7 +1526,7 @@ klasse SizeofTest(unittest.TestCase):
 
         klasse InvalidSizeof:
             def __sizeof__(self):
-                return None
+                return Nichts
         self.assertRaises(TypeError, sys.getsizeof, InvalidSizeof())
         sentinel = ["sentinel"]
         self.assertIs(sys.getsizeof(InvalidSizeof(), sentinel), sentinel)
@@ -1551,8 +1551,8 @@ klasse SizeofTest(unittest.TestCase):
 
     def test_default(self):
         size = test.support.calcvobjsize
-        self.assertEqual(sys.getsizeof(True), size('') + self.longdigit)
-        self.assertEqual(sys.getsizeof(True, -1), size('') + self.longdigit)
+        self.assertEqual(sys.getsizeof(Wahr), size('') + self.longdigit)
+        self.assertEqual(sys.getsizeof(Wahr, -1), size('') + self.longdigit)
 
     def test_objecttypes(self):
         # check all types defined in Objects/
@@ -1561,8 +1561,8 @@ klasse SizeofTest(unittest.TestCase):
         vsize = test.support.calcvobjsize
         check = self.check_sizeof
         # bool
-        check(True, vsize('') + self.longdigit)
-        check(False, vsize('') + self.longdigit)
+        check(Wahr, vsize('') + self.longdigit)
+        check(Falsch, vsize('') + self.longdigit)
         # buffer
         # XXX
         # builtin_function_or_method
@@ -1716,8 +1716,8 @@ klasse SizeofTest(unittest.TestCase):
             check(unittest, size('PPPPPP'))
         sonst:
             check(unittest, size('PPPPP'))
-        # None
-        check(None, size(''))
+        # Nichts
+        check(Nichts, size(''))
         # NotImplementedType
         check(NotImplemented, size(''))
         # object
@@ -1883,7 +1883,7 @@ klasse SizeofTest(unittest.TestCase):
         except TypeError as e:
             tb = e.__traceback__
             # traceback
-            wenn tb is not None:
+            wenn tb is not Nichts:
                 check(tb, size('2P2i'))
         # symtable entry
         # XXX
@@ -1895,31 +1895,31 @@ klasse SizeofTest(unittest.TestCase):
 
     def test_asyncgen_hooks(self):
         old = sys.get_asyncgen_hooks()
-        self.assertIsNone(old.firstiter)
-        self.assertIsNone(old.finalizer)
+        self.assertIsNichts(old.firstiter)
+        self.assertIsNichts(old.finalizer)
 
-        firstiter = lambda *a: None
-        finalizer = lambda *a: None
+        firstiter = lambda *a: Nichts
+        finalizer = lambda *a: Nichts
 
         with self.assertRaises(TypeError):
             sys.set_asyncgen_hooks(firstiter=firstiter, finalizer="invalid")
         cur = sys.get_asyncgen_hooks()
-        self.assertIsNone(cur.firstiter)
-        self.assertIsNone(cur.finalizer)
+        self.assertIsNichts(cur.firstiter)
+        self.assertIsNichts(cur.finalizer)
 
         # gh-118473
         with self.assertRaises(TypeError):
             sys.set_asyncgen_hooks(firstiter="invalid", finalizer=finalizer)
         cur = sys.get_asyncgen_hooks()
-        self.assertIsNone(cur.firstiter)
-        self.assertIsNone(cur.finalizer)
+        self.assertIsNichts(cur.firstiter)
+        self.assertIsNichts(cur.finalizer)
 
         sys.set_asyncgen_hooks(firstiter=firstiter)
         hooks = sys.get_asyncgen_hooks()
         self.assertIs(hooks.firstiter, firstiter)
         self.assertIs(hooks[0], firstiter)
-        self.assertIs(hooks.finalizer, None)
-        self.assertIs(hooks[1], None)
+        self.assertIs(hooks.finalizer, Nichts)
+        self.assertIs(hooks[1], Nichts)
 
         sys.set_asyncgen_hooks(finalizer=finalizer)
         hooks = sys.get_asyncgen_hooks()
@@ -1930,8 +1930,8 @@ klasse SizeofTest(unittest.TestCase):
 
         sys.set_asyncgen_hooks(*old)
         cur = sys.get_asyncgen_hooks()
-        self.assertIsNone(cur.firstiter)
-        self.assertIsNone(cur.finalizer)
+        self.assertIsNichts(cur.firstiter)
+        self.assertIsNichts(cur.finalizer)
 
     def test_changing_sys_stderr_and_removing_reference(self):
         # If the default displayhook doesn't take a strong reference
@@ -1941,7 +1941,7 @@ klasse SizeofTest(unittest.TestCase):
             import sys
             klasse MyStderr:
                 def write(self, s):
-                    sys.stderr = None
+                    sys.stderr = Nichts
             sys.stderr = MyStderr()
             1/0
         ''')
@@ -1955,7 +1955,7 @@ klasse TestRemoteExec(unittest.TestCase):
     def tearDown(self):
         test.support.reap_children()
 
-    def _run_remote_exec_test(self, script_code, python_args=None, env=None,
+    def _run_remote_exec_test(self, script_code, python_args=Nichts, env=Nichts,
                               prologue='',
                               script_path=os_helper.TESTFN + '_remote.py'):
         # Create the script that will be remotely executed
@@ -2020,7 +2020,7 @@ sock.close()
                               stderr=subprocess.PIPE,
                               env=env,
                               ) as proc:
-            client_socket = None
+            client_socket = Nichts
             try:
                 # Accept connection from target process
                 client_socket, _ = server_socket.accept()
@@ -2045,7 +2045,7 @@ sock.close()
             except PermissionError:
                 self.skipTest("Insufficient permissions to execute code in remote process")
             finally:
-                wenn client_socket is not None:
+                wenn client_socket is not Nichts:
                     client_socket.close()
                 proc.kill()
                 proc.terminate()
@@ -2158,7 +2158,7 @@ raise Exception("Remote script exception")
     def test_remote_exec_invalid_script(self):
         """Test remote exec with invalid script type"""
         with self.assertRaises(TypeError):
-            sys.remote_exec(0, None)
+            sys.remote_exec(0, Nichts)
         with self.assertRaises(TypeError):
             sys.remote_exec(0, 123)
 
@@ -2212,7 +2212,7 @@ klasse TestSysJIT(unittest.TestCase):
     def test_jit_is_enabled(self):
         available = sys._jit.is_available()
         script = "import sys; assert sys._jit.is_enabled() is {enabled}"
-        assert_python_ok("-c", script.format(enabled=False), PYTHON_JIT="0")
+        assert_python_ok("-c", script.format(enabled=Falsch), PYTHON_JIT="0")
         assert_python_ok("-c", script.format(enabled=available), PYTHON_JIT="1")
 
     def test_jit_is_active(self):
@@ -2223,22 +2223,22 @@ klasse TestSysJIT(unittest.TestCase):
             import _testinternalcapi
             import sys
 
-            def frame_0_interpreter() -> None:
-                assert sys._jit.is_active() is False
+            def frame_0_interpreter() -> Nichts:
+                assert sys._jit.is_active() is Falsch
 
-            def frame_1_interpreter() -> None:
-                assert sys._jit.is_active() is False
+            def frame_1_interpreter() -> Nichts:
+                assert sys._jit.is_active() is Falsch
                 frame_0_interpreter()
-                assert sys._jit.is_active() is False
+                assert sys._jit.is_active() is Falsch
 
-            def frame_2_jit(expected: bool) -> None:
+            def frame_2_jit(expected: bool) -> Nichts:
                 # Inlined into the last loop of frame_3_jit:
                 assert sys._jit.is_active() is expected
                 # Insert C frame:
-                _testcapi.pyobject_vectorcall(frame_1_interpreter, None, None)
+                _testcapi.pyobject_vectorcall(frame_1_interpreter, Nichts, Nichts)
                 assert sys._jit.is_active() is expected
 
-            def frame_3_jit() -> None:
+            def frame_3_jit() -> Nichts:
                 # JITs just before the last loop:
                 fuer i in range(_testinternalcapi.TIER2_THRESHOLD + 1):
                     # Careful, doing this in the reverse order breaks tracing:
@@ -2247,17 +2247,17 @@ klasse TestSysJIT(unittest.TestCase):
                     frame_2_jit(expected)
                     assert sys._jit.is_active() is expected
 
-            def frame_4_interpreter() -> None:
-                assert sys._jit.is_active() is False
+            def frame_4_interpreter() -> Nichts:
+                assert sys._jit.is_active() is Falsch
                 frame_3_jit()
-                assert sys._jit.is_active() is False
+                assert sys._jit.is_active() is Falsch
 
-            assert sys._jit.is_active() is False
+            assert sys._jit.is_active() is Falsch
             frame_4_interpreter()
-            assert sys._jit.is_active() is False
+            assert sys._jit.is_active() is Falsch
             """
         )
-        assert_python_ok("-c", script.format(enabled=False), PYTHON_JIT="0")
+        assert_python_ok("-c", script.format(enabled=Falsch), PYTHON_JIT="0")
         assert_python_ok("-c", script.format(enabled=available), PYTHON_JIT="1")
 
 

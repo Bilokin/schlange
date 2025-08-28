@@ -37,14 +37,14 @@ klasse ContentManager:
         handler(msg, obj, *args, **kw)
 
     def _find_set_handler(self, msg, obj):
-        full_path_for_error = None
+        full_path_for_error = Nichts
         fuer typ in type(obj).__mro__:
             wenn typ in self.set_handlers:
                 return self.set_handlers[typ]
             qname = typ.__qualname__
             modname = getattr(typ, '__module__', '')
             full_path = '.'.join((modname, qname)) wenn modname sonst qname
-            wenn full_path_for_error is None:
+            wenn full_path_for_error is Nichts:
                 full_path_for_error = full_path
             wenn full_path in self.set_handlers:
                 return self.set_handlers[full_path]
@@ -53,8 +53,8 @@ klasse ContentManager:
             name = typ.__name__
             wenn name in self.set_handlers:
                 return self.set_handlers[name]
-        wenn None in self.set_handlers:
-            return self.set_handlers[None]
+        wenn Nichts in self.set_handlers:
+            return self.set_handlers[Nichts]
         raise KeyError(full_path_for_error)
 
 
@@ -62,14 +62,14 @@ raw_data_manager = ContentManager()
 
 
 def get_text_content(msg, errors='replace'):
-    content = msg.get_payload(decode=True)
+    content = msg.get_payload(decode=Wahr)
     charset = msg.get_param('charset', 'ASCII')
     return content.decode(charset, errors=errors)
 raw_data_manager.add_get_handler('text', get_text_content)
 
 
 def get_non_text_content(msg):
-    return msg.get_payload(decode=True)
+    return msg.get_payload(decode=Wahr)
 fuer maintype in 'audio image video application'.split():
     raw_data_manager.add_get_handler(maintype, get_non_text_content)
 del maintype
@@ -112,18 +112,18 @@ def _prepare_set(msg, maintype, subtype, headers):
 
 
 def _finalize_set(msg, disposition, filename, cid, params):
-    wenn disposition is None and filename is not None:
+    wenn disposition is Nichts and filename is not Nichts:
         disposition = 'attachment'
-    wenn disposition is not None:
+    wenn disposition is not Nichts:
         msg['Content-Disposition'] = disposition
-    wenn filename is not None:
+    wenn filename is not Nichts:
         msg.set_param('filename',
                       filename,
                       header='Content-Disposition',
-                      replace=True)
-    wenn cid is not None:
+                      replace=Wahr)
+    wenn cid is not Nichts:
         msg['Content-ID'] = cid
-    wenn params is not None:
+    wenn params is not Nichts:
         fuer key, value in params.items():
             msg.set_param(key, value)
 
@@ -146,7 +146,7 @@ def _encode_text(string, charset, cte, policy):
     linesep = policy.linesep.encode('ascii')
     def embedded_body(lines): return linesep.join(lines) + linesep
     def normal_body(lines): return b'\n'.join(lines) + b'\n'
-    wenn cte is None:
+    wenn cte is Nichts:
         # Use heuristics to decide on the "best" encoding.
         wenn max((len(x) fuer x in lines), default=0) <= policy.max_line_length:
             try:
@@ -180,27 +180,27 @@ def _encode_text(string, charset, cte, policy):
     return cte, data
 
 
-def set_text_content(msg, string, subtype="plain", charset='utf-8', cte=None,
-                     disposition=None, filename=None, cid=None,
-                     params=None, headers=None):
+def set_text_content(msg, string, subtype="plain", charset='utf-8', cte=Nichts,
+                     disposition=Nichts, filename=Nichts, cid=Nichts,
+                     params=Nichts, headers=Nichts):
     _prepare_set(msg, 'text', subtype, headers)
     cte, payload = _encode_text(string, charset, cte, msg.policy)
     msg.set_payload(payload)
     msg.set_param('charset',
                   email.charset.ALIASES.get(charset, charset),
-                  replace=True)
+                  replace=Wahr)
     msg['Content-Transfer-Encoding'] = cte
     _finalize_set(msg, disposition, filename, cid, params)
 raw_data_manager.add_set_handler(str, set_text_content)
 
 
-def set_message_content(msg, message, subtype="rfc822", cte=None,
-                       disposition=None, filename=None, cid=None,
-                       params=None, headers=None):
+def set_message_content(msg, message, subtype="rfc822", cte=Nichts,
+                       disposition=Nichts, filename=Nichts, cid=Nichts,
+                       params=Nichts, headers=Nichts):
     wenn subtype == 'partial':
         raise ValueError("message/partial is not supported fuer Message objects")
     wenn subtype == 'rfc822':
-        wenn cte not in (None, '7bit', '8bit', 'binary'):
+        wenn cte not in (Nichts, '7bit', '8bit', 'binary'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.1 mandate.
             raise ValueError(
                 "message/rfc822 parts do not support cte={}".format(cte))
@@ -209,14 +209,14 @@ def set_message_content(msg, message, subtype="rfc822", cte=None,
         # result of that should be a gateway that needs to coerce to 7bit
         # having to look through the whole embedded message to discover whether
         # or not it actually has to do anything.
-        cte = '8bit' wenn cte is None sonst cte
+        cte = '8bit' wenn cte is Nichts sonst cte
     sowenn subtype == 'external-body':
-        wenn cte not in (None, '7bit'):
+        wenn cte not in (Nichts, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.
             raise ValueError(
                 "message/external-body parts do not support cte={}".format(cte))
         cte = '7bit'
-    sowenn cte is None:
+    sowenn cte is Nichts:
         # http://tools.ietf.org/html/rfc2046#section-5.2.4 says all future
         # subtypes should be restricted to 7bit, so assume that.
         cte = '7bit'
@@ -228,8 +228,8 @@ raw_data_manager.add_set_handler(email.message.Message, set_message_content)
 
 
 def set_bytes_content(msg, data, maintype, subtype, cte='base64',
-                     disposition=None, filename=None, cid=None,
-                     params=None, headers=None):
+                     disposition=Nichts, filename=Nichts, cid=Nichts,
+                     params=Nichts, headers=Nichts):
     _prepare_set(msg, maintype, subtype, headers)
     wenn cte == 'base64':
         data = _encode_base64(data, max_line_length=msg.policy.max_line_length)
@@ -237,7 +237,7 @@ def set_bytes_content(msg, data, maintype, subtype, cte='base64',
         # XXX: quoprimime.body_encode won't encode newline characters in data,
         # so we can't use it.  This means max_line_length is ignored.  Another
         # bug to fix later.  (Note: encoders.quopri is broken on line ends.)
-        data = binascii.b2a_qp(data, istext=False, header=False, quotetabs=True)
+        data = binascii.b2a_qp(data, istext=Falsch, header=Falsch, quotetabs=Wahr)
         data = data.decode('ascii')
     sowenn cte == '7bit':
         data = data.decode('ascii')

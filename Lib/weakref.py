@@ -43,33 +43,33 @@ klasse WeakMethod(ref):
 
     __slots__ = "_func_ref", "_meth_type", "_alive", "__weakref__"
 
-    def __new__(cls, meth, callback=None):
+    def __new__(cls, meth, callback=Nichts):
         try:
             obj = meth.__self__
             func = meth.__func__
         except AttributeError:
             raise TypeError("argument should be a bound method, not {}"
-                            .format(type(meth))) from None
+                            .format(type(meth))) from Nichts
         def _cb(arg):
             # The self-weakref trick is needed to avoid creating a reference
             # cycle.
             self = self_wr()
             wenn self._alive:
-                self._alive = False
-                wenn callback is not None:
+                self._alive = Falsch
+                wenn callback is not Nichts:
                     callback(self)
         self = ref.__new__(cls, obj, _cb)
         self._func_ref = ref(func, _cb)
         self._meth_type = type(meth)
-        self._alive = True
+        self._alive = Wahr
         self_wr = ref(self)
         return self
 
     def __call__(self):
         obj = super().__call__()
         func = self._func_ref()
-        wenn obj is None or func is None:
-            return None
+        wenn obj is Nichts or func is Nichts:
+            return Nichts
         return self._meth_type(func, obj)
 
     def __eq__(self, other):
@@ -104,7 +104,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
     def __init__(self, other=(), /, **kw):
         def remove(wr, selfref=ref(self), _atomic_removal=_remove_dead_weakref):
             self = selfref()
-            wenn self is not None:
+            wenn self is not Nichts:
                 # Atomic removal is necessary since this function
                 # can be called asynchronously by the GC
                 _atomic_removal(self.data, wr.key)
@@ -114,7 +114,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
 
     def __getitem__(self, key):
         o = self.data[key]()
-        wenn o is None:
+        wenn o is Nichts:
             raise KeyError(key)
         sonst:
             return o
@@ -129,8 +129,8 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         try:
             o = self.data[key]()
         except KeyError:
-            return False
-        return o is not None
+            return Falsch
+        return o is not Nichts
 
     def __repr__(self):
         return "<%s at %#x>" % (self.__class__.__name__, id(self))
@@ -142,7 +142,7 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         new = WeakValueDictionary()
         fuer key, wr in self.data.copy().items():
             o = wr()
-            wenn o is not None:
+            wenn o is not Nichts:
                 new[key] = o
         return new
 
@@ -153,18 +153,18 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         new = self.__class__()
         fuer key, wr in self.data.copy().items():
             o = wr()
-            wenn o is not None:
+            wenn o is not Nichts:
                 new[deepcopy(key, memo)] = o
         return new
 
-    def get(self, key, default=None):
+    def get(self, key, default=Nichts):
         try:
             wr = self.data[key]
         except KeyError:
             return default
         sonst:
             o = wr()
-            wenn o is None:
+            wenn o is Nichts:
                 # This should only happen
                 return default
             sonst:
@@ -173,12 +173,12 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
     def items(self):
         fuer k, wr in self.data.copy().items():
             v = wr()
-            wenn v is not None:
+            wenn v is not Nichts:
                 yield k, v
 
     def keys(self):
         fuer k, wr in self.data.copy().items():
-            wenn wr() is not None:
+            wenn wr() is not Nichts:
                 yield k
 
     __iter__ = keys
@@ -198,22 +198,22 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
     def values(self):
         fuer wr in self.data.copy().values():
             obj = wr()
-            wenn obj is not None:
+            wenn obj is not Nichts:
                 yield obj
 
     def popitem(self):
-        while True:
+        while Wahr:
             key, wr = self.data.popitem()
             o = wr()
-            wenn o is not None:
+            wenn o is not Nichts:
                 return key, o
 
     def pop(self, key, *args):
         try:
             o = self.data.pop(key)()
         except KeyError:
-            o = None
-        wenn o is None:
+            o = Nichts
+        wenn o is Nichts:
             wenn args:
                 return args[0]
             sonst:
@@ -221,20 +221,20 @@ klasse WeakValueDictionary(_collections_abc.MutableMapping):
         sonst:
             return o
 
-    def setdefault(self, key, default=None):
+    def setdefault(self, key, default=Nichts):
         try:
             o = self.data[key]()
         except KeyError:
-            o = None
-        wenn o is None:
+            o = Nichts
+        wenn o is Nichts:
             self.data[key] = KeyedRef(default, self._remove, key)
             return default
         sonst:
             return o
 
-    def update(self, other=None, /, **kwargs):
+    def update(self, other=Nichts, /, **kwargs):
         d = self.data
-        wenn other is not None:
+        wenn other is not Nichts:
             wenn not hasattr(other, "items"):
                 other = dict(other)
             fuer key, o in other.items():
@@ -306,17 +306,17 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
     accesses.
     """
 
-    def __init__(self, dict=None):
+    def __init__(self, dict=Nichts):
         self.data = {}
         def remove(k, selfref=ref(self)):
             self = selfref()
-            wenn self is not None:
+            wenn self is not Nichts:
                 try:
                     del self.data[k]
                 except KeyError:
                     pass
         self._remove = remove
-        wenn dict is not None:
+        wenn dict is not Nichts:
             self.update(dict)
 
     def __delitem__(self, key):
@@ -338,7 +338,7 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         new = WeakKeyDictionary()
         fuer key, value in self.data.copy().items():
             o = key()
-            wenn o is not None:
+            wenn o is not Nichts:
                 new[o] = value
         return new
 
@@ -349,37 +349,37 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         new = self.__class__()
         fuer key, value in self.data.copy().items():
             o = key()
-            wenn o is not None:
+            wenn o is not Nichts:
                 new[o] = deepcopy(value, memo)
         return new
 
-    def get(self, key, default=None):
+    def get(self, key, default=Nichts):
         return self.data.get(ref(key),default)
 
     def __contains__(self, key):
         try:
             wr = ref(key)
         except TypeError:
-            return False
+            return Falsch
         return wr in self.data
 
     def items(self):
         fuer wr, value in self.data.copy().items():
             key = wr()
-            wenn key is not None:
+            wenn key is not Nichts:
                 yield key, value
 
     def keys(self):
         fuer wr in self.data.copy():
             obj = wr()
-            wenn obj is not None:
+            wenn obj is not Nichts:
                 yield obj
 
     __iter__ = keys
 
     def values(self):
         fuer wr, value in self.data.copy().items():
-            wenn wr() is not None:
+            wenn wr() is not Nichts:
                 yield value
 
     def keyrefs(self):
@@ -395,21 +395,21 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
         return list(self.data)
 
     def popitem(self):
-        while True:
+        while Wahr:
             key, value = self.data.popitem()
             o = key()
-            wenn o is not None:
+            wenn o is not Nichts:
                 return o, value
 
     def pop(self, key, *args):
         return self.data.pop(ref(key), *args)
 
-    def setdefault(self, key, default=None):
+    def setdefault(self, key, default=Nichts):
         return self.data.setdefault(ref(key, self._remove),default)
 
-    def update(self, dict=None, /, **kwargs):
+    def update(self, dict=Nichts, /, **kwargs):
         d = self.data
-        wenn dict is not None:
+        wenn dict is not Nichts:
             wenn not hasattr(dict, "items"):
                 dict = type({})(dict)
             fuer key, value in dict.items():
@@ -444,7 +444,7 @@ klasse finalize:
     object which will be called when obj is garbage collected. The
     first time the finalizer is called it evaluates func(*arg, **kwargs)
     and returns the result. After this the finalizer is dead, and
-    calling it just returns None.
+    calling it just returns Nichts.
 
     When the program exits any remaining finalizers fuer which the
     atexit attribute is true will be run in reverse order of creation.
@@ -457,10 +457,10 @@ klasse finalize:
 
     __slots__ = ()
     _registry = {}
-    _shutdown = False
+    _shutdown = Falsch
     _index_iter = itertools.count()
-    _dirty = False
-    _registered_with_atexit = False
+    _dirty = Falsch
+    _registered_with_atexit = Falsch
 
     klasse _Info:
         __slots__ = ("weakref", "func", "args", "kwargs", "atexit", "index")
@@ -471,38 +471,38 @@ klasse finalize:
             # of a thread race, but that is harmless
             import atexit
             atexit.register(self._exitfunc)
-            finalize._registered_with_atexit = True
+            finalize._registered_with_atexit = Wahr
         info = self._Info()
         info.weakref = ref(obj, self)
         info.func = func
         info.args = args
-        info.kwargs = kwargs or None
-        info.atexit = True
+        info.kwargs = kwargs or Nichts
+        info.atexit = Wahr
         info.index = next(self._index_iter)
         self._registry[self] = info
-        finalize._dirty = True
+        finalize._dirty = Wahr
 
-    def __call__(self, _=None):
+    def __call__(self, _=Nichts):
         """If alive then mark as dead and return func(*args, **kwargs);
-        otherwise return None"""
-        info = self._registry.pop(self, None)
+        otherwise return Nichts"""
+        info = self._registry.pop(self, Nichts)
         wenn info and not self._shutdown:
             return info.func(*info.args, **(info.kwargs or {}))
 
     def detach(self):
         """If alive then mark as dead and return (obj, func, args, kwargs);
-        otherwise return None"""
+        otherwise return Nichts"""
         info = self._registry.get(self)
         obj = info and info.weakref()
-        wenn obj is not None and self._registry.pop(self, None):
+        wenn obj is not Nichts and self._registry.pop(self, Nichts):
             return (obj, info.func, info.args, info.kwargs or {})
 
     def peek(self):
         """If alive then return (obj, func, args, kwargs);
-        otherwise return None"""
+        otherwise return Nichts"""
         info = self._registry.get(self)
         obj = info and info.weakref()
-        wenn obj is not None:
+        wenn obj is not Nichts:
             return (obj, info.func, info.args, info.kwargs or {})
 
     @property
@@ -525,7 +525,7 @@ klasse finalize:
     def __repr__(self):
         info = self._registry.get(self)
         obj = info and info.weakref()
-        wenn obj is None:
+        wenn obj is Nichts:
             return '<%s object at %#x; dead>' % (type(self).__name__, id(self))
         sonst:
             return '<%s object at %#x; fuer %r at %#x>' % \
@@ -543,18 +543,18 @@ klasse finalize:
         # At shutdown invoke finalizers fuer which atexit is true.
         # This is called once all other non-daemonic threads have been
         # joined.
-        reenable_gc = False
+        reenable_gc = Falsch
         try:
             wenn cls._registry:
                 import gc
                 wenn gc.isenabled():
-                    reenable_gc = True
+                    reenable_gc = Wahr
                     gc.disable()
-                pending = None
-                while True:
-                    wenn pending is None or finalize._dirty:
+                pending = Nichts
+                while Wahr:
+                    wenn pending is Nichts or finalize._dirty:
                         pending = cls._select_for_exit()
-                        finalize._dirty = False
+                        finalize._dirty = Falsch
                     wenn not pending:
                         break
                     f = pending.pop()
@@ -569,6 +569,6 @@ klasse finalize:
                     assert f not in cls._registry
         finally:
             # prevent any more finalizers from executing during shutdown
-            finalize._shutdown = True
+            finalize._shutdown = Wahr
             wenn reenable_gc:
                 gc.enable()

@@ -14,15 +14,15 @@ klasse UnseekableIO(io.FileIO):
 
 
 klasse AudioTests:
-    close_fd = False
+    close_fd = Falsch
 
     def setUp(self):
-        self.f = self.fout = None
+        self.f = self.fout = Nichts
 
     def tearDown(self):
-        wenn self.f is not None:
+        wenn self.f is not Nichts:
             self.f.close()
-        wenn self.fout is not None:
+        wenn self.fout is not Nichts:
             self.fout.close()
         unlink(TESTFN)
 
@@ -97,13 +97,13 @@ klasse AudioWriteTests(AudioTests):
             self.assertEqual(testfile.closed, self.close_fd)
         with open(TESTFN, 'rb') as testfile:
             with self.module.open(testfile) as f:
-                self.assertFalse(f.getfp().closed)
+                self.assertFalsch(f.getfp().closed)
                 params = f.getparams()
                 self.assertEqual(params.nchannels, self.nchannels)
                 self.assertEqual(params.sampwidth, self.sampwidth)
                 self.assertEqual(params.framerate, self.framerate)
             wenn not self.close_fd:
-                self.assertIsNone(f.getfp())
+                self.assertIsNichts(f.getfp())
             self.assertEqual(testfile.closed, self.close_fd)
 
     def test_context_manager_with_filename(self):
@@ -115,13 +115,13 @@ klasse AudioWriteTests(AudioTests):
             f.setframerate(self.framerate)
             f.setcomptype(self.comptype, self.compname)
         with self.module.open(TESTFN) as f:
-            self.assertFalse(f.getfp().closed)
+            self.assertFalsch(f.getfp().closed)
             params = f.getparams()
             self.assertEqual(params.nchannels, self.nchannels)
             self.assertEqual(params.sampwidth, self.sampwidth)
             self.assertEqual(params.framerate, self.framerate)
         wenn not self.close_fd:
-            self.assertIsNone(f.getfp())
+            self.assertIsNichts(f.getfp())
 
     def test_write(self):
         f = self.create_file(TESTFN)
@@ -262,12 +262,12 @@ klasse AudioTestsWithSourceFile(AudioTests):
     def test_close(self):
         with open(self.sndfilepath, 'rb') as testfile:
             f = self.f = self.module.open(testfile)
-            self.assertFalse(testfile.closed)
+            self.assertFalsch(testfile.closed)
             f.close()
             self.assertEqual(testfile.closed, self.close_fd)
         with open(TESTFN, 'wb') as testfile:
             fout = self.fout = self.module.open(testfile, 'wb')
-            self.assertFalse(testfile.closed)
+            self.assertFalsch(testfile.closed)
             with self.assertRaises(self.module.Error):
                 fout.close()
             self.assertEqual(testfile.closed, self.close_fd)

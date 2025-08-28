@@ -267,7 +267,7 @@ klasse NetrcTestCase(unittest.TestCase):
 
     @unittest.skipUnless(support.is_wasi, 'WASI only test')
     def test_security_on_WASI(self):
-        self.assertFalse(netrc._can_security_check())
+        self.assertFalsch(netrc._can_security_check())
         self.assertEqual(netrc._getpwuid(0), 'uid 0')
         self.assertEqual(netrc._getpwuid(123456), 'uid 123456')
 

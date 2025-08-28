@@ -296,8 +296,8 @@ klasse ModuleTests(unittest.TestCase):
             check_disallow_instantiation(self, sqlite.Blob)
 
     def test_complete_statement(self):
-        self.assertFalse(sqlite.complete_statement("select t"))
-        self.assertTrue(sqlite.complete_statement("create table t(t);"))
+        self.assertFalsch(sqlite.complete_statement("select t"))
+        self.assertWahr(sqlite.complete_statement("create table t(t);"))
 
 
 klasse ConnectionTests(unittest.TestCase):
@@ -380,24 +380,24 @@ klasse ConnectionTests(unittest.TestCase):
         # Can't use db from setUp because we want to test initial state.
         with memory_database() as cx:
             cu = cx.cursor()
-            self.assertEqual(cx.in_transaction, False)
+            self.assertEqual(cx.in_transaction, Falsch)
             cu.execute("create table transactiontest(id integer primary key, name text)")
-            self.assertEqual(cx.in_transaction, False)
+            self.assertEqual(cx.in_transaction, Falsch)
             cu.execute("insert into transactiontest(name) values (?)", ("foo",))
-            self.assertEqual(cx.in_transaction, True)
+            self.assertEqual(cx.in_transaction, Wahr)
             cu.execute("select name from transactiontest where name=?", ["foo"])
             row = cu.fetchone()
-            self.assertEqual(cx.in_transaction, True)
+            self.assertEqual(cx.in_transaction, Wahr)
             cx.commit()
-            self.assertEqual(cx.in_transaction, False)
+            self.assertEqual(cx.in_transaction, Falsch)
             cu.execute("select name from transactiontest where name=?", ["foo"])
             row = cu.fetchone()
-            self.assertEqual(cx.in_transaction, False)
+            self.assertEqual(cx.in_transaction, Falsch)
             cu.close()
 
     def test_in_transaction_ro(self):
         with self.assertRaises(AttributeError):
-            self.cx.in_transaction = True
+            self.cx.in_transaction = Wahr
 
     def test_connection_exceptions(self):
         exceptions = [
@@ -422,7 +422,7 @@ klasse ConnectionTests(unittest.TestCase):
             self.cx.interrupt()
 
     def test_interrupt(self):
-        self.assertIsNone(self.cx.interrupt())
+        self.assertIsNichts(self.cx.interrupt())
 
     def test_drop_unused_refs(self):
         fuer n in range(500):
@@ -477,7 +477,7 @@ klasse ConnectionTests(unittest.TestCase):
                     self.assertEqual(cx.isolation_level, "")
 
     def test_connection_init_good_isolation_levels(self):
-        fuer level in ("", "DEFERRED", "IMMEDIATE", "EXCLUSIVE", None):
+        fuer level in ("", "DEFERRED", "IMMEDIATE", "EXCLUSIVE", Nichts):
             with self.subTest(level=level):
                 with memory_database(isolation_level=level) as cx:
                     self.assertEqual(cx.isolation_level, level)
@@ -497,7 +497,7 @@ klasse ConnectionTests(unittest.TestCase):
             cu.execute("select bar from foo")
 
             rows = [r fuer r in cu.fetchmany(2)]
-            self.assertTrue(all(isinstance(r, sqlite.Row) fuer r in rows))
+            self.assertWahr(all(isinstance(r, sqlite.Row) fuer r in rows))
             self.assertEqual([r[0] fuer r in rows], [b"0", b"1"])
 
             cx.__init__(":memory:")
@@ -507,7 +507,7 @@ klasse ConnectionTests(unittest.TestCase):
 
             # This uses the old database, old row factory, but new text factory
             rows = [r fuer r in cu.fetchall()]
-            self.assertTrue(all(isinstance(r, sqlite.Row) fuer r in rows))
+            self.assertWahr(all(isinstance(r, sqlite.Row) fuer r in rows))
             self.assertEqual([r[0] fuer r in rows], ["2", "3"])
             cu.close()
 
@@ -536,8 +536,8 @@ klasse ConnectionTests(unittest.TestCase):
             cx.setconfig(op, new)
             self.assertEqual(cx.getconfig(op), new)
 
-            cx.setconfig(op)  # defaults to True
-            self.assertTrue(cx.getconfig(op))
+            cx.setconfig(op)  # defaults to Wahr
+            self.assertWahr(cx.getconfig(op))
 
             # Check that foreign key support was actually enabled.
             with cx:
@@ -610,7 +610,7 @@ klasse SerializeTests(unittest.TestCase):
             (BufferError, memoryview(b"blob")[::2]),
             (TypeError, []),
             (TypeError, 1),
-            (TypeError, None),
+            (TypeError, Nichts),
         )
         fuer exc, arg in dataset:
             with self.subTest(exc=exc, arg=arg):
@@ -633,9 +633,9 @@ klasse OpenTests(unittest.TestCase):
     def test_open_with_bytes_path(self):
         path = os.fsencode(TESTFN)
         self.addCleanup(unlink, path)
-        self.assertFalse(os.path.exists(path))
+        self.assertFalsch(os.path.exists(path))
         with contextlib.closing(sqlite.connect(path)) as cx:
-            self.assertTrue(os.path.exists(path))
+            self.assertWahr(os.path.exists(path))
             cx.execute(self._sql)
 
     def test_open_with_path_like_object(self):
@@ -643,9 +643,9 @@ klasse OpenTests(unittest.TestCase):
             is PathLike, i.e. has __fspath__(). """
         path = FakePath(TESTFN)
         self.addCleanup(unlink, path)
-        self.assertFalse(os.path.exists(path))
+        self.assertFalsch(os.path.exists(path))
         with contextlib.closing(sqlite.connect(path)) as cx:
-            self.assertTrue(os.path.exists(path))
+            self.assertWahr(os.path.exists(path))
             cx.execute(self._sql)
 
     def get_undecodable_path(self):
@@ -664,40 +664,40 @@ klasse OpenTests(unittest.TestCase):
         path = self.get_undecodable_path()
         self.addCleanup(unlink, path)
         with contextlib.closing(sqlite.connect(path)) as cx:
-            self.assertTrue(os.path.exists(path))
+            self.assertWahr(os.path.exists(path))
             cx.execute(self._sql)
 
     def test_open_uri(self):
         path = TESTFN
         self.addCleanup(unlink, path)
         uri = "file:" + urllib.parse.quote(os.fsencode(path))
-        self.assertFalse(os.path.exists(path))
-        with contextlib.closing(sqlite.connect(uri, uri=True)) as cx:
-            self.assertTrue(os.path.exists(path))
+        self.assertFalsch(os.path.exists(path))
+        with contextlib.closing(sqlite.connect(uri, uri=Wahr)) as cx:
+            self.assertWahr(os.path.exists(path))
             cx.execute(self._sql)
 
     def test_open_unquoted_uri(self):
         path = TESTFN
         self.addCleanup(unlink, path)
         uri = "file:" + path
-        self.assertFalse(os.path.exists(path))
-        with contextlib.closing(sqlite.connect(uri, uri=True)) as cx:
-            self.assertTrue(os.path.exists(path))
+        self.assertFalsch(os.path.exists(path))
+        with contextlib.closing(sqlite.connect(uri, uri=Wahr)) as cx:
+            self.assertWahr(os.path.exists(path))
             cx.execute(self._sql)
 
     def test_open_uri_readonly(self):
         path = TESTFN
         self.addCleanup(unlink, path)
         uri = "file:" + urllib.parse.quote(os.fsencode(path)) + "?mode=ro"
-        self.assertFalse(os.path.exists(path))
+        self.assertFalsch(os.path.exists(path))
         # Cannot create new DB
         with self.assertRaises(sqlite.OperationalError):
-            sqlite.connect(uri, uri=True)
-        self.assertFalse(os.path.exists(path))
+            sqlite.connect(uri, uri=Wahr)
+        self.assertFalsch(os.path.exists(path))
         sqlite.connect(path).close()
-        self.assertTrue(os.path.exists(path))
+        self.assertWahr(os.path.exists(path))
         # Cannot modify new DB
-        with contextlib.closing(sqlite.connect(uri, uri=True)) as cx:
+        with contextlib.closing(sqlite.connect(uri, uri=Wahr)) as cx:
             with self.assertRaises(sqlite.OperationalError):
                 cx.execute(self._sql)
 
@@ -706,8 +706,8 @@ klasse OpenTests(unittest.TestCase):
         path = self.get_undecodable_path()
         self.addCleanup(unlink, path)
         uri = "file:" + urllib.parse.quote(path)
-        with contextlib.closing(sqlite.connect(uri, uri=True)) as cx:
-            self.assertTrue(os.path.exists(path))
+        with contextlib.closing(sqlite.connect(uri, uri=Wahr)) as cx:
+            self.assertWahr(os.path.exists(path))
             cx.execute(self._sql)
 
     def test_factory_database_arg(self):
@@ -718,7 +718,7 @@ klasse OpenTests(unittest.TestCase):
 
         fuer database in (TESTFN, os.fsencode(TESTFN),
                          FakePath(TESTFN), FakePath(os.fsencode(TESTFN))):
-            database_arg = None
+            database_arg = Nichts
             sqlite.connect(database, factory=factory).close()
             self.assertEqual(database_arg, database)
 
@@ -1046,12 +1046,12 @@ klasse CursorTests(unittest.TestCase):
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
         row = self.cu.fetchone()
-        self.assertEqual(row, None)
+        self.assertEqual(row, Nichts)
 
     def test_fetchone_no_statement(self):
         cur = self.cx.cursor()
         row = cur.fetchone()
-        self.assertEqual(row, None)
+        self.assertEqual(row, Nichts)
 
     def test_array_size(self):
         # must default to 1
@@ -1277,7 +1277,7 @@ klasse BlobTests(unittest.TestCase):
             self.blob.write(b"aaa")
 
     def test_blob_write_error_readonly(self):
-        ro_blob = self.cx.blobopen("test", "b", 1, readonly=True)
+        ro_blob = self.cx.blobopen("test", "b", 1, readonly=Wahr)
         with self.assertRaisesRegex(sqlite.OperationalError, "readonly"):
             ro_blob.write(b"aaa")
         ro_blob.close()
@@ -1466,7 +1466,7 @@ klasse BlobTests(unittest.TestCase):
             with self.assertRaisesRegex(sqlite.ProgrammingError, msg):
                 blob.__enter__()
             with self.assertRaisesRegex(sqlite.ProgrammingError, msg):
-                blob.__exit__(None, None, None)
+                blob.__exit__(Nichts, Nichts, Nichts)
             with self.assertRaisesRegex(sqlite.ProgrammingError, msg):
                 len(blob)
             with self.assertRaisesRegex(sqlite.ProgrammingError, msg):
@@ -1531,9 +1531,9 @@ klasse ThreadTests(unittest.TestCase):
             lambda: self.con.commit(),
             lambda: self.con.rollback(),
             lambda: self.con.close(),
-            lambda: self.con.set_trace_callback(None),
-            lambda: self.con.set_authorizer(None),
-            lambda: self.con.create_collation("foo", None),
+            lambda: self.con.set_trace_callback(Nichts),
+            lambda: self.con.set_authorizer(Nichts),
+            lambda: self.con.create_collation("foo", Nichts),
             lambda: self.con.setlimit(sqlite.SQLITE_LIMIT_LENGTH, -1),
             lambda: self.con.getlimit(sqlite.SQLITE_LIMIT_LENGTH),
             lambda: self.con.blobopen("test", "b", 1),
@@ -1542,7 +1542,7 @@ klasse ThreadTests(unittest.TestCase):
             fns.append(lambda: self.con.serialize())
             fns.append(lambda: self.con.deserialize(b""))
         wenn sqlite.sqlite_version_info >= (3, 25, 0):
-            fns.append(lambda: self.con.create_window_function("foo", 0, None))
+            fns.append(lambda: self.con.create_window_function("foo", 0, Nichts))
 
         fuer fn in fns:
             with self.subTest(fn=fn):
@@ -1568,7 +1568,7 @@ klasse ThreadTests(unittest.TestCase):
             except sqlite.Error:
                 err.append("multi-threading not allowed")
 
-        with memory_database(check_same_thread=False) as con:
+        with memory_database(check_same_thread=Falsch) as con:
             err = []
             t = threading.Thread(target=run, kwargs={"con": con, "err": err})
             t.start()
@@ -1665,9 +1665,9 @@ klasse ExtensionTests(unittest.TestCase):
     def test_cursor_executescript_tx_control(self):
         con = self.con
         con.execute("begin")
-        self.assertTrue(con.in_transaction)
+        self.assertWahr(con.in_transaction)
         con.executescript("select 1")
-        self.assertFalse(con.in_transaction)
+        self.assertFalsch(con.in_transaction)
 
     def test_connection_execute(self):
         result = self.con.execute("select 5").fetchone()[0]
@@ -1782,7 +1782,7 @@ klasse SqliteOnConflictTests(unittest.TestCase):
         self.cx.close()
 
     def test_on_conflict_rollback_with_explicit_transaction(self):
-        self.cx.isolation_level = None  # autocommit mode
+        self.cx.isolation_level = Nichts  # autocommit mode
         self.cu = self.cx.cursor()
         # Start an explicit transaction.
         self.cu.execute("BEGIN")
@@ -1799,7 +1799,7 @@ klasse SqliteOnConflictTests(unittest.TestCase):
     def test_on_conflict_abort_raises_with_explicit_transactions(self):
         # Abort cancels the current sql statement but doesn't change anything
         # about the current transaction.
-        self.cx.isolation_level = None  # autocommit mode
+        self.cx.isolation_level = Nichts  # autocommit mode
         self.cu = self.cx.cursor()
         # Start an explicit transaction.
         self.cu.execute("BEGIN")
@@ -1810,7 +1810,7 @@ klasse SqliteOnConflictTests(unittest.TestCase):
         self.cx.commit()
         self.cu.execute("SELECT name, unique_name FROM test")
         # Expect the first two inserts to work, third to do nothing.
-        self.assertEqual(self.cu.fetchall(), [('abort_test', None), (None, 'foo',)])
+        self.assertEqual(self.cu.fetchall(), [('abort_test', Nichts), (Nichts, 'foo',)])
 
     def test_on_conflict_rollback_without_transaction(self):
         # Start of implicit transaction
@@ -1831,7 +1831,7 @@ klasse SqliteOnConflictTests(unittest.TestCase):
             self.cu.execute("INSERT OR ABORT INTO test(unique_name) VALUES ('foo')")
         # Make sure all other values were inserted.
         self.cu.execute("SELECT name, unique_name FROM test")
-        self.assertEqual(self.cu.fetchall(), [('abort_test', None), (None, 'foo',)])
+        self.assertEqual(self.cu.fetchall(), [('abort_test', Nichts), (Nichts, 'foo',)])
 
     def test_on_conflict_fail(self):
         self.cu.execute("INSERT OR FAIL INTO test(unique_name) VALUES ('foo')")
@@ -1916,7 +1916,7 @@ klasse MultiprocessTests(unittest.TestCase):
             cx.close()
 
         # terminate child process
-        self.assertIsNone(proc.returncode)
+        self.assertIsNichts(proc.returncode)
         try:
             proc.communicate(input="end", timeout=SHORT_TIMEOUT)
         except subprocess.TimeoutExpired:
@@ -1974,7 +1974,7 @@ klasse RowTests(unittest.TestCase):
 
     def test_row_no_description(self):
         cu = self.cx.cursor()
-        self.assertIsNone(cu.description)
+        self.assertIsNichts(cu.description)
 
         row = sqlite.Row(cu, ())
         self.assertEqual(row.keys(), [])

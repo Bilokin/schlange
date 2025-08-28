@@ -83,7 +83,7 @@ WAVE_FORMAT_EXTENSIBLE = 0xFFFE
 # Derived from uuid.UUID("00000001-0000-0010-8000-00aa00389b71").bytes_le
 KSDATAFORMAT_SUBTYPE_PCM = b'\x01\x00\x00\x00\x00\x00\x10\x00\x80\x00\x00\xaa\x008\x9bq'
 
-_array_fmts = None, 'b', 'h', None, 'i'
+_array_fmts = Nichts, 'b', 'h', Nichts, 'i'
 
 _wave_params = namedtuple('_wave_params',
                      'nchannels sampwidth framerate nframes comptype compname')
@@ -100,8 +100,8 @@ def _byteswap(data, width):
 
 
 klasse _Chunk:
-    def __init__(self, file, align=True, bigendian=True, inclheader=False):
-        self.closed = False
+    def __init__(self, file, align=Wahr, bigendian=Wahr, inclheader=Falsch):
+        self.closed = Falsch
         self.align = align      # whether to align to word (2-byte) boundaries
         wenn bigendian:
             strflag = '>'
@@ -114,16 +114,16 @@ klasse _Chunk:
         try:
             self.chunksize = struct.unpack_from(strflag+'L', file.read(4))[0]
         except struct.error:
-            raise EOFError from None
+            raise EOFError from Nichts
         wenn inclheader:
             self.chunksize = self.chunksize - 8 # subtract header
         self.size_read = 0
         try:
             self.offset = self.file.tell()
         except (AttributeError, OSError):
-            self.seekable = False
+            self.seekable = Falsch
         sonst:
-            self.seekable = True
+            self.seekable = Wahr
 
     def getname(self):
         """Return the name (ID) of the current chunk."""
@@ -134,7 +134,7 @@ klasse _Chunk:
             try:
                 self.skip()
             finally:
-                self.closed = True
+                self.closed = Wahr
 
     def seek(self, pos, whence=0):
         """Seek to specified position into the chunk.
@@ -242,7 +242,7 @@ klasse Wave_read:
     """
 
     def initfp(self, file):
-        self._convert = None
+        self._convert = Nichts
         self._soundpos = 0
         self._file = _Chunk(file, bigendian = 0)
         wenn self._file.getname() != b'RIFF':
@@ -250,7 +250,7 @@ klasse Wave_read:
         wenn self._file.read(4) != b'WAVE':
             raise Error('not a WAVE file')
         self._fmt_chunk_read = 0
-        self._data_chunk = None
+        self._data_chunk = Nichts
         while 1:
             self._data_seek_needed = 1
             try:
@@ -273,7 +273,7 @@ klasse Wave_read:
             raise Error('fmt chunk and/or data chunk missing')
 
     def __init__(self, f):
-        self._i_opened_the_file = None
+        self._i_opened_the_file = Nichts
         wenn isinstance(f, str):
             f = builtins.open(f, 'rb')
             self._i_opened_the_file = f
@@ -305,10 +305,10 @@ klasse Wave_read:
         self._soundpos = 0
 
     def close(self):
-        self._file = None
+        self._file = Nichts
         file = self._i_opened_the_file
         wenn file:
-            self._i_opened_the_file = None
+            self._i_opened_the_file = Nichts
             file.close()
 
     def tell(self):
@@ -368,13 +368,13 @@ klasse Wave_read:
         try:
             wFormatTag, self._nchannels, self._framerate, dwAvgBytesPerSec, wBlockAlign = struct.unpack_from('<HHLLH', chunk.read(14))
         except struct.error:
-            raise EOFError from None
+            raise EOFError from Nichts
         wenn wFormatTag != WAVE_FORMAT_PCM and wFormatTag != WAVE_FORMAT_EXTENSIBLE:
             raise Error('unknown format: %r' % (wFormatTag,))
         try:
             sampwidth = struct.unpack_from('<H', chunk.read(2))[0]
         except struct.error:
-            raise EOFError from None
+            raise EOFError from Nichts
         wenn wFormatTag == WAVE_FORMAT_EXTENSIBLE:
             try:
                 cbSize, wValidBitsPerSample, dwChannelMask = struct.unpack_from('<HHL', chunk.read(8))
@@ -383,7 +383,7 @@ klasse Wave_read:
                 wenn len(SubFormat) < 16:
                     raise EOFError
             except struct.error:
-                raise EOFError from None
+                raise EOFError from Nichts
             wenn SubFormat != KSDATAFORMAT_SUBTYPE_PCM:
                 try:
                     import uuid
@@ -427,10 +427,10 @@ klasse Wave_write:
     _datawritten -- the size of the audio samples actually written
     """
 
-    _file = None
+    _file = Nichts
 
     def __init__(self, f):
-        self._i_opened_the_file = None
+        self._i_opened_the_file = Nichts
         wenn isinstance(f, str):
             f = builtins.open(f, 'wb')
             self._i_opened_the_file = f
@@ -443,7 +443,7 @@ klasse Wave_write:
 
     def initfp(self, file):
         self._file = file
-        self._convert = None
+        self._convert = Nichts
         self._nchannels = 0
         self._sampwidth = 0
         self._framerate = 0
@@ -451,7 +451,7 @@ klasse Wave_write:
         self._nframeswritten = 0
         self._datawritten = 0
         self._datalength = 0
-        self._headerwritten = False
+        self._headerwritten = Falsch
 
     def __del__(self):
         self.close()
@@ -568,10 +568,10 @@ klasse Wave_write:
                     self._patchheader()
                 self._file.flush()
         finally:
-            self._file = None
+            self._file = Nichts
             file = self._i_opened_the_file
             wenn file:
-                self._i_opened_the_file = None
+                self._i_opened_the_file = Nichts
                 file.close()
 
     #
@@ -597,17 +597,17 @@ klasse Wave_write:
         try:
             self._form_length_pos = self._file.tell()
         except (AttributeError, OSError):
-            self._form_length_pos = None
+            self._form_length_pos = Nichts
         self._file.write(struct.pack('<L4s4sLHHLLHH4s',
             36 + self._datalength, b'WAVE', b'fmt ', 16,
             WAVE_FORMAT_PCM, self._nchannels, self._framerate,
             self._nchannels * self._framerate * self._sampwidth,
             self._nchannels * self._sampwidth,
             self._sampwidth * 8, b'data'))
-        wenn self._form_length_pos is not None:
+        wenn self._form_length_pos is not Nichts:
             self._data_length_pos = self._file.tell()
         self._file.write(struct.pack('<L', self._datalength))
-        self._headerwritten = True
+        self._headerwritten = Wahr
 
     def _patchheader(self):
         assert self._headerwritten
@@ -622,8 +622,8 @@ klasse Wave_write:
         self._datalength = self._datawritten
 
 
-def open(f, mode=None):
-    wenn mode is None:
+def open(f, mode=Nichts):
+    wenn mode is Nichts:
         wenn hasattr(f, 'mode'):
             mode = f.mode
         sonst:

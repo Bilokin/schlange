@@ -25,7 +25,7 @@ klasse ObjectsTestCase(unittest.TestCase):
         refcnt = sys.getrefcount(i)
         ci = c_int(i)
         self.assertEqual(refcnt, sys.getrefcount(i))
-        self.assertEqual(ci._objects, None)
+        self.assertEqual(ci._objects, Nichts)
 
     def test_c_char_p(self):
         s = "Hello, World".encode("ascii")
@@ -41,10 +41,10 @@ klasse ObjectsTestCase(unittest.TestCase):
         a = 421234
         b = 421235
         x = X()
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
         x.a = a
         x.b = b
-        self.assertEqual(x._objects, None)
+        self.assertEqual(x._objects, Nichts)
 
     def test_embedded_structs(self):
         klasse X(Structure):
@@ -54,7 +54,7 @@ klasse ObjectsTestCase(unittest.TestCase):
             _fields_ = [("x", X), ("y", X)]
 
         y = Y()
-        self.assertEqual(y._objects, None)
+        self.assertEqual(y._objects, Nichts)
 
         x1, x2 = X(), X()
         y.x, y.y = x1, x2
@@ -87,7 +87,7 @@ klasse ObjectsTestCase(unittest.TestCase):
 
         A = c_int*4
         a = A(11, 22, 33, 44)
-        self.assertEqual(a._objects, None)
+        self.assertEqual(a._objects, Nichts)
 
         x = X()
         x.data = a

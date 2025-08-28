@@ -15,12 +15,12 @@ klasse IncrementalGCTests(unittest.TestCase):
             #Use slots to reduce number of implicit objects
             __slots__ = "next", "prev", "surprise"
 
-            def __init__(self, next=None, prev=None):
+            def __init__(self, next=Nichts, prev=Nichts):
                 self.next = next
-                wenn next is not None:
+                wenn next is not Nichts:
                     next.prev = self
                 self.prev = prev
-                wenn prev is not None:
+                wenn prev is not Nichts:
                     prev.next = self
 
         def make_ll(depth):

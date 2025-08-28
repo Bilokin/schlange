@@ -13,13 +13,13 @@ NORMSEP = os.path.normcase('\\') == os.path.normcase('/')
 
 klasse FnmatchTestCase(unittest.TestCase):
 
-    def check_match(self, filename, pattern, should_match=True, fn=fnmatch):
+    def check_match(self, filename, pattern, should_match=Wahr, fn=fnmatch):
         wenn should_match:
-            self.assertTrue(fn(filename, pattern),
+            self.assertWahr(fn(filename, pattern),
                          "expected %r to match pattern %r"
                          % (filename, pattern))
         sonst:
-            self.assertFalse(fn(filename, pattern),
+            self.assertFalsch(fn(filename, pattern),
                          "expected %r not to match pattern %r"
                          % (filename, pattern))
 
@@ -33,21 +33,21 @@ klasse FnmatchTestCase(unittest.TestCase):
         check('abc', '*')
         check('abc', 'ab[cd]')
         check('abc', 'ab[!de]')
-        check('abc', 'ab[de]', False)
-        check('a', '??', False)
-        check('a', 'b', False)
+        check('abc', 'ab[de]', Falsch)
+        check('a', '??', Falsch)
+        check('a', 'b', Falsch)
 
         # these test that '\' is handled correctly in character sets;
         # see SF bug #409651
         check('\\', r'[\]')
         check('a', r'[!\]')
-        check('\\', r'[!\]', False)
+        check('\\', r'[!\]', Falsch)
 
         # test that filenames with newlines in them are handled correctly.
         # http://bugs.python.org/issue6665
         check('foo\nbar', 'foo*')
         check('foo\nbar\n', 'foo*')
-        check('\nfoo', 'foo*', False)
+        check('\nfoo', 'foo*', Falsch)
         check('\n', '*')
 
     def test_slow_fnmatch(self):
@@ -55,7 +55,7 @@ klasse FnmatchTestCase(unittest.TestCase):
         check('a' * 50, '*a*a*a*a*a*a*a*a*a*a')
         # The next "takes forever" wenn the regexp translation is
         # straightforward.  See bpo-40480.
-        check('a' * 50 + 'b', '*a*a*a*a*a*a*a*a*a*a', False)
+        check('a' * 50 + 'b', '*a*a*a*a*a*a*a*a*a*a', Falsch)
 
     def test_mix_bytes_str(self):
         self.assertRaises(TypeError, fnmatch, 'test', b'*')
@@ -65,15 +65,15 @@ klasse FnmatchTestCase(unittest.TestCase):
 
     def test_fnmatchcase(self):
         check = self.check_match
-        check('abc', 'abc', True, fnmatchcase)
-        check('AbC', 'abc', False, fnmatchcase)
-        check('abc', 'AbC', False, fnmatchcase)
-        check('AbC', 'AbC', True, fnmatchcase)
+        check('abc', 'abc', Wahr, fnmatchcase)
+        check('AbC', 'abc', Falsch, fnmatchcase)
+        check('abc', 'AbC', Falsch, fnmatchcase)
+        check('AbC', 'AbC', Wahr, fnmatchcase)
 
-        check('usr/bin', 'usr/bin', True, fnmatchcase)
-        check('usr\\bin', 'usr/bin', False, fnmatchcase)
-        check('usr/bin', 'usr\\bin', False, fnmatchcase)
-        check('usr\\bin', 'usr\\bin', True, fnmatchcase)
+        check('usr/bin', 'usr/bin', Wahr, fnmatchcase)
+        check('usr\\bin', 'usr/bin', Falsch, fnmatchcase)
+        check('usr/bin', 'usr\\bin', Falsch, fnmatchcase)
+        check('usr\\bin', 'usr\\bin', Wahr, fnmatchcase)
 
     def test_bytes(self):
         self.check_match(b'test', b'te*')
@@ -154,8 +154,8 @@ klasse FnmatchTestCase(unittest.TestCase):
             check(c, '[!-]', c not in '-')
         # Upper bound is less that lower bound: error in RE.
         fuer c in tescases:
-            check(c, '[d-b]', False)
-            check(c, '[!d-b]', True)
+            check(c, '[d-b]', Falsch)
+            check(c, '[!d-b]', Wahr)
             check(c, '[d-bx-z]', c in 'xyz')
             check(c, '[!d-bx-z]', c not in 'xyz')
             check(c, '[d-b^-`]', c in '^_`')
@@ -168,39 +168,39 @@ klasse FnmatchTestCase(unittest.TestCase):
         check('\\', r'[\]')
         check('/', r'[\]', NORMSEP)
         check('\\', r'[/]', NORMSEP)
-        check('[/]', r'[/]', False)
-        check(r'[\\]', r'[/]', False)
+        check('[/]', r'[/]', Falsch)
+        check(r'[\\]', r'[/]', Falsch)
         check('\\', r'[\t]')
         check('/', r'[\t]', NORMSEP)
         check('t', r'[\t]')
-        check('\t', r'[\t]', False)
+        check('\t', r'[\t]', Falsch)
 
     def test_sep_in_range(self):
         check = self.check_match
         check('a/b', 'a[.-0]b', not NORMSEP)
-        check('a\\b', 'a[.-0]b', False)
+        check('a\\b', 'a[.-0]b', Falsch)
         check('a\\b', 'a[Z-^]b', not NORMSEP)
-        check('a/b', 'a[Z-^]b', False)
+        check('a/b', 'a[Z-^]b', Falsch)
 
         check('a/b', 'a[/-0]b', not NORMSEP)
-        check(r'a\b', 'a[/-0]b', False)
-        check('a[/-0]b', 'a[/-0]b', False)
-        check(r'a[\-0]b', 'a[/-0]b', False)
+        check(r'a\b', 'a[/-0]b', Falsch)
+        check('a[/-0]b', 'a[/-0]b', Falsch)
+        check(r'a[\-0]b', 'a[/-0]b', Falsch)
 
         check('a/b', 'a[.-/]b')
         check(r'a\b', 'a[.-/]b', NORMSEP)
-        check('a[.-/]b', 'a[.-/]b', False)
-        check(r'a[.-\]b', 'a[.-/]b', False)
+        check('a[.-/]b', 'a[.-/]b', Falsch)
+        check(r'a[.-\]b', 'a[.-/]b', Falsch)
 
         check(r'a\b', r'a[\-^]b')
         check('a/b', r'a[\-^]b', NORMSEP)
-        check(r'a[\-^]b', r'a[\-^]b', False)
-        check('a[/-^]b', r'a[\-^]b', False)
+        check(r'a[\-^]b', r'a[\-^]b', Falsch)
+        check('a[/-^]b', r'a[\-^]b', Falsch)
 
         check(r'a\b', r'a[Z-\]b', not NORMSEP)
-        check('a/b', r'a[Z-\]b', False)
-        check(r'a[Z-\]b', r'a[Z-\]b', False)
-        check('a[Z-/]b', r'a[Z-\]b', False)
+        check('a/b', r'a[Z-\]b', Falsch)
+        check(r'a[Z-\]b', r'a[Z-\]b', Falsch)
+        check('a[Z-/]b', r'a[Z-\]b', Falsch)
 
     def test_warnings(self):
         with warnings.catch_warnings():
@@ -242,10 +242,10 @@ klasse TranslateTestCase(unittest.TestCase):
         r2 = translate('**b**b**b*')
         r3 = translate('*c*c*c*')
         fatre = "|".join([r1, r2, r3])
-        self.assertTrue(re.match(fatre, 'abaccad'))
-        self.assertTrue(re.match(fatre, 'abxbcab'))
-        self.assertTrue(re.match(fatre, 'cbabcaxc'))
-        self.assertFalse(re.match(fatre, 'dabccbad'))
+        self.assertWahr(re.match(fatre, 'abaccad'))
+        self.assertWahr(re.match(fatre, 'abxbcab'))
+        self.assertWahr(re.match(fatre, 'cbabcaxc'))
+        self.assertFalsch(re.match(fatre, 'dabccbad'))
 
     def test_translate_wildcards(self):
         fuer pattern, expect in [
@@ -341,7 +341,7 @@ klasse FilterTestCase(unittest.TestCase):
                          ['usr/bin', 'usr\\lib'] wenn NORMSEP sonst ['usr\\lib'])
 
 
-klasse FilterFalseTestCase(unittest.TestCase):
+klasse FilterFalschTestCase(unittest.TestCase):
 
     def test_filterfalse(self):
         actual = filterfalse(['Python', 'Ruby', 'Perl', 'Tcl'], 'P*')

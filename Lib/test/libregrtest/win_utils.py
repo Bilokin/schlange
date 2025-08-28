@@ -25,17 +25,17 @@ klasse WindowsLoadTracker():
 
     def __init__(self):
         # make __del__ not fail wenn pre-flight test fails
-        self._running = None
-        self._stopped = None
+        self._running = Nichts
+        self._stopped = Nichts
 
         # Pre-flight test fuer access to the performance data;
         # `PermissionError` will be raised wenn not allowed
         winreg.QueryInfoKey(winreg.HKEY_PERFORMANCE_DATA)
 
         self._values = []
-        self._load = None
-        self._running = _overlapped.CreateEvent(None, True, False, None)
-        self._stopped = _overlapped.CreateEvent(None, True, False, None)
+        self._load = Nichts
+        self._running = _overlapped.CreateEvent(Nichts, Wahr, Falsch, Nichts)
+        self._stopped = _overlapped.CreateEvent(Nichts, Wahr, Falsch, Nichts)
 
         _thread.start_new_thread(self._update_load, (), {})
 
@@ -97,7 +97,7 @@ klasse WindowsLoadTracker():
         # load calculation on Unix systems.
         # https://en.wikipedia.org/wiki/Load_(computing)#Unix-style_load_calculation
         # https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average
-        wenn self._load is not None:
+        wenn self._load is not Nichts:
             self._load = (self._load * LOAD_FACTOR_1
                             + processor_queue_length  * (1.0 - LOAD_FACTOR_1))
         sowenn len(self._values) < NVALUE:
@@ -105,7 +105,7 @@ klasse WindowsLoadTracker():
         sonst:
             self._load = sum(self._values) / len(self._values)
 
-    def close(self, kill=True):
+    def close(self, kill=Wahr):
         self.__del__()
         return
 
@@ -114,7 +114,7 @@ klasse WindowsLoadTracker():
                 _wait=_winapi.WaitForSingleObject,
                 _close=_winapi.CloseHandle,
                 _signal=_overlapped.SetEvent):
-        wenn self._running is not None:
+        wenn self._running is not Nichts:
             # tell the update thread to quit
             _signal(self._running)
             # wait fuer the update thread to signal done
@@ -122,7 +122,7 @@ klasse WindowsLoadTracker():
             # cleanup events
             _close(self._running)
             _close(self._stopped)
-            self._running = self._stopped = None
+            self._running = self._stopped = Nichts
 
     def getloadavg(self):
         return self._load

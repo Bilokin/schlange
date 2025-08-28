@@ -47,13 +47,13 @@ from _ctypes import FUNCFLAG_CDECL as _FUNCFLAG_CDECL, \
 #
 # STDAPICALLTYPE
 
-def create_string_buffer(init, size=None):
+def create_string_buffer(init, size=Nichts):
     """create_string_buffer(aBytes) -> character array
     create_string_buffer(anInteger) -> character array
     create_string_buffer(aBytes, anInteger) -> character array
     """
     wenn isinstance(init, bytes):
-        wenn size is None:
+        wenn size is Nichts:
             size = len(init)+1
         _sys.audit("ctypes.create_string_buffer", init, size)
         buftype = c_char * size
@@ -61,7 +61,7 @@ def create_string_buffer(init, size=None):
         buf.value = init
         return buf
     sowenn isinstance(init, int):
-        _sys.audit("ctypes.create_string_buffer", None, init)
+        _sys.audit("ctypes.create_string_buffer", Nichts, init)
         buftype = c_char * init
         buf = buftype()
         return buf
@@ -73,7 +73,7 @@ c_buffer = create_string_buffer
 _c_functype_cache = {}
 def CFUNCTYPE(restype, *argtypes, **kw):
     """CFUNCTYPE(restype, *argtypes,
-                 use_errno=False, use_last_error=False) -> function prototype.
+                 use_errno=Falsch, use_last_error=Falsch) -> function prototype.
 
     restype: the result type
     argtypes: a sequence specifying the argument types
@@ -88,9 +88,9 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     prototype((function name, dll object)[, paramflags]) -> foreign function exported by name
     """
     flags = _FUNCFLAG_CDECL
-    wenn kw.pop("use_errno", False):
+    wenn kw.pop("use_errno", Falsch):
         flags |= _FUNCFLAG_USE_ERRNO
-    wenn kw.pop("use_last_error", False):
+    wenn kw.pop("use_last_error", Falsch):
         flags |= _FUNCFLAG_USE_LASTERROR
     wenn kw:
         raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
@@ -115,9 +115,9 @@ wenn _os.name == "nt":
     def WINFUNCTYPE(restype, *argtypes, **kw):
         # docstring set later (very similar to CFUNCTYPE.__doc__)
         flags = _FUNCFLAG_STDCALL
-        wenn kw.pop("use_errno", False):
+        wenn kw.pop("use_errno", Falsch):
             flags |= _FUNCFLAG_USE_ERRNO
-        wenn kw.pop("use_last_error", False):
+        wenn kw.pop("use_last_error", Falsch):
             flags |= _FUNCFLAG_USE_LASTERROR
         wenn kw:
             raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
@@ -143,11 +143,11 @@ from _ctypes import sizeof, byref, addressof, alignment, resize
 from _ctypes import get_errno, set_errno
 from _ctypes import _SimpleCData
 
-def _check_size(typ, typecode=None):
+def _check_size(typ, typecode=Nichts):
     # Check wenn sizeof(ctypes_type) against struct.calcsize.  This
     # should protect somewhat against a misconfigured libffi.
     from struct import calcsize
-    wenn typecode is None:
+    wenn typecode is Nichts:
         # Most _type_ codes are the same as used in struct
         typecode = typ._type_
     actual, required = sizeof(typ), calcsize(typecode)
@@ -272,7 +272,7 @@ def POINTER(cls):
     Pointer types are cached and reused internally,
     so calling this function repeatedly is cheap.
     """
-    wenn cls is None:
+    wenn cls is Nichts:
         return c_void_p
     try:
         return cls.__pointer_type__
@@ -319,7 +319,7 @@ klasse _PointerTypeCache:
         except AttributeError:
             return _pointer_type_cache_fallback[cls]
 
-    def get(self, cls, default=None):
+    def get(self, cls, default=Nichts):
         import warnings
         warnings._deprecated("ctypes._pointer_type_cache", remove=(3, 19))
         try:
@@ -351,13 +351,13 @@ def _reset_cache():
     # _SimpleCData.c_char_p_from_param
     POINTER(c_char).from_param = c_char_p.from_param
 
-def create_unicode_buffer(init, size=None):
+def create_unicode_buffer(init, size=Nichts):
     """create_unicode_buffer(aString) -> character array
     create_unicode_buffer(anInteger) -> character array
     create_unicode_buffer(aString, anInteger) -> character array
     """
     wenn isinstance(init, str):
-        wenn size is None:
+        wenn size is Nichts:
             wenn sizeof(c_wchar) == 2:
                 # UTF-16 requires a surrogate pair (2 wchar_t) fuer non-BMP
                 # characters (outside [U+0000; U+FFFF] range). +1 fuer trailing
@@ -373,7 +373,7 @@ def create_unicode_buffer(init, size=None):
         buf.value = init
         return buf
     sowenn isinstance(init, int):
-        _sys.audit("ctypes.create_unicode_buffer", None, init)
+        _sys.audit("ctypes.create_unicode_buffer", Nichts, init)
         buftype = c_wchar * init
         buf = buftype()
         return buf
@@ -404,12 +404,12 @@ klasse CDLL(object):
     # default values fuer repr
     _name = '<uninitialized>'
     _handle = 0
-    _FuncPtr = None
+    _FuncPtr = Nichts
 
-    def __init__(self, name, mode=DEFAULT_MODE, handle=None,
-                 use_errno=False,
-                 use_last_error=False,
-                 winmode=None):
+    def __init__(self, name, mode=DEFAULT_MODE, handle=Nichts,
+                 use_errno=Falsch,
+                 use_last_error=Falsch,
+                 winmode=Nichts):
         wenn name:
             name = _os.fspath(name)
 
@@ -438,7 +438,7 @@ klasse CDLL(object):
             wenn name and name.endswith(")") and ".a(" in name:
                 mode |= ( _os.RTLD_MEMBER | _os.RTLD_NOW )
         wenn _os.name == "nt":
-            wenn winmode is not None:
+            wenn winmode is not Nichts:
                 mode = winmode
             sonst:
                 import nt
@@ -452,7 +452,7 @@ klasse CDLL(object):
             _restype_ = self._func_restype_
         self._FuncPtr = _FuncPtr
 
-        wenn handle is None:
+        wenn handle is Nichts:
             self._handle = _dlopen(self._name, mode)
         sonst:
             self._handle = handle
@@ -542,13 +542,13 @@ cdll = LibraryLoader(CDLL)
 pydll = LibraryLoader(PyDLL)
 
 wenn _os.name == "nt":
-    pythonapi = PyDLL("python dll", None, _sys.dllhandle)
+    pythonapi = PyDLL("python dll", Nichts, _sys.dllhandle)
 sowenn _sys.platform == "android":
     pythonapi = PyDLL("libpython%d.%d.so" % _sys.version_info[:2])
 sowenn _sys.platform == "cygwin":
     pythonapi = PyDLL("libpython%d.%d.dll" % _sys.version_info[:2])
 sonst:
-    pythonapi = PyDLL(None)
+    pythonapi = PyDLL(Nichts)
 
 
 wenn _os.name == "nt":
@@ -558,12 +558,12 @@ wenn _os.name == "nt":
     GetLastError = windll.kernel32.GetLastError
     from _ctypes import get_last_error, set_last_error
 
-    def WinError(code=None, descr=None):
-        wenn code is None:
+    def WinError(code=Nichts, descr=Nichts):
+        wenn code is Nichts:
             code = GetLastError()
-        wenn descr is None:
+        wenn descr is Nichts:
             descr = FormatError(code).strip()
-        return OSError(None, descr, None, code)
+        return OSError(Nichts, descr, Nichts, code)
 
 wenn sizeof(c_uint) == sizeof(c_void_p):
     c_size_t = c_uint
@@ -606,7 +606,7 @@ def string_at(ptr, size=-1):
 
 _memoryview_at = PYFUNCTYPE(
     py_object, c_void_p, c_ssize_t, c_int)(_memoryview_at_addr)
-def memoryview_at(ptr, size, readonly=False):
+def memoryview_at(ptr, size, readonly=Falsch):
     """memoryview_at(ptr, size[, readonly]) -> memoryview
 
     Return a memoryview representing the memory at void *ptr."""

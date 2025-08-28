@@ -24,18 +24,18 @@ from _ast import *
 
 
 def parse(source, filename='<unknown>', mode='exec', *,
-          type_comments=False, feature_version=None, optimize=-1):
+          type_comments=Falsch, feature_version=Nichts, optimize=-1):
     """
     Parse the source into an AST node.
     Equivalent to compile(source, filename, mode, PyCF_ONLY_AST).
-    Pass type_comments=True to get back type comments where the syntax allows.
+    Pass type_comments=Wahr to get back type comments where the syntax allows.
     """
     flags = PyCF_ONLY_AST
     wenn optimize > 0:
         flags |= PyCF_OPTIMIZED_AST
     wenn type_comments:
         flags |= PyCF_TYPE_COMMENTS
-    wenn feature_version is None:
+    wenn feature_version is Nichts:
         feature_version = -1
     sowenn isinstance(feature_version, tuple):
         major, minor = feature_version  # Should be a 2-tuple.
@@ -52,7 +52,7 @@ def literal_eval(node_or_string):
     Evaluate an expression node or a string containing only a Python
     expression.  The string or node provided may only consist of the following
     Python literal structures: strings, bytes, numbers, tuples, lists, dicts,
-    sets, booleans, and None.
+    sets, booleans, and Nichts.
 
     Caution: A complex expression can overflow the C stack and cause a crash.
     """
@@ -108,15 +108,15 @@ def _convert_literal(node):
         sonst:
             return left - right
     msg = "malformed node or string"
-    wenn lno := getattr(node, 'lineno', None):
+    wenn lno := getattr(node, 'lineno', Nichts):
         msg += f' on line {lno}'
     raise ValueError(msg + f': {node!r}')
 
 
 def dump(
-    node, annotate_fields=True, include_attributes=False,
+    node, annotate_fields=Wahr, include_attributes=Falsch,
     *,
-    indent=None, show_empty=False,
+    indent=Nichts, show_empty=Falsch,
 ):
     """
     Return a formatted dump of the tree in node.  This is mainly useful for
@@ -127,12 +127,12 @@ def dump(
     numbers and column offsets are not dumped by default.  If this is wanted,
     include_attributes can be set to true.  If indent is a non-negative
     integer or string, then the tree will be pretty-printed with that indent
-    level. None (the default) selects the single line representation.
-    If show_empty is False, then empty lists and fields that are None
+    level. Nichts (the default) selects the single line representation.
+    If show_empty is Falsch, then empty lists and fields that are Nichts
     will be omitted from the output fuer better readability.
     """
     def _format(node, level=0):
-        wenn indent is not None:
+        wenn indent is not Nichts:
             level += 1
             prefix = '\n' + indent * level
             sep = ',\n' + indent * level
@@ -143,16 +143,16 @@ def dump(
             cls = type(node)
             args = []
             args_buffer = []
-            allsimple = True
+            allsimple = Wahr
             keywords = annotate_fields
             fuer name in node._fields:
                 try:
                     value = getattr(node, name)
                 except AttributeError:
-                    keywords = True
+                    keywords = Wahr
                     continue
-                wenn value is None and getattr(cls, name, ...) is None:
-                    keywords = True
+                wenn value is Nichts and getattr(cls, name, ...) is Nichts:
+                    keywords = Wahr
                     continue
                 wenn not show_empty:
                     wenn value == []:
@@ -182,23 +182,23 @@ def dump(
                         value = getattr(node, name)
                     except AttributeError:
                         continue
-                    wenn value is None and getattr(cls, name, ...) is None:
+                    wenn value is Nichts and getattr(cls, name, ...) is Nichts:
                         continue
                     value, simple = _format(value, level)
                     allsimple = allsimple and simple
                     args.append('%s=%s' % (name, value))
             wenn allsimple and len(args) <= 3:
                 return '%s(%s)' % (node.__class__.__name__, ', '.join(args)), not args
-            return '%s(%s%s)' % (node.__class__.__name__, prefix, sep.join(args)), False
+            return '%s(%s%s)' % (node.__class__.__name__, prefix, sep.join(args)), Falsch
         sowenn isinstance(node, list):
             wenn not node:
-                return '[]', True
-            return '[%s%s]' % (prefix, sep.join(_format(x, level)[0] fuer x in node)), False
-        return repr(node), True
+                return '[]', Wahr
+            return '[%s%s]' % (prefix, sep.join(_format(x, level)[0] fuer x in node)), Falsch
+        return repr(node), Wahr
 
     wenn not isinstance(node, AST):
         raise TypeError('expected AST, got %r' % node.__class__.__name__)
-    wenn indent is not None and not isinstance(indent, str):
+    wenn indent is not Nichts and not isinstance(indent, str):
         indent = ' ' * indent
     return _format(node)[0]
 
@@ -210,10 +210,10 @@ def copy_location(new_node, old_node):
     """
     fuer attr in 'lineno', 'col_offset', 'end_lineno', 'end_col_offset':
         wenn attr in old_node._attributes and attr in new_node._attributes:
-            value = getattr(old_node, attr, None)
+            value = getattr(old_node, attr, Nichts)
             # end_lineno and end_col_offset are optional attributes, and they
-            # should be copied whether the value is None or not.
-            wenn value is not None or (
+            # should be copied whether the value is Nichts or not.
+            wenn value is not Nichts or (
                 hasattr(old_node, attr) and attr.startswith("end_")
             ):
                 setattr(new_node, attr, value)
@@ -235,7 +235,7 @@ def fix_missing_locations(node):
             sonst:
                 lineno = node.lineno
         wenn 'end_lineno' in node._attributes:
-            wenn getattr(node, 'end_lineno', None) is None:
+            wenn getattr(node, 'end_lineno', Nichts) is Nichts:
                 node.end_lineno = end_lineno
             sonst:
                 end_lineno = node.end_lineno
@@ -245,7 +245,7 @@ def fix_missing_locations(node):
             sonst:
                 col_offset = node.col_offset
         wenn 'end_col_offset' in node._attributes:
-            wenn getattr(node, 'end_col_offset', None) is None:
+            wenn getattr(node, 'end_col_offset', Nichts) is Nichts:
                 node.end_col_offset = end_col_offset
             sonst:
                 end_col_offset = node.end_col_offset
@@ -272,7 +272,7 @@ def increment_lineno(node, n=1):
             child.lineno = getattr(child, 'lineno', 0) + n
         wenn (
             "end_lineno" in child._attributes
-            and (end_lineno := getattr(child, "end_lineno", 0)) is not None
+            and (end_lineno := getattr(child, "end_lineno", 0)) is not Nichts
         ):
             child.end_lineno = end_lineno + n
     return node
@@ -304,45 +304,45 @@ def iter_child_nodes(node):
                     yield item
 
 
-def get_docstring(node, clean=True):
+def get_docstring(node, clean=Wahr):
     """
-    Return the docstring fuer the given node or None wenn no docstring can
+    Return the docstring fuer the given node or Nichts wenn no docstring can
     be found.  If the node provided does not have docstrings a TypeError
     will be raised.
 
-    If *clean* is `True`, all tabs are expanded to spaces and any whitespace
+    If *clean* is `Wahr`, all tabs are expanded to spaces and any whitespace
     that can be uniformly removed from the second line onwards is removed.
     """
     wenn not isinstance(node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)):
         raise TypeError("%r can't have docstrings" % node.__class__.__name__)
     wenn not(node.body and isinstance(node.body[0], Expr)):
-        return None
+        return Nichts
     node = node.body[0].value
     wenn isinstance(node, Constant) and isinstance(node.value, str):
         text = node.value
     sonst:
-        return None
+        return Nichts
     wenn clean:
         import inspect
         text = inspect.cleandoc(text)
     return text
 
 
-_line_pattern = None
-def _splitlines_no_ff(source, maxlines=None):
+_line_pattern = Nichts
+def _splitlines_no_ff(source, maxlines=Nichts):
     """Split a string into lines ignoring form feed and other chars.
 
     This mimics how the Python parser splits source code.
     """
     global _line_pattern
-    wenn _line_pattern is None:
+    wenn _line_pattern is Nichts:
         # lazily computed to speedup import time of `ast`
         import re
         _line_pattern = re.compile(r"(.*?(?:\r\n|\n|\r|$))")
 
     lines = []
     fuer lineno, match in enumerate(_line_pattern.finditer(source), 1):
-        wenn maxlines is not None and lineno > maxlines:
+        wenn maxlines is not Nichts and lineno > maxlines:
             break
         lines.append(match[0])
     return lines
@@ -359,24 +359,24 @@ def _pad_whitespace(source):
     return result
 
 
-def get_source_segment(source, node, *, padded=False):
+def get_source_segment(source, node, *, padded=Falsch):
     """Get source code segment of the *source* that generated *node*.
 
     If some location information (`lineno`, `end_lineno`, `col_offset`,
-    or `end_col_offset`) is missing, return None.
+    or `end_col_offset`) is missing, return Nichts.
 
-    If *padded* is `True`, the first line of a multi-line statement will
+    If *padded* is `Wahr`, the first line of a multi-line statement will
     be padded with spaces to match its original position.
     """
     try:
-        wenn node.end_lineno is None or node.end_col_offset is None:
-            return None
+        wenn node.end_lineno is Nichts or node.end_col_offset is Nichts:
+            return Nichts
         lineno = node.lineno - 1
         end_lineno = node.end_lineno - 1
         col_offset = node.col_offset
         end_col_offset = node.end_col_offset
     except AttributeError:
-        return None
+        return Nichts
 
     lines = _splitlines_no_ff(source, maxlines=end_lineno+1)
     wenn end_lineno == lineno:
@@ -415,12 +415,12 @@ def compare(
     b,
     /,
     *,
-    compare_attributes=False,
+    compare_attributes=Falsch,
 ):
     """Recursively compares two ASTs.
 
     compare_attributes affects whether AST attributes are considered
-    in the comparison. If compare_attributes is False (default), then
+    in the comparison. If compare_attributes is Falsch (default), then
     attributes are ignored. Otherwise they must all be equal. This
     option is useful to check whether the ASTs are structurally equal but
     might differ in whitespace or similar details.
@@ -442,18 +442,18 @@ def compare(
             # If a field is repeated, then both objects will represent
             # the value as a list.
             wenn len(a) != len(b):
-                return False
+                return Falsch
             fuer a_item, b_item in zip(a, b):
                 wenn not _compare(a_item, b_item):
-                    return False
+                    return Falsch
             sonst:
-                return True
+                return Wahr
         sonst:
             return type(a) is type(b) and a == b
 
     def _compare_fields(a, b):
         wenn a._fields != b._fields:
-            return False
+            return Falsch
         fuer field in a._fields:
             a_field = getattr(a, field, sentinel)
             b_field = getattr(b, field, sentinel)
@@ -462,15 +462,15 @@ def compare(
                 continue
             wenn a_field is sentinel or b_field is sentinel:
                 # one of the node is missing a field
-                return False
+                return Falsch
             wenn not _compare(a_field, b_field):
-                return False
+                return Falsch
         sonst:
-            return True
+            return Wahr
 
     def _compare_attributes(a, b):
         wenn a._attributes != b._attributes:
-            return False
+            return Falsch
         # Attributes are always ints.
         fuer attr in a._attributes:
             a_attr = getattr(a, attr, sentinel)
@@ -479,17 +479,17 @@ def compare(
                 # both nodes are missing an attribute at runtime
                 continue
             wenn a_attr != b_attr:
-                return False
+                return Falsch
         sonst:
-            return True
+            return Wahr
 
     wenn type(a) is not type(b):
-        return False
+        return Falsch
     wenn not _compare_fields(a, b):
-        return False
+        return Falsch
     wenn compare_attributes and not _compare_attributes(a, b):
-        return False
-    return True
+        return Falsch
+    return Wahr
 
 
 klasse NodeVisitor(object):
@@ -505,7 +505,7 @@ klasse NodeVisitor(object):
     klasse name of the node.  So a `TryFinally` node visit function would
     be `visit_TryFinally`.  This behavior can be changed by overriding
     the `visit` method.  If no visitor function exists fuer a node
-    (return value `None`) the `generic_visit` visitor is used instead.
+    (return value `Nichts`) the `generic_visit` visitor is used instead.
 
     Don't use the `NodeVisitor` wenn you want to apply changes to nodes during
     traversing.  For this a special visitor exists (`NodeTransformer`) that
@@ -536,7 +536,7 @@ klasse NodeTransformer(NodeVisitor):
 
     The `NodeTransformer` will walk the AST and use the return value of the
     visitor methods to replace or remove the old node.  If the return value of
-    the visitor method is ``None``, the node will be removed from its location,
+    the visitor method is ``Nichts``, the node will be removed from its location,
     otherwise it is replaced with the return value.  The return value may be the
     original node in which case no replacement takes place.
 
@@ -572,7 +572,7 @@ klasse NodeTransformer(NodeVisitor):
                 fuer value in old_value:
                     wenn isinstance(value, AST):
                         value = self.visit(value)
-                        wenn value is None:
+                        wenn value is Nichts:
                             continue
                         sowenn not isinstance(value, AST):
                             new_values.extend(value)
@@ -581,7 +581,7 @@ klasse NodeTransformer(NodeVisitor):
                 old_value[:] = new_values
             sowenn isinstance(old_value, AST):
                 new_node = self.visit(old_value)
-                wenn new_node is None:
+                wenn new_node is Nichts:
                     delattr(node, field)
                 sonst:
                     setattr(node, field, new_node)
@@ -637,17 +637,17 @@ def unparse(ast_obj):
     return unparser.visit(ast_obj)
 
 
-def main(args=None):
+def main(args=Nichts):
     import argparse
     import sys
 
-    parser = argparse.ArgumentParser(color=True)
+    parser = argparse.ArgumentParser(color=Wahr)
     parser.add_argument('infile', nargs='?', default='-',
                         help='the file to parse; defaults to stdin')
     parser.add_argument('-m', '--mode', default='exec',
                         choices=('exec', 'single', 'eval', 'func_type'),
                         help='specify what kind of code must be parsed')
-    parser.add_argument('--no-type-comments', default=True, action='store_false',
+    parser.add_argument('--no-type-comments', default=Wahr, action='store_false',
                         help="don't add information about type comments")
     parser.add_argument('-a', '--include-attributes', action='store_true',
                         help='include attributes such as line numbers and '
@@ -655,13 +655,13 @@ def main(args=None):
     parser.add_argument('-i', '--indent', type=int, default=3,
                         help='indentation of nodes (number of spaces)')
     parser.add_argument('--feature-version',
-                        type=str, default=None, metavar='VERSION',
+                        type=str, default=Nichts, metavar='VERSION',
                         help='Python version in the format 3.x '
                              '(for example, 3.10)')
     parser.add_argument('-O', '--optimize',
                         type=int, default=-1, metavar='LEVEL',
                         help='optimization level fuer parser (default -1)')
-    parser.add_argument('--show-empty', default=False, action='store_true',
+    parser.add_argument('--show-empty', default=Falsch, action='store_true',
                         help='show empty lists and fields in dump output')
     args = parser.parse_args(args)
 
@@ -674,7 +674,7 @@ def main(args=None):
             source = infile.read()
 
     # Process feature_version
-    feature_version = None
+    feature_version = Nichts
     wenn args.feature_version:
         try:
             major, minor = map(int, args.feature_version.split('.', 1))

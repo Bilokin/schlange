@@ -155,7 +155,7 @@ klasse Reader:
     def r_ref_reserve(self, flag: int) -> int:
         wenn flag:
             idx = len(self.refs)
-            self.refs.append(None)
+            self.refs.append(Nichts)
             return idx
         sonst:
             return 0
@@ -192,13 +192,13 @@ klasse Reader:
         wenn type == Type.NULL:
             return NULL
         sowenn type == Type.NONE:
-            return None
+            return Nichts
         sowenn type == Type.ELLIPSIS:
             return Ellipsis
         sowenn type == Type.FALSE:
-            return False
+            return Falsch
         sowenn type == Type.TRUE:
-            return True
+            return Wahr
         sowenn type == Type.INT:
             return R_REF(self.r_long())
         sowenn type == Type.INT64:
@@ -247,7 +247,7 @@ klasse Reader:
             return retval
         sowenn type == Type.DICT:
             retval = R_REF({})
-            while True:
+            while Wahr:
                 key = self.r_object()
                 wenn key == NULL:
                     break
@@ -293,7 +293,7 @@ klasse Reader:
         sowenn type == Type.REF:
             n = self.r_long()
             retval = self.refs[n]
-            assert retval is not None
+            assert retval is not Nichts
             return retval
         sonst:
             breakpoint()
@@ -306,7 +306,7 @@ def loads(data: bytes) -> Any:
     return r.r_object()
 
 
-def main() -> None:
+def main() -> Nichts:
     # Test
     import marshal
     import pprint

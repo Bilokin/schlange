@@ -31,8 +31,8 @@ from tkinter import messagebox
 klasse SimpleDialog:
 
     def __init__(self, master,
-                 text='', buttons=[], default=None, cancel=None,
-                 title=None, class_=None):
+                 text='', buttons=[], default=Nichts, cancel=Nichts,
+                 title=Nichts, class_=Nichts):
         wenn class_:
             self.root = Toplevel(master, class_=class_)
         sonst:
@@ -70,13 +70,13 @@ klasse SimpleDialog:
         return self.num
 
     def return_event(self, event):
-        wenn self.default is None:
+        wenn self.default is Nichts:
             self.root.bell()
         sonst:
             self.done(self.default)
 
     def wm_delete_window(self):
-        wenn self.cancel is None:
+        wenn self.cancel is Nichts:
             self.root.bell()
         sonst:
             self.done(self.cancel)
@@ -93,7 +93,7 @@ klasse Dialog(Toplevel):
     This klasse is intended as a base klasse fuer custom dialogs
     '''
 
-    def __init__(self, parent, title = None):
+    def __init__(self, parent, title = Nichts):
         '''Initialize a dialog.
 
         Arguments:
@@ -103,7 +103,7 @@ klasse Dialog(Toplevel):
             title -- the dialog title
         '''
         master = parent
-        wenn master is None:
+        wenn master is Nichts:
             master = _get_temp_root()
 
         Toplevel.__init__(self, master)
@@ -112,7 +112,7 @@ klasse Dialog(Toplevel):
         # If the parent is not viewable, don't
         # make the child transient, or sonst it
         # would be opened withdrawn
-        wenn parent is not None and parent.winfo_viewable():
+        wenn parent is not Nichts and parent.winfo_viewable():
             self.transient(parent)
 
         wenn title:
@@ -122,7 +122,7 @@ klasse Dialog(Toplevel):
 
         self.parent = parent
 
-        self.result = None
+        self.result = Nichts
 
         body = Frame(self)
         self.initial_focus = self.body(body)
@@ -130,7 +130,7 @@ klasse Dialog(Toplevel):
 
         self.buttonbox()
 
-        wenn self.initial_focus is None:
+        wenn self.initial_focus is Nichts:
             self.initial_focus = self
 
         self.protocol("WM_DELETE_WINDOW", self.cancel)
@@ -146,7 +146,7 @@ klasse Dialog(Toplevel):
 
     def destroy(self):
         '''Destroy the window'''
-        self.initial_focus = None
+        self.initial_focus = Nichts
         Toplevel.destroy(self)
         _destroy_temp_root(self.master)
 
@@ -183,7 +183,7 @@ klasse Dialog(Toplevel):
     #
     # standard button semantics
 
-    def ok(self, event=None):
+    def ok(self, event=Nichts):
 
         wenn not self.validate():
             self.initial_focus.focus_set() # put focus back
@@ -197,10 +197,10 @@ klasse Dialog(Toplevel):
         finally:
             self.cancel()
 
-    def cancel(self, event=None):
+    def cancel(self, event=Nichts):
 
         # put focus back to the parent window
-        wenn self.parent is not None:
+        wenn self.parent is not Nichts:
             self.parent.focus_set()
         self.destroy()
 
@@ -228,7 +228,7 @@ klasse Dialog(Toplevel):
 
 # Place a toplevel window at the center of parent or screen
 # It is a Python implementation of ::tk::PlaceWindow.
-def _place_window(w, parent=None):
+def _place_window(w, parent=Nichts):
     w.wm_withdraw() # Remain invisible while we figure out the geometry
     w.update_idletasks() # Actualize geometry information
 
@@ -236,7 +236,7 @@ def _place_window(w, parent=None):
     minheight = w.winfo_reqheight()
     maxwidth = w.winfo_vrootwidth()
     maxheight = w.winfo_vrootheight()
-    wenn parent is not None and parent.winfo_ismapped():
+    wenn parent is not Nichts and parent.winfo_ismapped():
         x = parent.winfo_rootx() + (parent.winfo_width() - minwidth) // 2
         y = parent.winfo_rooty() + (parent.winfo_height() - minheight) // 2
         vrootx = w.winfo_vrootx()
@@ -270,9 +270,9 @@ def _setup_dialog(w):
 klasse _QueryDialog(Dialog):
 
     def __init__(self, title, prompt,
-                 initialvalue=None,
-                 minvalue = None, maxvalue = None,
-                 parent = None):
+                 initialvalue=Nichts,
+                 minvalue = Nichts, maxvalue = Nichts,
+                 parent = Nichts):
 
         self.prompt   = prompt
         self.minvalue = minvalue
@@ -283,7 +283,7 @@ klasse _QueryDialog(Dialog):
         Dialog.__init__(self, parent, title)
 
     def destroy(self):
-        self.entry = None
+        self.entry = Nichts
         Dialog.destroy(self)
 
     def body(self, master):
@@ -294,7 +294,7 @@ klasse _QueryDialog(Dialog):
         self.entry = Entry(master, name="entry")
         self.entry.grid(row=1, padx=5, sticky=W+E)
 
-        wenn self.initialvalue is not None:
+        wenn self.initialvalue is not Nichts:
             self.entry.insert(0, self.initialvalue)
             self.entry.select_range(0, END)
 
@@ -311,7 +311,7 @@ klasse _QueryDialog(Dialog):
             )
             return 0
 
-        wenn self.minvalue is not None and result < self.minvalue:
+        wenn self.minvalue is not Nichts and result < self.minvalue:
             messagebox.showwarning(
                 "Too small",
                 "The allowed minimum value is %s. "
@@ -320,7 +320,7 @@ klasse _QueryDialog(Dialog):
             )
             return 0
 
-        wenn self.maxvalue is not None and result > self.maxvalue:
+        wenn self.maxvalue is not Nichts and result > self.maxvalue:
             messagebox.showwarning(
                 "Too large",
                 "The allowed maximum value is %s. "
@@ -384,12 +384,12 @@ klasse _QueryString(_QueryDialog):
             self.__show = kw["show"]
             del kw["show"]
         sonst:
-            self.__show = None
+            self.__show = Nichts
         _QueryDialog.__init__(self, *args, **kw)
 
     def body(self, master):
         entry = _QueryDialog.body(self, master)
-        wenn self.__show is not None:
+        wenn self.__show is not Nichts:
             entry.configure(show=self.__show)
         return entry
 

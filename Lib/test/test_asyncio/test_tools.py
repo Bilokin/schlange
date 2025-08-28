@@ -1498,7 +1498,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
         with self.assertRaises(tools.CycleFoundException) as ctx:
             tools.build_async_tree(input_)
         cycles = ctx.exception.cycles
-        self.assertTrue(any(set(c) == {1, 2, 3} fuer c in cycles))
+        self.assertWahr(any(set(c) == {1, 2, 3} fuer c in cycles))
 
     def test_table_output_format(self):
         input_ = [
@@ -1529,14 +1529,14 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
         fuer row in table:
             self.assertEqual(len(row), 7)
             self.assertIsInstance(row[0], int)  # thread ID
-            self.assertTrue(
+            self.assertWahr(
                 isinstance(row[1], str) and row[1].startswith("0x")
             )  # hex task ID
             self.assertIsInstance(row[2], str)  # task name
             self.assertIsInstance(row[3], str)  # coroutine stack
             self.assertIsInstance(row[4], str)  # coroutine chain
             self.assertIsInstance(row[5], str)  # awaiter name
-            self.assertTrue(
+            self.assertWahr(
                 isinstance(row[6], str) and row[6].startswith("0x")
             )  # hex awaiter ID
 
@@ -1658,16 +1658,16 @@ klasse TestAsyncioToolsEdgeCases(unittest.TestCase):
                     ),
                     TaskInfo(
                         task_id=2,
-                        task_name=None,
+                        task_name=Nichts,
                         coroutine_stack=[],
                         awaited_by=[]
                     )
                 ]
             )
         ]
-        # If name is None, fallback to string should not crash
+        # If name is Nichts, fallback to string should not crash
         tree = tools.build_async_tree(input_)
-        self.assertIn("(T) None", "\n".join(tree[0]))
+        self.assertIn("(T) Nichts", "\n".join(tree[0]))
 
     def test_tree_rendering_with_custom_emojis(self):
         """Pass custom emojis to the tree renderer."""

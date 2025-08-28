@@ -39,8 +39,8 @@ klasse BaseTestCase(unittest.TestCase):
         self.assertEqual(-7 .__index__(), -7)
         self.assertEqual(self.o.__index__(), 4)
         self.assertEqual(self.n.__index__(), 5)
-        self.assertEqual(True.__index__(), 1)
-        self.assertEqual(False.__index__(), 0)
+        self.assertEqual(Wahr.__index__(), 1)
+        self.assertEqual(Falsch.__index__(), 0)
 
     def test_subclasses(self):
         r = list(range(10))
@@ -74,11 +74,11 @@ klasse BaseTestCase(unittest.TestCase):
     def test_index_returns_int_subclass(self):
         klasse BadInt:
             def __index__(self):
-                return True
+                return Wahr
 
         klasse BadInt2(int):
             def __index__(self):
-                return True
+                return Wahr
 
         bad_int = BadInt()
         with self.assertWarns(DeprecationWarning):
@@ -255,7 +255,7 @@ klasse OverflowTestCase(unittest.TestCase):
     def test_getitem(self):
         klasse GetItem:
             def __len__(self):
-                assert False, "__len__ should not be invoked"
+                assert Falsch, "__len__ should not be invoked"
             def __getitem__(self, key):
                 return key
         x = GetItem()

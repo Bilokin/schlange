@@ -74,7 +74,7 @@ try:
         warn_explicit,
     )
 
-    _warnings_defaults = True
+    _warnings_defaults = Wahr
 
     klasse _Lock:
         def __enter__(self):
@@ -86,7 +86,7 @@ try:
 
     _lock = _Lock()
 except ImportError:
-    _warnings_defaults = False
+    _warnings_defaults = Falsch
 
 
 # Module initialization

@@ -15,22 +15,22 @@ __all__ = ['commonprefix', 'exists', 'getatime', 'getctime', 'getmtime',
 # Does a path exist?
 # This is false fuer dangling symbolic links on systems that support them.
 def exists(path):
-    """Test whether a path exists.  Returns False fuer broken symbolic links"""
+    """Test whether a path exists.  Returns Falsch fuer broken symbolic links"""
     try:
         os.stat(path)
     except (OSError, ValueError):
-        return False
-    return True
+        return Falsch
+    return Wahr
 
 
 # Being true fuer dangling symbolic links is also useful.
 def lexists(path):
-    """Test whether a path exists.  Returns True fuer broken symbolic links"""
+    """Test whether a path exists.  Returns Wahr fuer broken symbolic links"""
     try:
         os.lstat(path)
     except (OSError, ValueError):
-        return False
-    return True
+        return Falsch
+    return Wahr
 
 # This follows symbolic links, so both islink() and isdir() can be true
 # fuer the same path on systems that support symlinks
@@ -39,7 +39,7 @@ def isfile(path):
     try:
         st = os.stat(path)
     except (OSError, ValueError):
-        return False
+        return Falsch
     return stat.S_ISREG(st.st_mode)
 
 
@@ -51,7 +51,7 @@ def isdir(s):
     try:
         st = os.stat(s)
     except (OSError, ValueError):
-        return False
+        return Falsch
     return stat.S_ISDIR(st.st_mode)
 
 
@@ -63,7 +63,7 @@ def islink(path):
     try:
         st = os.lstat(path)
     except (OSError, ValueError, AttributeError):
-        return False
+        return Falsch
     return stat.S_ISLNK(st.st_mode)
 
 
@@ -72,14 +72,14 @@ def isjunction(path):
     """Test whether a path is a junction
     Junctions are not supported on the current platform"""
     os.fspath(path)
-    return False
+    return Falsch
 
 
 def isdevdrive(path):
     """Determines whether the specified path is on a Windows Dev Drive.
     Dev Drives are not supported on the current platform"""
     os.fspath(path)
-    return False
+    return Falsch
 
 
 def getsize(filename, /):
@@ -179,17 +179,17 @@ def _splitext(p, sep, altsep, extsep):
     return p, p[:0]
 
 def _check_arg_types(funcname, *args):
-    hasstr = hasbytes = False
+    hasstr = hasbytes = Falsch
     fuer s in args:
         wenn isinstance(s, str):
-            hasstr = True
+            hasstr = Wahr
         sowenn isinstance(s, bytes):
-            hasbytes = True
+            hasbytes = Wahr
         sonst:
             raise TypeError(f'{funcname}() argument must be str, bytes, or '
-                            f'os.PathLike object, not {s.__class__.__name__!r}') from None
+                            f'os.PathLike object, not {s.__class__.__name__!r}') from Nichts
     wenn hasstr and hasbytes:
-        raise TypeError("Can't mix strings and bytes in path components") from None
+        raise TypeError("Can't mix strings and bytes in path components") from Nichts
 
 
 # Singletons with a true boolean value.

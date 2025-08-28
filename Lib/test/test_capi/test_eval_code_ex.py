@@ -9,7 +9,7 @@ from test.support import swap_attr
 # Skip this test wenn the _testcapi module isn't available.
 _testcapi = import_helper.import_module('_testcapi')
 
-NULL = None
+NULL = Nichts
 
 
 klasse PyEval_EvalCodeExTests(unittest.TestCase):
@@ -32,7 +32,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
 
     def test_custom_locals(self):
         # Monkey-patch __build_class__ to get a klasse code object.
-        code = None
+        code = Nichts
         def build_class(func, name, /, *bases, **kwds):
             nonlocal code
             code = func.__code__
@@ -45,15 +45,15 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
         eval_code_ex = _testcapi.eval_code_ex
         results = []
         g = dict(a=1, r=results)
-        self.assertIsNone(eval_code_ex(code, g))
+        self.assertIsNichts(eval_code_ex(code, g))
         self.assertEqual(results, [1])
-        self.assertIsNone(eval_code_ex(code, g, dict(a=2)))
+        self.assertIsNichts(eval_code_ex(code, g, dict(a=2)))
         self.assertEqual(results, [2])
-        self.assertIsNone(eval_code_ex(code, g, UserDict(a=3)))
+        self.assertIsNichts(eval_code_ex(code, g, UserDict(a=3)))
         self.assertEqual(results, [3])
-        self.assertIsNone(eval_code_ex(code, g, {}))
+        self.assertIsNichts(eval_code_ex(code, g, {}))
         self.assertEqual(results, [1])
-        self.assertIsNone(eval_code_ex(code, g, NULL))
+        self.assertIsNichts(eval_code_ex(code, g, NULL))
         self.assertEqual(results, [1])
 
         self.assertRaises(TypeError, eval_code_ex, code, g, [])

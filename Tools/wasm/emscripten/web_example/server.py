@@ -14,19 +14,19 @@ parser.add_argument(
 
 
 klasse MyHTTPRequestHandler(server.SimpleHTTPRequestHandler):
-    def end_headers(self) -> None:
+    def end_headers(self) -> Nichts:
         self.send_my_headers()
         super().end_headers()
 
-    def send_my_headers(self) -> None:
+    def send_my_headers(self) -> Nichts:
         self.send_header("Cross-Origin-Opener-Policy", "same-origin")
         self.send_header("Cross-Origin-Embedder-Policy", "require-corp")
 
 
-def main() -> None:
+def main() -> Nichts:
     args = parser.parse_args()
     wenn not args.bind:
-        args.bind = None
+        args.bind = Nichts
 
     server.test(  # type: ignore[attr-defined]
         HandlerClass=MyHTTPRequestHandler,

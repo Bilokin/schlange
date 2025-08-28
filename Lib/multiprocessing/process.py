@@ -28,7 +28,7 @@ from _weakrefset import WeakSet
 try:
     ORIGINAL_DIR = os.path.abspath(os.getcwd())
 except OSError:
-    ORIGINAL_DIR = None
+    ORIGINAL_DIR = Nichts
 
 #
 # Public functions
@@ -61,7 +61,7 @@ def parent_process():
 def _cleanup():
     # check fuer processes which have finished
     fuer p in list(_children):
-        wenn (child_popen := p._popen) and child_popen.poll() is not None:
+        wenn (child_popen := p._popen) and child_popen.poll() is not Nichts:
             _children.discard(p)
 
 #
@@ -77,22 +77,22 @@ klasse BaseProcess(object):
     def _Popen(self):
         raise NotImplementedError
 
-    def __init__(self, group=None, target=None, name=None, args=(), kwargs={},
-                 *, daemon=None):
-        assert group is None, 'group argument must be None fuer now'
+    def __init__(self, group=Nichts, target=Nichts, name=Nichts, args=(), kwargs={},
+                 *, daemon=Nichts):
+        assert group is Nichts, 'group argument must be Nichts fuer now'
         count = next(_process_counter)
         self._identity = _current_process._identity + (count,)
         self._config = _current_process._config.copy()
         self._parent_pid = os.getpid()
         self._parent_name = _current_process.name
-        self._popen = None
-        self._closed = False
+        self._popen = Nichts
+        self._closed = Falsch
         self._target = target
         self._args = tuple(args)
         self._kwargs = dict(kwargs)
         self._name = name or type(self).__name__ + '-' + \
                      ':'.join(str(i) fuer i in self._identity)
-        wenn daemon is not None:
+        wenn daemon is not Nichts:
             self.daemon = daemon
         _dangling.add(self)
 
@@ -112,7 +112,7 @@ klasse BaseProcess(object):
         Start child process
         '''
         self._check_closed()
-        assert self._popen is None, 'cannot start a process twice'
+        assert self._popen is Nichts, 'cannot start a process twice'
         assert self._parent_pid == os.getpid(), \
                'can only start a process object created by current process'
         assert not _current_process._config.get('daemon'), \
@@ -146,15 +146,15 @@ klasse BaseProcess(object):
         self._check_closed()
         self._popen.kill()
 
-    def join(self, timeout=None):
+    def join(self, timeout=Nichts):
         '''
         Wait until child process terminates
         '''
         self._check_closed()
         assert self._parent_pid == os.getpid(), 'can only join a child process'
-        assert self._popen is not None, 'can only join a started process'
+        assert self._popen is not Nichts, 'can only join a started process'
         res = self._popen.wait(timeout)
-        wenn res is not None:
+        wenn res is not Nichts:
             _children.discard(self)
 
     def is_alive(self):
@@ -163,18 +163,18 @@ klasse BaseProcess(object):
         '''
         self._check_closed()
         wenn self is _current_process:
-            return True
+            return Wahr
         assert self._parent_pid == os.getpid(), 'can only test a child process'
 
-        wenn self._popen is None:
-            return False
+        wenn self._popen is Nichts:
+            return Falsch
 
         returncode = self._popen.poll()
-        wenn returncode is None:
-            return True
+        wenn returncode is Nichts:
+            return Wahr
         sonst:
             _children.discard(self)
-            return False
+            return Falsch
 
     def close(self):
         '''
@@ -183,15 +183,15 @@ klasse BaseProcess(object):
         This method releases resources held by the Process object.  It is
         an error to call this method wenn the child process is still running.
         '''
-        wenn self._popen is not None:
-            wenn self._popen.poll() is None:
+        wenn self._popen is not Nichts:
+            wenn self._popen.poll() is Nichts:
                 raise ValueError("Cannot close a process while it is still running. "
                                  "You should first call join() or terminate().")
             self._popen.close()
-            self._popen = None
+            self._popen = Nichts
             del self._sentinel
             _children.discard(self)
-        self._closed = True
+        self._closed = Wahr
 
     @property
     def name(self):
@@ -207,14 +207,14 @@ klasse BaseProcess(object):
         '''
         Return whether process is a daemon
         '''
-        return self._config.get('daemon', False)
+        return self._config.get('daemon', Falsch)
 
     @daemon.setter
     def daemon(self, daemonic):
         '''
         Set whether process is a daemon
         '''
-        assert self._popen is None, 'process has already started'
+        assert self._popen is Nichts, 'process has already started'
         self._config['daemon'] = daemonic
 
     @property
@@ -231,17 +231,17 @@ klasse BaseProcess(object):
     @property
     def exitcode(self):
         '''
-        Return exit code of process or `None` wenn it has yet to stop
+        Return exit code of process or `Nichts` wenn it has yet to stop
         '''
         self._check_closed()
-        wenn self._popen is None:
+        wenn self._popen is Nichts:
             return self._popen
         return self._popen.poll()
 
     @property
     def ident(self):
         '''
-        Return identifier (PID) of process or `None` wenn it has yet to start
+        Return identifier (PID) of process or `Nichts` wenn it has yet to start
         '''
         self._check_closed()
         wenn self is _current_process:
@@ -261,31 +261,31 @@ klasse BaseProcess(object):
         try:
             return self._sentinel
         except AttributeError:
-            raise ValueError("process not started") from None
+            raise ValueError("process not started") from Nichts
 
     def __repr__(self):
-        exitcode = None
+        exitcode = Nichts
         wenn self is _current_process:
             status = 'started'
         sowenn self._closed:
             status = 'closed'
         sowenn self._parent_pid != os.getpid():
             status = 'unknown'
-        sowenn self._popen is None:
+        sowenn self._popen is Nichts:
             status = 'initial'
         sonst:
             exitcode = self._popen.poll()
-            wenn exitcode is not None:
+            wenn exitcode is not Nichts:
                 status = 'stopped'
             sonst:
                 status = 'started'
 
         info = [type(self).__name__, 'name=%r' % self._name]
-        wenn self._popen is not None:
+        wenn self._popen is not Nichts:
             info.append('pid=%s' % self._popen.pid)
         info.append('parent=%s' % self._parent_pid)
         info.append(status)
-        wenn exitcode is not None:
+        wenn exitcode is not Nichts:
             exitcode = _exitcode_to_name.get(exitcode, exitcode)
             info.append('exitcode=%s' % exitcode)
         wenn self.daemon:
@@ -294,12 +294,12 @@ klasse BaseProcess(object):
 
     ##
 
-    def _bootstrap(self, parent_sentinel=None):
+    def _bootstrap(self, parent_sentinel=Nichts):
         from . import util, context
         global _current_process, _parent_process, _process_counter, _children
 
         try:
-            wenn self._start_method is not None:
+            wenn self._start_method is not Nichts:
                 context._force_start_method(self._start_method)
             _process_counter = itertools.count(1)
             _children = set()
@@ -320,7 +320,7 @@ klasse BaseProcess(object):
             self.run()
             exitcode = 0
         except SystemExit as e:
-            wenn e.code is None:
+            wenn e.code is Nichts:
                 exitcode = 0
             sowenn isinstance(e.code, int):
                 exitcode = e.code
@@ -353,7 +353,7 @@ klasse BaseProcess(object):
 klasse AuthenticationString(bytes):
     def __reduce__(self):
         from .context import get_spawning_popen
-        wenn get_spawning_popen() is None:
+        wenn get_spawning_popen() is Nichts:
             raise TypeError(
                 'Pickling an AuthenticationString object is '
                 'disallowed fuer security reasons'
@@ -371,9 +371,9 @@ klasse _ParentProcess(BaseProcess):
         self._identity = ()
         self._name = name
         self._pid = pid
-        self._parent_pid = None
-        self._popen = None
-        self._closed = False
+        self._parent_pid = Nichts
+        self._popen = Nichts
+        self._closed = Falsch
         self._sentinel = sentinel
         self._config = {}
 
@@ -385,7 +385,7 @@ klasse _ParentProcess(BaseProcess):
     def ident(self):
         return self._pid
 
-    def join(self, timeout=None):
+    def join(self, timeout=Nichts):
         '''
         Wait until parent process terminates
         '''
@@ -403,9 +403,9 @@ klasse _MainProcess(BaseProcess):
     def __init__(self):
         self._identity = ()
         self._name = 'MainProcess'
-        self._parent_pid = None
-        self._popen = None
-        self._closed = False
+        self._parent_pid = Nichts
+        self._popen = Nichts
+        self._closed = Falsch
         self._config = {'authkey': AuthenticationString(os.urandom(32)),
                         'semprefix': '/mp'}
         # Note that some versions of FreeBSD only allow named
@@ -422,7 +422,7 @@ klasse _MainProcess(BaseProcess):
         pass
 
 
-_parent_process = None
+_parent_process = Nichts
 _current_process = _MainProcess()
 _process_counter = itertools.count(1)
 _children = set()

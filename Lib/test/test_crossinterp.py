@@ -44,7 +44,7 @@ except Exception as exc:
 EXCEPTIONS_WITH_SPECIAL_SIG = {
     BaseExceptionGroup: (lambda msg: (msg, [CAUGHT])),
     ExceptionGroup: (lambda msg: (msg, [CAUGHT])),
-    UnicodeError: (lambda msg: (None, msg, None, None, None)),
+    UnicodeError: (lambda msg: (Nichts, msg, Nichts, Nichts, Nichts)),
     UnicodeEncodeError: (lambda msg: ('utf-8', '', 1, 3, msg)),
     UnicodeDecodeError: (lambda msg: ('utf-8', b'', 1, 3, msg)),
     UnicodeTranslateError: (lambda msg: ('', 1, 3, msg)),
@@ -71,9 +71,9 @@ BUILTIN_WRAPPERS = {
     METHOD_DESCRIPTOR_WRAPPER: types.MethodDescriptorType,
     METHOD_WRAPPER: types.MethodWrapperType,
     WRAPPER_DESCRIPTOR: types.WrapperDescriptorType,
-    staticmethod(defs.SpamOkay.okay): None,
-    classmethod(defs.SpamOkay.okay): None,
-    property(defs.SpamOkay.okay): None,
+    staticmethod(defs.SpamOkay.okay): Nichts,
+    classmethod(defs.SpamOkay.okay): Nichts,
+    property(defs.SpamOkay.okay): Nichts,
 }
 BUILTIN_FUNCTIONS = [
     # types.BuiltinFunctionType
@@ -93,17 +93,17 @@ MODULES = [
 ]
 OBJECT = object()
 EXCEPTION = Exception()
-LAMBDA = (lambda: None)
+LAMBDA = (lambda: Nichts)
 BUILTIN_SIMPLE = [
     OBJECT,
     # singletons
-    None,
-    True,
-    False,
+    Nichts,
+    Wahr,
+    Falsch,
     Ellipsis,
     NotImplemented,
     # bytes
-    *(i.to_bytes(2, 'little', signed=True)
+    *(i.to_bytes(2, 'little', signed=Wahr)
       fuer i in range(-1, 258)),
     # str
     'hello world',
@@ -135,7 +135,7 @@ BUILTIN_CONTAINERS = [
     (),
     (1,),
     ("hello", "world", ),
-    (1, True, "hello"),
+    (1, Wahr, "hello"),
     TUPLE_EXCEPTION,
     TUPLE_OBJECT,
     # tuple (nested)
@@ -311,7 +311,7 @@ DEFS_TEXT = f"""
 del infile, _code_defs_text, _defs_text
 
 
-def load_defs(module=None):
+def load_defs(module=Nichts):
     """Return a new copy of the test._crossinterp_definitions module.
 
     The module's __name__ matches the "module" arg, which is either
@@ -322,11 +322,11 @@ def load_defs(module=None):
 
     Note that the new module is not added to sys.modules.
     """
-    wenn module is None:
+    wenn module is Nichts:
         modname = DEFS.__name__
     sowenn isinstance(module, str):
         modname = module
-        module = None
+        module = Nichts
     sonst:
         modname = module.__name__
     # Create the new module and populate it.
@@ -334,7 +334,7 @@ def load_defs(module=None):
     defs.__file__ = DEFS.__file__
     exec(DEFS_TEXT, defs.__dict__)
     # Copy the defs into the module arg, wenn any.
-    wenn module is not None:
+    wenn module is not Nichts:
         fuer name, value in defs.__dict__.items():
             wenn name.startswith('_'):
                 continue
@@ -364,7 +364,7 @@ def temp_module(modname):
 
 
 @contextlib.contextmanager
-def missing_defs_module(modname, *, prep=False):
+def missing_defs_module(modname, *, prep=Falsch):
     assert modname not in sys.modules, (modname,)
     wenn prep:
         with import_helper.ready_to_import(modname, DEFS_TEXT):
@@ -376,7 +376,7 @@ def missing_defs_module(modname, *, prep=False):
 
 klasse _GetXIDataTests(unittest.TestCase):
 
-    MODE = None
+    MODE = Nichts
 
     def assert_functions_equal(self, func1, func2):
         assert type(func1) is types.FunctionType, repr(func1)
@@ -414,18 +414,18 @@ klasse _GetXIDataTests(unittest.TestCase):
 
         self.assert_exc_args_equal(exc1, exc2)
         # XXX For now we do not preserve tracebacks.
-        wenn exc1.__traceback__ is not None:
+        wenn exc1.__traceback__ is not Nichts:
             self.assertEqual(exc1.__traceback__, exc2.__traceback__)
         self.assertEqual(
-            getattr(exc1, '__notes__', None),
-            getattr(exc2, '__notes__', None),
+            getattr(exc1, '__notes__', Nichts),
+            getattr(exc2, '__notes__', Nichts),
         )
         # We assume there are no cycles.
-        wenn exc1.__cause__ is None:
+        wenn exc1.__cause__ is Nichts:
             self.assertIs(exc1.__cause__, exc2.__cause__)
         sonst:
             self.assert_exc_equal(exc1.__cause__, exc2.__cause__)
-        wenn exc1.__context__ is None:
+        wenn exc1.__context__ is Nichts:
             self.assertIs(exc1.__context__, exc2.__context__)
         sonst:
             self.assert_exc_equal(exc1.__context__, exc2.__context__)
@@ -449,11 +449,11 @@ klasse _GetXIDataTests(unittest.TestCase):
         sonst:
             raise NotImplementedError(cls)
 
-    def get_xidata(self, obj, *, mode=None):
+    def get_xidata(self, obj, *, mode=Nichts):
         mode = self._resolve_mode(mode)
         return _testinternalcapi.get_crossinterp_data(obj, mode)
 
-    def get_roundtrip(self, obj, *, mode=None):
+    def get_roundtrip(self, obj, *, mode=Nichts):
         mode = self._resolve_mode(mode)
         return self._get_roundtrip(obj, mode)
 
@@ -461,14 +461,14 @@ klasse _GetXIDataTests(unittest.TestCase):
         xid = _testinternalcapi.get_crossinterp_data(obj, mode)
         return _testinternalcapi.restore_crossinterp_data(xid)
 
-    def assert_roundtrip_identical(self, values, *, mode=None):
+    def assert_roundtrip_identical(self, values, *, mode=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
             with self.subTest(repr(obj)):
                 got = self._get_roundtrip(obj, mode)
                 self.assertIs(got, obj)
 
-    def assert_roundtrip_equal(self, values, *, mode=None, expecttype=None):
+    def assert_roundtrip_equal(self, values, *, mode=Nichts, expecttype=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
             with self.subTest(repr(obj)):
@@ -476,42 +476,42 @@ klasse _GetXIDataTests(unittest.TestCase):
                 wenn got is obj:
                     continue
                 self.assertIs(type(got),
-                              type(obj) wenn expecttype is None sonst expecttype)
+                              type(obj) wenn expecttype is Nichts sonst expecttype)
                 self.assert_equal_or_equalish(got, obj)
 
     def assert_roundtrip_equal_not_identical(self, values, *,
-                                             mode=None, expecttype=None):
+                                             mode=Nichts, expecttype=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
             with self.subTest(repr(obj)):
                 got = self._get_roundtrip(obj, mode)
                 self.assertIsNot(got, obj)
                 self.assertIs(type(got),
-                              type(obj) wenn expecttype is None sonst expecttype)
+                              type(obj) wenn expecttype is Nichts sonst expecttype)
                 self.assert_equal_or_equalish(got, obj)
 
     def assert_roundtrip_not_equal(self, values, *,
-                                   mode=None, expecttype=None):
+                                   mode=Nichts, expecttype=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
             with self.subTest(repr(obj)):
                 got = self._get_roundtrip(obj, mode)
                 self.assertIsNot(got, obj)
                 self.assertIs(type(got),
-                              type(obj) wenn expecttype is None sonst expecttype)
+                              type(obj) wenn expecttype is Nichts sonst expecttype)
                 self.assertNotEqual(got, obj)
 
-    def assert_not_shareable(self, values, exctype=None, *, mode=None):
+    def assert_not_shareable(self, values, exctype=Nichts, *, mode=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
             with self.subTest(repr(obj)):
                 with self.assertRaises(NotShareableError) as cm:
                     _testinternalcapi.get_crossinterp_data(obj, mode)
-                wenn exctype is not None:
+                wenn exctype is not Nichts:
                     self.assertIsInstance(cm.exception.__cause__, exctype)
 
     def _resolve_mode(self, mode):
-        wenn mode is None:
+        wenn mode is Nichts:
             mode = self.MODE
         assert mode
         return mode
@@ -596,7 +596,7 @@ klasse PickleTests(_GetXIDataTests):
             instances.append(cls(*args))
         self.assert_not_shareable(instances)
 
-    def assert_class_defs_other_unpickle(self, defs, mod, *, fail=False):
+    def assert_class_defs_other_unpickle(self, defs, mod, *, fail=Falsch):
         # Unpickle relative to a different module than the original.
         fuer cls in defs.TOP_CLASSES:
             assert not hasattr(mod, cls.__name__), (cls, getattr(mod, cls.__name__))
@@ -659,8 +659,8 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_class_not_in___main___without_filename(self):
         with using___main__() as mod:
             defs = load_defs('__main__')
-            defs.__file__ = None
-            mod.__file__ = None
+            defs.__file__ = Nichts
+            mod.__file__ = Nichts
             self.assert_class_defs_not_shareable(defs)
 
     def test_user_class_not_in___main___unpickle_with_filename(self):
@@ -673,9 +673,9 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_class_not_in___main___unpickle_without_filename(self):
         with using___main__() as mod:
             defs = load_defs('__main__')
-            defs.__file__ = None
-            mod.__file__ = None
-            self.assert_class_defs_other_unpickle(defs, mod, fail=True)
+            defs.__file__ = Nichts
+            mod.__file__ = Nichts
+            self.assert_class_defs_other_unpickle(defs, mod, fail=Wahr)
 
     def test_user_class_in_module(self):
         with temp_module('__spam__') as mod:
@@ -692,11 +692,11 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_class_not_in_module_without_filename(self):
         with temp_module('__spam__') as mod:
             defs = load_defs(mod.__name__)
-            defs.__file__ = None
+            defs.__file__ = Nichts
             self.assert_class_defs_not_shareable(defs)
 
     def test_user_class_module_missing_then_imported(self):
-        with missing_defs_module('__spam__', prep=True) as modname:
+        with missing_defs_module('__spam__', prep=Wahr) as modname:
             defs = load_defs(modname)
             # For now, we only address this case fuer __main__.
             self.assert_class_defs_not_shareable(defs)
@@ -723,7 +723,7 @@ klasse PickleTests(_GetXIDataTests):
             assert not hasattr(mod, func.__name__), (getattr(mod, func.__name__),)
         self.assert_not_shareable(defs.TOP_FUNCTIONS)
 
-    def assert_func_defs_other_unpickle(self, defs, mod, *, fail=False):
+    def assert_func_defs_other_unpickle(self, defs, mod, *, fail=Falsch):
         # Unpickle relative to a different module than the original.
         fuer func in defs.TOP_FUNCTIONS:
             assert not hasattr(mod, func.__name__), (getattr(mod, func.__name__),)
@@ -769,8 +769,8 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_func_not_in___main___without_filename(self):
         with using___main__() as mod:
             defs = load_defs('__main__')
-            defs.__file__ = None
-            mod.__file__ = None
+            defs.__file__ = Nichts
+            mod.__file__ = Nichts
             self.assert_func_defs_not_shareable(defs)
 
     def test_user_func_not_in___main___unpickle_with_filename(self):
@@ -783,9 +783,9 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_func_not_in___main___unpickle_without_filename(self):
         with using___main__() as mod:
             defs = load_defs('__main__')
-            defs.__file__ = None
-            mod.__file__ = None
-            self.assert_func_defs_other_unpickle(defs, mod, fail=True)
+            defs.__file__ = Nichts
+            mod.__file__ = Nichts
+            self.assert_func_defs_other_unpickle(defs, mod, fail=Wahr)
 
     def test_user_func_in_module(self):
         with temp_module('__spam__') as mod:
@@ -802,11 +802,11 @@ klasse PickleTests(_GetXIDataTests):
     def test_user_func_not_in_module_without_filename(self):
         with temp_module('__spam__') as mod:
             defs = load_defs(mod.__name__)
-            defs.__file__ = None
+            defs.__file__ = Nichts
             self.assert_func_defs_not_shareable(defs)
 
     def test_user_func_module_missing_then_imported(self):
-        with missing_defs_module('__spam__', prep=True) as modname:
+        with missing_defs_module('__spam__', prep=Wahr) as modname:
             defs = load_defs(modname)
             # For now, we only address this case fuer __main__.
             self.assert_func_defs_not_shareable(defs)
@@ -838,7 +838,7 @@ klasse PickleTests(_GetXIDataTests):
         special = {
             BaseExceptionGroup: (msg, [caught]),
             ExceptionGroup: (msg, [caught]),
-            UnicodeError: (None, msg, None, None, None),
+            UnicodeError: (Nichts, msg, Nichts, Nichts, Nichts),
             UnicodeEncodeError: ('utf-8', '', 1, 3, msg),
             UnicodeDecodeError: ('utf-8', b'', 1, 3, msg),
             UnicodeTranslateError: ('', 1, 3, msg),
@@ -857,9 +857,9 @@ klasse MarshalTests(_GetXIDataTests):
 
     def test_simple_builtin_singletons(self):
         self.assert_roundtrip_identical([
-            True,
-            False,
-            None,
+            Wahr,
+            Falsch,
+            Nichts,
             Ellipsis,
         ])
         self.assert_not_shareable([
@@ -884,7 +884,7 @@ klasse MarshalTests(_GetXIDataTests):
             0.12345678,
             -0.12345678,
             # bytes
-            *(i.to_bytes(2, 'little', signed=True)
+            *(i.to_bytes(2, 'little', signed=Wahr)
               fuer i in range(-1, 258)),
             b'hello world',
             # str
@@ -910,7 +910,7 @@ klasse MarshalTests(_GetXIDataTests):
             (),
             (1,),
             ("hello", "world"),
-            (1, True, "hello"),
+            (1, Wahr, "hello"),
             # frozenset
             frozenset([1, 2, 3]),
         ])
@@ -939,7 +939,7 @@ klasse MarshalTests(_GetXIDataTests):
         # nested
         self.assert_roundtrip_equal([
             [[1], [2], [3]],
-            {1: {'a': True}, 2: {'b': False}},
+            {1: {'a': Wahr}, 2: {'b': Falsch}},
             {(1, 2, 3,)},
         ])
 
@@ -949,8 +949,8 @@ klasse MarshalTests(_GetXIDataTests):
             (bogus,),
             frozenset([bogus]),
             [bogus],
-            {bogus: True},
-            {True: bogus},
+            {bogus: Wahr},
+            {Wahr: bogus},
             {bogus},
         ])
 
@@ -991,7 +991,7 @@ klasse MarshalTests(_GetXIDataTests):
         special = {
             BaseExceptionGroup: (msg, [caught]),
             ExceptionGroup: (msg, [caught]),
-#            UnicodeError: (None, msg, None, None, None),
+#            UnicodeError: (Nichts, msg, Nichts, Nichts, Nichts),
             UnicodeEncodeError: ('utf-8', '', 1, 3, msg),
             UnicodeDecodeError: ('utf-8', b'', 1, 3, msg),
             UnicodeTranslateError: ('', 1, 3, msg),
@@ -1057,9 +1057,9 @@ klasse CodeTests(_GetXIDataTests):
 
     def test_other_objects(self):
         self.assert_not_shareable([
-            None,
-            True,
-            False,
+            Nichts,
+            Wahr,
+            Falsch,
             Ellipsis,
             NotImplemented,
             9999,
@@ -1091,9 +1091,9 @@ klasse ShareableFuncTests(_GetXIDataTests):
 
     def test_other_objects(self):
         self.assert_not_shareable([
-            None,
-            True,
-            False,
+            Nichts,
+            Wahr,
+            Falsch,
             Ellipsis,
             NotImplemented,
             9999,
@@ -1116,10 +1116,10 @@ klasse PureShareableScriptTests(_GetXIDataTests):
         '# a comment',
         'print("spam")',
         'raise Exception("spam")',
-        """if True:
+        """if Wahr:
             do_something()
             """,
-        """if True:
+        """if Wahr:
             def spam(x):
                 return x
             klasse Spam:
@@ -1132,7 +1132,7 @@ klasse PureShareableScriptTests(_GetXIDataTests):
     INVALID_SCRIPTS = [
         '    pass',  # IndentationError
         '----',  # SyntaxError
-        """if True:
+        """if Wahr:
             def spam():
                 # no body
             spam()
@@ -1197,9 +1197,9 @@ klasse PureShareableScriptTests(_GetXIDataTests):
 
     def test_other_objects(self):
         self.assert_not_shareable([
-            None,
-            True,
-            False,
+            Nichts,
+            Wahr,
+            Falsch,
             Ellipsis,
             NotImplemented,
             (),
@@ -1271,9 +1271,9 @@ klasse ShareableTypeTests(_GetXIDataTests):
 
     def test_singletons(self):
         self.assert_roundtrip_identical([
-            None,
-            True,
-            False,
+            Nichts,
+            Wahr,
+            Falsch,
         ])
         self.assert_not_shareable([
             Ellipsis,
@@ -1287,7 +1287,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
         ])
 
     def test_bytes(self):
-        values = (i.to_bytes(2, 'little', signed=True)
+        values = (i.to_bytes(2, 'little', signed=Wahr)
                   fuer i in range(-1, 258))
         self.assert_roundtrip_equal(values)
 
@@ -1325,7 +1325,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
             (),
             (1,),
             ("hello", "world", ),
-            (1, True, "hello"),
+            (1, Wahr, "hello"),
         ])
         # Test nesting
         self.assert_roundtrip_equal([
@@ -1457,7 +1457,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
         special = {
             BaseExceptionGroup: (msg, [caught]),
             ExceptionGroup: (msg, [caught]),
-#            UnicodeError: (None, msg, None, None, None),
+#            UnicodeError: (Nichts, msg, Nichts, Nichts, Nichts),
             UnicodeEncodeError: ('utf-8', '', 1, 3, msg),
             UnicodeDecodeError: ('utf-8', b'', 1, 3, msg),
             UnicodeTranslateError: ('', 1, 3, msg),
@@ -1471,7 +1471,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
 
     def test_builtin_objects(self):
         ns = {}
-        exec("""if True:
+        exec("""if Wahr:
             try:
                 raise Exception
             except Exception as exc:

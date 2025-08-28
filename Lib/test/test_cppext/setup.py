@@ -67,7 +67,7 @@ def main():
     # option emits a C++ compiler warning. Remove "-std11" option from the
     # CC command.
     cmd = (sysconfig.get_config_var('CC') or '')
-    wenn cmd is not None:
+    wenn cmd is not Nichts:
         wenn support.MS_WINDOWS:
             std_prefix = '/std'
         sonst:

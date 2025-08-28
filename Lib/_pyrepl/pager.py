@@ -7,10 +7,10 @@ import sys
 
 
 # types
-wenn False:
+wenn Falsch:
     from typing import Protocol
     klasse Pager(Protocol):
-        def __call__(self, text: str, title: str = "") -> None:
+        def __call__(self, text: str, title: str = "") -> Nichts:
             ...
 
 
@@ -55,7 +55,7 @@ def get_pager() -> Pager:
 
 def escape_stdout(text: str) -> str:
     # Escape non-encodable characters to avoid encoding errors later
-    encoding = getattr(sys.stdout, 'encoding', None) or 'utf-8'
+    encoding = getattr(sys.stdout, 'encoding', Nichts) or 'utf-8'
     return text.encode(encoding, 'backslashreplace').decode(encoding)
 
 
@@ -68,17 +68,17 @@ def plain(text: str) -> str:
     return re.sub('.\b', '', text)
 
 
-def tty_pager(text: str, title: str = '') -> None:
+def tty_pager(text: str, title: str = '') -> Nichts:
     """Page through text on a text terminal."""
     lines = plain(escape_stdout(text)).split('\n')
-    has_tty = False
+    has_tty = Falsch
     try:
         import tty
         import termios
         fd = sys.stdin.fileno()
         old = termios.tcgetattr(fd)
         tty.setcbreak(fd)
-        has_tty = True
+        has_tty = Wahr
 
         def getchar() -> str:
             return sys.stdin.read(1)
@@ -119,12 +119,12 @@ def tty_pager(text: str, title: str = '') -> None:
             termios.tcsetattr(fd, termios.TCSAFLUSH, old)
 
 
-def plain_pager(text: str, title: str = '') -> None:
+def plain_pager(text: str, title: str = '') -> Nichts:
     """Simply print unformatted text.  This is the ultimate fallback."""
     sys.stdout.write(plain(escape_stdout(text)))
 
 
-def pipe_pager(text: str, cmd: str, title: str = '') -> None:
+def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
     """Page through text by feeding it to another program."""
     import subprocess
     env = os.environ.copy()
@@ -139,9 +139,9 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> None:
         '?e (END):?pB %pB\\%..'
         ' (press h fuer help or q to quit)')
     env['LESS'] = '-RmPm{0}$PM{0}$'.format(prompt_string)
-    proc = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE,
+    proc = subprocess.Popen(cmd, shell=Wahr, stdin=subprocess.PIPE,
                             errors='backslashreplace', env=env)
-    assert proc.stdin is not None
+    assert proc.stdin is not Nichts
     try:
         with proc.stdin as pipe:
             try:
@@ -152,7 +152,7 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> None:
                 pass
     except OSError:
         pass # Ignore broken pipes caused by quitting the pager program.
-    while True:
+    while Wahr:
         try:
             proc.wait()
             break
@@ -162,14 +162,14 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> None:
             pass
 
 
-def tempfile_pager(text: str, cmd: str, title: str = '') -> None:
+def tempfile_pager(text: str, cmd: str, title: str = '') -> Nichts:
     """Page through text by invoking a program on a temporary file."""
     import tempfile
     with tempfile.TemporaryDirectory() as tempdir:
         filename = os.path.join(tempdir, 'pydoc.out')
         with open(filename, 'w', errors='backslashreplace',
                   encoding=os.device_encoding(0) if
-                  sys.platform == 'win32' sonst None
+                  sys.platform == 'win32' sonst Nichts
                   ) as file:
             file.write(text)
         os.system(cmd + ' "' + filename + '"')

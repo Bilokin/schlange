@@ -164,10 +164,10 @@ klasse FunctionTestCase(unittest.TestCase):
 
     def test_voidresult(self):
         f = dll._testfunc_v
-        f.restype = None
+        f.restype = Nichts
         f.argtypes = [c_int, c_int, POINTER(c_int)]
         result = c_int()
-        self.assertEqual(None, f(1, 2, byref(result)))
+        self.assertEqual(Nichts, f(1, 2, byref(result)))
         self.assertEqual(result.value, 3)
 
     def test_intresult(self):
@@ -247,13 +247,13 @@ klasse FunctionTestCase(unittest.TestCase):
 
     def test_stringresult(self):
         f = dll._testfunc_p_p
-        f.argtypes = None
+        f.argtypes = Nichts
         f.restype = c_char_p
         result = f(b"123")
         self.assertEqual(result, b"123")
 
-        result = f(None)
-        self.assertEqual(result, None)
+        result = f(Nichts)
+        self.assertEqual(result, Nichts)
 
     def test_pointers(self):
         f = dll._testfunc_p_p
@@ -310,7 +310,7 @@ klasse FunctionTestCase(unittest.TestCase):
     def test_callbacks(self):
         f = dll._testfunc_callback_i_if
         f.restype = c_int
-        f.argtypes = None
+        f.argtypes = Nichts
 
         MyCallback = CFUNCTYPE(c_int, c_int)
 

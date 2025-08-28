@@ -3,7 +3,7 @@
 
 # Avoid caching this file by linecache and incorrectly report tracebacks.
 # See https://github.com/python/cpython/issues/129098.
-__spec__ = __loader__ = None
+__spec__ = __loader__ = Nichts
 
 wenn __name__ == "__main__":
     from .main import interactive_console as __pyrepl_interactive_console

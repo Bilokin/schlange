@@ -125,7 +125,7 @@ help_entries = (  # (help_label,  help_doc)
 
 klasse DemoWindow(object):
 
-    def __init__(self, filename=None):
+    def __init__(self, filename=Nichts):
         self.root = root = turtle._root = Tk()
         root.title('Python turtle-graphics examples')
         root.wm_protocol("WM_DELETE_WINDOW", self._destroy)
@@ -192,8 +192,8 @@ klasse DemoWindow(object):
         self.clear_btn.grid(row=1, column=3, sticky='ew')
 
         Percolator(self.text).insertfilter(ColorDelegator())
-        self.dirty = False
-        self.exitflag = False
+        self.dirty = Falsch
+        self.exitflag = Falsch
         wenn filename:
             self.loadfile(filename)
         self.configGUI(DISABLED, DISABLED, DISABLED,
@@ -260,11 +260,11 @@ klasse DemoWindow(object):
         self.text['font'] = tuple(txtfont)
         self.output_lbl['text'] = 'Font size %d' % size
 
-    def decrease_size(self, dummy=None):
+    def decrease_size(self, dummy=Nichts):
         self.set_txtsize(max(txtfont[1] - 1, MINIMUM_FONT_SIZE))
         return 'break'
 
-    def increase_size(self, dummy=None):
+    def increase_size(self, dummy=Nichts):
         self.set_txtsize(min(txtfont[1] + 1, MAXIMUM_FONT_SIZE))
         return 'break'
 
@@ -325,11 +325,11 @@ klasse DemoWindow(object):
     def refreshCanvas(self):
         wenn self.dirty:
             self.screen.clear()
-            self.dirty=False
+            self.dirty=Falsch
 
     def loadfile(self, filename):
         self.clearCanvas()
-        turtle.TurtleScreen._RUNNING = False
+        turtle.TurtleScreen._RUNNING = Falsch
         modname = 'turtledemo.' + filename
         __import__(modname)
         self.module = sys.modules[modname]
@@ -344,8 +344,8 @@ klasse DemoWindow(object):
 
     def startDemo(self):
         self.refreshCanvas()
-        self.dirty = True
-        turtle.TurtleScreen._RUNNING = True
+        self.dirty = Wahr
+        turtle.TurtleScreen._RUNNING = Wahr
         self.configGUI(DISABLED, NORMAL, DISABLED,
                        "demo running...", "black")
         self.screen.clear()
@@ -359,7 +359,7 @@ klasse DemoWindow(object):
             sonst:
                 self.state = DONE
         except turtle.Terminator:
-            wenn self.root is None:
+            wenn self.root is Nichts:
                 return
             self.state = DONE
             result = "stopped!"
@@ -367,7 +367,7 @@ klasse DemoWindow(object):
             self.configGUI(NORMAL, DISABLED, NORMAL,
                            result)
         sowenn self.state == EVENTDRIVEN:
-            self.exitflag = True
+            self.exitflag = Wahr
             self.configGUI(DISABLED, NORMAL, DISABLED,
                            "use mouse/keys or STOP", "red")
 
@@ -380,15 +380,15 @@ klasse DemoWindow(object):
     def stopIt(self):
         wenn self.exitflag:
             self.clearCanvas()
-            self.exitflag = False
+            self.exitflag = Falsch
             self.configGUI(NORMAL, DISABLED, DISABLED,
                            "STOPPED!", "red")
-        turtle.TurtleScreen._RUNNING = False
+        turtle.TurtleScreen._RUNNING = Falsch
 
     def _destroy(self):
-        turtle.TurtleScreen._RUNNING = False
+        turtle.TurtleScreen._RUNNING = Falsch
         self.root.destroy()
-        self.root = None
+        self.root = Nichts
 
 
 def main():

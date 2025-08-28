@@ -50,19 +50,19 @@ klasse HelpParser(HTMLParser):
     the handle_starttag and handle_endtags methods, might have to also.
     """
     def __init__(self, text):
-        HTMLParser.__init__(self, convert_charrefs=True)
+        HTMLParser.__init__(self, convert_charrefs=Wahr)
         self.text = text         # Text widget we're rendering into.
         self.tags = ''           # Current block level text tags to apply.
         self.chartags = ''       # Current character level text tags.
-        self.hdrlink = False     # Exclude html header links.
+        self.hdrlink = Falsch     # Exclude html header links.
         self.level = 0           # Track indentation level.
-        self.pre = False         # Displaying preformatted text?
+        self.pre = Falsch         # Displaying preformatted text?
         self.hprefix = ''        # Heading prefix (like '25.5'?) to remove.
-        self.nested_dl = False   # In a nested <dl>?
-        self.simplelist = False  # In a simple list (no double spacing)?
+        self.nested_dl = Falsch   # In a nested <dl>?
+        self.simplelist = Falsch  # In a simple list (no double spacing)?
         self.toc = []            # Pair headers with text indexes fuer toc.
         self.header = ''         # Text within header tags fuer toc.
-        self.prevtag = None      # Previous tag info (opener?, tag).
+        self.prevtag = Nichts      # Previous tag info (opener?, tag).
 
     def indent(self, amt=1):
         "Change indent (+1, 0, -1) and tags."
@@ -90,27 +90,27 @@ klasse HelpParser(HTMLParser):
         sowenn tag in ['ul', 'ol']:
             wenn class_.find('simple') != -1:
                 s = '\n'
-                self.simplelist = True
+                self.simplelist = Wahr
             sonst:
-                self.simplelist = False
+                self.simplelist = Falsch
             self.indent()
         sowenn tag == 'dl':
             wenn self.level > 0:
-                self.nested_dl = True
+                self.nested_dl = Wahr
         sowenn tag == 'li':
             s = '\n* '
         sowenn tag == 'dt':
             s = '\n\n' wenn not self.nested_dl sonst '\n'  # Avoid extra line.
-            self.nested_dl = False
+            self.nested_dl = Falsch
         sowenn tag == 'dd':
             self.indent()
             s = '\n'
         sowenn tag == 'pre':
-            self.pre = True
+            self.pre = Wahr
             self.text.insert('end', '\n\n')
             self.tags = 'preblock'
         sowenn tag == 'a' and class_ == 'headerlink':
-            self.hdrlink = True
+            self.hdrlink = Wahr
         sowenn tag == 'h1':
             self.tags = tag
         sowenn tag in ['h2', 'h3']:
@@ -118,7 +118,7 @@ klasse HelpParser(HTMLParser):
             self.text.insert('end', '\n\n')
             self.tags = tag
         self.text.insert('end', s, (self.tags, self.chartags))
-        self.prevtag = (True, tag)
+        self.prevtag = (Wahr, tag)
 
     def handle_endtag(self, tag):
         "Handle endtags in help.html."
@@ -132,13 +132,13 @@ klasse HelpParser(HTMLParser):
         sowenn tag in ['span', 'em']:
             self.chartags = ''
         sowenn tag == 'a':
-            self.hdrlink = False
+            self.hdrlink = Falsch
         sowenn tag == 'pre':
-            self.pre = False
+            self.pre = Falsch
             self.tags = ''
         sowenn tag in ['ul', 'dd', 'ol']:
             self.indent(-1)
-        self.prevtag = (False, tag)
+        self.prevtag = (Falsch, tag)
 
     def handle_data(self, data):
         "Handle date segments in help.html."
@@ -196,7 +196,7 @@ klasse HelpText(Text):
         "Return name of first font family derived from names."
         fuer name in names:
             wenn name.lower() in (x.lower() fuer x in tkfont.names(root=self)):
-                font = tkfont.Font(name=name, exists=True, root=self)
+                font = tkfont.Font(name=name, exists=Wahr, root=self)
                 return font.actual()['family']
             sowenn name.lower() in (x.lower()
                                   fuer x in tkfont.families(root=self)):
@@ -224,7 +224,7 @@ klasse HelpFrame(Frame):
     def toc_menu(self, text):
         "Create table of contents as drop-down menu."
         toc = Menubutton(self, text='TOC')
-        drop = Menu(toc, tearoff=False)
+        drop = Menu(toc, tearoff=Falsch)
         fuer lbl, dex in text.parser.toc:
             drop.add_command(label=lbl, command=lambda dex=dex:text.yview(dex))
         toc['menu'] = drop
@@ -271,9 +271,9 @@ def copy_strip():  # pragma: no cover
     dst = join(abspath(dirname(__file__)), 'help.html')
 
     with open(src, 'r', encoding="utf-8") as inn, open(dst, 'w', encoding="utf-8") as out:
-        copy = False
+        copy = Falsch
         fuer line in inn:
-            wenn '<section id="idle">' in line: copy = True
+            wenn '<section id="idle">' in line: copy = Wahr
             wenn '<div class="clearer">' in line: break
             wenn copy: out.write(line.strip() + '\n')
 
@@ -291,7 +291,7 @@ def show_idlehelp(parent):
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_help', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_help', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(show_idlehelp)

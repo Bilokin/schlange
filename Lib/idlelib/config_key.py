@@ -70,7 +70,7 @@ klasse GetKeysFrame(Frame):
             variable = StringVar(self)
             variable.set('')
             self.modifier_vars.append(variable)
-        self.advanced = False
+        self.advanced = Falsch
         self.create_widgets()
 
     def showerror(self, *args, **kwargs):
@@ -188,15 +188,15 @@ klasse GetKeysFrame(Frame):
             self.frame_keyseq_advanced.lift()
             self.frame_help_advanced.lift()
             self.advanced_keys.focus_set()
-            self.advanced = True
+            self.advanced = Wahr
         sonst:
             self.clear_key_seq()
             self.button_level.config(text='Advanced Key Binding Entry >>')
             self.frame_keyseq_basic.lift()
             self.frame_controls_basic.lift()
-            self.advanced = False
+            self.advanced = Falsch
 
-    def final_key_selected(self, event=None):
+    def final_key_selected(self, event=Nichts):
         "Handler fuer clicking on key in basic settings list."
         self.build_key_string()
 
@@ -261,28 +261,28 @@ klasse GetKeysFrame(Frame):
             msg = 'This key combination is already in use.'
             self.showerror(title=title, parent=self, message=msg)
         sonst:
-            return True
-        return False
+            return Wahr
+        return Falsch
 
     def bind_ok(self, keys):
-        "Return True wenn Tcl accepts the new keys sonst show message."
+        "Return Wahr wenn Tcl accepts the new keys sonst show message."
         try:
-            binding = self.bind(keys, lambda: None)
+            binding = self.bind(keys, lambda: Nichts)
         except TclError as err:
             self.showerror(
                     title=self.keyerror_title, parent=self,
                     message=(f'The entered key sequence is not accepted.\n\n'
                              f'Error: {err}'))
-            return False
+            return Falsch
         sonst:
             self.unbind(keys, binding)
-            return True
+            return Wahr
 
 
 klasse GetKeysWindow(Toplevel):
 
     def __init__(self, parent, title, action, current_key_sequences,
-                 *, _htest=False, _utest=False):
+                 *, _htest=Falsch, _utest=Falsch):
         """
         parent - parent of this dialog
         title - string which is the title of the popup dialog
@@ -296,7 +296,7 @@ klasse GetKeysWindow(Toplevel):
         super().__init__(parent)
         self.withdraw()  # Hide while setting geometry.
         self['borderwidth'] = 5
-        self.resizable(height=False, width=False)
+        self.resizable(height=Falsch, width=Falsch)
         # Needed fuer winfo_reqwidth().
         self.update_idletasks()
         # Center dialog over parent (or below htest box).
@@ -317,7 +317,7 @@ klasse GetKeysWindow(Toplevel):
                                    width=8, command=self.cancel)
         self.button_ok.grid(row=0, column=0, padx=5, pady=5)
         self.button_cancel.grid(row=0, column=1, padx=5, pady=5)
-        frame.pack(side='top', expand=True, fill='both')
+        frame.pack(side='top', expand=Wahr, fill='both')
         frame_buttons.pack(side='bottom', fill='x')
 
         self.transient(parent)
@@ -335,12 +335,12 @@ klasse GetKeysWindow(Toplevel):
     def result(self, value):
         self.frame.result = value
 
-    def ok(self, event=None):
+    def ok(self, event=Nichts):
         self.frame.ok()
         self.grab_release()
         self.destroy()
 
-    def cancel(self, event=None):
+    def cancel(self, event=Nichts):
         self.result = ''
         self.grab_release()
         self.destroy()
@@ -348,7 +348,7 @@ klasse GetKeysWindow(Toplevel):
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_config_key', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_config_key', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(GetKeysWindow)

@@ -28,7 +28,7 @@ klasse Wait3Test(ForkWait):
 
         self.assertEqual(spid, cpid)
         self.assertEqual(os.waitstatus_to_exitcode(status), exitcode)
-        self.assertTrue(rusage)
+        self.assertWahr(rusage)
 
     def test_wait3_rusage_initialized(self):
         # Ensure a successful wait3() call where no child was ready to report

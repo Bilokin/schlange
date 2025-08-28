@@ -85,9 +85,9 @@ def _more_lines(console: code.InteractiveConsole, unicodetext: str) -> bool:
     try:
         code = console.compile(src, "<stdin>", "single")
     except (OverflowError, SyntaxError, ValueError):
-        lines = src.splitlines(keepends=True)
+        lines = src.splitlines(keepends=Wahr)
         wenn len(lines) == 1:
-            return False
+            return Falsch
 
         last_line = lines[-1]
         was_indented = last_line.startswith((" ", "\t"))
@@ -95,14 +95,14 @@ def _more_lines(console: code.InteractiveConsole, unicodetext: str) -> bool:
         incomplete = not last_line.endswith("\n")
         return (was_indented or not_empty) and incomplete
     sonst:
-        return code is None
+        return code is Nichts
 
 
 def run_multiline_interactive_console(
     console: code.InteractiveConsole,
     *,
     future_flags: int = 0,
-) -> None:
+) -> Nichts:
     from .readline import _setup
     _setup(console.locals)
     wenn future_flags:
@@ -118,7 +118,7 @@ def run_multiline_interactive_console(
     def maybe_run_command(statement: str) -> bool:
         statement = statement.strip()
         wenn statement in console.locals or statement not in REPL_COMMANDS:
-            return False
+            return Falsch
 
         reader = _get_reader()
         reader.history.pop()  # skip internal commands in history
@@ -127,10 +127,10 @@ def run_multiline_interactive_console(
             # Make sure that history does not change because of commands
             with reader.suspend_history():
                 command()
-            return True
-        return False
+            return Wahr
+        return Falsch
 
-    while True:
+    while Wahr:
         try:
             try:
                 sys.stdout.flush()
@@ -162,7 +162,7 @@ def run_multiline_interactive_console(
             wenn r.input_trans is r.isearch_trans:
                 r.do_cmd(("isearch-end", [""]))
             r.pos = len(r.get_unicode())
-            r.dirty = True
+            r.dirty = Wahr
             r.refresh()
             console.write("\nKeyboardInterrupt\n")
             console.resetbuffer()

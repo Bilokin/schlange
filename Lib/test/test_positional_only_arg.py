@@ -234,25 +234,25 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
         self.assertEqual(x(1, 2), 3)
 
     def test_invalid_syntax_lambda(self):
-        check_syntax_error(self, "lambda a, b = 5, /, c: None", "parameter without a default follows parameter with a default")
-        check_syntax_error(self, "lambda a = 5, b, /, c: None", "parameter without a default follows parameter with a default")
-        check_syntax_error(self, "lambda a = 5, b=1, /, c, *, d=2: None", "parameter without a default follows parameter with a default")
-        check_syntax_error(self, "lambda a = 5, b, /: None", "parameter without a default follows parameter with a default")
-        check_syntax_error(self, "lambda a, /, b = 5, c: None", "parameter without a default follows parameter with a default")
-        check_syntax_error(self, "lambda *args, /: None")
-        check_syntax_error(self, "lambda *args, a, /: None")
-        check_syntax_error(self, "lambda **kwargs, /: None")
-        check_syntax_error(self, "lambda /, a = 1: None")
-        check_syntax_error(self, "lambda /, a: None")
-        check_syntax_error(self, "lambda /: None")
-        check_syntax_error(self, "lambda *, a, /: None")
-        check_syntax_error(self, "lambda *, /, a: None")
-        check_syntax_error(self, "lambda a, /, a: None", "duplicate parameter 'a' in function definition")
-        check_syntax_error(self, "lambda a, /, *, a: None", "duplicate parameter 'a' in function definition")
-        check_syntax_error(self, "lambda a, /, b, /: None")
-        check_syntax_error(self, "lambda a, /, b, /, c: None")
-        check_syntax_error(self, "lambda a, /, b, /, c, *, d: None")
-        check_syntax_error(self, "lambda a, *, b, /, c: None")
+        check_syntax_error(self, "lambda a, b = 5, /, c: Nichts", "parameter without a default follows parameter with a default")
+        check_syntax_error(self, "lambda a = 5, b, /, c: Nichts", "parameter without a default follows parameter with a default")
+        check_syntax_error(self, "lambda a = 5, b=1, /, c, *, d=2: Nichts", "parameter without a default follows parameter with a default")
+        check_syntax_error(self, "lambda a = 5, b, /: Nichts", "parameter without a default follows parameter with a default")
+        check_syntax_error(self, "lambda a, /, b = 5, c: Nichts", "parameter without a default follows parameter with a default")
+        check_syntax_error(self, "lambda *args, /: Nichts")
+        check_syntax_error(self, "lambda *args, a, /: Nichts")
+        check_syntax_error(self, "lambda **kwargs, /: Nichts")
+        check_syntax_error(self, "lambda /, a = 1: Nichts")
+        check_syntax_error(self, "lambda /, a: Nichts")
+        check_syntax_error(self, "lambda /: Nichts")
+        check_syntax_error(self, "lambda *, a, /: Nichts")
+        check_syntax_error(self, "lambda *, /, a: Nichts")
+        check_syntax_error(self, "lambda a, /, a: Nichts", "duplicate parameter 'a' in function definition")
+        check_syntax_error(self, "lambda a, /, *, a: Nichts", "duplicate parameter 'a' in function definition")
+        check_syntax_error(self, "lambda a, /, b, /: Nichts")
+        check_syntax_error(self, "lambda a, /, b, /, c: Nichts")
+        check_syntax_error(self, "lambda a, /, b, /, c, *, d: Nichts")
+        check_syntax_error(self, "lambda a, *, b, /, c: Nichts")
 
     def test_posonly_methods(self):
         klasse Example:
@@ -393,7 +393,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
         def _check_call(*args, **kwargs):
             try:
                 coro = f(*args, **kwargs)
-                coro.send(None)
+                coro.send(Nichts)
             except StopIteration as e:
                 result = e.value
             self.assertEqual(result, (1, 2))
@@ -444,7 +444,7 @@ klasse PositionalOnlyTestCase(unittest.TestCase):
         code_obj = next(const fuer const in g.__code__.co_consts
                         wenn isinstance(const, types.CodeType) and const.co_name == "__annotate__")
         codes = [(i.opname, i.argval) fuer i in dis.get_instructions(code_obj)]
-        self.assertNotIn(('UNARY_NOT', None), codes)
+        self.assertNotIn(('UNARY_NOT', Nichts), codes)
         self.assertIn(('IS_OP', 1), codes)
 
 

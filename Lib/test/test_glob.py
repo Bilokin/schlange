@@ -11,7 +11,7 @@ from test.support.os_helper import (TESTFN, skip_unless_symlink,
 
 
 klasse GlobTests(unittest.TestCase):
-    dir_fd = None
+    dir_fd = Nichts
 
     def norm(self, *parts):
         return os.path.normpath(os.path.join(self.tempdir, *parts))
@@ -45,15 +45,15 @@ klasse GlobTests(unittest.TestCase):
         self.open_dirfd()
 
     def open_dirfd(self):
-        wenn self.dir_fd is not None:
+        wenn self.dir_fd is not Nichts:
             os.close(self.dir_fd)
         wenn {os.open, os.stat} <= os.supports_dir_fd and os.scandir in os.supports_fd:
             self.dir_fd = os.open(self.tempdir, os.O_RDONLY | os.O_DIRECTORY)
         sonst:
-            self.dir_fd = None
+            self.dir_fd = Nichts
 
     def tearDown(self):
-        wenn self.dir_fd is not None:
+        wenn self.dir_fd is not Nichts:
             os.close(self.dir_fd)
         shutil.rmtree(self.tempdir)
 
@@ -74,7 +74,7 @@ klasse GlobTests(unittest.TestCase):
         with change_cwd(self.tempdir):
             res2 = glob.glob(pattern, **kwargs)
             fuer x in res2:
-                self.assertFalse(os.path.isabs(x), x)
+                self.assertFalsch(os.path.isabs(x), x)
             wenn pattern == '**' or pattern == '**' + os.sep:
                 expected = res[1:]
             sonst:
@@ -95,7 +95,7 @@ klasse GlobTests(unittest.TestCase):
         self.assertCountEqual(
             glob.iglob(bpattern, root_dir=btempdir, **kwargs), bres2)
 
-        wenn self.dir_fd is not None:
+        wenn self.dir_fd is not Nichts:
             self.assertCountEqual(
                 glob.glob(pattern, dir_fd=self.dir_fd, **kwargs), res2)
             self.assertCountEqual(
@@ -264,10 +264,10 @@ klasse GlobTests(unittest.TestCase):
         check('//*/*/*', '//*/*/[*]')
 
     def rglob(self, *parts, **kwargs):
-        return self.glob(*parts, recursive=True, **kwargs)
+        return self.glob(*parts, recursive=Wahr, **kwargs)
 
     def hglob(self, *parts, **kwargs):
-        return self.glob(*parts, include_hidden=True, **kwargs)
+        return self.glob(*parts, include_hidden=Wahr, **kwargs)
 
     def test_hidden_glob(self):
         eq = self.assertSequencesEqual_noorder
@@ -323,27 +323,27 @@ klasse GlobTests(unittest.TestCase):
 
         with change_cwd(self.tempdir):
             join = os.path.join
-            eq(glob.glob('**', recursive=True), [join(*i) fuer i in full])
-            eq(glob.glob(join('**', ''), recursive=True),
+            eq(glob.glob('**', recursive=Wahr), [join(*i) fuer i in full])
+            eq(glob.glob(join('**', ''), recursive=Wahr),
                 [join(*i) fuer i in dirs])
-            eq(glob.glob(join('**', '*'), recursive=True),
+            eq(glob.glob(join('**', '*'), recursive=Wahr),
                 [join(*i) fuer i in full])
-            eq(glob.glob(join(os.curdir, '**'), recursive=True),
+            eq(glob.glob(join(os.curdir, '**'), recursive=Wahr),
                 [join(os.curdir, '')] + [join(os.curdir, *i) fuer i in full])
-            eq(glob.glob(join(os.curdir, '**', ''), recursive=True),
+            eq(glob.glob(join(os.curdir, '**', ''), recursive=Wahr),
                 [join(os.curdir, '')] + [join(os.curdir, *i) fuer i in dirs])
-            eq(glob.glob(join(os.curdir, '**', '*'), recursive=True),
+            eq(glob.glob(join(os.curdir, '**', '*'), recursive=Wahr),
                 [join(os.curdir, *i) fuer i in full])
-            eq(glob.glob(join('**','zz*F'), recursive=True),
+            eq(glob.glob(join('**','zz*F'), recursive=Wahr),
                 [join('aaa', 'zzzF')])
-            eq(glob.glob('**zz*F', recursive=True), [])
+            eq(glob.glob('**zz*F', recursive=Wahr), [])
             expect = [join('a', 'bcd', 'EF'), 'EF']
             wenn can_symlink():
                 expect += [join('sym3', 'EF')]
-            eq(glob.glob(join('**', 'EF'), recursive=True), expect)
+            eq(glob.glob(join('**', 'EF'), recursive=Wahr), expect)
 
             rec = [('.bb','H'), ('.bb','.J'), ('.aa','G'), ('.aa',), ('.bb',)]
-            eq(glob.glob('**', recursive=True, include_hidden=True),
+            eq(glob.glob('**', recursive=Wahr, include_hidden=Wahr),
                [join(*i) fuer i in full+rec])
 
     def test_glob_non_directory(self):
@@ -381,11 +381,11 @@ klasse GlobTests(unittest.TestCase):
         p = os.path.join(base, *(['d']*depth))
         os.makedirs(p)
         pattern = os.path.join(base, *(['*']*depth))
-        iters = [glob.iglob(pattern, recursive=True) fuer j in range(100)]
+        iters = [glob.iglob(pattern, recursive=Wahr) fuer j in range(100)]
         fuer it in iters:
             self.assertEqual(next(it), p)
         pattern = os.path.join(base, '**', 'd')
-        iters = [glob.iglob(pattern, recursive=True) fuer j in range(100)]
+        iters = [glob.iglob(pattern, recursive=Wahr) fuer j in range(100)]
         p = base
         fuer i in range(depth):
             p = os.path.join(p, 'd')
@@ -394,36 +394,36 @@ klasse GlobTests(unittest.TestCase):
 
     def test_translate_matching(self):
         match = re.compile(glob.translate('*')).match
-        self.assertIsNotNone(match('foo'))
-        self.assertIsNotNone(match('foo.bar'))
-        self.assertIsNone(match('.foo'))
+        self.assertIsNotNichts(match('foo'))
+        self.assertIsNotNichts(match('foo.bar'))
+        self.assertIsNichts(match('.foo'))
         match = re.compile(glob.translate('.*')).match
-        self.assertIsNotNone(match('.foo'))
-        match = re.compile(glob.translate('**', recursive=True)).match
-        self.assertIsNotNone(match('foo'))
-        self.assertIsNone(match('.foo'))
-        self.assertIsNotNone(match(os.path.join('foo', 'bar')))
-        self.assertIsNone(match(os.path.join('foo', '.bar')))
-        self.assertIsNone(match(os.path.join('.foo', 'bar')))
-        self.assertIsNone(match(os.path.join('.foo', '.bar')))
-        match = re.compile(glob.translate('**/*', recursive=True)).match
-        self.assertIsNotNone(match(os.path.join('foo', 'bar')))
-        self.assertIsNone(match(os.path.join('foo', '.bar')))
-        self.assertIsNone(match(os.path.join('.foo', 'bar')))
-        self.assertIsNone(match(os.path.join('.foo', '.bar')))
-        match = re.compile(glob.translate('*/**', recursive=True)).match
-        self.assertIsNotNone(match(os.path.join('foo', 'bar')))
-        self.assertIsNone(match(os.path.join('foo', '.bar')))
-        self.assertIsNone(match(os.path.join('.foo', 'bar')))
-        self.assertIsNone(match(os.path.join('.foo', '.bar')))
-        match = re.compile(glob.translate('**/.bar', recursive=True)).match
-        self.assertIsNotNone(match(os.path.join('foo', '.bar')))
-        self.assertIsNone(match(os.path.join('.foo', '.bar')))
-        match = re.compile(glob.translate('**/*.*', recursive=True)).match
-        self.assertIsNone(match(os.path.join('foo', 'bar')))
-        self.assertIsNone(match(os.path.join('foo', '.bar')))
-        self.assertIsNotNone(match(os.path.join('foo', 'bar.txt')))
-        self.assertIsNone(match(os.path.join('foo', '.bar.txt')))
+        self.assertIsNotNichts(match('.foo'))
+        match = re.compile(glob.translate('**', recursive=Wahr)).match
+        self.assertIsNotNichts(match('foo'))
+        self.assertIsNichts(match('.foo'))
+        self.assertIsNotNichts(match(os.path.join('foo', 'bar')))
+        self.assertIsNichts(match(os.path.join('foo', '.bar')))
+        self.assertIsNichts(match(os.path.join('.foo', 'bar')))
+        self.assertIsNichts(match(os.path.join('.foo', '.bar')))
+        match = re.compile(glob.translate('**/*', recursive=Wahr)).match
+        self.assertIsNotNichts(match(os.path.join('foo', 'bar')))
+        self.assertIsNichts(match(os.path.join('foo', '.bar')))
+        self.assertIsNichts(match(os.path.join('.foo', 'bar')))
+        self.assertIsNichts(match(os.path.join('.foo', '.bar')))
+        match = re.compile(glob.translate('*/**', recursive=Wahr)).match
+        self.assertIsNotNichts(match(os.path.join('foo', 'bar')))
+        self.assertIsNichts(match(os.path.join('foo', '.bar')))
+        self.assertIsNichts(match(os.path.join('.foo', 'bar')))
+        self.assertIsNichts(match(os.path.join('.foo', '.bar')))
+        match = re.compile(glob.translate('**/.bar', recursive=Wahr)).match
+        self.assertIsNotNichts(match(os.path.join('foo', '.bar')))
+        self.assertIsNichts(match(os.path.join('.foo', '.bar')))
+        match = re.compile(glob.translate('**/*.*', recursive=Wahr)).match
+        self.assertIsNichts(match(os.path.join('foo', 'bar')))
+        self.assertIsNichts(match(os.path.join('foo', '.bar')))
+        self.assertIsNotNichts(match(os.path.join('foo', 'bar.txt')))
+        self.assertIsNichts(match(os.path.join('foo', '.bar.txt')))
 
     def test_translate(self):
         def fn(pat):
@@ -447,7 +447,7 @@ klasse GlobTests(unittest.TestCase):
 
     def test_translate_include_hidden(self):
         def fn(pat):
-            return glob.translate(pat, include_hidden=True, seps='/')
+            return glob.translate(pat, include_hidden=Wahr, seps='/')
         self.assertEqual(fn('foo'), r'(?s:foo)\z')
         self.assertEqual(fn('foo/bar'), r'(?s:foo/bar)\z')
         self.assertEqual(fn('*'), r'(?s:[^/]+)\z')
@@ -466,7 +466,7 @@ klasse GlobTests(unittest.TestCase):
 
     def test_translate_recursive(self):
         def fn(pat):
-            return glob.translate(pat, recursive=True, include_hidden=True, seps='/')
+            return glob.translate(pat, recursive=Wahr, include_hidden=Wahr, seps='/')
         self.assertEqual(fn('*'), r'(?s:[^/]+)\z')
         self.assertEqual(fn('?'), r'(?s:[^/])\z')
         self.assertEqual(fn('**'), r'(?s:.*)\z')
@@ -478,7 +478,7 @@ klasse GlobTests(unittest.TestCase):
 
     def test_translate_seps(self):
         def fn(pat):
-            return glob.translate(pat, recursive=True, include_hidden=True, seps=['/', '\\'])
+            return glob.translate(pat, recursive=Wahr, include_hidden=Wahr, seps=['/', '\\'])
         self.assertEqual(fn('foo/bar\\baz'), r'(?s:foo[/\\]bar[/\\]baz)\z')
         self.assertEqual(fn('**/*'), r'(?s:(?:.+[/\\])?[^/\\]+)\z')
 

@@ -17,7 +17,7 @@ sonst:
     # slow tests (avoiding flakiness from random VM slowness in CI).
     hypothesis.settings.register_profile(
         "slow-is-ok",
-        deadline=None,
+        deadline=Nichts,
         suppress_health_check=[
             hypothesis.HealthCheck.too_slow,
             hypothesis.HealthCheck.differing_executors,

@@ -17,8 +17,8 @@ klasse UseCache:
     loader returns) [from cache on return]. This also applies to imports of
     things contained within a package and thus get assigned as an attribute
     [from cache to attribute] or pulled in thanks to a fromlist import
-    [from cache fuer fromlist]. But wenn sys.modules contains None then
-    ImportError is raised [None in cache].
+    [from cache fuer fromlist]. But wenn sys.modules contains Nichts then
+    ImportError is raised [Nichts in cache].
 
     """
 
@@ -30,11 +30,11 @@ klasse UseCache:
             module = self.__import__('some_module')
             self.assertEqual(id(module_to_use), id(module))
 
-    def test_None_in_cache(self):
-        #[None in cache]
-        name = 'using_None'
+    def test_Nichts_in_cache(self):
+        #[Nichts in cache]
+        name = 'using_Nichts'
         with util.uncache(name):
-            sys.modules[name] = None
+            sys.modules[name] = Nichts
             with self.assertRaises(ImportError) as cm:
                 self.__import__(name)
             self.assertEqual(cm.exception.name, name)
@@ -51,10 +51,10 @@ klasse ImportlibUseCache(UseCache, unittest.TestCase):
 
     __import__ = util.__import__['Source']
 
-    def create_mock(self, *names, return_=None):
+    def create_mock(self, *names, return_=Nichts):
         mock = util.mock_spec(*names)
         original_spec = mock.find_spec
-        def find_spec(self, fullname, path, target=None):
+        def find_spec(self, fullname, path, target=Nichts):
             return original_spec(fullname)
         mock.find_spec = MethodType(find_spec, mock)
         return mock

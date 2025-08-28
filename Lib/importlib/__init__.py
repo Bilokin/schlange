@@ -68,7 +68,7 @@ def invalidate_caches():
             finder.invalidate_caches()
 
 
-def import_module(name, package=None):
+def import_module(name, package=Nichts):
     """Import a module.
 
     The 'package' argument is required when performing a relative import. It
@@ -103,7 +103,7 @@ def reload(module):
         try:
             name = module.__name__
         except AttributeError:
-            raise TypeError("reload() argument must be a module") from None
+            raise TypeError("reload() argument must be a module") from Nichts
 
     wenn sys.modules.get(name) is not module:
         raise ImportError(f"module {name} not in sys.modules", name=name)
@@ -117,14 +117,14 @@ def reload(module):
                 parent = sys.modules[parent_name]
             except KeyError:
                 raise ImportError(f"parent {parent_name!r} not in sys.modules",
-                                  name=parent_name) from None
+                                  name=parent_name) from Nichts
             sonst:
                 pkgpath = parent.__path__
         sonst:
-            pkgpath = None
+            pkgpath = Nichts
         target = module
         spec = module.__spec__ = _bootstrap._find_spec(name, pkgpath, target)
-        wenn spec is None:
+        wenn spec is Nichts:
             raise ModuleNotFoundError(f"spec not found fuer the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself in sys.modules!

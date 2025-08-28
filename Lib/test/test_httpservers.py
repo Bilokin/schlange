@@ -40,16 +40,16 @@ from test.support.socket_helper import find_unused_port
 try:
     import ssl
 except ImportError:
-    ssl = None
+    ssl = Nichts
 
-support.requires_working_socket(module=True)
+support.requires_working_socket(module=Wahr)
 
 klasse NoLogRequestHandler:
     def log_message(self, *args):
         # don't write log messages to stderr
         pass
 
-    def read(self, n=None):
+    def read(self, n=Nichts):
         return ''
 
 
@@ -59,8 +59,8 @@ klasse DummyRequestHandler(NoLogRequestHandler, SimpleHTTPRequestHandler):
 
 def create_https_server(
     certfile,
-    keyfile=None,
-    password=None,
+    keyfile=Nichts,
+    password=Nichts,
     *,
     address=('localhost', 0),
     request_handler=DummyRequestHandler,
@@ -74,14 +74,14 @@ def create_https_server(
 klasse TestSSLDisabled(unittest.TestCase):
     def test_https_server_raises_runtime_error(self):
         with import_helper.isolated_modules():
-            sys.modules['ssl'] = None
+            sys.modules['ssl'] = Nichts
             certfile = certdata_file("keycert.pem")
             with self.assertRaises(RuntimeError):
                 create_https_server(certfile)
 
 
 klasse TestServerThread(threading.Thread):
-    def __init__(self, test_object, request_handler, tls=None):
+    def __init__(self, test_object, request_handler, tls=Nichts):
         threading.Thread.__init__(self)
         self.request_handler = request_handler
         self.test_object = test_object
@@ -98,7 +98,7 @@ klasse TestServerThread(threading.Thread):
             self.server = HTTPServer(('localhost', 0), self.request_handler)
         self.test_object.HOST, self.test_object.PORT = self.server.socket.getsockname()
         self.test_object.server_started.set()
-        self.test_object = None
+        self.test_object = Nichts
         try:
             self.server.serve_forever(0.05)
         finally:
@@ -112,7 +112,7 @@ klasse TestServerThread(threading.Thread):
 klasse BaseTestCase(unittest.TestCase):
 
     # Optional tuple (certfile, keyfile, password) to use fuer HTTPS servers.
-    tls = None
+    tls = Nichts
 
     def setUp(self):
         self._threads = threading_helper.threading_setup()
@@ -124,11 +124,11 @@ klasse BaseTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.thread.stop()
-        self.thread = None
+        self.thread = Nichts
         os.environ.__exit__()
         threading_helper.threading_cleanup(*self._threads)
 
-    def request(self, uri, method='GET', body=None, headers={}):
+    def request(self, uri, method='GET', body=Nichts, headers={}):
         self.connection = http.client.HTTPConnection(self.HOST, self.PORT)
         self.connection.request(method, uri, body, headers)
         return self.connection.getresponse()
@@ -304,7 +304,7 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
         self.con.request('EXPLAINERROR', '/')
         res = self.con.getresponse()
         self.assertEqual(res.status, 999)
-        self.assertTrue(int(res.getheader('Content-Length')))
+        self.assertWahr(int(res.getheader('Content-Length')))
 
     def test_latin1_header(self):
         self.con.request('LATINONEHEADER', '/', headers={
@@ -332,10 +332,10 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
             self.con.request('SEND_ERROR', '/{}'.format(code))
             res = self.con.getresponse()
             self.assertEqual(code, res.status)
-            self.assertEqual(None, res.getheader('Content-Length'))
-            self.assertEqual(None, res.getheader('Content-Type'))
+            self.assertEqual(Nichts, res.getheader('Content-Length'))
+            self.assertEqual(Nichts, res.getheader('Content-Type'))
             wenn code not in allow_transfer_encoding_codes:
-                self.assertEqual(None, res.getheader('Transfer-Encoding'))
+                self.assertEqual(Nichts, res.getheader('Transfer-Encoding'))
 
             data = res.read()
             self.assertEqual(b'', data)
@@ -350,13 +350,13 @@ klasse BaseHTTPServerTestCase(BaseTestCase):
             res = self.con.getresponse()
             self.assertEqual(code, res.status)
             wenn code == HTTPStatus.OK:
-                self.assertTrue(int(res.getheader('Content-Length')) > 0)
+                self.assertWahr(int(res.getheader('Content-Length')) > 0)
                 self.assertIn('text/html', res.getheader('Content-Type'))
             sonst:
-                self.assertEqual(None, res.getheader('Content-Length'))
-                self.assertEqual(None, res.getheader('Content-Type'))
+                self.assertEqual(Nichts, res.getheader('Content-Length'))
+                self.assertEqual(Nichts, res.getheader('Content-Type'))
             wenn code not in allow_transfer_encoding_codes:
-                self.assertEqual(None, res.getheader('Transfer-Encoding'))
+                self.assertEqual(Nichts, res.getheader('Transfer-Encoding'))
 
             data = res.read()
             self.assertEqual(b'', data)
@@ -366,7 +366,7 @@ def certdata_file(*path):
     return os.path.join(os.path.dirname(__file__), "certdata", *path)
 
 
-@unittest.skipIf(ssl is None, "requires ssl")
+@unittest.skipIf(ssl is Nichts, "requires ssl")
 klasse BaseHTTPSServerTestCase(BaseTestCase):
     CERTFILE = certdata_file("keycert.pem")
     ONLYCERT = certdata_file("ssl_cert.pem")
@@ -378,7 +378,7 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
     KEY_PASSWORD = "somepass"
     BADPASSWORD = "badpass"
 
-    tls = (ONLYCERT, ONLYKEY, None)  # values by default
+    tls = (ONLYCERT, ONLYKEY, Nichts)  # values by default
 
     request_handler = DummyRequestHandler
 
@@ -386,7 +386,7 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
         response = self.request('/')
         self.assertEqual(response.status, HTTPStatus.OK)
 
-    def request(self, uri, method='GET', body=None, headers={}):
+    def request(self, uri, method='GET', body=Nichts, headers={}):
         context = ssl._create_unverified_context()
         self.connection = http.client.HTTPSConnection(
             self.HOST, self.PORT, context=context
@@ -396,9 +396,9 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
 
     def test_valid_certdata(self):
         valid_certdata= [
-            (self.CERTFILE, None, None),
-            (self.CERTFILE, self.CERTFILE, None),
-            (self.CERTFILE_PROTECTED, None, self.KEY_PASSWORD),
+            (self.CERTFILE, Nichts, Nichts),
+            (self.CERTFILE, self.CERTFILE, Nichts),
+            (self.CERTFILE_PROTECTED, Nichts, self.KEY_PASSWORD),
             (self.ONLYCERT, self.ONLYKEY_PROTECTED, self.KEY_PASSWORD),
         ]
         fuer certfile, keyfile, password in valid_certdata:
@@ -411,15 +411,15 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
 
     def test_invalid_certdata(self):
         invalid_certdata = [
-            (self.BADCERT, None, None),
-            (self.EMPTYCERT, None, None),
-            (self.ONLYCERT, None, None),
-            (self.ONLYKEY, None, None),
-            (self.ONLYKEY, self.ONLYCERT, None),
-            (self.CERTFILE_PROTECTED, None, self.BADPASSWORD),
+            (self.BADCERT, Nichts, Nichts),
+            (self.EMPTYCERT, Nichts, Nichts),
+            (self.ONLYCERT, Nichts, Nichts),
+            (self.ONLYKEY, Nichts, Nichts),
+            (self.ONLYKEY, self.ONLYCERT, Nichts),
+            (self.CERTFILE_PROTECTED, Nichts, self.BADPASSWORD),
             # TODO: test the next case and add same case to test_ssl (We
             # specify a cert and a password-protected file, but no password):
-            # (self.CERTFILE_PROTECTED, None, None),
+            # (self.CERTFILE_PROTECTED, Nichts, Nichts),
             # see issue #132102
         ]
         fuer certfile, keyfile, password in invalid_certdata:
@@ -488,7 +488,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
             datetime.timezone.utc)
         self.last_modif_datetime = last_modif.replace(microsecond=0)
         self.last_modif_header = email.utils.formatdate(
-            last_modif.timestamp(), usegmt=True)
+            last_modif.timestamp(), usegmt=Wahr)
 
     def tearDown(self):
         try:
@@ -500,20 +500,20 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         finally:
             super().tearDown()
 
-    def check_status_and_reason(self, response, status, data=None):
+    def check_status_and_reason(self, response, status, data=Nichts):
         def close_conn():
             """Don't close reader yet so we can check wenn there was leftover
             buffered input"""
             nonlocal reader
             reader = response.fp
-            response.fp = None
-        reader = None
+            response.fp = Nichts
+        reader = Nichts
         response._close_conn = close_conn
 
         body = response.read()
-        self.assertTrue(response)
+        self.assertWahr(response)
         self.assertEqual(response.status, status)
-        self.assertIsNotNone(response.reason)
+        self.assertIsNotNichts(response.reason)
         wenn data:
             self.assertEqual(data, body)
         # Ensure the server has not set up a persistent connection, and has
@@ -525,7 +525,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         reader.close()
         return body
 
-    def check_list_dir_dirname(self, dirname, quotedname=None):
+    def check_list_dir_dirname(self, dirname, quotedname=Nichts):
         fullpath = os.path.join(self.tempdir, dirname)
         try:
             os.mkdir(os.path.join(self.tempdir, dirname))
@@ -533,11 +533,11 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
             self.skipTest(f'Can not create directory {dirname!a} '
                           f'on current file system')
 
-        wenn quotedname is None:
+        wenn quotedname is Nichts:
             quotedname = urllib.parse.quote(dirname, errors='surrogatepass')
         response = self.request(self.base_url + '/' + quotedname + '/')
         body = self.check_status_and_reason(response, HTTPStatus.OK)
-        displaypath = html.escape(f'{self.base_url}/{dirname}/', quote=False)
+        displaypath = html.escape(f'{self.base_url}/{dirname}/', quote=Falsch)
         enc = sys.getfilesystemencoding()
         prefix = f'listing fuer {displaypath}</'.encode(enc, 'surrogateescape')
         self.assertIn(prefix + b'title>', body)
@@ -557,9 +557,9 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         body = self.check_status_and_reason(response, HTTPStatus.OK)
         quotedname = urllib.parse.quote(filename, errors='surrogatepass')
         enc = response.headers.get_content_charset()
-        self.assertIsNotNone(enc)
+        self.assertIsNotNichts(enc)
         self.assertIn((f'href="{quotedname}"').encode('ascii'), body)
-        displayname = html.escape(filename, quote=False)
+        displayname = html.escape(filename, quote=Falsch)
         self.assertIn(f'>{displayname}<'.encode(enc, 'surrogateescape'), body)
 
         response = self.request(self.base_url + '/' + quotedname)
@@ -763,7 +763,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         new_dt = self.last_modif_datetime + datetime.timedelta(hours=1)
         headers = email.message.Message()
         headers['If-Modified-Since'] = email.utils.format_datetime(new_dt,
-            usegmt=True)
+            usegmt=Wahr)
         response = self.request(self.base_url + '/test', headers=headers)
         self.check_status_and_reason(response, HTTPStatus.NOT_MODIFIED)
 
@@ -774,16 +774,16 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         old_dt = dt - datetime.timedelta(days=365)
         headers = email.message.Message()
         headers['If-Modified-Since'] = email.utils.format_datetime(old_dt,
-            usegmt=True)
+            usegmt=Wahr)
         response = self.request(self.base_url + '/test', headers=headers)
         self.check_status_and_reason(response, HTTPStatus.OK)
 
-    def test_browser_cache_with_If_None_Match_header(self):
-        # wenn If-None-Match header is present, ignore If-Modified-Since
+    def test_browser_cache_with_If_Nichts_Match_header(self):
+        # wenn If-Nichts-Match header is present, ignore If-Modified-Since
 
         headers = email.message.Message()
         headers['If-Modified-Since'] = self.last_modif_header
-        headers['If-None-Match'] = "*"
+        headers['If-Nichts-Match'] = "*"
         response = self.request(self.base_url + '/test', headers=headers)
         self.check_status_and_reason(response, HTTPStatus.OK)
 
@@ -825,16 +825,16 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
 
 
 klasse SocketlessRequestHandler(SimpleHTTPRequestHandler):
-    def __init__(self, directory=None):
+    def __init__(self, directory=Nichts):
         request = mock.Mock()
         request.makefile.return_value = BytesIO()
-        super().__init__(request, None, None, directory=directory)
+        super().__init__(request, Nichts, Nichts, directory=directory)
 
-        self.get_called = False
+        self.get_called = Falsch
         self.protocol_version = "HTTP/1.1"
 
     def do_GET(self):
-        self.get_called = True
+        self.get_called = Wahr
         self.send_response(HTTPStatus.OK)
         self.send_header('Content-Type', 'text/html')
         self.end_headers()
@@ -847,7 +847,7 @@ klasse SocketlessRequestHandler(SimpleHTTPRequestHandler):
 klasse RejectingSocketlessRequestHandler(SocketlessRequestHandler):
     def handle_expect_100(self):
         self.send_error(HTTPStatus.EXPECTATION_FAILED)
-        return False
+        return Falsch
 
 
 klasse AuditableBytesIO:
@@ -887,7 +887,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         return output.readlines()
 
     def verify_get_called(self):
-        self.assertTrue(self.handler.get_called)
+        self.assertWahr(self.handler.get_called)
 
     def verify_expected_headers(self, headers):
         fuer fieldName in b'Server: ', b'Date: ', b'Content-Type: ':
@@ -895,7 +895,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
 
     def verify_http_server_response(self, response):
         match = self.HTTPResponseMatch.search(response)
-        self.assertIsNotNone(match)
+        self.assertIsNotNichts(match)
 
     def test_unprintable_not_logged(self):
         # We call the method from the klasse directly as our Socketless
@@ -956,7 +956,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         )
         self.assertStartsWith(result[0], b'HTTP/1.1 400 ')
         self.verify_expected_headers(result[1:result.index(b'\r\n')])
-        self.assertFalse(self.handler.get_called)
+        self.assertFalsch(self.handler.get_called)
 
     def test_with_continue_1_0(self):
         result = self.send_typical_request(b'GET / HTTP/1.0\r\nExpect: 100-continue\r\n\r\n')
@@ -995,7 +995,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         handler.wfile = output
         handler.request_version = 'HTTP/1.1'
         handler.requestline = ''
-        handler.command = None
+        handler.command = Nichts
 
         handler.send_error(418)
         self.assertEqual(output.numWrites, 2)
@@ -1060,7 +1060,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         self.verify_expected_headers(result[1:-1])
         # The expect handler should short circuit the usual get method by
         # returning false here, so get_called should be false
-        self.assertFalse(self.handler.get_called)
+        self.assertFalsch(self.handler.get_called)
         self.assertEqual(sum(r == b'Connection: close\r\n' fuer r in result[1:-1]), 1)
         self.handler = usual_handler        # Restore to avoid breaking any subsequent tests.
 
@@ -1069,7 +1069,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         # of Service attacks.
         result = self.send_typical_request(b'GET ' + b'x' * 65537)
         self.assertEqual(result[0], b'HTTP/1.1 414 URI Too Long\r\n')
-        self.assertFalse(self.handler.get_called)
+        self.assertFalsch(self.handler.get_called)
         self.assertIsInstance(self.handler.requestline, str)
 
     def test_header_length(self):
@@ -1077,14 +1077,14 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         result = self.send_typical_request(
             b'GET / HTTP/1.1\r\nX-Foo: bar' + b'r' * 65537 + b'\r\n\r\n')
         self.assertEqual(result[0], b'HTTP/1.1 431 Line too long\r\n')
-        self.assertFalse(self.handler.get_called)
+        self.assertFalsch(self.handler.get_called)
         self.assertEqual(self.handler.requestline, 'GET / HTTP/1.1')
 
     def test_too_many_headers(self):
         result = self.send_typical_request(
             b'GET / HTTP/1.1\r\n' + b'X-Foo: bar\r\n' * 101 + b'\r\n')
         self.assertEqual(result[0], b'HTTP/1.1 431 Too many headers\r\n')
-        self.assertFalse(self.handler.get_called)
+        self.assertFalsch(self.handler.get_called)
         self.assertEqual(self.handler.requestline, 'GET / HTTP/1.1')
 
     def test_html_escape_on_error(self):
@@ -1092,7 +1092,7 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
             b'<script>alert("hello")</script> / HTTP/1.1')
         result = b''.join(result)
         text = '<script>alert("hello")</script>'
-        self.assertIn(html.escape(text, quote=False).encode('ascii'), result)
+        self.assertIn(html.escape(text, quote=Falsch).encode('ascii'), result)
 
     def test_close_connection(self):
         # handle_one_request() should be repeatedly called until
@@ -1101,11 +1101,11 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
             self.handler.close_connection = next(close_values)
         self.handler.handle_one_request = handle_one_request
 
-        close_values = iter((True,))
+        close_values = iter((Wahr,))
         self.handler.handle()
         self.assertRaises(StopIteration, next, close_values)
 
-        close_values = iter((False, False, True))
+        close_values = iter((Falsch, Falsch, Wahr))
         self.handler.handle()
         self.assertRaises(StopIteration, next, close_values)
 
@@ -1220,7 +1220,7 @@ klasse MiscTestCase(unittest.TestCase):
             wenn name.startswith('_') or name in denylist:
                 continue
             module_object = getattr(server, name)
-            wenn getattr(module_object, '__module__', None) == 'http.server':
+            wenn getattr(module_object, '__module__', Nichts) == 'http.server':
                 expected.append(name)
         self.assertCountEqual(server.__all__, expected)
 
@@ -1243,7 +1243,7 @@ klasse ScriptTestCase(unittest.TestCase):
     @mock.patch('builtins.print')
     def test_server_test_unspec(self, _):
         mock_server = self.mock_server_class()
-        server.test(ServerClass=mock_server, bind=None)
+        server.test(ServerClass=mock_server, bind=Nichts)
         self.assertIn(
             mock_server.address_family,
             (socket.AF_INET6, socket.AF_INET),
@@ -1287,7 +1287,7 @@ klasse ScriptTestCase(unittest.TestCase):
 
 klasse CommandLineTestCase(unittest.TestCase):
     default_port = 8000
-    default_bind = None
+    default_bind = Nichts
     default_protocol = 'HTTP/1.0'
     default_handler = SimpleHTTPRequestHandler
     default_server = unittest.mock.ANY
@@ -1303,9 +1303,9 @@ klasse CommandLineTestCase(unittest.TestCase):
         'protocol': default_protocol,
         'port': default_port,
         'bind': default_bind,
-        'tls_cert': None,
-        'tls_key': None,
-        'tls_password': None,
+        'tls_cert': Nichts,
+        'tls_key': Nichts,
+        'tls_password': Nichts,
     }
 
     def setUp(self):
@@ -1315,9 +1315,9 @@ klasse CommandLineTestCase(unittest.TestCase):
             f.write(self.tls_password.encode())
         self.addCleanup(os_helper.unlink, self.tls_password_file)
 
-    def invoke_httpd(self, *args, stdout=None, stderr=None):
-        stdout = StringIO() wenn stdout is None sonst stdout
-        stderr = StringIO() wenn stderr is None sonst stderr
+    def invoke_httpd(self, *args, stdout=Nichts, stderr=Nichts):
+        stdout = StringIO() wenn stdout is Nichts sonst stdout
+        stderr = StringIO() wenn stderr is Nichts sonst stderr
         with contextlib.redirect_stdout(stdout), \
             contextlib.redirect_stderr(stderr):
             server._main(args)
@@ -1371,7 +1371,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                     mock_func.assert_called_once_with(**call_args)
                     mock_func.reset_mock()
 
-    @unittest.skipIf(ssl is None, "requires ssl")
+    @unittest.skipIf(ssl is Nichts, "requires ssl")
     @mock.patch('http.server.test')
     def test_tls_cert_and_key_flags(self, mock_func):
         fuer tls_cert_option in self.tls_cert_options:
@@ -1385,7 +1385,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                 mock_func.assert_called_once_with(**call_args)
                 mock_func.reset_mock()
 
-    @unittest.skipIf(ssl is None, "requires ssl")
+    @unittest.skipIf(ssl is Nichts, "requires ssl")
     @mock.patch('http.server.test')
     def test_tls_cert_and_key_and_password_flags(self, mock_func):
         fuer tls_cert_option in self.tls_cert_options:
@@ -1405,7 +1405,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                     mock_func.assert_called_once_with(**call_args)
                     mock_func.reset_mock()
 
-    @unittest.skipIf(ssl is None, "requires ssl")
+    @unittest.skipIf(ssl is Nichts, "requires ssl")
     @mock.patch('http.server.test')
     def test_missing_tls_cert_flag(self, mock_func):
         fuer tls_key_option in self.tls_key_options:
@@ -1418,7 +1418,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                 self.invoke_httpd(tls_password_option, self.tls_password)
             mock_func.reset_mock()
 
-    @unittest.skipIf(ssl is None, "requires ssl")
+    @unittest.skipIf(ssl is Nichts, "requires ssl")
     @mock.patch('http.server.test')
     def test_invalid_password_file(self, mock_func):
         non_existent_file = 'non_existent_file'
@@ -1472,15 +1472,15 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
         with open(self.tls_password_file, 'wb') as f:
             f.write(self.tls_password)
 
-    def fetch_file(self, path, context=None):
+    def fetch_file(self, path, context=Nichts):
         req = urllib.request.Request(path, method='GET')
         with urllib.request.urlopen(req, context=context) as res:
             return res.read()
 
     def parse_cli_output(self, output):
         match = re.search(r'Serving (HTTP|HTTPS) on (.+) port (\d+)', output)
-        wenn match is None:
-            return None, None, None
+        wenn match is Nichts:
+            return Nichts, Nichts, Nichts
         return match.group(1).lower(), match.group(2), int(match.group(3))
 
     def wait_for_server(self, proc, protocol, bind, port):
@@ -1494,18 +1494,18 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
     def test_http_client(self):
         bind, port = '127.0.0.1', find_unused_port()
         proc = spawn_python('-u', '-m', 'http.server', str(port), '-b', bind,
-                            bufsize=1, text=True)
+                            bufsize=1, text=Wahr)
         self.addCleanup(kill_python, proc)
         self.addCleanup(proc.terminate)
-        self.assertTrue(self.wait_for_server(proc, 'http', bind, port))
+        self.assertWahr(self.wait_for_server(proc, 'http', bind, port))
         res = self.fetch_file(f'http://{bind}:{port}/{self.served_filename}')
         self.assertEqual(res, self.served_data)
 
-    @unittest.skipIf(ssl is None, "requires ssl")
+    @unittest.skipIf(ssl is Nichts, "requires ssl")
     def test_https_client(self):
         context = ssl.create_default_context()
         # allow self-signed certificates
-        context.check_hostname = False
+        context.check_hostname = Falsch
         context.verify_mode = ssl.CERT_NONE
 
         bind, port = '127.0.0.1', find_unused_port()
@@ -1513,10 +1513,10 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
                             '--tls-cert', self.tls_cert,
                             '--tls-key', self.tls_key,
                             '--tls-password-file', self.tls_password_file,
-                            bufsize=1, text=True)
+                            bufsize=1, text=Wahr)
         self.addCleanup(kill_python, proc)
         self.addCleanup(proc.terminate)
-        self.assertTrue(self.wait_for_server(proc, 'https', bind, port))
+        self.assertWahr(self.wait_for_server(proc, 'https', bind, port))
         url = f'https://{bind}:{port}/{self.served_filename}'
         res = self.fetch_file(url, context=context)
         self.assertEqual(res, self.served_data)

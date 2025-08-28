@@ -52,7 +52,7 @@ klasse ContentHandler:
     mirrors the order of the information in the document."""
 
     def __init__(self):
-        self._locator = None
+        self._locator = Nichts
 
     def setDocumentLocator(self, locator):
         """Called by the parser to give the application a locator for
@@ -146,7 +146,7 @@ klasse ContentHandler:
         holds an instance of the Attributes klasse containing the
         attributes of the element.
 
-        The uri part of the name tuple is None fuer elements which have
+        The uri part of the name tuple is Nichts fuer elements which have
         no namespace."""
 
     def endElementNS(self, name, qname):
@@ -331,7 +331,7 @@ property_interning_dict = "http://www.python.org/sax/properties/interning-dict"
 # description: The dictionary used to intern common strings in the document
 # access: write: Request that the parser uses a specific dictionary, to
 #                allow interning across different documents
-#         read:  return the current interning dictionary, or None
+#         read:  return the current interning dictionary, or Nichts
 #
 
 all_properties = [property_lexical_handler,
@@ -370,9 +370,9 @@ klasse LexicalHandler:
         used to infer from which subset DTD declarations derive.
 
         name is the name of the document element type, public_id the
-        public identifier of the DTD (or None wenn none were supplied)
+        public identifier of the DTD (or Nichts wenn none were supplied)
         and system_id the system identifier of the external subset (or
-        None wenn none were supplied)."""
+        Nichts wenn none were supplied)."""
 
     def endDTD(self):
         """Signals the end of DTD declarations."""

@@ -6,7 +6,7 @@ import time
 from idlelib.config import idleConf
 from idlelib.delegator import Delegator
 
-DEBUG = False
+DEBUG = Falsch
 
 
 def any(name, alternates):
@@ -124,10 +124,10 @@ klasse ColorDelegator(Delegator):
 
     def init_state(self):
         "Initialize variables that track colorizing state."
-        self.after_id = None
-        self.allow_colorizing = True
-        self.stop_colorizing = False
-        self.colorizing = False
+        self.after_id = Nichts
+        self.allow_colorizing = Wahr
+        self.stop_colorizing = Falsch
+        self.colorizing = Falsch
 
     def setdelegate(self, delegate):
         """Set the delegate fuer this instance.
@@ -140,17 +140,17 @@ klasse ColorDelegator(Delegator):
 
         If there is a delegate, also start the colorizing process.
         """
-        wenn self.delegate is not None:
+        wenn self.delegate is not Nichts:
             self.unbind("<<toggle-auto-coloring>>")
         Delegator.setdelegate(self, delegate)
-        wenn delegate is not None:
+        wenn delegate is not Nichts:
             self.config_colors()
             self.bind("<<toggle-auto-coloring>>", self.toggle_colorize_event)
             self.notify_range("1.0", "end")
         sonst:
             # No delegate - stop any colorizing.
-            self.stop_colorizing = True
-            self.allow_colorizing = False
+            self.stop_colorizing = Wahr
+            self.allow_colorizing = Falsch
 
     def config_colors(self):
         "Configure text widget tags with colors from tagdefs."
@@ -167,8 +167,8 @@ klasse ColorDelegator(Delegator):
             "BUILTIN": idleConf.GetHighlight(theme, "builtin"),
             "STRING": idleConf.GetHighlight(theme, "string"),
             "DEFINITION": idleConf.GetHighlight(theme, "definition"),
-            "SYNC": {'background': None, 'foreground': None},
-            "TODO": {'background': None, 'foreground': None},
+            "SYNC": {'background': Nichts, 'foreground': Nichts},
+            "TODO": {'background': Nichts, 'foreground': Nichts},
             "ERROR": idleConf.GetHighlight(theme, "error"),
             # "hit" is used by ReplaceDialog to mark matches. It shouldn't be changed by Colorizer, but
             # that currently isn't technically possible. This should be moved elsewhere in the future
@@ -178,26 +178,26 @@ klasse ColorDelegator(Delegator):
             }
         wenn DEBUG: print('tagdefs', self.tagdefs)
 
-    def insert(self, index, chars, tags=None):
+    def insert(self, index, chars, tags=Nichts):
         "Insert chars into widget at index and mark fuer colorizing."
         index = self.index(index)
         self.delegate.insert(index, chars, tags)
         self.notify_range(index, index + "+%dc" % len(chars))
 
-    def delete(self, index1, index2=None):
+    def delete(self, index1, index2=Nichts):
         "Delete chars between indexes and mark fuer colorizing."
         index1 = self.index(index1)
         self.delegate.delete(index1, index2)
         self.notify_range(index1)
 
-    def notify_range(self, index1, index2=None):
+    def notify_range(self, index1, index2=Nichts):
         "Mark text changes fuer processing and restart colorizing, wenn active."
         self.tag_add("TODO", index1, index2)
         wenn self.after_id:
             wenn DEBUG: print("colorizing already scheduled")
             return
         wenn self.colorizing:
-            self.stop_colorizing = True
+            self.stop_colorizing = Wahr
             wenn DEBUG: print("stop colorizing")
         wenn self.allow_colorizing:
             wenn DEBUG: print("schedule colorizing")
@@ -207,13 +207,13 @@ klasse ColorDelegator(Delegator):
     def close(self):
         wenn self.after_id:
             after_id = self.after_id
-            self.after_id = None
+            self.after_id = Nichts
             wenn DEBUG: print("cancel scheduled recolorizer")
             self.after_cancel(after_id)
-        self.allow_colorizing = False
-        self.stop_colorizing = True
+        self.allow_colorizing = Falsch
+        self.stop_colorizing = Wahr
 
-    def toggle_colorize_event(self, event=None):
+    def toggle_colorize_event(self, event=Nichts):
         """Toggle colorizing on and off.
 
         When toggling off, wenn colorizing is scheduled or is in
@@ -223,12 +223,12 @@ klasse ColorDelegator(Delegator):
         """
         wenn self.after_id:
             after_id = self.after_id
-            self.after_id = None
+            self.after_id = Nichts
             wenn DEBUG: print("cancel scheduled recolorizer")
             self.after_cancel(after_id)
         wenn self.allow_colorizing and self.colorizing:
             wenn DEBUG: print("stop colorizing")
-            self.stop_colorizing = True
+            self.stop_colorizing = Wahr
         self.allow_colorizing = not self.allow_colorizing
         wenn self.allow_colorizing and not self.colorizing:
             self.after_id = self.after(1, self.recolorize)
@@ -247,7 +247,7 @@ klasse ColorDelegator(Delegator):
         After colorizing is complete, some cleanup is done to
         make sure that all the text has been colorized.
         """
-        self.after_id = None
+        self.after_id = Nichts
         wenn not self.delegate:
             wenn DEBUG: print("no delegate")
             return
@@ -258,15 +258,15 @@ klasse ColorDelegator(Delegator):
             wenn DEBUG: print("already colorizing")
             return
         try:
-            self.stop_colorizing = False
-            self.colorizing = True
+            self.stop_colorizing = Falsch
+            self.colorizing = Wahr
             wenn DEBUG: print("colorizing...")
             t0 = time.perf_counter()
             self.recolorize_main()
             t1 = time.perf_counter()
             wenn DEBUG: print("%.3f seconds" % (t1-t0))
         finally:
-            self.colorizing = False
+            self.colorizing = Falsch
         wenn self.allow_colorizing and self.tag_nextrange("TODO", "1.0"):
             wenn DEBUG: print("reschedule colorizing")
             self.after_id = self.after(1, self.recolorize)
@@ -282,7 +282,7 @@ klasse ColorDelegator(Delegator):
             chars = ""
             next = head
             lines_to_get = 1
-            ok = False
+            ok = Falsch
             while not ok:
                 mark = next
                 next = self.index(mark + "+%d lines linestart" %
@@ -301,7 +301,7 @@ klasse ColorDelegator(Delegator):
                     head = next
                     chars = ""
                 sonst:
-                    ok = False
+                    ok = Falsch
                 wenn not ok:
                     # We're in an inconsistent state, and the call to
                     # update may tell us to stop.  It may also change
@@ -378,7 +378,7 @@ def _color_delegator(parent):  # htest #
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_colorizer', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_colorizer', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(_color_delegator)

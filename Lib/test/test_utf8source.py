@@ -17,7 +17,7 @@ klasse PEP3120Test(unittest.TestCase):
             import test.tokenizedata.badsyntax_pep3120  # noqa: F401
         except SyntaxError as msg:
             msg = str(msg).lower()
-            self.assertTrue('utf-8' in msg)
+            self.assertWahr('utf-8' in msg)
         sonst:
             self.fail("expected exception didn't occur")
 

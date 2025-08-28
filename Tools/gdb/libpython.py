@@ -77,10 +77,10 @@ def _managed_dict_offset():
     sonst:
         return -3 * _sizeof_void_p()
 
-_INTERP_FRAME_HAS_TLBC_INDEX = None
+_INTERP_FRAME_HAS_TLBC_INDEX = Nichts
 def interp_frame_has_tlbc_index():
     global _INTERP_FRAME_HAS_TLBC_INDEX
-    wenn _INTERP_FRAME_HAS_TLBC_INDEX is None:
+    wenn _INTERP_FRAME_HAS_TLBC_INDEX is Nichts:
         interp_frame = gdb.lookup_type("_PyInterpreterFrame")
         _INTERP_FRAME_HAS_TLBC_INDEX = any(field.name == "tlbc_index"
                                            fuer field in interp_frame.fields())
@@ -136,7 +136,7 @@ klasse StringTruncated(RuntimeError):
 klasse TruncatedStringIO(object):
     '''Similar to io.StringIO, but can truncate the output by raising a
     StringTruncated exception'''
-    def __init__(self, maxlen=None):
+    def __init__(self, maxlen=Nichts):
         self._val = ''
         self.maxlen = maxlen
 
@@ -165,10 +165,10 @@ klasse PyObjectPtr(object):
     """
     _typename = 'PyObject'
 
-    def __init__(self, gdbval, cast_to=None):
+    def __init__(self, gdbval, cast_to=Nichts):
         # Clear the tagged pointer
         wenn gdbval.type.name == '_PyStackRef':
-            wenn cast_to is None:
+            wenn cast_to is Nichts:
                 cast_to = gdb.lookup_type('PyObject').pointer()
             self._gdbval = gdb.Value(int(gdbval['bits']) & ~USED_TAGS).cast(cast_to)
         sowenn cast_to:
@@ -343,7 +343,7 @@ klasse PyObjectPtr(object):
 
         name_map = {'bool': PyBoolObjectPtr,
                     'classobj': PyClassObjectPtr,
-                    'NoneType': PyNoneStructPtr,
+                    'NoneType': PyNichtsStructPtr,
                     'frame': PyFrameObjectPtr,
                     'set' : PySetObjectPtr,
                     'frozenset' : PySetObjectPtr,
@@ -425,12 +425,12 @@ def _write_instance_repr(out, visited, name, pyop_attrdict, address):
     # Write dictionary of instance attributes:
     wenn isinstance(pyop_attrdict, (PyKeysValuesPair, PyDictObjectPtr)):
         out.write('(')
-        first = True
+        first = Wahr
         items = pyop_attrdict.iteritems()
         fuer pyop_arg, pyop_val in items:
             wenn not first:
                 out.write(', ')
-            first = False
+            first = Falsch
             out.write(pyop_arg.proxyval(visited))
             out.write('=')
             pyop_val.write_repr(out, visited)
@@ -456,7 +456,7 @@ klasse InstanceProxy(object):
                                             self.address)
 
 def _PyObject_VAR_SIZE(typeobj, nitems):
-    wenn _PyObject_VAR_SIZE._type_size_t is None:
+    wenn _PyObject_VAR_SIZE._type_size_t is Nichts:
         _PyObject_VAR_SIZE._type_size_t = gdb.lookup_type('size_t')
 
     return ( ( typeobj.field('tp_basicsize') +
@@ -464,7 +464,7 @@ def _PyObject_VAR_SIZE(typeobj, nitems):
                (_sizeof_void_p() - 1)
              ) & ~(_sizeof_void_p() - 1)
            ).cast(_PyObject_VAR_SIZE._type_size_t)
-_PyObject_VAR_SIZE._type_size_t = None
+_PyObject_VAR_SIZE._type_size_t = Nichts
 
 klasse HeapTypeObjectPtr(PyObjectPtr):
     _typename = 'PyObject'
@@ -472,7 +472,7 @@ klasse HeapTypeObjectPtr(PyObjectPtr):
     def get_attr_dict(self):
         '''
         Get the PyDictObject ptr representing the attribute dictionary
-        (or None wenn there's a problem)
+        (or Nichts wenn there's a problem)
         '''
         try:
             typeobj = self.type()
@@ -495,25 +495,25 @@ klasse HeapTypeObjectPtr(PyObjectPtr):
                 PyObjectPtrPtr = PyObjectPtr.get_gdb_type().pointer()
                 dictptr = dictptr.cast(PyObjectPtrPtr)
                 wenn int(dictptr.dereference()) & 1:
-                    return None
+                    return Nichts
                 return PyObjectPtr.from_pyobject_ptr(dictptr.dereference())
         except RuntimeError:
             # Corrupt data somewhere; fail safe
             pass
 
         # Not found, or some kind of error:
-        return None
+        return Nichts
 
     def get_keys_values(self):
         typeobj = self.type()
         has_values =  int_from_int(typeobj.field('tp_flags')) & Py_TPFLAGS_MANAGED_DICT
         wenn not has_values:
-            return None
+            return Nichts
         obj_ptr = self._gdbval.cast(_type_char_ptr())
         dict_ptr_ptr = obj_ptr + _managed_dict_offset()
         dict_ptr = dict_ptr_ptr.cast(_type_char_ptr().pointer()).dereference()
         wenn int(dict_ptr):
-            return None
+            return Nichts
         char_ptr = obj_ptr + typeobj.field('tp_basicsize')
         values_ptr = char_ptr.cast(gdb.lookup_type("PyDictValues").pointer())
         values = values_ptr['values']
@@ -669,7 +669,7 @@ def parse_location_table(firstlineno, linetable):
     line = firstlineno
     addr = 0
     it = iter(linetable)
-    while True:
+    while Wahr:
         try:
             first_byte = read(it)
         except StopIteration:
@@ -678,7 +678,7 @@ def parse_location_table(firstlineno, linetable):
         length = (first_byte & 7) + 1
         end_addr = addr + length
         wenn code == 15:
-            yield addr, end_addr, None
+            yield addr, end_addr, Nichts
             addr = end_addr
             continue
         sowenn code == 14: # Long form
@@ -738,7 +738,7 @@ klasse PyCodeObjectPtr(PyObjectPtr):
         fuer addr, end_addr, line in parse_location_table(lineno, co_linetable):
             wenn addr <= addrq and end_addr > addrq:
                 return line
-        assert False, "Unreachable"
+        assert Falsch, "Unreachable"
 
 
 def items_from_keys_and_values(keys, values):
@@ -817,11 +817,11 @@ klasse PyDictObjectPtr(PyObjectPtr):
         visited.add(self.as_address())
 
         out.write('{')
-        first = True
+        first = Wahr
         fuer pyop_key, pyop_value in self.iteritems():
             wenn not first:
                 out.write(', ')
-            first = False
+            first = Falsch
             pyop_key.write_repr(out, visited)
             out.write(': ')
             pyop_value.write_repr(out, visited)
@@ -944,28 +944,28 @@ klasse PyLongObjectPtr(PyObjectPtr):
 klasse PyBoolObjectPtr(PyLongObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyBoolObject* i.e. one of the two
-    <bool> instances (Py_True/Py_False) within the process being debugged.
+    <bool> instances (Py_Wahr/Py_Falsch) within the process being debugged.
     """
     def proxyval(self, visited):
         wenn PyLongObjectPtr.proxyval(self, visited):
-            return True
+            return Wahr
         sonst:
-            return False
+            return Falsch
 
-klasse PyNoneStructPtr(PyObjectPtr):
+klasse PyNichtsStructPtr(PyObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyObject* pointing to the
-    singleton (we hope) _Py_NoneStruct with ob_type PyNone_Type
+    singleton (we hope) _Py_NichtsStruct with ob_type PyNichts_Type
     """
     _typename = 'PyObject'
 
     def proxyval(self, visited):
-        return None
+        return Nichts
 
 klasse PyFrameObjectPtr(PyObjectPtr):
     _typename = 'PyFrameObject'
 
-    def __init__(self, gdbval, cast_to=None):
+    def __init__(self, gdbval, cast_to=Nichts):
         PyObjectPtr.__init__(self, gdbval, cast_to)
 
         wenn not self.is_optimized_out():
@@ -1001,7 +1001,7 @@ klasse PyFrameObjectPtr(PyObjectPtr):
     def get_var_by_name(self, name):
 
         wenn self.is_optimized_out():
-            return None, None
+            return Nichts, Nichts
         return self._frame.get_var_by_name(name)
 
     def filename(self):
@@ -1018,7 +1018,7 @@ klasse PyFrameObjectPtr(PyObjectPtr):
         See Objects/lnotab_notes.txt
         '''
         wenn self.is_optimized_out():
-            return None
+            return Nichts
         return self._frame.current_line_num()
 
     def current_line(self):
@@ -1055,9 +1055,9 @@ klasse PyFramePtr:
                 self.co_nlocals = int_from_int(self.co.field('co_nlocals'))
                 pnames = self.co.field('co_localsplusnames')
                 self.co_localsplusnames = PyTupleObjectPtr.from_pyobject_ptr(pnames)
-                self._is_code = True
+                self._is_code = Wahr
             except:
-                self._is_code = False
+                self._is_code = Falsch
 
     def is_optimized_out(self):
         return self._gdbval.is_optimized_out
@@ -1144,7 +1144,7 @@ klasse PyFramePtr:
         Look fuer the named local variable, returning a (PyObjectPtr, scope) pair
         where scope is a string 'local', 'global', 'builtin'
 
-        If not found, return (None, None)
+        If not found, return (Nichts, Nichts)
         '''
         fuer pyop_name, pyop_value in self.iter_locals():
             wenn name == pyop_name.proxyval(set()):
@@ -1155,7 +1155,7 @@ klasse PyFramePtr:
         fuer pyop_name, pyop_value in self.iter_builtins():
             wenn name == pyop_name.proxyval(set()):
                 return pyop_value, 'builtin'
-        return None, None
+        return Nichts, Nichts
 
     def filename(self):
         '''Get the path of the current Python source file, as a string'''
@@ -1171,7 +1171,7 @@ klasse PyFramePtr:
         See Objects/lnotab_notes.txt
         '''
         wenn self.is_optimized_out():
-            return None
+            return Nichts
         try:
             return self.co.addr2line(self.f_lasti)
         except Exception as ex:
@@ -1179,8 +1179,8 @@ klasse PyFramePtr:
             # ways. For example, it fails with a TypeError on "FakeRepr" if
             # gdb fails to load debug symbols. Use a catch-all "except
             # Exception" to make the whole function safe. The caller has to
-            # handle None anyway fuer optimized Python.
-            return None
+            # handle Nichts anyway fuer optimized Python.
+            return Nichts
 
     def current_line(self):
         '''Get the text of the current source line as a string, with a trailing
@@ -1189,7 +1189,7 @@ klasse PyFramePtr:
             return FRAME_INFO_OPTIMIZED_OUT
 
         lineno = self.current_line_num()
-        wenn lineno is None:
+        wenn lineno is Nichts:
             return '(failed to get frame line number)'
 
         filename = self.filename()
@@ -1197,30 +1197,30 @@ klasse PyFramePtr:
             with open(os.fsencode(filename), 'r', encoding="utf-8") as fp:
                 lines = fp.readlines()
         except IOError:
-            return None
+            return Nichts
 
         try:
             # Convert from 1-based current_line_num to 0-based list offset
             return lines[lineno - 1]
         except IndexError:
-            return None
+            return Nichts
 
     def write_repr(self, out, visited):
         wenn self.is_optimized_out():
             out.write(FRAME_INFO_OPTIMIZED_OUT)
             return
         lineno = self.current_line_num()
-        lineno = str(lineno) wenn lineno is not None sonst "?"
+        lineno = str(lineno) wenn lineno is not Nichts sonst "?"
         out.write('Frame 0x%x, fuer file %s, line %s, in %s ('
                   % (self.as_address(),
                      self.co_filename.proxyval(visited),
                      lineno,
                      self.co_name.proxyval(visited)))
-        first = True
+        first = Wahr
         fuer pyop_name, pyop_value in self.iter_locals():
             wenn not first:
                 out.write(', ')
-            first = False
+            first = Falsch
 
             out.write(pyop_name.proxyval(visited))
             out.write('=')
@@ -1237,7 +1237,7 @@ klasse PyFramePtr:
             return
         visited = set()
         lineno = self.current_line_num()
-        lineno = str(lineno) wenn lineno is not None sonst "?"
+        lineno = str(lineno) wenn lineno is not Nichts sonst "?"
         sys.stdout.write('  File "%s", line %s, in %s\n'
                   % (self.co_filename.proxyval(visited),
                      lineno,
@@ -1308,11 +1308,11 @@ klasse PySetObjectPtr(PyObjectPtr):
             out.write('(')
 
         out.write('{')
-        first = True
+        first = Wahr
         fuer key in self:
             wenn not first:
                 out.write(', ')
-            first = False
+            first = Falsch
             key.write_repr(out, visited)
         out.write('}')
 
@@ -1406,7 +1406,7 @@ klasse PyTypeObjectPtr(PyObjectPtr):
 def _unichr_is_printable(char):
     # Logic adapted from Python's Tools/unicode/makeunicodedata.py
     wenn char == u" ":
-        return True
+        return Wahr
     import unicodedata
     return unicodedata.category(char) not in ("C", "Z")
 
@@ -1488,19 +1488,19 @@ klasse PyUnicodeObjectPtr(PyObjectPtr):
             # Non-ASCII characters
             sonst:
                 ucs = ch
-                ch2 = None
+                ch2 = Nichts
 
                 printable = ucs.isprintable()
                 wenn printable:
                     try:
                         ucs.encode(ENCODING)
                     except UnicodeEncodeError:
-                        printable = False
+                        printable = Falsch
 
                 # Map Unicode whitespace and control characters
                 # (categories Z* and C* except ASCII space)
                 wenn not printable:
-                    wenn ch2 is not None:
+                    wenn ch2 is not Nichts:
                         # Match Python's representation of non-printable
                         # wide characters.
                         code = (ord(ch) & 0x03FF) << 10
@@ -1535,7 +1535,7 @@ klasse PyUnicodeObjectPtr(PyObjectPtr):
                 sonst:
                     # Copy characters as-is
                     out.write(ch)
-                    wenn ch2 is not None:
+                    wenn ch2 is not Nichts:
                         out.write(ch2)
 
         out.write(quote)
@@ -1583,7 +1583,7 @@ def int_from_int(gdbval):
 def stringify(val):
     # TODO: repr() puts everything on one line; pformat can be nicer, but
     # can lead to v.long results; this function isolates the choice
-    wenn True:
+    wenn Wahr:
         return repr(val)
     sonst:
         from pprint import pformat
@@ -1598,7 +1598,7 @@ klasse PyObjectPtrPrinter:
 
     def to_string (self):
         pyop = PyObjectPtr.from_pyobject_ptr(self.gdbval)
-        wenn True:
+        wenn Wahr:
             return pyop.get_truncated_repr(MAX_OUTPUT_LEN)
         sonst:
             # Generate full proxy value then stringify it.
@@ -1612,7 +1612,7 @@ def pretty_printer_lookup(gdbval):
         return PyObjectPtrPrinter(gdbval)
 
     wenn type.code != gdb.TYPE_CODE_PTR:
-        return None
+        return Nichts
 
     type = type.target().unqualified()
     t = str(type)
@@ -1639,7 +1639,7 @@ that this python file is installed to the same path as the library (or its
   /usr/lib/debug/usr/lib/libpython3.12.so.1.0.debug-gdb.py
 """
 def register (obj):
-    wenn obj is None:
+    wenn obj is Nichts:
         obj = gdb
 
     # Wire up the pretty-printer
@@ -1665,26 +1665,26 @@ klasse Frame(object):
         wenn older:
             return Frame(older)
         sonst:
-            return None
+            return Nichts
 
     def newer(self):
         newer = self._gdbframe.newer()
         wenn newer:
             return Frame(newer)
         sonst:
-            return None
+            return Nichts
 
     def select(self):
-        '''If supported, select this frame and return True; return False wenn unsupported
+        '''If supported, select this frame and return Wahr; return Falsch wenn unsupported
 
         Not all builds have a gdb.Frame.select method; seems to be present on Fedora 12
         onwards, but absent on Ubuntu buildbot'''
         wenn not hasattr(self._gdbframe, 'select'):
             print ('Unable to select frame: '
                    'this build of gdb does not expose a gdb.Frame.select method')
-            return False
+            return Falsch
         self._gdbframe.select()
-        return True
+        return Wahr
 
     def get_index(self):
         '''Calculate index of frame, starting at 0 fuer the newest frame within
@@ -1709,10 +1709,10 @@ klasse Frame(object):
         frame? (see is_other_python_frame fuer what "important" means in this
         context)'''
         wenn self.is_evalframe():
-            return True
+            return Wahr
         wenn self.is_other_python_frame():
-            return True
-        return False
+            return Wahr
+        return Falsch
 
     def is_evalframe(self):
         '''Is this a _PyEval_EvalFrameDefault frame?'''
@@ -1726,9 +1726,9 @@ klasse Frame(object):
             '''
             wenn self._gdbframe.type() == gdb.NORMAL_FRAME:
                 # We have a _PyEval_EvalFrameDefault frame:
-                return True
+                return Wahr
 
-        return False
+        return Falsch
 
     def is_other_python_frame(self):
         '''Is this frame worth displaying in python backtraces?
@@ -1737,7 +1737,7 @@ klasse Frame(object):
           - garbage-collecting
           - within a CFunction
          If it is, return a descriptive string
-         For other frames, return False
+         For other frames, return Falsch
          '''
         wenn self.is_waiting_for_gil():
             return 'Waiting fuer the GIL'
@@ -1749,7 +1749,7 @@ klasse Frame(object):
         frame = self._gdbframe
         caller = frame.name()
         wenn not caller:
-            return False
+            return Falsch
 
         wenn (caller.startswith('cfunction_vectorcall_') or
             caller == 'cfunction_call'):
@@ -1781,7 +1781,7 @@ klasse Frame(object):
                 return '<wrapper_call invocation (unable to read %s)>' % arg_name
 
         # This frame isn't worth reporting:
-        return False
+        return Falsch
 
     def is_waiting_for_gil(self):
         '''Is this frame waiting on the GIL?'''
@@ -1804,31 +1804,31 @@ klasse Frame(object):
             wenn not frame.is_optimized_out():
                 return frame
             cframe = self._gdbframe.read_var('cframe')
-            wenn cframe is None:
-                return None
+            wenn cframe is Nichts:
+                return Nichts
             frame = PyFramePtr(cframe["current_frame"])
             wenn frame and not frame.is_optimized_out():
                 return frame
-            return None
+            return Nichts
         except ValueError:
-            return None
+            return Nichts
 
     @classmethod
     def get_selected_frame(cls):
         _gdbframe = gdb.selected_frame()
         wenn _gdbframe:
             return Frame(_gdbframe)
-        return None
+        return Nichts
 
     @classmethod
     def get_selected_python_frame(cls):
         '''Try to obtain the Frame fuer the python-related code in the selected
-        frame, or None'''
+        frame, or Nichts'''
         try:
             frame = cls.get_selected_frame()
         except gdb.error:
             # No frame: Python didn't start yet
-            return None
+            return Nichts
 
         while frame:
             wenn frame.is_python_frame():
@@ -1836,12 +1836,12 @@ klasse Frame(object):
             frame = frame.older()
 
         # Not found:
-        return None
+        return Nichts
 
     @classmethod
     def get_selected_bytecode_frame(cls):
         '''Try to obtain the Frame fuer the python bytecode interpreter in the
-        selected GDB frame, or None'''
+        selected GDB frame, or Nichts'''
         frame = cls.get_selected_frame()
 
         while frame:
@@ -1850,12 +1850,12 @@ klasse Frame(object):
             frame = frame.older()
 
         # Not found:
-        return None
+        return Nichts
 
     def print_summary(self):
         wenn self.is_evalframe():
             interp_frame = self.get_pyop()
-            while True:
+            while Wahr:
                 wenn interp_frame:
                     wenn interp_frame.is_shim():
                         break
@@ -1863,7 +1863,7 @@ klasse Frame(object):
                     sys.stdout.write('#%i %s\n' % (self.get_index(), line))
                     wenn not interp_frame.is_optimized_out():
                         line = interp_frame.current_line()
-                        wenn line is not None:
+                        wenn line is not Nichts:
                             sys.stdout.write('    %s\n' % line.strip())
                 sonst:
                     sys.stdout.write('#%i (unable to read python frame information)\n' % self.get_index())
@@ -1879,14 +1879,14 @@ klasse Frame(object):
     def print_traceback(self):
         wenn self.is_evalframe():
             interp_frame = self.get_pyop()
-            while True:
+            while Wahr:
                 wenn interp_frame:
                     wenn interp_frame.is_shim():
                         break
                     interp_frame.print_traceback()
                     wenn not interp_frame.is_optimized_out():
                         line = interp_frame.current_line()
-                        wenn line is not None:
+                        wenn line is not Nichts:
                             sys.stdout.write('    %s\n' % line.strip())
                 sonst:
                     sys.stdout.write('  (unable to read python frame information)\n')
@@ -1921,8 +1921,8 @@ klasse PyList(gdb.Command):
     def invoke(self, args, from_tty):
         import re
 
-        start = None
-        end = None
+        start = Nichts
+        end = Nichts
 
         m = re.match(r'\s*(\d+)\s*', args)
         wenn m:
@@ -1946,11 +1946,11 @@ klasse PyList(gdb.Command):
 
         filename = pyop.filename()
         lineno = pyop.current_line_num()
-        wenn lineno is None:
+        wenn lineno is Nichts:
             print('Unable to read python frame line number')
             return
 
-        wenn start is None:
+        wenn start is Nichts:
             start = lineno - 5
             end = lineno + 5
 
@@ -2023,7 +2023,7 @@ klasse PyUp(gdb.Command):
 
 
     def invoke(self, args, from_tty):
-        move_in_stack(move_up=True)
+        move_in_stack(move_up=Wahr)
 
 klasse PyDown(gdb.Command):
     'Select and print all python stack frame in the same eval loop starting from the one called this one (if any)'
@@ -2035,7 +2035,7 @@ klasse PyDown(gdb.Command):
 
 
     def invoke(self, args, from_tty):
-        move_in_stack(move_up=False)
+        move_in_stack(move_up=Falsch)
 
 # Not all builds of gdb have gdb.Frame.select
 wenn hasattr(gdb.Frame, 'select'):
@@ -2139,7 +2139,7 @@ klasse PyLocals(gdb.Command):
             return
 
         pyop_frame = frame.get_pyop()
-        while True:
+        while Wahr:
             wenn not pyop_frame:
                 print(UNABLE_READ_INFO_PYTHON_FRAME)
                 break

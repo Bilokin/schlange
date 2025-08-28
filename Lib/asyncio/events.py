@@ -38,26 +38,26 @@ klasse Handle:
                  '_source_traceback', '_repr', '__weakref__',
                  '_context')
 
-    def __init__(self, callback, args, loop, context=None):
-        wenn context is None:
+    def __init__(self, callback, args, loop, context=Nichts):
+        wenn context is Nichts:
             context = contextvars.copy_context()
         self._context = context
         self._loop = loop
         self._callback = callback
         self._args = args
-        self._cancelled = False
-        self._repr = None
+        self._cancelled = Falsch
+        self._repr = Nichts
         wenn self._loop.get_debug():
             self._source_traceback = format_helpers.extract_stack(
                 sys._getframe(1))
         sonst:
-            self._source_traceback = None
+            self._source_traceback = Nichts
 
     def _repr_info(self):
         info = [self.__class__.__name__]
         wenn self._cancelled:
             info.append('cancelled')
-        wenn self._callback is not None:
+        wenn self._callback is not Nichts:
             info.append(format_helpers._format_callback_source(
                 self._callback, self._args,
                 debug=self._loop.get_debug()))
@@ -67,7 +67,7 @@ klasse Handle:
         return info
 
     def __repr__(self):
-        wenn self._repr is not None:
+        wenn self._repr is not Nichts:
             return self._repr
         info = self._repr_info()
         return '<{}>'.format(' '.join(info))
@@ -77,14 +77,14 @@ klasse Handle:
 
     def cancel(self):
         wenn not self._cancelled:
-            self._cancelled = True
+            self._cancelled = Wahr
             wenn self._loop.get_debug():
                 # Keep a representation in debug mode to keep callback and
                 # parameters. For example, to log the warning
                 # "Executing <Handle...> took 2.5 second"
                 self._repr = repr(self)
-            self._callback = None
-            self._args = None
+            self._callback = Nichts
+            self._args = Nichts
 
     def cancelled(self):
         return self._cancelled
@@ -107,7 +107,7 @@ klasse Handle:
             wenn self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
-        self = None  # Needed to break cycles when an exception occurs.
+        self = Nichts  # Needed to break cycles when an exception occurs.
 
 # _ThreadSafeHandle is used fuer callbacks scheduled with call_soon_threadsafe
 # and is thread safe unlike Handle which is not thread safe.
@@ -115,7 +115,7 @@ klasse _ThreadSafeHandle(Handle):
 
     __slots__ = ('_lock',)
 
-    def __init__(self, callback, args, loop, context=None):
+    def __init__(self, callback, args, loop, context=Nichts):
         super().__init__(callback, args, loop, context)
         self._lock = threading.RLock()
 
@@ -143,12 +143,12 @@ klasse TimerHandle(Handle):
 
     __slots__ = ['_scheduled', '_when']
 
-    def __init__(self, when, callback, args, loop, context=None):
+    def __init__(self, when, callback, args, loop, context=Nichts):
         super().__init__(callback, args, loop, context)
         wenn self._source_traceback:
             del self._source_traceback[-1]
         self._when = when
-        self._scheduled = False
+        self._scheduled = Falsch
 
     def _repr_info(self):
         info = super()._repr_info()
@@ -221,7 +221,7 @@ klasse AbstractServer:
         raise NotImplementedError
 
     def is_serving(self):
-        """Return True wenn the server is accepting connections."""
+        """Return Wahr wenn the server is accepting connections."""
         raise NotImplementedError
 
     async def start_serving(self):
@@ -280,7 +280,7 @@ klasse AbstractEventLoop:
         raise NotImplementedError
 
     def is_closed(self):
-        """Returns True wenn the event loop was closed."""
+        """Returns Wahr wenn the event loop was closed."""
         raise NotImplementedError
 
     def close(self):
@@ -308,13 +308,13 @@ klasse AbstractEventLoop:
         """Notification that a TimerHandle has been cancelled."""
         raise NotImplementedError
 
-    def call_soon(self, callback, *args, context=None):
+    def call_soon(self, callback, *args, context=Nichts):
         return self.call_later(0, callback, *args, context=context)
 
-    def call_later(self, delay, callback, *args, context=None):
+    def call_later(self, delay, callback, *args, context=Nichts):
         raise NotImplementedError
 
-    def call_at(self, when, callback, *args, context=None):
+    def call_at(self, when, callback, *args, context=Nichts):
         raise NotImplementedError
 
     def time(self):
@@ -330,7 +330,7 @@ klasse AbstractEventLoop:
 
     # Methods fuer interacting with threads.
 
-    def call_soon_threadsafe(self, callback, *args, context=None):
+    def call_soon_threadsafe(self, callback, *args, context=Nichts):
         raise NotImplementedError
 
     def run_in_executor(self, executor, func, *args):
@@ -349,30 +349,30 @@ klasse AbstractEventLoop:
         raise NotImplementedError
 
     async def create_connection(
-            self, protocol_factory, host=None, port=None,
-            *, ssl=None, family=0, proto=0,
-            flags=0, sock=None, local_addr=None,
-            server_hostname=None,
-            ssl_handshake_timeout=None,
-            ssl_shutdown_timeout=None,
-            happy_eyeballs_delay=None, interleave=None):
+            self, protocol_factory, host=Nichts, port=Nichts,
+            *, ssl=Nichts, family=0, proto=0,
+            flags=0, sock=Nichts, local_addr=Nichts,
+            server_hostname=Nichts,
+            ssl_handshake_timeout=Nichts,
+            ssl_shutdown_timeout=Nichts,
+            happy_eyeballs_delay=Nichts, interleave=Nichts):
         raise NotImplementedError
 
     async def create_server(
-            self, protocol_factory, host=None, port=None,
+            self, protocol_factory, host=Nichts, port=Nichts,
             *, family=socket.AF_UNSPEC,
-            flags=socket.AI_PASSIVE, sock=None, backlog=100,
-            ssl=None, reuse_address=None, reuse_port=None,
-            keep_alive=None,
-            ssl_handshake_timeout=None,
-            ssl_shutdown_timeout=None,
-            start_serving=True):
+            flags=socket.AI_PASSIVE, sock=Nichts, backlog=100,
+            ssl=Nichts, reuse_address=Nichts, reuse_port=Nichts,
+            keep_alive=Nichts,
+            ssl_handshake_timeout=Nichts,
+            ssl_shutdown_timeout=Nichts,
+            start_serving=Wahr):
         """A coroutine which creates a TCP server bound to host and port.
 
         The return value is a Server object which can be used to stop
         the service.
 
-        If host is an empty string or None all interfaces are assumed
+        If host is an empty string or Nichts all interfaces are assumed
         and a list of multiple sockets will be returned (most likely
         one fuer IPv4 and another one fuer IPv6). The host parameter can also be
         a sequence (e.g. list) of hosts to bind to.
@@ -394,7 +394,7 @@ klasse AbstractEventLoop:
 
         reuse_address tells the kernel to reuse a local socket in
         TIME_WAIT state, without waiting fuer its natural timeout to
-        expire. If not specified will automatically be set to True on
+        expire. If not specified will automatically be set to Wahr on
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
@@ -402,7 +402,7 @@ klasse AbstractEventLoop:
         they all set this flag when being created. This option is not
         supported on Windows.
 
-        keep_alive set to True keeps connections active by enabling the
+        keep_alive set to Wahr keeps connections active by enabling the
         periodic transmission of messages.
 
         ssl_handshake_timeout is the time in seconds that an SSL server
@@ -413,15 +413,15 @@ klasse AbstractEventLoop:
         will wait fuer completion of the SSL shutdown procedure
         before aborting the connection. Default is 30s.
 
-        start_serving set to True (default) causes the created server
-        to start accepting connections immediately.  When set to False,
+        start_serving set to Wahr (default) causes the created server
+        to start accepting connections immediately.  When set to Falsch,
         the user should await Server.start_serving() or Server.serve_forever()
         to make the server to start accepting connections.
         """
         raise NotImplementedError
 
-    async def sendfile(self, transport, file, offset=0, count=None,
-                       *, fallback=True):
+    async def sendfile(self, transport, file, offset=0, count=Nichts,
+                       *, fallback=Wahr):
         """Send a file through a transport.
 
         Return an amount of sent bytes.
@@ -429,10 +429,10 @@ klasse AbstractEventLoop:
         raise NotImplementedError
 
     async def start_tls(self, transport, protocol, sslcontext, *,
-                        server_side=False,
-                        server_hostname=None,
-                        ssl_handshake_timeout=None,
-                        ssl_shutdown_timeout=None):
+                        server_side=Falsch,
+                        server_hostname=Nichts,
+                        ssl_handshake_timeout=Nichts,
+                        ssl_shutdown_timeout=Nichts):
         """Upgrade a transport to TLS.
 
         Return a new transport that *protocol* should start using
@@ -441,19 +441,19 @@ klasse AbstractEventLoop:
         raise NotImplementedError
 
     async def create_unix_connection(
-            self, protocol_factory, path=None, *,
-            ssl=None, sock=None,
-            server_hostname=None,
-            ssl_handshake_timeout=None,
-            ssl_shutdown_timeout=None):
+            self, protocol_factory, path=Nichts, *,
+            ssl=Nichts, sock=Nichts,
+            server_hostname=Nichts,
+            ssl_handshake_timeout=Nichts,
+            ssl_shutdown_timeout=Nichts):
         raise NotImplementedError
 
     async def create_unix_server(
-            self, protocol_factory, path=None, *,
-            sock=None, backlog=100, ssl=None,
-            ssl_handshake_timeout=None,
-            ssl_shutdown_timeout=None,
-            start_serving=True):
+            self, protocol_factory, path=Nichts, *,
+            sock=Nichts, backlog=100, ssl=Nichts,
+            ssl_handshake_timeout=Nichts,
+            ssl_shutdown_timeout=Nichts,
+            start_serving=Wahr):
         """A coroutine which creates a UNIX Domain Socket server.
 
         The return value is a Server object, which can be used to stop
@@ -477,8 +477,8 @@ klasse AbstractEventLoop:
         ssl_shutdown_timeout is the time in seconds that an SSL server
         will wait fuer the SSL shutdown to finish (defaults to 30s).
 
-        start_serving set to True (default) causes the created server
-        to start accepting connections immediately.  When set to False,
+        start_serving set to Wahr (default) causes the created server
+        to start accepting connections immediately.  When set to Falsch,
         the user should await Server.start_serving() or Server.serve_forever()
         to make the server to start accepting connections.
         """
@@ -486,9 +486,9 @@ klasse AbstractEventLoop:
 
     async def connect_accepted_socket(
             self, protocol_factory, sock,
-            *, ssl=None,
-            ssl_handshake_timeout=None,
-            ssl_shutdown_timeout=None):
+            *, ssl=Nichts,
+            ssl_handshake_timeout=Nichts,
+            ssl_shutdown_timeout=Nichts):
         """Handle an accepted connection.
 
         This is used by servers that accept connections outside of
@@ -500,10 +500,10 @@ klasse AbstractEventLoop:
         raise NotImplementedError
 
     async def create_datagram_endpoint(self, protocol_factory,
-                                       local_addr=None, remote_addr=None, *,
+                                       local_addr=Nichts, remote_addr=Nichts, *,
                                        family=0, proto=0, flags=0,
-                                       reuse_address=None, reuse_port=None,
-                                       allow_broadcast=None, sock=None):
+                                       reuse_address=Nichts, reuse_port=Nichts,
+                                       allow_broadcast=Nichts, sock=Nichts):
         """A coroutine which creates a datagram endpoint.
 
         This method will try to establish the endpoint in the background.
@@ -516,7 +516,7 @@ klasse AbstractEventLoop:
 
         reuse_address tells the kernel to reuse a local socket in
         TIME_WAIT state, without waiting fuer its natural timeout to
-        expire. If not specified it will automatically be set to True on
+        expire. If not specified it will automatically be set to Wahr on
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
@@ -577,9 +577,9 @@ klasse AbstractEventLoop:
         raise NotImplementedError
 
     # Ready-based callback registration methods.
-    # The add_*() methods return None.
-    # The remove_*() methods return True wenn something was removed,
-    # False wenn there was nothing to delete.
+    # The add_*() methods return Nichts.
+    # The remove_*() methods return Wahr wenn something was removed,
+    # Falsch wenn there was nothing to delete.
 
     def add_reader(self, fd, callback, *args):
         raise NotImplementedError
@@ -619,8 +619,8 @@ klasse AbstractEventLoop:
     async def sock_accept(self, sock):
         raise NotImplementedError
 
-    async def sock_sendfile(self, sock, file, offset=0, count=None,
-                            *, fallback=None):
+    async def sock_sendfile(self, sock, file, offset=0, count=Nichts,
+                            *, fallback=Nichts):
         raise NotImplementedError
 
     # Signal handling.
@@ -672,7 +672,7 @@ klasse _AbstractEventLoopPolicy:
         or raises an exception in case no event loop has been set fuer the
         current context and the current policy does not specify to create one.
 
-        It should never return None."""
+        It should never return Nichts."""
         raise NotImplementedError
 
     def set_event_loop(self, loop):
@@ -698,10 +698,10 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
     associated).
     """
 
-    _loop_factory = None
+    _loop_factory = Nichts
 
     klasse _Local(threading.local):
-        _loop = None
+        _loop = Nichts
 
     def __init__(self):
         self._local = self._Local()
@@ -711,7 +711,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
 
         Returns an instance of EventLoop or raises an exception.
         """
-        wenn self._local._loop is None:
+        wenn self._local._loop is Nichts:
             raise RuntimeError('There is no current event loop in thread %r.'
                                % threading.current_thread().name)
 
@@ -719,8 +719,8 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
 
     def set_event_loop(self, loop):
         """Set the event loop."""
-        wenn loop is not None and not isinstance(loop, AbstractEventLoop):
-            raise TypeError(f"loop must be an instance of AbstractEventLoop or None, not '{type(loop).__name__}'")
+        wenn loop is not Nichts and not isinstance(loop, AbstractEventLoop):
+            raise TypeError(f"loop must be an instance of AbstractEventLoop or Nichts, not '{type(loop).__name__}'")
         self._local._loop = loop
 
     def new_event_loop(self):
@@ -736,7 +736,7 @@ klasse _BaseDefaultEventLoopPolicy(_AbstractEventLoopPolicy):
 # policy's rules say that there is an event loop per thread (or other
 # notion of context).  The default policy is installed by the first
 # call to get_event_loop_policy().
-_event_loop_policy = None
+_event_loop_policy = Nichts
 
 # Lock fuer protecting the on-the-fly creation of the event loop policy.
 _lock = threading.Lock()
@@ -744,7 +744,7 @@ _lock = threading.Lock()
 
 # A TLS fuer the running event loop, used by _get_running_loop.
 klasse _RunningLoop(threading.local):
-    loop_pid = (None, None)
+    loop_pid = (Nichts, Nichts)
 
 
 _running_loop = _RunningLoop()
@@ -757,20 +757,20 @@ def get_running_loop():
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     loop = _get_running_loop()
-    wenn loop is None:
+    wenn loop is Nichts:
         raise RuntimeError('no running event loop')
     return loop
 
 
 def _get_running_loop():
-    """Return the running event loop or None.
+    """Return the running event loop or Nichts.
 
     This is a low-level function intended to be used by event loops.
     This function is thread-specific.
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     running_loop, pid = _running_loop.loop_pid
-    wenn running_loop is not None and pid == os.getpid():
+    wenn running_loop is not Nichts and pid == os.getpid():
         return running_loop
 
 
@@ -787,7 +787,7 @@ def _set_running_loop(loop):
 def _init_event_loop_policy():
     global _event_loop_policy
     with _lock:
-        wenn _event_loop_policy is None:  # pragma: no branch
+        wenn _event_loop_policy is Nichts:  # pragma: no branch
             wenn sys.platform == 'win32':
                 from .windows_events import _DefaultEventLoopPolicy
             sonst:
@@ -797,7 +797,7 @@ def _init_event_loop_policy():
 
 def _get_event_loop_policy():
     """Get the current event loop policy."""
-    wenn _event_loop_policy is None:
+    wenn _event_loop_policy is Nichts:
         _init_event_loop_policy()
     return _event_loop_policy
 
@@ -808,10 +808,10 @@ def get_event_loop_policy():
 def _set_event_loop_policy(policy):
     """Set the current event loop policy.
 
-    If policy is None, the default policy is restored."""
+    If policy is Nichts, the default policy is restored."""
     global _event_loop_policy
-    wenn policy is not None and not isinstance(policy, _AbstractEventLoopPolicy):
-        raise TypeError(f"policy must be an instance of AbstractEventLoopPolicy or None, not '{type(policy).__name__}'")
+    wenn policy is not Nichts and not isinstance(policy, _AbstractEventLoopPolicy):
+        raise TypeError(f"policy must be an instance of AbstractEventLoopPolicy or Nichts, not '{type(policy).__name__}'")
     _event_loop_policy = policy
 
 def set_event_loop_policy(policy):
@@ -829,7 +829,7 @@ def get_event_loop():
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     current_loop = _get_running_loop()
-    wenn current_loop is not None:
+    wenn current_loop is not Nichts:
         return current_loop
     return _get_event_loop_policy().get_event_loop()
 
@@ -870,9 +870,9 @@ sonst:
 wenn hasattr(os, 'fork'):
     def on_fork():
         # Reset the loop and wakeupfd in the forked child process.
-        wenn _event_loop_policy is not None:
+        wenn _event_loop_policy is not Nichts:
             _event_loop_policy._local = _BaseDefaultEventLoopPolicy._Local()
-        _set_running_loop(None)
+        _set_running_loop(Nichts)
         signal.set_wakeup_fd(-1)
 
     os.register_at_fork(after_in_child=on_fork)

@@ -12,11 +12,11 @@ def import_singlephase():
     try:
         import _testsinglephase  # noqa: F401
     except ImportError:
-        sys.modules.pop('_testsinglephase', None)
-        return False
+        sys.modules.pop('_testsinglephase', Nichts)
+        return Falsch
     sonst:
         del sys.modules['_testsinglephase']
-        return True
+        return Wahr
 
 
 def check_singlephase(override):

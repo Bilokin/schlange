@@ -61,7 +61,7 @@ klasse BCPPCompiler(CCompiler) :
         self.linker = "ilink32.exe"
         self.lib = "tlib.exe"
 
-        self.preprocess_options = None
+        self.preprocess_options = Nichts
         self.compile_options = ['/tWM', '/O2', '/q', '/g0']
         self.compile_options_debug = ['/tWM', '/Od', '/q', '/g0']
 
@@ -76,17 +76,17 @@ klasse BCPPCompiler(CCompiler) :
 
     def preprocess (self,
                     source,
-                    output_file=None,
-                    macros=None,
-                    include_dirs=None,
-                    extra_preargs=None,
-                    extra_postargs=None):
+                    output_file=Nichts,
+                    macros=Nichts,
+                    include_dirs=Nichts,
+                    extra_preargs=Nichts,
+                    extra_postargs=Nichts):
 
         (_, macros, include_dirs) = \
-            self._fix_compile_args(None, macros, include_dirs)
+            self._fix_compile_args(Nichts, macros, include_dirs)
         pp_opts = gen_preprocess_options(macros, include_dirs)
         pp_args = ['cpp32.exe'] + pp_opts
-        wenn output_file is not None:
+        wenn output_file is not Nichts:
             pp_args.append('-o' + output_file)
         wenn extra_preargs:
             pp_args[:0] = extra_preargs
@@ -97,7 +97,7 @@ klasse BCPPCompiler(CCompiler) :
         # We need to preprocess: either we're being forced to, or the
         # source file is newer than the target (or the target doesn't
         # exist).
-        wenn self.force or output_file is None or newer(source, output_file):
+        wenn self.force or output_file is Nichts or newer(source, output_file):
             wenn output_file:
                 self.mkpath(os.path.dirname(output_file))
             try:

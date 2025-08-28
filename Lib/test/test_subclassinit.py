@@ -5,31 +5,31 @@ import unittest
 klasse Test(unittest.TestCase):
     def test_init_subclass(self):
         klasse A:
-            initialized = False
+            initialized = Falsch
 
             def __init_subclass__(cls):
                 super().__init_subclass__()
-                cls.initialized = True
+                cls.initialized = Wahr
 
         klasse B(A):
             pass
 
-        self.assertFalse(A.initialized)
-        self.assertTrue(B.initialized)
+        self.assertFalsch(A.initialized)
+        self.assertWahr(B.initialized)
 
     def test_init_subclass_dict(self):
         klasse A(dict):
-            initialized = False
+            initialized = Falsch
 
             def __init_subclass__(cls):
                 super().__init_subclass__()
-                cls.initialized = True
+                cls.initialized = Wahr
 
         klasse B(A):
             pass
 
-        self.assertFalse(A.initialized)
-        self.assertTrue(B.initialized)
+        self.assertFalsch(A.initialized)
+        self.assertWahr(B.initialized)
 
     def test_init_subclass_kwargs(self):
         klasse A:
@@ -199,7 +199,7 @@ klasse Test(unittest.TestCase):
         notified = []
         klasse Descriptor:
             def __set_name__(self, owner, name):
-                setattr(owner, name + 'x', None)
+                setattr(owner, name + 'x', Nichts)
                 notified.append(name)
 
         klasse A:

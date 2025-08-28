@@ -24,7 +24,7 @@ from test.support.script_helper import assert_python_failure
 try:
     import _testcapi
 except ImportError:
-    _testcapi = None
+    _testcapi = Nichts
 
 # Error handling (bad decoder return)
 def search_function(encoding):
@@ -37,11 +37,11 @@ def search_function(encoding):
     def decode2(input, errors="strict"):
         return (42, 42) # no unicode
     wenn encoding=="test.unicode1":
-        return (encode1, decode1, None, None)
+        return (encode1, decode1, Nichts, Nichts)
     sowenn encoding=="test.unicode2":
-        return (encode2, decode2, None, None)
+        return (encode2, decode2, Nichts, Nichts)
     sonst:
-        return None
+        return Nichts
 
 def duplicate_string(text):
     """
@@ -85,7 +85,7 @@ klasse StrTest(string_tests.StringLikeTest,
         method = getattr(object, methodname)
         realresult = method(*args)
         self.assertEqual(realresult, result)
-        self.assertTrue(type(realresult) is type(result))
+        self.assertWahr(type(realresult) is type(result))
 
         # wenn the original is returned make sure that
         # this doesn't happen with subclasses
@@ -97,7 +97,7 @@ klasse StrTest(string_tests.StringLikeTest,
             method = getattr(object, methodname)
             realresult = method(*args)
             self.assertEqual(realresult, result)
-            self.assertTrue(object is not realresult)
+            self.assertWahr(object is not realresult)
 
     def assertTypedEqual(self, actual, expected):
         self.assertIs(type(actual), type(expected))
@@ -406,20 +406,20 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_maketrans_translate(self):
         # these work with plain translate()
         self.checkequalnofix('bbbc', 'abababc', 'translate',
-                             {ord('a'): None})
+                             {ord('a'): Nichts})
         self.checkequalnofix('iiic', 'abababc', 'translate',
-                             {ord('a'): None, ord('b'): ord('i')})
+                             {ord('a'): Nichts, ord('b'): ord('i')})
         self.checkequalnofix('iiix', 'abababc', 'translate',
-                             {ord('a'): None, ord('b'): ord('i'), ord('c'): 'x'})
+                             {ord('a'): Nichts, ord('b'): ord('i'), ord('c'): 'x'})
         self.checkequalnofix('c', 'abababc', 'translate',
-                             {ord('a'): None, ord('b'): ''})
+                             {ord('a'): Nichts, ord('b'): ''})
         self.checkequalnofix('xyyx', 'xzx', 'translate',
                              {ord('z'): 'yy'})
 
         # this needs maketrans()
         self.checkequalnofix('abababc', 'abababc', 'translate',
                              {'b': '<i>'})
-        tbl = self.type2test.maketrans({'a': None, 'b': '<i>'})
+        tbl = self.type2test.maketrans({'a': Nichts, 'b': '<i>'})
         self.checkequalnofix('<i><i><i>c', 'abababc', 'translate', tbl)
         # test alternative way of calling maketrans()
         tbl = self.type2test.maketrans('abc', 'xyz', 'd')
@@ -431,15 +431,15 @@ klasse StrTest(string_tests.StringLikeTest,
                          "[X]")
         self.assertEqual("[a]".translate(str.maketrans({'a': 'X'})),
                          "[X]")
-        self.assertEqual("[a]".translate(str.maketrans({'a': None})),
+        self.assertEqual("[a]".translate(str.maketrans({'a': Nichts})),
                          "[]")
         self.assertEqual("[a]".translate(str.maketrans({'a': 'XXX'})),
                          "[XXX]")
         self.assertEqual("[a]".translate(str.maketrans({'a': '\xe9'})),
                          "[\xe9]")
-        self.assertEqual('axb'.translate(str.maketrans({'a': None, 'b': '123'})),
+        self.assertEqual('axb'.translate(str.maketrans({'a': Nichts, 'b': '123'})),
                          "x123")
-        self.assertEqual('axb'.translate(str.maketrans({'a': None, 'b': '\xe9'})),
+        self.assertEqual('axb'.translate(str.maketrans({'a': Nichts, 'b': '\xe9'})),
                          "x\xe9")
 
         # test non-ASCII (don't take the fast-path)
@@ -447,7 +447,7 @@ klasse StrTest(string_tests.StringLikeTest,
                          "[<\xe9>]")
         self.assertEqual("[\xe9]".translate(str.maketrans({'\xe9': 'a'})),
                          "[a]")
-        self.assertEqual("[\xe9]".translate(str.maketrans({'\xe9': None})),
+        self.assertEqual("[\xe9]".translate(str.maketrans({'\xe9': Nichts})),
                          "[]")
         self.assertEqual("[\xe9]".translate(str.maketrans({'\xe9': '123'})),
                          "[123]")
@@ -506,9 +506,9 @@ klasse StrTest(string_tests.StringLikeTest,
                 self.checkequal([left, right],
                                 left + delim * 2 + right, 'rsplit', delim *2)
 
-            # Check `None` as well:
+            # Check `Nichts` as well:
             self.checkequal([left + right],
-                             left + right, 'rsplit', None)
+                             left + right, 'rsplit', Nichts)
 
     def test_partition(self):
         string_tests.StringLikeTest.test_partition(self)
@@ -625,29 +625,29 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_bytes_comparison(self):
         with warnings_helper.check_warnings():
             warnings.simplefilter('ignore', BytesWarning)
-            self.assertEqual('abc' == b'abc', False)
-            self.assertEqual('abc' != b'abc', True)
-            self.assertEqual('abc' == bytearray(b'abc'), False)
-            self.assertEqual('abc' != bytearray(b'abc'), True)
+            self.assertEqual('abc' == b'abc', Falsch)
+            self.assertEqual('abc' != b'abc', Wahr)
+            self.assertEqual('abc' == bytearray(b'abc'), Falsch)
+            self.assertEqual('abc' != bytearray(b'abc'), Wahr)
 
     def test_comparison(self):
         # Comparisons:
         self.assertEqual('abc', 'abc')
-        self.assertTrue('abcd' > 'abc')
-        self.assertTrue('abc' < 'abcd')
+        self.assertWahr('abcd' > 'abc')
+        self.assertWahr('abc' < 'abcd')
 
         wenn 0:
             # Move these tests to a Unicode collation module test...
             # Testing UTF-16 code point order comparisons...
 
             # No surrogates, no fixup required.
-            self.assertTrue('\u0061' < '\u20ac')
+            self.assertWahr('\u0061' < '\u20ac')
             # Non surrogate below surrogate value, no fixup required
-            self.assertTrue('\u0061' < '\ud800\udc02')
+            self.assertWahr('\u0061' < '\ud800\udc02')
 
             # Non surrogate above surrogate value, fixup required
             def test_lecmp(s, s2):
-                self.assertTrue(s < s2)
+                self.assertWahr(s < s2)
 
             def test_fixup(s):
                 s2 = '\ud800\udc01'
@@ -687,59 +687,59 @@ klasse StrTest(string_tests.StringLikeTest,
                 test_fixup('\uff61')
 
         # Surrogates on both sides, no fixup required
-        self.assertTrue('\ud800\udc02' < '\ud84d\udc56')
+        self.assertWahr('\ud800\udc02' < '\ud84d\udc56')
 
     def test_islower(self):
         super().test_islower()
-        self.checkequalnofix(False, '\u1FFc', 'islower')
-        self.assertFalse('\u2167'.islower())
-        self.assertTrue('\u2177'.islower())
+        self.checkequalnofix(Falsch, '\u1FFc', 'islower')
+        self.assertFalsch('\u2167'.islower())
+        self.assertWahr('\u2177'.islower())
         # non-BMP, uppercase
-        self.assertFalse('\U00010401'.islower())
-        self.assertFalse('\U00010427'.islower())
+        self.assertFalsch('\U00010401'.islower())
+        self.assertFalsch('\U00010427'.islower())
         # non-BMP, lowercase
-        self.assertTrue('\U00010429'.islower())
-        self.assertTrue('\U0001044E'.islower())
+        self.assertWahr('\U00010429'.islower())
+        self.assertWahr('\U0001044E'.islower())
         # non-BMP, non-cased
-        self.assertFalse('\U0001F40D'.islower())
-        self.assertFalse('\U0001F46F'.islower())
+        self.assertFalsch('\U0001F40D'.islower())
+        self.assertFalsch('\U0001F46F'.islower())
 
     def test_isupper(self):
         super().test_isupper()
-        self.checkequalnofix(False, '\u1FFc', 'isupper')
-        self.assertTrue('\u2167'.isupper())
-        self.assertFalse('\u2177'.isupper())
+        self.checkequalnofix(Falsch, '\u1FFc', 'isupper')
+        self.assertWahr('\u2167'.isupper())
+        self.assertFalsch('\u2177'.isupper())
         # non-BMP, uppercase
-        self.assertTrue('\U00010401'.isupper())
-        self.assertTrue('\U00010427'.isupper())
+        self.assertWahr('\U00010401'.isupper())
+        self.assertWahr('\U00010427'.isupper())
         # non-BMP, lowercase
-        self.assertFalse('\U00010429'.isupper())
-        self.assertFalse('\U0001044E'.isupper())
+        self.assertFalsch('\U00010429'.isupper())
+        self.assertFalsch('\U0001044E'.isupper())
         # non-BMP, non-cased
-        self.assertFalse('\U0001F40D'.isupper())
-        self.assertFalse('\U0001F46F'.isupper())
+        self.assertFalsch('\U0001F40D'.isupper())
+        self.assertFalsch('\U0001F46F'.isupper())
 
     def test_istitle(self):
         super().test_istitle()
-        self.checkequalnofix(True, '\u1FFc', 'istitle')
-        self.checkequalnofix(True, 'Greek \u1FFcitlecases ...', 'istitle')
+        self.checkequalnofix(Wahr, '\u1FFc', 'istitle')
+        self.checkequalnofix(Wahr, 'Greek \u1FFcitlecases ...', 'istitle')
 
         # non-BMP, uppercase + lowercase
-        self.assertTrue('\U00010401\U00010429'.istitle())
-        self.assertTrue('\U00010427\U0001044E'.istitle())
+        self.assertWahr('\U00010401\U00010429'.istitle())
+        self.assertWahr('\U00010427\U0001044E'.istitle())
         # apparently there are no titlecased (Lt) non-BMP chars in Unicode 6
         fuer ch in ['\U00010429', '\U0001044E', '\U0001F40D', '\U0001F46F']:
-            self.assertFalse(ch.istitle(), '{!a} is not title'.format(ch))
+            self.assertFalsch(ch.istitle(), '{!a} is not title'.format(ch))
 
     def test_isspace(self):
         super().test_isspace()
-        self.checkequalnofix(True, '\u2000', 'isspace')
-        self.checkequalnofix(True, '\u200a', 'isspace')
-        self.checkequalnofix(False, '\u2014', 'isspace')
+        self.checkequalnofix(Wahr, '\u2000', 'isspace')
+        self.checkequalnofix(Wahr, '\u200a', 'isspace')
+        self.checkequalnofix(Falsch, '\u2014', 'isspace')
         # There are no non-BMP whitespace chars as of Unicode 12.
         fuer ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F']:
-            self.assertFalse(ch.isspace(), '{!a} is not space.'.format(ch))
+            self.assertFalsch(ch.isspace(), '{!a} is not space.'.format(ch))
 
     @support.requires_resource('cpu')
     def test_isspace_invariant(self):
@@ -755,103 +755,103 @@ klasse StrTest(string_tests.StringLikeTest,
         super().test_isalnum()
         fuer ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001D7F6', '\U00011066', '\U000104A0', '\U0001F107']:
-            self.assertTrue(ch.isalnum(), '{!a} is alnum.'.format(ch))
+            self.assertWahr(ch.isalnum(), '{!a} is alnum.'.format(ch))
 
     def test_isalpha(self):
         super().test_isalpha()
-        self.checkequalnofix(True, '\u1FFc', 'isalpha')
+        self.checkequalnofix(Wahr, '\u1FFc', 'isalpha')
         # non-BMP, cased
-        self.assertTrue('\U00010401'.isalpha())
-        self.assertTrue('\U00010427'.isalpha())
-        self.assertTrue('\U00010429'.isalpha())
-        self.assertTrue('\U0001044E'.isalpha())
+        self.assertWahr('\U00010401'.isalpha())
+        self.assertWahr('\U00010427'.isalpha())
+        self.assertWahr('\U00010429'.isalpha())
+        self.assertWahr('\U0001044E'.isalpha())
         # non-BMP, non-cased
-        self.assertFalse('\U0001F40D'.isalpha())
-        self.assertFalse('\U0001F46F'.isalpha())
+        self.assertFalsch('\U0001F40D'.isalpha())
+        self.assertFalsch('\U0001F46F'.isalpha())
 
     def test_isascii(self):
         super().test_isascii()
-        self.assertFalse("\u20ac".isascii())
-        self.assertFalse("\U0010ffff".isascii())
+        self.assertFalsch("\u20ac".isascii())
+        self.assertFalsch("\U0010ffff".isascii())
 
     def test_isdecimal(self):
-        self.checkequalnofix(False, '', 'isdecimal')
-        self.checkequalnofix(False, 'a', 'isdecimal')
-        self.checkequalnofix(True, '0', 'isdecimal')
-        self.checkequalnofix(False, '\u2460', 'isdecimal') # CIRCLED DIGIT ONE
-        self.checkequalnofix(False, '\xbc', 'isdecimal') # VULGAR FRACTION ONE QUARTER
-        self.checkequalnofix(True, '\u0660', 'isdecimal') # ARABIC-INDIC DIGIT ZERO
-        self.checkequalnofix(True, '0123456789', 'isdecimal')
-        self.checkequalnofix(False, '0123456789a', 'isdecimal')
+        self.checkequalnofix(Falsch, '', 'isdecimal')
+        self.checkequalnofix(Falsch, 'a', 'isdecimal')
+        self.checkequalnofix(Wahr, '0', 'isdecimal')
+        self.checkequalnofix(Falsch, '\u2460', 'isdecimal') # CIRCLED DIGIT ONE
+        self.checkequalnofix(Falsch, '\xbc', 'isdecimal') # VULGAR FRACTION ONE QUARTER
+        self.checkequalnofix(Wahr, '\u0660', 'isdecimal') # ARABIC-INDIC DIGIT ZERO
+        self.checkequalnofix(Wahr, '0123456789', 'isdecimal')
+        self.checkequalnofix(Falsch, '0123456789a', 'isdecimal')
 
         self.checkraises(TypeError, 'abc', 'isdecimal', 42)
 
         fuer ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F', '\U00011065', '\U0001F107']:
-            self.assertFalse(ch.isdecimal(), '{!a} is not decimal.'.format(ch))
+            self.assertFalsch(ch.isdecimal(), '{!a} is not decimal.'.format(ch))
         fuer ch in ['\U0001D7F6', '\U00011066', '\U000104A0']:
-            self.assertTrue(ch.isdecimal(), '{!a} is decimal.'.format(ch))
+            self.assertWahr(ch.isdecimal(), '{!a} is decimal.'.format(ch))
 
     def test_isdigit(self):
         super().test_isdigit()
-        self.checkequalnofix(True, '\u2460', 'isdigit')
-        self.checkequalnofix(False, '\xbc', 'isdigit')
-        self.checkequalnofix(True, '\u0660', 'isdigit')
+        self.checkequalnofix(Wahr, '\u2460', 'isdigit')
+        self.checkequalnofix(Falsch, '\xbc', 'isdigit')
+        self.checkequalnofix(Wahr, '\u0660', 'isdigit')
 
         fuer ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F', '\U00011065']:
-            self.assertFalse(ch.isdigit(), '{!a} is not a digit.'.format(ch))
+            self.assertFalsch(ch.isdigit(), '{!a} is not a digit.'.format(ch))
         fuer ch in ['\U0001D7F6', '\U00011066', '\U000104A0', '\U0001F107']:
-            self.assertTrue(ch.isdigit(), '{!a} is a digit.'.format(ch))
+            self.assertWahr(ch.isdigit(), '{!a} is a digit.'.format(ch))
 
     def test_isnumeric(self):
-        self.checkequalnofix(False, '', 'isnumeric')
-        self.checkequalnofix(False, 'a', 'isnumeric')
-        self.checkequalnofix(True, '0', 'isnumeric')
-        self.checkequalnofix(True, '\u2460', 'isnumeric')
-        self.checkequalnofix(True, '\xbc', 'isnumeric')
-        self.checkequalnofix(True, '\u0660', 'isnumeric')
-        self.checkequalnofix(True, '0123456789', 'isnumeric')
-        self.checkequalnofix(False, '0123456789a', 'isnumeric')
+        self.checkequalnofix(Falsch, '', 'isnumeric')
+        self.checkequalnofix(Falsch, 'a', 'isnumeric')
+        self.checkequalnofix(Wahr, '0', 'isnumeric')
+        self.checkequalnofix(Wahr, '\u2460', 'isnumeric')
+        self.checkequalnofix(Wahr, '\xbc', 'isnumeric')
+        self.checkequalnofix(Wahr, '\u0660', 'isnumeric')
+        self.checkequalnofix(Wahr, '0123456789', 'isnumeric')
+        self.checkequalnofix(Falsch, '0123456789a', 'isnumeric')
 
         self.assertRaises(TypeError, "abc".isnumeric, 42)
 
         fuer ch in ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F']:
-            self.assertFalse(ch.isnumeric(), '{!a} is not numeric.'.format(ch))
+            self.assertFalsch(ch.isnumeric(), '{!a} is not numeric.'.format(ch))
         fuer ch in ['\U00011065', '\U0001D7F6', '\U00011066',
                    '\U000104A0', '\U0001F107']:
-            self.assertTrue(ch.isnumeric(), '{!a} is numeric.'.format(ch))
+            self.assertWahr(ch.isnumeric(), '{!a} is numeric.'.format(ch))
 
     def test_isidentifier(self):
-        self.assertTrue("a".isidentifier())
-        self.assertTrue("Z".isidentifier())
-        self.assertTrue("_".isidentifier())
-        self.assertTrue("b0".isidentifier())
-        self.assertTrue("bc".isidentifier())
-        self.assertTrue("b_".isidentifier())
-        self.assertTrue("µ".isidentifier())
-        self.assertTrue("𝔘𝔫𝔦𝔠𝔬𝔡𝔢".isidentifier())
+        self.assertWahr("a".isidentifier())
+        self.assertWahr("Z".isidentifier())
+        self.assertWahr("_".isidentifier())
+        self.assertWahr("b0".isidentifier())
+        self.assertWahr("bc".isidentifier())
+        self.assertWahr("b_".isidentifier())
+        self.assertWahr("µ".isidentifier())
+        self.assertWahr("𝔘𝔫𝔦𝔠𝔬𝔡𝔢".isidentifier())
 
-        self.assertFalse(" ".isidentifier())
-        self.assertFalse("[".isidentifier())
-        self.assertFalse("©".isidentifier())
-        self.assertFalse("0".isidentifier())
+        self.assertFalsch(" ".isidentifier())
+        self.assertFalsch("[".isidentifier())
+        self.assertFalsch("©".isidentifier())
+        self.assertFalsch("0".isidentifier())
 
     def test_isprintable(self):
-        self.assertTrue("".isprintable())
-        self.assertTrue(" ".isprintable())
-        self.assertTrue("abcdefg".isprintable())
-        self.assertFalse("abcdefg\n".isprintable())
+        self.assertWahr("".isprintable())
+        self.assertWahr(" ".isprintable())
+        self.assertWahr("abcdefg".isprintable())
+        self.assertFalsch("abcdefg\n".isprintable())
         # some defined Unicode character
-        self.assertTrue("\u0374".isprintable())
+        self.assertWahr("\u0374".isprintable())
         # undefined character
-        self.assertFalse("\u0378".isprintable())
+        self.assertFalsch("\u0378".isprintable())
         # single surrogate character
-        self.assertFalse("\ud800".isprintable())
+        self.assertFalsch("\ud800".isprintable())
 
-        self.assertTrue('\U0001F46F'.isprintable())
-        self.assertFalse('\U000E0020'.isprintable())
+        self.assertWahr('\U0001F46F'.isprintable())
+        self.assertFalsch('\U000E0020'.isprintable())
 
     @support.requires_resource('cpu')
     def test_isprintable_invariant(self):
@@ -865,19 +865,19 @@ klasse StrTest(string_tests.StringLikeTest,
     def test_surrogates(self):
         fuer s in ('a\uD800b\uDFFF', 'a\uDFFFb\uD800',
                   'a\uD800b\uDFFFa', 'a\uDFFFb\uD800a'):
-            self.assertTrue(s.islower())
-            self.assertFalse(s.isupper())
-            self.assertFalse(s.istitle())
+            self.assertWahr(s.islower())
+            self.assertFalsch(s.isupper())
+            self.assertFalsch(s.istitle())
         fuer s in ('A\uD800B\uDFFF', 'A\uDFFFB\uD800',
                   'A\uD800B\uDFFFA', 'A\uDFFFB\uD800A'):
-            self.assertFalse(s.islower())
-            self.assertTrue(s.isupper())
-            self.assertTrue(s.istitle())
+            self.assertFalsch(s.islower())
+            self.assertWahr(s.isupper())
+            self.assertWahr(s.istitle())
 
         fuer meth_name in ('islower', 'isupper', 'istitle'):
             meth = getattr(str, meth_name)
             fuer s in ('\uD800', '\uDFFF', '\uD800\uD800', '\uDFFF\uDFFF'):
-                self.assertFalse(meth(s), '%a.%s() is False' % (s, meth_name))
+                self.assertFalsch(meth(s), '%a.%s() is Falsch' % (s, meth_name))
 
         fuer meth_name in ('isalpha', 'isalnum', 'isdigit', 'isspace',
                           'isdecimal', 'isnumeric',
@@ -886,7 +886,7 @@ klasse StrTest(string_tests.StringLikeTest,
             fuer s in ('\uD800', '\uDFFF', '\uD800\uD800', '\uDFFF\uDFFF',
                       'a\uD800b\uDFFF', 'a\uDFFFb\uD800',
                       'a\uD800b\uDFFFa', 'a\uDFFFb\uD800a'):
-                self.assertFalse(meth(s), '%a.%s() is False' % (s, meth_name))
+                self.assertFalsch(meth(s), '%a.%s() is Falsch' % (s, meth_name))
 
 
     def test_lower(self):
@@ -1028,16 +1028,16 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertIn('a', 'bdba')
         self.assertNotIn('a', 'bdb')
         self.assertIn('a', 'bdba')
-        self.assertIn('a', ('a',1,None))
-        self.assertIn('a', (1,None,'a'))
-        self.assertIn('a', ('a',1,None))
-        self.assertIn('a', (1,None,'a'))
+        self.assertIn('a', ('a',1,Nichts))
+        self.assertIn('a', (1,Nichts,'a'))
+        self.assertIn('a', ('a',1,Nichts))
+        self.assertIn('a', (1,Nichts,'a'))
         self.assertNotIn('a', ('x',1,'y'))
-        self.assertNotIn('a', ('x',1,None))
+        self.assertNotIn('a', ('x',1,Nichts))
         self.assertNotIn('abcd', 'abcxxxx')
         self.assertIn('ab', 'abcd')
         self.assertIn('ab', 'abc')
-        self.assertIn('ab', (1,None,'ab'))
+        self.assertIn('ab', (1,Nichts,'ab'))
         self.assertIn('', 'abc')
         self.assertIn('', '')
         self.assertIn('', 'abc')
@@ -1143,14 +1143,14 @@ klasse StrTest(string_tests.StringLikeTest,
                 self.x = x
             def __repr__(self):
                 return 'M(' + self.x + ')'
-            __str__ = None
+            __str__ = Nichts
 
         klasse N:
             def __init__(self, x):
                 self.x = x
             def __repr__(self):
                 return 'N(' + self.x + ')'
-            __format__ = None
+            __format__ = Nichts
 
         self.assertEqual(''.format(), '')
         self.assertEqual('abc'.format(), 'abc')
@@ -1345,8 +1345,8 @@ klasse StrTest(string_tests.StringLikeTest,
         self.assertRaises(ValueError, '{0:d}'.format, 1.0)
 
         # issue 6089
-        self.assertRaises(ValueError, "{0[0]x}".format, [None])
-        self.assertRaises(ValueError, "{0[0](10)}".format, [None])
+        self.assertRaises(ValueError, "{0[0]x}".format, [Nichts])
+        self.assertRaises(ValueError, "{0[0](10)}".format, [Nichts])
 
         # can't have a replacement on the field name portion
         self.assertRaises(TypeError, '{0[{1}]}'.format, 'abcdefg', 4)
@@ -1656,7 +1656,7 @@ klasse StrTest(string_tests.StringLikeTest,
                          "Success, self.__rmod__('lhs %% %r') was called")
 
     @support.cpython_only
-    @unittest.skipIf(_testcapi is None, 'need _testcapi module')
+    @unittest.skipIf(_testcapi is Nichts, 'need _testcapi module')
     def test_formatting_huge_precision_c_limits(self):
         format_string = "%.{}f".format(_testcapi.INT_MAX + 1)
         with self.assertRaises(ValueError):
@@ -2551,8 +2551,8 @@ klasse StrTest(string_tests.StringLikeTest,
             self.assertEqual(text1 != text2, not equal)
 
             wenn equal:
-                self.assertTrue(text1 <= text2)
-                self.assertTrue(text1 >= text2)
+                self.assertWahr(text1 <= text2)
+                self.assertWahr(text1 >= text2)
 
                 # text1 is text2: duplicate strings to skip the "str1 == str2"
                 # optimization in unicode_compare_eq() and really compare
@@ -2561,47 +2561,47 @@ klasse StrTest(string_tests.StringLikeTest,
                 copy2 = duplicate_string(text2)
                 self.assertIsNot(copy1, copy2)
 
-                self.assertTrue(copy1 == copy2)
-                self.assertFalse(copy1 != copy2)
+                self.assertWahr(copy1 == copy2)
+                self.assertFalsch(copy1 != copy2)
 
-                self.assertTrue(copy1 <= copy2)
-                self.assertTrue(copy2 >= copy2)
+                self.assertWahr(copy1 <= copy2)
+                self.assertWahr(copy2 >= copy2)
 
-        self.assertTrue(ascii < ascii2)
-        self.assertTrue(ascii < latin)
-        self.assertTrue(ascii < bmp)
-        self.assertTrue(ascii < astral)
-        self.assertFalse(ascii >= ascii2)
-        self.assertFalse(ascii >= latin)
-        self.assertFalse(ascii >= bmp)
-        self.assertFalse(ascii >= astral)
+        self.assertWahr(ascii < ascii2)
+        self.assertWahr(ascii < latin)
+        self.assertWahr(ascii < bmp)
+        self.assertWahr(ascii < astral)
+        self.assertFalsch(ascii >= ascii2)
+        self.assertFalsch(ascii >= latin)
+        self.assertFalsch(ascii >= bmp)
+        self.assertFalsch(ascii >= astral)
 
-        self.assertFalse(latin < ascii)
-        self.assertTrue(latin < latin2)
-        self.assertTrue(latin < bmp)
-        self.assertTrue(latin < astral)
-        self.assertTrue(latin >= ascii)
-        self.assertFalse(latin >= latin2)
-        self.assertFalse(latin >= bmp)
-        self.assertFalse(latin >= astral)
+        self.assertFalsch(latin < ascii)
+        self.assertWahr(latin < latin2)
+        self.assertWahr(latin < bmp)
+        self.assertWahr(latin < astral)
+        self.assertWahr(latin >= ascii)
+        self.assertFalsch(latin >= latin2)
+        self.assertFalsch(latin >= bmp)
+        self.assertFalsch(latin >= astral)
 
-        self.assertFalse(bmp < ascii)
-        self.assertFalse(bmp < latin)
-        self.assertTrue(bmp < bmp2)
-        self.assertTrue(bmp < astral)
-        self.assertTrue(bmp >= ascii)
-        self.assertTrue(bmp >= latin)
-        self.assertFalse(bmp >= bmp2)
-        self.assertFalse(bmp >= astral)
+        self.assertFalsch(bmp < ascii)
+        self.assertFalsch(bmp < latin)
+        self.assertWahr(bmp < bmp2)
+        self.assertWahr(bmp < astral)
+        self.assertWahr(bmp >= ascii)
+        self.assertWahr(bmp >= latin)
+        self.assertFalsch(bmp >= bmp2)
+        self.assertFalsch(bmp >= astral)
 
-        self.assertFalse(astral < ascii)
-        self.assertFalse(astral < latin)
-        self.assertFalse(astral < bmp2)
-        self.assertTrue(astral < astral2)
-        self.assertTrue(astral >= ascii)
-        self.assertTrue(astral >= latin)
-        self.assertTrue(astral >= bmp2)
-        self.assertFalse(astral >= astral2)
+        self.assertFalsch(astral < ascii)
+        self.assertFalsch(astral < latin)
+        self.assertFalsch(astral < bmp2)
+        self.assertWahr(astral < astral2)
+        self.assertWahr(astral >= ascii)
+        self.assertWahr(astral >= latin)
+        self.assertWahr(astral >= bmp2)
+        self.assertFalsch(astral >= astral2)
 
     def test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, str)
@@ -2718,20 +2718,20 @@ klasse StringModuleTest(unittest.TestCase):
         formatter = parse("prefix {2!s}xxx{0:^+10.3f}{obj.attr!s} {z[0]!s:10}")
         self.assertEqual(formatter, [
             ('prefix ', '2', '', 's'),
-            ('xxx', '0', '^+10.3f', None),
+            ('xxx', '0', '^+10.3f', Nichts),
             ('', 'obj.attr', '', 's'),
             (' ', 'z[0]', '10', 's'),
         ])
 
         formatter = parse("prefix {} suffix")
         self.assertEqual(formatter, [
-            ('prefix ', '', '', None),
-            (' suffix', None, None, None),
+            ('prefix ', '', '', Nichts),
+            (' suffix', Nichts, Nichts, Nichts),
         ])
 
         formatter = parse("str")
         self.assertEqual(formatter, [
-            ('str', None, None, None),
+            ('str', Nichts, Nichts, Nichts),
         ])
 
         formatter = parse("")
@@ -2739,7 +2739,7 @@ klasse StringModuleTest(unittest.TestCase):
 
         formatter = parse("{0}")
         self.assertEqual(formatter, [
-            ('', '0', '', None),
+            ('', '0', '', Nichts),
         ])
 
         self.assertRaises(TypeError, _string.formatter_parser, 1)
@@ -2750,13 +2750,13 @@ klasse StringModuleTest(unittest.TestCase):
             items[1] = list(items[1])
             return items
         self.assertEqual(split("obj"), ["obj", []])
-        self.assertEqual(split("obj.arg"), ["obj", [(True, 'arg')]])
-        self.assertEqual(split("obj[key]"), ["obj", [(False, 'key')]])
+        self.assertEqual(split("obj.arg"), ["obj", [(Wahr, 'arg')]])
+        self.assertEqual(split("obj[key]"), ["obj", [(Falsch, 'key')]])
         self.assertEqual(split("obj.arg[key1][key2]"), [
             "obj",
-            [(True, 'arg'),
-             (False, 'key1'),
-             (False, 'key2'),
+            [(Wahr, 'arg'),
+             (Falsch, 'key1'),
+             (Falsch, 'key2'),
             ]])
         self.assertRaises(TypeError, _string.formatter_field_name_split, 1)
 

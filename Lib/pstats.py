@@ -54,7 +54,7 @@ klasse SortKey:
         return obj
 
 
-@dataclass(unsafe_hash=True)
+@dataclass(unsafe_hash=Wahr)
 klasse FunctionProfile:
     ncalls: str
     tottime: float
@@ -64,7 +64,7 @@ klasse FunctionProfile:
     file_name: str
     line_number: int
 
-@dataclass(unsafe_hash=True)
+@dataclass(unsafe_hash=Wahr)
 klasse StatsProfile:
     '''Class fuer keeping track of an item in inventory.'''
     total_tt: float
@@ -104,10 +104,10 @@ klasse Stats:
                             print_stats(5).print_callers(5)
     """
 
-    def __init__(self, *args, stream=None):
+    def __init__(self, *args, stream=Nichts):
         self.stream = stream or sys.stdout
         wenn not len(args):
-            arg = None
+            arg = Nichts
         sonst:
             arg = args[0]
             args = args[1:]
@@ -115,9 +115,9 @@ klasse Stats:
         self.add(*args)
 
     def init(self, arg):
-        self.all_callees = None  # calc only wenn needed
+        self.all_callees = Nichts  # calc only wenn needed
         self.files = []
-        self.fcn_list = None
+        self.fcn_list = Nichts
         self.total_tt = 0
         self.total_calls = 0
         self.prim_calls = 0
@@ -134,7 +134,7 @@ klasse Stats:
             raise
 
     def load_stats(self, arg):
-        wenn arg is None:
+        wenn arg is Nichts:
             self.stats = {}
             return
         sowenn isinstance(arg, str):
@@ -185,7 +185,7 @@ klasse Stats:
             wenn self.max_name_len < item.max_name_len:
                 self.max_name_len = item.max_name_len
 
-            self.fcn_list = None
+            self.fcn_list = Nichts
 
             fuer func, stat in item.stats.items():
                 wenn func in self.stats:
@@ -304,8 +304,8 @@ klasse Stats:
 
         self.max_name_len = max_name_len
 
-        self.fcn_list = None
-        self.all_callees = None
+        self.fcn_list = Nichts
+        self.all_callees = Nichts
         return self
 
     def calc_callees(self):
@@ -464,7 +464,7 @@ klasse Stats:
     def print_call_heading(self, name_size, column_title):
         print("Function ".ljust(name_size) + column_title, file=self.stream)
         # print sub-header only wenn we have new-style callers
-        subheader = False
+        subheader = Falsch
         fuer cc, nc, tt, ct, callers in self.stats.values():
             wenn callers:
                 value = next(iter(callers.values()))
@@ -525,7 +525,7 @@ klasse Stats:
 
 
 klasse SampledStats(Stats):
-    def __init__(self, *args, stream=None):
+    def __init__(self, *args, stream=Nichts):
         super().__init__(*args, stream=stream)
 
         self.sort_arg_dict = {
@@ -669,12 +669,12 @@ wenn __name__ == '__main__':
         pass
 
     klasse ProfileBrowser(cmd.Cmd):
-        def __init__(self, profile=None):
+        def __init__(self, profile=Nichts):
             cmd.Cmd.__init__(self)
             self.prompt = "% "
-            self.stats = None
+            self.stats = Nichts
             self.stream = sys.stdout
-            wenn profile is not None:
+            wenn profile is not Nichts:
                 self.do_read(profile)
 
         def generic(self, fn, line):
@@ -820,12 +820,12 @@ wenn __name__ == '__main__':
         def postcmd(self, stop, line):
             wenn stop:
                 return stop
-            return None
+            return Nichts
 
     wenn len(sys.argv) > 1:
         initprofile = sys.argv[1]
     sonst:
-        initprofile = None
+        initprofile = Nichts
     try:
         browser = ProfileBrowser(initprofile)
         fuer profile in sys.argv[2:]:

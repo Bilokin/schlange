@@ -46,7 +46,7 @@ klasse TestAbstractContextManager(unittest.TestCase):
             def __enter__(self):
                 return self
             def __exit__(self, exc_type, exc_value, traceback):
-                return None
+                return Nichts
 
         self.assertIsSubclass(ManagerFromScratch, AbstractContextManager)
 
@@ -57,12 +57,12 @@ klasse TestAbstractContextManager(unittest.TestCase):
         self.assertIsSubclass(DefaultEnter, AbstractContextManager)
 
         klasse NoEnter(ManagerFromScratch):
-            __enter__ = None
+            __enter__ = Nichts
 
         self.assertNotIsSubclass(NoEnter, AbstractContextManager)
 
         klasse NoExit(ManagerFromScratch):
-            __exit__ = None
+            __exit__ = Nichts
 
         self.assertNotIsSubclass(NoExit, AbstractContextManager)
 
@@ -156,7 +156,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         ctx = whee()
         ctx.__enter__()
         # Calling __exit__ should not result in an exception
-        self.assertFalse(ctx.__exit__(TypeError, TypeError("foo"), None))
+        self.assertFalsch(ctx.__exit__(TypeError, TypeError("foo"), Nichts))
 
     def test_contextmanager_trap_yield_after_throw(self):
         @contextmanager
@@ -168,15 +168,15 @@ klasse ContextManagerTestCase(unittest.TestCase):
         ctx = whoo()
         ctx.__enter__()
         with self.assertRaises(RuntimeError):
-            ctx.__exit__(TypeError, TypeError("foo"), None)
-        wenn support.check_impl_detail(cpython=True):
+            ctx.__exit__(TypeError, TypeError("foo"), Nichts)
+        wenn support.check_impl_detail(cpython=Wahr):
             # The "gen" attribute is an implementation detail.
-            self.assertFalse(ctx.gen.gi_suspended)
+            self.assertFalsch(ctx.gen.gi_suspended)
 
     def test_contextmanager_trap_no_yield(self):
         @contextmanager
         def whoo():
-            wenn False:
+            wenn Falsch:
                 yield
         ctx = whoo()
         with self.assertRaises(RuntimeError):
@@ -190,10 +190,10 @@ klasse ContextManagerTestCase(unittest.TestCase):
         ctx = whoo()
         ctx.__enter__()
         with self.assertRaises(RuntimeError):
-            ctx.__exit__(None, None, None)
-        wenn support.check_impl_detail(cpython=True):
+            ctx.__exit__(Nichts, Nichts, Nichts)
+        wenn support.check_impl_detail(cpython=Wahr):
             # The "gen" attribute is an implementation detail.
-            self.assertFalse(ctx.gen.gi_suspended)
+            self.assertFalsch(ctx.gen.gi_suspended)
 
     def test_contextmanager_non_normalised(self):
         @contextmanager
@@ -206,7 +206,7 @@ klasse ContextManagerTestCase(unittest.TestCase):
         ctx = whoo()
         ctx.__enter__()
         with self.assertRaises(SyntaxError):
-            ctx.__exit__(RuntimeError, None, None)
+            ctx.__exit__(RuntimeError, Nichts, Nichts)
 
     def test_contextmanager_except(self):
         state = []
@@ -285,7 +285,7 @@ def woohoo():
         except Exception as ex:
             self.assertIs(type(ex), StopIteration)
             self.assertEqual(ex.args[0], 'issue29692:Unchained')
-            self.assertIsNone(ex.__cause__)
+            self.assertIsNichts(ex.__cause__)
 
     def test_contextmanager_wrap_runtimeerror(self):
         @contextmanager
@@ -332,7 +332,7 @@ def woohoo():
 
     @support.requires_docstrings
     def test_instance_docstring_given_cm_docstring(self):
-        baz = self._create_contextmanager_attribs()(None)
+        baz = self._create_contextmanager_attribs()(Nichts)
         self.assertEqual(baz.__doc__, "Whee!")
 
     def test_keywords(self):
@@ -353,8 +353,8 @@ def woohoo():
             b = weakref.ref(b)
             # Allow test to work with a non-refcounted GC
             support.gc_collect()
-            self.assertIsNone(a())
-            self.assertIsNone(b())
+            self.assertIsNichts(a())
+            self.assertIsNichts(b())
             yield
 
         with woohoo(A(), b=A()):
@@ -402,7 +402,7 @@ klasse ClosingTestCase(unittest.TestCase):
     def test_instance_docs(self):
         # Issue 19330: ensure context manager instances have good docstrings
         cm_docstring = closing.__doc__
-        obj = closing(None)
+        obj = closing(Nichts)
         self.assertEqual(obj.__doc__, cm_docstring)
 
     def test_closing(self):
@@ -445,30 +445,30 @@ klasse FileContextTestCase(unittest.TestCase):
         tfn = tempfile.mktemp()
         try:
             with open(tfn, "w", encoding="utf-8") as f:
-                self.assertFalse(f.closed)
+                self.assertFalsch(f.closed)
                 f.write("Booh\n")
-            self.assertTrue(f.closed)
+            self.assertWahr(f.closed)
             with self.assertRaises(ZeroDivisionError):
                 with open(tfn, "r", encoding="utf-8") as f:
-                    self.assertFalse(f.closed)
+                    self.assertFalsch(f.closed)
                     self.assertEqual(f.read(), "Booh\n")
                     1 / 0
-            self.assertTrue(f.closed)
+            self.assertWahr(f.closed)
         finally:
             os_helper.unlink(tfn)
 
 klasse LockContextTestCase(unittest.TestCase):
 
     def boilerPlate(self, lock, locked):
-        self.assertFalse(locked())
+        self.assertFalsch(locked())
         with lock:
-            self.assertTrue(locked())
-        self.assertFalse(locked())
+            self.assertWahr(locked())
+        self.assertFalsch(locked())
         with self.assertRaises(ZeroDivisionError):
             with lock:
-                self.assertTrue(locked())
+                self.assertWahr(locked())
                 1 / 0
-        self.assertFalse(locked())
+        self.assertFalsch(locked())
 
     def testWithLock(self):
         lock = threading.Lock()
@@ -487,32 +487,32 @@ klasse LockContextTestCase(unittest.TestCase):
     def testWithSemaphore(self):
         lock = threading.Semaphore()
         def locked():
-            wenn lock.acquire(False):
+            wenn lock.acquire(Falsch):
                 lock.release()
-                return False
+                return Falsch
             sonst:
-                return True
+                return Wahr
         self.boilerPlate(lock, locked)
 
     def testWithBoundedSemaphore(self):
         lock = threading.BoundedSemaphore()
         def locked():
-            wenn lock.acquire(False):
+            wenn lock.acquire(Falsch):
                 lock.release()
-                return False
+                return Falsch
             sonst:
-                return True
+                return Wahr
         self.boilerPlate(lock, locked)
 
 
 klasse mycontext(ContextDecorator):
     """Example decoration-compatible context manager fuer testing"""
-    started = False
-    exc = None
-    catch = False
+    started = Falsch
+    exc = Nichts
+    catch = Falsch
 
     def __enter__(self):
-        self.started = True
+        self.started = Wahr
         return self
 
     def __exit__(self, *exc):
@@ -533,9 +533,9 @@ klasse TestContextDecorator(unittest.TestCase):
         context = mycontext()
         with context as result:
             self.assertIs(result, context)
-            self.assertTrue(context.started)
+            self.assertWahr(context.started)
 
-        self.assertEqual(context.exc, (None, None, None))
+        self.assertEqual(context.exc, (Nichts, Nichts, Nichts))
 
 
     def test_contextdecorator_with_exception(self):
@@ -544,14 +544,14 @@ klasse TestContextDecorator(unittest.TestCase):
         with self.assertRaisesRegex(NameError, 'foo'):
             with context:
                 raise NameError('foo')
-        self.assertIsNotNone(context.exc)
+        self.assertIsNotNichts(context.exc)
         self.assertIs(context.exc[0], NameError)
 
         context = mycontext()
-        context.catch = True
+        context.catch = Wahr
         with context:
             raise NameError('foo')
-        self.assertIsNotNone(context.exc)
+        self.assertIsNotNichts(context.exc)
         self.assertIs(context.exc[0], NameError)
 
 
@@ -560,10 +560,10 @@ klasse TestContextDecorator(unittest.TestCase):
 
         @context
         def test():
-            self.assertIsNone(context.exc)
-            self.assertTrue(context.started)
+            self.assertIsNichts(context.exc)
+            self.assertWahr(context.started)
         test()
-        self.assertEqual(context.exc, (None, None, None))
+        self.assertEqual(context.exc, (Nichts, Nichts, Nichts))
 
 
     def test_decorator_with_exception(self):
@@ -571,13 +571,13 @@ klasse TestContextDecorator(unittest.TestCase):
 
         @context
         def test():
-            self.assertIsNone(context.exc)
-            self.assertTrue(context.started)
+            self.assertIsNichts(context.exc)
+            self.assertWahr(context.started)
             raise NameError('foo')
 
         with self.assertRaisesRegex(NameError, 'foo'):
             test()
-        self.assertIsNotNone(context.exc)
+        self.assertIsNotNichts(context.exc)
         self.assertIs(context.exc[0], NameError)
 
 
@@ -587,7 +587,7 @@ klasse TestContextDecorator(unittest.TestCase):
         klasse Test(object):
 
             @context
-            def method(self, a, b, c=None):
+            def method(self, a, b, c=Nichts):
                 self.a = a
                 self.b = b
                 self.c = c
@@ -597,7 +597,7 @@ klasse TestContextDecorator(unittest.TestCase):
         test.method(1, 2)
         self.assertEqual(test.a, 1)
         self.assertEqual(test.b, 2)
-        self.assertEqual(test.c, None)
+        self.assertEqual(test.c, Nichts)
 
         test = Test()
         test.method('a', 'b', 'c')
@@ -637,11 +637,11 @@ klasse TestContextDecorator(unittest.TestCase):
 
     def test_contextdecorator_as_mixin(self):
         klasse somecontext(object):
-            started = False
-            exc = None
+            started = Falsch
+            exc = Nichts
 
             def __enter__(self):
-                self.started = True
+                self.started = Wahr
                 return self
 
             def __exit__(self, *exc):
@@ -653,10 +653,10 @@ klasse TestContextDecorator(unittest.TestCase):
         context = mycontext()
         @context
         def test():
-            self.assertIsNone(context.exc)
-            self.assertTrue(context.started)
+            self.assertIsNichts(context.exc)
+            self.assertWahr(context.started)
         test()
-        self.assertEqual(context.exc, (None, None, None))
+        self.assertEqual(context.exc, (Nichts, Nichts, Nichts))
 
 
     def test_contextmanager_as_decorator(self):
@@ -681,7 +681,7 @@ klasse TestContextDecorator(unittest.TestCase):
 
 
 klasse TestBaseExitStack:
-    exit_stack = None
+    exit_stack = Nichts
 
     @support.requires_docstrings
     def test_instance_docs(self):
@@ -722,7 +722,7 @@ klasse TestBaseExitStack:
             fuer wrapper in stack._exit_callbacks:
                 self.assertIs(wrapper[1].__wrapped__, _exit)
                 self.assertNotEqual(wrapper[1].__name__, _exit.__name__)
-                self.assertIsNone(wrapper[1].__doc__, _exit.__doc__)
+                self.assertIsNichts(wrapper[1].__doc__, _exit.__doc__)
         self.assertEqual(result, expected)
 
         result = []
@@ -740,11 +740,11 @@ klasse TestBaseExitStack:
         def _expect_exc(exc_type, exc, exc_tb):
             self.assertIs(exc_type, exc_raised)
         def _suppress_exc(*exc_details):
-            return True
+            return Wahr
         def _expect_ok(exc_type, exc, exc_tb):
-            self.assertIsNone(exc_type)
-            self.assertIsNone(exc)
-            self.assertIsNone(exc_tb)
+            self.assertIsNichts(exc_type)
+            self.assertIsNichts(exc)
+            self.assertIsNichts(exc_tb)
         klasse ExitCM(object):
             def __init__(self, check_exc):
                 self.check_exc = check_exc
@@ -782,7 +782,7 @@ klasse TestBaseExitStack:
             @stack.callback  # Registered first => cleaned up last
             def _exit():
                 result.append(4)
-            self.assertIsNotNone(_exit)
+            self.assertIsNotNichts(_exit)
             stack.enter_context(cm)
             self.assertIs(stack._exit_callbacks[-1][1].__self__, cm)
             result.append(2)
@@ -805,7 +805,7 @@ klasse TestBaseExitStack:
                 stack.enter_context(LacksEnter())
             with self.assertRaisesRegex(TypeError, 'the context manager'):
                 stack.enter_context(LacksExit())
-            self.assertFalse(stack._exit_callbacks)
+            self.assertFalsch(stack._exit_callbacks)
 
     def test_close(self):
         result = []
@@ -813,7 +813,7 @@ klasse TestBaseExitStack:
             @stack.callback
             def _exit():
                 result.append(1)
-            self.assertIsNotNone(_exit)
+            self.assertIsNotNichts(_exit)
             stack.close()
             result.append(2)
         self.assertEqual(result, [1, 2])
@@ -824,7 +824,7 @@ klasse TestBaseExitStack:
             @stack.callback
             def _exit():
                 result.append(3)
-            self.assertIsNotNone(_exit)
+            self.assertIsNotNichts(_exit)
             new_stack = stack.pop_all()
             result.append(1)
         result.append(2)
@@ -834,12 +834,12 @@ klasse TestBaseExitStack:
     def test_exit_raise(self):
         with self.assertRaises(ZeroDivisionError):
             with self.exit_stack() as stack:
-                stack.push(lambda *exc: False)
+                stack.push(lambda *exc: Falsch)
                 1/0
 
     def test_exit_suppress(self):
         with self.exit_stack() as stack:
-            stack.push(lambda *exc: True)
+            stack.push(lambda *exc: Wahr)
             1/0
 
     def test_exit_exception_traceback(self):
@@ -902,7 +902,7 @@ klasse TestBaseExitStack:
                 return self
             def __exit__(self, *exc_details):
                 type(self).saved_details = exc_details
-                return True
+                return Wahr
 
         try:
             with RaiseExc(IndexError):
@@ -914,7 +914,7 @@ klasse TestBaseExitStack:
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
-            self.assertIsNone(exc.__context__.__context__.__context__)
+            self.assertIsNichts(exc.__context__.__context__.__context__)
         sonst:
             self.fail("Expected IndexError, but no exception was raised")
         # Check the inner exceptions
@@ -927,11 +927,11 @@ klasse TestBaseExitStack:
         def raise_exc(exc):
             raise exc
 
-        saved_details = None
+        saved_details = Nichts
         def suppress_exc(*exc_details):
             nonlocal saved_details
             saved_details = exc_details
-            return True
+            return Wahr
 
         try:
             with self.exit_stack() as stack:
@@ -945,7 +945,7 @@ klasse TestBaseExitStack:
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
-            self.assertIsNone(exc.__context__.__context__.__context__)
+            self.assertIsNichts(exc.__context__.__context__.__context__)
         sonst:
             self.fail("Expected IndexError, but no exception was raised")
         # Check the inner exceptions
@@ -955,7 +955,7 @@ klasse TestBaseExitStack:
 
     def test_exit_exception_explicit_none_context(self):
         # Ensure ExitStack chaining matches actual nested `with` statements
-        # regarding explicit __context__ = None.
+        # regarding explicit __context__ = Nichts.
 
         klasse MyException(Exception):
             pass
@@ -969,7 +969,7 @@ klasse TestBaseExitStack:
                 try:
                     raise exc
                 finally:
-                    exc.__context__ = None
+                    exc.__context__ = Nichts
 
         @contextmanager
         def my_cm_with_exit_stack():
@@ -983,7 +983,7 @@ klasse TestBaseExitStack:
                     with cm():
                         raise IndexError()
                 except MyException as exc:
-                    self.assertIsNone(exc.__context__)
+                    self.assertIsNichts(exc.__context__)
                 sonst:
                     self.fail("Expected IndexError, but no exception was raised")
 
@@ -993,11 +993,11 @@ klasse TestBaseExitStack:
             raise exc
 
         def suppress_exc(*exc_details):
-            return True
+            return Wahr
 
         try:
             with self.exit_stack() as stack:
-                stack.callback(lambda: None)
+                stack.callback(lambda: Nichts)
                 stack.callback(raise_exc, IndexError)
         except Exception as exc:
             self.assertIsInstance(exc, IndexError)
@@ -1042,7 +1042,7 @@ klasse TestBaseExitStack:
             self.assertIs(exc.__context__, exc3)
             self.assertIs(exc.__context__.__context__, exc2)
             self.assertIs(exc.__context__.__context__.__context__, exc1)
-            self.assertIsNone(
+            self.assertIsNichts(
                        exc.__context__.__context__.__context__.__context__)
 
     def test_exit_exception_with_existing_context(self):
@@ -1070,12 +1070,12 @@ klasse TestBaseExitStack:
             self.assertIs(exc.__context__.__context__.__context__, exc2)
             self.assertIs(
                  exc.__context__.__context__.__context__.__context__, exc1)
-            self.assertIsNone(
+            self.assertIsNichts(
                 exc.__context__.__context__.__context__.__context__.__context__)
 
     def test_body_exception_suppress(self):
         def suppress_exc(*exc_details):
-            return True
+            return Wahr
         try:
             with self.exit_stack() as stack:
                 stack.push(suppress_exc)
@@ -1085,7 +1085,7 @@ klasse TestBaseExitStack:
 
     def test_exit_exception_chaining_suppress(self):
         with self.exit_stack() as stack:
-            stack.push(lambda *exc: True)
+            stack.push(lambda *exc: Wahr)
             stack.push(lambda *exc: 1/0)
             stack.push(lambda *exc: {}[1])
 
@@ -1136,8 +1136,8 @@ klasse TestBaseExitStack:
         exc = err_ctx.exception
         self.assertIsInstance(exc, UniqueException)
         self.assertIsInstance(exc.__context__, UniqueRuntimeError)
-        self.assertIsNone(exc.__context__.__context__)
-        self.assertIsNone(exc.__context__.__cause__)
+        self.assertIsNichts(exc.__context__.__context__)
+        self.assertIsNichts(exc.__context__.__cause__)
         self.assertIs(exc.__cause__, exc.__context__)
 
 
@@ -1151,19 +1151,19 @@ klasse TestExitStack(TestBaseExitStack, unittest.TestCase):
 
 klasse TestRedirectStream:
 
-    redirect_stream = None
-    orig_stream = None
+    redirect_stream = Nichts
+    orig_stream = Nichts
 
     @support.requires_docstrings
     def test_instance_docs(self):
         # Issue 19330: ensure context manager instances have good docstrings
         cm_docstring = self.redirect_stream.__doc__
-        obj = self.redirect_stream(None)
+        obj = self.redirect_stream(Nichts)
         self.assertEqual(obj.__doc__, cm_docstring)
 
     def test_no_redirect_in_init(self):
         orig_stdout = getattr(sys, self.orig_stream)
-        self.redirect_stream(None)
+        self.redirect_stream(Nichts)
         self.assertIs(getattr(sys, self.orig_stream), orig_stdout)
 
     def test_redirect_to_string_io(self):
@@ -1229,7 +1229,7 @@ klasse TestSuppress(ExceptionIsLikeMixin, unittest.TestCase):
 
     def test_no_result_from_enter(self):
         with suppress(ValueError) as enter_result:
-            self.assertIsNone(enter_result)
+            self.assertIsNichts(enter_result)
 
     def test_no_exception(self):
         with suppress(ValueError):
@@ -1268,9 +1268,9 @@ klasse TestSuppress(ExceptionIsLikeMixin, unittest.TestCase):
         with ignore_exceptions:
             with ignore_exceptions: # Check nested usage
                 len(5)
-            outer_continued = True
+            outer_continued = Wahr
             1/0
-        self.assertTrue(outer_continued)
+        self.assertWahr(outer_continued)
 
     def test_exception_groups(self):
         eg_ve = lambda: ExceptionGroup(

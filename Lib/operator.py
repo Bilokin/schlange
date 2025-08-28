@@ -55,8 +55,8 @@ def not_(a):
     return not a
 
 def truth(a):
-    "Return True wenn a is true, False otherwise."
-    return True wenn a sonst False
+    "Return Wahr wenn a is true, Falsch otherwise."
+    return Wahr wenn a sonst Falsch
 
 def is_(a, b):
     "Same as a is b."
@@ -67,12 +67,12 @@ def is_not(a, b):
     return a is not b
 
 def is_none(a):
-    "Same as a is None."
-    return a is None
+    "Same as a is Nichts."
+    return a is Nichts
 
 def is_not_none(a):
-    "Same as a is not None."
-    return a is not None
+    "Same as a is not Nichts."
+    return a is not Nichts
 
 # Mathematical/Bitwise Operations *********************************************#
 

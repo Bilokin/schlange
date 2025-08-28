@@ -47,7 +47,7 @@ klasse ExecutorShutdownTest:
                        context=getattr(self, "ctx", "")))
         # Errors in atexit hooks don't change the process exit code, check
         # stderr manually.
-        self.assertFalse(err)
+        self.assertFalsch(err)
         self.assertEqual(out.strip(), b"apple")
 
     @support.force_not_colorized
@@ -58,7 +58,7 @@ klasse ExecutorShutdownTest:
             @atexit.register
             def run_last():
                 try:
-                    t.submit(id, None)
+                    t.submit(id, Nichts)
                 except RuntimeError:
                     print("runtime-error")
                     raise
@@ -90,7 +90,7 @@ klasse ExecutorShutdownTest:
     def test_cancel_futures(self):
         assert self.worker_count <= 5, "test needs few workers"
         fs = [self.executor.submit(time.sleep, .1) fuer _ in range(50)]
-        self.executor.shutdown(cancel_futures=True)
+        self.executor.shutdown(cancel_futures=Wahr)
         # We can't guarantee the exact number of cancellations, but we can
         # guarantee that *some* were cancelled. With few workers, many of
         # the submitted futures should have been cancelled.
@@ -102,8 +102,8 @@ klasse ExecutorShutdownTest:
         # that may have been left in a pending state.
         others = [fut fuer fut in fs wenn not fut.cancelled()]
         fuer fut in others:
-            self.assertTrue(fut.done(), msg=f"{fut._state=}")
-            self.assertIsNone(fut.exception())
+            self.assertWahr(fut.done(), msg=f"{fut._state=}")
+            self.assertIsNichts(fut.exception())
 
         # Similar to the number of cancelled futures, we can't guarantee the
         # exact number that completed. But, we can guarantee that at least
@@ -111,7 +111,7 @@ klasse ExecutorShutdownTest:
         self.assertGreater(len(others), 0)
 
     def test_hang_gh83386(self):
-        """shutdown(wait=False) doesn't hang at exit with running futures.
+        """shutdown(wait=Falsch) doesn't hang at exit with running futures.
 
         See https://github.com/python/cpython/issues/83386.
         """
@@ -119,22 +119,22 @@ klasse ExecutorShutdownTest:
             raise unittest.SkipTest(
                 "Hangs, see https://github.com/python/cpython/issues/83386")
 
-        rc, out, err = assert_python_ok('-c', """if True:
+        rc, out, err = assert_python_ok('-c', """if Wahr:
             from concurrent.futures import {executor_type}
             from test.test_concurrent_futures.test_shutdown import sleep_and_print
             wenn __name__ == "__main__":
                 wenn {context!r}: multiprocessing.set_start_method({context!r})
                 t = {executor_type}(max_workers=3)
                 t.submit(sleep_and_print, 1.0, "apple")
-                t.shutdown(wait=False)
+                t.shutdown(wait=Falsch)
             """.format(executor_type=self.executor_type.__name__,
-                       context=getattr(self, 'ctx', None)))
-        self.assertFalse(err)
+                       context=getattr(self, 'ctx', Nichts)))
+        self.assertFalsch(err)
         self.assertEqual(out.strip(), b"apple")
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_hang_gh94440(self):
-        """shutdown(wait=True) doesn't hang when a future was submitted and
+        """shutdown(wait=Wahr) doesn't hang when a future was submitted and
         quickly canceled right before shutdown.
 
         See https://github.com/python/cpython/issues/94440.
@@ -147,7 +147,7 @@ klasse ExecutorShutdownTest:
             raise RuntimeError("timed out waiting fuer shutdown")
 
         kwargs = {}
-        wenn getattr(self, 'ctx', None):
+        wenn getattr(self, 'ctx', Nichts):
             kwargs['mp_context'] = self.get_context()
         executor = self.executor_type(max_workers=1, **kwargs)
         executor.submit(int).result()
@@ -155,7 +155,7 @@ klasse ExecutorShutdownTest:
         try:
             signal.alarm(5)
             executor.submit(int).cancel()
-            executor.shutdown(wait=True)
+            executor.shutdown(wait=Wahr)
         finally:
             signal.alarm(0)
             signal.signal(signal.SIGALRM, old_handler)
@@ -203,11 +203,11 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_no_wait(self):
         # Ensure that the executor cleans up the threads when calling
-        # shutdown with wait=False
+        # shutdown with wait=Falsch
         executor = futures.ThreadPoolExecutor(max_workers=5)
         res = executor.map(abs, range(-5, 5))
         threads = executor._threads
-        executor.shutdown(wait=False)
+        executor.shutdown(wait=Falsch)
         fuer t in threads:
             t.join()
 
@@ -244,18 +244,18 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
 
     def test_cancel_futures_wait_false(self):
         # Can only be reliably tested fuer TPE, since PPE often hangs with
-        # `wait=False` (even without *cancel_futures*).
-        rc, out, err = assert_python_ok('-c', """if True:
+        # `wait=Falsch` (even without *cancel_futures*).
+        rc, out, err = assert_python_ok('-c', """if Wahr:
             from concurrent.futures import ThreadPoolExecutor
             from test.test_concurrent_futures.test_shutdown import sleep_and_print
             wenn __name__ == "__main__":
                 t = ThreadPoolExecutor()
                 t.submit(sleep_and_print, .1, "apple")
-                t.shutdown(wait=False, cancel_futures=True)
+                t.shutdown(wait=Falsch, cancel_futures=Wahr)
             """)
         # Errors in atexit hooks don't change the process exit code, check
         # stderr manually.
-        self.assertFalse(err)
+        self.assertFalsch(err)
         # gh-116682: stdout may be empty wenn shutdown happens before task
         # starts executing.
         self.assertIn(out.strip(), [b"apple", b""])
@@ -268,7 +268,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
             lock.acquire()
 
         mp_context = self.get_context()
-        wenn mp_context.get_start_method(allow_none=False) == "fork":
+        wenn mp_context.get_start_method(allow_none=Falsch) == "fork":
             # fork pre-spawns, not on demand.
             expected_num_processes = self.worker_count
         sonst:
@@ -323,14 +323,14 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_no_wait(self):
         # Ensure that the executor cleans up the processes when calling
-        # shutdown with wait=False
+        # shutdown with wait=Falsch
         executor = futures.ProcessPoolExecutor(
                 max_workers=5, mp_context=self.get_context())
         res = executor.map(abs, range(-5, 5))
         processes = executor._processes
         call_queue = executor._call_queue
         executor_manager_thread = executor._executor_manager_thread
-        executor.shutdown(wait=False)
+        executor.shutdown(wait=Falsch)
 
         # Make sure that all the executor resources were properly cleaned by
         # the shutdown process
@@ -359,7 +359,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
         # Repro conditions
         #   max_tasks_per_child=1
         #   a task ends abnormally
-        #   shutdown(wait=False) is called
+        #   shutdown(wait=Falsch) is called
         start_method = self.get_context().get_start_method()
         wenn (start_method == "fork" or
            (start_method == "forkserver" and sys.platform.startswith("win"))):
@@ -381,23 +381,23 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
             pass
 
         # Ensure that the executor cleans up after called
-        # shutdown with wait=False
+        # shutdown with wait=Falsch
         executor_manager_thread = executor._executor_manager_thread
-        executor.shutdown(wait=False)
+        executor.shutdown(wait=Falsch)
         time.sleep(0.2)
         executor_manager_thread.join()
         return result
 
     def test_shutdown_gh_132969_case_1(self):
         # gh-132969: test that exception "object of type 'NoneType' has no len()"
-        # is not raised when shutdown(wait=False) is called.
+        # is not raised when shutdown(wait=Falsch) is called.
         result = self._run_test_issue_gh_132969(2)
         self.assertEqual(result, 1)
 
     def test_shutdown_gh_132969_case_2(self):
         # gh-132969: test that process does not hang and
         # exception "object of type 'NoneType' has no len()" is not raised
-        # when shutdown(wait=False) is called.
+        # when shutdown(wait=Falsch) is called.
         result = self._run_test_issue_gh_132969(4)
         self.assertEqual(result, 1)
 

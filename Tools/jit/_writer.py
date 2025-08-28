@@ -60,14 +60,14 @@ def _dump_stencil(opname: str, group: _stencils.StencilGroup) -> typing.Iterator
     fuer part, stencil in [("data", group.data), ("code", group.code)]:
         wenn stencil.body.rstrip(b"\x00"):
             yield f"    memcpy({part}, {part}_body, sizeof({part}_body));"
-        skip = False
+        skip = Falsch
         stencil.holes.sort(key=lambda hole: hole.offset)
         fuer hole, pair in itertools.zip_longest(stencil.holes, stencil.holes[1:]):
             wenn skip:
-                skip = False
+                skip = Falsch
                 continue
             wenn pair and (folded := hole.fold(pair, stencil.body)):
-                skip = True
+                skip = Wahr
                 hole = folded
             yield f"    {hole.as_c(part)}"
     yield "}"

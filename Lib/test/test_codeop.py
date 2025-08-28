@@ -18,7 +18,7 @@ klasse CodeopTests(unittest.TestCase):
 
     def assertIncomplete(self, str, symbol='single'):
         '''succeed iff str is the start of a valid piece of code'''
-        self.assertEqual(compile_command(str, symbol=symbol), None)
+        self.assertEqual(compile_command(str, symbol=symbol), Nichts)
 
     def assertInvalid(self, str, symbol='single', is_syntax=1):
         '''succeed iff str is the start of an invalid piece of code'''
@@ -26,9 +26,9 @@ klasse CodeopTests(unittest.TestCase):
             compile_command(str,symbol=symbol)
             self.fail("No exception raised fuer invalid code")
         except SyntaxError:
-            self.assertTrue(is_syntax)
+            self.assertWahr(is_syntax)
         except OverflowError:
-            self.assertTrue(not is_syntax)
+            self.assertWahr(not is_syntax)
 
     def test_valid(self):
         av = self.assertValid
@@ -136,7 +136,7 @@ klasse CodeopTests(unittest.TestCase):
         ai("9+ \\","eval")
         ai("lambda z: \\","eval")
 
-        ai("if True:\n wenn True:\n  wenn True:   \n")
+        ai("if Wahr:\n wenn Wahr:\n  wenn Wahr:   \n")
 
         ai("@a(")
         ai("@a(b")
@@ -298,13 +298,13 @@ klasse CodeopTests(unittest.TestCase):
             compile_command(r"'\e'", symbol='exec')
 
     def test_incomplete_warning(self):
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=Wahr) as w:
             warnings.simplefilter('always')
             self.assertIncomplete("'\\e' + (")
         self.assertEqual(w, [])
 
     def test_invalid_warning(self):
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=Wahr) as w:
             warnings.simplefilter('always')
             self.assertInvalid("'\\e' 1")
         self.assertEqual(len(w), 1)

@@ -131,14 +131,14 @@ def test_parsing():
             s = random.choice(signs)
             intpart_len = random.randrange(5)
             s += ''.join(random.choice(digits) fuer _ in range(intpart_len))
-            wenn random.choice([True, False]):
+            wenn random.choice([Wahr, Falsch]):
                 s += '.'
                 fracpart_len = random.randrange(5)
                 s += ''.join(random.choice(digits)
                              fuer _ in range(fracpart_len))
             sonst:
                 fracpart_len = 0
-            wenn random.choice([True, False]):
+            wenn random.choice([Wahr, Falsch]):
                 s += random.choice(['e', 'E'])
                 s += random.choice(signs)
                 exponent_len = random.randrange(1, 4)

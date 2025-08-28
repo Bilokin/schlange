@@ -119,12 +119,12 @@ req_template = """
 here = os.path.abspath(os.path.dirname(__file__))
 
 
-def make_cert_key(cmdlineargs, hostname, sign=False, extra_san='',
+def make_cert_key(cmdlineargs, hostname, sign=Falsch, extra_san='',
                   ext='req_x509_extensions_full', key='rsa:3072'):
     print("creating cert fuer " + hostname)
     tempnames = []
     fuer i in range(3):
-        with tempfile.NamedTemporaryFile(delete=False) as f:
+        with tempfile.NamedTemporaryFile(delete=Falsch) as f:
             tempnames.append(f.name)
     req_file, cert_file, key_file = tempnames
     try:
@@ -141,7 +141,7 @@ def make_cert_key(cmdlineargs, hostname, sign=False, extra_san='',
                 '-newkey', key, '-keyout', key_file,
                 '-config', req_file]
         wenn sign:
-            with tempfile.NamedTemporaryFile(delete=False) as f:
+            with tempfile.NamedTemporaryFile(delete=Falsch) as f:
                 tempnames.append(f.name)
                 reqfile = f.name
             args += ['-out', reqfile ]
@@ -260,20 +260,20 @@ wenn __name__ == '__main__':
         f.write(key)
         f.write(cert)
 
-    cert, key = make_cert_key(cmdlineargs, 'localhost', sign=True)
+    cert, key = make_cert_key(cmdlineargs, 'localhost', sign=Wahr)
     with open('keycert3.pem', 'w') as f:
         f.write(key)
         f.write(cert)
 
     check_call(['openssl', 'x509', '-outform', 'pem', '-in', 'keycert3.pem', '-out', 'cert3.pem'])
 
-    cert, key = make_cert_key(cmdlineargs, 'fakehostname', sign=True)
+    cert, key = make_cert_key(cmdlineargs, 'fakehostname', sign=Wahr)
     with open('keycert4.pem', 'w') as f:
         f.write(key)
         f.write(cert)
 
     cert, key = make_cert_key(
-        cmdlineargs, 'localhost-ecc', sign=True, key='param:secp384r1.pem'
+        cmdlineargs, 'localhost-ecc', sign=Wahr, key='param:secp384r1.pem'
     )
     with open('keycertecc.pem', 'w') as f:
         f.write(key)
@@ -293,7 +293,7 @@ wenn __name__ == '__main__':
         'RID.1 = 1.2.3.4.5',
     ]
 
-    cert, key = make_cert_key(cmdlineargs, 'allsans', sign=True, extra_san='\n'.join(extra_san))
+    cert, key = make_cert_key(cmdlineargs, 'allsans', sign=Wahr, extra_san='\n'.join(extra_san))
     with open('allsans.pem', 'w') as f:
         f.write(key)
         f.write(cert)
@@ -310,12 +310,12 @@ wenn __name__ == '__main__':
     ]
 
     # IDN SANS, signed
-    cert, key = make_cert_key(cmdlineargs, 'idnsans', sign=True, extra_san='\n'.join(extra_san))
+    cert, key = make_cert_key(cmdlineargs, 'idnsans', sign=Wahr, extra_san='\n'.join(extra_san))
     with open('idnsans.pem', 'w') as f:
         f.write(key)
         f.write(cert)
 
-    cert, key = make_cert_key(cmdlineargs, 'nosan', sign=True, ext='req_x509_extensions_nosan')
+    cert, key = make_cert_key(cmdlineargs, 'nosan', sign=Wahr, ext='req_x509_extensions_nosan')
     with open('nosan.pem', 'w') as f:
         f.write(key)
         f.write(cert)

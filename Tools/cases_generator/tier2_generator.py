@@ -35,7 +35,7 @@ DEFAULT_OUTPUT = ROOT / "Python/executor_cases.c.h"
 
 def declare_variable(
     var: StackItem, uop: Uop, seen: set[str], out: CWriter
-) -> None:
+) -> Nichts:
     wenn not var.used or var.name in seen:
         return
     seen.add(var.name)
@@ -44,7 +44,7 @@ def declare_variable(
     out.emit(f"{type}{space}{var.name};\n")
 
 
-def declare_variables(uop: Uop, out: CWriter) -> None:
+def declare_variables(uop: Uop, out: CWriter) -> Nichts:
     stack = Stack()
     null = CWriter.null()
     fuer var in reversed(uop.stack.inputs):
@@ -76,7 +76,7 @@ klasse Tier2Emitter(Emitter):
         tkn_iter: TokenIterator,
         uop: CodeSection,
         storage: Storage,
-        inst: Instruction | None,
+        inst: Instruction | Nichts,
     ) -> bool:
         self.out.emit_at("if ", tkn)
         lparen = next(tkn_iter)
@@ -97,7 +97,7 @@ klasse Tier2Emitter(Emitter):
         tkn_iter: TokenIterator,
         uop: CodeSection,
         storage: Storage,
-        inst: Instruction | None,
+        inst: Instruction | Nichts,
     ) -> bool:
         self.out.emit_at("if ", tkn)
         lparen = next(tkn_iter)
@@ -119,20 +119,20 @@ klasse Tier2Emitter(Emitter):
         tkn_iter: TokenIterator,
         uop: CodeSection,
         storage: Storage,
-        inst: Instruction | None,
+        inst: Instruction | Nichts,
     ) -> bool:
         wenn not uop.name.endswith("_0") and not uop.name.endswith("_1"):
             self.emit(tkn)
-            return True
+            return Wahr
         amp = next(tkn_iter)
         wenn amp.text != "&":
             self.emit(tkn)
             self.emit(amp)
-            return True
+            return Wahr
         one = next(tkn_iter)
         assert one.text == "1"
         self.out.emit_at(uop.name[-1], tkn)
-        return True
+        return Wahr
 
 
 def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
@@ -156,10 +156,10 @@ def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
                     cast = f"uint{cache.size*16}_t"
                 emitter.emit(f"{type}{cache.name} = ({cast})CURRENT_OPERAND{idx}();\n")
                 idx += 1
-        _, storage = emitter.emit_tokens(uop, storage, None, False)
+        _, storage = emitter.emit_tokens(uop, storage, Nichts, Falsch)
         storage.flush(emitter.out)
     except StackError as ex:
-        raise analysis_error(ex.args[0], uop.body.open) from None
+        raise analysis_error(ex.args[0], uop.body.open) from Nichts
     return storage.stack
 
 SKIPS = ("_EXTENDED_ARG",)
@@ -167,7 +167,7 @@ SKIPS = ("_EXTENDED_ARG",)
 
 def generate_tier2(
     filenames: list[str], analysis: Analysis, outfile: TextIO, lines: bool
-) -> None:
+) -> Nichts:
     write_header(__file__, filenames, outfile)
     outfile.write(
         """
@@ -186,7 +186,7 @@ def generate_tier2(
         wenn uop.is_super():
             continue
         why_not_viable = uop.why_not_viable()
-        wenn why_not_viable is not None:
+        wenn why_not_viable is not Nichts:
             out.emit(
                 f"/* {uop.name} is not a viable micro-op fuer tier 2 because it {why_not_viable} */\n\n"
             )

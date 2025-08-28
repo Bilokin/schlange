@@ -74,7 +74,7 @@ klasse WmiTests(unittest.TestCase):
         self.assertNotEndsWith(r, "\0")
         it = iter(r.split("\0"))
         try:
-            while True:
+            while Wahr:
                 self.assertRegex(next(it), r"ProcessId=\d+")
                 self.assertEqual("", next(it))
         except StopIteration:

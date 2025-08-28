@@ -308,7 +308,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         # check with one argument too much
         self.assertRaises(TypeError, exctype, *(args + ["too much"]))
         # check with one argument of the wrong type
-        wrongargs = [ "spam", b"eggs", b"spam", 42, 1.0, None ]
+        wrongargs = [ "spam", b"eggs", b"spam", 42, 1.0, Nichts ]
         fuer i in range(len(args)):
             fuer wrongarg in wrongargs:
                 wenn type(wrongarg) is type(args[i]):
@@ -756,7 +756,7 @@ klasse CodecCallbackTest(unittest.TestCase):
                 )
 
     def test_badhandlerresults(self):
-        results = ( 42, "foo", (1,2,3), ("foo", 1, 3), ("foo", None), ("foo",), ("foo", 1, 3), ("foo", None), ("foo",) )
+        results = ( 42, "foo", (1,2,3), ("foo", 1, 3), ("foo", Nichts), ("foo",), ("foo", 1, 3), ("foo", Nichts), ("foo",) )
         encs = ("ascii", "latin-1", "iso-8859-1", "iso-8859-15")
 
         fuer res in results:
@@ -942,7 +942,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         self.assertRaises(TypeError, b"\\uyyyy".decode, "raw-unicode-escape", "test.baddecodereturn1")
 
         def baddecodereturn2(exc):
-            return ("?", None)
+            return ("?", Nichts)
         codecs.register_error("test.baddecodereturn2", baddecodereturn2)
         self.assertRaises(TypeError, b"\xff".decode, "ascii", "test.baddecodereturn2")
 
@@ -980,7 +980,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         klasse D(dict):
             def __getitem__(self, key):
                 raise ValueError
-        self.assertRaises(UnicodeError, codecs.charmap_decode, b"\xff", "strict", {0xff: None})
+        self.assertRaises(UnicodeError, codecs.charmap_decode, b"\xff", "strict", {0xff: Nichts})
         self.assertRaises(ValueError, codecs.charmap_decode, b"\xff", "strict", D())
         self.assertRaises(TypeError, codecs.charmap_decode, b"\xff", "strict", {0xff: sys.maxunicode+1})
 
@@ -996,7 +996,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         self.assertRaises(TypeError, "\xff".encode, "ascii", "test.badencodereturn1")
 
         def badencodereturn2(exc):
-            return ("?", None)
+            return ("?", Nichts)
         codecs.register_error("test.badencodereturn2", badencodereturn2)
         self.assertRaises(TypeError, "\xff".encode, "ascii", "test.badencodereturn2")
 
@@ -1034,7 +1034,7 @@ klasse CodecCallbackTest(unittest.TestCase):
                 raise ValueError
         fuer err in ("strict", "replace", "xmlcharrefreplace",
                     "backslashreplace", "namereplace", "test.posreturn"):
-            self.assertRaises(UnicodeError, codecs.charmap_encode, "\xff", err, {0xff: None})
+            self.assertRaises(UnicodeError, codecs.charmap_encode, "\xff", err, {0xff: Nichts})
             self.assertRaises(ValueError, codecs.charmap_encode, "\xff", err, D())
             self.assertRaises(TypeError, codecs.charmap_encode, "\xff", err, {0xff: 300})
 
@@ -1165,7 +1165,7 @@ klasse CodecCallbackTest(unittest.TestCase):
         def mutating(exc):
             wenn isinstance(exc, UnicodeDecodeError):
                 r = data.get(exc.object[:exc.end])
-                wenn r is not None:
+                wenn r is not Nichts:
                     exc.object = r[0] + exc.object[exc.end:]
                     return ('\u0404', r[1])
             raise AssertionError("don't know how to handle %r" % exc)
@@ -1287,13 +1287,13 @@ klasse CodecCallbackTest(unittest.TestCase):
         self.assertRaises(LookupError, codecs.lookup_error, custom_name)
         codecs.register_error(custom_name, custom_handler)
         self.assertIs(codecs.lookup_error(custom_name), custom_handler)
-        self.assertTrue(_codecs_unregister_error(custom_name))
+        self.assertWahr(_codecs_unregister_error(custom_name))
         self.assertRaises(LookupError, codecs.lookup_error, custom_name)
 
     def test_unregister_custom_unknown_error_handler(self):
         unknown_name = 'test.test_unregister_custom_unknown_error_handler'
         self.assertRaises(LookupError, codecs.lookup_error, unknown_name)
-        self.assertFalse(_codecs_unregister_error(unknown_name))
+        self.assertFalsch(_codecs_unregister_error(unknown_name))
         self.assertRaises(LookupError, codecs.lookup_error, unknown_name)
 
 

@@ -11,12 +11,12 @@ klasse Test_GB2312(multibytecodec_support.TestBase, unittest.TestCase):
     tstring = multibytecodec_support.load_teststring('gb2312')
     codectests = (
         # invalid bytes
-        (b"abc\x81\x81\xc1\xc4", "strict",  None),
-        (b"abc\xc8", "strict",  None),
+        (b"abc\x81\x81\xc1\xc4", "strict",  Nichts),
+        (b"abc\xc8", "strict",  Nichts),
         (b"abc\x81\x81\xc1\xc4", "replace", "abc\ufffd\ufffd\u804a"),
         (b"abc\x81\x81\xc1\xc4\xc8", "replace", "abc\ufffd\ufffd\u804a\ufffd"),
         (b"abc\x81\x81\xc1\xc4", "ignore",  "abc\u804a"),
-        (b"\xc1\x64", "strict", None),
+        (b"\xc1\x64", "strict", Nichts),
     )
 
 klasse Test_GBK(multibytecodec_support.TestBase, unittest.TestCase):
@@ -24,13 +24,13 @@ klasse Test_GBK(multibytecodec_support.TestBase, unittest.TestCase):
     tstring = multibytecodec_support.load_teststring('gbk')
     codectests = (
         # invalid bytes
-        (b"abc\x80\x80\xc1\xc4", "strict",  None),
-        (b"abc\xc8", "strict",  None),
+        (b"abc\x80\x80\xc1\xc4", "strict",  Nichts),
+        (b"abc\xc8", "strict",  Nichts),
         (b"abc\x80\x80\xc1\xc4", "replace", "abc\ufffd\ufffd\u804a"),
         (b"abc\x80\x80\xc1\xc4\xc8", "replace", "abc\ufffd\ufffd\u804a\ufffd"),
         (b"abc\x80\x80\xc1\xc4", "ignore",  "abc\u804a"),
-        (b"\x83\x34\x83\x31", "strict", None),
-        ("\u30fb", "strict", None),
+        (b"\x83\x34\x83\x31", "strict", Nichts),
+        ("\u30fb", "strict", Nichts),
     )
 
 klasse Test_GB18030(multibytecodec_support.TestBase, unittest.TestCase):
@@ -38,8 +38,8 @@ klasse Test_GB18030(multibytecodec_support.TestBase, unittest.TestCase):
     tstring = multibytecodec_support.load_teststring('gb18030')
     codectests = (
         # invalid bytes
-        (b"abc\x80\x80\xc1\xc4", "strict",  None),
-        (b"abc\xc8", "strict",  None),
+        (b"abc\x80\x80\xc1\xc4", "strict",  Nichts),
+        (b"abc\xc8", "strict",  Nichts),
         (b"abc\x80\x80\xc1\xc4", "replace", "abc\ufffd\ufffd\u804a"),
         (b"abc\x80\x80\xc1\xc4\xc8", "replace", "abc\ufffd\ufffd\u804a\ufffd"),
         (b"abc\x80\x80\xc1\xc4", "ignore",  "abc\u804a"),
@@ -49,13 +49,13 @@ klasse Test_GB18030(multibytecodec_support.TestBase, unittest.TestCase):
         (b"abc\x81\x30\x81\x30def", "strict", 'abc\x80def'),
         (b"abc\x86\x30\x81\x30def", "replace", 'abc\ufffd0\ufffd0def'),
         # issue29990
-        (b"\xff\x30\x81\x30", "strict", None),
-        (b"\x81\x30\xff\x30", "strict", None),
+        (b"\xff\x30\x81\x30", "strict", Nichts),
+        (b"\x81\x30\xff\x30", "strict", Nichts),
         (b"abc\x81\x39\xff\x39\xc1\xc4", "replace", "abc\ufffd\x39\ufffd\x39\u804a"),
         (b"abc\xab\x36\xff\x30def", "replace", 'abc\ufffd\x36\ufffd\x30def'),
         (b"abc\xbf\x38\xff\x32\xc1\xc4", "ignore",  "abc\x38\x32\u804a"),
     )
-    has_iso10646 = True
+    has_iso10646 = Wahr
 
 klasse Test_HZ(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'hz'
@@ -88,8 +88,8 @@ klasse Test_HZ(multibytecodec_support.TestBase, unittest.TestCase):
         (b"ab~{\x79\x79\x41\x44~}cd", "replace", "ab\ufffd\ufffd\u804acd"),
         # issue 30003
         ('ab~cd', 'strict',  b'ab~~cd'),  # escape ~
-        (b'~{Dc~~:C~}', 'strict', None),  # ~~ only in ASCII mode
-        (b'~{Dc~\n:C~}', 'strict', None), # ~\n only in ASCII mode
+        (b'~{Dc~~:C~}', 'strict', Nichts),  # ~~ only in ASCII mode
+        (b'~{Dc~\n:C~}', 'strict', Nichts), # ~\n only in ASCII mode
     )
 
 wenn __name__ == "__main__":

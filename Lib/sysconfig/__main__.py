@@ -25,7 +25,7 @@ _findvar1_rx = r"\$\(([A-Za-z][A-Za-z0-9_]*)\)"
 _findvar2_rx = r"\${([A-Za-z][A-Za-z0-9_]*)}"
 
 
-def _parse_makefile(filename, vars=None, keep_unresolved=True):
+def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
     """Parse a Makefile-style file.
 
     A dictionary containing name/value pairs is returned.  If an
@@ -34,7 +34,7 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
     """
     import re
 
-    wenn vars is None:
+    wenn vars is Nichts:
         vars = {}
     done = {}
     notdone = {}
@@ -85,14 +85,14 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
                 m = m1 wenn m1.start() < m2.start() sonst m2
             sonst:
                 m = m1 wenn m1 sonst m2
-            wenn m is not None:
+            wenn m is not Nichts:
                 n = m.group(1)
-                found = True
+                found = Wahr
                 wenn n in done:
                     item = str(done[n])
                 sowenn n in notdone:
                     # get it on a subsequent round
-                    found = False
+                    found = Falsch
                 sowenn n in os.environ:
                     # do it like make: fall back to environment
                     item = os.environ[n]
@@ -103,7 +103,7 @@ def _parse_makefile(filename, vars=None, keep_unresolved=True):
                         item = ""
 
                     sowenn 'PY_' + n in notdone:
-                        found = False
+                        found = Falsch
 
                     sonst:
                         item = str(done['PY_' + n])
@@ -221,7 +221,7 @@ def _generate_posix_vars():
     sys.modules[name] = module
 
     pybuilddir = _get_pybuilddir()
-    os.makedirs(pybuilddir, exist_ok=True)
+    os.makedirs(pybuilddir, exist_ok=Wahr)
     destfile = os.path.join(pybuilddir, name + '.py')
 
     with open(destfile, 'w', encoding='utf8') as f:

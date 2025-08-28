@@ -22,7 +22,7 @@ from test.support import force_not_colorized_test_class, SHORT_TIMEOUT
 from test.support.socket_helper import find_unused_port
 from test.support import requires_subprocess, is_emscripten
 
-PROCESS_VM_READV_SUPPORTED = False
+PROCESS_VM_READV_SUPPORTED = Falsch
 
 try:
     from _remote_debugging import PROCESS_VM_READV_SUPPORTED
@@ -88,7 +88,7 @@ _test_sock.sendall(b"ready")
         stderr=subprocess.DEVNULL,
     )
 
-    client_socket = None
+    client_socket = Nichts
     try:
         # Wait fuer process to connect and send ready signal
         client_socket, _ = server_socket.accept()
@@ -99,9 +99,9 @@ _test_sock.sendall(b"ready")
 
         yield proc
     finally:
-        wenn client_socket is not None:
+        wenn client_socket is not Nichts:
             client_socket.close()
-        wenn proc.poll() is None:
+        wenn proc.poll() is Nichts:
             proc.kill()
         proc.wait()
 
@@ -137,7 +137,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         self.assertEqual(frame.funcname, long_funcname)
 
     def test_pstats_collector_with_extreme_intervals_and_empty_data(self):
-        """Test PstatsCollector handles zero/large intervals, empty frames, None thread IDs, and duplicate frames."""
+        """Test PstatsCollector handles zero/large intervals, empty frames, Nichts thread IDs, and duplicate frames."""
         # Test with zero interval
         collector = PstatsCollector(sample_interval_usec=0)
         self.assertEqual(collector.sample_interval_usec, 0)
@@ -151,8 +151,8 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         collector.collect([])
         self.assertEqual(len(collector.result), 0)
 
-        # Test collecting frames with None thread id
-        test_frames = [(None, [MockFrameInfo("file.py", 10, "func")])]
+        # Test collecting frames with Nichts thread id
+        test_frames = [(Nichts, [MockFrameInfo("file.py", 10, "func")])]
         collector.collect(test_frames)
         # Should still process the frames
         self.assertEqual(len(collector.result), 1)
@@ -368,7 +368,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         )
 
     def test_collapsed_stack_collector_export(self):
-        collapsed_out = tempfile.NamedTemporaryFile(delete=False)
+        collapsed_out = tempfile.NamedTemporaryFile(delete=Falsch)
         self.addCleanup(close_and_unlink, collapsed_out)
 
         collector = CollapsedStackCollector()
@@ -430,7 +430,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         collector.collect(test_frames3)
 
         pstats_out = tempfile.NamedTemporaryFile(
-            suffix=".pstats", delete=False
+            suffix=".pstats", delete=Falsch
         )
         self.addCleanup(close_and_unlink, pstats_out)
         collector.export(pstats_out.name)
@@ -442,7 +442,7 @@ klasse TestSampleProfilerComponents(unittest.TestCase):
         # Should be a dictionary with the sampled marker
         self.assertIsInstance(stats_data, dict)
         self.assertIn(("__sampled__",), stats_data)
-        self.assertTrue(stats_data[("__sampled__",)])
+        self.assertWahr(stats_data[("__sampled__",)])
 
         # Should have function data
         function_entries = [
@@ -482,19 +482,19 @@ klasse TestSampleProfiler(unittest.TestCase):
 
             # Test basic initialization
             profiler = SampleProfiler(
-                pid=12345, sample_interval_usec=1000, all_threads=False
+                pid=12345, sample_interval_usec=1000, all_threads=Falsch
             )
             self.assertEqual(profiler.pid, 12345)
             self.assertEqual(profiler.sample_interval_usec, 1000)
-            self.assertEqual(profiler.all_threads, False)
+            self.assertEqual(profiler.all_threads, Falsch)
 
-            # Test with all_threads=True
+            # Test with all_threads=Wahr
             profiler = SampleProfiler(
-                pid=54321, sample_interval_usec=5000, all_threads=True
+                pid=54321, sample_interval_usec=5000, all_threads=Wahr
             )
             self.assertEqual(profiler.pid, 54321)
             self.assertEqual(profiler.sample_interval_usec, 5000)
-            self.assertEqual(profiler.all_threads, True)
+            self.assertEqual(profiler.all_threads, Wahr)
 
     def test_sample_profiler_sample_method_timing(self):
         """Test that the sample method respects duration and handles timing correctly."""
@@ -519,7 +519,7 @@ klasse TestSampleProfiler(unittest.TestCase):
             mock_unwinder_class.return_value = mock_unwinder
 
             profiler = SampleProfiler(
-                pid=12345, sample_interval_usec=100000, all_threads=False
+                pid=12345, sample_interval_usec=100000, all_threads=Falsch
             )  # 100ms interval
 
             # Mock collector
@@ -587,7 +587,7 @@ klasse TestSampleProfiler(unittest.TestCase):
             mock_unwinder_class.return_value = mock_unwinder
 
             profiler = SampleProfiler(
-                pid=12345, sample_interval_usec=10000, all_threads=False
+                pid=12345, sample_interval_usec=10000, all_threads=Falsch
             )
 
             mock_collector = mock.MagicMock()
@@ -633,7 +633,7 @@ klasse TestSampleProfiler(unittest.TestCase):
 
             # Use very short interval that we'll miss
             profiler = SampleProfiler(
-                pid=12345, sample_interval_usec=1000, all_threads=False
+                pid=12345, sample_interval_usec=1000, all_threads=Falsch
             )  # 1ms interval
 
             mock_collector = mock.MagicMock()
@@ -818,7 +818,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             with mock.patch("sys.stdout", output):
                 print_sampled_stats(
                     self.mock_stats,
-                    show_summary=True,
+                    show_summary=Wahr,
                     sample_interval_usec=100,
                 )
 
@@ -846,7 +846,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             with mock.patch("sys.stdout", output):
                 print_sampled_stats(
                     self.mock_stats,
-                    show_summary=False,
+                    show_summary=Falsch,
                     sample_interval_usec=100,
                 )
 
@@ -1047,7 +1047,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             with mock.patch("sys.stdout", output):
                 print_sampled_stats(
                     zero_time_stats,
-                    show_summary=True,
+                    show_summary=Wahr,
                     sample_interval_usec=100,
                 )
 
@@ -1075,7 +1075,7 @@ klasse TestPrintSampledStats(unittest.TestCase):
             with mock.patch("sys.stdout", output):
                 print_sampled_stats(
                     malformed_stats,
-                    show_summary=True,
+                    show_summary=Wahr,
                     sample_interval_usec=100,
                 )
 
@@ -1361,8 +1361,8 @@ klasse TestRecursiveFunctionProfiling(unittest.TestCase):
         self.assertNotEqual(len(tree1), len(tree2))
 
         # Both should contain factorial calls
-        self.assertTrue(any("factorial" in str(frame) fuer frame in tree1))
-        self.assertTrue(any("factorial" in str(frame) fuer frame in tree2))
+        self.assertWahr(any("factorial" in str(frame) fuer frame in tree1))
+        self.assertWahr(any("factorial" in str(frame) fuer frame in tree2))
 
         # Function samples should count all occurrences
         factorial_key = ("factorial.py", 10, "factorial")
@@ -1424,7 +1424,7 @@ def main_loop():
     """Main test loop with different execution paths."""
     iteration = 0
 
-    while True:
+    while Wahr:
         iteration += 1
 
         # Different execution paths - focus on CPU intensive work
@@ -1455,7 +1455,7 @@ wenn __name__ == "__main__":
                     proc.pid,
                     duration_sec=2,
                     sample_interval_usec=1000,  # 1ms
-                    show_summary=False,
+                    show_summary=Falsch,
                 )
             except PermissionError:
                 self.skipTest("Insufficient permissions fuer remote profiling")
@@ -1472,7 +1472,7 @@ wenn __name__ == "__main__":
 
     def test_sampling_with_pstats_export(self):
         pstats_out = tempfile.NamedTemporaryFile(
-            suffix=".pstats", delete=False
+            suffix=".pstats", delete=Falsch
         )
         self.addCleanup(close_and_unlink, pstats_out)
 
@@ -1495,7 +1495,7 @@ wenn __name__ == "__main__":
                     )
 
             # Verify file was created and contains valid data
-            self.assertTrue(os.path.exists(pstats_out.name))
+            self.assertWahr(os.path.exists(pstats_out.name))
             self.assertGreater(os.path.getsize(pstats_out.name), 0)
 
             # Try to load the stats file
@@ -1505,7 +1505,7 @@ wenn __name__ == "__main__":
             # Should be a dictionary with the sampled marker
             self.assertIsInstance(stats_data, dict)
             self.assertIn(("__sampled__",), stats_data)
-            self.assertTrue(stats_data[("__sampled__",)])
+            self.assertWahr(stats_data[("__sampled__",)])
 
             # Should have some function data
             function_entries = [
@@ -1515,7 +1515,7 @@ wenn __name__ == "__main__":
 
     def test_sampling_with_collapsed_export(self):
         collapsed_file = tempfile.NamedTemporaryFile(
-            suffix=".txt", delete=False
+            suffix=".txt", delete=Falsch
         )
         self.addCleanup(close_and_unlink, collapsed_file)
 
@@ -1541,7 +1541,7 @@ wenn __name__ == "__main__":
                     )
 
             # Verify file was created and contains valid data
-            self.assertTrue(os.path.exists(collapsed_file.name))
+            self.assertWahr(os.path.exists(collapsed_file.name))
             self.assertGreater(os.path.getsize(collapsed_file.name), 0)
 
             # Check file format
@@ -1558,7 +1558,7 @@ wenn __name__ == "__main__":
 
                 stack_trace, count_str = parts
                 self.assertGreater(len(stack_trace), 0)
-                self.assertTrue(count_str.isdigit())
+                self.assertWahr(count_str.isdigit())
                 self.assertGreater(int(count_str), 0)
 
                 # Stack trace should contain semicolon-separated entries
@@ -1579,9 +1579,9 @@ wenn __name__ == "__main__":
                 profiling.sampling.sample.sample(
                     proc.pid,
                     duration_sec=1,
-                    all_threads=True,
+                    all_threads=Wahr,
                     sample_interval_usec=10000,
-                    show_summary=False,
+                    show_summary=Falsch,
                 )
             except PermissionError:
                 self.skipTest("Insufficient permissions fuer remote profiling")
@@ -1590,7 +1590,7 @@ wenn __name__ == "__main__":
         # We're not testing output format here
 
     def test_sample_target_script(self):
-        script_file = tempfile.NamedTemporaryFile(delete=False)
+        script_file = tempfile.NamedTemporaryFile(delete=Falsch)
         script_file.write(self.test_script.encode("utf-8"))
         script_file.flush()
         self.addCleanup(close_and_unlink, script_file)
@@ -1619,7 +1619,7 @@ wenn __name__ == "__main__":
 
 
     def test_sample_target_module(self):
-        tempdir = tempfile.TemporaryDirectory(delete=False)
+        tempdir = tempfile.TemporaryDirectory(delete=Falsch)
         self.addCleanup(lambda x: shutil.rmtree(x), tempdir.name)
 
         module_path = os.path.join(tempdir.name, "test_module.py")
@@ -1714,19 +1714,19 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
     def test_is_process_running(self):
         with test_subprocess("import time; time.sleep(1000)") as proc:
             try:
-                profiler = SampleProfiler(pid=proc.pid, sample_interval_usec=1000, all_threads=False)
+                profiler = SampleProfiler(pid=proc.pid, sample_interval_usec=1000, all_threads=Falsch)
             except PermissionError:
                 self.skipTest(
                     "Insufficient permissions to read the stack trace"
                 )
-            self.assertTrue(profiler._is_process_running())
-            self.assertIsNotNone(profiler.unwinder.get_stack_trace())
+            self.assertWahr(profiler._is_process_running())
+            self.assertIsNotNichts(profiler.unwinder.get_stack_trace())
             proc.kill()
             proc.wait()
             self.assertRaises(ProcessLookupError, profiler.unwinder.get_stack_trace)
 
         # Exit the context manager to ensure the process is terminated
-        self.assertFalse(profiler._is_process_running())
+        self.assertFalsch(profiler._is_process_running())
         self.assertRaises(ProcessLookupError, profiler.unwinder.get_stack_trace)
 
     @unittest.skipUnless(sys.platform == "linux", "Only valid on Linux")
@@ -1739,7 +1739,7 @@ klasse TestSampleProfilerErrorHandling(unittest.TestCase):
                     "Insufficient permissions to read the stack trace"
                 )
             initial_trace = unwinder.get_stack_trace()
-            self.assertIsNotNone(initial_trace)
+            self.assertIsNotNichts(initial_trace)
 
             proc.kill()
 
@@ -1762,7 +1762,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         mock_conn = mock.MagicMock()
         mock_conn.recv.return_value = b"ready"
         mock_conn.__enter__.return_value = mock_conn
-        mock_conn.__exit__.return_value = None
+        mock_conn.__exit__.return_value = Nichts
 
         # Mock accept() to return (connection, address) and support indexing
         mock_accept_result = mock.MagicMock()
@@ -1771,13 +1771,13 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
 
         # Mock socket with context manager support
         mock_sock_instance.__enter__.return_value = mock_sock_instance
-        mock_sock_instance.__exit__.return_value = None
+        mock_sock_instance.__exit__.return_value = Nichts
         mock_socket.return_value = mock_sock_instance
 
         # Mock the subprocess
         mock_process = mock.MagicMock()
         mock_process.pid = 12345
-        mock_process.poll.return_value = None
+        mock_process.poll.return_value = Nichts
         mock_popen.return_value = mock_process
         return mock_process
 
@@ -1811,12 +1811,12 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 sort=2,  # default sort (sort_value from args.sort)
                 sample_interval_usec=100,
                 duration_sec=10,
-                filename=None,
-                all_threads=False,
+                filename=Nichts,
+                all_threads=Falsch,
                 limit=15,
-                show_summary=True,
+                show_summary=Wahr,
                 output_format="pstats",
-                realtime_stats=False,
+                realtime_stats=Falsch,
             )
 
     @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
@@ -1838,12 +1838,12 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 sort=2,
                 sample_interval_usec=100,
                 duration_sec=10,
-                filename=None,
-                all_threads=False,
+                filename=Nichts,
+                all_threads=Falsch,
                 limit=15,
-                show_summary=True,
+                show_summary=Wahr,
                 output_format="pstats",
-                realtime_stats=False,
+                realtime_stats=Falsch,
             )
 
     @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
@@ -1865,12 +1865,12 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 sort=2,
                 sample_interval_usec=100,
                 duration_sec=10,
-                filename=None,
-                all_threads=False,
+                filename=Nichts,
+                all_threads=Falsch,
                 limit=15,
-                show_summary=True,
+                show_summary=Wahr,
                 output_format="pstats",
-                realtime_stats=False,
+                realtime_stats=Falsch,
             )
 
     @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
@@ -1886,7 +1886,7 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
             # Use the helper to set up mocks consistently
             mock_process = self._setup_sync_mocks(mock_socket, mock_popen)
             # Override specific behavior fuer this test
-            mock_process.wait.side_effect = [subprocess.TimeoutExpired(test_args, 0.1), None]
+            mock_process.wait.side_effect = [subprocess.TimeoutExpired(test_args, 0.1), Nichts]
 
             profiling.sampling.sample.main()
 
@@ -1964,12 +1964,12 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 sort=1,  # sort-tottime
                 sample_interval_usec=1000,
                 duration_sec=30,
-                filename=None,
-                all_threads=True,
+                filename=Nichts,
+                all_threads=Wahr,
                 limit=20,
-                show_summary=True,
+                show_summary=Wahr,
                 output_format="pstats",
-                realtime_stats=False,
+                realtime_stats=Falsch,
             )
 
     @unittest.skipIf(is_emscripten, "socket.SO_REUSEADDR does not exist")
@@ -1998,11 +1998,11 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 sample_interval_usec=2000,
                 duration_sec=60,
                 filename="output.txt",
-                all_threads=False,
+                all_threads=Falsch,
                 limit=15,
-                show_summary=True,
+                show_summary=Wahr,
                 output_format="collapsed",
-                realtime_stats=False,
+                realtime_stats=Falsch,
             )
 
     def test_cli_empty_module_name(self):
@@ -2047,8 +2047,8 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
         ):
             mock_process = mock.MagicMock()
             mock_process.pid = 12345
-            mock_process.wait.side_effect = [subprocess.TimeoutExpired(test_args, 0.1), None]
-            mock_process.poll.return_value = None
+            mock_process.wait.side_effect = [subprocess.TimeoutExpired(test_args, 0.1), Nichts]
+            mock_process.poll.return_value = Nichts
             mock_run_with_sync.return_value = mock_process
 
             profiling.sampling.sample.main()
@@ -2207,13 +2207,13 @@ klasse TestSampleProfilerCLI(unittest.TestCase):
                 12345,
                 sample_interval_usec=100,
                 duration_sec=10,
-                filename=None,
-                all_threads=False,
+                filename=Nichts,
+                all_threads=Falsch,
                 limit=15,
                 sort=2,
-                show_summary=True,
+                show_summary=Wahr,
                 output_format="pstats",
-                realtime_stats=False,
+                realtime_stats=Falsch,
             )
 
     def test_sort_options(self):

@@ -69,7 +69,7 @@ def quoteattr(data, entities={}):
 
 
 def _gettextwriter(out, encoding):
-    wenn out is None:
+    wenn out is Nichts:
         import sys
         return sys.stdout
 
@@ -90,12 +90,12 @@ def _gettextwriter(out, encoding):
             def __getattr__(self, name):
                 return getattr(out, name)
         buffer = _wrapper()
-        buffer.close = lambda: None
+        buffer.close = lambda: Nichts
     sonst:
         # This is to handle passed objects that aren't in the
         # IOBase hierarchy, but just have a write method
         buffer = io.BufferedIOBase()
-        buffer.writable = lambda: True
+        buffer.writable = lambda: Wahr
         buffer.write = out.write
         try:
             # TextIOWrapper uses this methods to determine
@@ -107,11 +107,11 @@ def _gettextwriter(out, encoding):
     return io.TextIOWrapper(buffer, encoding=encoding,
                             errors='xmlcharrefreplace',
                             newline='\n',
-                            write_through=True)
+                            write_through=Wahr)
 
 klasse XMLGenerator(handler.ContentHandler):
 
-    def __init__(self, out=None, encoding="iso-8859-1", short_empty_elements=False):
+    def __init__(self, out=Nichts, encoding="iso-8859-1", short_empty_elements=Falsch):
         handler.ContentHandler.__init__(self)
         out = _gettextwriter(out, encoding)
         self._write = out.write
@@ -121,7 +121,7 @@ klasse XMLGenerator(handler.ContentHandler):
         self._undeclared_ns_maps = []
         self._encoding = encoding
         self._short_empty_elements = short_empty_elements
-        self._pending_start_element = False
+        self._pending_start_element = Falsch
 
     def _qname(self, name):
         """Builds a qualified name from a (ns_url, localname) pair"""
@@ -140,10 +140,10 @@ klasse XMLGenerator(handler.ContentHandler):
         # Return the unqualified name
         return name[1]
 
-    def _finish_pending_start_element(self,endElement=False):
+    def _finish_pending_start_element(self,endElement=Falsch):
         wenn self._pending_start_element:
             self._write('>')
-            self._pending_start_element = False
+            self._pending_start_element = Falsch
 
     # ContentHandler methods
 
@@ -169,14 +169,14 @@ klasse XMLGenerator(handler.ContentHandler):
         fuer (name, value) in attrs.items():
             self._write(' %s=%s' % (name, quoteattr(value)))
         wenn self._short_empty_elements:
-            self._pending_start_element = True
+            self._pending_start_element = Wahr
         sonst:
             self._write(">")
 
     def endElement(self, name):
         wenn self._pending_start_element:
             self._write('/>')
-            self._pending_start_element = False
+            self._pending_start_element = Falsch
         sonst:
             self._write('</%s>' % name)
 
@@ -194,14 +194,14 @@ klasse XMLGenerator(handler.ContentHandler):
         fuer (name, value) in attrs.items():
             self._write(' %s=%s' % (self._qname(name), quoteattr(value)))
         wenn self._short_empty_elements:
-            self._pending_start_element = True
+            self._pending_start_element = Wahr
         sonst:
             self._write(">")
 
     def endElementNS(self, name, qname):
         wenn self._pending_start_element:
             self._write('/>')
-            self._pending_start_element = False
+            self._pending_start_element = Falsch
         sonst:
             self._write('</%s>' % self._qname(name))
 
@@ -232,7 +232,7 @@ klasse XMLFilterBase(xmlreader.XMLReader):
     the event stream or the configuration requests as they pass
     through."""
 
-    def __init__(self, parent = None):
+    def __init__(self, parent = Nichts):
         xmlreader.XMLReader.__init__(self)
         self._parent = parent
 
@@ -353,7 +353,7 @@ def prepare_input_source(source, base=""):
         wenn hasattr(f, "name") and isinstance(f.name, str):
             source.setSystemId(f.name)
 
-    wenn source.getCharacterStream() is None and source.getByteStream() is None:
+    wenn source.getCharacterStream() is Nichts and source.getByteStream() is Nichts:
         sysid = source.getSystemId()
         basehead = os.path.dirname(os.path.normpath(base))
         sysidfilename = os.path.join(basehead, sysid)

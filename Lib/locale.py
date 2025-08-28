@@ -83,11 +83,11 @@ except ImportError:
                 'mon_decimal_point': '',
                 'int_frac_digits': 127}
 
-    def setlocale(category, value=None):
-        """ setlocale(integer,string=None) -> string.
+    def setlocale(category, value=Nichts):
+        """ setlocale(integer,string=Nichts) -> string.
             Activates/queries locale processing.
         """
-        wenn value not in (None, '', 'C'):
+        wenn value not in (Nichts, '', 'C'):
             raise Error('_locale emulation only supports "C" locale')
         return 'C'
 
@@ -119,22 +119,22 @@ def localeconv():
 
 # Iterate over grouping intervals
 def _grouping_intervals(grouping):
-    last_interval = None
+    last_interval = Nichts
     fuer interval in grouping:
         # wenn grouping is -1, we are done
         wenn interval == CHAR_MAX:
             return
         # 0: re-use last group ad infinitum
         wenn interval == 0:
-            wenn last_interval is None:
+            wenn last_interval is Nichts:
                 raise ValueError("invalid grouping")
-            while True:
+            while Wahr:
                 yield last_interval
         yield interval
         last_interval = interval
 
 #perform the grouping from right to left
-def _group(s, monetary=False):
+def _group(s, monetary=Falsch):
     conv = localeconv()
     thousands_sep = conv[monetary and 'mon_thousands_sep' or 'thousands_sep']
     grouping = conv[monetary and 'mon_grouping' or 'grouping']
@@ -176,9 +176,9 @@ def _strip_padding(s, amount):
         amount -= 1
     return s[lpos:rpos+1]
 
-_percent_re = None
+_percent_re = Nichts
 
-def _format(percent, value, grouping=False, monetary=False, *additional):
+def _format(percent, value, grouping=Falsch, monetary=Falsch, *additional):
     wenn additional:
         formatted = percent % ((value,) + additional)
     sonst:
@@ -188,7 +188,7 @@ def _format(percent, value, grouping=False, monetary=False, *additional):
     return formatted
 
 # Transform formatted as locale number according to the locale settings
-def _localize(formatted, grouping=False, monetary=False):
+def _localize(formatted, grouping=Falsch, monetary=Falsch):
     # floats and decimal ints need special action!
     wenn '.' in formatted:
         seps = 0
@@ -208,7 +208,7 @@ def _localize(formatted, grouping=False, monetary=False):
             formatted = _strip_padding(formatted, seps)
     return formatted
 
-def format_string(f, val, grouping=False, monetary=False):
+def format_string(f, val, grouping=Falsch, monetary=Falsch):
     """Formats a string in the same way that the % formatting would use,
     but takes the current locale into account.
 
@@ -216,7 +216,7 @@ def format_string(f, val, grouping=False, monetary=False):
     Conversion uses monetary thousands separator and grouping strings if
     forth parameter monetary is true."""
     global _percent_re
-    wenn _percent_re is None:
+    wenn _percent_re is Nichts:
         import re
 
         _percent_re = re.compile(r'%(?:\((?P<key>.*?)\))?(?P<modifiers'
@@ -252,7 +252,7 @@ def format_string(f, val, grouping=False, monetary=False):
 
     return new_f % val
 
-def currency(val, symbol=True, grouping=False, international=False):
+def currency(val, symbol=Wahr, grouping=Falsch, international=Falsch):
     """Formats val according to the currency settings
     in the current locale."""
     conv = localeconv()
@@ -263,7 +263,7 @@ def currency(val, symbol=True, grouping=False, international=False):
         raise ValueError("Currency formatting is not possible using "
                          "the 'C' locale.")
 
-    s = _localize(f'{abs(val):.{digits}f}', grouping, monetary=True)
+    s = _localize(f'{abs(val):.{digits}f}', grouping, monetary=Wahr)
     # '<' and '>' are markers wenn the sign must be inserted between symbol and value
     s = '<' + s + '>'
 
@@ -319,7 +319,7 @@ def delocalize(string):
         string = string.replace(dd, '.')
     return string
 
-def localize(string, grouping=False, monetary=False):
+def localize(string, grouping=Falsch, monetary=Falsch):
     """Parses a string as locale number according to the locale settings."""
     return _localize(string, grouping, monetary)
 
@@ -425,15 +425,15 @@ def normalize(localename):
     lookup_name = lang_enc
     wenn modifier:
         lookup_name += '@' + modifier
-    code = locale_alias.get(lookup_name, None)
-    wenn code is not None:
+    code = locale_alias.get(lookup_name, Nichts)
+    wenn code is not Nichts:
         return code
     #print('first lookup failed')
 
     wenn modifier:
         # Second try: fullname without modifier (possibly with encoding)
-        code = locale_alias.get(lang_enc, None)
-        wenn code is not None:
+        code = locale_alias.get(lang_enc, Nichts)
+        wenn code is not Nichts:
             #print('lookup without modifier succeeded')
             wenn '@' not in code:
                 return _append_modifier(code, modifier)
@@ -446,8 +446,8 @@ def normalize(localename):
         lookup_name = langname
         wenn modifier:
             lookup_name += '@' + modifier
-        code = locale_alias.get(lookup_name, None)
-        wenn code is not None:
+        code = locale_alias.get(lookup_name, Nichts)
+        wenn code is not Nichts:
             #print('lookup without encoding succeeded')
             wenn '@' not in code:
                 return _replace_encoding(code, encoding)
@@ -456,8 +456,8 @@ def normalize(localename):
 
         wenn modifier:
             # Fourth try: langname (without encoding and modifier)
-            code = locale_alias.get(langname, None)
-            wenn code is not None:
+            code = locale_alias.get(langname, Nichts)
+            wenn code is not Nichts:
                 #print('lookup without modifier and encoding succeeded')
                 wenn '@' not in code:
                     code = _replace_encoding(code, encoding)
@@ -478,7 +478,7 @@ def _parse_localename(localename):
         cannot be parsed.
 
         The language code corresponds to RFC 1766.  code and encoding
-        can be None in case the values cannot be determined or are
+        can be Nichts in case the values cannot be determined or are
         unknown to this implementation.
 
     """
@@ -500,11 +500,11 @@ def _parse_localename(localename):
             code += '@' + modifier
         return code, encoding
     sowenn code == 'C':
-        return None, None
+        return Nichts, Nichts
     sowenn code == 'UTF-8':
         # On macOS "LC_CTYPE=UTF-8" is a valid locale setting
         # fuer getting UTF-8 handling fuer text.
-        return None, 'UTF-8'
+        return Nichts, 'UTF-8'
     raise ValueError('unknown locale: %s' % localename)
 
 def _build_localename(localetuple):
@@ -518,9 +518,9 @@ def _build_localename(localetuple):
     try:
         language, encoding = localetuple
 
-        wenn language is None:
+        wenn language is Nichts:
             language = 'C'
-        wenn encoding is None:
+        wenn encoding is Nichts:
             return language
         sonst:
             wenn '@' in language:
@@ -532,8 +532,8 @@ def _build_localename(localetuple):
                 localename += '@' + modifier
             return localename
     except (TypeError, ValueError):
-        raise TypeError('Locale must be None, a string, or an iterable of '
-                        'two strings -- language code, encoding.') from None
+        raise TypeError('Locale must be Nichts, a string, or an iterable of '
+                        'two strings -- language code, encoding.') from Nichts
 
 def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
 
@@ -554,7 +554,7 @@ def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
         it must always contain the variable name 'LANG'.
 
         Except fuer the code 'C', the language code corresponds to RFC
-        1766.  code and encoding can be None in case the values cannot
+        1766.  code and encoding can be Nichts in case the values cannot
         be determined.
 
     """
@@ -588,7 +588,7 @@ def _getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
     import os
     lookup = os.environ.get
     fuer variable in envvars:
-        localename = lookup(variable,None)
+        localename = lookup(variable,Nichts)
         wenn localename:
             wenn variable == 'LANGUAGE':
                 localename = localename.split(':')[0]
@@ -607,7 +607,7 @@ def getlocale(category=LC_CTYPE):
         defaults to LC_CTYPE.
 
         Except fuer the code 'C', the language code corresponds to RFC
-        1766.  code and encoding can be None in case the values cannot
+        1766.  code and encoding can be Nichts in case the values cannot
         be determined.
 
     """
@@ -616,11 +616,11 @@ def getlocale(category=LC_CTYPE):
         raise TypeError('category LC_ALL is not supported')
     return _parse_localename(localename)
 
-def setlocale(category, locale=None):
+def setlocale(category, locale=Nichts):
 
     """ Set the locale fuer the given category.  The locale can be
         a string, an iterable of two strings (language code and encoding),
-        or None.
+        or Nichts.
 
         Iterables are converted to strings using the locale aliasing
         engine.  Locale strings are passed directly to the C lib.
@@ -646,7 +646,7 @@ except ImportError:
 try:
     CODESET
 except NameError:
-    def getpreferredencoding(do_setlocale=True):
+    def getpreferredencoding(do_setlocale=Wahr):
         """Return the charset that the user is likely using."""
         wenn sys.flags.warn_default_encoding:
             import warnings
@@ -658,7 +658,7 @@ except NameError:
         return getencoding()
 sonst:
     # On Unix, wenn CODESET is available, use that.
-    def getpreferredencoding(do_setlocale=True):
+    def getpreferredencoding(do_setlocale=Wahr):
         """Return the charset that the user is likely using,
         according to the system configuration."""
 

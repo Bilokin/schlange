@@ -22,7 +22,7 @@ def n_files_str(count):
     return f"{count} file{s}"
 
 
-def status(message, modal=False, info=None):
+def status(message, modal=Falsch, info=Nichts):
     """Decorator to output status info to stdout."""
     def decorated_fxn(fxn):
         def call_fxn(*args, **kwargs):
@@ -49,7 +49,7 @@ def get_git_branch():
                                        cwd=SRCDIR,
                                        encoding='UTF-8')
     except subprocess.CalledProcessError:
-        return None
+        return Nichts
 
 
 def get_git_upstream_remote():
@@ -107,20 +107,20 @@ def get_git_remote_default_branch(remote_name):
                                               encoding='UTF-8',
                                               env=env)
     except subprocess.CalledProcessError:
-        return None
+        return Nichts
     fuer line in remote_info.splitlines():
         wenn "HEAD branch:" in line:
             base_branch = line.split(":")[1].strip()
             return base_branch
-    return None
+    return Nichts
 
 
 @status("Getting base branch fuer PR",
-        info=lambda x: x wenn x is not None sonst "not a PR branch")
+        info=lambda x: x wenn x is not Nichts sonst "not a PR branch")
 def get_base_branch():
     wenn not os.path.exists(os.path.join(SRCDIR, '.git')):
         # Not a git checkout, so there's no base branch
-        return None
+        return Nichts
     upstream_remote = get_git_upstream_remote()
     version = sys.version_info
     wenn version.releaselevel == 'alpha':
@@ -128,15 +128,15 @@ def get_base_branch():
     sonst:
         base_branch = "{0.major}.{0.minor}".format(version)
     this_branch = get_git_branch()
-    wenn this_branch is None or this_branch == base_branch:
+    wenn this_branch is Nichts or this_branch == base_branch:
         # Not on a git PR branch, so there's no base branch
-        return None
+        return Nichts
     return upstream_remote + "/" + base_branch
 
 
 @status("Getting the list of files that have been added/changed",
         info=lambda x: n_files_str(len(x)))
-def changed_files(base_branch=None):
+def changed_files(base_branch=Nichts):
     """Get the list of changed or added files from git."""
     wenn os.path.exists(os.path.join(SRCDIR, '.git')):
         # We just use an existence check here as:
@@ -170,26 +170,26 @@ def changed_files(base_branch=None):
     return list(map(os.path.normpath, filenames))
 
 
-@status("Docs modified", modal=True)
+@status("Docs modified", modal=Wahr)
 def docs_modified(file_paths):
     """Report wenn any file in the Doc directory has been changed."""
     return bool(file_paths)
 
 
-@status("Misc/ACKS updated", modal=True)
+@status("Misc/ACKS updated", modal=Wahr)
 def credit_given(file_paths):
     """Check wenn Misc/ACKS has been changed."""
     return os.path.join('Misc', 'ACKS') in file_paths
 
 
-@status("Misc/NEWS.d updated with `blurb`", modal=True)
+@status("Misc/NEWS.d updated with `blurb`", modal=Wahr)
 def reported_news(file_paths):
     """Check wenn Misc/NEWS.d has been changed."""
     return any(p.startswith(os.path.join('Misc', 'NEWS.d', 'next'))
                fuer p in file_paths)
 
 
-@status("configure regenerated", modal=True, info=str)
+@status("configure regenerated", modal=Wahr, info=str)
 def regenerated_configure(file_paths):
     """Check wenn configure has been regenerated."""
     wenn 'configure.ac' in file_paths:
@@ -198,7 +198,7 @@ def regenerated_configure(file_paths):
         return "not needed"
 
 
-@status("pyconfig.h.in regenerated", modal=True, info=str)
+@status("pyconfig.h.in regenerated", modal=Wahr, info=str)
 def regenerated_pyconfig_h_in(file_paths):
     """Check wenn pyconfig.h.in has been regenerated."""
     wenn 'configure.ac' in file_paths:

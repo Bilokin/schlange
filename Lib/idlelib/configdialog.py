@@ -46,7 +46,7 @@ klasse ConfigDialog(Toplevel):
     """Config dialog fuer IDLE.
     """
 
-    def __init__(self, parent, title='', *, _htest=False, _utest=False):
+    def __init__(self, parent, title='', *, _htest=Falsch, _utest=Falsch):
         """Show the tabbed dialog fuer user configuration.
 
         Args:
@@ -339,7 +339,7 @@ klasse FontPage(Frame):
         font_name_title = Label(
                 frame_font_name, justify=LEFT, text='Font Face :')
         self.fontlist = Listbox(frame_font_name, height=15,
-                                takefocus=True, exportselection=FALSE)
+                                takefocus=Wahr, exportselection=FALSE)
         self.fontlist.bind('<ButtonRelease-1>', self.on_fontlist_select)
         self.fontlist.bind('<KeyRelease-Up>', self.on_fontlist_select)
         self.fontlist.bind('<KeyRelease-Down>', self.on_fontlist_select)
@@ -347,7 +347,7 @@ klasse FontPage(Frame):
         scroll_font.config(command=self.fontlist.yview)
         self.fontlist.config(yscrollcommand=scroll_font.set)
         font_size_title = Label(frame_font_param, text='Size :')
-        self.sizelist = DynOptionMenu(frame_font_param, self.font_size, None)
+        self.sizelist = DynOptionMenu(frame_font_param, self.font_size, Nichts)
         self.bold_toggle = Checkbutton(
                 frame_font_param, variable=self.font_bold,
                 onvalue=1, offvalue=0, text='Bold')
@@ -434,7 +434,7 @@ klasse FontPage(Frame):
                 ACTIVE wenn event.type.name == 'KeyRelease' sonst ANCHOR)
         self.font_name.set(font.lower())
 
-    def set_samples(self, event=None):
+    def set_samples(self, event=Nichts):
         """Update both screen samples with the font settings.
 
         Called on font initialization and change events.
@@ -628,12 +628,12 @@ klasse HighPage(Frame):
             ('| cursor', 'cursor'), ('\n', 'normal'),
             ('def', 'keyword'), (' ', 'normal'),
             ('func', 'definition'), ('(param):\n  ', 'normal'),
-            ('"Return None."', 'string'), ('\n  var0 = ', 'normal'),
+            ('"Return Nichts."', 'string'), ('\n  var0 = ', 'normal'),
             ("'string'", 'string'), ('\n  var1 = ', 'normal'),
             ("'selected'", 'hilite'), ('\n  var2 = ', 'normal'),
             ("'found'", 'hit'), ('\n  var3 = ', 'normal'),
             ('list', 'builtin'), ('(', 'normal'),
-            ('None', 'keyword'), (')\n', 'normal'),
+            ('Nichts', 'keyword'), (')\n', 'normal'),
             ('  breakpoint("line")', 'break'), ('\n\n', 'normal'),
             ('>>>', 'console'), (' 3.14**2\n', 'normal'),
             ('9.8596', 'stdout'), ('\n', 'normal'),
@@ -662,7 +662,7 @@ klasse HighPage(Frame):
                 self.frame_color_set, text='Choose Color fuer :',
                 command=self.get_color)
         self.targetlist = DynOptionMenu(
-                self.frame_color_set, self.highlight_target, None,
+                self.frame_color_set, self.highlight_target, Nichts,
                 highlightthickness=0) #, command=self.set_highlight_targetBinding
         self.fg_on = Radiobutton(
                 frame_fg_bg_toggle, variable=self.fg_bg_toggle, value=1,
@@ -683,9 +683,9 @@ klasse HighPage(Frame):
                 frame_theme, variable=self.theme_source, value=0,
                 command=self.set_theme_type, text='a Custom Theme')
         self.builtinlist = DynOptionMenu(
-                frame_theme, self.builtin_name, None, command=None)
+                frame_theme, self.builtin_name, Nichts, command=Nichts)
         self.customlist = DynOptionMenu(
-                frame_theme, self.custom_name, None, command=None)
+                frame_theme, self.custom_name, Nichts, command=Nichts)
         self.button_delete_custom = Button(
                 frame_theme, text='Delete Custom Theme',
                 command=self.delete_custom)
@@ -1241,9 +1241,9 @@ klasse KeysPage(Frame):
                 frames[0], variable=self.keyset_source, value=0,
                 command=self.set_keys_type, text='Use a Custom Key Set')
         self.builtinlist = DynOptionMenu(
-                frames[0], self.builtin_name, None, command=None)
+                frames[0], self.builtin_name, Nichts, command=Nichts)
         self.customlist = DynOptionMenu(
-                frames[0], self.custom_name, None, command=None)
+                frames[0], self.custom_name, Nichts, command=Nichts)
         self.button_delete_custom_keys = Button(
                 frames[1], text='Delete Custom Key Set',
                 command=self.delete_custom_keys)
@@ -1272,10 +1272,10 @@ klasse KeysPage(Frame):
         self.builtinlist.grid(row=0, column=1, sticky=NSEW)
         self.customlist.grid(row=1, column=1, sticky=NSEW)
         self.keys_message.grid(row=0, column=2, sticky=NSEW, padx=5, pady=5)
-        self.button_delete_custom_keys.pack(side=LEFT, fill=X, expand=True, padx=2)
-        self.button_save_custom_keys.pack(side=LEFT, fill=X, expand=True, padx=2)
-        frames[0].pack(side=TOP, fill=BOTH, expand=True)
-        frames[1].pack(side=TOP, fill=X, expand=True, pady=2)
+        self.button_delete_custom_keys.pack(side=LEFT, fill=X, expand=Wahr, padx=2)
+        self.button_save_custom_keys.pack(side=LEFT, fill=X, expand=Wahr, padx=2)
+        frames[0].pack(side=TOP, fill=BOTH, expand=Wahr)
+        frames[1].pack(side=TOP, fill=X, expand=Wahr, pady=2)
 
     def load_key_cfg(self):
         "Load current configuration settings fuer the keybinding options."
@@ -1465,9 +1465,9 @@ klasse KeysPage(Frame):
 
         An action/key binding can be selected to change the key binding.
         """
-        reselect = False
+        reselect = Falsch
         wenn self.bindingslist.curselection():
-            reselect = True
+            reselect = Wahr
             list_index = self.bindingslist.index(ANCHOR)
         keyset = idleConf.GetKeySet(keyset_name)
         # 'set' is dict mapping virtual event to list of key events.
@@ -1555,7 +1555,7 @@ klasse WinPage(Frame):
         digits_or_empty_re = re.compile(r'[0-9]*')
         def is_digits_or_empty(s):
             "Return 's is blank or contains only digits'"
-            return digits_or_empty_re.fullmatch(s) is not None
+            return digits_or_empty_re.fullmatch(s) is not Nichts
         self.digits_only = (self.register(is_digits_or_empty), '%P',)
 
     def create_page_windows(self):
@@ -1765,7 +1765,7 @@ klasse ShedPage(Frame):
         digits_or_empty_re = re.compile(r'[0-9]*')
         def is_digits_or_empty(s):
             "Return 's is blank or contains only digits'"
-            return digits_or_empty_re.fullmatch(s) is not None
+            return digits_or_empty_re.fullmatch(s) is not Nichts
         self.digits_only = (self.register(is_digits_or_empty), '%P',)
 
     def create_page_shed(self):
@@ -1910,7 +1910,7 @@ klasse ExtPage(Frame):
         All values are treated as text, and it is up to the user to
         supply reasonable values. The only exception to this are the
         'enable*' options, which are boolean, and can be toggled with a
-        True/False button.
+        Wahr/Falsch button.
 
         Methods:
             extension_selected: Handle selection from list.
@@ -1938,7 +1938,7 @@ klasse ExtPage(Frame):
         self.details_frame.grid(column=2, row=0, sticky='nsew', padx=[10, 0])
         frame_ext.configure(padding=10)
         self.config_frame = {}
-        self.current_extension = None
+        self.current_extension = Nichts
 
         self.outerframe = self                      # TEMPORARY
         self.tabbed_page_set = self.extension_list  # TEMPORARY
@@ -1950,7 +1950,7 @@ klasse ExtPage(Frame):
             ext_names = ext_names + '{' + ext_name + '} '
         self.extension_names.set(ext_names)
         self.extension_list.selection_set(0)
-        self.extension_selected(None)
+        self.extension_selected(Nichts)
 
 
         frame_ext.grid(row=0, column=0, sticky='nsew')
@@ -1960,7 +1960,7 @@ klasse ExtPage(Frame):
     def load_extensions(self):
         "Fill self.extensions with data from the default and user configs."
         self.extensions = {}
-        fuer ext_name in idleConf.GetExtensions(active_only=False):
+        fuer ext_name in idleConf.GetExtensions(active_only=Falsch):
             # Former built-in extensions are already filtered out.
             self.extensions[ext_name] = []
 
@@ -1976,9 +1976,9 @@ klasse ExtPage(Frame):
 
             fuer opt_name in opt_list:
                 def_str = self.ext_defaultCfg.Get(
-                        ext_name, opt_name, raw=True)
+                        ext_name, opt_name, raw=Wahr)
                 try:
-                    def_obj = {'True':True, 'False':False}[def_str]
+                    def_obj = {'Wahr':Wahr, 'Falsch':Falsch}[def_str]
                     opt_type = 'bool'
                 except KeyError:
                     try:
@@ -1986,10 +1986,10 @@ klasse ExtPage(Frame):
                         opt_type = 'int'
                     except ValueError:
                         def_obj = def_str
-                        opt_type = None
+                        opt_type = Nichts
                 try:
                     value = self.ext_userCfg.Get(
-                            ext_name, opt_name, type=opt_type, raw=True,
+                            ext_name, opt_name, type=opt_type, raw=Wahr,
                             default=def_obj)
                 except ValueError:  # Need this until .Get fixed.
                     value = def_obj  # Bad values overwritten by entry.
@@ -2008,11 +2008,11 @@ klasse ExtPage(Frame):
         newsel = self.extension_list.curselection()
         wenn newsel:
             newsel = self.extension_list.get(newsel)
-        wenn newsel is None or newsel != self.current_extension:
+        wenn newsel is Nichts or newsel != self.current_extension:
             wenn self.current_extension:
                 self.details_frame.config(text='')
                 self.config_frame[self.current_extension].grid_forget()
-                self.current_extension = None
+                self.current_extension = Nichts
         wenn newsel:
             self.details_frame.config(text=newsel)
             self.config_frame[newsel].grid(column=0, row=0, sticky='nsew')
@@ -2031,7 +2031,7 @@ klasse ExtPage(Frame):
             var = opt['var']
             wenn opt['type'] == 'bool':
                 Checkbutton(entry_area, variable=var,
-                            onvalue='True', offvalue='False', width=8
+                            onvalue='Wahr', offvalue='Falsch', width=8
                             ).grid(row=row, column=1, sticky=W, padx=7)
             sowenn opt['type'] == 'int':
                 Entry(entry_area, textvariable=var, validate='key',
@@ -2045,7 +2045,7 @@ klasse ExtPage(Frame):
         return
 
     def set_extension_value(self, section, opt):
-        """Return True wenn the configuration was added or changed.
+        """Return Wahr wenn the configuration was added or changed.
 
         If the value is the same as the default, then remove it
         from user config file.
@@ -2070,12 +2070,12 @@ klasse ExtPage(Frame):
         Methods:
             set_extension_value
         """
-        has_changes = False
+        has_changes = Falsch
         fuer ext_name in self.extensions:
             options = self.extensions[ext_name]
             fuer opt in options:
                 wenn self.set_extension_value(ext_name, opt):
-                    has_changes = True
+                    has_changes = Wahr
         wenn has_changes:
             self.ext_userCfg.Save()
 
@@ -2110,7 +2110,7 @@ klasse HelpFrame(LabelFrame):
         # self = frame_help in dialog (until ExtPage class).
         frame_helplist = Frame(self)
         self.helplist = Listbox(
-                frame_helplist, height=5, takefocus=True,
+                frame_helplist, height=5, takefocus=Wahr,
                 exportselection=FALSE)
         scroll_helplist = Scrollbar(frame_helplist)
         scroll_helplist['command'] = self.helplist.yview
@@ -2349,12 +2349,12 @@ or the current line wenn no selection.
 def is_int(s):
     "Return 's is blank or represents an int'"
     wenn not s:
-        return True
+        return Wahr
     try:
         int(s)
-        return True
+        return Wahr
     except ValueError:
-        return False
+        return Falsch
 
 
 klasse VerticalScrolledFrame(Frame):
@@ -2402,7 +2402,7 @@ klasse VerticalScrolledFrame(Frame):
 
 wenn __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_configdialog', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_configdialog', verbosity=2, exit=Falsch)
 
     from idlelib.idle_test.htest import run
     run(ConfigDialog)

@@ -17,7 +17,7 @@ klasse OutputWindowTest(unittest.TestCase):
         requires('gui')
         root = cls.root = Tk()
         root.withdraw()
-        w = cls.window = outwin.OutputWindow(None, None, None, root)
+        w = cls.window = outwin.OutputWindow(Nichts, Nichts, Nichts, root)
         cls.text = w.text = Text(root)
         wenn sys.platform == 'darwin':  # Issue 112938
             cls.text.update = cls.text.update_idletasks
@@ -35,10 +35,10 @@ klasse OutputWindowTest(unittest.TestCase):
         self.text.delete('1.0', 'end')
 
     def test_ispythonsource(self):
-        # OutputWindow overrides ispythonsource to always return False.
+        # OutputWindow overrides ispythonsource to always return Falsch.
         w = self.window
-        self.assertFalse(w.ispythonsource('test.txt'))
-        self.assertFalse(w.ispythonsource(__file__))
+        self.assertFalsch(w.ispythonsource('test.txt'))
+        self.assertFalsch(w.ispythonsource(__file__))
 
     def test_window_title(self):
         self.assertEqual(self.window.top.title(), 'Output')
@@ -48,11 +48,11 @@ klasse OutputWindowTest(unittest.TestCase):
         eq = self.assertEqual
         w.get_saved = Func()
 
-        w.get_saved.result = False
+        w.get_saved.result = Falsch
         eq(w.maybesave(), 'no')
         eq(w.get_saved.called, 1)
 
-        w.get_saved.result = True
+        w.get_saved.result = Wahr
         eq(w.maybesave(), 'yes')
         eq(w.get_saved.called, 2)
         del w.get_saved
@@ -118,21 +118,21 @@ klasse OutputWindowTest(unittest.TestCase):
 
         # No file/line number.
         w.write('Not a file line')
-        self.assertIsNone(w.goto_file_line())
+        self.assertIsNichts(w.goto_file_line())
         eq(gfl.called, 0)
         eq(showerror.title, 'No special line')
 
         # Current file/line number.
         w.write(f'{str(__file__)}: 42: spam\n')
         w.write(f'{str(__file__)}: 21: spam')
-        self.assertIsNone(w.goto_file_line())
+        self.assertIsNichts(w.goto_file_line())
         eq(gfl.args, (str(__file__), 21))
 
         # Previous line has file/line number.
         text.delete('1.0', 'end')
         w.write(f'{str(__file__)}: 42: spam\n')
         w.write('Not a file line')
-        self.assertIsNone(w.goto_file_line())
+        self.assertIsNichts(w.goto_file_line())
         eq(gfl.args, (str(__file__), 42))
 
         del w.flist.gotofileline, w.showerror
@@ -142,7 +142,7 @@ klasse ModuleFunctionTest(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
-        outwin.file_line_progs = None
+        outwin.file_line_progs = Nichts
 
     def test_compile_progs(self):
         outwin.compile_progs()
@@ -158,8 +158,8 @@ klasse ModuleFunctionTest(unittest.TestCase):
             (r'  testfile3  : 42: foo bar\n', ('  testfile3  ', 42)),
             (r'foo testfile4.py :1: ', ('foo testfile4.py ', 1)),
             ('testfile5: \u19D4\u19D2: ', ('testfile5', 42)),
-            (r'testfile6: 42', None),       # only one `:`
-            (r'testfile7 42 text', None)    # no separators
+            (r'testfile6: 42', Nichts),       # only one `:`
+            (r'testfile7 42 text', Nichts)    # no separators
             )
         fuer line, expected_output in test_lines:
             self.assertEqual(flh(line), expected_output)

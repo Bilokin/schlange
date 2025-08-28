@@ -16,7 +16,7 @@ TemplateDict = dict[str, str]
 
 
 klasse CRenderData:
-    def __init__(self) -> None:
+    def __init__(self) -> Nichts:
 
         # The C statements to declare variables.
         # Should be full lines with \n eol characters.
@@ -72,7 +72,7 @@ klasse CRenderData:
         self.unlock: list[str] = []
 
 
-@dc.dataclass(slots=True, frozen=True)
+@dc.dataclass(slots=Wahr, frozen=Wahr)
 klasse Include:
     """
     An include like: #include "pycore_long.h"   // _Py_ID()
@@ -83,16 +83,16 @@ klasse Include:
     # Example: "_Py_ID()".
     reason: str
 
-    # None means unconditional include.
+    # Nichts means unconditional include.
     # Example: "#if defined(Py_BUILD_CORE) && !defined(Py_BUILD_CORE_MODULE)".
-    condition: str | None
+    condition: str | Nichts
 
     def sort_key(self) -> tuple[str, str]:
         # order: '#if' comes before 'NO_CONDITION'
         return (self.condition or 'NO_CONDITION', self.filename)
 
 
-@dc.dataclass(slots=True)
+@dc.dataclass(slots=Wahr)
 klasse BlockPrinter:
     language: Language
     f: io.StringIO = dc.field(default_factory=io.StringIO)
@@ -104,14 +104,14 @@ klasse BlockPrinter:
         self,
         block: Block,
         *,
-        header_includes: list[Include] | None = None,
-    ) -> None:
+        header_includes: list[Include] | Nichts = Nichts,
+    ) -> Nichts:
         input = block.input
         output = block.output
         dsl_name = block.dsl_name
         write = self.f.write
 
-        assert not ((dsl_name is None) ^ (output is None)), "you must specify dsl_name and output together, dsl_name " + repr(dsl_name)
+        assert not ((dsl_name is Nichts) ^ (output is Nichts)), "you must specify dsl_name and output together, dsl_name " + repr(dsl_name)
 
         wenn not dsl_name:
             write(input)
@@ -137,7 +137,7 @@ klasse BlockPrinter:
             # Emit optional "#include" directives fuer C headers
             output += '\n'
 
-            current_condition: str | None = None
+            current_condition: str | Nichts = Nichts
             fuer include in header_includes:
                 wenn include.condition != current_condition:
                     wenn current_condition:
@@ -172,7 +172,7 @@ klasse BlockPrinter:
         write(self.language.checksum_line.format(dsl_name=dsl_name, arguments=arguments))
         write("\n")
 
-    def write(self, text: str) -> None:
+    def write(self, text: str) -> Nichts:
         self.f.write(text)
 
 
@@ -187,7 +187,7 @@ klasse BufferSeries:
     e.g. o[-1] is an element immediately preceding o[0].
     """
 
-    def __init__(self) -> None:
+    def __init__(self) -> Nichts:
         self._start = 0
         self._array: list[list[str]] = []
 
@@ -202,7 +202,7 @@ klasse BufferSeries:
             self._array.append([])
         return self._array[i]
 
-    def clear(self) -> None:
+    def clear(self) -> Nichts:
         fuer ta in self._array:
             ta.clear()
 
@@ -212,17 +212,17 @@ klasse BufferSeries:
         return "".join(texts)
 
 
-@dc.dataclass(slots=True, repr=False)
+@dc.dataclass(slots=Wahr, repr=Falsch)
 klasse Destination:
     name: str
     type: str
     clinic: Clinic
-    buffers: BufferSeries = dc.field(init=False, default_factory=BufferSeries)
-    filename: str = dc.field(init=False)  # set in __post_init__
+    buffers: BufferSeries = dc.field(init=Falsch, default_factory=BufferSeries)
+    filename: str = dc.field(init=Falsch)  # set in __post_init__
 
     args: dc.InitVar[tuple[str, ...]] = ()
 
-    def __post_init__(self, args: tuple[str, ...]) -> None:
+    def __post_init__(self, args: tuple[str, ...]) -> Nichts:
         valid_types = ('buffer', 'file', 'suppress')
         wenn self.type not in valid_types:
             fail(
@@ -254,7 +254,7 @@ klasse Destination:
             type_repr = f"type={self.type!r}"
         return f"<clinic.Destination {self.name!r} {type_repr}>"
 
-    def clear(self) -> None:
+    def clear(self) -> Nichts:
         wenn self.type != 'buffer':
             fail(f"Can't clear destination {self.name!r}: it's not of type 'buffer'")
         self.buffers.clear()
@@ -267,7 +267,7 @@ DestinationDict = dict[str, Destination]
 
 
 klasse CodeGen:
-    def __init__(self, limited_capi: bool) -> None:
+    def __init__(self, limited_capi: bool) -> Nichts:
         self.limited_capi = limited_capi
         self._ifndef_symbols: set[str] = set()
         # dict: include name => Include instance
@@ -275,12 +275,12 @@ klasse CodeGen:
 
     def add_ifndef_symbol(self, name: str) -> bool:
         wenn name in self._ifndef_symbols:
-            return False
+            return Falsch
         self._ifndef_symbols.add(name)
-        return True
+        return Wahr
 
     def add_include(self, name: str, reason: str,
-                    *, condition: str | None = None) -> None:
+                    *, condition: str | Nichts = Nichts) -> Nichts:
         try:
             existing = self._includes[name]
         except KeyError:

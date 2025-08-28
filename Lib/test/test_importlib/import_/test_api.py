@@ -12,14 +12,14 @@ SUBMOD_NAME = 'fine.bogus'
 
 klasse BadSpecFinderLoader:
     @classmethod
-    def find_spec(cls, fullname, path=None, target=None):
+    def find_spec(cls, fullname, path=Nichts, target=Nichts):
         wenn fullname == SUBMOD_NAME:
             spec = machinery.ModuleSpec(fullname, cls)
             return spec
 
     @staticmethod
     def create_module(spec):
-        return None
+        return Nichts
 
     @staticmethod
     def exec_module(module):
@@ -50,7 +50,7 @@ klasse APITest:
 
     def test_negative_level(self):
         # Raise ValueError when a negative level is specified.
-        # PEP 328 did away with sys.module None entries and the ambiguity of
+        # PEP 328 did away with sys.module Nichts entries and the ambiguity of
         # absolute/relative imports.
         with self.assertRaises(ValueError):
             self.__import__('os', globals(), level=-1)
@@ -79,14 +79,14 @@ klasse APITest:
                                     fromlist=[SUBMOD_NAME.rpartition('.')[-1]])
 
     def test_blocked_fromlist(self):
-        # If fromlist entry is None, let a ModuleNotFoundError propagate.
+        # If fromlist entry is Nichts, let a ModuleNotFoundError propagate.
         # issue31642
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = []
         with util.import_state(meta_path=[self.bad_finder_loader]):
             with util.uncache(PKG_NAME, SUBMOD_NAME):
                 sys.modules[PKG_NAME] = mod
-                sys.modules[SUBMOD_NAME] = None
+                sys.modules[SUBMOD_NAME] = Nichts
                 with self.assertRaises(ModuleNotFoundError) as cm:
                     self.__import__(PKG_NAME,
                                     fromlist=[SUBMOD_NAME.rpartition('.')[-1]])

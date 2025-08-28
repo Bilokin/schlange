@@ -21,7 +21,7 @@ klasse Language(metaclass=abc.ABCMeta):
     stop_line = ""
     checksum_line = ""
 
-    def __init__(self, filename: str) -> None:
+    def __init__(self, filename: str) -> Nichts:
         self.filename = filename
 
     @abc.abstractmethod
@@ -32,14 +32,14 @@ klasse Language(metaclass=abc.ABCMeta):
     ) -> str:
         ...
 
-    def parse_line(self, line: str) -> None:
+    def parse_line(self, line: str) -> Nichts:
         ...
 
-    def validate(self) -> None:
+    def validate(self) -> Nichts:
         def assert_only_one(
                 attr: str,
                 *additional_fields: str
-        ) -> None:
+        ) -> Nichts:
             """
             Ensures that the string found at getattr(self, attr)
             contains exactly one formatter replacement string for
@@ -69,7 +69,7 @@ klasse Language(metaclass=abc.ABCMeta):
             line: str = getattr(self, attr)
             fcf = libclinic.FormatCounterFormatter()
             fcf.format(line)
-            def local_fail(should_be_there_but_isnt: bool) -> None:
+            def local_fail(should_be_there_but_isnt: bool) -> Nichts:
                 wenn should_be_there_but_isnt:
                     fail("{} {} must contain {{{}}} exactly once!".format(
                         self.__class__.__name__, attr, name))
@@ -80,12 +80,12 @@ klasse Language(metaclass=abc.ABCMeta):
             fuer name, count in fcf.counts.items():
                 wenn name in fields:
                     wenn count > 1:
-                        local_fail(True)
+                        local_fail(Wahr)
                 sonst:
-                    local_fail(False)
+                    local_fail(Falsch)
             fuer name in fields:
                 wenn fcf.counts.get(name) != 1:
-                    local_fail(True)
+                    local_fail(Wahr)
 
         assert_only_one('start_line')
         assert_only_one('stop_line')

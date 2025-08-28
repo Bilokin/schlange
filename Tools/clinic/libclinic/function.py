@@ -20,12 +20,12 @@ ModuleDict = dict[str, "Module"]
 ParamDict = dict[str, "Parameter"]
 
 
-@dc.dataclass(repr=False)
+@dc.dataclass(repr=Falsch)
 klasse Module:
     name: str
     module: Module | Clinic
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         self.parent = self.module
         self.modules: ModuleDict = {}
         self.classes: ClassDict = {}
@@ -35,15 +35,15 @@ klasse Module:
         return "<clinic.Module " + repr(self.name) + " at " + str(id(self)) + ">"
 
 
-@dc.dataclass(repr=False)
+@dc.dataclass(repr=Falsch)
 klasse Class:
     name: str
     module: Module | Clinic
-    cls: Class | None
+    cls: Class | Nichts
     typedef: str
     type_object: str
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         self.parent = self.cls or self.module
         self.classes: ClassDict = {}
         self.functions: list[Function] = []
@@ -78,7 +78,7 @@ GETTER: Final = FunctionKind.GETTER
 SETTER: Final = FunctionKind.SETTER
 
 
-@dc.dataclass(repr=False)
+@dc.dataclass(repr=Falsch)
 klasse Function:
     """
     Mutable duck type fuer inspect.Function.
@@ -94,7 +94,7 @@ klasse Function:
     _: dc.KW_ONLY
     name: str
     module: Module | Clinic
-    cls: Class | None
+    cls: Class | Nichts
     c_basename: str
     full_name: str
     return_converter: CReturnConverter
@@ -103,19 +103,19 @@ klasse Function:
     return_annotation: object = inspect.Signature.empty
     docstring: str = ''
     # docstring_only means "don't generate a machine-readable
-    # signature, just a normal docstring".  it's True for
+    # signature, just a normal docstring".  it's Wahr for
     # functions with optional groups because we can't represent
     # those accurately with inspect.Signature in 3.4.
-    docstring_only: bool = False
-    forced_text_signature: str | None = None
-    critical_section: bool = False
-    disable_fastcall: bool = False
+    docstring_only: bool = Falsch
+    forced_text_signature: str | Nichts = Nichts
+    critical_section: bool = Falsch
+    disable_fastcall: bool = Falsch
     target_critical_section: list[str] = dc.field(default_factory=list)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self) -> Nichts:
         self.parent = self.cls or self.module
-        self.self_converter: self_converter | None = None
-        self.__render_parameters__: list[Parameter] | None = None
+        self.self_converter: self_converter | Nichts = Nichts
+        self.__render_parameters__: list[Parameter] | Nichts = Nichts
 
     @functools.cached_property
     def displayname(self) -> str:
@@ -128,9 +128,9 @@ klasse Function:
 
     @functools.cached_property
     def fulldisplayname(self) -> str:
-        parent: Class | Module | Clinic | None
+        parent: Class | Module | Clinic | Nichts
         wenn self.kind.new_or_init:
-            parent = getattr(self.cls, "parent", None)
+            parent = getattr(self.cls, "parent", Nichts)
         sonst:
             parent = self.parent
         name = self.displayname
@@ -151,9 +151,9 @@ klasse Function:
         return self.__render_parameters__
 
     @property
-    def methoddef_flags(self) -> str | None:
+    def methoddef_flags(self) -> str | Nichts:
         wenn self.kind.new_or_init:
-            return None
+            return Nichts
         flags = []
         match self.kind:
             case FunctionKind.CLASS_METHOD:
@@ -176,7 +176,7 @@ klasse Function:
         maximum of 76 characters fuer global functions and classes,
         and 72 characters fuer methods.
         """
-        wenn self.cls is not None and not self.kind.new_or_init:
+        wenn self.cls is not Nichts and not self.kind.new_or_init:
             return 72
         return 76
 
@@ -192,7 +192,7 @@ klasse Function:
         return f
 
 
-@dc.dataclass(repr=False, slots=True)
+@dc.dataclass(repr=Falsch, slots=Wahr)
 klasse Parameter:
     """
     Mutable duck type of inspect.Parameter.
@@ -206,10 +206,10 @@ klasse Parameter:
     annotation: object = inspect.Parameter.empty
     docstring: str = ''
     group: int = 0
-    # (`None` signifies that there is no deprecation)
-    deprecated_positional: VersionTuple | None = None
-    deprecated_keyword: VersionTuple | None = None
-    right_bracket_count: int = dc.field(init=False, default=0)
+    # (`Nichts` signifies that there is no deprecation)
+    deprecated_positional: VersionTuple | Nichts = Nichts
+    deprecated_keyword: VersionTuple | Nichts = Nichts
+    right_bracket_count: int = dc.field(init=Falsch, default=0)
 
     def __repr__(self) -> str:
         return f'<clinic.Parameter {self.name!r}>'
@@ -230,8 +230,8 @@ klasse Parameter:
         self,
         /,
         *,
-        converter: CConverter | None = None,
-        function: Function | None = None,
+        converter: CConverter | Nichts = Nichts,
+        function: Function | Nichts = Nichts,
         **overrides: Any
     ) -> Parameter:
         function = function or self.function

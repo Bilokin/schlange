@@ -13,8 +13,8 @@ from unittest import TestCase, main as unittest_main
 from test.test_importlib import util as test_importlib_util
 
 
-StaticMethodType = type(staticmethod(lambda: None))
-ClassMethodType = type(classmethod(lambda c: None))
+StaticMethodType = type(staticmethod(lambda: Nichts))
+ClassMethodType = type(classmethod(lambda c: Nichts))
 
 # Here we test the python klasse browser code.
 #
@@ -31,14 +31,14 @@ def temporary_main_spec():
     of the `__main__` module wenn it's missing.
     """
     main_mod = sys.modules.get("__main__")
-    wenn main_mod is None:
+    wenn main_mod is Nichts:
         yield  # Do nothing wenn __main__ is not present
         return
 
-    original_spec = getattr(main_mod, "__spec__", None)
-    wenn original_spec is None:
+    original_spec = getattr(main_mod, "__spec__", Nichts)
+    wenn original_spec is Nichts:
         main_mod.__spec__ = importlib.machinery.ModuleSpec(
-            name="__main__", loader=None, origin="built-in"
+            name="__main__", loader=Nichts, origin="built-in"
         )
     try:
         yield
@@ -67,7 +67,7 @@ klasse PyclbrTest(TestCase):
         wenn a not in ignore and b not in ignore:
             self.assertEqual(a, b)
 
-    def checkModule(self, moduleName, module=None, ignore=()):
+    def checkModule(self, moduleName, module=Nichts, ignore=()):
         ''' succeed iff pyclbr.readmodule_ex(modulename) corresponds
             to the actual module object, module.  Any identifiers in
             ignore are ignored.   If no module is provided, the appropriate
@@ -75,7 +75,7 @@ klasse PyclbrTest(TestCase):
 
         ignore = set(ignore) | set(['object'])
 
-        wenn module is None:
+        wenn module is Nichts:
             # Import it.
             # ('<silly>' is to work around an API silliness in __import__)
             module = __import__(moduleName, globals(), {}, ['<silly>'])
@@ -88,9 +88,9 @@ klasse PyclbrTest(TestCase):
                 # could be a classmethod
                 wenn (not isinstance(classdict[name], ClassMethodType) or
                     obj.__self__ is not oclass):
-                    return False
+                    return Falsch
             sowenn not isinstance(obj, FunctionType):
-                return False
+                return Falsch
 
             objname = obj.__name__
             wenn objname.startswith("__") and not objname.endswith("__"):
@@ -158,7 +158,7 @@ klasse PyclbrTest(TestCase):
                 return item.__module__ == module.__name__
             wenn isinstance(item, FunctionType):
                 return item.__globals__ is module.__dict__
-            return False
+            return Falsch
         fuer name in dir(module):
             item = getattr(module, name)
             wenn isinstance(item,  (type, FunctionType)):
@@ -181,7 +181,7 @@ klasse PyclbrTest(TestCase):
     def test_nested(self):
         mb = pyclbr
         # Set arguments fuer descriptor creation and _creat_tree call.
-        m, p, f, t, i = 'test', '', 'test.py', {}, None
+        m, p, f, t, i = 'test', '', 'test.py', {}, Nichts
         source = dedent("""\
         def f0():
             def f1(a,b,c):
@@ -206,7 +206,7 @@ klasse PyclbrTest(TestCase):
         f1 = mb._nest_function(f0, 'f1', 2, 4)
         f2 = mb._nest_function(f1, 'f2', 3, 3)
         c1 = mb._nest_class(f0, 'c1', 5, 5)
-        C0 = mb.Class(m, 'C0', None, f, 6, end_lineno=14)
+        C0 = mb.Class(m, 'C0', Nichts, f, 6, end_lineno=14)
         F1 = mb._nest_function(C0, 'F1', 8, 10)
         C1 = mb._nest_class(C0, 'C1', 11, 14)
         C2 = mb._nest_class(C1, 'C2', 12, 14)
@@ -237,7 +237,7 @@ klasse PyclbrTest(TestCase):
                 # Skip superclasses fuer now as not part of example
                 compare(o1, o1.children, o2, o2.children)
 
-        compare(None, actual, None, expected)
+        compare(Nichts, actual, Nichts, expected)
 
     def test_others(self):
         cm = self.checkModule

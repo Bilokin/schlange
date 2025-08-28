@@ -32,7 +32,7 @@ def get_line_info(codeline):
     """Return tuple of (line indent value, codeline, block start keyword).
 
     The indentation of empty lines (or comment lines) is INFINITY.
-    If the line does not start a block, the keyword value is False.
+    If the line does not start a block, the keyword value is Falsch.
     """
     spaces, firstword = get_spaces_firstword(codeline)
     indent = len(spaces)
@@ -53,7 +53,7 @@ klasse CodeContext:
         self.text is the editor window text widget.
 
         self.context displays the code context text above the editor text.
-          Initially None, it is toggled via <<toggle-code-context>>.
+          Initially Nichts, it is toggled via <<toggle-code-context>>.
         self.topvisible is the number of the top text line displayed.
         self.info is a list of (line number, indent level, line text,
           block keyword) tuples fuer the block structure above topvisible.
@@ -68,11 +68,11 @@ klasse CodeContext:
         self._reset()
 
     def _reset(self):
-        self.context = None
-        self.cell00 = None
-        self.t1 = None
+        self.context = Nichts
+        self.cell00 = Nichts
+        self.t1 = Nichts
         self.topvisible = 1
-        self.info = [(0, -1, "", False)]
+        self.info = [(0, -1, "", Falsch)]
 
     @classmethod
     def reload(cls):
@@ -83,21 +83,21 @@ klasse CodeContext:
 
     def __del__(self):
         "Cancel scheduled events."
-        wenn self.t1 is not None:
+        wenn self.t1 is not Nichts:
             try:
                 self.text.after_cancel(self.t1)
             except TclError:  # pragma: no cover
                 pass
-            self.t1 = None
+            self.t1 = Nichts
 
-    def toggle_code_context_event(self, event=None):
+    def toggle_code_context_event(self, event=Nichts):
         """Toggle code context display.
 
         If self.context doesn't exist, create it to match the size of the editor
         window text (toggle on).  If it does exist, destroy it (toggle off).
         Return 'break' to complete the processing of the binding.
         """
-        wenn self.context is None:
+        wenn self.context is Nichts:
             # Calculate the border width and horizontal padding required to
             # align the context with the text in the main Text widget.
             #
@@ -136,9 +136,9 @@ klasse CodeContext:
             menu_status = 'Hide'
         sonst:
             self.context.destroy()
-            self.context = None
+            self.context = Nichts
             self.cell00.destroy()
-            self.cell00 = None
+            self.cell00 = Nichts
             self.text.after_cancel(self.t1)
             self._reset()
             menu_status = 'Show'
@@ -216,7 +216,7 @@ klasse CodeContext:
         self.context.insert('end', '\n'.join(context_strings[showfirst:]))
         self.context['state'] = 'disabled'
 
-    def jumptoline(self, event=None):
+    def jumptoline(self, event=Nichts):
         """ Show clicked context line at top of editor.
 
         If a selection was made, don't jump; allow copying.
@@ -239,22 +239,22 @@ klasse CodeContext:
 
     def timer_event(self):
         "Event on editor text widget triggered every UPDATEINTERVAL ms."
-        wenn self.context is not None:
+        wenn self.context is not Nichts:
             self.update_code_context()
             self.t1 = self.text.after(self.UPDATEINTERVAL, self.timer_event)
 
     def update_font(self):
-        wenn self.context is not None:
+        wenn self.context is not Nichts:
             font = idleConf.GetFont(self.text, 'main', 'EditorWindow')
             self.context['font'] = font
 
     def update_highlight_colors(self):
-        wenn self.context is not None:
+        wenn self.context is not Nichts:
             colors = idleConf.GetHighlight(idleConf.CurrentTheme(), 'context')
             self.context['background'] = colors['background']
             self.context['foreground'] = colors['foreground']
 
-        wenn self.cell00 is not None:
+        wenn self.cell00 is not Nichts:
             line_number_colors = idleConf.GetHighlight(idleConf.CurrentTheme(),
                                                        'linenumber')
             self.cell00.config(bg=line_number_colors['background'])
@@ -265,6 +265,6 @@ CodeContext.reload()
 
 wenn __name__ == "__main__":
     from unittest import main
-    main('idlelib.idle_test.test_codecontext', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_codecontext', verbosity=2, exit=Falsch)
 
     # Add htest.

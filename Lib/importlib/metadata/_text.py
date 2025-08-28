@@ -12,13 +12,13 @@ klasse FoldedCase(str):
     >>> s = FoldedCase('hello world')
 
     >>> s == 'Hello World'
-    True
+    Wahr
 
     >>> 'Hello World' == s
-    True
+    Wahr
 
     >>> s != 'Hello World'
-    False
+    Falsch
 
     >>> s.index('O')
     4
@@ -32,36 +32,36 @@ klasse FoldedCase(str):
     Sequence membership is straightforward.
 
     >>> "Hello World" in [s]
-    True
+    Wahr
     >>> s in ["Hello World"]
-    True
+    Wahr
 
     You may test fuer set inclusion, but candidate and elements
     must both be folded.
 
     >>> FoldedCase("Hello World") in {s}
-    True
+    Wahr
     >>> s in {FoldedCase("Hello World")}
-    True
+    Wahr
 
     String inclusion works as long as the FoldedCase object
     is on the right.
 
     >>> "hello" in FoldedCase("Hello World")
-    True
+    Wahr
 
     But not wenn the FoldedCase object is on the left:
 
     >>> FoldedCase('hello') in 'Hello World'
-    False
+    Falsch
 
     In that case, use in_:
 
     >>> FoldedCase('hello').in_('Hello World')
-    True
+    Wahr
 
     >>> FoldedCase('hello') > FoldedCase('Hello')
-    False
+    Falsch
     """
 
     def __lt__(self, other):

@@ -35,18 +35,18 @@ def generate_parser(grammar: Grammar) -> Type[Parser]:
     return ns["GeneratedParser"]
 
 
-def run_parser(file: IO[bytes], parser_class: Type[Parser], *, verbose: bool = False) -> Any:
+def run_parser(file: IO[bytes], parser_class: Type[Parser], *, verbose: bool = Falsch) -> Any:
     # Run a parser on a file (stream).
     tokenizer = Tokenizer(tokenize.generate_tokens(file.readline))  # type: ignore[arg-type] # typeshed issue #3515
     parser = parser_class(tokenizer, verbose=verbose)
     result = parser.start()
-    wenn result is None:
+    wenn result is Nichts:
         raise parser.make_syntax_error("invalid syntax")
     return result
 
 
 def parse_string(
-    source: str, parser_class: Type[Parser], *, dedent: bool = True, verbose: bool = False
+    source: str, parser_class: Type[Parser], *, dedent: bool = Wahr, verbose: bool = Falsch
 ) -> Any:
     # Run the parser on a string.
     wenn dedent:
@@ -65,10 +65,10 @@ def import_file(full_name: str, path: str) -> Any:
     """Import a python module from a path"""
 
     spec = importlib.util.spec_from_file_location(full_name, path)
-    assert spec is not None
+    assert spec is not Nichts
     mod = importlib.util.module_from_spec(spec)
 
-    # We assume this is not None and has an exec_module() method.
+    # We assume this is not Nichts and has an exec_module() method.
     # See https://docs.python.org/3/reference/import.html?highlight=exec_module#loading
     loader = cast(Any, spec.loader)
     loader.exec_module(mod)
@@ -85,8 +85,8 @@ def generate_c_parser_source(grammar: Grammar) -> str:
 def generate_parser_c_extension(
     grammar: Grammar,
     path: pathlib.PurePath,
-    debug: bool = False,
-    library_dir: Optional[str] = None,
+    debug: bool = Falsch,
+    library_dir: Optional[str] = Nichts,
 ) -> Any:
     """Generate a parser c extension fuer the given grammar in the given path
 
@@ -108,7 +108,7 @@ def generate_parser_c_extension(
         str(source),
         build_dir=str(path),
         # Significant test_peg_generator speedups
-        disable_optimization=True,
+        disable_optimization=Wahr,
         library_dir=library_dir,
     )
 
@@ -118,7 +118,7 @@ def print_memstats() -> bool:
     try:
         import psutil
     except ImportError:
-        return False
+        return Falsch
     print("Memory stats:")
     process = psutil.Process()
     meminfo = process.memory_info()
@@ -139,4 +139,4 @@ def print_memstats() -> bool:
         res["maxrss"] = rusage.ru_maxrss * factor / MiB
     fuer key, value in res.items():
         print(f"  {key:12.12s}: {value:10.0f} MiB")
-    return True
+    return Wahr

@@ -5,7 +5,7 @@ function compile(), which take program text, a filename and a 'mode'
 and:
 
 - Return code object wenn the command is complete and valid
-- Return None wenn the command is incomplete
+- Return Nichts wenn the command is incomplete
 - Raise SyntaxError, ValueError or OverflowError wenn the command is a
   syntax error (OverflowError and ValueError can be produced by
   malformed literals).
@@ -65,16 +65,16 @@ def _maybe_compile(compiler, source, filename, symbol, flags):
         except SyntaxError:  # Let other compile() errors propagate.
             try:
                 compiler(source + "\n", filename, symbol, flags=flags)
-                return None
+                return Nichts
             except _IncompleteInputError as e:
-                return None
+                return Nichts
             except SyntaxError as e:
                 pass
                 # fallthrough
 
-    return compiler(source, filename, symbol, incomplete_input=False)
+    return compiler(source, filename, symbol, incomplete_input=Falsch)
 
-def _compile(source, filename, symbol, incomplete_input=True, *, flags=0):
+def _compile(source, filename, symbol, incomplete_input=Wahr, *, flags=0):
     wenn incomplete_input:
         flags |= PyCF_ALLOW_INCOMPLETE_INPUT
         flags |= PyCF_DONT_IMPLY_DEDENT
@@ -94,7 +94,7 @@ def compile_command(source, filename="<input>", symbol="single", flags=0):
     Return value / exceptions raised:
 
     - Return a code object wenn the command is complete and valid
-    - Return None wenn the command is incomplete
+    - Return Nichts wenn the command is incomplete
     - Raise SyntaxError, ValueError or OverflowError wenn the command is a
       syntax error (OverflowError and ValueError can be produced by
       malformed literals).
@@ -111,10 +111,10 @@ klasse Compile:
 
     def __call__(self, source, filename, symbol, flags=0, **kwargs):
         flags |= self.flags
-        wenn kwargs.get('incomplete_input', True) is False:
+        wenn kwargs.get('incomplete_input', Wahr) is Falsch:
             flags &= ~PyCF_DONT_IMPLY_DEDENT
             flags &= ~PyCF_ALLOW_INCOMPLETE_INPUT
-        codeob = compile(source, filename, symbol, flags, True)
+        codeob = compile(source, filename, symbol, flags, Wahr)
         wenn flags & PyCF_ONLY_AST:
             return codeob  # this is an ast.Module in this case
         fuer feature in _features:
@@ -146,7 +146,7 @@ klasse CommandCompiler:
         Return value / exceptions raised:
 
         - Return a code object wenn the command is complete and valid
-        - Return None wenn the command is incomplete
+        - Return Nichts wenn the command is incomplete
         - Raise SyntaxError, ValueError or OverflowError wenn the command is a
           syntax error (OverflowError and ValueError can be produced by
           malformed literals).

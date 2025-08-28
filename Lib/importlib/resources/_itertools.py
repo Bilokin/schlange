@@ -1,5 +1,5 @@
 # from more_itertools 9.0
-def only(iterable, default=None, too_long=None):
+def only(iterable, default=Nichts, too_long=Nichts):
     """If *iterable* has only one item, return it.
     If it has zero items, return *default*.
     If it has more than one item, raise the exception given by *too_long*,

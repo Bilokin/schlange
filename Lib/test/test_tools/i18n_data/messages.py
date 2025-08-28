@@ -30,9 +30,9 @@ _("""Hello,
 
 # Invalid arguments
 _()
-_(None)
+_(Nichts)
 _(1)
-_(False)
+_(Falsch)
 _(["invalid"])
 _({"invalid"})
 _("string"[3])

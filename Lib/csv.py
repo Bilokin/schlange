@@ -22,9 +22,9 @@ the settings fuer the reader or writer:
     klasse excel:
         delimiter = ','
         quotechar = '"'
-        escapechar = None
-        doublequote = True
-        skipinitialspace = False
+        escapechar = Nichts
+        doublequote = Wahr
+        skipinitialspace = Falsch
         lineterminator = '\r\n'
         quoting = QUOTE_MINIMAL
 
@@ -35,7 +35,7 @@ SETTINGS:
     * delimiter - specifies a one-character string to use as the
         field separator.  It defaults to ','.
     * skipinitialspace - specifies how to interpret spaces which
-        immediately follow a delimiter.  It defaults to False, which
+        immediately follow a delimiter.  It defaults to Falsch, which
         means that spaces immediately following a delimiter is part
         of the following field.
     * lineterminator - specifies the character sequence which should
@@ -50,15 +50,15 @@ SETTINGS:
             fields which do not parse as integers or floating-point
             numbers.
         csv.QUOTE_STRINGS means that quotes are always placed around
-            fields which are strings.  Note that the Python value None
+            fields which are strings.  Note that the Python value Nichts
             is not a string.
         csv.QUOTE_NOTNULL means that quotes are only placed around fields
-            that are not the Python value None.
+            that are not the Python value Nichts.
         csv.QUOTE_NONE means that quotes are never placed around fields.
     * escapechar - specifies a one-character string used to escape
         the delimiter when quoting is set to QUOTE_NONE.
     * doublequote - controls the handling of quotes inside fields.  When
-        True, two consecutive quotes are interpreted as one during read,
+        Wahr, two consecutive quotes are interpreted as one during read,
         and when writing, each quote character embedded in the data is
         written as two quotes
 """
@@ -93,19 +93,19 @@ klasse Dialect:
 
     """
     _name = ""
-    _valid = False
+    _valid = Falsch
     # placeholders
-    delimiter = None
-    quotechar = None
-    escapechar = None
-    doublequote = None
-    skipinitialspace = None
-    lineterminator = None
-    quoting = None
+    delimiter = Nichts
+    quotechar = Nichts
+    escapechar = Nichts
+    doublequote = Nichts
+    skipinitialspace = Nichts
+    lineterminator = Nichts
+    quoting = Nichts
 
     def __init__(self):
         wenn self.__class__ != Dialect:
-            self._valid = True
+            self._valid = Wahr
         self._validate()
 
     def _validate(self):
@@ -113,14 +113,14 @@ klasse Dialect:
             _Dialect(self)
         except TypeError as e:
             # Re-raise to get a traceback showing more user code.
-            raise Error(str(e)) from None
+            raise Error(str(e)) from Nichts
 
 klasse excel(Dialect):
     """Describe the usual properties of Excel-generated CSV files."""
     delimiter = ','
     quotechar = '"'
-    doublequote = True
-    skipinitialspace = False
+    doublequote = Wahr
+    skipinitialspace = Falsch
     lineterminator = '\r\n'
     quoting = QUOTE_MINIMAL
 register_dialect("excel", excel)
@@ -134,17 +134,17 @@ klasse unix_dialect(Dialect):
     """Describe the usual properties of Unix-generated CSV files."""
     delimiter = ','
     quotechar = '"'
-    doublequote = True
-    skipinitialspace = False
+    doublequote = Wahr
+    skipinitialspace = Falsch
     lineterminator = '\n'
     quoting = QUOTE_ALL
 register_dialect("unix", unix_dialect)
 
 
 klasse DictReader:
-    def __init__(self, f, fieldnames=None, restkey=None, restval=None,
+    def __init__(self, f, fieldnames=Nichts, restkey=Nichts, restval=Nichts,
                  dialect="excel", *args, **kwds):
-        wenn fieldnames is not None and iter(fieldnames) is fieldnames:
+        wenn fieldnames is not Nichts and iter(fieldnames) is fieldnames:
             fieldnames = list(fieldnames)
         self._fieldnames = fieldnames   # list of keys fuer the dict
         self.restkey = restkey          # key to catch long rows
@@ -158,7 +158,7 @@ klasse DictReader:
 
     @property
     def fieldnames(self):
-        wenn self._fieldnames is None:
+        wenn self._fieldnames is Nichts:
             try:
                 self._fieldnames = next(self.reader)
             except StopIteration:
@@ -178,7 +178,7 @@ klasse DictReader:
         self.line_num = self.reader.line_num
 
         # unlike the basic reader, we prefer not to return blanks,
-        # because we will typically wind up with a dict full of None
+        # because we will typically wind up with a dict full of Nichts
         # values
         while row == []:
             row = next(self.reader)
@@ -198,7 +198,7 @@ klasse DictReader:
 klasse DictWriter:
     def __init__(self, f, fieldnames, restval="", extrasaction="raise",
                  dialect="excel", *args, **kwds):
-        wenn fieldnames is not None and iter(fieldnames) is fieldnames:
+        wenn fieldnames is not Nichts and iter(fieldnames) is fieldnames:
             fieldnames = list(fieldnames)
         self.fieldnames = fieldnames    # list of keys fuer the dict
         self.restval = restval          # fuer writing short dicts
@@ -240,9 +240,9 @@ klasse Sniffer:
         self.preferred = [',', '\t', ';', ' ', ':']
 
 
-    def sniff(self, sample, delimiters=None):
+    def sniff(self, sample, delimiters=Nichts):
         """
-        Returns a dialect (or None) corresponding to the sample
+        Returns a dialect (or Nichts) corresponding to the sample
         """
 
         quotechar, doublequote, delimiter, skipinitialspace = \
@@ -294,7 +294,7 @@ klasse Sniffer:
 
         wenn not matches:
             # (quotechar, doublequote, delimiter, skipinitialspace)
-            return ('', False, None, 0)
+            return ('', Falsch, Nichts, 0)
         quotes = {}
         delims = {}
         spaces = 0
@@ -309,7 +309,7 @@ klasse Sniffer:
                 key = m[n]
             except KeyError:
                 continue
-            wenn key and (delimiters is None or key in delimiters):
+            wenn key and (delimiters is Nichts or key in delimiters):
                 delims[key] = delims.get(key, 0) + 1
             try:
                 n = groupindex['space'] - 1
@@ -339,9 +339,9 @@ klasse Sniffer:
 
 
         wenn dq_regexp.search(data):
-            doublequote = True
+            doublequote = Wahr
         sonst:
-            doublequote = False
+            doublequote = Falsch
 
         return (quotechar, doublequote, delim, skipinitialspace)
 
@@ -365,7 +365,7 @@ klasse Sniffer:
         additional chunks as necessary.
         """
 
-        data = list(filter(None, data.split('\n')))
+        data = list(filter(Nichts, data.split('\n')))
 
         ascii = [chr(c) fuer c in range(127)] # 7-bit ASCII
 
@@ -413,7 +413,7 @@ klasse Sniffer:
                 fuer k, v in modeList:
                     wenn v[0] > 0 and v[1] > 0:
                         wenn ((v[1]/total) >= consistency and
-                            (delimiters is None or k in delimiters)):
+                            (delimiters is Nichts or k in delimiters)):
                             delims[k] = v
                 consistency -= 0.01
 
@@ -465,7 +465,7 @@ klasse Sniffer:
 
         columns = len(header)
         columnTypes = {}
-        fuer i in range(columns): columnTypes[i] = None
+        fuer i in range(columns): columnTypes[i] = Nichts
 
         checked = 0
         fuer row in rdr:
@@ -486,7 +486,7 @@ klasse Sniffer:
                     thisType = len(row[col])
 
                 wenn thisType != columnTypes[col]:
-                    wenn columnTypes[col] is None: # add new column type
+                    wenn columnTypes[col] is Nichts: # add new column type
                         columnTypes[col] = thisType
                     sonst:
                         # type is inconsistent, remove column from

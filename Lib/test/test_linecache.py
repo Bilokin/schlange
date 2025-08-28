@@ -46,7 +46,7 @@ klasse TempFile:
 
     def setUp(self):
         super().setUp()
-        with tempfile.NamedTemporaryFile(delete=False) as fp:
+        with tempfile.NamedTemporaryFile(delete=Falsch) as fp:
             self.file_name = fp.name
             fp.write(self.file_byte_string)
         self.addCleanup(os_helper.unlink, self.file_name)
@@ -112,7 +112,7 @@ klasse FakeLoader:
 
 klasse NoSourceLoader:
     def get_source(self, fullname):
-        return None
+        return Nichts
 
 
 klasse LineCacheTests(unittest.TestCase):
@@ -202,14 +202,14 @@ klasse LineCacheTests(unittest.TestCase):
     def test_lazycache_no_globals(self):
         lines = linecache.getlines(FILENAME)
         linecache.clearcache()
-        self.assertEqual(False, linecache.lazycache(FILENAME, None))
+        self.assertEqual(Falsch, linecache.lazycache(FILENAME, Nichts))
         self.assertEqual(lines, linecache.getlines(FILENAME))
 
     def test_lazycache_smoke(self):
         lines = linecache.getlines(NONEXISTENT_FILENAME, globals())
         linecache.clearcache()
         self.assertEqual(
-            True, linecache.lazycache(NONEXISTENT_FILENAME, globals()))
+            Wahr, linecache.lazycache(NONEXISTENT_FILENAME, globals()))
         self.assertEqual(1, len(linecache.cache[NONEXISTENT_FILENAME]))
         # Note here that we're looking up a nonexistent filename with no
         # globals: this would error wenn the lazy value wasn't resolved.
@@ -230,20 +230,20 @@ klasse LineCacheTests(unittest.TestCase):
 
     def test_lazycache_bad_filename(self):
         linecache.clearcache()
-        self.assertEqual(False, linecache.lazycache('', globals()))
-        self.assertEqual(False, linecache.lazycache('<foo>', globals()))
+        self.assertEqual(Falsch, linecache.lazycache('', globals()))
+        self.assertEqual(Falsch, linecache.lazycache('<foo>', globals()))
 
     def test_lazycache_already_cached(self):
         linecache.clearcache()
         lines = linecache.getlines(NONEXISTENT_FILENAME, globals())
         self.assertEqual(
-            False,
+            Falsch,
             linecache.lazycache(NONEXISTENT_FILENAME, globals()))
         self.assertEqual(4, len(linecache.cache[NONEXISTENT_FILENAME]))
 
     def test_memoryerror(self):
         lines = linecache.getlines(FILENAME)
-        self.assertTrue(lines)
+        self.assertWahr(lines)
         def raise_memoryerror(*args, **kwargs):
             raise MemoryError
         with support.swap_attr(linecache, 'updatecache', raise_memoryerror):
@@ -259,7 +259,7 @@ klasse LineCacheTests(unittest.TestCase):
     def test_loader(self):
         filename = 'scheme://path'
 
-        fuer loader in (None, object(), NoSourceLoader()):
+        fuer loader in (Nichts, object(), NoSourceLoader()):
             linecache.clearcache()
             module_globals = {'__name__': 'a.b.c', '__loader__': loader}
             self.assertEqual(linecache.getlines(filename, module_globals), [])
@@ -269,7 +269,7 @@ klasse LineCacheTests(unittest.TestCase):
         self.assertEqual(linecache.getlines(filename, module_globals),
                          ['source fuer a.b.c\n'])
 
-        fuer spec in (None, object(), ModuleSpec('', FakeLoader())):
+        fuer spec in (Nichts, object(), ModuleSpec('', FakeLoader())):
             linecache.clearcache()
             module_globals = {'__name__': 'a.b.c', '__loader__': FakeLoader(),
                               '__spec__': spec}

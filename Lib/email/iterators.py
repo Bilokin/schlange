@@ -29,10 +29,10 @@ def walk(self):
 
 
 # These two functions are imported into the Iterators.py interface module.
-def body_line_iterator(msg, decode=False):
+def body_line_iterator(msg, decode=Falsch):
     """Iterate over the parts, returning string payloads line-by-line.
 
-    Optional decode (default False) is passed through to .get_payload().
+    Optional decode (default Falsch) is passed through to .get_payload().
     """
     fuer subpart in msg.walk():
         payload = subpart.get_payload(decode=decode)
@@ -40,7 +40,7 @@ def body_line_iterator(msg, decode=False):
             yield from StringIO(payload)
 
 
-def typed_subpart_iterator(msg, maintype='text', subtype=None):
+def typed_subpart_iterator(msg, maintype='text', subtype=Nichts):
     """Iterate over the subparts with a given MIME type.
 
     Use 'maintype' as the main MIME type to match against; this defaults to
@@ -49,13 +49,13 @@ def typed_subpart_iterator(msg, maintype='text', subtype=None):
     """
     fuer subpart in msg.walk():
         wenn subpart.get_content_maintype() == maintype:
-            wenn subtype is None or subpart.get_content_subtype() == subtype:
+            wenn subtype is Nichts or subpart.get_content_subtype() == subtype:
                 yield subpart
 
 
-def _structure(msg, fp=None, level=0, include_default=False):
+def _structure(msg, fp=Nichts, level=0, include_default=Falsch):
     """A handy debugging aid"""
-    wenn fp is None:
+    wenn fp is Nichts:
         fp = sys.stdout
     tab = ' ' * (level * 4)
     print(tab + msg.get_content_type(), end='', file=fp)

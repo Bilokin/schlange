@@ -10,7 +10,7 @@ _test_patterns = ()
 
 def match_test(test):
     # Function used by support.run_unittest() and regrtest --list-cases
-    result = False
+    result = Falsch
     fuer matcher, result in reversed(_test_matchers):
         wenn matcher(test.id()):
             return result
@@ -67,7 +67,7 @@ def _compile_match_function(patterns):
             wenn regex_match(test_id):
                 # The regex matches the whole identifier, fuer example
                 # 'test.test_os.FileTests.test_access'.
-                return True
+                return Wahr
             sonst:
                 # Try to match parts of the test identifier.
                 # For example, split 'test.test_os.FileTests.test_access'

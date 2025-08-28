@@ -169,7 +169,7 @@ def iter_global_strings():
             fuer lno, line in enumerate(infile, 1):
                 fuer m in id_regex.finditer(line):
                     identifier, = m.groups()
-                    yield identifier, None, filename, lno, line
+                    yield identifier, Nichts, filename, lno, line
                 fuer m in str_regex.finditer(line):
                     varname, string = m.groups()
                     yield varname, string, filename, lno, line
@@ -187,7 +187,7 @@ klasse Printer:
     def __init__(self, file):
         self.level = 0
         self.file = file
-        self.continuation = [False]
+        self.continuation = [Falsch]
 
     @contextlib.contextmanager
     def indent(self):
@@ -205,8 +205,8 @@ klasse Printer:
         self.file.writelines(("    "*self.level, arg, eol))
 
     @contextlib.contextmanager
-    def block(self, prefix, suffix="", *, continuation=None):
-        wenn continuation is None:
+    def block(self, prefix, suffix="", *, continuation=Nichts):
+        wenn continuation is Nichts:
             continuation = self.continuation[-1]
         self.continuation.append(continuation)
 
@@ -275,8 +275,8 @@ def generate_global_strings(identifiers, strings):
 
 def generate_runtime_init(identifiers, strings):
     # First get some info from the declarations.
-    nsmallposints = None
-    nsmallnegints = None
+    nsmallposints = Nichts
+    nsmallnegints = Nichts
     with open(os.path.join(INTERNAL, 'pycore_runtime_structs.h')) as infile:
         fuer line in infile:
             wenn line.startswith('#define _PY_NSMALLPOSINTS'):
@@ -307,33 +307,33 @@ def generate_runtime_init(identifiers, strings):
         printer = Printer(outfile)
         printer.write(before)
         printer.write(START)
-        with printer.block('#define _Py_small_ints_INIT', continuation=True):
+        with printer.block('#define _Py_small_ints_INIT', continuation=Wahr):
             fuer i in range(-nsmallnegints, nsmallposints):
                 printer.write(f'_PyLong_DIGIT_INIT({i}),')
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(small_ints)[_PY_NSMALLNEGINTS + {i}]')
         printer.write('')
-        with printer.block('#define _Py_bytes_characters_INIT', continuation=True):
+        with printer.block('#define _Py_bytes_characters_INIT', continuation=Wahr):
             fuer i in range(256):
                 printer.write(f'_PyBytes_CHAR_INIT({i}),')
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(bytes_characters)[{i}]')
         printer.write('')
-        with printer.block('#define _Py_str_literals_INIT', continuation=True):
+        with printer.block('#define _Py_str_literals_INIT', continuation=Wahr):
             fuer literal, name in sorted(strings.items(), key=lambda x: x[1]):
                 printer.write(f'INIT_STR({name}, "{literal}"),')
                 immortal_objects.append(f'(PyObject *)&_Py_STR({name})')
         printer.write('')
-        with printer.block('#define _Py_str_identifiers_INIT', continuation=True):
+        with printer.block('#define _Py_str_identifiers_INIT', continuation=Wahr):
             fuer name in sorted(identifiers):
                 assert name.isidentifier(), name
                 printer.write(f'INIT_ID({name}),')
                 immortal_objects.append(f'(PyObject *)&_Py_ID({name})')
         printer.write('')
-        with printer.block('#define _Py_str_ascii_INIT', continuation=True):
+        with printer.block('#define _Py_str_ascii_INIT', continuation=Wahr):
             fuer i in range(128):
                 printer.write(f'_PyASCIIObject_INIT("\\x{i:02x}"),')
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(strings).ascii[{i}]')
         printer.write('')
-        with printer.block('#define _Py_str_latin1_INIT', continuation=True):
+        with printer.block('#define _Py_str_latin1_INIT', continuation=Wahr):
             fuer i in range(128, 256):
                 utf8 = ['"']
                 fuer c in chr(i).encode('utf-8'):
@@ -426,7 +426,7 @@ def get_identifiers_and_strings() -> 'tuple[set[str], dict[str, str]]':
     # - "\n" appears as 2 characters.
     # Probably not worth adding a C string parser.
     fuer name, string, *_ in iter_global_strings():
-        wenn string is None:
+        wenn string is Nichts:
             wenn name not in IGNORED:
                 identifiers.add(name)
         sonst:
@@ -451,7 +451,7 @@ def get_identifiers_and_strings() -> 'tuple[set[str], dict[str, str]]':
 #######################################
 # the script
 
-def main() -> None:
+def main() -> Nichts:
     identifiers, strings = get_identifiers_and_strings()
 
     generate_global_strings(identifiers, strings)

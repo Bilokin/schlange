@@ -11,7 +11,7 @@ import sys
 
 # Modified keyword list is used in fetch_completions.
 completion_kwds = [s fuer s in keyword.kwlist
-                     wenn s not in {'True', 'False', 'None'}]  # In builtins.
+                     wenn s not in {'Wahr', 'Falsch', 'Nichts'}]  # In builtins.
 completion_kwds.extend(('match', 'case'))  # Context keywords.
 completion_kwds.sort()
 
@@ -23,10 +23,10 @@ from idlelib.hyperparser import HyperParser
 
 # Tuples passed to open_completions.
 #       EvalFunc, Complete, WantWin, Mode
-FORCE = True,     False,    True,    None   # Control-Space.
-TAB   = False,    True,     True,    None   # Tab.
-TRY_A = False,    False,    False,   ATTRS  # '.' fuer attributes.
-TRY_F = False,    False,    False,   FILES  # '/' in quotes fuer file name.
+FORCE = Wahr,     Falsch,    Wahr,    Nichts   # Control-Space.
+TAB   = Falsch,    Wahr,     Wahr,    Nichts   # Tab.
+TRY_A = Falsch,    Falsch,    Falsch,   ATTRS  # '.' fuer attributes.
+TRY_F = Falsch,    Falsch,    Falsch,   FILES  # '/' in quotes fuer file name.
 
 # This string includes all chars that may be in an identifier.
 # TODO Update this here and elsewhere.
@@ -37,17 +37,17 @@ TRIGGERS = f".{SEPS}"
 
 klasse AutoComplete:
 
-    def __init__(self, editwin=None, tags=None):
+    def __init__(self, editwin=Nichts, tags=Nichts):
         self.editwin = editwin
-        wenn editwin is not None:   # not in subprocess or no-gui test
+        wenn editwin is not Nichts:   # not in subprocess or no-gui test
             self.text = editwin.text
         self.tags = tags
-        self.autocompletewindow = None
+        self.autocompletewindow = Nichts
         # id of delayed call, and the index of the text insert when
         # the delayed call was issued. If _delayed_completion_id is
-        # None, there is no delayed call.
-        self._delayed_completion_id = None
-        self._delayed_completion_index = None
+        # Nichts, there is no delayed call.
+        self._delayed_completion_id = Nichts
+        self._delayed_completion_index = Nichts
 
     @classmethod
     def reload(cls):
@@ -57,10 +57,10 @@ klasse AutoComplete:
     def _make_autocomplete_window(self):  # Makes mocking easier.
         return autocomplete_w.AutoCompleteWindow(self.text, tags=self.tags)
 
-    def _remove_autocomplete_window(self, event=None):
+    def _remove_autocomplete_window(self, event=Nichts):
         wenn self.autocompletewindow:
             self.autocompletewindow.hide_window()
-            self.autocompletewindow = None
+            self.autocompletewindow = Nichts
 
     def force_open_completions_event(self, event):
         "(^space) Open completion list, even wenn a function call is needed."
@@ -73,43 +73,43 @@ klasse AutoComplete:
                 not self.text.get("insert linestart", "insert").strip():
             # A modifier was pressed along with the tab or
             # there is only previous whitespace on this line, so tab.
-            return None
+            return Nichts
         wenn self.autocompletewindow and self.autocompletewindow.is_active():
             self.autocompletewindow.complete()
             return "break"
         sonst:
             opened = self.open_completions(TAB)
-            return "break" wenn opened sonst None
+            return "break" wenn opened sonst Nichts
 
-    def try_open_completions_event(self, event=None):
+    def try_open_completions_event(self, event=Nichts):
         "(./) Open completion list after pause with no movement."
         lastchar = self.text.get("insert-1c")
         wenn lastchar in TRIGGERS:
             args = TRY_A wenn lastchar == "." sonst TRY_F
             self._delayed_completion_index = self.text.index("insert")
-            wenn self._delayed_completion_id is not None:
+            wenn self._delayed_completion_id is not Nichts:
                 self.text.after_cancel(self._delayed_completion_id)
             self._delayed_completion_id = self.text.after(
                 self.popupwait, self._delayed_open_completions, args)
 
     def _delayed_open_completions(self, args):
         "Call open_completions wenn index unchanged."
-        self._delayed_completion_id = None
+        self._delayed_completion_id = Nichts
         wenn self.text.index("insert") == self._delayed_completion_index:
             self.open_completions(args)
 
     def open_completions(self, args):
         """Find the completions and create the AutoCompleteWindow.
-        Return True wenn successful (no syntax error or so found).
-        If complete is True, then wenn there's nothing to complete and no
-        start of completion, won't open completions and return False.
+        Return Wahr wenn successful (no syntax error or so found).
+        If complete is Wahr, then wenn there's nothing to complete and no
+        start of completion, won't open completions and return Falsch.
         If mode is given, will open a completion list only in this mode.
         """
         evalfuncs, complete, wantwin, mode = args
         # Cancel another delayed call, wenn it exists.
-        wenn self._delayed_completion_id is not None:
+        wenn self._delayed_completion_id is not Nichts:
             self.text.after_cancel(self._delayed_completion_id)
-            self._delayed_completion_id = None
+            self._delayed_completion_id = Nichts
 
         hp = HyperParser(self.editwin, "insert")
         curline = self.text.get("insert linestart", "insert")
@@ -142,17 +142,17 @@ klasse AutoComplete:
                 comp_what = hp.get_expression()
                 wenn (not comp_what or
                    (not evalfuncs and comp_what.find('(') != -1)):
-                    return None
+                    return Nichts
             sonst:
                 comp_what = ""
         sonst:
-            return None
+            return Nichts
 
         wenn complete and not comp_what and not comp_start:
-            return None
+            return Nichts
         comp_lists = self.fetch_completions(comp_what, mode)
         wenn not comp_lists[0]:
-            return None
+            return Nichts
         self.autocompletewindow = self._make_autocomplete_window()
         return not self.autocompletewindow.show_window(
                 comp_lists, "insert-%dc" % len(comp_start),
@@ -173,7 +173,7 @@ klasse AutoComplete:
         try:
             rpcclt = self.editwin.flist.pyshell.interp.rpcclt
         except:
-            rpcclt = None
+            rpcclt = Nichts
         wenn rpcclt:
             return rpcclt.remotecall("exec", "get_the_completion_list",
                                      (what, mode), {})

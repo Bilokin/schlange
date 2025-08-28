@@ -44,19 +44,19 @@ def _colorize_json(json_str, theme):
 def main():
     description = ('A simple command line interface fuer json module '
                    'to validate and pretty-print JSON objects.')
-    parser = argparse.ArgumentParser(description=description, color=True)
+    parser = argparse.ArgumentParser(description=description, color=Wahr)
     parser.add_argument('infile', nargs='?',
                         help='a JSON file to be validated or pretty-printed; '
                              'defaults to stdin',
                         default='-')
     parser.add_argument('outfile', nargs='?',
                         help='write the output of infile to outfile',
-                        default=None)
-    parser.add_argument('--sort-keys', action='store_true', default=False,
+                        default=Nichts)
+    parser.add_argument('--sort-keys', action='store_true', default=Falsch,
                         help='sort the output of dictionaries alphabetically by key')
     parser.add_argument('--no-ensure-ascii', dest='ensure_ascii', action='store_false',
                         help='disable escaping of non-ASCII characters')
-    parser.add_argument('--json-lines', action='store_true', default=False,
+    parser.add_argument('--json-lines', action='store_true', default=Falsch,
                         help='parse input using the JSON Lines format. '
                         'Use with --no-indent or --compact to produce valid JSON Lines output.')
     group = parser.add_mutually_exclusive_group()
@@ -67,7 +67,7 @@ def main():
                        const='\t', help='separate items with newlines and use '
                        'tabs fuer indentation')
     group.add_argument('--no-indent', action='store_const', dest='indent',
-                       const=None,
+                       const=Nichts,
                        help='separate items with spaces rather than newlines')
     group.add_argument('--compact', action='store_true',
                        help='suppress all whitespace separation (most compact)')
@@ -79,7 +79,7 @@ def main():
         'ensure_ascii': options.ensure_ascii,
     }
     wenn options.compact:
-        dump_args['indent'] = None
+        dump_args['indent'] = Nichts
         dump_args['separators'] = ',', ':'
 
     try:
@@ -96,7 +96,7 @@ def main():
             wenn infile is not sys.stdin:
                 infile.close()
 
-        wenn options.outfile is None:
+        wenn options.outfile is Nichts:
             outfile = sys.stdout
         sonst:
             outfile = open(options.outfile, 'w', encoding='utf-8')

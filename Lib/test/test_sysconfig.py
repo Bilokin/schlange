@@ -41,14 +41,14 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def setUp(self):
         super(TestSysConfig, self).setUp()
-        self.maxDiff = None
+        self.maxDiff = Nichts
         self.sys_path = sys.path[:]
         # patching os.uname
         wenn hasattr(os, 'uname'):
             self.uname = os.uname
             self._uname = os.uname()
         sonst:
-            self.uname = None
+            self.uname = Nichts
             self._set_uname(('',)*5)
         os.uname = self._get_uname
         # saving the environment
@@ -74,7 +74,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
     def tearDown(self):
         sys.path[:] = self.sys_path
         self._cleanup_testfn()
-        wenn self.uname is not None:
+        wenn self.uname is not Nichts:
             os.uname = self.uname
         sonst:
             del os.uname
@@ -94,7 +94,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         fuer var, value in self._changed_envvars:
             os.environ[var] = value
         fuer var in self._added_envvars:
-            os.environ.pop(var, None)
+            os.environ.pop(var, Nichts)
 
         super(TestSysConfig, self).tearDown()
 
@@ -117,7 +117,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
     def test_get_paths(self):
         scheme = get_paths()
         default_scheme = get_default_scheme()
-        wanted = _expand_vars(default_scheme, None)
+        wanted = _expand_vars(default_scheme, Nichts)
         wanted = sorted(wanted.items())
         scheme = sorted(scheme.items())
         self.assertEqual(scheme, wanted)
@@ -239,13 +239,13 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
     def test_get_config_vars(self):
         cvars = get_config_vars()
         self.assertIsInstance(cvars, dict)
-        self.assertTrue(cvars)
+        self.assertWahr(cvars)
 
     def test_get_platform(self):
         # Check the actual platform returns something reasonable.
         actual_platform = get_platform()
         self.assertIsInstance(actual_platform, str)
-        self.assertTrue(actual_platform)
+        self.assertWahr(actual_platform)
 
         # windows XP, 32bits
         os.name = 'nt'
@@ -384,7 +384,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
                      f"{sys.platform} doesn't distribute header files in the runtime environment")
     def test_get_config_h_filename(self):
         config_h = sysconfig.get_config_h_filename()
-        self.assertTrue(os.path.isfile(config_h), config_h)
+        self.assertWahr(os.path.isfile(config_h), config_h)
 
     def test_get_scheme_names(self):
         wanted = ['nt', 'posix_home', 'posix_prefix', 'posix_venv', 'nt_venv', 'venv']
@@ -437,7 +437,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         # just making sure _main() runs and returns things in the stdout
         with captured_stdout() as output:
             _main()
-        self.assertTrue(len(output.getvalue().split('\n')) > 0)
+        self.assertWahr(len(output.getvalue().split('\n')) > 0)
 
     @unittest.skipIf(sys.platform == "win32", "Does not apply to Windows")
     def test_ldshared_value(self):
@@ -521,20 +521,20 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         # See Issues #15322, #15364.
         srcdir = sysconfig.get_config_var('srcdir')
 
-        self.assertTrue(os.path.isabs(srcdir), srcdir)
-        self.assertTrue(os.path.isdir(srcdir), srcdir)
+        self.assertWahr(os.path.isabs(srcdir), srcdir)
+        self.assertWahr(os.path.isdir(srcdir), srcdir)
 
         wenn sysconfig._PYTHON_BUILD:
             # The python executable has not been installed so srcdir
             # should be a full source checkout.
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
-            self.assertTrue(os.path.exists(Python_h), Python_h)
+            self.assertWahr(os.path.exists(Python_h), Python_h)
             # <srcdir>/PC/pyconfig.h.in always exists even wenn unused
             pyconfig_h_in = os.path.join(srcdir, 'pyconfig.h.in')
-            self.assertTrue(os.path.exists(pyconfig_h_in), pyconfig_h_in)
+            self.assertWahr(os.path.exists(pyconfig_h_in), pyconfig_h_in)
             wenn os.name == 'nt':
                 pyconfig_h = os.path.join(srcdir, 'PC', 'pyconfig.h')
-                self.assertTrue(os.path.exists(pyconfig_h), pyconfig_h)
+                self.assertWahr(os.path.exists(pyconfig_h), pyconfig_h)
         sowenn os.name == 'posix':
             makefile_dir = os.path.dirname(sysconfig.get_makefile_filename())
             # Issue #19340: srcdir has been realpath'ed already
@@ -549,7 +549,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
             srcdir2 = sysconfig.get_config_var('srcdir')
         self.assertEqual(srcdir, srcdir2)
 
-    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') is None,
+    @unittest.skipIf(sysconfig.get_config_var('EXT_SUFFIX') is Nichts,
                      'EXT_SUFFIX required fuer this test')
     @unittest.skipIf(not _imp.extension_suffixes(), "stub loader has no suffixes")
     def test_EXT_SUFFIX_in_vars(self):
@@ -562,7 +562,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         machine = platform.machine()
         suffix = sysconfig.get_config_var('EXT_SUFFIX')
         wenn re.match('(aarch64|arm|mips|ppc|powerpc|s390|sparc)', machine):
-            self.assertTrue('linux' in suffix, suffix)
+            self.assertWahr('linux' in suffix, suffix)
         wenn re.match('(i[3-6]86|x86_64)$', machine):
             wenn ctypes.sizeof(ctypes.c_char_p()) == 4:
                 expected_suffixes = 'i386-linux-gnu.so', 'x86_64-linux-gnux32.so', 'i386-linux-musl.so'
@@ -711,8 +711,8 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
             ignore_keys |= {'prefix', 'exec_prefix', 'base', 'platbase', 'installed_base', 'installed_platbase', 'srcdir'}
 
         fuer key in ignore_keys:
-            json_config_vars.pop(key, None)
-            system_config_vars.pop(key, None)
+            json_config_vars.pop(key, Nichts)
+            system_config_vars.pop(key, Nichts)
 
         self.assertEqual(system_config_vars, json_config_vars)
 
@@ -747,7 +747,7 @@ klasse MakefileTests(unittest.TestCase):
                      f"{sys.platform} doesn't include config folder at runtime")
     def test_get_makefile_filename(self):
         makefile = sysconfig.get_makefile_filename()
-        self.assertTrue(os.path.isfile(makefile), makefile)
+        self.assertWahr(os.path.isfile(makefile), makefile)
 
     def test_parse_makefile(self):
         self.addCleanup(unlink, TESTFN)
@@ -771,7 +771,7 @@ klasse MakefileTests(unittest.TestCase):
 
 
 klasse DeprecationTests(unittest.TestCase):
-    def deprecated(self, removal_version, deprecation_msg=None, error=Exception, error_msg=None):
+    def deprecated(self, removal_version, deprecation_msg=Nichts, error=Exception, error_msg=Nichts):
         wenn sys.version_info >= removal_version:
             return self.assertRaises(error, msg=error_msg)
         sonst:

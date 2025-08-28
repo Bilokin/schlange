@@ -114,7 +114,7 @@ klasse PropertyTests(unittest.TestCase):
         # see #1620
         sub = SubClass()
         self.assertRaises(PropertyGet, getattr, sub, "spam")
-        self.assertRaises(PropertySet, setattr, sub, "spam", None)
+        self.assertRaises(PropertySet, setattr, sub, "spam", Nichts)
         self.assertRaises(PropertyDel, delattr, sub, "spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
@@ -146,7 +146,7 @@ klasse PropertyTests(unittest.TestCase):
         self.assertEqual(newgetter.__class__.__dict__['spam'].__doc__, "new docstring")
 
     def test_property___isabstractmethod__descriptor(self):
-        fuer val in (True, False, [], [1], '', '1'):
+        fuer val in (Wahr, Falsch, [], [1], '', '1'):
             klasse C(object):
                 def foo(self):
                     pass

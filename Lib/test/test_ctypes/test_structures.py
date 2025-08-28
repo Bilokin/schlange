@@ -230,7 +230,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_large_struct_update_value
         func.argtypes = (Test,)
-        func.restype = None
+        func.restype = Nichts
         func(s)
         self.assertEqual(s.first, 0xdeadbeef)
         self.assertEqual(s.second, 0xcafebabe)
@@ -261,7 +261,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_large_struct_update_value
         func.argtypes = (Test,)
-        func.restype = None
+        func.restype = Nichts
         func(s)
         # bpo-37140: Passing the structure by reference must not call
         # its finalizer!
@@ -271,7 +271,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(s.third, 3)
 
         # The finalizer must be called exactly once
-        s = None
+        s = Nichts
         support.gc_collect()
         self.assertEqual(finalizer_calls, ["called"])
 
@@ -289,7 +289,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_reg_struct_update_value
         func.argtypes = (X,)
-        func.restype = None
+        func.restype = Nichts
         func(s)
         self.assertEqual(s.first, 0xdeadbeef)
         self.assertEqual(s.second, 0xcafebabe)
@@ -524,7 +524,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
             self.assertEqual(f2, [0x4567, 0x0123, 0xcdef, 0x89ab,
                                   0x3210, 0x7654, 0xba98, 0xfedc])
 
-    @unittest.skipIf(True, 'Test disabled fuer now - see gh-60779/gh-60780')
+    @unittest.skipIf(Wahr, 'Test disabled fuer now - see gh-60779/gh-60780')
     def test_union_by_value(self):
         # See gh-60779
 
@@ -609,7 +609,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(test5.nested.an_int, 0)
         self.assertEqual(test5.another_int, 0)
 
-    @unittest.skipIf(True, 'Test disabled fuer now - see gh-60779/gh-60780')
+    @unittest.skipIf(Wahr, 'Test disabled fuer now - see gh-60779/gh-60780')
     def test_bitfield_by_value(self):
         # See gh-60780
 

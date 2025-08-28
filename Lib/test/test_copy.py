@@ -97,8 +97,8 @@ klasse TestCopy(unittest.TestCase):
             pass
         klasse WithMetaclass(metaclass=abc.ABCMeta):
             pass
-        tests = [None, ..., NotImplemented,
-                 42, 2**100, 3.14, True, False, 1j,
+        tests = [Nichts, ..., NotImplemented,
+                 42, 2**100, 3.14, Wahr, Falsch, 1j,
                  "hello", "hello\u1234", f.__code__,
                  b"world", bytes(range(256)), range(10), slice(1, 10, 2),
                  NewStyle, max, WithMetaclass, property()]
@@ -295,7 +295,7 @@ klasse TestCopy(unittest.TestCase):
         klasse C(object):
             def __init__(self, foo):
                 self.foo = foo
-            def __deepcopy__(self, memo=None):
+            def __deepcopy__(self, memo=Nichts):
                 return C(self.foo)
         x = C(42)
         y = copy.deepcopy(x)
@@ -358,7 +358,7 @@ klasse TestCopy(unittest.TestCase):
             pass
         def f():
             pass
-        tests = [None, ..., NotImplemented, 42, 2**100, 3.14, True, False, 1j,
+        tests = [Nichts, ..., NotImplemented, 42, 2**100, 3.14, Wahr, Falsch, 1j,
                  b"bytes", "hello", "hello\u1234", f.__code__,
                  NewStyle, range(10), max, property()]
         fuer x in tests:
@@ -672,7 +672,7 @@ klasse TestCopy(unittest.TestCase):
     def test_reduce_5tuple(self):
         klasse C(dict):
             def __reduce__(self):
-                return (C, (), self.__dict__, None, self.items())
+                return (C, (), self.__dict__, Nichts, self.items())
             def __eq__(self, other):
                 return (dict(self) == dict(other) and
                         self.__dict__ == other.__dict__)
@@ -691,7 +691,7 @@ klasse TestCopy(unittest.TestCase):
             self.fail("shouldn't call this")
         klasse C:
             def __reduce__(self):
-                return C, (), self.__dict__, None, None, state_setter
+                return C, (), self.__dict__, Nichts, Nichts, state_setter
         x = C()
         with self.assertRaises(TypeError):
             copy.copy(x)
@@ -701,7 +701,7 @@ klasse TestCopy(unittest.TestCase):
     def test_reduce_6tuple_none(self):
         klasse C:
             def __reduce__(self):
-                return C, (), self.__dict__, None, None, None
+                return C, (), self.__dict__, Nichts, Nichts, Nichts
         x = C()
         with self.assertRaises(TypeError):
             copy.copy(x)
@@ -727,7 +727,7 @@ klasse TestCopy(unittest.TestCase):
 
     def test_deepcopy_dict_subclass(self):
         klasse C(dict):
-            def __init__(self, d=None):
+            def __init__(self, d=Nichts):
                 wenn not d:
                     d = {}
                 self._keys = list(d.keys())
@@ -795,14 +795,14 @@ klasse TestCopy(unittest.TestCase):
         self.assertEqual(copy.copy(global_foo), global_foo)
         def foo(x, y): return x+y
         self.assertEqual(copy.copy(foo), foo)
-        bar = lambda: None
+        bar = lambda: Nichts
         self.assertEqual(copy.copy(bar), bar)
 
     def test_deepcopy_function(self):
         self.assertEqual(copy.deepcopy(global_foo), global_foo)
         def foo(x, y): return x+y
         self.assertEqual(copy.deepcopy(foo), foo)
-        bar = lambda: None
+        bar = lambda: Nichts
         self.assertEqual(copy.deepcopy(bar), bar)
 
     def _check_weakref(self, _copy):

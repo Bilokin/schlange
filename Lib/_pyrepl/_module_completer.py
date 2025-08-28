@@ -10,15 +10,15 @@ from dataclasses import dataclass
 from itertools import chain
 from tokenize import TokenInfo
 
-TYPE_CHECKING = False
+TYPE_CHECKING = Falsch
 
 wenn TYPE_CHECKING:
     from typing import Any, Iterable, Iterator, Mapping
 
 
 def make_default_module_completer() -> ModuleCompleter:
-    # Inside pyrepl, __package__ is set to None by default
-    return ModuleCompleter(namespace={'__package__': None})
+    # Inside pyrepl, __package__ is set to Nichts by default
+    return ModuleCompleter(namespace={'__package__': Nichts})
 
 
 klasse ModuleCompleter:
@@ -37,16 +37,16 @@ klasse ModuleCompleter:
         - from foo import (bar as baz, qux<tab>
     """
 
-    def __init__(self, namespace: Mapping[str, Any] | None = None) -> None:
+    def __init__(self, namespace: Mapping[str, Any] | Nichts = Nichts) -> Nichts:
         self.namespace = namespace or {}
         self._global_cache: list[pkgutil.ModuleInfo] = []
         self._curr_sys_path: list[str] = sys.path[:]
 
-    def get_completions(self, line: str) -> list[str] | None:
+    def get_completions(self, line: str) -> list[str] | Nichts:
         """Return the next possible import completions fuer 'line'."""
         result = ImportParser(line).parse()
         wenn not result:
-            return None
+            return Nichts
         try:
             return self.complete(*result)
         except Exception:
@@ -54,15 +54,15 @@ klasse ModuleCompleter:
             # no completions are available
             return []
 
-    def complete(self, from_name: str | None, name: str | None) -> list[str]:
-        wenn from_name is None:
+    def complete(self, from_name: str | Nichts, name: str | Nichts) -> list[str]:
+        wenn from_name is Nichts:
             # import x.y.z<tab>
-            assert name is not None
+            assert name is not Nichts
             path, prefix = self.get_path_and_prefix(name)
             modules = self.find_modules(path, prefix)
             return [self.format_completion(path, module) fuer module in modules]
 
-        wenn name is None:
+        wenn name is Nichts:
             # from x.y.z<tab>
             path, prefix = self.get_path_and_prefix(from_name)
             modules = self.find_modules(path, prefix)
@@ -91,7 +91,7 @@ klasse ModuleCompleter:
             # Convert relative path to absolute path
             package = self.namespace.get('__package__', '')
             path = self.resolve_relative_name(path, package)  # type: ignore[assignment]
-            wenn path is None:
+            wenn path is Nichts:
                 return []
 
         modules: Iterable[pkgutil.ModuleInfo] = self.global_cache
@@ -111,7 +111,7 @@ klasse ModuleCompleter:
 
     def iter_submodules(self, parent_modules: list[pkgutil.ModuleInfo]) -> Iterator[pkgutil.ModuleInfo]:
         """Iterate over all submodules of the given parent modules."""
-        specs = [info.module_finder.find_spec(info.name, None)
+        specs = [info.module_finder.find_spec(info.name, Nichts)
                  fuer info in parent_modules wenn info.ispkg]
         search_locations = set(chain.from_iterable(
             getattr(spec, 'submodule_search_locations', [])
@@ -146,7 +146,7 @@ klasse ModuleCompleter:
             return f'{path}{module}'
         return f'{path}.{module}'
 
-    def resolve_relative_name(self, name: str, package: str) -> str | None:
+    def resolve_relative_name(self, name: str, package: str) -> str | Nichts:
         """Resolve a relative module name to an absolute name.
 
         Example: resolve_relative_name('.foo', 'bar') -> 'bar.foo'
@@ -159,7 +159,7 @@ klasse ModuleCompleter:
             level += 1
         bits = package.rsplit('.', level - 1)
         wenn len(bits) < level:
-            return None
+            return Nichts
         base = bits[0]
         name = name[level:]
         return f'{base}.{name}' wenn name sonst base
@@ -180,9 +180,9 @@ klasse ImportParser:
     suitable fuer autocomplete suggestions.
 
     Examples:
-        - import foo          -> Result(from_name=None, name='foo')
-        - import foo.         -> Result(from_name=None, name='foo.')
-        - from foo            -> Result(from_name='foo', name=None)
+        - import foo          -> Result(from_name=Nichts, name='foo')
+        - import foo.         -> Result(from_name=Nichts, name='foo.')
+        - from foo            -> Result(from_name='foo', name=Nichts)
         - from foo import bar -> Result(from_name='foo', name='bar')
         - from .foo import (  -> Result(from_name='.foo', name='')
 
@@ -196,7 +196,7 @@ klasse ImportParser:
     }
     _keywords = {'import', 'from', 'as'}
 
-    def __init__(self, code: str) -> None:
+    def __init__(self, code: str) -> Nichts:
         self.code = code
         tokens = []
         try:
@@ -214,12 +214,12 @@ klasse ImportParser:
             tokens = []
         self.tokens = TokenQueue(tokens[::-1])
 
-    def parse(self) -> tuple[str | None, str | None] | None:
+    def parse(self) -> tuple[str | Nichts, str | Nichts] | Nichts:
         wenn not (res := self._parse()):
-            return None
+            return Nichts
         return res.from_name, res.name
 
-    def _parse(self) -> Result | None:
+    def _parse(self) -> Result | Nichts:
         with self.tokens.save_state():
             return self.parse_from_import()
         with self.tokens.save_state():
@@ -309,13 +309,13 @@ klasse ImportParser:
             self.tokens.pop()
         return ''.join(name[::-1])
 
-    def parse_as_names(self) -> None:
+    def parse_as_names(self) -> Nichts:
         self.parse_as_name()
         while self.tokens.peek_string(','):
             self.tokens.pop()
             self.parse_as_name()
 
-    def parse_as_name(self) -> None:
+    def parse_as_name(self) -> Nichts:
         self.tokens.pop_name()
         wenn self.tokens.peek_string('as'):
             self.tokens.pop()
@@ -326,16 +326,16 @@ klasse ParseError(Exception):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=Wahr)
 klasse Result:
-    from_name: str | None = None
-    name: str | None = None
+    from_name: str | Nichts = Nichts
+    name: str | Nichts = Nichts
 
 
 klasse TokenQueue:
     """Provides helper functions fuer working with a sequence of tokens."""
 
-    def __init__(self, tokens: list[TokenInfo]) -> None:
+    def __init__(self, tokens: list[TokenInfo]) -> Nichts:
         self.tokens: list[TokenInfo] = tokens
         self.index: int = 0
         self.stack: list[int] = []
@@ -353,14 +353,14 @@ klasse TokenQueue:
     def __bool__(self) -> bool:
         return self.index < len(self.tokens)
 
-    def peek(self) -> TokenInfo | None:
+    def peek(self) -> TokenInfo | Nichts:
         wenn not self:
-            return None
+            return Nichts
         return self.tokens[self.index]
 
     def peek_name(self) -> bool:
         wenn not (tok := self.peek()):
-            return False
+            return Falsch
         return tok.type == token.NAME
 
     def pop_name(self) -> str:
@@ -371,7 +371,7 @@ klasse TokenQueue:
 
     def peek_string(self, string: str) -> bool:
         wenn not (tok := self.peek()):
-            return False
+            return Falsch
         return tok.string == string
 
     def pop_string(self, string: str) -> str:

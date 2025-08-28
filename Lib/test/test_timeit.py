@@ -70,7 +70,7 @@ klasse TestTimeit(unittest.TestCase):
             "print()\n    pass\n    break")
 
     def test_timer_invalid_stmt(self):
-        self.assertRaises(ValueError, timeit.Timer, stmt=None)
+        self.assertRaises(ValueError, timeit.Timer, stmt=Nichts)
         self.assertRaises(SyntaxError, timeit.Timer, stmt='return')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='yield')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='yield from ()')
@@ -79,10 +79,10 @@ klasse TestTimeit(unittest.TestCase):
         self.assertRaises(SyntaxError, timeit.Timer, stmt='from timeit import *')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='  pass')
         self.assertRaises(SyntaxError, timeit.Timer,
-                          setup='while False:\n  pass', stmt='  break')
+                          setup='while Falsch:\n  pass', stmt='  break')
 
     def test_timer_invalid_setup(self):
-        self.assertRaises(ValueError, timeit.Timer, setup=None)
+        self.assertRaises(ValueError, timeit.Timer, setup=Nichts)
         self.assertRaises(SyntaxError, timeit.Timer, setup='return')
         self.assertRaises(SyntaxError, timeit.Timer, setup='yield')
         self.assertRaises(SyntaxError, timeit.Timer, setup='yield from ()')
@@ -105,12 +105,12 @@ klasse TestTimeit(unittest.TestCase):
     def fake_callable_stmt(self):
         self.fake_timer.inc()
 
-    def timeit(self, stmt, setup, number=None, globals=None):
+    def timeit(self, stmt, setup, number=Nichts, globals=Nichts):
         self.fake_timer = FakeTimer()
         t = timeit.Timer(stmt=stmt, setup=setup, timer=self.fake_timer,
                 globals=globals)
         kwargs = {}
-        wenn number is None:
+        wenn number is Nichts:
             number = DEFAULT_NUMBER
         sonst:
             kwargs['number'] = number
@@ -161,15 +161,15 @@ klasse TestTimeit(unittest.TestCase):
         timeit.timeit(stmt='local_timer.inc()', timer=local_timer,
                       globals=locals(), number=3)
 
-    def repeat(self, stmt, setup, repeat=None, number=None):
+    def repeat(self, stmt, setup, repeat=Nichts, number=Nichts):
         self.fake_timer = FakeTimer()
         t = timeit.Timer(stmt=stmt, setup=setup, timer=self.fake_timer)
         kwargs = {}
-        wenn repeat is None:
+        wenn repeat is Nichts:
             repeat = DEFAULT_REPEAT
         sonst:
             kwargs['repeat'] = repeat
-        wenn number is None:
+        wenn number is Nichts:
             number = DEFAULT_NUMBER
         sonst:
             kwargs['number'] = number
@@ -236,10 +236,10 @@ klasse TestTimeit(unittest.TestCase):
 
     MAIN_DEFAULT_OUTPUT = "1 loop, best of 5: 1 sec per loop\n"
 
-    def run_main(self, seconds_per_increment=1.0, switches=None, timer=None):
-        wenn timer is None:
+    def run_main(self, seconds_per_increment=1.0, switches=Nichts, timer=Nichts):
+        wenn timer is Nichts:
             timer = FakeTimer(seconds_per_increment=seconds_per_increment)
-        wenn switches is None:
+        wenn switches is Nichts:
             args = []
         sonst:
             args = switches[:]
@@ -361,7 +361,7 @@ klasse TestTimeit(unittest.TestCase):
             s = self.run_main(switches=['-n1', '1/0'])
         self.assert_exc_string(error_stringio.getvalue(), 'ZeroDivisionError')
 
-    def autorange(self, seconds_per_increment=1/1024, callback=None):
+    def autorange(self, seconds_per_increment=1/1024, callback=Nichts):
         timer = FakeTimer(seconds_per_increment=seconds_per_increment)
         t = timeit.Timer(stmt=self.fake_stmt, setup=self.fake_setup, timer=timer)
         return t.autorange(callback)

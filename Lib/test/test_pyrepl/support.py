@@ -11,14 +11,14 @@ from _pyrepl.utils import unbracket, ANSI_ESCAPE_SEQUENCE
 
 klasse ScreenEqualMixin:
     def assert_screen_equal(
-        self, reader: ReadlineAlikeReader, expected: str, clean: bool = False
+        self, reader: ReadlineAlikeReader, expected: str, clean: bool = Falsch
     ):
         actual = clean_screen(reader) wenn clean sonst reader.screen
         expected = expected.split("\n")
         self.assertListEqual(actual, expected)
 
 
-def multiline_input(reader: ReadlineAlikeReader, namespace: dict | None = None):
+def multiline_input(reader: ReadlineAlikeReader, namespace: dict | Nichts = Nichts):
     saved = reader.more_lines
     try:
         reader.more_lines = partial(more_lines, namespace=namespace)
@@ -27,20 +27,20 @@ def multiline_input(reader: ReadlineAlikeReader, namespace: dict | None = None):
         return reader.readline()
     finally:
         reader.more_lines = saved
-        reader.paste_mode = False
+        reader.paste_mode = Falsch
 
 
-def more_lines(text: str, namespace: dict | None = None):
-    wenn namespace is None:
+def more_lines(text: str, namespace: dict | Nichts = Nichts):
+    wenn namespace is Nichts:
         namespace = {}
     src = _strip_final_indent(text)
     console = InteractiveConsole(namespace, filename="<stdin>")
     try:
         code = console.compile(src, "<stdin>", "single")
     except (OverflowError, SyntaxError, ValueError):
-        return False
+        return Falsch
     sonst:
-        return code is None
+        return code is Nichts
 
 
 def code_to_events(code: str):
@@ -56,7 +56,7 @@ def clean_screen(reader: ReadlineAlikeReader) -> list[str]:
     """
     output = []
     fuer line in reader.screen:
-        line = unbracket(line, including_content=True)
+        line = unbracket(line, including_content=Wahr)
         line = ANSI_ESCAPE_SEQUENCE.sub("", line)
         fuer prefix in (reader.ps1, reader.ps2, reader.ps3, reader.ps4):
             wenn line.startswith(prefix):
@@ -67,10 +67,10 @@ def clean_screen(reader: ReadlineAlikeReader) -> list[str]:
 
 
 def prepare_reader(console: Console, **kwargs):
-    config = ReadlineConfig(readline_completer=kwargs.pop("readline_completer", None))
+    config = ReadlineConfig(readline_completer=kwargs.pop("readline_completer", Nichts))
     reader = ReadlineAlikeReader(console=console, config=config)
-    reader.more_lines = partial(more_lines, namespace=None)
-    reader.paste_mode = True  # Avoid extra indents
+    reader.more_lines = partial(more_lines, namespace=Nichts)
+    reader.paste_mode = Wahr  # Avoid extra indents
 
     def get_prompt(lineno, cursor_on_line) -> str:
         return ""
@@ -99,7 +99,7 @@ def handle_all_events(
     console = prepare_console(events)
     reader = prepare_reader(console)
     try:
-        while True:
+        while Wahr:
             reader.handle1()
     except StopIteration:
         pass
@@ -115,57 +115,57 @@ handle_events_narrow_console = partial(
 
 
 klasse FakeConsole(Console):
-    def __init__(self, events, encoding="utf-8") -> None:
+    def __init__(self, events, encoding="utf-8") -> Nichts:
         self.events = iter(events)
         self.encoding = encoding
         self.screen = []
         self.height = 100
         self.width = 80
 
-    def get_event(self, block: bool = True) -> Event | None:
+    def get_event(self, block: bool = Wahr) -> Event | Nichts:
         return next(self.events)
 
     def getpending(self) -> Event:
-        return self.get_event(block=False)
+        return self.get_event(block=Falsch)
 
     def getheightwidth(self) -> tuple[int, int]:
         return self.height, self.width
 
-    def refresh(self, screen: list[str], xy: tuple[int, int]) -> None:
+    def refresh(self, screen: list[str], xy: tuple[int, int]) -> Nichts:
         pass
 
-    def prepare(self) -> None:
+    def prepare(self) -> Nichts:
         pass
 
-    def restore(self) -> None:
+    def restore(self) -> Nichts:
         pass
 
-    def move_cursor(self, x: int, y: int) -> None:
+    def move_cursor(self, x: int, y: int) -> Nichts:
         pass
 
-    def set_cursor_vis(self, visible: bool) -> None:
+    def set_cursor_vis(self, visible: bool) -> Nichts:
         pass
 
-    def push_char(self, char: int | bytes) -> None:
+    def push_char(self, char: int | bytes) -> Nichts:
         pass
 
-    def beep(self) -> None:
+    def beep(self) -> Nichts:
         pass
 
-    def clear(self) -> None:
+    def clear(self) -> Nichts:
         pass
 
-    def finish(self) -> None:
+    def finish(self) -> Nichts:
         pass
 
-    def flushoutput(self) -> None:
+    def flushoutput(self) -> Nichts:
         pass
 
-    def forgetinput(self) -> None:
+    def forgetinput(self) -> Nichts:
         pass
 
-    def wait(self, timeout: float | None = None) -> bool:
-        return True
+    def wait(self, timeout: float | Nichts = Nichts) -> bool:
+        return Wahr
 
-    def repaint(self) -> None:
+    def repaint(self) -> Nichts:
         pass

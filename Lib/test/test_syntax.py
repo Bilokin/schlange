@@ -12,7 +12,7 @@ each C call that raises SyntaxError.  There are several modules that
 raise these exceptions-- ast.c, compile.c, future.c, pythonrun.c, and
 symtable.c.
 
-The parser itself outlaws a lot of invalid syntax.  None of these
+The parser itself outlaws a lot of invalid syntax.  Nichts of these
 errors are tested here at the moment.  We should add some tests; since
 there are infinitely many programs with invalid syntax, we would need
 to be judicious in selecting some.
@@ -27,25 +27,25 @@ In ast.c, syntax errors are raised by calling ast_error().
 
 Errors from set_context():
 
->>> obj.None = 1
+>>> obj.Nichts = 1
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> None = 1
+>>> Nichts = 1
 Traceback (most recent call last):
-SyntaxError: cannot assign to None
+SyntaxError: cannot assign to Nichts
 
->>> obj.True = 1
+>>> obj.Wahr = 1
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> True = 1
+>>> Wahr = 1
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
+SyntaxError: cannot assign to Wahr
 
->>> (True := 1)
+>>> (Wahr := 1)
 Traceback (most recent call last):
-SyntaxError: cannot use assignment expressions with True
+SyntaxError: cannot use assignment expressions with Wahr
 
 >>> obj.__debug__ = 1
 Traceback (most recent call last):
@@ -124,17 +124,17 @@ them.
 Traceback (most recent call last):
 SyntaxError: cannot assign to literal
 
->>> (a, True, c) = (1, 2, 3)
+>>> (a, Wahr, c) = (1, 2, 3)
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
+SyntaxError: cannot assign to Wahr
 
 >>> (a, __debug__, c) = (1, 2, 3)
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> (a, *True, c) = (1, 2, 3)
+>>> (a, *Wahr, c) = (1, 2, 3)
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
+SyntaxError: cannot assign to Wahr
 
 >>> (a, *__debug__, c) = (1, 2, 3)
 Traceback (most recent call last):
@@ -156,15 +156,15 @@ SyntaxError: cannot assign to expression
 Traceback (most recent call last):
 SyntaxError: cannot assign to conditional expression
 
->>> a = 42 wenn True
+>>> a = 42 wenn Wahr
 Traceback (most recent call last):
 SyntaxError: expected 'else' after 'if' expression
 
->>> a = (42 wenn True)
+>>> a = (42 wenn Wahr)
 Traceback (most recent call last):
 SyntaxError: expected 'else' after 'if' expression
 
->>> a = [1, 42 wenn True, 4]
+>>> a = [1, 42 wenn Wahr, 4]
 Traceback (most recent call last):
 SyntaxError: expected 'else' after 'if' expression
 
@@ -180,7 +180,7 @@ SyntaxError: expected expression before 'if', but statement is given
 Traceback (most recent call last):
 SyntaxError: expected expression before 'if', but statement is given
 
->>> wenn True:
+>>> wenn Wahr:
 ...     print("Hello"
 ...
 ... wenn 2:
@@ -188,13 +188,13 @@ SyntaxError: expected expression before 'if', but statement is given
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> True = True = 3
+>>> Wahr = Wahr = 3
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
+SyntaxError: cannot assign to Wahr
 
->>> x = y = True = z = 3
+>>> x = y = Wahr = z = 3
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
+SyntaxError: cannot assign to Wahr
 
 >>> x = y = yield = 1
 Traceback (most recent call last):
@@ -391,7 +391,7 @@ SyntaxError: invalid syntax. Perhaps you forgot a comma?
 
 From compiler_complex_args():
 
->>> def f(None=1):
+>>> def f(Nichts=1):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
@@ -408,17 +408,17 @@ SyntaxError: parameter without a default follows parameter with a default
 Traceback (most recent call last):
 SyntaxError: parameter without a default follows parameter with a default
 
->>> def f(x, None):
+>>> def f(x, Nichts):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> def f(*None):
+>>> def f(*Nichts):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> def f(**None):
+>>> def f(**Nichts):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
@@ -543,95 +543,95 @@ SyntaxError: expected default value expression
 Traceback (most recent call last):
 SyntaxError: expected default value expression
 
->>> lambda /,a,b,c: None
+>>> lambda /,a,b,c: Nichts
 Traceback (most recent call last):
 SyntaxError: at least one parameter must precede /
 
->>> lambda a,/,/,b,c: None
+>>> lambda a,/,/,b,c: Nichts
 Traceback (most recent call last):
 SyntaxError: / may appear only once
 
->>> lambda a,/,a1,/,b,c: None
+>>> lambda a,/,a1,/,b,c: Nichts
 Traceback (most recent call last):
 SyntaxError: / may appear only once
 
->>> lambda a=1,/,/,*b,/,c: None
+>>> lambda a=1,/,/,*b,/,c: Nichts
 Traceback (most recent call last):
 SyntaxError: / may appear only once
 
->>> lambda a,/,a1=1,/,b,c: None
+>>> lambda a,/,a1=1,/,b,c: Nichts
 Traceback (most recent call last):
 SyntaxError: / may appear only once
 
->>> lambda a,*b,c,/,d,e: None
+>>> lambda a,*b,c,/,d,e: Nichts
 Traceback (most recent call last):
 SyntaxError: / must be ahead of *
 
->>> lambda a=1,*b,c=3,/,d,e: None
+>>> lambda a=1,*b,c=3,/,d,e: Nichts
 Traceback (most recent call last):
 SyntaxError: / must be ahead of *
 
->>> lambda a=1,/*,b,c: None
+>>> lambda a=1,/*,b,c: Nichts
 Traceback (most recent call last):
 SyntaxError: expected comma between / and *
 
->>> lambda a,*b=3,c: None
+>>> lambda a,*b=3,c: Nichts
 Traceback (most recent call last):
 SyntaxError: var-positional parameter cannot have default value
 
->>> lambda a,**b=3: None
+>>> lambda a,**b=3: Nichts
 Traceback (most recent call last):
 SyntaxError: var-keyword parameter cannot have default value
 
->>> lambda a, *a, b, **c, d: None
+>>> lambda a, *a, b, **c, d: Nichts
 Traceback (most recent call last):
 SyntaxError: parameters cannot follow var-keyword parameter
 
->>> lambda a,*a, b, **c, d=4: None
+>>> lambda a,*a, b, **c, d=4: Nichts
 Traceback (most recent call last):
 SyntaxError: parameters cannot follow var-keyword parameter
 
->>> lambda a,*a, b, **c, *d: None
+>>> lambda a,*a, b, **c, *d: Nichts
 Traceback (most recent call last):
 SyntaxError: parameters cannot follow var-keyword parameter
 
->>> lambda a,*a, b, **c, **d: None
+>>> lambda a,*a, b, **c, **d: Nichts
 Traceback (most recent call last):
 SyntaxError: parameters cannot follow var-keyword parameter
 
->>> lambda a=1,/,**b,/,c: None
+>>> lambda a=1,/,**b,/,c: Nichts
 Traceback (most recent call last):
 SyntaxError: parameters cannot follow var-keyword parameter
 
->>> lambda *b,*d: None
+>>> lambda *b,*d: Nichts
 Traceback (most recent call last):
 SyntaxError: * may appear only once
 
->>> lambda a,*b,c,*d,*e,c: None
+>>> lambda a,*b,c,*d,*e,c: Nichts
 Traceback (most recent call last):
 SyntaxError: * may appear only once
 
->>> lambda a,b,/,c,*b,c,*d,*e,c: None
+>>> lambda a,b,/,c,*b,c,*d,*e,c: Nichts
 Traceback (most recent call last):
 SyntaxError: * may appear only once
 
->>> lambda a,b,/,c,*b,c,*d,**e: None
+>>> lambda a,b,/,c,*b,c,*d,**e: Nichts
 Traceback (most recent call last):
 SyntaxError: * may appear only once
 
->>> lambda a=1,d=,c: None
+>>> lambda a=1,d=,c: Nichts
 Traceback (most recent call last):
 SyntaxError: expected default value expression
 
->>> lambda a,d=,c: None
+>>> lambda a,d=,c: Nichts
 Traceback (most recent call last):
 SyntaxError: expected default value expression
 
->>> lambda a,d=3,c: None
+>>> lambda a,d=3,c: Nichts
 Traceback (most recent call last):
 SyntaxError: parameter without a default follows parameter with a default
 
->>> lambda a,/,d=3,c: None
+>>> lambda a,/,d=3,c: Nichts
 Traceback (most recent call last):
 SyntaxError: parameter without a default follows parameter with a default
 
@@ -641,14 +641,14 @@ SyntaxError: parameter without a default follows parameter with a default
 ...     a, # type: int
 ... ):
 ...     pass
-... ''', type_comments=True)
+... ''', type_comments=Wahr)
 Traceback (most recent call last):
 SyntaxError: bare * has associated type comment
 
 
 From ast_for_funcdef():
 
->>> def None(x):
+>>> def Nichts(x):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
@@ -808,15 +808,15 @@ SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
 >>> f((x)=2)
 Traceback (most recent call last):
 SyntaxError: expression cannot contain assignment, perhaps you meant "=="?
->>> f(True=1)
+>>> f(Wahr=1)
 Traceback (most recent call last):
-SyntaxError: cannot assign to True
->>> f(False=1)
+SyntaxError: cannot assign to Wahr
+>>> f(Falsch=1)
 Traceback (most recent call last):
-SyntaxError: cannot assign to False
->>> f(None=1)
+SyntaxError: cannot assign to Falsch
+>>> f(Nichts=1)
 Traceback (most recent call last):
-SyntaxError: cannot assign to None
+SyntaxError: cannot assign to Nichts
 >>> f(__debug__=1)
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
@@ -854,9 +854,9 @@ More set_context():
 >>> (x fuer x in x) += 1
 Traceback (most recent call last):
 SyntaxError: 'generator expression' is an illegal expression fuer augmented assignment
->>> None += 1
+>>> Nichts += 1
 Traceback (most recent call last):
-SyntaxError: 'None' is an illegal expression fuer augmented assignment
+SyntaxError: 'Nichts' is an illegal expression fuer augmented assignment
 >>> __debug__ += 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
@@ -1160,7 +1160,7 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: invalid syntax
 
-   >>> while True
+   >>> while Wahr
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
@@ -1333,19 +1333,19 @@ Parenthesized parameters in function definitions
    Traceback (most recent call last):
    SyntaxError: Function parameters cannot be parenthesized
 
-   >>> lambda x, (y, z), w: None
+   >>> lambda x, (y, z), w: Nichts
    Traceback (most recent call last):
    SyntaxError: Lambda expression parameters cannot be parenthesized
 
-   >>> lambda (x, y, z, w): None
+   >>> lambda (x, y, z, w): Nichts
    Traceback (most recent call last):
    SyntaxError: Lambda expression parameters cannot be parenthesized
 
-   >>> lambda x, (y, z, w): None
+   >>> lambda x, (y, z, w): Nichts
    Traceback (most recent call last):
    SyntaxError: Lambda expression parameters cannot be parenthesized
 
-   >>> lambda (x, y, z), w: None
+   >>> lambda (x, y, z), w: Nichts
    Traceback (most recent call last):
    SyntaxError: Lambda expression parameters cannot be parenthesized
 
@@ -1441,17 +1441,17 @@ Better error message fuer using `except as` with not a name:
 Regression tests fuer gh-133999:
 
    >>> try: pass
-   ... except TypeError as name: raise from None
+   ... except TypeError as name: raise from Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' and 'from'?
 
    >>> try: pass
-   ... except* TypeError as name: raise from None
+   ... except* TypeError as name: raise from Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' and 'from'?
 
    >>> match 1:
-   ...     case 1 | 2 as abc: raise from None
+   ...     case 1 | 2 as abc: raise from Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' and 'from'?
 
@@ -1716,7 +1716,7 @@ Better errors fuer `raise` statement:
     Traceback (most recent call last):
     SyntaxError: did you forget an expression between 'raise' and 'from'?
 
-    >>> raise from None
+    >>> raise from Nichts
     Traceback (most recent call last):
     SyntaxError: did you forget an expression between 'raise' and 'from'?
 
@@ -1785,12 +1785,12 @@ SyntaxError: invalid syntax. Did you mean 'for'?
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'else'?
 
->>> whille True:
+>>> whille Wahr:
 ...   pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax. Did you mean 'while'?
 
->>> while True:
+>>> while Wahr:
 ...   pass
 ... elso:
 ...   pass
@@ -2779,8 +2779,8 @@ klasse SyntaxWarningTest(unittest.TestCase):
 klasse SyntaxErrorTestCase(unittest.TestCase):
 
     def _check_error(self, code, errtext,
-                     filename="<testcase>", mode="exec", subclass=None,
-                     lineno=None, offset=None, end_lineno=None, end_offset=None):
+                     filename="<testcase>", mode="exec", subclass=Nichts,
+                     lineno=Nichts, offset=Nichts, end_lineno=Nichts, end_offset=Nichts):
         """Check that compiling code raises SyntaxError with errtext.
 
         errtest is a regular expression that must be present in the
@@ -2793,16 +2793,16 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
             wenn subclass and not isinstance(err, subclass):
                 self.fail("SyntaxError is not a %s" % subclass.__name__)
             mo = re.search(errtext, str(err))
-            wenn mo is None:
+            wenn mo is Nichts:
                 self.fail("SyntaxError did not contain %r" % (errtext,))
             self.assertEqual(err.filename, filename)
-            wenn lineno is not None:
+            wenn lineno is not Nichts:
                 self.assertEqual(err.lineno, lineno)
-            wenn offset is not None:
+            wenn offset is not Nichts:
                 self.assertEqual(err.offset, offset)
-            wenn end_lineno is not None:
+            wenn end_lineno is not Nichts:
                 self.assertEqual(err.end_lineno, end_lineno)
-            wenn end_offset is not None:
+            wenn end_offset is not Nichts:
                 self.assertEqual(err.end_offset, end_offset)
 
         sonst:
@@ -2825,7 +2825,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("del (,)", "invalid syntax")
         self._check_error("del 1", "cannot delete literal")
         self._check_error("del (1, 2)", "cannot delete literal")
-        self._check_error("del None", "cannot delete None")
+        self._check_error("del Nichts", "cannot delete Nichts")
         self._check_error("del *x", "cannot delete starred")
         self._check_error("del (*x)", "cannot use starred expression")
         self._check_error("del (*x,)", "cannot delete starred")
@@ -2837,7 +2837,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("del x, f()", "cannot delete function call")
         self._check_error("del f(), x", "cannot delete function call")
         self._check_error("del [a, b, ((c), (d,), e.f())]", "cannot delete function call")
-        self._check_error("del (a wenn True sonst b)", "cannot delete conditional")
+        self._check_error("del (a wenn Wahr sonst b)", "cannot delete conditional")
         self._check_error("del +a", "cannot delete expression")
         self._check_error("del a, +b", "cannot delete expression")
         self._check_error("del a + b", "cannot delete expression")
@@ -2874,7 +2874,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
 
     def test_raise_from_error_message(self):
         source = """if 1:
-        raise AssertionError() from None
+        raise AssertionError() from Nichts
         print(1,,2)
         """
         self._check_error(source, "invalid syntax", lineno=3)
@@ -3295,7 +3295,7 @@ while 1:
             "raise Exception('a')",
             "del a",
             "yield 2",
-            "assert False",
+            "assert Falsch",
             "break",
             "continue",
             "import",

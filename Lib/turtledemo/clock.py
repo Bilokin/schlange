@@ -7,7 +7,7 @@ from turtle import *
 from datetime import datetime
 
 dtfont = "TkFixedFont", 14, "bold"
-current_day = None
+current_day = Nichts
 
 def jump(distanz, winkel=0):
     penup()
@@ -107,21 +107,21 @@ def tick():
     minute = t.minute + sekunde/60.0
     stunde = t.hour + minute/60.0
     try:
-        tracer(False)  # Terminator can occur here
+        tracer(Falsch)  # Terminator can occur here
         second_hand.setheading(6*sekunde)  # or here
         minute_hand.setheading(6*minute)
         hour_hand.setheading(30*stunde)
         wenn t.day != current_day:
             display_date_time()
-        tracer(True)
+        tracer(Wahr)
         ontimer(tick, 100)
     except Terminator:
         pass  # turtledemo user pressed STOP
 
 def main():
-    tracer(False)
+    tracer(Falsch)
     setup()
-    tracer(True)
+    tracer(Wahr)
     tick()
     return "EVENTLOOP"
 

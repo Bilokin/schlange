@@ -12,7 +12,7 @@ from test.support import os_helper, thread_unsafe
 klasse Test_OpenGL_libs(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        lib_gl = lib_glu = lib_gle = None
+        lib_gl = lib_glu = lib_gle = Nichts
         wenn sys.platform == "win32":
             lib_gl = find_library("OpenGL32")
             lib_glu = find_library("Glu32")
@@ -31,7 +31,7 @@ klasse Test_OpenGL_libs(unittest.TestCase):
                          ("gle", lib_gle)):
                 print("\t", item)
 
-        cls.gl = cls.glu = cls.gle = None
+        cls.gl = cls.glu = cls.gle = Nichts
         wenn lib_gl:
             try:
                 cls.gl = CDLL(lib_gl, mode=RTLD_GLOBAL)
@@ -52,27 +52,27 @@ klasse Test_OpenGL_libs(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.gl = cls.glu = cls.gle = None
+        cls.gl = cls.glu = cls.gle = Nichts
 
     def test_gl(self):
-        wenn self.gl is None:
+        wenn self.gl is Nichts:
             self.skipTest('lib_gl not available')
         self.gl.glClearIndex
 
     def test_glu(self):
-        wenn self.glu is None:
+        wenn self.glu is Nichts:
             self.skipTest('lib_glu not available')
         self.glu.gluBeginCurve
 
     def test_gle(self):
-        wenn self.gle is None:
+        wenn self.gle is Nichts:
             self.skipTest('lib_gle not available')
         self.gle.gleGetJoinStyle
 
     def test_shell_injection(self):
         result = find_library('; echo Hello shell > ' + os_helper.TESTFN)
-        self.assertFalse(os.path.lexists(os_helper.TESTFN))
-        self.assertIsNone(result)
+        self.assertFalsch(os.path.lexists(os_helper.TESTFN))
+        self.assertIsNichts(result)
 
 
 @unittest.skipUnless(sys.platform.startswith('linux'),
@@ -96,15 +96,15 @@ klasse FindLibraryLinux(unittest.TestCase):
             dstname = os.path.join(d, 'lib%s.so' % libname)
             with open(srcname, 'wb') as f:
                 pass
-            self.assertTrue(os.path.exists(srcname))
+            self.assertWahr(os.path.exists(srcname))
             # compile the file to a shared library
             cmd = ['gcc', '-o', dstname, '--shared',
                    '-Wl,-soname,lib%s.so' % libname, srcname]
             out = subprocess.check_output(cmd)
-            self.assertTrue(os.path.exists(dstname))
+            self.assertWahr(os.path.exists(dstname))
             # now check that the .so can't be found (since not in
             # LD_LIBRARY_PATH)
-            self.assertIsNone(find_library(libname))
+            self.assertIsNichts(find_library(libname))
             # now add the location to LD_LIBRARY_PATH
             with os_helper.EnvironmentVarGuard() as env:
                 KEY = 'LD_LIBRARY_PATH'
@@ -118,16 +118,16 @@ klasse FindLibraryLinux(unittest.TestCase):
                 self.assertEqual(find_library(libname), 'lib%s.so' % libname)
 
     def test_find_library_with_gcc(self):
-        with unittest.mock.patch("ctypes.util._findSoname_ldconfig", lambda *args: None):
-            self.assertNotEqual(find_library('c'), None)
+        with unittest.mock.patch("ctypes.util._findSoname_ldconfig", lambda *args: Nichts):
+            self.assertNotEqual(find_library('c'), Nichts)
 
     def test_find_library_with_ld(self):
-        with unittest.mock.patch("ctypes.util._findSoname_ldconfig", lambda *args: None), \
-             unittest.mock.patch("ctypes.util._findLib_gcc", lambda *args: None):
-            self.assertNotEqual(find_library('c'), None)
+        with unittest.mock.patch("ctypes.util._findSoname_ldconfig", lambda *args: Nichts), \
+             unittest.mock.patch("ctypes.util._findLib_gcc", lambda *args: Nichts):
+            self.assertNotEqual(find_library('c'), Nichts)
 
     def test_gh114257(self):
-        self.assertIsNone(find_library("libc"))
+        self.assertIsNichts(find_library("libc"))
 
 
 @unittest.skipUnless(sys.platform == 'android', 'Test only valid fuer Android')
@@ -146,11 +146,11 @@ klasse FindLibraryAndroid(unittest.TestCase):
                     "/system/lib64" wenn "64" in os.uname().machine
                     sonst "/system/lib")
                 self.assertEqual(os.path.basename(path), f"lib{name}.so")
-                self.assertTrue(os.path.isfile(path), path)
+                self.assertWahr(os.path.isfile(path), path)
 
         fuer name in ["libc", "nonexistent"]:
             with self.subTest(name=name):
-                self.assertIsNone(find_library(name))
+                self.assertIsNichts(find_library(name))
 
 
 wenn __name__ == "__main__":

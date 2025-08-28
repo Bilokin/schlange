@@ -22,7 +22,7 @@ def _getpwuid(uid):
 
 klasse NetrcParseError(Exception):
     """Exception raised on syntax errors in the .netrc file."""
-    def __init__(self, msg, filename=None, lineno=None):
+    def __init__(self, msg, filename=Nichts, lineno=Nichts):
         self.filename = filename
         self.lineno = lineno
         self.msg = msg
@@ -77,9 +77,9 @@ klasse _netrclex:
 
 
 klasse netrc:
-    def __init__(self, file=None):
-        default_netrc = file is None
-        wenn file is None:
+    def __init__(self, file=Nichts):
+        default_netrc = file is Nichts
+        wenn file is Nichts:
             file = os.path.join(os.path.expanduser("~"), ".netrc")
         self.hosts = {}
         self.macros = {}
@@ -177,7 +177,7 @@ klasse netrc:
         sowenn 'default' in self.hosts:
             return self.hosts['default']
         sonst:
-            return None
+            return Nichts
 
     def __repr__(self):
         """Dump the klasse data in the format of a .netrc file."""

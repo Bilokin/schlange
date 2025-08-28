@@ -15,17 +15,17 @@ klasse Logger:
         self.start_time = time.perf_counter()
         self.test_count_text = ''
         self.test_count_width = 3
-        self.win_load_tracker: WindowsLoadTracker | None = None
+        self.win_load_tracker: WindowsLoadTracker | Nichts = Nichts
         self._results: TestResults = results
         self._quiet: bool = quiet
         self._pgo: bool = pgo
 
-    def log(self, line: str = '') -> None:
+    def log(self, line: str = '') -> Nichts:
         empty = not line
 
         # add the system load prefix: "load avg: 1.80 "
         load_avg = self.get_load_avg()
-        wenn load_avg is not None:
+        wenn load_avg is not Nichts:
             line = f"load avg: {load_avg:.2f} {line}"
 
         # add the timestamp prefix:  "0:01:05 "
@@ -39,19 +39,19 @@ klasse Logger:
         wenn empty:
             line = line[:-1]
 
-        print(line, flush=True)
+        print(line, flush=Wahr)
 
-    def get_load_avg(self) -> float | None:
+    def get_load_avg(self) -> float | Nichts:
         wenn hasattr(os, 'getloadavg'):
             try:
                 return os.getloadavg()[0]
             except OSError:
                 pass
-        wenn self.win_load_tracker is not None:
+        wenn self.win_load_tracker is not Nichts:
             return self.win_load_tracker.getloadavg()
-        return None
+        return Nichts
 
-    def display_progress(self, test_index: int, text: str) -> None:
+    def display_progress(self, test_index: int, text: str) -> Nichts:
         wenn self._quiet:
             return
         results = self._results
@@ -63,7 +63,7 @@ klasse Logger:
             line = f"{line}/{fails}"
         self.log(f"[{line}] {text}")
 
-    def set_tests(self, runtests: RunTests) -> None:
+    def set_tests(self, runtests: RunTests) -> Nichts:
         wenn runtests.forever:
             self.test_count_text = ''
             self.test_count_width = 3
@@ -71,7 +71,7 @@ klasse Logger:
             self.test_count_text = '/{}'.format(len(runtests.tests))
             self.test_count_width = len(self.test_count_text) - 1
 
-    def start_load_tracker(self) -> None:
+    def start_load_tracker(self) -> Nichts:
         wenn not MS_WINDOWS:
             return
 
@@ -82,8 +82,8 @@ klasse Logger:
             # counters.
             print_warning(f'Failed to create WindowsLoadTracker: {error}')
 
-    def stop_load_tracker(self) -> None:
-        wenn self.win_load_tracker is None:
+    def stop_load_tracker(self) -> Nichts:
+        wenn self.win_load_tracker is Nichts:
             return
         self.win_load_tracker.close()
-        self.win_load_tracker = None
+        self.win_load_tracker = Nichts

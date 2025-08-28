@@ -29,7 +29,7 @@ klasse ZipAppTest(unittest.TestCase):
         (source / '__main__.py').touch()
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(str(source), str(target))
-        self.assertTrue(target.is_file())
+        self.assertWahr(target.is_file())
 
     def test_create_archive_with_pathlib(self):
         # Test packing a directory using Path objects fuer source and target.
@@ -38,7 +38,7 @@ klasse ZipAppTest(unittest.TestCase):
         (source / '__main__.py').touch()
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(source, target)
-        self.assertTrue(target.is_file())
+        self.assertWahr(target.is_file())
 
     def test_create_archive_with_subdirs(self):
         # Test packing a directory includes entries fuer subdirectories.
@@ -153,7 +153,7 @@ klasse ZipAppTest(unittest.TestCase):
         (source / '__main__.py').touch()
         zipapp.create_archive(str(source))
         expected_target = self.tmpdir / 'source.pyz'
-        self.assertTrue(expected_target.is_file())
+        self.assertWahr(expected_target.is_file())
 
     @requires_zlib()
     def test_create_archive_with_compression(self):
@@ -164,7 +164,7 @@ klasse ZipAppTest(unittest.TestCase):
         (source / 'test.py').touch()
         target = self.tmpdir / 'source.pyz'
 
-        zipapp.create_archive(source, target, compressed=True)
+        zipapp.create_archive(source, target, compressed=Wahr)
         with zipfile.ZipFile(target, 'r') as z:
             fuer name in ('__main__.py', 'test.py'):
                 self.assertEqual(z.getinfo(name).compress_type,
@@ -271,13 +271,13 @@ klasse ZipAppTest(unittest.TestCase):
         self.assertEqual(zipapp.get_interpreter(str(target)), 'python')
 
     def test_read_missing_shebang(self):
-        # Test that reading the shebang line of a file without one returns None.
+        # Test that reading the shebang line of a file without one returns Nichts.
         source = self.tmpdir / 'source'
         source.mkdir()
         (source / '__main__.py').touch()
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(str(source), str(target))
-        self.assertEqual(zipapp.get_interpreter(str(target)), None)
+        self.assertEqual(zipapp.get_interpreter(str(target)), Nichts)
 
     def test_modify_shebang(self):
         # Test that we can change the shebang of a file.
@@ -336,8 +336,8 @@ klasse ZipAppTest(unittest.TestCase):
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(str(source), str(target), interpreter='python')
         new_target = self.tmpdir / 'changed.pyz'
-        zipapp.create_archive(str(target), str(new_target), interpreter=None)
-        self.assertEqual(zipapp.get_interpreter(str(new_target)), None)
+        zipapp.create_archive(str(target), str(new_target), interpreter=Nichts)
+        self.assertEqual(zipapp.get_interpreter(str(new_target)), Nichts)
 
     def test_content_of_copied_archive(self):
         # Test that copying an archive doesn't corrupt it.
@@ -348,7 +348,7 @@ klasse ZipAppTest(unittest.TestCase):
         zipapp.create_archive(str(source), target, interpreter='python')
         new_target = io.BytesIO()
         target.seek(0)
-        zipapp.create_archive(target, new_target, interpreter=None)
+        zipapp.create_archive(target, new_target, interpreter=Nichts)
         new_target.seek(0)
         with zipfile.ZipFile(new_target, 'r') as z:
             self.assertEqual(set(z.namelist()), {'__main__.py'})
@@ -364,7 +364,7 @@ klasse ZipAppTest(unittest.TestCase):
         (source / '__main__.py').touch()
         target = self.tmpdir / 'source.pyz'
         zipapp.create_archive(str(source), str(target), interpreter='python')
-        self.assertTrue(target.stat().st_mode & stat.S_IEXEC)
+        self.assertWahr(target.stat().st_mode & stat.S_IEXEC)
 
     @unittest.skipIf(sys.platform == 'win32',
                      'Windows does not support an executable bit')
@@ -374,8 +374,8 @@ klasse ZipAppTest(unittest.TestCase):
         source.mkdir()
         (source / '__main__.py').touch()
         target = self.tmpdir / 'source.pyz'
-        zipapp.create_archive(str(source), str(target), interpreter=None)
-        self.assertFalse(target.stat().st_mode & stat.S_IEXEC)
+        zipapp.create_archive(str(source), str(target), interpreter=Nichts)
+        self.assertFalsch(target.stat().st_mode & stat.S_IEXEC)
 
 
 klasse ZipAppCmdlineTest(unittest.TestCase):
@@ -404,7 +404,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         args = [str(source)]
         zipapp.main(args)
         target = source.with_suffix('.pyz')
-        self.assertTrue(target.is_file())
+        self.assertWahr(target.is_file())
 
     def test_cmdline_copy(self):
         # Test copying an archive.
@@ -412,7 +412,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         target = self.tmpdir / 'target.pyz'
         args = [str(original), '-o', str(target)]
         zipapp.main(args)
-        self.assertTrue(target.is_file())
+        self.assertWahr(target.is_file())
 
     def test_cmdline_copy_inplace(self):
         # Test copying an archive in place fails.
@@ -422,7 +422,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         with self.assertRaises(SystemExit) as cm:
             zipapp.main(args)
         # Program should exit with a non-zero return code.
-        self.assertTrue(cm.exception.code)
+        self.assertWahr(cm.exception.code)
 
     def test_cmdline_copy_change_main(self):
         # Test copying an archive doesn't allow changing __main__.py.
@@ -432,7 +432,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         with self.assertRaises(SystemExit) as cm:
             zipapp.main(args)
         # Program should exit with a non-zero return code.
-        self.assertTrue(cm.exception.code)
+        self.assertWahr(cm.exception.code)
 
     @patch('sys.stdout', new_callable=io.StringIO)
     def test_info_command(self, mock_stdout):
@@ -452,7 +452,7 @@ klasse ZipAppCmdlineTest(unittest.TestCase):
         with self.assertRaises(SystemExit) as cm:
             zipapp.main(args)
         # Program should exit with a non-zero return code.
-        self.assertTrue(cm.exception.code)
+        self.assertWahr(cm.exception.code)
 
 
 wenn __name__ == "__main__":

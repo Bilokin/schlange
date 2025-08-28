@@ -9,7 +9,7 @@ from tkinter import Text, Tk, END
 
 klasse MyFilter(Delegator):
     def __init__(self):
-        Delegator.__init__(self, None)
+        Delegator.__init__(self, Nichts)
 
     def insert(self, *args):
         self.insert_called_with = args
@@ -19,15 +19,15 @@ klasse MyFilter(Delegator):
         self.delete_called_with = args
         self.delegate.delete(*args)
 
-    def uppercase_insert(self, index, chars, tags=None):
+    def uppercase_insert(self, index, chars, tags=Nichts):
         chars = chars.upper()
         self.delegate.insert(index, chars)
 
-    def lowercase_insert(self, index, chars, tags=None):
+    def lowercase_insert(self, index, chars, tags=Nichts):
         chars = chars.lower()
         self.delegate.insert(index, chars)
 
-    def dont_insert(self, index, chars, tags=None):
+    def dont_insert(self, index, chars, tags=Nichts):
         pass
 
 
@@ -56,7 +56,7 @@ klasse PercolatorTest(unittest.TestCase):
         self.text.delete('1.0', END)
 
     def test_insertfilter(self):
-        self.assertIsNotNone(self.filter_one.delegate)
+        self.assertIsNotNichts(self.filter_one.delegate)
         self.assertEqual(self.percolator.top, self.filter_two)
         self.assertEqual(self.filter_two.delegate, self.filter_one)
         self.assertEqual(self.filter_one.delegate, self.percolator.bottom)
@@ -65,7 +65,7 @@ klasse PercolatorTest(unittest.TestCase):
         filter_three = MyFilter()
         self.percolator.removefilter(self.filter_two)
         self.assertEqual(self.percolator.top, self.filter_one)
-        self.assertIsNone(self.filter_two.delegate)
+        self.assertIsNichts(self.filter_two.delegate)
 
         filter_three = MyFilter()
         self.percolator.insertfilter(self.filter_two)
@@ -74,13 +74,13 @@ klasse PercolatorTest(unittest.TestCase):
         self.assertEqual(self.percolator.top, filter_three)
         self.assertEqual(filter_three.delegate, self.filter_two)
         self.assertEqual(self.filter_two.delegate, self.percolator.bottom)
-        self.assertIsNone(self.filter_one.delegate)
+        self.assertIsNichts(self.filter_one.delegate)
 
     def test_insert(self):
         self.text.insert('insert', 'foo')
         self.assertEqual(self.text.get('1.0', END), 'foo\n')
         self.assertTupleEqual(self.filter_one.insert_called_with,
-                              ('insert', 'foo', None))
+                              ('insert', 'foo', Nichts))
 
     def test_modify_insert(self):
         self.filter_one.insert = self.filter_one.uppercase_insert

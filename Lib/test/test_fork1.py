@@ -70,7 +70,7 @@ klasse ForkTest(ForkWait):
         # Issue 9573: this used to trigger RuntimeError in the child process
         def fork_with_import_lock(level):
             release = 0
-            in_child = False
+            in_child = Falsch
             try:
                 try:
                     fuer i in range(level):

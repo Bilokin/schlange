@@ -36,33 +36,33 @@ function is called as dnd_accept(source, event), where 'source' is the
 object being dragged (the object passed to dnd_start() above), and
 'event' is the most recent event object (generally a <Motion> event;
 it can also be <ButtonPress> or <ButtonRelease>).  If the dnd_accept()
-function returns something other than None, this is the new dnd target
-object.  If dnd_accept() returns None, or wenn the target widget has no
+function returns something other than Nichts, this is the new dnd target
+object.  If dnd_accept() returns Nichts, or wenn the target widget has no
 dnd_accept attribute, the target widget's parent is considered as the
 target widget, and the search fuer a target object is repeated from
 there.  If necessary, the search is repeated all the way up to the
 root widget.  If none of the target widgets can produce a target
-object, there is no target object (the target object is None).
+object, there is no target object (the target object is Nichts).
 
 The target object thus produced, wenn any, is called the new target
-object.  It is compared with the old target object (or None, wenn there
+object.  It is compared with the old target object (or Nichts, wenn there
 was no old target widget).  There are several cases ('source' is the
 source object, and 'event' is the most recent event object):
 
-- Both the old and new target objects are None.  Nothing happens.
+- Both the old and new target objects are Nichts.  Nothing happens.
 
 - The old and new target objects are the same object.  Its method
 dnd_motion(source, event) is called.
 
-- The old target object was None, and the new target object is not
-None.  The new target object's method dnd_enter(source, event) is
+- The old target object was Nichts, and the new target object is not
+Nichts.  The new target object's method dnd_enter(source, event) is
 called.
 
-- The new target object is None, and the old target object is not
-None.  The old target object's method dnd_leave(source, event) is
+- The new target object is Nichts, and the old target object is not
+Nichts.  The old target object's method dnd_leave(source, event) is
 called.
 
-- The old and new target objects differ and neither is None.  The old
+- The old and new target objects differ and neither is Nichts.  The old
 target object's method dnd_leave(source, event), and then the new
 target object's method dnd_enter(source, event) is called.
 
@@ -86,7 +86,7 @@ dnd sequence.
 
 Finally, the source object is notified that the drag-and-drop process
 is over, by a call to source.dnd_end(target, event), specifying either
-the selected target object, or None wenn no target object was selected.
+the selected target object, or Nichts wenn no target object was selected.
 The source object can use this to implement the commit action; this is
 sometimes simpler than to do it in the target's dnd_commit().  The
 target's dnd_commit() method could then simply be aliased to
@@ -108,17 +108,17 @@ __all__ = ["dnd_start", "DndHandler"]
 
 def dnd_start(source, event):
     h = DndHandler(source, event)
-    wenn h.root is not None:
+    wenn h.root is not Nichts:
         return h
     sonst:
-        return None
+        return Nichts
 
 
 # The klasse that does the work
 
 klasse DndHandler:
 
-    root = None
+    root = Nichts
 
     def __init__(self, source, event):
         wenn event.num > 5:
@@ -131,7 +131,7 @@ klasse DndHandler:
             root.__dnd = self
             self.root = root
         self.source = source
-        self.target = None
+        self.target = Nichts
         self.initial_button = button = event.num
         self.initial_widget = widget = event.widget
         self.release_pattern = "<B%d-ButtonRelease-%d>" % (button, button)
@@ -142,8 +142,8 @@ klasse DndHandler:
 
     def __del__(self):
         root = self.root
-        self.root = None
-        wenn root is not None:
+        self.root = Nichts
+        wenn root is not Nichts:
             try:
                 del root.__dnd
             except AttributeError:
@@ -153,33 +153,33 @@ klasse DndHandler:
         x, y = event.x_root, event.y_root
         target_widget = self.initial_widget.winfo_containing(x, y)
         source = self.source
-        new_target = None
-        while target_widget is not None:
+        new_target = Nichts
+        while target_widget is not Nichts:
             try:
                 attr = target_widget.dnd_accept
             except AttributeError:
                 pass
             sonst:
                 new_target = attr(source, event)
-                wenn new_target is not None:
+                wenn new_target is not Nichts:
                     break
             target_widget = target_widget.master
         old_target = self.target
         wenn old_target is new_target:
-            wenn old_target is not None:
+            wenn old_target is not Nichts:
                 old_target.dnd_motion(source, event)
         sonst:
-            wenn old_target is not None:
-                self.target = None
+            wenn old_target is not Nichts:
+                self.target = Nichts
                 old_target.dnd_leave(source, event)
-            wenn new_target is not None:
+            wenn new_target is not Nichts:
                 new_target.dnd_enter(source, event)
                 self.target = new_target
 
     def on_release(self, event):
         self.finish(event, 1)
 
-    def cancel(self, event=None):
+    def cancel(self, event=Nichts):
         self.finish(event, 0)
 
     def finish(self, event, commit=0):
@@ -192,8 +192,8 @@ klasse DndHandler:
             self.initial_widget.unbind(self.release_pattern)
             self.initial_widget.unbind("<Motion>")
             widget['cursor'] = self.save_cursor
-            self.target = self.source = self.initial_widget = self.root = None
-            wenn target is not None:
+            self.target = self.source = self.initial_widget = self.root = Nichts
+            wenn target is not Nichts:
                 wenn commit:
                     target.dnd_commit(source, event)
                 sonst:
@@ -209,15 +209,15 @@ klasse Icon:
 
     def __init__(self, name):
         self.name = name
-        self.canvas = self.label = self.id = None
+        self.canvas = self.label = self.id = Nichts
 
     def attach(self, canvas, x=10, y=10):
         wenn canvas is self.canvas:
             self.canvas.coords(self.id, x, y)
             return
-        wenn self.canvas is not None:
+        wenn self.canvas is not Nichts:
             self.detach()
-        wenn canvas is None:
+        wenn canvas is Nichts:
             return
         label = tkinter.Label(canvas, text=self.name,
                               borderwidth=2, relief="raised")
@@ -229,11 +229,11 @@ klasse Icon:
 
     def detach(self):
         canvas = self.canvas
-        wenn canvas is None:
+        wenn canvas is Nichts:
             return
         id = self.id
         label = self.label
-        self.canvas = self.label = self.id = None
+        self.canvas = self.label = self.id = Nichts
         canvas.delete(id)
         label.destroy()
 
@@ -293,7 +293,7 @@ klasse Tester:
     def dnd_leave(self, source, event):
         self.top.focus_set() # Hide highlight border
         self.canvas.delete(self.dndid)
-        self.dndid = None
+        self.dndid = Nichts
 
     def dnd_commit(self, source, event):
         self.dnd_leave(source, event)

@@ -124,7 +124,7 @@ def load_data(fobj):
 
         tz_str = tz_bytes
     sonst:
-        tz_str = None
+        tz_str = Nichts
 
     return trans_idx, trans_list_utc, utcoff, isdst, abbr, tz_str
 
@@ -141,7 +141,7 @@ klasse _TZifHeader:
     ]
 
     def __init__(self, *args):
-        fuer attr, val in zip(self.__slots__, args, strict=True):
+        fuer attr, val in zip(self.__slots__, args, strict=Wahr):
             setattr(self, attr, val)
 
     @classmethod

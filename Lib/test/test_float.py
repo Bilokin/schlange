@@ -19,7 +19,7 @@ import math
 try:
     import _testcapi
 except ImportError:
-    _testcapi = None
+    _testcapi = Nichts
 
 INF = float("inf")
 NAN = float("nan")
@@ -265,7 +265,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             subclass(x=0)
 
         klasse subclass_with_init(float):
-            def __init__(self, arg, newarg=None):
+            def __init__(self, arg, newarg=Nichts):
                 self.newarg = newarg
         u = subclass_with_init(2.5, newarg=3)
         self.assertIs(type(u), subclass_with_init)
@@ -273,7 +273,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         self.assertEqual(u.newarg, 3)
 
         klasse subclass_with_new(float):
-            def __new__(cls, arg, newarg=None):
+            def __new__(cls, arg, newarg=Nichts):
                 self = super().__new__(cls, arg)
                 self.newarg = newarg
                 return self
@@ -298,7 +298,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         eq(cls.from_number(MyIndex(314)), 314.0)
 
         x = cls.from_number(NAN)
-        self.assertTrue(x != x)
+        self.assertWahr(x != x)
         self.assertIs(type(x), cls)
         wenn cls is float:
             self.assertIs(cls.from_number(NAN), NAN)
@@ -314,10 +314,10 @@ klasse GeneralFloatCases(unittest.TestCase):
         self.test_from_number(FloatSubclass)
 
     def test_is_integer(self):
-        self.assertFalse((1.1).is_integer())
-        self.assertTrue((1.).is_integer())
-        self.assertFalse(float("nan").is_integer())
-        self.assertFalse(float("inf").is_integer())
+        self.assertFalsch((1.1).is_integer())
+        self.assertWahr((1.).is_integer())
+        self.assertFalsch(float("nan").is_integer())
+        self.assertFalsch(float("inf").is_integer())
 
     def test_floatasratio(self):
         fuer f, ratio in [
@@ -358,24 +358,24 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertIn(f, [f])
             self.assertIn(f, (f,))
             self.assertIn(f, {f})
-            self.assertIn(f, {f: None})
+            self.assertIn(f, {f: Nichts})
             self.assertEqual([f].count(f), 1, "[].count('%r') != 1" % f)
             self.assertIn(f, floats)
 
         fuer f in floats:
             # nonidentical containers, same type, same contents
-            self.assertTrue([f] == [f], "[%r] != [%r]" % (f, f))
-            self.assertTrue((f,) == (f,), "(%r,) != (%r,)" % (f, f))
-            self.assertTrue({f} == {f}, "{%r} != {%r}" % (f, f))
-            self.assertTrue({f : None} == {f: None}, "{%r : None} != "
-                                                   "{%r : None}" % (f, f))
+            self.assertWahr([f] == [f], "[%r] != [%r]" % (f, f))
+            self.assertWahr((f,) == (f,), "(%r,) != (%r,)" % (f, f))
+            self.assertWahr({f} == {f}, "{%r} != {%r}" % (f, f))
+            self.assertWahr({f : Nichts} == {f: Nichts}, "{%r : Nichts} != "
+                                                   "{%r : Nichts}" % (f, f))
 
             # identical containers
-            l, t, s, d = [f], (f,), {f}, {f: None}
-            self.assertTrue(l == l, "[%r] not equal to itself" % f)
-            self.assertTrue(t == t, "(%r,) not equal to itself" % f)
-            self.assertTrue(s == s, "{%r} not equal to itself" % f)
-            self.assertTrue(d == d, "{%r : None} not equal to itself" % f)
+            l, t, s, d = [f], (f,), {f}, {f: Nichts}
+            self.assertWahr(l == l, "[%r] not equal to itself" % f)
+            self.assertWahr(t == t, "(%r,) not equal to itself" % f)
+            self.assertWahr(s == s, "{%r} not equal to itself" % f)
+            self.assertWahr(d == d, "{%r : Nichts} not equal to itself" % f)
 
     def assertEqualAndEqualSign(self, a, b):
         # fail unless a == b and a and b have the same sign bit;
@@ -438,26 +438,26 @@ klasse GeneralFloatCases(unittest.TestCase):
 
         fuer pow_op in pow, operator.pow:
             # x**NAN is NAN fuer any x except 1
-            self.assertTrue(isnan(pow_op(-INF, NAN)))
-            self.assertTrue(isnan(pow_op(-2.0, NAN)))
-            self.assertTrue(isnan(pow_op(-1.0, NAN)))
-            self.assertTrue(isnan(pow_op(-0.5, NAN)))
-            self.assertTrue(isnan(pow_op(-0.0, NAN)))
-            self.assertTrue(isnan(pow_op(0.0, NAN)))
-            self.assertTrue(isnan(pow_op(0.5, NAN)))
-            self.assertTrue(isnan(pow_op(2.0, NAN)))
-            self.assertTrue(isnan(pow_op(INF, NAN)))
-            self.assertTrue(isnan(pow_op(NAN, NAN)))
+            self.assertWahr(isnan(pow_op(-INF, NAN)))
+            self.assertWahr(isnan(pow_op(-2.0, NAN)))
+            self.assertWahr(isnan(pow_op(-1.0, NAN)))
+            self.assertWahr(isnan(pow_op(-0.5, NAN)))
+            self.assertWahr(isnan(pow_op(-0.0, NAN)))
+            self.assertWahr(isnan(pow_op(0.0, NAN)))
+            self.assertWahr(isnan(pow_op(0.5, NAN)))
+            self.assertWahr(isnan(pow_op(2.0, NAN)))
+            self.assertWahr(isnan(pow_op(INF, NAN)))
+            self.assertWahr(isnan(pow_op(NAN, NAN)))
 
             # NAN**y is NAN fuer any y except +-0
-            self.assertTrue(isnan(pow_op(NAN, -INF)))
-            self.assertTrue(isnan(pow_op(NAN, -2.0)))
-            self.assertTrue(isnan(pow_op(NAN, -1.0)))
-            self.assertTrue(isnan(pow_op(NAN, -0.5)))
-            self.assertTrue(isnan(pow_op(NAN, 0.5)))
-            self.assertTrue(isnan(pow_op(NAN, 1.0)))
-            self.assertTrue(isnan(pow_op(NAN, 2.0)))
-            self.assertTrue(isnan(pow_op(NAN, INF)))
+            self.assertWahr(isnan(pow_op(NAN, -INF)))
+            self.assertWahr(isnan(pow_op(NAN, -2.0)))
+            self.assertWahr(isnan(pow_op(NAN, -1.0)))
+            self.assertWahr(isnan(pow_op(NAN, -0.5)))
+            self.assertWahr(isnan(pow_op(NAN, 0.5)))
+            self.assertWahr(isnan(pow_op(NAN, 1.0)))
+            self.assertWahr(isnan(pow_op(NAN, 2.0)))
+            self.assertWahr(isnan(pow_op(NAN, INF)))
 
             # (+-0)**y raises ZeroDivisionError fuer y a negative odd integer
             self.assertRaises(ZeroDivisionError, pow_op, -0.0, -1.0)
@@ -623,14 +623,14 @@ klasse GeneralFloatCases(unittest.TestCase):
             # and validate signs.  Tests currently disabled, since
             # they fail on systems where a subnormal result from pow
             # is flushed to zero (e.g. Debian/ia64.)
-            #self.assertTrue(0.0 < pow_op(0.5, 1048) < 1e-315)
-            #self.assertTrue(0.0 < pow_op(-0.5, 1048) < 1e-315)
-            #self.assertTrue(0.0 < pow_op(0.5, 1047) < 1e-315)
-            #self.assertTrue(0.0 > pow_op(-0.5, 1047) > -1e-315)
-            #self.assertTrue(0.0 < pow_op(2.0, -1048) < 1e-315)
-            #self.assertTrue(0.0 < pow_op(-2.0, -1048) < 1e-315)
-            #self.assertTrue(0.0 < pow_op(2.0, -1047) < 1e-315)
-            #self.assertTrue(0.0 > pow_op(-2.0, -1047) > -1e-315)
+            #self.assertWahr(0.0 < pow_op(0.5, 1048) < 1e-315)
+            #self.assertWahr(0.0 < pow_op(-0.5, 1048) < 1e-315)
+            #self.assertWahr(0.0 < pow_op(0.5, 1047) < 1e-315)
+            #self.assertWahr(0.0 > pow_op(-0.5, 1047) > -1e-315)
+            #self.assertWahr(0.0 < pow_op(2.0, -1048) < 1e-315)
+            #self.assertWahr(0.0 < pow_op(-2.0, -1048) < 1e-315)
+            #self.assertWahr(0.0 < pow_op(2.0, -1047) < 1e-315)
+            #self.assertWahr(0.0 > pow_op(-2.0, -1047) > -1e-315)
 
     def test_hash(self):
         fuer x in range(-30, 30):
@@ -697,7 +697,7 @@ klasse IEEEFormatTestCase(unittest.TestCase):
             struct.unpack(fmt, data)
 
     @support.requires_IEEE_754
-    @unittest.skipIf(_testcapi is None, 'needs _testcapi')
+    @unittest.skipIf(_testcapi is Nichts, 'needs _testcapi')
     def test_serialized_float_rounding(self):
         FLT_MAX = _testcapi.FLT_MAX
         self.assertEqual(struct.pack("<f", 3.40282356e38), struct.pack("<f", FLT_MAX))
@@ -919,7 +919,7 @@ klasse RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
     def test_inf_nan_ndigits(self):
         self.assertEqual(round(INF, 0), INF)
         self.assertEqual(round(-INF, 0), -INF)
-        self.assertTrue(math.isnan(round(NAN, 0)))
+        self.assertWahr(math.isnan(round(NAN, 0)))
 
     def test_large_n(self):
         fuer n in [324, 325, 400, 2**31-1, 2**31, 2**32, 2**100]:
@@ -1017,19 +1017,19 @@ klasse RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
             test(sfmt, NAN, ' nan')
             test(sfmt, -NAN, ' nan')
 
-    def test_None_ndigits(self):
-        fuer x in round(1.23), round(1.23, None), round(1.23, ndigits=None):
+    def test_Nichts_ndigits(self):
+        fuer x in round(1.23), round(1.23, Nichts), round(1.23, ndigits=Nichts):
             self.assertEqual(x, 1)
             self.assertIsInstance(x, int)
-        fuer x in round(1.78), round(1.78, None), round(1.78, ndigits=None):
+        fuer x in round(1.78), round(1.78, Nichts), round(1.78, ndigits=Nichts):
             self.assertEqual(x, 2)
             self.assertIsInstance(x, int)
 
     @support.cpython_only
     def test_round_with_none_arg_direct_call(self):
-        fuer val in [(1.0).__round__(None),
+        fuer val in [(1.0).__round__(Nichts),
                     round(1.0),
-                    round(1.0, None)]:
+                    round(1.0, Nichts)]:
             self.assertEqual(val, 1)
             self.assertIs(type(val), int)
 
@@ -1037,12 +1037,12 @@ klasse RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
 # ways to create and represent inf and nan
 klasse InfNanTest(unittest.TestCase):
     def test_inf_from_str(self):
-        self.assertTrue(isinf(float("inf")))
-        self.assertTrue(isinf(float("+inf")))
-        self.assertTrue(isinf(float("-inf")))
-        self.assertTrue(isinf(float("infinity")))
-        self.assertTrue(isinf(float("+infinity")))
-        self.assertTrue(isinf(float("-infinity")))
+        self.assertWahr(isinf(float("inf")))
+        self.assertWahr(isinf(float("+inf")))
+        self.assertWahr(isinf(float("-inf")))
+        self.assertWahr(isinf(float("infinity")))
+        self.assertWahr(isinf(float("+infinity")))
+        self.assertWahr(isinf(float("-infinity")))
 
         self.assertEqual(repr(float("inf")), "inf")
         self.assertEqual(repr(float("+inf")), "inf")
@@ -1089,9 +1089,9 @@ klasse InfNanTest(unittest.TestCase):
         self.assertEqual(str(-1e300 * 1e300), "-inf")
 
     def test_nan_from_str(self):
-        self.assertTrue(isnan(float("nan")))
-        self.assertTrue(isnan(float("+nan")))
-        self.assertTrue(isnan(float("-nan")))
+        self.assertWahr(isnan(float("nan")))
+        self.assertWahr(isnan(float("+nan")))
+        self.assertWahr(isnan(float("-nan")))
 
         self.assertEqual(repr(float("nan")), "nan")
         self.assertEqual(repr(float("+nan")), "nan")

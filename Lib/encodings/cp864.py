@@ -15,11 +15,11 @@ klasse Codec(codecs.Codec):
         return codecs.charmap_decode(input,errors,decoding_table)
 
 klasse IncrementalEncoder(codecs.IncrementalEncoder):
-    def encode(self, input, final=False):
+    def encode(self, input, final=Falsch):
         return codecs.charmap_encode(input,self.errors,encoding_map)[0]
 
 klasse IncrementalDecoder(codecs.IncrementalDecoder):
-    def decode(self, input, final=False):
+    def decode(self, input, final=Falsch):
         return codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 klasse StreamWriter(Codec,codecs.StreamWriter):
@@ -73,16 +73,16 @@ decoding_map.update({
     0x0098: 0x00bb,     #  RIGHT POINTING GUILLEMET
     0x0099: 0xfef7,     #  ARABIC LIGATURE LAM WITH ALEF WITH HAMZA ABOVE ISOLATED FORM
     0x009a: 0xfef8,     #  ARABIC LIGATURE LAM WITH ALEF WITH HAMZA ABOVE FINAL FORM
-    0x009b: None,       #  UNDEFINED
-    0x009c: None,       #  UNDEFINED
+    0x009b: Nichts,       #  UNDEFINED
+    0x009c: Nichts,       #  UNDEFINED
     0x009d: 0xfefb,     #  ARABIC LIGATURE LAM WITH ALEF ISOLATED FORM
     0x009e: 0xfefc,     #  ARABIC LIGATURE LAM WITH ALEF FINAL FORM
-    0x009f: None,       #  UNDEFINED
+    0x009f: Nichts,       #  UNDEFINED
     0x00a1: 0x00ad,     #  SOFT HYPHEN
     0x00a2: 0xfe82,     #  ARABIC LETTER ALEF WITH MADDA ABOVE FINAL FORM
     0x00a5: 0xfe84,     #  ARABIC LETTER ALEF WITH HAMZA ABOVE FINAL FORM
-    0x00a6: None,       #  UNDEFINED
-    0x00a7: None,       #  UNDEFINED
+    0x00a6: Nichts,       #  UNDEFINED
+    0x00a7: Nichts,       #  UNDEFINED
     0x00a8: 0xfe8e,     #  ARABIC LETTER ALEF FINAL FORM
     0x00a9: 0xfe8f,     #  ARABIC LETTER BEH ISOLATED FORM
     0x00aa: 0xfe95,     #  ARABIC LETTER TEH ISOLATED FORM
@@ -170,7 +170,7 @@ decoding_map.update({
     0x00fc: 0xfed9,     #  ARABIC LETTER KAF ISOLATED FORM
     0x00fd: 0xfef1,     #  ARABIC LETTER YEH ISOLATED FORM
     0x00fe: 0x25a0,     #  BLACK SQUARE
-    0x00ff: None,       #  UNDEFINED
+    0x00ff: Nichts,       #  UNDEFINED
 })
 
 ### Decoding Table

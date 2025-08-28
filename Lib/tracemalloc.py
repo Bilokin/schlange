@@ -52,11 +52,11 @@ klasse Statistic:
     def __str__(self):
         text = ("%s: size=%s, count=%i"
                  % (self.traceback,
-                    _format_size(self.size, False),
+                    _format_size(self.size, Falsch),
                     self.count))
         wenn self.count:
             average = self.size / self.count
-            text += ", average=%s" % _format_size(average, False)
+            text += ", average=%s" % _format_size(average, Falsch)
         return text
 
     def __repr__(self):
@@ -97,13 +97,13 @@ klasse StatisticDiff:
     def __str__(self):
         text = ("%s: size=%s (%s), count=%i (%+i)"
                 % (self.traceback,
-                   _format_size(self.size, False),
-                   _format_size(self.size_diff, True),
+                   _format_size(self.size, Falsch),
+                   _format_size(self.size_diff, Wahr),
                    self.count,
                    self.count_diff))
         wenn self.count:
             average = self.size / self.count
-            text += ", average=%s" % _format_size(average, False)
+            text += ", average=%s" % _format_size(average, Falsch)
         return text
 
     def __repr__(self):
@@ -120,8 +120,8 @@ klasse StatisticDiff:
 def _compare_grouped_stats(old_group, new_group):
     statistics = []
     fuer traceback, stat in new_group.items():
-        previous = old_group.pop(traceback, None)
-        wenn previous is not None:
+        previous = old_group.pop(traceback, Nichts)
+        wenn previous is not Nichts:
             stat = StatisticDiff(traceback,
                                  stat.size, stat.size - previous.size,
                                  stat.count, stat.count - previous.count)
@@ -184,7 +184,7 @@ klasse Traceback(Sequence):
     """
     __slots__ = ("_frames", '_total_nframe')
 
-    def __init__(self, frames, total_nframe=None):
+    def __init__(self, frames, total_nframe=Nichts):
         Sequence.__init__(self)
         # frames is a tuple of frame tuples: see Frame constructor fuer the
         # format of a frame tuple; it is reversed, because _tracemalloc
@@ -227,15 +227,15 @@ klasse Traceback(Sequence):
 
     def __repr__(self):
         s = f"<Traceback {tuple(self)}"
-        wenn self._total_nframe is None:
+        wenn self._total_nframe is Nichts:
             s += ">"
         sonst:
             s += f" total_nframe={self.total_nframe}>"
         return s
 
-    def format(self, limit=None, most_recent_first=False):
+    def format(self, limit=Nichts, most_recent_first=Falsch):
         lines = []
-        wenn limit is not None:
+        wenn limit is not Nichts:
             wenn limit > 0:
                 frame_slice = self[-limit:]
             sonst:
@@ -259,14 +259,14 @@ def get_object_traceback(obj):
     Get the traceback where the Python object *obj* was allocated.
     Return a Traceback instance.
 
-    Return None wenn the tracemalloc module is not tracing memory allocations or
+    Return Nichts wenn the tracemalloc module is not tracing memory allocations or
     did not trace the allocation of the object.
     """
     frames = _get_object_traceback(obj)
-    wenn frames is not None:
+    wenn frames is not Nichts:
         return Traceback(frames)
     sonst:
-        return None
+        return Nichts
 
 
 klasse Trace:
@@ -301,11 +301,11 @@ klasse Trace:
         return hash(self._trace)
 
     def __str__(self):
-        return "%s: %s" % (self.traceback, _format_size(self.size, False))
+        return "%s: %s" % (self.traceback, _format_size(self.size, Falsch))
 
     def __repr__(self):
         return ("<Trace domain=%s size=%s, traceback=%r>"
-                % (self.domain, _format_size(self.size, False), self.traceback))
+                % (self.domain, _format_size(self.size, Falsch), self.traceback))
 
 
 klasse _Traces(Sequence):
@@ -352,7 +352,7 @@ klasse BaseFilter:
 
 klasse Filter(BaseFilter):
     def __init__(self, inclusive, filename_pattern,
-                 lineno=None, all_frames=False, domain=None):
+                 lineno=Nichts, all_frames=Falsch, domain=Nichts):
         super().__init__(inclusive)
         self.inclusive = inclusive
         self._filename_pattern = _normalize_filename(filename_pattern)
@@ -367,9 +367,9 @@ klasse Filter(BaseFilter):
     def _match_frame_impl(self, filename, lineno):
         filename = _normalize_filename(filename)
         wenn not fnmatch.fnmatch(filename, self._filename_pattern):
-            return False
-        wenn self.lineno is None:
-            return True
+            return Falsch
+        wenn self.lineno is Nichts:
+            return Wahr
         sonst:
             return (lineno == self.lineno)
 
@@ -390,7 +390,7 @@ klasse Filter(BaseFilter):
     def _match(self, trace):
         domain, size, traceback, total_nframe = trace
         res = self._match_traceback(traceback)
-        wenn self.domain is not None:
+        wenn self.domain is not Nichts:
             wenn self.inclusive:
                 return res and (domain == self.domain)
             sonst:
@@ -442,12 +442,12 @@ klasse Snapshot:
         wenn include_filters:
             wenn not any(trace_filter._match(trace)
                        fuer trace_filter in include_filters):
-                return False
+                return Falsch
         wenn exclude_filters:
             wenn any(not trace_filter._match(trace)
                    fuer trace_filter in exclude_filters):
-                return False
-        return True
+                return Falsch
+        return Wahr
 
     def filter_traces(self, filters):
         """
@@ -525,17 +525,17 @@ klasse Snapshot:
                         stats[traceback] = Statistic(traceback, size, 1)
         return stats
 
-    def statistics(self, key_type, cumulative=False):
+    def statistics(self, key_type, cumulative=Falsch):
         """
         Group statistics by key_type. Return a sorted list of Statistic
         instances.
         """
         grouped = self._group_by(key_type, cumulative)
         statistics = list(grouped.values())
-        statistics.sort(reverse=True, key=Statistic._sort_key)
+        statistics.sort(reverse=Wahr, key=Statistic._sort_key)
         return statistics
 
-    def compare_to(self, old_snapshot, key_type, cumulative=False):
+    def compare_to(self, old_snapshot, key_type, cumulative=Falsch):
         """
         Compute the differences with an old snapshot old_snapshot. Get
         statistics as a sorted list of StatisticDiff instances, grouped by
@@ -544,7 +544,7 @@ klasse Snapshot:
         new_group = self._group_by(key_type, cumulative)
         old_group = old_snapshot._group_by(key_type, cumulative)
         statistics = _compare_grouped_stats(old_group, new_group)
-        statistics.sort(reverse=True, key=StatisticDiff._sort_key)
+        statistics.sort(reverse=Wahr, key=StatisticDiff._sort_key)
         return statistics
 
 

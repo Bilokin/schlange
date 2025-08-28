@@ -36,12 +36,12 @@ def _good_enough(dom, features):
             return 0
     return 1
 
-def getDOMImplementation(name=None, features=()):
-    """getDOMImplementation(name = None, features = ()) -> DOM implementation.
+def getDOMImplementation(name=Nichts, features=()):
+    """getDOMImplementation(name = Nichts, features = ()) -> DOM implementation.
 
     Return a suitable DOM implementation. The name is either
-    well-known, the module name of a DOM implementation, or None. If
-    it is not None, imports the corresponding module and returns
+    well-known, the module name of a DOM implementation, or Nichts. If
+    it is not Nichts, imports the corresponding module and returns
     DOMImplementation object wenn the import succeeds.
 
     If name is not given, consider the available implementations to
@@ -50,7 +50,7 @@ def getDOMImplementation(name=None, features=()):
     of (feature, version) pairs which are passed to hasFeature."""
 
     import os
-    creator = None
+    creator = Nichts
     mod = well_known_implementations.get(name)
     wenn mod:
         mod = __import__(mod, {}, {}, ['getDOMImplementation'])
@@ -89,7 +89,7 @@ def _parse_feature_string(s):
         wenn feature[0] in "0123456789":
             raise ValueError("bad feature name: %r" % (feature,))
         i = i + 1
-        version = None
+        version = Nichts
         wenn i < length:
             v = parts[i]
             wenn v[0] in "0123456789":

@@ -30,7 +30,7 @@ def clean_environment():
 # Temporary value until it's initialized by get_gdb_version() below
 GDB_VERSION = (0, 0)
 
-def run_gdb(*args, exitcode=0, check=True, **env_vars):
+def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
     """Runs gdb in --batch mode with the additional arguments given by *args.
 
     Returns its (stdout, stderr) decoded from utf-8 using the replace handler.
@@ -87,7 +87,7 @@ def get_gdb_version():
     # 'GNU gdb (GDB) Fedora (7.5.1-37.fc18)\n' -> 7.5
     # 'HP gdb 6.7 fuer HP Itanium (32 or 64 bit) and target HP-UX 11iv2 and 11iv3.\n' -> 6.7
     match = re.search(r"^(?:GNU|HP) gdb.*?\b(\d+)\.(\d+)", stdout)
-    wenn match is None:
+    wenn match is Nichts:
         raise Exception("unable to parse gdb version: %r" % stdout)
     version_text = stdout
     major = int(match.group(1))
@@ -110,7 +110,7 @@ def check_usable_gdb():
     stdout, stderr = run_gdb(
         '--eval-command=python import sys; print(sys.version_info)',
         '--args', sys.executable,
-        check=False)
+        check=Falsch)
 
     wenn "auto-loading has been declined" in stderr:
         raise unittest.SkipTest(
@@ -132,9 +132,9 @@ check_usable_gdb()
 def cet_protection():
     cflags = sysconfig.get_config_var('CFLAGS')
     wenn not cflags:
-        return False
+        return Falsch
     flags = cflags.split()
-    # True wenn "-mcet -fcf-protection" options are found, but false
+    # Wahr wenn "-mcet -fcf-protection" options are found, but false
     # wenn "-fcf-protection=none" or "-fcf-protection=return" is found.
     return (('-mcet' in flags)
             and any((flag.startswith('-fcf-protection')
@@ -156,11 +156,11 @@ klasse DebuggerTests(unittest.TestCase):
 
     """Test that the debugger can debug Python."""
 
-    def get_stack_trace(self, source=None, script=None,
+    def get_stack_trace(self, source=Nichts, script=Nichts,
                         breakpoint=BREAKPOINT_FN,
-                        cmds_after_breakpoint=None,
-                        import_site=False,
-                        ignore_stderr=False):
+                        cmds_after_breakpoint=Nichts,
+                        import_site=Falsch,
+                        ignore_stderr=Falsch):
         '''
         Run 'python -c SOURCE' under gdb with a breakpoint.
 

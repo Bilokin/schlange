@@ -22,8 +22,8 @@ The extended form, "assert expression1, expression2", is equivalent to
 
 These equivalences assume that "__debug__" and "AssertionError" refer
 to the built-in variables with those names.  In the current
-implementation, the built-in variable "__debug__" is "True" under
-normal circumstances, "False" when optimization is requested (command
+implementation, the built-in variable "__debug__" is "Wahr" under
+normal circumstances, "Falsch" when optimization is requested (command
 line option "-O").  The current code generator emits no code fuer an
 "assert" statement when optimization is requested at compile time.
 Note that it is unnecessary to include the source code fuer the
@@ -371,13 +371,13 @@ Is semantically equivalent to:
 
    iter = (ITER)
    iter = type(iter).__aiter__(iter)
-   running = True
+   running = Wahr
 
    while running:
        try:
            TARGET = await type(iter).__anext__(iter)
        except StopAsyncIteration:
-           running = False
+           running = Falsch
        sonst:
            SUITE
    sonst:
@@ -408,18 +408,18 @@ is semantically equivalent to:
    aenter = type(manager).__aenter__
    aexit = type(manager).__aexit__
    value = await aenter(manager)
-   hit_except = False
+   hit_except = Falsch
 
    try:
        TARGET = value
        SUITE
    except:
-       hit_except = True
+       hit_except = Wahr
        wenn not await aexit(manager, *sys.exc_info()):
            raise
    finally:
        wenn not hit_except:
-           await aexit(manager, None, None, None)
+           await aexit(manager, Nichts, Nichts, Nichts)
 
 See also "__aenter__()" and "__aexit__()" fuer details.
 
@@ -648,13 +648,13 @@ examples below, “the attribute” refers to the attribute whose name is
 the key of the property in the owner class’ "__dict__".  The "object"
 klasse itself does not implement any of these protocols.
 
-object.__get__(self, instance, owner=None)
+object.__get__(self, instance, owner=Nichts)
 
    Called to get the attribute of the owner klasse (class attribute
    access) or of an instance of that klasse (instance attribute
    access). The optional *owner* argument is the owner class, while
    *instance* is the instance that the attribute was accessed through,
-   or "None" when the attribute is accessed through the *owner*.
+   or "Nichts" when the attribute is accessed through the *owner*.
 
    This method should return the computed attribute value or raise an
    "AttributeError" exception.
@@ -728,7 +728,7 @@ Instance Binding
 
 Class Binding
    If binding to a class, "A.x" is transformed into the call:
-   "A.__dict__['x'].__get__(None, A)".
+   "A.__dict__['x'].__get__(Nichts, A)".
 
 Super Binding
    A dotted lookup such as "super(A, a).x" searches
@@ -1059,10 +1059,10 @@ It is written as "Ellipsis" or "...".
 
 This object is returned by functions that don’t explicitly return a
 value.  It supports no special operations.  There is exactly one null
-object, named "None" (a built-in name).  "type(None)()" produces the
+object, named "Nichts" (a built-in name).  "type(Nichts)()" produces the
 same singleton.
 
-It is written as "None".
+It is written as "Nichts".
 ''',
     'bltin-type-objects': r'''Type Objects
 ************
@@ -1083,13 +1083,13 @@ Types are written like this: "<class 'int'>".
 
 In the context of Boolean operations, and also when expressions are
 used by control flow statements, the following values are interpreted
-as false: "False", "None", numeric zero of all types, and empty
+as false: "Falsch", "Nichts", numeric zero of all types, and empty
 strings and containers (including strings, tuples, lists,
 dictionaries, sets and frozensets).  All other values are interpreted
 as true.  User-defined objects can customize their truth value by
 providing a "__bool__()" method.
 
-The operator "not" yields "True" wenn its argument is false, "False"
+The operator "not" yields "Wahr" wenn its argument is false, "Falsch"
 otherwise.
 
 The expression "x and y" first evaluates *x*; wenn *x* is false, its
@@ -1101,12 +1101,12 @@ is returned; otherwise, *y* is evaluated and the resulting value is
 returned.
 
 Note that neither "and" nor "or" restrict the value and type they
-return to "False" and "True", but rather return the last evaluated
+return to "Falsch" and "Wahr", but rather return the last evaluated
 argument.  This is sometimes useful, e.g., wenn "s" is a string that
 should be replaced by a default value wenn it is empty, the expression
 "s or 'foo'" yields the desired value.  Because "not" has to create a
 new value, it returns a boolean value regardless of the type of its
-argument (for example, "not 'foo'" produces "False" rather than "''".)
+argument (for example, "not 'foo'" produces "Falsch" rather than "''".)
 ''',
     'break': r'''The "break" statement
 *********************
@@ -1175,7 +1175,7 @@ corresponding slot (if the identifier is the same as the first formal
 parameter name, the first slot is used, and so on).  If the slot is
 already filled, a "TypeError" exception is raised. Otherwise, the
 argument is placed in the slot, filling it (even wenn the expression is
-"None", it fills the slot).  When all arguments have been processed,
+"Nichts", it fills the slot).  When all arguments have been processed,
 the slots that are still unfilled are filled with the corresponding
 default value from the function definition.  (Default values are
 calculated, once, when the function is defined; thus, a mutable object
@@ -1259,7 +1259,7 @@ Changed in version 3.5: Function calls accept any number of "*" and
 ("*"), and keyword arguments may follow dictionary unpackings ("**").
 Originally proposed by **PEP 448**.
 
-A call always returns some value, possibly "None", unless it raises an
+A call always returns some value, possibly "Nichts", unless it raises an
 exception.  How this value is computed depends on the type of the
 callable object.
 
@@ -1272,7 +1272,7 @@ a user-defined function:
    Function definitions.  When the code block executes a "return"
    statement, this specifies the return value of the function call.
    If execution reaches the end of the code block without executing a
-   "return" statement, the return value is "None".
+   "return" statement, the return value is "Nichts".
 
 a built-in function or method:
    The result is up to the interpreter; see Built-in Functions fuer the
@@ -1390,7 +1390,7 @@ interpretation that is conventional in mathematics:
    comp_operator: "<" | ">" | "==" | ">=" | "<=" | "!="
                   | "is" ["not"] | ["not"] "in"
 
-Comparisons yield boolean values: "True" or "False". Custom *rich
+Comparisons yield boolean values: "Wahr" or "Falsch". Custom *rich
 comparison methods* may return non-boolean values. In this case Python
 will call "bool()" on such value in boolean contexts.
 
@@ -1465,7 +1465,7 @@ important built-in types.
   float('NaN')", "3 < x", "x < 3" and "x == x" are all false, while "x
   != x" is true.  This behavior is compliant with IEEE 754.
 
-* "None" and "NotImplemented" are singletons.  **PEP 8** advises that
+* "Nichts" and "NotImplemented" are singletons.  **PEP 8** advises that
   comparisons fuer singletons should always be done with "is" or "is
   not", never the equality operators.
 
@@ -1578,7 +1578,7 @@ Membership test operations
 ==========================
 
 The operators "in" and "not in" test fuer membership.  "x in s"
-evaluates to "True" wenn *x* is a member of *s*, and "False" otherwise.
+evaluates to "Wahr" wenn *x* is a member of *s*, and "Falsch" otherwise.
 "x not in s" returns the negation of "x in s".  All built-in sequences
 and set types support this as well as dictionary, fuer which "in" tests
 whether the dictionary has a given key. For container types such as
@@ -1586,23 +1586,23 @@ list, tuple, set, frozenset, dict, or collections.deque, the
 expression "x in y" is equivalent to "any(x is e or x == e fuer e in
 y)".
 
-For the string and bytes types, "x in y" is "True" wenn and only wenn *x*
+For the string and bytes types, "x in y" is "Wahr" wenn and only wenn *x*
 is a substring of *y*.  An equivalent test is "y.find(x) != -1".
 Empty strings are always considered to be a substring of any other
-string, so """ in "abc"" will return "True".
+string, so """ in "abc"" will return "Wahr".
 
 For user-defined classes which define the "__contains__()" method, "x
-in y" returns "True" wenn "y.__contains__(x)" returns a true value, and
-"False" otherwise.
+in y" returns "Wahr" wenn "y.__contains__(x)" returns a true value, and
+"Falsch" otherwise.
 
 For user-defined classes which do not define "__contains__()" but do
-define "__iter__()", "x in y" is "True" wenn some value "z", fuer which
+define "__iter__()", "x in y" is "Wahr" wenn some value "z", fuer which
 the expression "x is z or x == z" is true, is produced while iterating
 over "y". If an exception is raised during the iteration, it is as if
 "in" raised that exception.
 
 Lastly, the old-style iteration protocol is tried: wenn a klasse defines
-"__getitem__()", "x in y" is "True" wenn and only wenn there is a non-
+"__getitem__()", "x in y" is "Wahr" wenn and only wenn there is a non-
 negative integer index *i* such that "x is y[i] or x == y[i]", and no
 lower integer index raises the "IndexError" exception.  (If any other
 exception is raised, it is as wenn "in" raised that exception).
@@ -1853,7 +1853,7 @@ exception handler, the exception stored in the "sys" module is reset
 to its previous value:
 
    >>> print(sys.exception())
-   None
+   Nichts
    >>> try:
    ...     raise TypeError
    ... except:
@@ -1868,7 +1868,7 @@ to its previous value:
    ValueError()
    TypeError()
    >>> print(sys.exception())
-   None
+   Nichts
 
 
 "except*" clause
@@ -2020,7 +2020,7 @@ follows:
 7. The context manager’s "__exit__()" method is invoked.  If an
    exception caused the suite to be exited, its type, value, and
    traceback are passed as arguments to "__exit__()". Otherwise, three
-   "None" arguments are supplied.
+   "Nichts" arguments are supplied.
 
    If the suite was exited due to an exception, and the return value
    from the "__exit__()" method was false, the exception is reraised.
@@ -2043,18 +2043,18 @@ is semantically equivalent to:
    enter = type(manager).__enter__
    exit = type(manager).__exit__
    value = enter(manager)
-   hit_except = False
+   hit_except = Falsch
 
    try:
        TARGET = value
        SUITE
    except:
-       hit_except = True
+       hit_except = Wahr
        wenn not exit(manager, *sys.exc_info()):
            raise
    finally:
        wenn not hit_except:
-           exit(manager, None, None, None)
+           exit(manager, Nichts, Nichts, Nichts)
 
 With more than one item, the context managers are processed as if
 multiple "with" statements were nested:
@@ -2170,7 +2170,7 @@ Note:
 
 A sample match statement:
 
-   >>> flag = False
+   >>> flag = Falsch
    >>> match (100, 200):
    ...    case (100, 300):  # Mismatch: 200 != 300
    ...        print('Case 1')
@@ -2322,9 +2322,9 @@ A literal pattern corresponds to most literals in Python.  Syntax:
                     | signed_number "+" NUMBER
                     | signed_number "-" NUMBER
                     | strings
-                    | "None"
-                    | "True"
-                    | "False"
+                    | "Nichts"
+                    | "Wahr"
+                    | "Falsch"
    signed_number:   ["-"] NUMBER
 
 The rule "strings" and the token "NUMBER" are defined in the standard
@@ -2336,7 +2336,7 @@ are fuer expressing complex numbers; they require a real number on the
 left and an imaginary number on the right. E.g. "3 + 4j".
 
 In simple terms, "LITERAL" will succeed only wenn "<subject> ==
-LITERAL". For the singletons "None", "True" and "False", the "is"
+LITERAL". For the singletons "Nichts", "Wahr" and "Falsch", the "is"
 operator is used.
 
 
@@ -2767,11 +2767,11 @@ to understand when a default parameter value is a mutable object, such
 as a list or a dictionary: wenn the function modifies the object (e.g.
 by appending an item to a list), the default parameter value is in
 effect modified.  This is generally not what was intended.  A way
-around this is to use "None" as the default, and explicitly test for
+around this is to use "Nichts" as the default, and explicitly test for
 it in the body of the function, e.g.:
 
-   def whats_on_the_telly(penguin=None):
-       wenn penguin is None:
+   def whats_on_the_telly(penguin=Nichts):
+       wenn penguin is Nichts:
            penguin = []
        penguin.append("property of the zoo")
        return penguin
@@ -2987,13 +2987,13 @@ Is semantically equivalent to:
 
    iter = (ITER)
    iter = type(iter).__aiter__(iter)
-   running = True
+   running = Wahr
 
    while running:
        try:
            TARGET = await type(iter).__anext__(iter)
        except StopAsyncIteration:
-           running = False
+           running = Falsch
        sonst:
            SUITE
    sonst:
@@ -3024,18 +3024,18 @@ is semantically equivalent to:
    aenter = type(manager).__aenter__
    aexit = type(manager).__aexit__
    value = await aenter(manager)
-   hit_except = False
+   hit_except = Falsch
 
    try:
        TARGET = value
        SUITE
    except:
-       hit_except = True
+       hit_except = Wahr
        wenn not await aexit(manager, *sys.exc_info()):
            raise
    finally:
        wenn not hit_except:
-           await aexit(manager, None, None, None)
+           await aexit(manager, Nichts, Nichts, Nichts)
 
 See also "__aenter__()" and "__aexit__()" fuer details.
 
@@ -3076,7 +3076,7 @@ a type parameter list:
        def __iter__(self) -> Iterator[T]:
            ...
 
-       def add(self, arg: T) -> None:
+       def add(self, arg: T) -> Nichts:
            ...
 
    type ListOrSet[T] = list[T] | set[T]
@@ -3408,7 +3408,7 @@ object.__exit__(self, exc_type, exc_value, traceback)
    Exit the runtime context related to this object. The parameters
    describe the exception that caused the context to be exited. If the
    context was exited without an exception, all three arguments will
-   be "None".
+   be "Nichts".
 
    If an exception is supplied, and the method wishes to suppress the
    exception (i.e., prevent it from being propagated), it should
@@ -3501,7 +3501,7 @@ object.__init__(self[, ...])
 
    Because "__new__()" and "__init__()" work together in constructing
    objects ("__new__()" to create it, and "__init__()" to customize
-   it), no non-"None" value may be returned by "__init__()"; doing so
+   it), no non-"Nichts" value may be returned by "__init__()"; doing so
    will cause a "TypeError" to be raised at runtime.
 
 object.__del__(self)
@@ -3556,7 +3556,7 @@ object.__del__(self)
 
      * "__del__()" can be executed during interpreter shutdown.  As a
        consequence, the global variables it needs to access (including
-       other modules) may already have been deleted or set to "None".
+       other modules) may already have been deleted or set to "Nichts".
        Python guarantees that globals whose name begins with a single
        underscore are deleted from their module before other globals
        are deleted; wenn no other references to such globals exist, this
@@ -3640,14 +3640,14 @@ object.__ge__(self, other)
 
    A rich comparison method may return the singleton "NotImplemented"
    wenn it does not implement the operation fuer a given pair of
-   arguments. By convention, "False" and "True" are returned fuer a
+   arguments. By convention, "Falsch" and "Wahr" are returned fuer a
    successful comparison. However, these methods can return any value,
    so wenn the comparison operator is used in a Boolean context (e.g.,
    in the condition of an "if" statement), Python will call "bool()"
    on the value to determine wenn the result is true or false.
 
    By default, "object" implements "__eq__()" by using "is", returning
-   "NotImplemented" in the case of a false comparison: "True wenn x is y
+   "NotImplemented" in the case of a false comparison: "Wahr wenn x is y
    sonst NotImplemented". For "__ne__()", by default it delegates to
    "__eq__()" and inverts the result unless it is "NotImplemented".
    There are no other implied relationships among the comparison
@@ -3721,8 +3721,8 @@ object.__hash__(self)
    and "hash(x) == hash(y)".
 
    A klasse that overrides "__eq__()" and does not define "__hash__()"
-   will have its "__hash__()" implicitly set to "None".  When the
-   "__hash__()" method of a klasse is "None", instances of the class
+   will have its "__hash__()" implicitly set to "Nichts".  When the
+   "__hash__()" method of a klasse is "Nichts", instances of the class
    will raise an appropriate "TypeError" when a program attempts to
    retrieve their hash value, and will also be correctly identified as
    unhashable when checking "isinstance(obj,
@@ -3734,7 +3734,7 @@ object.__hash__(self)
    <ParentClass>.__hash__".
 
    If a klasse that does not override "__eq__()" wishes to suppress
-   hash support, it should include "__hash__ = None" in the class
+   hash support, it should include "__hash__ = Nichts" in the class
    definition. A klasse which defines its own "__hash__()" that
    explicitly raises a "TypeError" would be incorrectly identified as
    hashable by an "isinstance(obj, collections.abc.Hashable)" call.
@@ -3759,7 +3759,7 @@ object.__hash__(self)
 object.__bool__(self)
 
    Called to implement truth value testing and the built-in operation
-   "bool()"; should return "False" or "True".  When this method is not
+   "bool()"; should return "Falsch" or "Wahr".  When this method is not
    defined, "__len__()" is called, wenn it is defined, and the object is
    considered true wenn its result is nonzero.  If a klasse defines
    neither "__len__()" nor "__bool__()" (which is true of the "object"
@@ -3891,7 +3891,7 @@ scope, even when running inside an *optimized scope*.
 The module defines the following functions; each enters the debugger
 in a slightly different way:
 
-pdb.run(statement, globals=None, locals=None)
+pdb.run(statement, globals=Nichts, locals=Nichts)
 
    Execute the *statement* (given as a string or a code object) under
    debugger control.  The debugger prompt appears before any code is
@@ -3902,7 +3902,7 @@ pdb.run(statement, globals=None, locals=None)
    default the dictionary of the module "__main__" is used.  (See the
    explanation of the built-in "exec()" or "eval()" functions.)
 
-pdb.runeval(expression, globals=None, locals=None)
+pdb.runeval(expression, globals=Nichts, locals=Nichts)
 
    Evaluate the *expression* (given as a string or a code object)
    under debugger control.  When "runeval()" returns, it returns the
@@ -3916,7 +3916,7 @@ pdb.runcall(function, *args, **kwds)
    whatever the function call returned.  The debugger prompt appears
    as soon as the function is entered.
 
-pdb.set_trace(*, header=None, commands=None)
+pdb.set_trace(*, header=Nichts, commands=Nichts)
 
    Enter the debugger at the calling stack frame.  This is useful to
    hard-code a breakpoint at a given point in a program, even wenn the
@@ -3932,7 +3932,7 @@ pdb.set_trace(*, header=None, commands=None)
 
    Added in version 3.14: The *commands* argument.
 
-awaitable pdb.set_trace_async(*, header=None, commands=None)
+awaitable pdb.set_trace_async(*, header=Nichts, commands=Nichts)
 
    async version of "set_trace()". This function should be used inside
    an async function with "await".
@@ -3945,7 +3945,7 @@ awaitable pdb.set_trace_async(*, header=None, commands=None)
 
    Added in version 3.14.
 
-pdb.post_mortem(t=None)
+pdb.post_mortem(t=Nichts)
 
    Enter post-mortem debugging of the given exception or traceback
    object. If no value is given, it uses the exception that is
@@ -3982,7 +3982,7 @@ The "run*" functions and "set_trace()" are aliases fuer instantiating
 the "Pdb" klasse and calling the method of the same name.  If you want
 to access further features, you have to do this yourself:
 
-klasse pdb.Pdb(completekey='tab', stdin=None, stdout=None, skip=None, nosigint=False, readrc=True, mode=None, backend=None, colorize=False)
+klasse pdb.Pdb(completekey='tab', stdin=Nichts, stdout=Nichts, skip=Nichts, nosigint=Falsch, readrc=Wahr, mode=Nichts, backend=Nichts, colorize=Falsch)
 
    "Pdb" is the debugger class.
 
@@ -4005,15 +4005,15 @@ klasse pdb.Pdb(completekey='tab', stdin=None, stdout=None, skip=None, nosigint=F
    The *mode* argument specifies how the debugger was invoked. It
    impacts the workings of some debugger commands. Valid values are
    "'inline'" (used by the breakpoint() builtin), "'cli'" (used by the
-   command line invocation) or "None" (for backwards compatible
+   command line invocation) or "Nichts" (for backwards compatible
    behaviour, as before the *mode* argument was added).
 
    The *backend* argument specifies the backend to use fuer the
-   debugger. If "None" is passed, the default backend will be used.
+   debugger. If "Nichts" is passed, the default backend will be used.
    See "set_default_backend()". Otherwise the supported backends are
    "'settrace'" and "'monitoring'".
 
-   The *colorize* argument, wenn set to "True", will enable colorized
+   The *colorize* argument, wenn set to "Wahr", will enable colorized
    output in the debugger, wenn color is supported. This will highlight
    source code displayed in pdb.
 
@@ -4040,8 +4040,8 @@ klasse pdb.Pdb(completekey='tab', stdin=None, stdout=None, skip=None, nosigint=F
    "pdb.set_trace()" will always stop the program at calling frame,
    ignoring the *skip* pattern (if any).
 
-   run(statement, globals=None, locals=None)
-   runeval(expression, globals=None, locals=None)
+   run(statement, globals=Nichts, locals=Nichts)
+   runeval(expression, globals=Nichts, locals=Nichts)
    runcall(function, *args, **kwds)
    set_trace()
 
@@ -5440,7 +5440,7 @@ The available string presentation types are:
    | "'s'"     | String format. This is the default type fuer strings and    |
    |           | may be omitted.                                            |
    +-----------+------------------------------------------------------------+
-   | None      | The same as "'s'".                                         |
+   | Nichts      | The same as "'s'".                                         |
    +-----------+------------------------------------------------------------+
 
 The available integer presentation types are:
@@ -5469,12 +5469,12 @@ The available integer presentation types are:
    |           | current locale setting to insert the appropriate digit     |
    |           | group separators.                                          |
    +-----------+------------------------------------------------------------+
-   | None      | The same as "'d'".                                         |
+   | Nichts      | The same as "'d'".                                         |
    +-----------+------------------------------------------------------------+
 
 In addition to the above presentation types, integers can be formatted
 with the floating-point presentation types listed below (except "'n'"
-and "None"). When doing so, "float()" is used to convert the integer
+and "Nichts"). When doing so, "float()" is used to convert the integer
 to a floating-point number before formatting.
 
 The available presentation types fuer "float" and "Decimal" values are:
@@ -5544,7 +5544,7 @@ The available presentation types fuer "float" and "Decimal" values are:
    | "'%'"     | Percentage. Multiplies the number by 100 and displays in   |
    |           | fixed ("'f'") format, followed by a percent sign.          |
    +-----------+------------------------------------------------------------+
-   | None      | For "float" this is like the "'g'" type, except that when  |
+   | Nichts      | For "float" this is like the "'g'" type, except that when  |
    |           | fixed- point notation is used to format the result, it     |
    |           | always includes at least one digit past the decimal point, |
    |           | and switches to the scientific notation when "exp >= p -   |
@@ -5802,11 +5802,11 @@ to understand when a default parameter value is a mutable object, such
 as a list or a dictionary: wenn the function modifies the object (e.g.
 by appending an item to a list), the default parameter value is in
 effect modified.  This is generally not what was intended.  A way
-around this is to use "None" as the default, and explicitly test for
+around this is to use "Nichts" as the default, and explicitly test for
 it in the body of the function, e.g.:
 
-   def whats_on_the_telly(penguin=None):
-       wenn penguin is None:
+   def whats_on_the_telly(penguin=Nichts):
+       wenn penguin is Nichts:
            penguin = []
        penguin.append("property of the zoo")
        return penguin
@@ -6010,9 +6010,9 @@ The following identifiers are used as reserved words, or *keywords* of
 the language, and cannot be used as ordinary identifiers.  They must
 be spelled exactly as written here:
 
-   False      await      sonst       import     pass
-   None       break      except     in         raise
-   True       klasse      finally    is         return
+   Falsch      await      sonst       import     pass
+   Nichts       break      except     in         raise
+   Wahr       klasse      finally    is         return
    and        continue   fuer        lambda     try
    as         def        from       nonlocal   while
    assert     del        global     not        with
@@ -6318,7 +6318,7 @@ See also:
 **************************
 
 The operators "in" and "not in" test fuer membership.  "x in s"
-evaluates to "True" wenn *x* is a member of *s*, and "False" otherwise.
+evaluates to "Wahr" wenn *x* is a member of *s*, and "Falsch" otherwise.
 "x not in s" returns the negation of "x in s".  All built-in sequences
 and set types support this as well as dictionary, fuer which "in" tests
 whether the dictionary has a given key. For container types such as
@@ -6326,23 +6326,23 @@ list, tuple, set, frozenset, dict, or collections.deque, the
 expression "x in y" is equivalent to "any(x is e or x == e fuer e in
 y)".
 
-For the string and bytes types, "x in y" is "True" wenn and only wenn *x*
+For the string and bytes types, "x in y" is "Wahr" wenn and only wenn *x*
 is a substring of *y*.  An equivalent test is "y.find(x) != -1".
 Empty strings are always considered to be a substring of any other
-string, so """ in "abc"" will return "True".
+string, so """ in "abc"" will return "Wahr".
 
 For user-defined classes which define the "__contains__()" method, "x
-in y" returns "True" wenn "y.__contains__(x)" returns a true value, and
-"False" otherwise.
+in y" returns "Wahr" wenn "y.__contains__(x)" returns a true value, and
+"Falsch" otherwise.
 
 For user-defined classes which do not define "__contains__()" but do
-define "__iter__()", "x in y" is "True" wenn some value "z", fuer which
+define "__iter__()", "x in y" is "Wahr" wenn some value "z", fuer which
 the expression "x is z or x == z" is true, is produced while iterating
 over "y". If an exception is raised during the iteration, it is as if
 "in" raised that exception.
 
 Lastly, the old-style iteration protocol is tried: wenn a klasse defines
-"__getitem__()", "x in y" is "True" wenn and only wenn there is a non-
+"__getitem__()", "x in y" is "Wahr" wenn and only wenn there is a non-
 negative integer index *i* such that "x is y[i] or x == y[i]", and no
 lower integer index raises the "IndexError" exception.  (If any other
 exception is raised, it is as wenn "in" raised that exception).
@@ -7073,7 +7073,7 @@ described in the Comparisons section.
 
     The comparison operators on strings compare at the level of
     Unicode code points. This may be counter-intuitive to humans.  For
-    example, ""\u00C7" == "\u0043\u0327"" is "False", even though both
+    example, ""\u00C7" == "\u0043\u0327"" is "Falsch", even though both
     strings represent the same abstract character “LATIN CAPITAL
     LETTER C WITH CEDILLA”.
 
@@ -7212,13 +7212,13 @@ The previous exception is then attached as the new exception’s
        raise RuntimeError("Something bad happened")
    RuntimeError: Something bad happened
 
-Exception chaining can be explicitly suppressed by specifying "None"
+Exception chaining can be explicitly suppressed by specifying "Nichts"
 in the "from" clause:
 
    >>> try:
    ...     print(1 / 0)
    ... except:
-   ...     raise RuntimeError("Something bad happened") from None
+   ...     raise RuntimeError("Something bad happened") from Nichts
    ...
    Traceback (most recent call last):
      File "<stdin>", line 4, in <module>
@@ -7228,7 +7228,7 @@ Additional information on exceptions can be found in section
 Exceptions, and information about handling exceptions is in section
 The try statement.
 
-Changed in version 3.3: "None" is now permitted as "Y" in "raise X
+Changed in version 3.3: "Nichts" is now permitted as "Y" in "raise X
 from Y".Added the "__suppress_context__" attribute to suppress
 automatic display of the exception context.
 
@@ -7245,11 +7245,11 @@ exception was re-raised with the traceback it had when it was caught.
 "return" may only occur syntactically nested in a function definition,
 not within a nested klasse definition.
 
-If an expression list is present, it is evaluated, sonst "None" is
+If an expression list is present, it is evaluated, sonst "Nichts" is
 substituted.
 
 "return" leaves the current function call with the expression list (or
-"None") as return value.
+"Nichts") as return value.
 
 When "return" passes control out of a "try" statement with a "finally"
 clause, that "finally" clause is executed before really leaving the
@@ -7269,7 +7269,7 @@ a syntax error in an asynchronous generator function.
 *************************
 
 The following methods can be defined to implement container objects.
-None of them are provided by the "object" klasse itself. Containers
+Nichts of them are provided by the "object" klasse itself. Containers
 usually are *sequences* (such as "lists" or "tuples") or *mappings*
 (like *dictionaries*), but can represent other containers as well.
 The first set of methods is used either to emulate a sequence or to
@@ -7333,9 +7333,9 @@ Note:
 
   is translated to
 
-     a[slice(1, 2, None)] = b
+     a[slice(1, 2, Nichts)] = b
 
-  and so forth.  Missing slice items are always filled in with "None".
+  and so forth.  Missing slice items are always filled in with "Nichts".
 
 object.__getitem__(self, key)
 
@@ -7472,7 +7472,7 @@ expression is that expression.  The conversion of a proper slice is a
 slice object (see section The standard type hierarchy) whose "start",
 "stop" and "step" attributes are the values of the expressions given
 as lower bound, upper bound and stride, respectively, substituting
-"None" fuer missing expressions.
+"Nichts" fuer missing expressions.
 ''',
     'specialattrs': r'''Special Attributes
 ******************
@@ -7499,7 +7499,7 @@ definition.__module__
 
 definition.__doc__
 
-   The documentation string of a klasse or function, or "None" if
+   The documentation string of a klasse or function, or "Nichts" if
    undefined.
 
 definition.__type_params__
@@ -7524,9 +7524,9 @@ Except where mentioned, attempts to execute an operation raise an
 exception when no appropriate method is defined (typically
 "AttributeError" or "TypeError").
 
-Setting a special method to "None" indicates that the corresponding
+Setting a special method to "Nichts" indicates that the corresponding
 operation is not available.  For example, wenn a klasse sets "__iter__()"
-to "None", the klasse is not iterable, so calling "iter()" on its
+to "Nichts", the klasse is not iterable, so calling "iter()" on its
 instances will raise a "TypeError" (without falling back to
 "__getitem__()"). [2]
 
@@ -7583,7 +7583,7 @@ object.__init__(self[, ...])
 
    Because "__new__()" and "__init__()" work together in constructing
    objects ("__new__()" to create it, and "__init__()" to customize
-   it), no non-"None" value may be returned by "__init__()"; doing so
+   it), no non-"Nichts" value may be returned by "__init__()"; doing so
    will cause a "TypeError" to be raised at runtime.
 
 object.__del__(self)
@@ -7638,7 +7638,7 @@ object.__del__(self)
 
      * "__del__()" can be executed during interpreter shutdown.  As a
        consequence, the global variables it needs to access (including
-       other modules) may already have been deleted or set to "None".
+       other modules) may already have been deleted or set to "Nichts".
        Python guarantees that globals whose name begins with a single
        underscore are deleted from their module before other globals
        are deleted; wenn no other references to such globals exist, this
@@ -7722,14 +7722,14 @@ object.__ge__(self, other)
 
    A rich comparison method may return the singleton "NotImplemented"
    wenn it does not implement the operation fuer a given pair of
-   arguments. By convention, "False" and "True" are returned fuer a
+   arguments. By convention, "Falsch" and "Wahr" are returned fuer a
    successful comparison. However, these methods can return any value,
    so wenn the comparison operator is used in a Boolean context (e.g.,
    in the condition of an "if" statement), Python will call "bool()"
    on the value to determine wenn the result is true or false.
 
    By default, "object" implements "__eq__()" by using "is", returning
-   "NotImplemented" in the case of a false comparison: "True wenn x is y
+   "NotImplemented" in the case of a false comparison: "Wahr wenn x is y
    sonst NotImplemented". For "__ne__()", by default it delegates to
    "__eq__()" and inverts the result unless it is "NotImplemented".
    There are no other implied relationships among the comparison
@@ -7803,8 +7803,8 @@ object.__hash__(self)
    and "hash(x) == hash(y)".
 
    A klasse that overrides "__eq__()" and does not define "__hash__()"
-   will have its "__hash__()" implicitly set to "None".  When the
-   "__hash__()" method of a klasse is "None", instances of the class
+   will have its "__hash__()" implicitly set to "Nichts".  When the
+   "__hash__()" method of a klasse is "Nichts", instances of the class
    will raise an appropriate "TypeError" when a program attempts to
    retrieve their hash value, and will also be correctly identified as
    unhashable when checking "isinstance(obj,
@@ -7816,7 +7816,7 @@ object.__hash__(self)
    <ParentClass>.__hash__".
 
    If a klasse that does not override "__eq__()" wishes to suppress
-   hash support, it should include "__hash__ = None" in the class
+   hash support, it should include "__hash__ = Nichts" in the class
    definition. A klasse which defines its own "__hash__()" that
    explicitly raises a "TypeError" would be incorrectly identified as
    hashable by an "isinstance(obj, collections.abc.Hashable)" call.
@@ -7841,7 +7841,7 @@ object.__hash__(self)
 object.__bool__(self)
 
    Called to implement truth value testing and the built-in operation
-   "bool()"; should return "False" or "True".  When this method is not
+   "bool()"; should return "Falsch" or "Wahr".  When this method is not
    defined, "__len__()" is called, wenn it is defined, and the object is
    considered true wenn its result is nonzero.  If a klasse defines
    neither "__len__()" nor "__bool__()" (which is true of the "object"
@@ -7990,13 +7990,13 @@ examples below, “the attribute” refers to the attribute whose name is
 the key of the property in the owner class’ "__dict__".  The "object"
 klasse itself does not implement any of these protocols.
 
-object.__get__(self, instance, owner=None)
+object.__get__(self, instance, owner=Nichts)
 
    Called to get the attribute of the owner klasse (class attribute
    access) or of an instance of that klasse (instance attribute
    access). The optional *owner* argument is the owner class, while
    *instance* is the instance that the attribute was accessed through,
-   or "None" when the attribute is accessed through the *owner*.
+   or "Nichts" when the attribute is accessed through the *owner*.
 
    This method should return the computed attribute value or raise an
    "AttributeError" exception.
@@ -8070,7 +8070,7 @@ Instance Binding
 
 Class Binding
    If binding to a class, "A.x" is transformed into the call:
-   "A.__dict__['x'].__get__(None, A)".
+   "A.__dict__['x'].__get__(Nichts, A)".
 
 Super Binding
    A dotted lookup such as "super(A, a).x" searches
@@ -8574,7 +8574,7 @@ define "__getitem__()", meaning that expressions such as "list[int]",
    >>> type(list)
    <class 'type'>
    >>> type(dict) == type(list) == type(tuple) == type(str) == type(bytes)
-   True
+   Wahr
    >>> # "list[int]" calls "list.__class_getitem__(int)"
    >>> list[int]
    list[int]
@@ -8626,7 +8626,7 @@ Emulating container types
 =========================
 
 The following methods can be defined to implement container objects.
-None of them are provided by the "object" klasse itself. Containers
+Nichts of them are provided by the "object" klasse itself. Containers
 usually are *sequences* (such as "lists" or "tuples") or *mappings*
 (like *dictionaries*), but can represent other containers as well.
 The first set of methods is used either to emulate a sequence or to
@@ -8690,9 +8690,9 @@ Note:
 
   is translated to
 
-     a[slice(1, 2, None)] = b
+     a[slice(1, 2, Nichts)] = b
 
-  and so forth.  Missing slice items are always filled in with "None".
+  and so forth.  Missing slice items are always filled in with "Nichts".
 
 object.__getitem__(self, key)
 
@@ -8958,7 +8958,7 @@ object.__exit__(self, exc_type, exc_value, traceback)
    Exit the runtime context related to this object. The parameters
    describe the exception that caused the context to be exited. If the
    context was exited without an exception, all three arguments will
-   be "None".
+   be "Nichts".
 
    If an exception is supplied, and the method wishes to suppress the
    exception (i.e., prevent it from being propagated), it should
@@ -9032,7 +9032,7 @@ object.__release_buffer__(self, buffer)
    Called when a buffer is no longer needed. The *buffer* argument is
    a "memoryview" object that was previously returned by
    "__buffer__()". The method must release any resources associated
-   with the buffer. This method should return "None". Buffer objects
+   with the buffer. This method should return "Nichts". Buffer objects
    that do not need to perform any cleanup are not required to
    implement this method.
 
@@ -9083,7 +9083,7 @@ object.__annotate__(format)
    any other format.
 
    If an object does not have any annotations, "__annotate__" should
-   preferably be set to "None" (it can’t be deleted), rather than set
+   preferably be set to "Nichts" (it can’t be deleted), rather than set
    to a function that returns an empty dict.
 
    Added in version 3.14.
@@ -9120,7 +9120,7 @@ methods used the conventional lookup process, they would fail when
 invoked on the type object itself:
 
    >>> 1 .__hash__() == hash(1)
-   True
+   Wahr
    >>> int.__hash__() == hash(int)
    Traceback (most recent call last):
      File "<stdin>", line 1, in <module>
@@ -9131,9 +9131,9 @@ way is sometimes referred to as ‘metaclass confusion’, and is avoided
 by bypassing the instance when looking up special methods:
 
    >>> type(1).__hash__(1) == hash(1)
-   True
+   Wahr
    >>> type(int).__hash__(int) == hash(int)
-   True
+   Wahr
 
 In addition to bypassing any instance attributes in the interest of
 correctness, implicit special method lookup generally also bypasses
@@ -9250,8 +9250,8 @@ str.encode(encoding='utf-8', errors='strict')
 
 str.endswith(suffix[, start[, end]])
 
-   Return "True" wenn the string ends with the specified *suffix*,
-   otherwise return "False".  *suffix* can also be a tuple of suffixes
+   Return "Wahr" wenn the string ends with the specified *suffix*,
+   otherwise return "Falsch".  *suffix* can also be a tuple of suffixes
    to look for.  With optional *start*, test beginning at that
    position.  With optional *end*, stop comparing at that position.
 
@@ -9290,7 +9290,7 @@ str.find(sub[, start[, end]])
      the "in" operator:
 
         >>> 'Py' in 'Python'
-        True
+        Wahr
 
 str.format(*args, **kwargs)
 
@@ -9345,15 +9345,15 @@ str.index(sub[, start[, end]])
 
 str.isalnum()
 
-   Return "True" wenn all characters in the string are alphanumeric and
-   there is at least one character, "False" otherwise.  A character
-   "c" is alphanumeric wenn one of the following returns "True":
+   Return "Wahr" wenn all characters in the string are alphanumeric and
+   there is at least one character, "Falsch" otherwise.  A character
+   "c" is alphanumeric wenn one of the following returns "Wahr":
    "c.isalpha()", "c.isdecimal()", "c.isdigit()", or "c.isnumeric()".
 
 str.isalpha()
 
-   Return "True" wenn all characters in the string are alphabetic and
-   there is at least one character, "False" otherwise.  Alphabetic
+   Return "Wahr" wenn all characters in the string are alphabetic and
+   there is at least one character, "Falsch" otherwise.  Alphabetic
    characters are those characters defined in the Unicode character
    database as “Letter”, i.e., those with general category property
    being one of “Lm”, “Lt”, “Lu”, “Ll”, or “Lo”.  Note that this is
@@ -9362,24 +9362,24 @@ str.isalpha()
 
 str.isascii()
 
-   Return "True" wenn the string is empty or all characters in the
-   string are ASCII, "False" otherwise. ASCII characters have code
+   Return "Wahr" wenn the string is empty or all characters in the
+   string are ASCII, "Falsch" otherwise. ASCII characters have code
    points in the range U+0000-U+007F.
 
    Added in version 3.7.
 
 str.isdecimal()
 
-   Return "True" wenn all characters in the string are decimal
-   characters and there is at least one character, "False" otherwise.
+   Return "Wahr" wenn all characters in the string are decimal
+   characters and there is at least one character, "Falsch" otherwise.
    Decimal characters are those that can be used to form numbers in
    base 10, e.g. U+0660, ARABIC-INDIC DIGIT ZERO.  Formally a decimal
    character is a character in the Unicode General Category “Nd”.
 
 str.isdigit()
 
-   Return "True" wenn all characters in the string are digits and there
-   is at least one character, "False" otherwise.  Digits include
+   Return "Wahr" wenn all characters in the string are digits and there
+   is at least one character, "Falsch" otherwise.  Digits include
    decimal characters and digits that need special handling, such as
    the compatibility superscript digits. This covers digits which
    cannot be used to form numbers in base 10, like the Kharosthi
@@ -9388,7 +9388,7 @@ str.isdigit()
 
 str.isidentifier()
 
-   Return "True" wenn the string is a valid identifier according to the
+   Return "Wahr" wenn the string is a valid identifier according to the
    language definition, section Identifiers and keywords.
 
    "keyword.iskeyword()" can be used to test whether string "s" is a
@@ -9399,20 +9399,20 @@ str.isidentifier()
       >>> from keyword import iskeyword
 
       >>> 'hello'.isidentifier(), iskeyword('hello')
-      (True, False)
+      (Wahr, Falsch)
       >>> 'def'.isidentifier(), iskeyword('def')
-      (True, True)
+      (Wahr, Wahr)
 
 str.islower()
 
-   Return "True" wenn all cased characters [4] in the string are
-   lowercase and there is at least one cased character, "False"
+   Return "Wahr" wenn all cased characters [4] in the string are
+   lowercase and there is at least one cased character, "Falsch"
    otherwise.
 
 str.isnumeric()
 
-   Return "True" wenn all characters in the string are numeric
-   characters, and there is at least one character, "False" otherwise.
+   Return "Wahr" wenn all characters in the string are numeric
+   characters, and there is at least one character, "Falsch" otherwise.
    Numeric characters include digit characters, and all characters
    that have the Unicode numeric value property, e.g. U+2155, VULGAR
    FRACTION ONE FIFTH.  Formally, numeric characters are those with
@@ -9437,8 +9437,8 @@ str.isprintable()
 
 str.isspace()
 
-   Return "True" wenn there are only whitespace characters in the string
-   and there is at least one character, "False" otherwise.
+   Return "Wahr" wenn there are only whitespace characters in the string
+   and there is at least one character, "Falsch" otherwise.
 
    A character is *whitespace* wenn in the Unicode character database
    (see "unicodedata"), either its general category is "Zs"
@@ -9447,25 +9447,25 @@ str.isspace()
 
 str.istitle()
 
-   Return "True" wenn the string is a titlecased string and there is at
+   Return "Wahr" wenn the string is a titlecased string and there is at
    least one character, fuer example uppercase characters may only
    follow uncased characters and lowercase characters only cased ones.
-   Return "False" otherwise.
+   Return "Falsch" otherwise.
 
 str.isupper()
 
-   Return "True" wenn all cased characters [4] in the string are
-   uppercase and there is at least one cased character, "False"
+   Return "Wahr" wenn all cased characters [4] in the string are
+   uppercase and there is at least one cased character, "Falsch"
    otherwise.
 
    >>> 'BANANA'.isupper()
-   True
+   Wahr
    >>> 'banana'.isupper()
-   False
+   Falsch
    >>> 'baNana'.isupper()
-   False
+   Falsch
    >>> ' '.isupper()
-   False
+   Falsch
 
 str.join(iterable)
 
@@ -9493,7 +9493,7 @@ str.lstrip([chars])
 
    Return a copy of the string with leading characters removed.  The
    *chars* argument is a string specifying the set of characters to be
-   removed.  If omitted or "None", the *chars* argument defaults to
+   removed.  If omitted or "Nichts", the *chars* argument defaults to
    removing whitespace.  The *chars* argument is not a prefix; rather,
    all combinations of its values are stripped:
 
@@ -9517,14 +9517,14 @@ static str.maketrans(x[, y[, z]])
 
    If there is only one argument, it must be a dictionary mapping
    Unicode ordinals (integers) or characters (strings of length 1) to
-   Unicode ordinals, strings (of arbitrary lengths) or "None".
+   Unicode ordinals, strings (of arbitrary lengths) or "Nichts".
    Character keys will then be converted to ordinals.
 
    If there are two arguments, they must be strings of equal length,
    and in the resulting dictionary, each character in x will be mapped
    to the character at the same position in y.  If there is a third
    argument, it must be a string, whose characters will be mapped to
-   "None" in the result.
+   "Nichts" in the result.
 
 str.partition(sep)
 
@@ -9597,12 +9597,12 @@ str.rpartition(sep)
    found, return a 3-tuple containing two empty strings, followed by
    the string itself.
 
-str.rsplit(sep=None, maxsplit=-1)
+str.rsplit(sep=Nichts, maxsplit=-1)
 
    Return a list of the words in the string, using *sep* as the
    delimiter string. If *maxsplit* is given, at most *maxsplit* splits
    are done, the *rightmost* ones.  If *sep* is not specified or
-   "None", any whitespace string is a separator.  Except fuer splitting
+   "Nichts", any whitespace string is a separator.  Except fuer splitting
    from the right, "rsplit()" behaves like "split()" which is
    described in detail below.
 
@@ -9610,7 +9610,7 @@ str.rstrip([chars])
 
    Return a copy of the string with trailing characters removed.  The
    *chars* argument is a string specifying the set of characters to be
-   removed.  If omitted or "None", the *chars* argument defaults to
+   removed.  If omitted or "Nichts", the *chars* argument defaults to
    removing whitespace.  The *chars* argument is not a suffix; rather,
    all combinations of its values are stripped:
 
@@ -9627,7 +9627,7 @@ str.rstrip([chars])
       >>> 'Monty Python'.removesuffix(' Python')
       'Monty'
 
-str.split(sep=None, maxsplit=-1)
+str.split(sep=Nichts, maxsplit=-1)
 
    Return a list of the words in the string, using *sep* as the
    delimiter string.  If *maxsplit* is given, at most *maxsplit*
@@ -9653,12 +9653,12 @@ str.split(sep=None, maxsplit=-1)
       >>> '1<>2<>3<4'.split('<>')
       ['1', '2', '3<4']
 
-   If *sep* is not specified or is "None", a different splitting
+   If *sep* is not specified or is "Nichts", a different splitting
    algorithm is applied: runs of consecutive whitespace are regarded
    as a single separator, and the result will contain no empty strings
    at the start or end wenn the string has leading or trailing
    whitespace.  Consequently, splitting an empty string or a string
-   consisting of just whitespace with a "None" separator returns "[]".
+   consisting of just whitespace with a "Nichts" separator returns "[]".
 
    For example:
 
@@ -9669,7 +9669,7 @@ str.split(sep=None, maxsplit=-1)
       >>> '   1   2   3   '.split()
       ['1', '2', '3']
 
-str.splitlines(keepends=False)
+str.splitlines(keepends=Falsch)
 
    Return a list of the lines in the string, breaking at line
    boundaries.  Line breaks are not included in the resulting list
@@ -9711,7 +9711,7 @@ str.splitlines(keepends=False)
 
       >>> 'ab c\n\nde fg\rkl\r\n'.splitlines()
       ['ab c', '', 'de fg', 'kl']
-      >>> 'ab c\n\nde fg\rkl\r\n'.splitlines(keepends=True)
+      >>> 'ab c\n\nde fg\rkl\r\n'.splitlines(keepends=Wahr)
       ['ab c\n', '\n', 'de fg\r', 'kl\r\n']
 
    Unlike "split()" when a delimiter string *sep* is given, this
@@ -9732,8 +9732,8 @@ str.splitlines(keepends=False)
 
 str.startswith(prefix[, start[, end]])
 
-   Return "True" wenn string starts with the *prefix*, otherwise return
-   "False". *prefix* can also be a tuple of prefixes to look for.
+   Return "Wahr" wenn string starts with the *prefix*, otherwise return
+   "Falsch". *prefix* can also be a tuple of prefixes to look for.
    With optional *start*, test string beginning at that position.
    With optional *end*, stop comparing string at that position.
 
@@ -9741,7 +9741,7 @@ str.strip([chars])
 
    Return a copy of the string with the leading and trailing
    characters removed. The *chars* argument is a string specifying the
-   set of characters to be removed. If omitted or "None", the *chars*
+   set of characters to be removed. If omitted or "Nichts", the *chars*
    argument defaults to removing whitespace. The *chars* argument is
    not a prefix or suffix; rather, all combinations of its values are
    stripped:
@@ -9809,7 +9809,7 @@ str.translate(table)
    or *sequence*.  When indexed by a Unicode ordinal (an integer), the
    table object can do any of the following: return a Unicode ordinal
    or a string, to map the character to one or more other characters;
-   return "None", to delete the character from the return string; or
+   return "Nichts", to delete the character from the return string; or
    raise a "LookupError" exception, to map the character to itself.
 
    You can use "str.maketrans()" to create a translation map from
@@ -9822,7 +9822,7 @@ str.upper()
 
    Return a copy of the string with all the cased characters [4]
    converted to uppercase.  Note that "s.upper().isupper()" might be
-   "False" wenn "s" contains uncased characters or wenn the Unicode
+   "Falsch" wenn "s" contains uncased characters or wenn the Unicode
    category of the resulting character(s) is not “Lu” (Letter,
    uppercase), but e.g. “Lt” (Letter, titlecase).
 
@@ -10089,11 +10089,11 @@ Any object can be tested fuer truth value, fuer use in an "if" or
 "while" condition or as operand of the Boolean operations below.
 
 By default, an object is considered true unless its klasse defines
-either a "__bool__()" method that returns "False" or a "__len__()"
+either a "__bool__()" method that returns "Falsch" or a "__len__()"
 method that returns zero, when called with the object. [1]  Here are
 most of the built-in objects considered false:
 
-* constants defined to be false: "None" and "False"
+* constants defined to be false: "Nichts" and "Falsch"
 
 * zero of any numeric type: "0", "0.0", "0j", "Decimal(0)",
   "Fraction(0, 1)"
@@ -10102,7 +10102,7 @@ most of the built-in objects considered false:
   "range(0)"
 
 Operations and built-in functions that have a Boolean result always
-return "0" or "False" fuer false and "1" or "True" fuer true, unless
+return "0" or "Falsch" fuer false and "1" or "Wahr" fuer true, unless
 otherwise stated. (Important exception: the Boolean operations "or"
 and "and" always return one of their operands.)
 ''',
@@ -10197,7 +10197,7 @@ exception handler, the exception stored in the "sys" module is reset
 to its previous value:
 
    >>> print(sys.exception())
-   None
+   Nichts
    >>> try:
    ...     raise TypeError
    ... except:
@@ -10212,7 +10212,7 @@ to its previous value:
    ValueError()
    TypeError()
    >>> print(sys.exception())
-   None
+   Nichts
 
 
 "except*" clause
@@ -10339,11 +10339,11 @@ implementation and are not intended fuer general use.  Their definition
 may change in the future.
 
 
-None
+Nichts
 ====
 
 This type has a single value.  There is a single object with this
-value. This object is accessed through the built-in name "None". It is
+value. This object is accessed through the built-in name "Nichts". It is
 used to signify the absence of a value in many situations, e.g., it is
 returned from functions that don’t explicitly return anything. Its
 truth value is false.
@@ -10366,7 +10366,7 @@ Changed in version 3.9: Evaluating "NotImplemented" in a boolean
 context was deprecated.
 
 Changed in version 3.14: Evaluating "NotImplemented" in a boolean
-context now raises a "TypeError". It previously evaluated to "True"
+context now raises a "TypeError". It previously evaluated to "Wahr"
 and emitted a "DeprecationWarning" since Python 3.9.
 
 
@@ -10431,12 +10431,12 @@ Integers ("int")
    left.
 
 Booleans ("bool")
-   These represent the truth values False and True.  The two objects
-   representing the values "False" and "True" are the only Boolean
+   These represent the truth values Falsch and Wahr.  The two objects
+   representing the values "Falsch" and "Wahr" are the only Boolean
    objects. The Boolean type is a subtype of the integer type, and
    Boolean values behave like the values 0 and 1, respectively, in
    almost all contexts, the exception being that when converted to a
-   string, the strings ""False"" or ""True"" are returned,
+   string, the strings ""Falsch"" or ""Wahr"" are returned,
    respectively.
 
 
@@ -10652,7 +10652,7 @@ Special read-only attributes
 |                                                    | function’s global variables – the global namespace |
 |                                                    | of the module in which the function was defined.   |
 +----------------------------------------------------+----------------------------------------------------+
-| function.__closure__                               | "None" or a "tuple" of cells that contain bindings |
+| function.__closure__                               | "Nichts" or a "tuple" of cells that contain bindings |
 |                                                    | fuer the names specified in the "co_freevars"       |
 |                                                    | attribute of the function’s "code object".  A cell |
 |                                                    | object has the attribute "cell_contents". This can |
@@ -10669,7 +10669,7 @@ Most of these attributes check the type of the assigned value:
 +----------------------------------------------------+----------------------------------------------------+
 | Attribute                                          | Meaning                                            |
 |====================================================|====================================================|
-| function.__doc__                                   | The function’s documentation string, or "None" wenn  |
+| function.__doc__                                   | The function’s documentation string, or "Nichts" wenn  |
 |                                                    | unavailable.                                       |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__name__                                  | The function’s name. See also: "__name__           |
@@ -10679,10 +10679,10 @@ Most of these attributes check the type of the assigned value:
 |                                                    | "__qualname__ attributes".  Added in version 3.3.  |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__module__                                | The name of the module the function was defined    |
-|                                                    | in, or "None" wenn unavailable.                      |
+|                                                    | in, or "Nichts" wenn unavailable.                      |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__defaults__                              | A "tuple" containing default *parameter* values    |
-|                                                    | fuer those parameters that have defaults, or "None" |
+|                                                    | fuer those parameters that have defaults, or "Nichts" |
 |                                                    | wenn no parameters have a default value.             |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__code__                                  | The code object representing the compiled function |
@@ -10700,7 +10700,7 @@ Most of these attributes check the type of the assigned value:
 |                                                    | **PEP 649**.                                       |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__annotate__                              | The *annotate function* fuer this function, or      |
-|                                                    | "None" wenn the function has no annotations. See     |
+|                                                    | "Nichts" wenn the function has no annotations. See     |
 |                                                    | "object.__annotate__".  Added in version 3.14.     |
 +----------------------------------------------------+----------------------------------------------------+
 | function.__kwdefaults__                            | A "dictionary" containing defaults fuer keyword-    |
@@ -10739,13 +10739,13 @@ Special read-only attributes:
 +----------------------------------------------------+----------------------------------------------------+
 | method.__doc__                                     | The method’s documentation (same as                |
 |                                                    | "method.__func__.__doc__"). A "string" wenn the      |
-|                                                    | original function had a docstring, sonst "None".    |
+|                                                    | original function had a docstring, sonst "Nichts".    |
 +----------------------------------------------------+----------------------------------------------------+
 | method.__name__                                    | The name of the method (same as                    |
 |                                                    | "method.__func__.__name__")                        |
 +----------------------------------------------------+----------------------------------------------------+
 | method.__module__                                  | The name of the module the method was defined in,  |
-|                                                    | or "None" wenn unavailable.                          |
+|                                                    | or "Nichts" wenn unavailable.                          |
 +----------------------------------------------------+----------------------------------------------------+
 
 Methods also support accessing (but not setting) the arbitrary
@@ -10831,15 +10831,15 @@ of built-in functions are "len()" and "math.sin()" ("math" is a
 standard built-in module). The number and type of the arguments are
 determined by the C function. Special read-only attributes:
 
-* "__doc__" is the function’s documentation string, or "None" if
+* "__doc__" is the function’s documentation string, or "Nichts" if
   unavailable. See "function.__doc__".
 
 * "__name__" is the function’s name. See "function.__name__".
 
-* "__self__" is set to "None" (but see the next item).
+* "__self__" is set to "Nichts" (but see the next item).
 
 * "__module__" is the name of the module the function was defined in
-  or "None" wenn unavailable. See "function.__module__".
+  or "Nichts" wenn unavailable. See "function.__module__".
 
 
 Built-in methods
@@ -10952,7 +10952,7 @@ module.__package__
    itself is a package). See **PEP 366** fuer further details.
 
    This attribute is used instead of "__name__" to calculate explicit
-   relative imports fuer main modules. It defaults to "None" for
+   relative imports fuer main modules. It defaults to "Nichts" for
    modules created dynamically using the "types.ModuleType"
    constructor; use "importlib.util.module_from_spec()" instead to
    ensure the attribute is set to a "str".
@@ -10962,7 +10962,7 @@ module.__package__
    "__package__" is now only used as a fallback wenn "__spec__.parent"
    is not set, and this fallback path is deprecated.
 
-   Changed in version 3.4: This attribute now defaults to "None" for
+   Changed in version 3.4: This attribute now defaults to "Nichts" for
    modules created dynamically using the "types.ModuleType"
    constructor. Previously the attribute was optional.
 
@@ -10992,7 +10992,7 @@ module.__loader__
    fuer additional loader-specific functionality, fuer example getting
    data associated with a loader.
 
-   "__loader__" defaults to "None" fuer modules created dynamically
+   "__loader__" defaults to "Nichts" fuer modules created dynamically
    using the "types.ModuleType" constructor; use
    "importlib.util.module_from_spec()" instead to ensure the attribute
    is set to a *loader* object.
@@ -11000,7 +11000,7 @@ module.__loader__
    It is **strongly** recommended that you use
    "module.__spec__.loader" instead of "module.__loader__".
 
-   Changed in version 3.4: This attribute now defaults to "None" for
+   Changed in version 3.4: This attribute now defaults to "Nichts" for
    modules created dynamically using the "types.ModuleType"
    constructor. Previously the attribute was optional.
 
@@ -11068,7 +11068,7 @@ also have the following writable attributes:
 
 module.__doc__
 
-   The module’s documentation string, or "None" wenn unavailable. See
+   The module’s documentation string, or "Nichts" wenn unavailable. See
    also: "__doc__ attributes".
 
 module.__annotations__
@@ -11082,7 +11082,7 @@ module.__annotations__
 
 module.__annotate__
 
-   The *annotate function* fuer this module, or "None" wenn the module
+   The *annotate function* fuer this module, or "Nichts" wenn the module
    has no annotations. See also: "__annotate__" attributes.
 
    Added in version 3.14.
@@ -11161,7 +11161,7 @@ Special attributes
 |                                                    | "X.__bases__" will be exactly equal to "(A, B,     |
 |                                                    | C)".                                               |
 +----------------------------------------------------+----------------------------------------------------+
-| type.__doc__                                       | The class’s documentation string, or "None" wenn     |
+| type.__doc__                                       | The class’s documentation string, or "Nichts" wenn     |
 |                                                    | undefined. Not inherited by subclasses.            |
 +----------------------------------------------------+----------------------------------------------------+
 | type.__annotations__                               | A dictionary containing *variable annotations*     |
@@ -11174,7 +11174,7 @@ Special attributes
 |                                                    | version 3.14: Annotations are now lazily           |
 |                                                    | evaluated. See **PEP 649**.                        |
 +----------------------------------------------------+----------------------------------------------------+
-| type.__annotate__()                                | The *annotate function* fuer this class, or "None"  |
+| type.__annotate__()                                | The *annotate function* fuer this class, or "Nichts"  |
 |                                                    | wenn the klasse has no annotations. See also:         |
 |                                                    | "__annotate__ attributes".  Added in version 3.14. |
 +----------------------------------------------------+----------------------------------------------------+
@@ -11410,7 +11410,7 @@ codeobject.co_positions()
    * Line and column numbers that can’t be represented due to
      implementation specific limitations.
 
-   When this occurs, some or all of the tuple elements can be "None".
+   When this occurs, some or all of the tuple elements can be "Nichts".
 
    Added in version 3.11.
 
@@ -11436,7 +11436,7 @@ codeobject.co_lines()
      the *bytecode* range
 
    * "lineno" is an "int" representing the line number of the
-     *bytecode* range, or "None" wenn the bytecodes in the given range
+     *bytecode* range, or "Nichts" wenn the bytecodes in the given range
      have no line number
 
    The items yielded will have the following properties:
@@ -11486,7 +11486,7 @@ Special read-only attributes
 
 +----------------------------------------------------+----------------------------------------------------+
 | frame.f_back                                       | Points to the previous stack frame (towards the    |
-|                                                    | caller), or "None" wenn this is the bottom stack     |
+|                                                    | caller), or "Nichts" wenn this is the bottom stack     |
 |                                                    | frame                                              |
 +----------------------------------------------------+----------------------------------------------------+
 | frame.f_code                                       | The code object being executed in this frame.      |
@@ -11516,15 +11516,15 @@ Special writable attributes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +----------------------------------------------------+----------------------------------------------------+
-| frame.f_trace                                      | If not "None", this is a function called fuer       |
+| frame.f_trace                                      | If not "Nichts", this is a function called fuer       |
 |                                                    | various events during code execution (this is used |
 |                                                    | by debuggers). Normally an event is triggered fuer  |
 |                                                    | each new source line (see "f_trace_lines").        |
 +----------------------------------------------------+----------------------------------------------------+
-| frame.f_trace_lines                                | Set this attribute to "False" to disable           |
+| frame.f_trace_lines                                | Set this attribute to "Falsch" to disable           |
 |                                                    | triggering a tracing event fuer each source line.   |
 +----------------------------------------------------+----------------------------------------------------+
-| frame.f_trace_opcodes                              | Set this attribute to "True" to allow per-opcode   |
+| frame.f_trace_opcodes                              | Set this attribute to "Wahr" to allow per-opcode   |
 |                                                    | events to be requested. Note that this may lead to |
 |                                                    | undefined interpreter behaviour wenn exceptions      |
 |                                                    | raised by the trace function escape to the         |
@@ -11610,7 +11610,7 @@ traceback.tb_next
 
    The special writable attribute "tb_next" is the next level in the
    stack trace (towards the frame where the exception occurred), or
-   "None" wenn there is no next level.
+   "Nichts" wenn there is no next level.
 
    Changed in version 3.7: This attribute is now writable
 
@@ -11622,7 +11622,7 @@ Slice objects are used to represent slices fuer "__getitem__()"
 methods.  They are also created by the built-in "slice()" function.
 
 Special read-only attributes: "start" is the lower bound; "stop" is
-the upper bound; "step" is the step value; each is "None" wenn omitted.
+the upper bound; "step" is the step value; each is "Nichts" wenn omitted.
 These attributes can have any type.
 
 Slice objects support one method:
@@ -11686,7 +11686,7 @@ A dictionary’s keys are *almost* arbitrary values.  Values that are
 not *hashable*, that is, values containing lists, dictionaries or
 other mutable types (that are compared by value rather than by object
 identity) may not be used as keys. Values that compare equal (such as
-"1", "1.0", and "True") can be used interchangeably to index the same
+"1", "1.0", and "Wahr") can be used interchangeably to index the same
 dictionary entry.
 
 klasse dict(**kwargs)
@@ -11734,7 +11734,7 @@ klasse dict(iterable, **kwargs)
       >>> e = dict({'three': 3, 'one': 1, 'two': 2})
       >>> f = dict({'one': 1, 'three': 3}, two=2)
       >>> a == b == c == d == e == f
-      True
+      Wahr
 
    Providing keyword arguments as in the first example only works for
    keys that are valid Python identifiers.  Otherwise, any valid keys
@@ -11791,7 +11791,7 @@ klasse dict(iterable, **kwargs)
 
    key in d
 
-      Return "True" wenn *d* has a key *key*, sonst "False".
+      Return "Wahr" wenn *d* has a key *key*, sonst "Falsch".
 
    key not in d
 
@@ -11810,21 +11810,21 @@ klasse dict(iterable, **kwargs)
 
       Return a shallow copy of the dictionary.
 
-   classmethod fromkeys(iterable, value=None, /)
+   classmethod fromkeys(iterable, value=Nichts, /)
 
       Create a new dictionary with keys from *iterable* and values set
       to *value*.
 
       "fromkeys()" is a klasse method that returns a new dictionary.
-      *value* defaults to "None".  All of the values refer to just a
+      *value* defaults to "Nichts".  All of the values refer to just a
       single instance, so it generally doesn’t make sense fuer *value*
       to be a mutable object such as an empty list.  To get distinct
       values, use a dict comprehension instead.
 
-   get(key, default=None, /)
+   get(key, default=Nichts, /)
 
       Return the value fuer *key* wenn *key* is in the dictionary, sonst
-      *default*. If *default* is not given, it defaults to "None", so
+      *default*. If *default* is not given, it defaults to "Nichts", so
       that this method never raises a "KeyError".
 
    items()
@@ -11862,16 +11862,16 @@ klasse dict(iterable, **kwargs)
 
       Added in version 3.8.
 
-   setdefault(key, default=None, /)
+   setdefault(key, default=Nichts, /)
 
       If *key* is in the dictionary, return its value.  If not, insert
       *key* with a value of *default* and return *default*.  *default*
-      defaults to "None".
+      defaults to "Nichts".
 
    update([other])
 
       Update the dictionary with the key/value pairs from *other*,
-      overwriting existing keys.  Return "None".
+      overwriting existing keys.  Return "Nichts".
 
       "update()" accepts either another object with a "keys()" method
       (in which case "__getitem__()" is called with every key returned
@@ -11886,12 +11886,12 @@ klasse dict(iterable, **kwargs)
       documentation of view objects.
 
       An equality comparison between one "dict.values()" view and
-      another will always return "False". This also applies when
+      another will always return "Falsch". This also applies when
       comparing "dict.values()" to itself:
 
          >>> d = {'a': 1}
          >>> d.values() == d.values()
-         False
+         Falsch
 
    d | other
 
@@ -11929,9 +11929,9 @@ klasse dict(iterable, **kwargs)
       >>> d
       {'one': 42, 'two': 2, 'three': 3, 'four': 4}
       >>> del d["two"]
-      >>> d["two"] = None
+      >>> d["two"] = Nichts
       >>> d
-      {'one': 42, 'three': 3, 'four': 4, 'two': None}
+      {'one': 42, 'three': 3, 'four': 4, 'two': Nichts}
 
    Changed in version 3.7: Dictionary order is guaranteed to be
    insertion order.  This behavior was an implementation detail of
@@ -11990,7 +11990,7 @@ iter(dictview)
 
 x in dictview
 
-   Return "True" wenn *x* is in the underlying dictionary’s keys, values
+   Return "Wahr" wenn *x* is in the underlying dictionary’s keys, values
    or items (in the latter case, *x* should be a "(key, value)"
    tuple).
 
@@ -12050,9 +12050,9 @@ An example of dictionary view usage:
    >>> keys & {'eggs', 'bacon', 'salad'}
    {'bacon'}
    >>> keys ^ {'sausage', 'juice'} == {'juice', 'sausage', 'bacon', 'spam'}
-   True
+   Wahr
    >>> keys | ['juice', 'juice', 'juice'] == {'bacon', 'spam', 'juice'}
-   True
+   Wahr
 
    >>> # get back a read-only proxy fuer the original dictionary
    >>> values.mapping
@@ -12152,11 +12152,11 @@ operations. [3]
 +----------------------------+----------------------------------+------------+
 | Operation                  | Result                           | Notes      |
 |============================|==================================|============|
-| "x in s"                   | "True" wenn an item of *s* is      | (1)        |
-|                            | equal to *x*, sonst "False"       |            |
+| "x in s"                   | "Wahr" wenn an item of *s* is      | (1)        |
+|                            | equal to *x*, sonst "Falsch"       |            |
 +----------------------------+----------------------------------+------------+
-| "x not in s"               | "False" wenn an item of *s* is     | (1)        |
-|                            | equal to *x*, sonst "True"        |            |
+| "x not in s"               | "Falsch" wenn an item of *s* is     | (1)        |
+|                            | equal to *x*, sonst "Wahr"        |            |
 +----------------------------+----------------------------------+------------+
 | "s + t"                    | the concatenation of *s* and *t* | (6)(7)     |
 +----------------------------+----------------------------------+------------+
@@ -12205,7 +12205,7 @@ Notes:
    subsequence testing:
 
       >>> "gg" in "eggs"
-      True
+      Wahr
 
 2. Values of *n* less than "0" are treated as "0" (which yields an
    empty sequence of the same type as *s*).  Note that items in the
@@ -12241,8 +12241,8 @@ Notes:
 
 4. The slice of *s* from *i* to *j* is defined as the sequence of
    items with index *k* such that "i <= k < j".  If *i* or *j* is
-   greater than "len(s)", use "len(s)".  If *i* is omitted or "None",
-   use "0".  If *j* is omitted or "None", use "len(s)".  If *i* is
+   greater than "len(s)", use "len(s)".  If *i* is omitted or "Nichts",
+   use "0".  If *j* is omitted or "Nichts", use "len(s)".  If *i* is
    greater than or equal to *j*, the slice is empty.
 
 5. The slice of *s* from *i* to *j* with step *k* is defined as the
@@ -12252,8 +12252,8 @@ Notes:
    including *j*).  When *k* is positive, *i* and *j* are reduced to
    "len(s)" wenn they are greater. When *k* is negative, *i* and *j* are
    reduced to "len(s) - 1" wenn they are greater.  If *i* or *j* are
-   omitted or "None", they become “end” values (which end depends on
-   the sign of *k*).  Note, *k* cannot be zero. If *k* is "None", it
+   omitted or "Nichts", they become “end” values (which end depends on
+   the sign of *k*).  Note, *k* cannot be zero. If *k* is "Nichts", it
    is treated like "1".
 
 6. Concatenating immutable sequences always results in a new object.
@@ -12427,7 +12427,7 @@ klasse list([iterable])
    Lists implement all of the common and mutable sequence operations.
    Lists also provide the following additional method:
 
-   sort(*, key=None, reverse=False)
+   sort(*, key=Nichts, reverse=Falsch)
 
       This method sorts the list in place, using only "<" comparisons
       between items. Exceptions are not suppressed - wenn any comparison
@@ -12441,13 +12441,13 @@ klasse list([iterable])
       extract a comparison key from each list element (for example,
       "key=str.lower"). The key corresponding to each item in the list
       is calculated once and then used fuer the entire sorting process.
-      The default value of "None" means that list items are sorted
+      The default value of "Nichts" means that list items are sorted
       directly without calculating a separate key value.
 
       The "functools.cmp_to_key()" utility is available to convert a
       2.x style *cmp* function to a *key* function.
 
-      *reverse* is a boolean value.  If set to "True", then the list
+      *reverse* is a boolean value.  If set to "Wahr", then the list
       elements are sorted as wenn each comparison were reversed.
 
       This method modifies the sequence in place fuer economy of space
@@ -12597,9 +12597,9 @@ tuple, range):
 >>> r
 range(0, 20, 2)
 >>> 11 in r
-False
+Falsch
 >>> 10 in r
-True
+Wahr
 >>> r.index(10)
 5
 >>> r[5]
@@ -12800,7 +12800,7 @@ follows:
 7. The context manager’s "__exit__()" method is invoked.  If an
    exception caused the suite to be exited, its type, value, and
    traceback are passed as arguments to "__exit__()". Otherwise, three
-   "None" arguments are supplied.
+   "Nichts" arguments are supplied.
 
    If the suite was exited due to an exception, and the return value
    from the "__exit__()" method was false, the exception is reraised.
@@ -12823,18 +12823,18 @@ is semantically equivalent to:
    enter = type(manager).__enter__
    exit = type(manager).__exit__
    value = enter(manager)
-   hit_except = False
+   hit_except = Falsch
 
    try:
        TARGET = value
        SUITE
    except:
-       hit_except = True
+       hit_except = Wahr
        wenn not exit(manager, *sys.exc_info()):
            raise
    finally:
        wenn not hit_except:
-           exit(manager, None, None, None)
+           exit(manager, Nichts, Nichts, Nichts)
 
 With more than one item, the context managers are processed as if
 multiple "with" statements were nested:

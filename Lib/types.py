@@ -14,7 +14,7 @@ except ImportError:
 
     def _f(): pass
     FunctionType = type(_f)
-    LambdaType = type(lambda: None)  # Same as FunctionType
+    LambdaType = type(lambda: Nichts)  # Same as FunctionType
     CodeType = type(_f.__code__)
     MappingProxyType = type(type.__dict__)
     SimpleNamespace = type(sys.implementation)
@@ -70,7 +70,7 @@ except ImportError:
     UnionType = type(int | str)
 
     EllipsisType = type(Ellipsis)
-    NoneType = type(None)
+    NoneType = type(Nichts)
     NotImplementedType = type(NotImplemented)
 
     # CapsuleType cannot be accessed from pure Python,
@@ -80,11 +80,11 @@ except ImportError:
 
 
 # Provide a PEP 3115 compliant mechanism fuer klasse creation
-def new_class(name, bases=(), kwds=None, exec_body=None):
+def new_class(name, bases=(), kwds=Nichts, exec_body=Nichts):
     """Create a klasse object dynamically using the appropriate metaclass."""
     resolved_bases = resolve_bases(bases)
     meta, ns, kwds = prepare_class(name, resolved_bases, kwds)
-    wenn exec_body is not None:
+    wenn exec_body is not Nichts:
         exec_body(ns)
     wenn resolved_bases is not bases:
         ns['__orig_bases__'] = bases
@@ -93,7 +93,7 @@ def new_class(name, bases=(), kwds=None, exec_body=None):
 def resolve_bases(bases):
     """Resolve MRO entries dynamically as specified by PEP 560."""
     new_bases = list(bases)
-    updated = False
+    updated = Falsch
     shift = 0
     fuer i, base in enumerate(bases):
         wenn isinstance(base, type):
@@ -101,7 +101,7 @@ def resolve_bases(bases):
         wenn not hasattr(base, "__mro_entries__"):
             continue
         new_base = base.__mro_entries__(bases)
-        updated = True
+        updated = Wahr
         wenn not isinstance(new_base, tuple):
             raise TypeError("__mro_entries__ must return a tuple")
         sonst:
@@ -111,7 +111,7 @@ def resolve_bases(bases):
         return bases
     return tuple(new_bases)
 
-def prepare_class(name, bases=(), kwds=None):
+def prepare_class(name, bases=(), kwds=Nichts):
     """Call the __prepare__ method of the appropriate metaclass.
 
     Returns (metaclass, namespace, kwds) as a 3-tuple
@@ -122,7 +122,7 @@ def prepare_class(name, bases=(), kwds=None):
     'metaclass' entry removed. If no kwds argument is passed in, this will
     be an empty dict.
     """
-    wenn kwds is None:
+    wenn kwds is Nichts:
         kwds = {}
     sonst:
         kwds = dict(kwds) # Don't alter the provided mapping
@@ -186,7 +186,7 @@ def get_original_bases(cls, /):
     except AttributeError:
         raise TypeError(
             f"Expected an instance of type, not {type(cls).__name__!r}"
-        ) from None
+        ) from Nichts
 
 
 klasse DynamicClassAttribute:
@@ -206,37 +206,37 @@ klasse DynamicClassAttribute:
     Python 3.10 .)
 
     """
-    def __init__(self, fget=None, fset=None, fdel=None, doc=None):
+    def __init__(self, fget=Nichts, fset=Nichts, fdel=Nichts, doc=Nichts):
         self.fget = fget
         self.fset = fset
         self.fdel = fdel
         # next two lines make DynamicClassAttribute act the same as property
         self.__doc__ = doc or fget.__doc__
-        self.overwrite_doc = doc is None
+        self.overwrite_doc = doc is Nichts
         # support fuer abstract methods
-        self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', False))
+        self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', Falsch))
 
-    def __get__(self, instance, ownerclass=None):
-        wenn instance is None:
+    def __get__(self, instance, ownerclass=Nichts):
+        wenn instance is Nichts:
             wenn self.__isabstractmethod__:
                 return self
             raise AttributeError()
-        sowenn self.fget is None:
+        sowenn self.fget is Nichts:
             raise AttributeError("unreadable attribute")
         return self.fget(instance)
 
     def __set__(self, instance, value):
-        wenn self.fset is None:
+        wenn self.fset is Nichts:
             raise AttributeError("can't set attribute")
         self.fset(instance, value)
 
     def __delete__(self, instance):
-        wenn self.fdel is None:
+        wenn self.fdel is Nichts:
             raise AttributeError("can't delete attribute")
         self.fdel(instance)
 
     def getter(self, fget):
-        fdoc = fget.__doc__ wenn self.overwrite_doc sonst None
+        fdoc = fget.__doc__ wenn self.overwrite_doc sonst Nichts
         result = type(self)(fget, self.fset, self.fdel, fdoc or self.__doc__)
         result.overwrite_doc = self.overwrite_doc
         return result
@@ -256,8 +256,8 @@ klasse _GeneratorWrapper:
     def __init__(self, gen):
         self.__wrapped = gen
         self.__isgen = gen.__class__ is GeneratorType
-        self.__name__ = getattr(gen, '__name__', None)
-        self.__qualname__ = getattr(gen, '__qualname__', None)
+        self.__name__ = getattr(gen, '__name__', Nichts)
+        self.__qualname__ = getattr(gen, '__qualname__', Nichts)
     def send(self, val):
         return self.__wrapped.send(val)
     def throw(self, tp, *rest):
@@ -295,7 +295,7 @@ def coroutine(func):
         raise TypeError('types.coroutine() expects a callable')
 
     wenn (func.__class__ is FunctionType and
-        getattr(func, '__code__', None).__class__ is CodeType):
+        getattr(func, '__code__', Nichts).__class__ is CodeType):
 
         co_flags = func.__code__.co_flags
 

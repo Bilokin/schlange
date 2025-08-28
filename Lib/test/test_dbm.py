@@ -10,13 +10,13 @@ from test.support import os_helper
 try:
     from dbm import sqlite3 as dbm_sqlite3
 except ImportError:
-    dbm_sqlite3 = None
+    dbm_sqlite3 = Nichts
 
 
 try:
     from dbm import ndbm
 except ImportError:
-    ndbm = None
+    ndbm = Nichts
 
 dirname = os_helper.TESTFN
 _fname = os.path.join(dirname, os_helper.TESTFN)
@@ -102,7 +102,7 @@ klasse AnyDBMTestCase:
         # get() works as in the dict interface
         self.assertEqual(f.get(b'a'), self._dict['a'])
         self.assertEqual(f.get(b'xxx', b'foo'), b'foo')
-        self.assertIsNone(f.get(b'xxx'))
+        self.assertIsNichts(f.get(b'xxx'))
         with self.assertRaises(KeyError):
             f[b'xxx']
         f.close()
@@ -114,7 +114,7 @@ klasse AnyDBMTestCase:
         f.close()
 
     def test_empty_value(self):
-        wenn getattr(dbm._defaultmod, 'library', None) == 'Berkeley DB':
+        wenn getattr(dbm._defaultmod, 'library', Nichts) == 'Berkeley DB':
             self.skipTest("Berkeley DB doesn't distinguish the empty value "
                           "from the absent one")
         f = dbm.open(_fname, 'c')
@@ -280,7 +280,7 @@ klasse WhichDBTestCase(unittest.TestCase):
         fnames = [_fname, os_helper.FakePath(_fname),
                   _bytes_fname, os_helper.FakePath(_bytes_fname)]
         fuer path in fnames:
-            self.assertIsNone(self.dbm.whichdb(path))
+            self.assertIsNichts(self.dbm.whichdb(path))
 
     @unittest.skipUnless(dbm_sqlite3, reason='Test requires dbm.sqlite3')
     def test_whichdb_sqlite3(self):

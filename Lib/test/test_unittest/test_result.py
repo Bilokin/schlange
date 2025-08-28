@@ -12,7 +12,7 @@ from test.test_unittest.support import BufferedWriter
 klasse MockTraceback(object):
     klasse TracebackException:
         def __init__(self, *args, **kwargs):
-            self.capture_locals = kwargs.get('capture_locals', False)
+            self.capture_locals = kwargs.get('capture_locals', Falsch)
         def format(self, **kwargs):
             result = ['A traceback']
             wenn self.capture_locals:
@@ -47,23 +47,23 @@ klasse Test_TestResult(unittest.TestCase):
     def test_init(self):
         result = unittest.TestResult()
 
-        self.assertTrue(result.wasSuccessful())
+        self.assertWahr(result.wasSuccessful())
         self.assertEqual(len(result.errors), 0)
         self.assertEqual(len(result.failures), 0)
         self.assertEqual(result.testsRun, 0)
-        self.assertEqual(result.shouldStop, False)
-        self.assertIsNone(result._stdout_buffer)
-        self.assertIsNone(result._stderr_buffer)
+        self.assertEqual(result.shouldStop, Falsch)
+        self.assertIsNichts(result._stdout_buffer)
+        self.assertIsNichts(result._stderr_buffer)
 
     # "This method can be called to signal that the set of tests being
     # run should be aborted by setting the TestResult's shouldStop
-    # attribute to True."
+    # attribute to Wahr."
     def test_stop(self):
         result = unittest.TestResult()
 
         result.stop()
 
-        self.assertEqual(result.shouldStop, True)
+        self.assertEqual(result.shouldStop, Wahr)
 
     # "Called when the test case test is about to be run. The default
     # implementation simply increments the instance's testsRun counter."
@@ -78,11 +78,11 @@ klasse Test_TestResult(unittest.TestCase):
 
         result.startTest(test)
 
-        self.assertTrue(result.wasSuccessful())
+        self.assertWahr(result.wasSuccessful())
         self.assertEqual(len(result.errors), 0)
         self.assertEqual(len(result.failures), 0)
         self.assertEqual(result.testsRun, 1)
-        self.assertEqual(result.shouldStop, False)
+        self.assertEqual(result.shouldStop, Falsch)
 
         result.stopTest(test)
 
@@ -99,20 +99,20 @@ klasse Test_TestResult(unittest.TestCase):
 
         result.startTest(test)
 
-        self.assertTrue(result.wasSuccessful())
+        self.assertWahr(result.wasSuccessful())
         self.assertEqual(len(result.errors), 0)
         self.assertEqual(len(result.failures), 0)
         self.assertEqual(result.testsRun, 1)
-        self.assertEqual(result.shouldStop, False)
+        self.assertEqual(result.shouldStop, Falsch)
 
         result.stopTest(test)
 
         # Same tests as above; make sure nothing has changed
-        self.assertTrue(result.wasSuccessful())
+        self.assertWahr(result.wasSuccessful())
         self.assertEqual(len(result.errors), 0)
         self.assertEqual(len(result.failures), 0)
         self.assertEqual(result.testsRun, 1)
-        self.assertEqual(result.shouldStop, False)
+        self.assertEqual(result.shouldStop, Falsch)
 
     # "Called before and after tests are run. The default implementation does nothing."
     def test_startTestRun_stopTestRun(self):
@@ -124,8 +124,8 @@ klasse Test_TestResult(unittest.TestCase):
     # ...
     # "Called when the test case test succeeds"
     # ...
-    # "wasSuccessful() - Returns True wenn all tests run so far have passed,
-    # otherwise returns False"
+    # "wasSuccessful() - Returns Wahr wenn all tests run so far have passed,
+    # otherwise returns Falsch"
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
@@ -152,19 +152,19 @@ klasse Test_TestResult(unittest.TestCase):
         result.addSuccess(test)
         result.stopTest(test)
 
-        self.assertTrue(result.wasSuccessful())
+        self.assertWahr(result.wasSuccessful())
         self.assertEqual(len(result.errors), 0)
         self.assertEqual(len(result.failures), 0)
         self.assertEqual(result.testsRun, 1)
-        self.assertEqual(result.shouldStop, False)
+        self.assertEqual(result.shouldStop, Falsch)
 
     # "addFailure(test, err)"
     # ...
     # "Called when the test case test signals a failure. err is a tuple of
     # the form returned by sys.exc_info(): (type, value, traceback)"
     # ...
-    # "wasSuccessful() - Returns True wenn all tests run so far have passed,
-    # otherwise returns False"
+    # "wasSuccessful() - Returns Wahr wenn all tests run so far have passed,
+    # otherwise returns Falsch"
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
@@ -195,11 +195,11 @@ klasse Test_TestResult(unittest.TestCase):
         result.addFailure(test, exc_info_tuple)
         result.stopTest(test)
 
-        self.assertFalse(result.wasSuccessful())
+        self.assertFalsch(result.wasSuccessful())
         self.assertEqual(len(result.errors), 0)
         self.assertEqual(len(result.failures), 1)
         self.assertEqual(result.testsRun, 1)
-        self.assertEqual(result.shouldStop, False)
+        self.assertEqual(result.shouldStop, Falsch)
 
         test_case, formatted_exc = result.failures[0]
         self.assertIs(test_case, test)
@@ -322,8 +322,8 @@ klasse Test_TestResult(unittest.TestCase):
     # is a tuple of the form returned by sys.exc_info():
     # (type, value, traceback)"
     # ...
-    # "wasSuccessful() - Returns True wenn all tests run so far have passed,
-    # otherwise returns False"
+    # "wasSuccessful() - Returns Wahr wenn all tests run so far have passed,
+    # otherwise returns Falsch"
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
@@ -354,11 +354,11 @@ klasse Test_TestResult(unittest.TestCase):
         result.addError(test, exc_info_tuple)
         result.stopTest(test)
 
-        self.assertFalse(result.wasSuccessful())
+        self.assertFalsch(result.wasSuccessful())
         self.assertEqual(len(result.errors), 1)
         self.assertEqual(len(result.failures), 0)
         self.assertEqual(result.testsRun, 1)
-        self.assertEqual(result.shouldStop, False)
+        self.assertEqual(result.shouldStop, Falsch)
 
         test_case, formatted_exc = result.errors[0]
         self.assertIs(test_case, test)
@@ -371,7 +371,7 @@ klasse Test_TestResult(unittest.TestCase):
 
         test = Foo('test_1')
         result = unittest.TestResult()
-        result.tb_locals = True
+        result.tb_locals = Wahr
 
         unittest.result.traceback = MockTraceback
         self.addCleanup(restore_traceback)
@@ -398,17 +398,17 @@ klasse Test_TestResult(unittest.TestCase):
                     # Now trigger a failure
                     self.fail("some recognizable failure")
 
-        subtest = None
+        subtest = Nichts
         test = Foo('test_1')
         result = unittest.TestResult()
 
         test.run(result)
 
-        self.assertFalse(result.wasSuccessful())
+        self.assertFalsch(result.wasSuccessful())
         self.assertEqual(len(result.errors), 1)
         self.assertEqual(len(result.failures), 1)
         self.assertEqual(result.testsRun, 1)
-        self.assertEqual(result.shouldStop, False)
+        self.assertEqual(result.shouldStop, Falsch)
 
         test_case, formatted_exc = result.errors[0]
         self.assertIs(test_case, subtest)
@@ -422,36 +422,36 @@ klasse Test_TestResult(unittest.TestCase):
             klasse tb_frame(object):
                 f_globals = {}
         result = unittest.TestResult()
-        self.assertFalse(result._is_relevant_tb_level(Frame))
+        self.assertFalsch(result._is_relevant_tb_level(Frame))
 
-        Frame.tb_frame.f_globals['__unittest'] = True
-        self.assertTrue(result._is_relevant_tb_level(Frame))
+        Frame.tb_frame.f_globals['__unittest'] = Wahr
+        self.assertWahr(result._is_relevant_tb_level(Frame))
 
     def testFailFast(self):
         result = unittest.TestResult()
         result._exc_info_to_string = lambda *_: ''
-        result.failfast = True
-        result.addError(None, None)
-        self.assertTrue(result.shouldStop)
+        result.failfast = Wahr
+        result.addError(Nichts, Nichts)
+        self.assertWahr(result.shouldStop)
 
         result = unittest.TestResult()
         result._exc_info_to_string = lambda *_: ''
-        result.failfast = True
-        result.addFailure(None, None)
-        self.assertTrue(result.shouldStop)
+        result.failfast = Wahr
+        result.addFailure(Nichts, Nichts)
+        self.assertWahr(result.shouldStop)
 
         result = unittest.TestResult()
         result._exc_info_to_string = lambda *_: ''
-        result.failfast = True
-        result.addUnexpectedSuccess(None)
-        self.assertTrue(result.shouldStop)
+        result.failfast = Wahr
+        result.addUnexpectedSuccess(Nichts)
+        self.assertWahr(result.shouldStop)
 
     def testFailFastSetByRunner(self):
         stream = BufferedWriter()
-        runner = unittest.TextTestRunner(stream=stream, failfast=True)
+        runner = unittest.TextTestRunner(stream=stream, failfast=Wahr)
         def test(result):
             result.testsRun += 1
-            self.assertTrue(result.failfast)
+            self.assertWahr(result.failfast)
         result = runner.run(test)
         stream.flush()
         self.assertEndsWith(stream.getvalue(), '\n\nOK\n')
@@ -459,10 +459,10 @@ klasse Test_TestResult(unittest.TestCase):
 
 @force_not_colorized_test_class
 klasse Test_TextTestResult(unittest.TestCase):
-    maxDiff = None
+    maxDiff = Nichts
 
     def testGetDescriptionWithoutDocstring(self):
-        result = unittest.TextTestResult(None, True, 1)
+        result = unittest.TextTestResult(Nichts, Wahr, 1)
         self.assertEqual(
                 result.getDescription(self),
                 'testGetDescriptionWithoutDocstring (' + __name__ +
@@ -470,14 +470,14 @@ klasse Test_TextTestResult(unittest.TestCase):
 
     def testGetSubTestDescriptionWithoutDocstring(self):
         with self.subTest(foo=1, bar=2):
-            result = unittest.TextTestResult(None, True, 1)
+            result = unittest.TextTestResult(Nichts, Wahr, 1)
             self.assertEqual(
                     result.getDescription(self._subtest),
                     'testGetSubTestDescriptionWithoutDocstring (' + __name__ +
                     '.Test_TextTestResult.testGetSubTestDescriptionWithoutDocstring) (foo=1, bar=2)')
 
         with self.subTest('some message'):
-            result = unittest.TextTestResult(None, True, 1)
+            result = unittest.TextTestResult(Nichts, Wahr, 1)
             self.assertEqual(
                     result.getDescription(self._subtest),
                     'testGetSubTestDescriptionWithoutDocstring (' + __name__ +
@@ -485,17 +485,17 @@ klasse Test_TextTestResult(unittest.TestCase):
 
     def testGetSubTestDescriptionWithoutDocstringAndParams(self):
         with self.subTest():
-            result = unittest.TextTestResult(None, True, 1)
+            result = unittest.TextTestResult(Nichts, Wahr, 1)
             self.assertEqual(
                     result.getDescription(self._subtest),
                     'testGetSubTestDescriptionWithoutDocstringAndParams '
                     '(' + __name__ + '.Test_TextTestResult.testGetSubTestDescriptionWithoutDocstringAndParams) '
                     '(<subtest>)')
 
-    def testGetSubTestDescriptionForFalseValues(self):
-        expected = 'testGetSubTestDescriptionForFalseValues (%s.Test_TextTestResult.testGetSubTestDescriptionForFalseValues) [%s]'
-        result = unittest.TextTestResult(None, True, 1)
-        fuer arg in [0, None, []]:
+    def testGetSubTestDescriptionForFalschValues(self):
+        expected = 'testGetSubTestDescriptionForFalschValues (%s.Test_TextTestResult.testGetSubTestDescriptionForFalschValues) [%s]'
+        result = unittest.TextTestResult(Nichts, Wahr, 1)
+        fuer arg in [0, Nichts, []]:
             with self.subTest(arg):
                 self.assertEqual(
                     result.getDescription(self._subtest),
@@ -505,7 +505,7 @@ klasse Test_TextTestResult(unittest.TestCase):
     def testGetNestedSubTestDescriptionWithoutDocstring(self):
         with self.subTest(foo=1):
             with self.subTest(baz=2, bar=3):
-                result = unittest.TextTestResult(None, True, 1)
+                result = unittest.TextTestResult(Nichts, Wahr, 1)
                 self.assertEqual(
                         result.getDescription(self._subtest),
                         'testGetNestedSubTestDescriptionWithoutDocstring '
@@ -515,7 +515,7 @@ klasse Test_TextTestResult(unittest.TestCase):
     def testGetDuplicatedNestedSubTestDescriptionWithoutDocstring(self):
         with self.subTest(foo=1, bar=2):
             with self.subTest(baz=3, bar=4):
-                result = unittest.TextTestResult(None, True, 1)
+                result = unittest.TextTestResult(Nichts, Wahr, 1)
                 self.assertEqual(
                         result.getDescription(self._subtest),
                         'testGetDuplicatedNestedSubTestDescriptionWithoutDocstring '
@@ -525,7 +525,7 @@ klasse Test_TextTestResult(unittest.TestCase):
                      "Docstrings are omitted with -O2 and above")
     def testGetDescriptionWithOneLineDocstring(self):
         """Tests getDescription() fuer a method with a docstring."""
-        result = unittest.TextTestResult(None, True, 1)
+        result = unittest.TextTestResult(Nichts, Wahr, 1)
         self.assertEqual(
                 result.getDescription(self),
                ('testGetDescriptionWithOneLineDocstring '
@@ -536,7 +536,7 @@ klasse Test_TextTestResult(unittest.TestCase):
                      "Docstrings are omitted with -O2 and above")
     def testGetSubTestDescriptionWithOneLineDocstring(self):
         """Tests getDescription() fuer a method with a docstring."""
-        result = unittest.TextTestResult(None, True, 1)
+        result = unittest.TextTestResult(Nichts, Wahr, 1)
         with self.subTest(foo=1, bar=2):
             self.assertEqual(
                 result.getDescription(self._subtest),
@@ -552,7 +552,7 @@ klasse Test_TextTestResult(unittest.TestCase):
         """Tests getDescription() fuer a method with a longer docstring.
         The second line of the docstring.
         """
-        result = unittest.TextTestResult(None, True, 1)
+        result = unittest.TextTestResult(Nichts, Wahr, 1)
         self.assertEqual(
                 result.getDescription(self),
                ('testGetDescriptionWithMultiLineDocstring '
@@ -566,7 +566,7 @@ klasse Test_TextTestResult(unittest.TestCase):
         """Tests getDescription() fuer a method with a longer docstring.
         The second line of the docstring.
         """
-        result = unittest.TextTestResult(None, True, 1)
+        result = unittest.TextTestResult(Nichts, Wahr, 1)
         with self.subTest(foo=1, bar=2):
             self.assertEqual(
                 result.getDescription(self._subtest),
@@ -606,15 +606,15 @@ klasse Test_TextTestResult(unittest.TestCase):
             with self.subTest('error', d=4):
                 raise Exception('error')
 
-        tearDownError = None
+        tearDownError = Nichts
         def tearDown(self):
-            wenn self.tearDownError is not None:
+            wenn self.tearDownError is not Nichts:
                 raise self.tearDownError
 
-    def _run_test(self, test_name, verbosity, tearDownError=None):
+    def _run_test(self, test_name, verbosity, tearDownError=Nichts):
         stream = BufferedWriter()
         stream = unittest.runner._WritelnDecorator(stream)
-        result = unittest.TextTestResult(stream, True, verbosity)
+        result = unittest.TextTestResult(stream, Wahr, verbosity)
         test = self.Test(test_name)
         test.tearDownError = tearDownError
         test.run(result)
@@ -696,13 +696,13 @@ fuer m in ('addSkip', 'addExpectedFailure', 'addUnexpectedSuccess',
            '__init__'):
     del classDict[m]
 
-def __init__(self, stream=None, descriptions=None, verbosity=None):
+def __init__(self, stream=Nichts, descriptions=Nichts, verbosity=Nichts):
     self.failures = []
     self.errors = []
     self.testsRun = 0
-    self.shouldStop = False
-    self.buffer = False
-    self.tb_locals = False
+    self.shouldStop = Falsch
+    self.buffer = Falsch
+    self.tb_locals = Falsch
 
 klasseDict['__init__'] = __init__
 OldResult = type('OldResult', (object,), classDict)
@@ -727,9 +727,9 @@ klasse Test_OldTestResult(unittest.TestCase):
             def testUnexpectedSuccess(self):
                 pass
 
-        fuer test_name, should_pass in (('testSkip', True),
-                                       ('testExpectedFail', True),
-                                       ('testUnexpectedSuccess', False)):
+        fuer test_name, should_pass in (('testSkip', Wahr),
+                                       ('testExpectedFail', Wahr),
+                                       ('testUnexpectedSuccess', Falsch)):
             test = Test(test_name)
             self.assertOldResultWarning(test, int(not should_pass))
 
@@ -775,7 +775,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         real_err = self._real_err
 
         result = unittest.TestResult()
-        self.assertFalse(result.buffer)
+        self.assertFalsch(result.buffer)
 
         self.assertIs(real_out, sys.stdout)
         self.assertIs(real_err, sys.stderr)
@@ -790,9 +790,9 @@ klasse TestOutputBuffering(unittest.TestCase):
         real_err = self._real_err
 
         result = unittest.TestResult()
-        self.assertFalse(result.buffer)
+        self.assertFalsch(result.buffer)
 
-        result.buffer = True
+        result.buffer = Wahr
 
         self.assertIs(real_out, sys.stdout)
         self.assertIs(real_err, sys.stderr)
@@ -835,7 +835,7 @@ klasse TestOutputBuffering(unittest.TestCase):
 
     def getStartedResult(self):
         result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
         result.startTest(self)
         return result
 
@@ -844,10 +844,10 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.addCleanup(restore_traceback)
 
         fuer message_attr, add_attr, include_error in [
-            ('errors', 'addError', True),
-            ('failures', 'addFailure', False),
-            ('errors', 'addError', True),
-            ('failures', 'addFailure', False)
+            ('errors', 'addError', Wahr),
+            ('failures', 'addFailure', Falsch),
+            ('errors', 'addError', Wahr),
+            ('failures', 'addFailure', Falsch)
         ]:
             result = self.getStartedResult()
             buffered_out = sys.stdout
@@ -861,7 +861,7 @@ klasse TestOutputBuffering(unittest.TestCase):
 
 
             addFunction = getattr(result, add_attr)
-            addFunction(self, (None, None, None))
+            addFunction(self, (Nichts, Nichts, Nichts))
             result.stopTest(self)
 
             result_list = getattr(result, message_attr)
@@ -889,7 +889,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferSetUp(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def setUp(self):
@@ -911,7 +911,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferTearDown(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def tearDown(self):
@@ -933,7 +933,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferDoCleanups(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def setUp(self):
@@ -963,7 +963,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferSetUp_DoCleanups(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def setUp(self):
@@ -1004,7 +1004,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferTearDown_DoCleanups(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def setUp(self):
@@ -1047,7 +1047,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferSetupClass(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             @classmethod
@@ -1070,7 +1070,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferTearDownClass(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             @classmethod
@@ -1093,7 +1093,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferDoClassCleanups(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             @classmethod
@@ -1126,7 +1126,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferSetupClass_DoClassCleanups(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             @classmethod
@@ -1165,7 +1165,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferTearDownClass_DoClassCleanups(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             @classmethod
@@ -1207,7 +1207,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferSetUpModule(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def test_foo(self):
@@ -1235,7 +1235,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferTearDownModule(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def test_foo(self):
@@ -1263,7 +1263,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferDoModuleCleanups(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def test_foo(self):
@@ -1301,7 +1301,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferSetUpModule_DoModuleCleanups(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def test_foo(self):
@@ -1352,7 +1352,7 @@ klasse TestOutputBuffering(unittest.TestCase):
     def testBufferTearDownModule_DoModuleCleanups(self):
         with captured_stdout() as stdout:
             result = unittest.TestResult()
-        result.buffer = True
+        result.buffer = Wahr
 
         klasse Foo(unittest.TestCase):
             def test_foo(self):

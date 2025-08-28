@@ -110,8 +110,8 @@ import bkfile
 
 def main():
     # overridable context
-    prefix = None                       # settable with -p option
-    exec_prefix = None                  # settable with -P option
+    prefix = Nichts                       # settable with -p option
+    exec_prefix = Nichts                  # settable with -P option
     extensions = []
     exclude = []                        # settable with -x option
     addn_link = []      # settable with -l, but only honored under Windows.
@@ -334,7 +334,7 @@ def main():
     # Handle special entry point requirements
     # (on Windows, some frozen programs do not use __main__, but
     # import the module directly.  Eg, DLLs, Services, etc
-    custom_entry_point = None  # Currently only used on Windows
+    custom_entry_point = Nichts  # Currently only used on Windows
     python_entry_is_main = 1   # Is the entry point called __main__?
     # handle -s option on Windows
     wenn win:
@@ -366,7 +366,7 @@ def main():
             continue
         wenn modargs:
             wenn mod[-2:] == '.*':
-                mf.import_hook(mod[:-2], None, ["*"])
+                mf.import_hook(mod[:-2], Nichts, ["*"])
             sonst:
                 mf.import_hook(mod)
         sonst:

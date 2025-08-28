@@ -23,7 +23,7 @@ EXITCODE_INTERRUPTED = 130   # 128 + signal.SIGINT=2
 
 
 klasse TestResults:
-    def __init__(self) -> None:
+    def __init__(self) -> Nichts:
         self.bad: TestList = []
         self.good: TestList = []
         self.rerun_bad: TestList = []
@@ -34,8 +34,8 @@ klasse TestResults:
         self.rerun: TestList = []
         self.rerun_results: list[TestResult] = []
 
-        self.interrupted: bool = False
-        self.worker_bug: bool = False
+        self.interrupted: bool = Falsch
+        self.worker_bug: bool = Falsch
         self.test_times: list[tuple[float, TestName]] = []
         self.stats = TestStats()
         # used by --junit-xml
@@ -97,7 +97,7 @@ klasse TestResults:
             exitcode = EXITCODE_BAD_TEST
         return exitcode
 
-    def accumulate_result(self, result: TestResult, runtests: RunTests) -> None:
+    def accumulate_result(self, result: TestResult, runtests: RunTests) -> Nichts:
         test_name = result.test_name
         rerun = runtests.rerun
         fail_env_changed = runtests.fail_env_changed
@@ -113,7 +113,7 @@ klasse TestResults:
             case State.RESOURCE_DENIED:
                 self.resource_denied.append(test_name)
             case State.INTERRUPTED:
-                self.interrupted = True
+                self.interrupted = Wahr
             case State.DID_NOT_RUN:
                 self.run_no_tests.append(test_name)
             case _:
@@ -124,13 +124,13 @@ klasse TestResults:
                     raise ValueError(f"invalid test state: {result.state!r}")
 
         wenn result.state == State.WORKER_BUG:
-            self.worker_bug = True
+            self.worker_bug = Wahr
 
         wenn result.has_meaningful_duration() and not rerun:
-            wenn result.duration is None:
-                raise ValueError("result.duration is None")
+            wenn result.duration is Nichts:
+                raise ValueError("result.duration is Nichts")
             self.test_times.append((result.duration, test_name))
-        wenn result.stats is not None:
+        wenn result.stats is not Nichts:
             self.stats.accumulate(result.stats)
         wenn rerun:
             self.rerun.append(test_name)
@@ -148,7 +148,7 @@ klasse TestResults:
     def need_rerun(self) -> bool:
         return bool(self.rerun_results)
 
-    def prepare_rerun(self, *, clear: bool = True) -> tuple[TestTuple, FilterDict]:
+    def prepare_rerun(self, *, clear: bool = Wahr) -> tuple[TestTuple, FilterDict]:
         tests: TestList = []
         match_tests_dict = {}
         fuer result in self.rerun_results:
@@ -168,7 +168,7 @@ klasse TestResults:
 
         return (tuple(tests), match_tests_dict)
 
-    def add_junit(self, xml_data: list[str]) -> None:
+    def add_junit(self, xml_data: list[str]) -> Nichts:
         import xml.etree.ElementTree as ET
         fuer e in xml_data:
             try:
@@ -177,7 +177,7 @@ klasse TestResults:
                 print(xml_data, file=sys.__stderr__)
                 raise
 
-    def write_junit(self, filename: StrPath) -> None:
+    def write_junit(self, filename: StrPath) -> Nichts:
         wenn not self.testsuite_xml:
             # Don't create empty XML file
             return
@@ -202,7 +202,7 @@ klasse TestResults:
             fuer s in ET.tostringlist(root):
                 f.write(s)
 
-    def display_result(self, tests: TestTuple, quiet: bool, print_slowest: bool) -> None:
+    def display_result(self, tests: TestTuple, quiet: bool, print_slowest: bool) -> Nichts:
         ansi = get_colors()
         green = ansi.GREEN
         red = ansi.BOLD_RED
@@ -210,7 +210,7 @@ klasse TestResults:
         yellow = ansi.YELLOW
 
         wenn print_slowest:
-            self.test_times.sort(reverse=True)
+            self.test_times.sort(reverse=Wahr)
             print()
             print(f"{yellow}10 slowest tests:{reset}")
             fuer test_time, test in self.test_times[:10]:
@@ -268,7 +268,7 @@ klasse TestResults:
             print()
             print(f"{yellow}Test suite interrupted by signal SIGINT.{reset}")
 
-    def display_summary(self, first_runtests: RunTests, filtered: bool) -> None:
+    def display_summary(self, first_runtests: RunTests, filtered: bool) -> Nichts:
         # Total tests
         ansi = get_colors()
         red, reset, yellow = ansi.RED, ansi.RESET, ansi.YELLOW

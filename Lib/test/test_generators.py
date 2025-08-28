@@ -14,15 +14,15 @@ from test import support
 try:
     import _testcapi
 except ImportError:
-    _testcapi = None
+    _testcapi = Nichts
 
 
 # This tests to make sure that wenn a SIGINT arrives just before we send into a
 # yield from chain, the KeyboardInterrupt is raised in the innermost
 # generator (see bpo-30039).
-@unittest.skipUnless(_testcapi is not None and
-                     hasattr(_testcapi, "raise_SIGINT_then_send_None"),
-                     "needs _testcapi.raise_SIGINT_then_send_None")
+@unittest.skipUnless(_testcapi is not Nichts and
+                     hasattr(_testcapi, "raise_SIGINT_then_send_Nichts"),
+                     "needs _testcapi.raise_SIGINT_then_send_Nichts")
 klasse SignalAndYieldFromTest(unittest.TestCase):
 
     def generator1(self):
@@ -38,9 +38,9 @@ klasse SignalAndYieldFromTest(unittest.TestCase):
 
     def test_raise_and_yield_from(self):
         gen = self.generator1()
-        gen.send(None)
+        gen.send(Nichts)
         try:
-            _testcapi.raise_SIGINT_then_send_None(gen)
+            _testcapi.raise_SIGINT_then_send_Nichts(gen)
         except BaseException as _exc:
             exc = _exc
         self.assertIs(type(exc), StopIteration)
@@ -63,31 +63,31 @@ klasse FinalizationTest(unittest.TestCase):
         next(g)
         del g
         support.gc_collect()
-        self.assertIs(wr(), None)
-        self.assertTrue(frame)
+        self.assertIs(wr(), Nichts)
+        self.assertWahr(frame)
         del frame
         support.gc_collect()
 
     def test_refcycle(self):
         # A generator caught in a refcycle gets finalized anyway.
         old_garbage = gc.garbage[:]
-        finalized = False
+        finalized = Falsch
         def gen():
             nonlocal finalized
             try:
                 g = yield
                 yield 1
             finally:
-                finalized = True
+                finalized = Wahr
 
         g = gen()
         next(g)
         g.send(g)
         self.assertGreaterEqual(sys.getrefcount(g), 2)
-        self.assertFalse(finalized)
+        self.assertFalsch(finalized)
         del g
         support.gc_collect()
-        self.assertTrue(finalized)
+        self.assertWahr(finalized)
         self.assertEqual(gc.garbage, old_garbage)
 
     def test_lambda_generator(self):
@@ -236,20 +236,20 @@ klasse GeneratorTest(unittest.TestCase):
         async def f():
             yield
         ag = f()
-        self.assertIsNone(ag.ag_frame.f_back)
+        self.assertIsNichts(ag.ag_frame.f_back)
 
     def test_cr_frame_f_back(self):
         async def f():
             pass
         cr = f()
-        self.assertIsNone(cr.cr_frame.f_back)
+        self.assertIsNichts(cr.cr_frame.f_back)
         cr.close()  # Suppress RuntimeWarning.
 
     def test_gi_frame_f_back(self):
         def f():
             yield
         gi = f()
-        self.assertIsNone(gi.gi_frame.f_back)
+        self.assertIsNichts(gi.gi_frame.f_back)
 
     def test_issue103488(self):
 
@@ -260,7 +260,7 @@ klasse GeneratorTest(unittest.TestCase):
         def loop():
             try:
                 fuer _ in gen_raises():
-                    wenn True is False:
+                    wenn Wahr is Falsch:
                         return
             except ValueError:
                 pass
@@ -303,7 +303,7 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
     ]
 
     non_iterables = [
-        None,
+        Nichts,
         42,
         3.0,
         2j,
@@ -370,12 +370,12 @@ klasse ExceptionTest(unittest.TestCase):
     def test_except_throw(self):
         def store_raise_exc_generator():
             try:
-                self.assertIsNone(sys.exception())
+                self.assertIsNichts(sys.exception())
                 yield
             except Exception as exc:
                 # exception raised by gen.throw(exc)
                 self.assertIsInstance(sys.exception(), ValueError)
-                self.assertIsNone(exc.__context__)
+                self.assertIsNichts(exc.__context__)
                 yield
 
                 # ensure that the exception is not lost
@@ -399,9 +399,9 @@ klasse ExceptionTest(unittest.TestCase):
         next(make)
         with self.assertRaises(ValueError) as cm:
             next(make)
-        self.assertIsNone(cm.exception.__context__)
+        self.assertIsNichts(cm.exception.__context__)
 
-        self.assertIsNone(sys.exception())
+        self.assertIsNichts(sys.exception())
 
     def test_except_next(self):
         def gen():
@@ -413,12 +413,12 @@ klasse ExceptionTest(unittest.TestCase):
             raise ValueError
         except Exception:
             self.assertEqual(next(g), "done")
-        self.assertIsNone(sys.exception())
+        self.assertIsNichts(sys.exception())
 
     def test_except_gen_except(self):
         def gen():
             try:
-                self.assertIsNone(sys.exception())
+                self.assertIsNichts(sys.exception())
                 yield
                 # we are called from "except ValueError:", TypeError must
                 # inherit ValueError in its context
@@ -429,7 +429,7 @@ klasse ExceptionTest(unittest.TestCase):
             # here we are still called from the "except ValueError:"
             self.assertIsInstance(sys.exception(), ValueError)
             yield
-            self.assertIsNone(sys.exception())
+            self.assertIsNichts(sys.exception())
             yield "done"
 
         g = gen()
@@ -440,7 +440,7 @@ klasse ExceptionTest(unittest.TestCase):
             next(g)
 
         self.assertEqual(next(g), "done")
-        self.assertIsNone(sys.exception())
+        self.assertIsNichts(sys.exception())
 
     def test_nested_gen_except_loop(self):
         def gen():
@@ -460,13 +460,13 @@ klasse ExceptionTest(unittest.TestCase):
         except Exception:
             fuer x in outer():
                 self.assertEqual(x, "doing")
-        self.assertEqual(sys.exception(), None)
+        self.assertEqual(sys.exception(), Nichts)
 
     def test_except_throw_exception_context(self):
         def gen():
             try:
                 try:
-                    self.assertIsNone(sys.exception())
+                    self.assertIsNichts(sys.exception())
                     yield
                 except ValueError:
                     # we are called from "except ValueError:"
@@ -478,7 +478,7 @@ klasse ExceptionTest(unittest.TestCase):
             # we are still called from "except ValueError:"
             self.assertIsInstance(sys.exception(), ValueError)
             yield
-            self.assertIsNone(sys.exception())
+            self.assertIsNichts(sys.exception())
             yield "done"
 
         g = gen()
@@ -489,7 +489,7 @@ klasse ExceptionTest(unittest.TestCase):
             g.throw(exc)
 
         self.assertEqual(next(g), "done")
-        self.assertIsNone(sys.exception())
+        self.assertIsNichts(sys.exception())
 
     def test_except_throw_bad_exception(self):
         klasse E(Exception):
@@ -524,7 +524,7 @@ klasse ExceptionTest(unittest.TestCase):
         gen = g()
         with self.assertWarns(DeprecationWarning):
             with self.assertRaises(TypeError):
-                gen.throw(TypeError, TypeError(24), None)
+                gen.throw(TypeError, TypeError(24), Nichts)
 
     def test_stopiteration_error(self):
         # See also PEP 479.
@@ -579,8 +579,8 @@ klasse GeneratorCloseTest(unittest.TestCase):
             yield
 
         gen = f()
-        gen.send(None)
-        self.assertIsNone(gen.close())
+        gen.send(Nichts)
+        self.assertIsNichts(gen.close())
 
     def test_close_return_value(self):
         def f():
@@ -591,7 +591,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
                 return 0
 
         gen = f()
-        gen.send(None)
+        gen.send(Nichts)
         self.assertEqual(gen.close(), 0)
 
     def test_close_not_catching_exit(self):
@@ -602,8 +602,8 @@ klasse GeneratorCloseTest(unittest.TestCase):
             return 0
 
         gen = f()
-        gen.send(None)
-        self.assertIsNone(gen.close())
+        gen.send(Nichts)
+        self.assertIsNichts(gen.close())
 
     def test_close_not_started(self):
         def f():
@@ -613,7 +613,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
                 return 0
 
         gen = f()
-        self.assertIsNone(gen.close())
+        self.assertIsNichts(gen.close())
 
     def test_close_exhausted(self):
         def f():
@@ -626,7 +626,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
         next(gen)
         with self.assertRaises(StopIteration):
             next(gen)
-        self.assertIsNone(gen.close())
+        self.assertIsNichts(gen.close())
 
     def test_close_closed(self):
         def f():
@@ -636,9 +636,9 @@ klasse GeneratorCloseTest(unittest.TestCase):
                 return 0
 
         gen = f()
-        gen.send(None)
+        gen.send(Nichts)
         self.assertEqual(gen.close(), 0)
-        self.assertIsNone(gen.close())
+        self.assertIsNichts(gen.close())
 
     def test_close_raises(self):
         def f():
@@ -649,7 +649,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
             raise RuntimeError
 
         gen = f()
-        gen.send(None)
+        gen.send(Nichts)
         with self.assertRaises(RuntimeError):
             gen.close()
 
@@ -671,7 +671,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
         del f
         g.close()
         support.gc_collect()
-        self.assertIsNone(f_wr())
+        self.assertIsNichts(f_wr())
 
 
 # See https://github.com/python/cpython/issues/125723
@@ -692,7 +692,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
 
         klasse ObjectWithFrame():
             def __init__(self):
-                self.frame = None
+                self.frame = Nichts
 
         def get_frame(index):
             wenn index == 1:
@@ -706,7 +706,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
                 next(g3(obj))
                 return obj.frame
             sonst:
-                return None
+                return Nichts
 
         fuer index in (1, 2, 3):
             with self.subTest(index=index):
@@ -716,7 +716,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
                 self.assertEqual(frame_locals['a'], 42)
 
     def test_frame_locals_outlive_generator(self):
-        frame_locals1 = None
+        frame_locals1 = Nichts
 
         def g1():
             nonlocal frame_locals1
@@ -736,7 +736,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
             wenn index == 2:
                 return next(g2())
             sonst:
-                return None
+                return Nichts
 
         fuer index in (1, 2):
             with self.subTest(index=index):
@@ -767,7 +767,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
                 yield
 
         gen = f()
-        gen.send(None)
+        gen.send(Nichts)
         with self.assertRaises(ValueError) as cm:
             gen.throw(ValueError)
         context = cm.exception.__context__
@@ -790,7 +790,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
                     yield 'b'
 
         gen = f()
-        gen.send(None)
+        gen.send(Nichts)
         actual = gen.throw(ValueError)
         # This ensures that the assertions inside were executed.
         self.assertEqual(actual, 'b')
@@ -806,7 +806,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
                 yield from f()
 
         gen = g()
-        gen.send(None)
+        gen.send(Nichts)
         with self.assertRaises(ValueError) as cm:
             gen.throw(ValueError)
         context = cm.exception.__context__
@@ -815,7 +815,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
     def test_exception_context_with_yield_from_with_context_cycle(self):
         # Check trying to create an exception context cycle:
         # https://bugs.python.org/issue40696
-        has_cycle = None
+        has_cycle = Nichts
 
         def f():
             yield
@@ -833,10 +833,10 @@ klasse GeneratorThrowTest(unittest.TestCase):
 
         exc = KeyError('a')
         gen = g(exc)
-        gen.send(None)
+        gen.send(Nichts)
         gen.throw(exc)
-        # This also distinguishes from the initial has_cycle=None.
-        self.assertEqual(has_cycle, False)
+        # This also distinguishes from the initial has_cycle=Nichts.
+        self.assertEqual(has_cycle, Falsch)
 
     def test_throw_after_none_exc_type(self):
         def g():
@@ -851,7 +851,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
                 raise RuntimeError
 
         gen = g()
-        gen.send(None)
+        gen.send(Nichts)
         with self.assertRaises(RuntimeError) as cm:
             gen.throw(ValueError)
 
@@ -887,7 +887,7 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
             self.check_stack_names(sys._getframe(), ['g'])
 
         gen = g()
-        gen.send(None)
+        gen.send(Nichts)
         try:
             call_method(gen)
         except StopIteration:
@@ -895,7 +895,7 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
 
     def test_send_with_yield_from(self):
         def call_send(gen):
-            gen.send(None)
+            gen.send(Nichts)
 
         self.check_yield_from_example(call_send)
 
@@ -921,7 +921,7 @@ klasse GeneratorStackTraceTest(unittest.TestCase):
             yield from target
 
         gen = g(CustomGen(self))
-        gen.send(None)
+        gen.send(Nichts)
         gen.throw(RuntimeError)
 
 
@@ -929,33 +929,33 @@ klasse YieldFromTests(unittest.TestCase):
     def test_generator_gi_yieldfrom(self):
         def a():
             self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_RUNNING)
-            self.assertIsNone(gen_b.gi_yieldfrom)
+            self.assertIsNichts(gen_b.gi_yieldfrom)
             yield
             self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_RUNNING)
-            self.assertIsNone(gen_b.gi_yieldfrom)
+            self.assertIsNichts(gen_b.gi_yieldfrom)
 
         def b():
-            self.assertIsNone(gen_b.gi_yieldfrom)
+            self.assertIsNichts(gen_b.gi_yieldfrom)
             yield from a()
-            self.assertIsNone(gen_b.gi_yieldfrom)
+            self.assertIsNichts(gen_b.gi_yieldfrom)
             yield
-            self.assertIsNone(gen_b.gi_yieldfrom)
+            self.assertIsNichts(gen_b.gi_yieldfrom)
 
         gen_b = b()
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_CREATED)
-        self.assertIsNone(gen_b.gi_yieldfrom)
+        self.assertIsNichts(gen_b.gi_yieldfrom)
 
-        gen_b.send(None)
+        gen_b.send(Nichts)
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_SUSPENDED)
         self.assertEqual(gen_b.gi_yieldfrom.gi_code.co_name, 'a')
 
-        gen_b.send(None)
+        gen_b.send(Nichts)
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_SUSPENDED)
-        self.assertIsNone(gen_b.gi_yieldfrom)
+        self.assertIsNichts(gen_b.gi_yieldfrom)
 
         [] = gen_b  # Exhaust generator
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_CLOSED)
-        self.assertIsNone(gen_b.gi_yieldfrom)
+        self.assertIsNichts(gen_b.gi_yieldfrom)
 
 
 tutorial_tests = """
@@ -1171,7 +1171,7 @@ Guido's binary tree example.
     >>> # A binary tree class.
     >>> klasse Tree:
     ...
-    ...     def __init__(self, label, left=None, right=None):
+    ...     def __init__(self, label, left=Nichts, right=Nichts):
     ...         self.label = label
     ...         self.left = left
     ...         self.right = right
@@ -1241,15 +1241,15 @@ Guido's binary tree example.
 
 email_tests = """
 
-The difference between yielding None and returning it.
+The difference between yielding Nichts and returning it.
 
 >>> def g():
 ...     fuer i in range(3):
-...         yield None
-...     yield None
+...         yield Nichts
+...     yield Nichts
 ...     return
 >>> list(g())
-[None, None, None, None]
+[Nichts, Nichts, Nichts, Nichts]
 
 Ensure that explicitly raising StopIteration acts like any other exception
 in try/except, not like a return.
@@ -1328,10 +1328,10 @@ From the Iterators list, about the types of these things.
 >>> print(i.__next__.__doc__ wenn HAVE_DOCSTRINGS sonst 'Implement next(self).')
 Implement next(self).
 >>> iter(i) is i
-True
+Wahr
 >>> import types
 >>> isinstance(i, types.GeneratorType)
-True
+Wahr
 
 And more, added later.
 
@@ -1361,7 +1361,7 @@ Subject: Re: PEP 255: Simple Generators
 >>> klasse disjointSet:
 ...     def __init__(self, name):
 ...         self.name = name
-...         self.parent = None
+...         self.parent = Nichts
 ...         self.generator = self.generate()
 ...
 ...     def generate(self):
@@ -1731,7 +1731,7 @@ These are fine:
 
 >>> def f():
 ...    wenn "":
-...        yield None
+...        yield Nichts
 >>> type(f())
 <class 'generator'>
 
@@ -1813,14 +1813,14 @@ Test the gi_code attribute
 ...
 >>> g = f()
 >>> g.gi_code is f.__code__
-True
+Wahr
 >>> next(g)
 5
 >>> next(g)
 Traceback (most recent call last):
 StopIteration
 >>> g.gi_code is f.__code__
-True
+Wahr
 
 
 Test the __name__ attribute and the repr()
@@ -1851,7 +1851,7 @@ Lambdas shouldn't have their usual return behavior.
 # function list [x, y, z] is passed.  Then conjoin acts like:
 #
 # def g():
-#     values = [None] * 3
+#     values = [Nichts] * 3
 #     fuer values[0] in x():
 #         fuer values[1] in y():
 #             fuer values[2] in z():
@@ -1867,7 +1867,7 @@ Lambdas shouldn't have their usual return behavior.
 
 def simple_conjoin(gs):
 
-    values = [None] * len(gs)
+    values = [Nichts] * len(gs)
 
     def gen(i):
         wenn i >= len(gs):
@@ -1889,7 +1889,7 @@ def simple_conjoin(gs):
 def conjoin(gs):
 
     n = len(gs)
-    values = [None] * n
+    values = [Nichts] * n
 
     # Do one loop nest at time recursively, until the # of loop nests
     # remaining is divisible by 3.
@@ -1949,8 +1949,8 @@ def conjoin(gs):
 
 def flat_conjoin(gs):  # rename to conjoin to run tests with this instead
     n = len(gs)
-    values = [None] * n
-    iters  = [None] * n
+    values = [Nichts] * n
+    iters  = [Nichts] * n
     _StopIteration = StopIteration  # make local because caught a *lot*
     i = 0
     while 1:
@@ -2215,7 +2215,7 @@ klasse Knights:
         w = len(str(m*n))
         format = "%" + str(w) + "d"
 
-        squares = [[None] * n fuer i in range(m)]
+        squares = [[Nichts] * n fuer i in range(m)]
         k = 1
         fuer i in x:
             i1, j1 = self.index2coords(i)
@@ -2256,16 +2256,16 @@ generated sequence, you need to copy its results.
 >>> fuer n in range(10):
 ...     all = list(gencopy(conjoin([lambda: iter((0, 1))] * n)))
 ...     print(n, len(all), all[0] == [0] * n, all[-1] == [1] * n)
-0 1 True True
-1 2 True True
-2 4 True True
-3 8 True True
-4 16 True True
-5 32 True True
-6 64 True True
-7 128 True True
-8 256 True True
-9 512 True True
+0 1 Wahr Wahr
+1 2 Wahr Wahr
+2 4 Wahr Wahr
+3 8 Wahr Wahr
+4 16 Wahr Wahr
+5 32 Wahr Wahr
+6 64 Wahr Wahr
+7 128 Wahr Wahr
+8 256 Wahr Wahr
+9 512 Wahr Wahr
 
 And run an 8-queens solver.
 
@@ -2385,7 +2385,7 @@ Generators are weakly referencable:
 ...
 >>> wr = weakref.ref(gen)
 >>> wr() is gen
-True
+Wahr
 >>> p = weakref.proxy(gen)
 
 Generator-iterators are weakly referencable as well:
@@ -2393,7 +2393,7 @@ Generator-iterators are weakly referencable as well:
 >>> gi = gen()
 >>> wr = weakref.ref(gi)
 >>> wr() is gi
-True
+Wahr
 >>> p = weakref.proxy(gi)
 >>> list(p)
 ['foo!']
@@ -2420,14 +2420,14 @@ Sending a value into a new generator produces a TypeError:
 >>> f().send("foo")
 Traceback (most recent call last):
 ...
-TypeError: can't send non-None value to a just-started generator
+TypeError: can't send non-Nichts value to a just-started generator
 
 
-Yield by itself yields None:
+Yield by itself yields Nichts:
 
 >>> def f(): yield
 >>> list(f())
-[None]
+[Nichts]
 
 
 Yield is allowed only in the outermost iterable in generator expression:
@@ -2496,7 +2496,7 @@ SyntaxError: 'yield expression' is an illegal expression fuer augmented assignme
 Now check some throw() conditions:
 
 >>> def f():
-...     while True:
+...     while Wahr:
 ...         try:
 ...             print((yield))
 ...         except ValueError as v:
@@ -2524,7 +2524,7 @@ caught ValueError (1)
 >>> g.throw(ValueError, TypeError(1))  # mismatched type, rewrapped
 caught ValueError (1)
 
->>> g.throw(ValueError, ValueError(1), None)   # explicit None traceback
+>>> g.throw(ValueError, ValueError(1), Nichts)   # explicit Nichts traceback
 caught ValueError (1)
 
 >>> g.throw(ValueError(1), "foo")       # bad args
@@ -2569,7 +2569,7 @@ Traceback (most recent call last):
 TypeError
 
 >>> print(g.gi_frame)
-None
+Nichts
 
 >>> g.send(2)
 Traceback (most recent call last):
@@ -2693,11 +2693,11 @@ Our ill-behaved code should be invoked during GC:
 ...                               f'generator {gen_repr}')
 ...     cm.unraisable.exc_type == RuntimeError
 ...     "generator ignored GeneratorExit" in str(cm.unraisable.exc_value)
-...     cm.unraisable.exc_traceback is not None
-True
-True
-True
-True
+...     cm.unraisable.exc_traceback is not Nichts
+Wahr
+Wahr
+Wahr
+Wahr
 
 And errors thrown during closing should propagate:
 
@@ -2733,7 +2733,7 @@ enclosing function a generator:
 >>> g = f(data)
 >>> type(g)
 <class 'generator'>
->>> g.send(None)
+>>> g.send(Nichts)
 'a'
 >>> data
 [1, 2]
@@ -2779,7 +2779,7 @@ was removed.
 
 >>> def leak():
 ...    def gen():
-...        while True:
+...        while Wahr:
 ...            yield g
 ...    g = gen()
 
@@ -2810,11 +2810,11 @@ to test.
 ...                               f'calling deallocator {del_repr}')
 ...     cm.unraisable.exc_type == RuntimeError
 ...     str(cm.unraisable.exc_value) == "del failed"
-...     cm.unraisable.exc_traceback is not None
-True
-True
-True
-True
+...     cm.unraisable.exc_traceback is not Nichts
+Wahr
+Wahr
+Wahr
+Wahr
 
 
 These refleak tests should perhaps be in a testfile of their own,

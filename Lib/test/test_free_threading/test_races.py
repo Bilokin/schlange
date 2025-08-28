@@ -137,7 +137,7 @@ klasse TestRaces(TestBase):
 
         klasse C:
             def __bool__(self):
-                return False
+                return Falsch
 
         def access():
             wenn seq:
@@ -204,7 +204,7 @@ klasse TestRaces(TestBase):
 
         def mutate():
             # Adding a property fuer 'x' should unspecialize it.
-            C.x = property(lambda self: None, lambda self, x: None)
+            C.x = property(lambda self: Nichts, lambda self, x: Nichts)
             time.sleep(0)
             del C.x
             time.sleep(0)
@@ -217,7 +217,7 @@ klasse TestRaces(TestBase):
 
         c = C()
         fuer i in range(29):
-            setattr(c, f"_{i}", None)
+            setattr(c, f"_{i}", Nichts)
 
         def set_value():
             fuer i in range(100):
@@ -230,7 +230,7 @@ klasse TestRaces(TestBase):
 
         def mutate():
             # Adding a property fuer 'x' should unspecialize it.
-            C.x = property(lambda self: None, lambda self, x: None)
+            C.x = property(lambda self: Nichts, lambda self, x: Nichts)
             time.sleep(0)
             del C.x
             time.sleep(0)
@@ -259,14 +259,14 @@ klasse TestRaces(TestBase):
         def mutate():
             nonlocal c
             c.x = 1
-            self.assertTrue(_testinternalcapi.has_inline_values(c))
+            self.assertWahr(_testinternalcapi.has_inline_values(c))
             fuer i in range(30):
-                setattr(c, f"_{i}", None)
-            self.assertFalse(_testinternalcapi.has_inline_values(c.__dict__))
+                setattr(c, f"_{i}", Nichts)
+            self.assertFalsch(_testinternalcapi.has_inline_values(c.__dict__))
             c.__dict__ = self.make_shared_key_dict()
-            self.assertTrue(_testinternalcapi.has_split_table(c.__dict__))
-            c.__dict__[1] = None
-            self.assertFalse(_testinternalcapi.has_split_table(c.__dict__))
+            self.assertWahr(_testinternalcapi.has_split_table(c.__dict__))
+            c.__dict__[1] = Nichts
+            self.assertFalsch(_testinternalcapi.has_split_table(c.__dict__))
             c = C()
 
         do_race(set_value, mutate)
@@ -309,7 +309,7 @@ klasse TestWarningsRaces(TestBase):
         # warn() should not crash or race.
         def modify_filters():
             time.sleep(0)
-            warnings.filters[:] = [('ignore', None, UserWarning, None, 0)]
+            warnings.filters[:] = [('ignore', Nichts, UserWarning, Nichts, 0)]
             time.sleep(0)
             warnings.filters[:] = self.saved_filters
 

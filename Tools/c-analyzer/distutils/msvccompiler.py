@@ -13,11 +13,11 @@ from distutils.errors import DistutilsPlatformError
 from distutils.ccompiler import CCompiler
 from distutils import log
 
-_can_read_reg = False
+_can_read_reg = Falsch
 try:
     import winreg
 
-    _can_read_reg = True
+    _can_read_reg = Wahr
     hkey_mod = winreg
 
     RegOpenKeyEx = winreg.OpenKeyEx
@@ -29,7 +29,7 @@ except ImportError:
     try:
         import win32api
         import win32con
-        _can_read_reg = True
+        _can_read_reg = Wahr
         hkey_mod = win32con
 
         RegOpenKeyEx = win32api.RegOpenKeyEx
@@ -53,10 +53,10 @@ def read_keys(base, key):
     try:
         handle = RegOpenKeyEx(base, key)
     except RegError:
-        return None
+        return Nichts
     L = []
     i = 0
-    while True:
+    while Wahr:
         try:
             k = RegEnumKey(handle, i)
         except RegError:
@@ -73,10 +73,10 @@ def read_values(base, key):
     try:
         handle = RegOpenKeyEx(base, key)
     except RegError:
-        return None
+        return Nichts
     d = {}
     i = 0
-    while True:
+    while Wahr:
         try:
             name, value, type = RegEnumValue(handle, i)
         except RegError:
@@ -87,8 +87,8 @@ def read_values(base, key):
     return d
 
 def convert_mbcs(s):
-    dec = getattr(s, "decode", None)
-    wenn dec is not None:
+    dec = getattr(s, "decode", Nichts)
+    wenn dec is not Nichts:
         try:
             s = dec("mbcs")
         except UnicodeError:
@@ -163,7 +163,7 @@ def get_build_version():
     wenn majorVersion >= 6:
         return majorVersion + minorVersion
     # sonst we don't know what version of the compiler this is
-    return None
+    return Nichts
 
 def get_build_architecture():
     """Return the processor architecture.
@@ -239,7 +239,7 @@ klasse MSVCCompiler(CCompiler) :
             # Win64. Assume this was built with the platform SDK
             self.__product = "Microsoft SDK compiler %s" % (self.__version + 6)
 
-        self.initialized = False
+        self.initialized = Falsch
 
 
     # -- Miscellaneous methods -----------------------------------------
@@ -296,7 +296,7 @@ klasse MSVCCompiler(CCompiler) :
         # the GUI is run.
         wenn self.__version == 6:
             fuer base in HKEYS:
-                wenn read_values(base, r"%s\6.0" % self.__root) is not None:
+                wenn read_values(base, r"%s\6.0" % self.__root) is not Nichts:
                     self.warn("It seems you have Visual Studio 6 installed, "
                         "but the expected registry settings are not present.\n"
                         "You must at least run the Visual Studio GUI once "

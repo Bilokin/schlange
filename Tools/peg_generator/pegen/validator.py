@@ -9,24 +9,24 @@ klasse ValidationError(Exception):
 
 
 klasse GrammarValidator(GrammarVisitor):
-    def __init__(self, grammar: grammar.Grammar) -> None:
+    def __init__(self, grammar: grammar.Grammar) -> Nichts:
         self.grammar = grammar
-        self.rulename: Optional[str] = None
+        self.rulename: Optional[str] = Nichts
 
-    def validate_rule(self, rulename: str, node: Rule) -> None:
+    def validate_rule(self, rulename: str, node: Rule) -> Nichts:
         self.rulename = rulename
         self.visit(node)
-        self.rulename = None
+        self.rulename = Nichts
 
 
 klasse SubRuleValidator(GrammarValidator):
-    def visit_Rhs(self, node: Rhs) -> None:
+    def visit_Rhs(self, node: Rhs) -> Nichts:
         fuer index, alt in enumerate(node.alts):
             alts_to_consider = node.alts[index + 1 :]
             fuer other_alt in alts_to_consider:
                 self.check_intersection(alt, other_alt)
 
-    def check_intersection(self, first_alt: Alt, second_alt: Alt) -> None:
+    def check_intersection(self, first_alt: Alt, second_alt: Alt) -> Nichts:
         wenn str(second_alt).startswith(str(first_alt)):
             raise ValidationError(
                 f"In {self.rulename} there is an alternative that will "
@@ -35,7 +35,7 @@ klasse SubRuleValidator(GrammarValidator):
 
 
 klasse RaiseRuleValidator(GrammarValidator):
-    def visit_Alt(self, node: Alt) -> None:
+    def visit_Alt(self, node: Alt) -> Nichts:
         wenn self.rulename and self.rulename.startswith('invalid'):
             # raising is allowed in invalid rules
             return
@@ -46,7 +46,7 @@ klasse RaiseRuleValidator(GrammarValidator):
             )
 
 
-def validate_grammar(the_grammar: grammar.Grammar) -> None:
+def validate_grammar(the_grammar: grammar.Grammar) -> Nichts:
     fuer validator_cls in GrammarValidator.__subclasses__():
         validator = validator_cls(the_grammar)
         fuer rule_name, rule in the_grammar.rules.items():
